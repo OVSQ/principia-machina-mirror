@@ -1,0 +1,103 @@
+{
+  "meta": {
+    "name": "tpc_digest_corpus",
+    "version": "0.1.0",
+    "status": "RATIFIED (D97.1, 2026-09-22)",
+    "conforms_tps": "0.1.0 revision 4 (fills TPS 2.5.3 OWED C-02/C-03 at primitive+combination level)",
+    "module": "tpc_digest 0.1.0",
+    "alg": "SHA-256 over netstring enc([...]); enc(b)=decimal(bytelen)+':'+bytes; hex lowercase",
+    "note": "Each case shows its exact 'preimage'; 'expect' is SHA-256(preimage). Auditable: printf %s <preimage> | sha256sum. Both residences MUST reproduce every 'expect'."
+  },
+  "cases": [
+    {
+      "id": "fields/empty",
+      "fn": "digest_fields",
+      "input": {
+        "fields": []
+      },
+      "preimage": "",
+      "expect": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "id": "fields/one",
+      "fn": "digest_fields",
+      "input": {
+        "fields": [
+          "hello"
+        ]
+      },
+      "preimage": "5:hello",
+      "expect": "a3a285698dc7dbfe23947339ee187d471f643617f88b4af70209bb1a01edd9d9"
+    },
+    {
+      "id": "fields/two",
+      "fn": "digest_fields",
+      "input": {
+        "fields": [
+          "a",
+          "bc"
+        ]
+      },
+      "preimage": "1:a2:bc",
+      "expect": "5310a58788781ab25d5ad7c3f85035824b4eb7bdfa394e0ac2186271472b5492"
+    },
+    {
+      "id": "fields/empty-then-x",
+      "fn": "digest_fields",
+      "input": {
+        "fields": [
+          "",
+          "x"
+        ]
+      },
+      "preimage": "0:1:x",
+      "expect": "6d6d0ffa8fe1fcf741ef439fdeb5af86467a300a86dfadd184a96775d57d78c3"
+    },
+    {
+      "id": "fields/int-and-str-collide",
+      "fn": "digest_fields",
+      "input": {
+        "fields": [
+          "10",
+          10
+        ]
+      },
+      "preimage": "2:102:10",
+      "expect": "6b8e11921a14e3e798f036a5141cf4d69f7a91fdca9b281c7746b84b33e2cf88"
+    },
+    {
+      "id": "fields/utf8",
+      "fn": "digest_fields",
+      "input": {
+        "fields": [
+          "café"
+        ]
+      },
+      "preimage": "5:café",
+      "expect": "7b5e3f329a2454a30a305bbc5b4a48df2c6453111bfd02e8d146f326e0195ffe"
+    },
+    {
+      "id": "combine/zero-and-ff",
+      "fn": "combine_digests",
+      "input": {
+        "hex_digests": [
+          "0000000000000000000000000000000000000000000000000000000000000000",
+          "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+        ]
+      },
+      "preimage": "64:000000000000000000000000000000000000000000000000000000000000000064:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "expect": "20270ad27988d96e450fd0bf3022a38a3b67d5d07fb95be5e4c761fbc8a5157b"
+    },
+    {
+      "id": "dtfk/placeholder-zones",
+      "fn": "d_tfk",
+      "input": {
+        "d_tpk": "902d19e715309b68f54725b13719eb52020db20e13d1bad6349bb07aed4a5c2c",
+        "d_trm": "3522a5e73f2c9e43456267fff83bd5d81774a161e0875c71d6ce5427a7ab437e",
+        "d_tms": "64cfae830814b4cf9d3ec48415a146e4a257a0832e5b19af0ad6fbc57b0926f3"
+      },
+      "preimage": "64:902d19e715309b68f54725b13719eb52020db20e13d1bad6349bb07aed4a5c2c64:3522a5e73f2c9e43456267fff83bd5d81774a161e0875c71d6ce5427a7ab437e64:64cfae830814b4cf9d3ec48415a146e4a257a0832e5b19af0ad6fbc57b0926f3",
+      "expect": "9b4dda86e5bd1dd6b6f20c2ce4cadda1ef18d0ec28d3a38549ca73e2272076ce"
+    }
+  ]
+}

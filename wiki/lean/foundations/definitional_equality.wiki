@@ -1,0 +1,295 @@
+{{DISPLAYTITLE:Definitional equality}}
+{{Plebeian|Lean theorem prover/Explainers/Two kinds of equality|Lean theorem prover/Explainers/Computation inside proofs}}
+{{Lean theorem prover map}}
+
+Two terms are '''definitionally equal''' when they are equal by computation and unfolding of
+definitions, without any proof. Definitional equality is not a proposition inside Lean. It is
+a judgment of the theory, and Lean's kernel decides it, as far as it can, whenever it checks
+a type. It is how computation enters proofs: a goal that holds by calculation is closed by
+<code>rfl</code>, because the two sides are definitionally equal. This page lists the rules
+that generate the relation, shows how natural-number literals are handled, describes how the
+Lean kernel decides it, and states the theoretical limits: in Lean's full theory the relation
+is undecidable, and the Lean kernel decides a slightly smaller one.
+
+== The judgment and its use ==
+
+The judgment <math>\Gamma \vdash e \equiv e'</math> says that <math>e</math> and
+<math>e'</math> are definitionally equal in the context <math>\Gamma</math>. In the ideal
+presentation it is an equivalence relation, closed under every term former, and generated
+by the rules below.<ref name="carneiro2019">Mario Carneiro, ''The Type Theory of Lean'', MSc
+thesis, Carnegie Mellon University, 2019.
+https://github.com/digama0/lean-type-theory/releases/tag/v1.0</ref> It does its work
+through the conversion rule of
+[[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]]:
+
+:<math>\frac{\Gamma \vdash e : A \qquad \Gamma \vdash A \equiv B}{\Gamma \vdash e : B}</math>
+
+A term of one type also has every definitionally equal type. In particular, a proof of
+<code>a = a</code>, which is what <code>rfl</code> is, is also a proof of <code>a = b</code>
+whenever <code>a</code> and <code>b</code> are definitionally equal. Because the relation
+includes reduction, types can be the result of computation.<ref name="refman-ts">''The Lean
+Language Reference'', for Lean 4.34.0, lean-lang.org, 2026, chapter 4, "The Type System".
+https://lean-lang.org/doc/reference/4.34.0/The-Type-System/</ref>
+
+== Reduction rules ==
+
+Four reductions generate most of the relation. Each is named by a Greek letter by long
+convention.<ref name="refman-ts" /><ref name="carneiro2019" />
+
+* '''Beta''': applying an abstraction substitutes the argument, <math>(\lambda x : A.\, e)\,a \equiv e[a/x]</math>.
+* '''Delta''': a defined constant equals its definition, with universe parameters instantiated, <math>c \equiv v</math> for <math>\mathrm{def}\ c := v</math>.
+* '''Iota''': a recursor applied to a constructor reduces to the corresponding minor premise, as described on [[Lean theorem prover/Foundations/Inductive types and recursors|Inductive types and recursors]]. A projection applied to a constructor application reduces in the same way, and so does the lifting of a function through a quotient, applied to an element of the quotient ([[Lean theorem prover/Foundations/Quotient types|Quotient types]]).
+* '''Zeta''': a local definition equals its body with the value substituted, <math>(\mathrm{let}\ x := v;\ e) \equiv e[v/x]</math>.
+
+Each holds by <code>rfl</code>:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+def sq (n : Nat) : Nat := n * n
+
+example : (fun x : Nat => x + 1) 2 = 2 + 1 := rfl                              -- beta
+example : sq 3 = 3 * 3 := rfl                                                   -- delta
+example : Nat.rec (motive := fun _ => Bool) true (fun _ b => !b) 3 = false := rfl -- iota
+example : (let x := 5; x + x) = 5 + 5 := rfl                                    -- zeta
+</pre>
+
+The third line computes by recursion: the recursor flips a Boolean three times, starting
+from <code>true</code>.
+
+== Extensionality rules ==
+
+Three further rules are not reductions of the left side to the right but identifications of
+terms that cannot be told apart.<ref name="refman-ts" />
+
+* '''Eta for functions''': <math>\lambda x : A.\, f\,x \equiv f</math>. A function is equal to the abstraction of its own application.
+* '''Eta for structures''': for a value <math>s</math> of a structure type, a non-recursive type with no indices and exactly one constructor <math>\mathrm{mk}</math>, with fields <math>1, \ldots, n</math>, <math>s \equiv \mathrm{mk}\;(s.1)\;\ldots\;(s.n)</math>. This rule is new in the Lean 4 kernel.<ref name="lean4lean">Mario Carneiro, "Lean4Lean: Verifying a Typechecker for Lean, in Lean", in ''31st International Conference on Types for Proofs and Programs (TYPES 2025)'', LIPIcs vol. 384, pp. 2:1–2:23, 2026. https://doi.org/10.4230/LIPIcs.TYPES.2025.2 (read in the version arXiv:2403.14064v2)</ref>
+* '''Proof irrelevance''': any two proofs of the same proposition are definitionally equal.
+
+:<math>\frac{\Gamma \vdash p : \mathrm{Prop} \qquad \Gamma \vdash h : p \qquad \Gamma \vdash h' : p}{\Gamma \vdash h \equiv h'}</math>
+
+<pre class="lean lean-cont" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+example (f : Nat → Nat) : (fun x => f x) = f := rfl          -- eta, functions
+example (p : Nat × Bool) : (p.1, p.2) = p := rfl              -- eta, structures
+example (p : Prop) (h₁ h₂ : p) : h₁ = h₂ := rfl               -- proof irrelevance
+</pre>
+
+All three are accepted. None of these rules makes functions equal because they agree on all
+arguments; that is the theorem <code>funext</code>, a propositional equality.<ref name="refman-fn">''The
+Lean Language Reference'', for Lean 4.34.0, lean-lang.org, 2026, section 4.1.3,
+"Extensionality".
+https://lean-lang.org/doc/reference/4.34.0/The-Type-System/Functions/</ref> Proof
+irrelevance is the rule with the largest consequences, taken up in
+[[Lean theorem prover/Foundations/Proof irrelevance and subsingleton elimination|Proof irrelevance and subsingleton elimination]] and, below, as one source of undecidability.
+
+== Natural-number literals ==
+
+In the logic, <code>Nat</code> is the inductive type with constructors <code>zero</code> and
+<code>succ</code>, so the number 1000 is <code>succ</code> applied a thousand times to
+<code>zero</code>, and addition defined by recursion would take time proportional to the
+size of its arguments. Lean's kernel does not compute this way. Natural-number literals are a
+separate kind of term, stored as arbitrary-precision integers, and basic functions such as
+addition, multiplication and comparison are evaluated on them by an arbitrary-precision
+arithmetic library, usually GMP, instead of by unfolding their
+definitions.<ref name="refman-nat">''The Lean Language Reference'', for Lean 4.34.0,
+lean-lang.org, 2026, section 20.1, "Natural Numbers".
+https://lean-lang.org/doc/reference/4.34.0/Basic-Types/Natural-Numbers/</ref><ref name="bailey">Christopher
+A. Bailey, with contributions from the Lean community, ''Type Checking in Lean 4'' (online
+book), chapters "Weak and strong reduction", "Definitional Equality" and "Reduction".
+https://ammkrn.github.io/type_checking_in_lean4/</ref> When iota reduction needs to
+see a constructor, a literal is presented as <code>zero</code> or as <code>succ</code>
+applied to the literal one smaller, and literals compare equal to the corresponding
+constructor terms, so the two forms remain interchangeable.<ref name="bailey" />
+
+<pre class="lean lean-cont" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem big_mul :
+    123456789123456789 * 987654321987654321 = 121932631356500531347203169112635269 := rfl
+theorem pow_mod : 2 ^ 200 % 7 = 4 := by decide
+
+#print axioms big_mul
+#print axioms pow_mod
+</pre>
+
+Both theorems are accepted, and Lean prints
+<code>'big_mul' does not depend on any axioms</code> and
+<code>'pow_mod' does not depend on any axioms</code>. The 36-digit product was confirmed by
+computation, not by an axiom. The price is trust: the arithmetic primitives are part of the
+Lean kernel, and the reference manual notes that if they did not agree with the definitions of the
+functions they replace, soundness could be undermined.<ref name="refman-nat" />
+
+== How the Lean kernel decides it ==
+
+The Lean kernel decides definitional equality by an algorithm that applies the rules lazily,
+reducing only as far as it must.<ref name="bailey" /><ref name="lean4lean" />
+
+'''Weak head normal form.''' The basic operation reduces a term at its head only, never
+under a binder that has no argument applied to it, until no beta, iota, zeta, projection or
+delta step applies at the head. The result is the term's '''weak head normal form''': a
+sort, a function type, an abstraction, a literal, a constructor application, or an
+application whose head is a variable or a constant that cannot be unfolded or reduced
+further.<ref name="bailey" />
+
+'''Cheap tests.''' Several tests need little or no reduction: identical terms, sorts with
+equal levels, the same constant at equal universe levels, and, by proof irrelevance, two
+terms whose types are the same proposition. Applications, binders and function types are
+compared component by component.<ref name="bailey" />
+
+'''Lazy delta.''' When both sides are headed by definitions, Lean's kernel does not unfold
+both completely, which would be much less efficient. It unfolds step by step, choosing which side to unfold by a '''reducibility hint'''
+stored with every definition: <code>opaque</code>, <code>abbrev</code>, or
+<code>regular</code> with a '''definitional height''', one more than the greatest height of
+the <code>regular</code> definitions its value mentions. Lean can show both the hints and the rule that uses them:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+import Lean
+open Lean Meta
+
+def sq (n : Nat) : Nat := n * n
+def quad (n : Nat) : Nat := sq (sq n)
+abbrev Sq := sq
+
+def showHints : ReducibilityHints → String
+  | .opaque => "opaque"
+  | .abbrev => "abbrev"
+  | .regular h => s!"regular {h}"
+
+#eval show MetaM Unit from do
+  for n in [``Nat.mul, ``sq, ``quad, ``Sq] do
+    let some (.defnInfo d) := (← getEnv).find? n | IO.println s!"{n}: not a definition"
+    IO.println s!"{n}: {showHints d.hints}"
+
+#eval show MetaM Unit from do
+  IO.println ((← findDocString? (← getEnv) ``ReducibilityHints).getD "none")
+</pre>
+
+The first command prints <code>Nat.mul: regular 2</code>, <code>sq: regular 4</code>,
+<code>quad: regular 5</code> and <code>Sq: abbrev</code>: <code>quad</code> is one higher
+than <code>sq</code>, which it mentions. The second prints the documentation that Lean 4.34.1
+carries for the hints; two passages of it read:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+* If `f` and `g` have the **same hint kind**:
+  - Both `.opaque` or both `.abbrev`: unfold both.
+  - Both `.regular`: unfold the one with the **greater** height first. If their heights are equal
+    (in particular, if `f` and `g` are the same definition), first try to compare their arguments
+    for definitional equality (short-circuiting the unfolding if they match), then unfold both.
+* If `f` and `g` have **different hint kinds**: unfold the one that is *not* `.opaque`, preferring to
+  unfold `.abbrev` over `.regular`.
+...
+The hints only affect performance — they control the order in which definitions are unfolded, but
+never prevent the kernel from unfolding a definition during type checking.
+
+The `ReducibilityHints` are not related to the `@[reducible]`/`@[irreducible]`/`@[semireducible]`
+attributes. Those attributes are used by the elaborator to control which definitions tactics like
+`simp`, `rfl`, and `dsimp` will unfold; they do not affect the kernel.
+</pre>
+
+Unfolding the higher definition first brings it down towards the lower one, which it is
+built from.<ref name="bailey" /> Because the attributes do not reach the Lean kernel, a definition marked <code>@[irreducible]</code>, such as one defined
+by well-founded recursion
+([[Lean theorem prover/Foundations/Structural and well-founded recursion|Structural and well-founded recursion]]), is still unfolded by the Lean kernel when a proof requires it.
+
+'''Extensionality.''' When one side is an abstraction and the other is not, Lean's kernel
+eta-expands the other side; when one side is a structure constructor application, it
+compares the other side field by field through projections. Failures of the congruence step
+are cached, which matters for performance.<ref name="bailey" /> Lean's kernel also has depth
+and time limits on some of its operations, so many pathological checks stop with an error
+instead of running for ever.<ref name="lean4lean" />
+
+== Undecidability ==
+
+Carneiro models what Lean's kernel checks as an '''algorithmic definitional equality''',
+written <math>\Leftrightarrow</math>, and shows that it is sound: for two terms of the same
+type, <math>e \Leftrightarrow e'</math> implies <math>e \equiv e'</math>.<ref name="carneiro2019" />
+It is not complete, and in Lean's full theory no algorithm could be.
+
+Carneiro proved in 2019 that definitional equality in Lean's theory is
+undecidable;<ref name="carneiro2019" /> Abel and Coquand cite his proof, for the
+accessibility predicate, and draw the consequence that typing is undecidable
+too.<ref name="abelcoquand" /> The argument uses <code>Acc</code>, the inductive proposition behind well-founded recursion. Proof irrelevance
+makes any proof <math>a</math> of <math>\mathrm{Acc}\;x</math> definitionally equal to
+<math>\mathrm{intro}\;x\;(\mathrm{inv}\;a)</math>, a proof built from the constructor, where
+<math>\mathrm{inv}\;a</math> extracts from <math>a</math> the accessibility of every element
+below <math>x</math> in the relation. Since <code>Acc</code> has subsingleton elimination, a function into data can be
+defined by recursion on such a proof, and the replacement unlocks one step of iota reduction.
+Carneiro defines a function <math>f</math> that, at each step <math>n</math>, continues while a decidable
+property <math>P\;n</math> holds and returns a fixed value when it fails, and takes
+<math>P\;n</math> to say that a given Turing machine has not halted after <math>n</math>
+steps, with the relation <math>></math> on the natural numbers. No proof that 0 is
+accessible for <math>></math> can exist, but definitional equality must be decided in
+every context, including one that assumes such a proof <math>a</math>. In that context the
+chain
+
+:<math>f\;0\;a \equiv f\;1\;a_1 \equiv f\;2\;a_2 \equiv \cdots</math>
+
+in which <math>a_0 = a</math> and each <math>a_{n+1}</math> is the proof that
+<math>n+1</math> is accessible which <math>\mathrm{inv}</math> extracts from
+<math>a_n</math>, reaches the fixed value exactly when the machine halts. A decision procedure for
+definitional equality would therefore solve the halting problem.
+
+The algorithmic relation is therefore strictly smaller, and it is not transitive. In the
+chain above it accepts
+<math>f\;0\;a \Leftrightarrow f\;0\;(\mathrm{intro}\;0\;(\mathrm{inv}\;a))</math> by proof
+irrelevance, and
+<math>f\;0\;(\mathrm{intro}\;0\;(\mathrm{inv}\;a)) \Leftrightarrow f\;1\;a_1</math> by
+reduction, when <math>P\;0</math> holds, but it does not accept the composite <math>f\;0\;a \Leftrightarrow f\;1\;a_1</math>:
+<math>f\;0\;a</math> is already in normal form, so the algorithm has nothing to reduce, and the
+intermediate term is a creative choice it does not make. Carneiro gives a second source of non-transitivity, quotients of
+propositions, and shows that with the algorithmic relation in the conversion rule, typing
+loses '''subject reduction''': a term can type-check while a term it reduces to does
+not.<ref name="carneiro2019" />
+
+Normalisation fails too. Abel and Coquand showed that a type theory with an impredicative
+universe of propositions and a proof-irrelevant equality whose elimination does not inspect
+the proof has terms with no normal form. Their counterexample, a version of the
+self-application <math>\Omega</math>, runs in Lean 3.4.2, and using propositional
+extensionality they gave a closed term, depending on Lean's standard axioms, that has no weak
+head normal form at all.<ref name="abelcoquand">Andreas Abel and Thierry Coquand, "Failure
+of Normalization in Impredicative Type Theory with Proof-Irrelevant Propositional Equality",
+''Logical Methods in Computer Science'' 16(2), 2020.
+https://doi.org/10.23638/LMCS-16(2:14)2020</ref> Carneiro reproduces it in Lean 4, with a
+variant that makes a definitional-equality check on ordinary data fail to
+terminate.<ref name="lean4lean" /> Lean 4.34.1 accepts the three definitions
+below; asking for the normal form of <code>Om</code> does not finish:
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+set_option linter.defProp false
+def True' : Prop := ∀ p : Prop, p → p
+
+def om : True' := fun A a =>
+  @cast (True' → True') A
+    (propext ⟨fun _ => a, fun _ => id⟩)
+    (fun z => z (True' → True') id z)
+
+def Om : True' := om (True' → True') id om
+
+#reduce (proofs := true) Om
+</pre>
+
+Lean stops with <code>maximum recursion depth has been reached</code>. A recursion limit is
+not itself a proof of non-termination; that <code>Om</code> has no normal form is Abel and
+Coquand's theorem.
+
+The reference manual states the position plainly. Lean's type theory lacks subject
+reduction, its definitional equality is not necessarily transitive, and the type checker can
+be made to run for ever. The sources are the ones described above: subsingleton elimination
+and quotients of propositions, combined with definitional proof irrelevance, for the first two
+properties;<ref name="carneiro2019" /> an impredicative universe of propositions with proof
+irrelevance and propositional extensionality for the third.<ref name="abelcoquand" /> The
+manual reports that failures of transitivity are exceedingly rare in practice, that, as far as
+its authors know, non-termination has not occurred except in code written to provoke it, and
+that logical soundness is not affected.<ref name="refman-kernel">''The Lean Language Reference'', for Lean 4.34.0,
+lean-lang.org, 2026, section 2.3, "The Kernel".
+https://lean-lang.org/doc/reference/4.34.0/Elaboration-and-Compilation/</ref> The last point
+is the one that matters for checking proofs. These properties make Lean's kernel incomplete,
+not unsound: their typical effect is a true equality that the Lean kernel cannot confirm in one step,
+which can often be proved instead as a chain of propositional equalities, since
+propositional equality is transitive.
+
+== Next ==
+
+[[Lean theorem prover/Foundations/Propositional equality|Propositional equality]] treats
+equality as a proposition, <code>a = b</code>, with its own rules, and its relation to the
+definitional equality described here.
+
+== References ==
+
+<references />

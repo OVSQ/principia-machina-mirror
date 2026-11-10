@@ -1,0 +1,15 @@
+{{DISPLAYTITLE:Einstein Toolkit}}
+'''Einstein Toolkit: 3+1 Numerical Relativity Solver'''
+[[Category:Principia Machina]] [[Category:Tools]]
+
+== Overview & Architectural Fit ==
+The '''Einstein Toolkit''' is a community-driven software suite for numerical relativity, relativistic astrophysics, and dynamic spacetime geometry based on the Cactus computational infrastructure.
+
+== Mathematical Evaluation for TPM & SVD ==
+* '''3+1 ADM/BSSN Spacetime Evolution (9.5/10):''' Evolves the full Einstein Field Equations (<math>G_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}</math>) dynamically across 3D spatial grids.
+* '''Strong-Field General Relativity:''' Simulates black hole mergers, dynamic metric perturbations, and gravitational wave emission.
+
+== References ==
+''Added on 2026-10-06 by the [[The Principia Machina/Research Toolkit|Research Toolkit]]: the tool's citations, each checked against the registry or the project's own page that day. The text above is the survey's own.''
+The project asks users to cite the DOI of the release they used first; the latest release is ET_2026_05, "Hypatia", of 10 July 2026 (checked 2026-10-06).
+* '''[[The Principia Machina/Research Toolkit/Bibliography#ETK12|ETK12]]''' &ndash; Löffler, F., Faber, J., Bentivegna, E., Bode, T., Diener, P., Haas, R., Hinder, I., Mundim, B. C., Ott, C. D., Schnetter, E., Allen, G., Campanelli, M., Laguna, P. (2012). The Einstein Toolkit: A Community Computational Infrastructure for Relativistic Astrophysics. Classical and Quantum Gravity 29(11), 115001. [https://doi.org/10.1088/0264-9381/29/11/115001 doi:10.1088/0264-9381/29/11/115001].

@@ -1,0 +1,23 @@
+{{DISPLAYTITLE:PySR / SymbolicRegression.jl}}
+'''PySR / SymbolicRegression.jl: High-Performance Symbolic Discovery'''
+[[Category:Principia Machina]] [[Category:Tools]]
+
+== Overview & Architectural Fit ==
+'''PySR''' (interfaced via Python to the high-performance Julia backend '''SymbolicRegression.jl''') is an open-source symbolic regression framework utilizing Multi-Population Genetic Algorithms and Pareto Frontier optimization. In the [[The Principia Machina|Principia Machina]] architecture, PySR addresses the inverse theoretical problem: given a field dataset or trajectory simulation, what analytical scalar expression or Lagrangian density <math>\mathcal{L}(q, \dot{q}, t)</math> or <math>\mathcal{L}(\phi, \partial_\mu \phi)</math> governs the system?
+
+== Mathematical Evaluation for TPM & SVD ==
+* '''Lagrangian & Action Discovery (9.5/10):''' PySR can search candidate functional spaces for invariant quantities. By setting loss functions to penalize violations of Euler-Lagrange dynamics or Hamilton's principle (<math>\delta S = 0</math>), PySR directly extracts analytical scalar Lagrangians from observational state trajectories.
+* '''Pareto Complexity Optimization:''' Automatically balances accuracy against expression complexity using score metrics:
+<math display="block">\text{Score} = -\frac{\Delta \log(\text{MSE})}{\Delta \text{Complexity}}</math>
+This directly prevents the discovery of unphysical "overfitted" mathematical artifacts.
+* '''Custom Operator Ingestion:''' Supports specialized physical operators (e.g., spatial gradients <math>\nabla \phi</math>, d'Alembertian operators <math>\Box \phi</math>, or relativistic dot products <math>u^\mu u_\mu</math>).
+
+== SVD Integration Pipeline ==
+# '''Data Generation:''' Extract spatial perturbation profiles from vacuum disturbance simulations.
+# '''Operator Set Specification:''' Define admissible operators <math>\{+, -, \times, \div, \nabla, \partial_t, \text{exp}\}</math>.
+# '''Variational Loss Enforcement:''' Evaluate candidates against action stationarity constraints.
+# '''Analytical Verification:''' Pass discovered symbolic candidate expressions to [[The Principia Machina/Tools/Cadabra2|Cadabra2]] for formal Noether symmetry evaluation.
+
+== References ==
+''Added on 2026-10-06 by the [[The Principia Machina/Research Toolkit|Research Toolkit]]: the tool's citations, each checked against the registry or the project's own page that day. The text above is the survey's own.''
+* '''[[The Principia Machina/Research Toolkit/Bibliography#PYSR23|PYSR23]]''' &ndash; Cranmer, M. (2023). Interpretable Machine Learning for Science with PySR and SymbolicRegression.jl. arXiv preprint (astro-ph.IM), v1 2 May 2023, v3 5 May 2023, no journal-ref. [https://arxiv.org/abs/2305.01582 arXiv:2305.01582], [https://doi.org/10.48550/arXiv.2305.01582 doi:10.48550/arXiv.2305.01582].

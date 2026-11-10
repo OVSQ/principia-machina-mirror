@@ -1,0 +1,115 @@
+{{DISPLAYTITLE:On Physical Lines of Force — Sources and editorial method}}
+{{On Physical Lines of Force map}}
+''[[On Physical Lines of Force]] → Sources''
+
+'''Read this before quoting anything from this wiki.''' It states exactly which text here is Maxwell's and which is not.
+
+== The paper ==
+
+James Clerk Maxwell, "On Physical Lines of Force", ''The London, Edinburgh, and Dublin Philosophical Magazine and Journal of Science'', Fourth Series:
+
+{| class="wikitable"
+! Part !! Subtitle !! Volume, number, date !! Pages
+|-
+| I || The Theory of Molecular Vortices applied to Magnetic Phenomena || Vol. XXI, No. 139, March 1861 || 161–175
+|-
+| II || The Theory of Molecular Vortices applied to Electric Currents || Vol. XXI, No. 140, April 1861<br>Vol. XXI, No. 141, May 1861 || 281–291<br>338–348
+|-
+| III || The Theory of Molecular Vortices applied to Statical Electricity || Vol. XXIII, No. 151, January 1862 || 12–24
+|-
+| IV || The Theory of Molecular Vortices applied to the Action of Magnetism on Polarized Light || Vol. XXIII, No. 152, February 1862 || 85–95
+|}
+
+Reprinted in ''The Scientific Papers of James Clerk Maxwell'', ed. W. D. Niven (Cambridge, 1890), vol. I, pp. 451–513.
+
+Maxwell's own retrospective dating, from the ''Treatise'' (1873), Art. 831: "A theory of molecular vortices, which I worked out at considerable length, was published in the Phil. Mag. for March, April, and May, 1861, Jan. and Feb. 1862."
+
+== Three classes of text on this wiki ==
+
+=== 1. Verbatim quotation — set as an indented quotation ===
+
+Text set like this:
+
+<blockquote>
+IN all phenomena involving attractions or repulsions, or any forces depending on the relative position of bodies, we have to determine the magnitude and direction of the force which would act on a given body, if placed in a given position.
+</blockquote>
+
+is transcribed from the English Wikisource text of the paper. '''It has not been collated against a page scan.''' Two specific cautions:
+
+* Wikisource's transcription appears to modernise some orthography. It prints "showed" and "shown" where the 1861 printing would almost certainly have "shewed" and "shewn". Where you see modern spelling in a quotation here, do not treat it as evidence about Maxwell's usage. Forms such as "connexion" and "neighbourhood" ''did'' survive the transcription.
+* At least one clear OCR corruption is known in the source: in Part III the Fizeau sentence reads "lenses per second" where the printed text must read "leagues per second".
+
+=== 2. Editorial prose in Maxwell's register — ordinary body text ===
+
+Most of the connective prose on the Part pages is '''written for this wiki''', in a register imitating Maxwell's. It is not his. It is meant to carry his argument in his manner, and it is set as ordinary text precisely so that it cannot be mistaken for the indented quotations.
+
+If you need Maxwell's actual words for a passage, take only what is inside a quotation block, and then check it against a scan.
+
+=== 3. Equations — reconstructed, and flagged ===
+
+'''No equation on this wiki was transcribed from the printed paper.''' This needs stating plainly, because it is the largest limitation of this edition.
+
+Every accessible electronic copy of the paper loses the mathematics:
+
+{| class="wikitable"
+! Source !! What happened
+|-
+| English Wikisource (article and ''Page:'' namespace) || Formulae are stored as markup that the retrieval tooling strips out; the prose survives, the equations become gaps
+|-
+| Taylor & Francis (the publisher's own PDFs, by DOI) || Access refused
+|-
+| UC Davis and other mirrored scans || Genuine page images with no text layer at all
+|-
+| Internet Archive full-text of the bound volumes || Truncates in the front matter, long before the paper begins
+|}
+
+What ''could'' be established from the surviving prose is the '''equation numbers''' and what each equation expresses, because Maxwell refers to his equations by number in running text and those references survived. The following numbers are attested this way, either by Maxwell citing them or by cross-reference from a later Part:
+
+* Part I — '''(9)''', '''(12)''', '''(13)''', '''(14)''', '''(18)''', '''(19)'''
+* Part II — '''(33)''', '''(34)''', '''(46)''', '''(47)''', '''(50)''', '''(54)''', '''(55)''', '''(56)''', '''(57)''', '''(58)''', '''(77)'''
+* Part III — '''(101)''', '''(105)''', '''(108)''', '''(112)''', '''(113)''', '''(115)''', '''(116)'''–'''(125)'''
+
+The '''bodies''' of those equations, as printed on this wiki, are reconstructions in Maxwell's notation, assembled from the standard secondary literature and from Maxwell's own later restatements of the same relations in ''A Dynamical Theory of the Electromagnetic Field'' (1865) and the ''Treatise'' (1873). They are, I believe, correct in content. They may differ from the 1861 printing in sign convention, in the placement of the factor 4π, and in whether a relation is written for one component or three.
+
+'''Every equation page on this wiki carries a short provenance line saying so.''' Where an equation number is uncertain, that is said too. In particular:
+
+* The equation numbering of Part I before (9) and after (19) is not established here. Part I appears to run from (1) to about (26), but that is inference from where formulae sit in the prose, not evidence.
+* The numbering between (58) and (77) in Part II is unresolved; contradictory readings were obtained.
+* Prop. XVI of Part III — the velocity-of-light calculation — carries '''no printed equation numbers at all'''. That much is established.
+* Whether Part IV contains numbered Propositions could not be established. Proposition numbering certainly reaches XVII at the end of Part III.
+
+=== The most-quoted sentence ===
+
+The concluding inference of Part III was confirmed word-for-word against four independent sources and is reproduced here with confidence:
+
+<blockquote>
+The velocity of transverse undulations in our hypothetical medium, calculated from the electro-magnetic experiments of MM. Kohlrausch and Weber, agrees so exactly with the velocity of light calculated from the optical experiments of M. Fizeau, that we can scarcely avoid the inference that light consists in the transverse undulations of the same medium which is the cause of electric and magnetic phenomena.
+</blockquote>
+
+It is conventionally reproduced wholly in italics. '''Whether the 1861 printing italicised it has not been verified here''', so this wiki sets it in roman.
+
+The two velocities Maxwell compares — 310,740,000,000 and 314,858,000,000 millimetres per second — are strongly corroborated but were '''not read directly off the page'''. Maxwell restates the same two numbers in metres per second in the 1865 ''Dynamical Theory'', §96.
+
+== How to improve this edition ==
+
+Anyone with either of the following can close nearly every gap above in an afternoon:
+
+# Institutional access to the Taylor & Francis PDFs (DOIs: Part I 10.1080/14786446108643033; Part II 10.1080/14786446108643056; Part III 10.1080/14786446208643207; Part IV 10.1080/14786446208643219).
+# A copy of Niven's ''Scientific Papers'', vol. I, pp. 451–513.
+
+Collate the equations against pp. 161–175, 281–291, 338–348, 12–24 and 85–95, correct the reconstructions on the Part pages, and delete the provenance lines as each is verified.
+
+== Secondary literature used ==
+
+* Daniel M. Siegel, ''Innovation in Maxwell's Electromagnetic Theory: Molecular Vortices, Displacement Current, and Light'' (Cambridge, 1991) — the standard monograph on this paper specifically.
+* Bruce J. Hunt, "Maxwell, Measurement, and the Modes of Electromagnetic Theory", ''Historical Studies in the Natural Sciences'' 45:2 (2015), 303–339 — argues that Maxwell reserved "provisional" for the idle wheels, not the vortices.
+* Malcolm Longair, "'…a paper …I hold to be great guns': a commentary on Maxwell (1865)", ''Phil. Trans. R. Soc. A'' 373 (2015), 20140473.
+* Maxwell, ''A Treatise on Electricity and Magnetism'' (1873), Part IV ch. XXI, Arts. 822 and 831.
+
+== Licence ==
+
+Maxwell's text is in the public domain. The editorial prose, the derivations and the figures on this wiki were prepared for this installation; the figures are original drawings, not reproductions of the 1861 plate, and are labelled "after Maxwell" where they follow his composition.
+
+----
+
+''[[On Physical Lines of Force|Back to the contents]]''

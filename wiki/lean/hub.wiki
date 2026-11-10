@@ -1,0 +1,259 @@
+{{DISPLAYTITLE:Lean theorem prover}}
+{{Lean theorem prover map}}
+<templatestyles src="Principia Machina/styles.css" />
+'''Lean''' is a proof assistant and a programming language. A person writes definitions,
+statements and proofs in Lean's formal language, and Lean checks each proof against the
+rules of its logic before it accepts the statement as a theorem. The same language is used to
+write programs that run, and a definition used by a program can also be the subject of a
+theorem.<ref name="refman">''The Lean Language Reference'', for Lean 4.34.0, lean-lang.org,
+2026, section 1, "Introduction". https://lean-lang.org/doc/reference/4.34.0/</ref>
+
+Lean was begun in 2013 by Leonardo de Moura at Microsoft Research. Its fourth version,
+Lean 4, is written largely in Lean itself. Since 2023 it has been developed by the Lean
+Focused Research Organization, a non-profit, with a new version about every month, and its
+users maintain Mathlib, a library of mathematics checked by Lean.
+
+This edition describes Lean: what it checks and how, the type theory behind it, how the
+program is built, where it came from, and what it is used for. It is written for two readers
+at once: one with no logic or programming who wants to know what a checked proof is, and one
+who wants the rules. Its Lean code was checked with Lean 4.34.1, and its statements about the
+state of things are dated October 2026.
+
+== What Lean checks ==
+
+In Lean a statement is a '''type''', and a proof of it is a '''term''' of that type: an
+expression built by the rules of the logic. Checking a proof is then checking that a term has
+the type claimed for it, the operation a compiler performs on a program. This is the idea
+called [[Lean theorem prover/Explainers/Propositions as types|propositions as types]]. The
+logic is a dependent type theory, in which a type may depend on a value. It belongs to the
+family of the Calculus of Inductive Constructions: propositions form a universe of their own,
+and almost every type, from the natural numbers to equality, is built from a few
+constructors.
+
+One part of Lean makes the check: the '''Lean kernel''', a small type checker written in C++.
+Everything else, the parser, the elaborator that fills in what a person leaves out, the
+tactics that construct a proof step by step, the automation that searches for one, only proposes
+terms, and the Lean kernel accepts or refuses each of them. A fault in a tactic can stop a
+proof from being found, but a wrong term it produces is refused.<ref name="refman" /> Code
+that goes around the Lean kernel on purpose is a separate matter, taken up at
+[[Lean theorem prover/System/Proof export and independent checkers|Proof export and independent checkers]].
+
+A theorem Lean accepts follows, as written, from the rules of Lean's logic and from the
+axioms its proof uses. Lean provides three axioms, propositional extensionality, the
+soundness of quotients and a principle of choice, and it lists on request the axioms any
+theorem depends on. The rest of what an accepted proof rests on is a short list: that the
+Lean kernel is correct, that the logic is consistent, and that the machine runs the Lean
+kernel faithfully. The consistency of the logic is known relative to set theory with
+inaccessible cardinals, and was proved for the type theory of Lean 3.
+[[Lean theorem prover/Explainers/What has to be trusted|What has to be trusted]] gives the
+list in full.
+
+The check does not establish two things. It does not establish that a statement says what its
+author meant: a theorem with a mistyped hypothesis can be true and say nothing
+([[Lean theorem prover/Explainers/Stating the right thing|Stating the right thing]]). And a
+theorem about a model of the world is a theorem about the model; whether the world fits the
+model is a question for experiment
+([[Lean theorem prover/Explainers/Lean and physics|Lean and physics]]).
+
+== Where Lean came from, and what it is used for ==
+
+Lean draws on fifty years of work. Automath, designed by N. G. de Bruijn from the late 1960s,
+was the first working system for checking mathematics by computer. Robin Milner's LCF, begun
+at Stanford in 1972 and redesigned at Edinburgh, introduced tactics. Per Martin-Löf made
+propositions as types the foundation of a theory of mathematics, and the Calculus of Constructions of Thierry Coquand and Gérard Huet began the
+family of theories to which Lean's logic belongs. Lean's own history runs from its first
+versions to Lean 4, whose first stable version appeared in September 2023.
+
+Lean is used to formalise research mathematics, in one case within a month of a proof's
+appearance; to verify software in industry; to teach proof; to check proofs written by
+machine-learning systems; and, so far on a small scale, for physics. The Applications pages
+describe each use together with what it did not establish.
+
+== What this edition is not ==
+
+It is not a tutorial. It does not teach how to write Lean; a reader who wants to learn will
+find the free books on [[Lean theorem prover/Further reading|Further reading]] more useful.
+
+It is not Lean's documentation. The authority on Lean is its documentation, chiefly ''The
+Lean Language Reference'', which describes itself as a reference work rather than a tutorial,
+and its source code.<ref name="refman" /> The pages here cite both. Every block of Lean code on
+them was compiled with Lean 4.34.1, without Mathlib unless a page says otherwise, and every
+message quoted is the one that version prints, so a reader can run the code and see.
+
+== Three levels of reading ==
+
+<div class="pma-fig" style="text-align: center; overflow-x: auto; margin: 0.6em 0 0.2em 0;">
+<graphviz>
+digraph levels {
+  rankdir=TB; bgcolor="transparent"; nodesep=0.3; ranksep=0.35; size="7.2,5";
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=10, color="#a2a9b1", fillcolor="#eaecf0", fontcolor="#202122ff", margin="0.14,0.07"];
+  edge [color="#54595d", fontname="Helvetica", fontsize=9, fontcolor="#202122ff", arrowsize=0.7];
+  hub [label="Level 1\nThis page: what Lean is and what it checks", fillcolor="#ffedad", color="#ac6600"];
+  exp [label="Level 2\nExplainers (22)\nplain language", fillcolor="#cedff2", color="#6a8fbf"];
+  his [label="History (9)\nat the explainers' level", fillcolor="#cedff2", color="#6a8fbf"];
+  app [label="Applications (9)\nat the explainers' level", fillcolor="#cedff2", color="#6a8fbf"];
+  fnd [label="Level 3\nFoundations (12)\nthe type theory", fillcolor="#cef2e0", color="#14866d"];
+  sys [label="Level 3\nSystem (12)\nhow Lean works", fillcolor="#cef2e0", color="#14866d"];
+  ref [label="Reference pages\nChronology, Glossary, Notation,\nSources, Bibliography, Further reading"];
+  { rank=same; exp; his; app; }
+  { rank=same; fnd; sys; }
+  hub -> exp;
+  exp:s -> fnd:n;
+  fnd -> sys;
+  sys -> his [constraint=false];
+  his -> app;
+  app -> ref;
+  sys -> ref [style=invis];
+  exp:se -> fnd:ne [style=dashed, dir=none, label=" paired"];
+  exp:e -> sys:n [style=dashed, dir=none, label=" paired"];
+}
+</graphviz>
+</div>
+<div style="font-size: 0.88em; color: #54595d;">The three levels of the edition. Solid arrows follow the reading order that each page's ''Next'' section continues; dashed lines join each explainer to the technical pages named at the head of both.</div>
+
+The edition is written at three levels.
+
+# '''This page''': what Lean is and what it checks, and a map of the rest.
+# '''The explainers''': twenty-two pages in plain language, for a reader with no logic or programming. They use no notation beyond a short line of Lean where one shows the point better than words.
+# '''The technical pages''', in two sections. The twelve '''Foundations''' pages set out the type theory, with its rules written as formulas and Lean code that compiles. The twelve '''System''' pages describe how Lean works, from elaboration to the compiler, with Lean's own output.
+
+Each explainer but the last, on physics, is paired with the technical pages that treat its
+subject in full, and the pairing is shown at the head of both: an explainer carries a line headed ''Technical
+version'', a technical page a line headed ''Plain-language version''. A reader can enter at
+either level and cross at any point. The History and Applications pages sit beside the
+explainers and are written at their level. Six reference pages close the edition.
+
+'''How to read it.''' Every page ends with a section headed ''Next'', whose first link
+continues one reading order: this page, the explainers, the Foundations pages, the System
+pages, the History, the Applications, and the reference pages; a second link, where there is
+one, leads sideways. A reader who wants the idea without the formalism can read the
+explainers, the History and the Applications. A reader who knows some logic can start at
+[[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]]
+and use the explainers as summaries. [[Lean theorem prover/Notation|Notation]] sets the
+formulas of the Foundations pages beside Lean's own syntax for the same things, and the
+[[Lean theorem prover/Glossary|Glossary]] defines the terms.
+
+== The pages ==
+
+=== Explainers ===
+
+{| class="wikitable"
+! Explainer !! Technical pages
+|-
+| [[Lean theorem prover/Explainers/What a proof assistant does|What a proof assistant does]] || [[Lean theorem prover/System/Elaboration|Elaboration]], [[Lean theorem prover/System/The Lean kernel|The Lean kernel]]
+|-
+| [[Lean theorem prover/Explainers/Checking instead of convincing|Checking instead of convincing]] || [[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]], [[Lean theorem prover/System/The Lean kernel|The Lean kernel]]
+|-
+| [[Lean theorem prover/Explainers/Propositions as types|Propositions as types]] || [[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]], [[Lean theorem prover/Foundations/Dependent function types|Dependent function types]]
+|-
+| [[Lean theorem prover/Explainers/Types as specifications|Types as specifications]] || [[Lean theorem prover/Foundations/Dependent function types|Dependent function types]], [[Lean theorem prover/Foundations/Inductive types and recursors|Inductive types and recursors]]
+|-
+| [[Lean theorem prover/Explainers/Why there is no type of all types|Why there is no type of all types]] || [[Lean theorem prover/Foundations/Universes and Prop|Universes and Prop]]
+|-
+| [[Lean theorem prover/Explainers/What the axioms are|What the axioms are]] || [[Lean theorem prover/Foundations/The three axioms|The three axioms]], [[Lean theorem prover/Foundations/Classical logic from choice|Classical logic from choice]], [[Lean theorem prover/Foundations/Quotient types|Quotient types]]
+|-
+| [[Lean theorem prover/Explainers/Two kinds of equality|Two kinds of equality]] || [[Lean theorem prover/Foundations/Definitional equality|Definitional equality]], [[Lean theorem prover/Foundations/Propositional equality|Propositional equality]], [[Lean theorem prover/Foundations/Proof irrelevance and subsingleton elimination|Proof irrelevance and subsingleton elimination]]
+|-
+| [[Lean theorem prover/Explainers/Functions that always finish|Functions that always finish]] || [[Lean theorem prover/Foundations/Structural and well-founded recursion|Structural and well-founded recursion]]
+|-
+| [[Lean theorem prover/Explainers/Building things from constructors|Building things from constructors]] || [[Lean theorem prover/Foundations/Inductive types and recursors|Inductive types and recursors]]
+|-
+| [[Lean theorem prover/Explainers/Induction, as the machine sees it|Induction, as the machine sees it]] || [[Lean theorem prover/Foundations/Inductive types and recursors|Inductive types and recursors]], [[Lean theorem prover/Foundations/Structural and well-founded recursion|Structural and well-founded recursion]]
+|-
+| [[Lean theorem prover/Explainers/Tactics|Tactics]] || [[Lean theorem prover/System/The tactic framework|The tactic framework]], [[Lean theorem prover/System/Metaprogramming in Lean|Metaprogramming in Lean]]
+|-
+| [[Lean theorem prover/Explainers/Holes and goals|Holes and goals]] || [[Lean theorem prover/System/Metavariables and unification|Metavariables and unification]], [[Lean theorem prover/System/The tactic framework|The tactic framework]]
+|-
+| [[Lean theorem prover/Explainers/Automation and its limits|Automation and its limits]] || [[Lean theorem prover/System/Decision procedures|Decision procedures]]
+|-
+| [[Lean theorem prover/Explainers/When Lean says no|When Lean says no]] || [[Lean theorem prover/System/Elaboration|Elaboration]], [[Lean theorem prover/System/Metavariables and unification|Metavariables and unification]]
+|-
+| [[Lean theorem prover/Explainers/Computation inside proofs|Computation inside proofs]] || [[Lean theorem prover/Foundations/Definitional equality|Definitional equality]], [[Lean theorem prover/System/Decision procedures|Decision procedures]]
+|-
+| [[Lean theorem prover/Explainers/The small trusted core|The small trusted core]] || [[Lean theorem prover/System/The Lean kernel|The Lean kernel]]
+|-
+| [[Lean theorem prover/Explainers/What has to be trusted|What has to be trusted]] || [[Lean theorem prover/System/The Lean kernel|The Lean kernel]], [[Lean theorem prover/Foundations/Consistency and the metatheory|Consistency and the metatheory]]
+|-
+| [[Lean theorem prover/Explainers/Checking a proof again later|Checking a proof again later]] || [[Lean theorem prover/System/Proof export and independent checkers|Proof export and independent checkers]]
+|-
+| [[Lean theorem prover/Explainers/Stating the right thing|Stating the right thing]] || [[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]]
+|-
+| [[Lean theorem prover/Explainers/Programs and proofs in one language|Programs and proofs in one language]] || [[Lean theorem prover/System/The compiler and runtime|The compiler and runtime]], [[Lean theorem prover/System/Monads and do-notation|Monads and do-notation]], [[Lean theorem prover/System/Syntax extension and hygienic macros|Syntax extension and hygienic macros]]
+|-
+| [[Lean theorem prover/Explainers/A library of mathematics|A library of mathematics]] || [[Lean theorem prover/System/Type classes and instance resolution|Type classes and instance resolution]], [[Lean theorem prover/System/Lake and Lean projects|Lake and Lean projects]]
+|-
+| [[Lean theorem prover/Explainers/Lean and physics|Lean and physics]] || none; it leads to [[Lean theorem prover/Applications/Physics in Lean|Physics in Lean]] and [[Lean theorem prover/Applications/Principia Machina|Principia Machina]]
+|}
+
+=== Foundations ===
+
+* [[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]]: the typing judgment, contexts, and the small term language the Lean kernel receives.
+* [[Lean theorem prover/Foundations/Dependent function types|Dependent function types]]: the one function type, of which implication and "for all" are cases.
+* [[Lean theorem prover/Foundations/Universes and Prop|Universes and Prop]]: the hierarchy of types of types, and the universe of propositions.
+* [[Lean theorem prover/Foundations/Inductive types and recursors|Inductive types and recursors]]: types given by constructors, and the recursor derived from them.
+* [[Lean theorem prover/Foundations/Structural and well-founded recursion|Structural and well-founded recursion]]: how recursive definitions reach the Lean kernel, and why they terminate.
+* [[Lean theorem prover/Foundations/Definitional equality|Definitional equality]]: equality by computation, its rules and its limits.
+* [[Lean theorem prover/Foundations/Propositional equality|Propositional equality]]: equality as a proposition, and what follows from its single constructor.
+* [[Lean theorem prover/Foundations/Quotient types|Quotient types]]: types made by identifying related elements.
+* [[Lean theorem prover/Foundations/The three axioms|The three axioms]]: what each says, and how a theorem's dependence on them is audited.
+* [[Lean theorem prover/Foundations/Classical logic from choice|Classical logic from choice]]: excluded middle as a theorem.
+* [[Lean theorem prover/Foundations/Proof irrelevance and subsingleton elimination|Proof irrelevance and subsingleton elimination]]: why the content of a proof never matters, and what that costs.
+* [[Lean theorem prover/Foundations/Consistency and the metatheory|Consistency and the metatheory]]: what is known about Lean's consistency.
+
+=== System ===
+
+* [[Lean theorem prover/System/Elaboration|Elaboration]]: from typed text to a fully explicit term.
+* [[Lean theorem prover/System/The Lean kernel|The Lean kernel]]: what the checker checks, and where its trust ends.
+* [[Lean theorem prover/System/Metavariables and unification|Metavariables and unification]]: holes in terms, and how Lean fills them.
+* [[Lean theorem prover/System/Type classes and instance resolution|Type classes and instance resolution]]: values Lean finds by itself.
+* [[Lean theorem prover/System/The tactic framework|The tactic framework]]: goals, the tactic monad, and a tactic in three lines.
+* [[Lean theorem prover/System/Decision procedures|Decision procedures]]: five automatic tactics, and what each asks to be trusted.
+* [[Lean theorem prover/System/Syntax extension and hygienic macros|Syntax extension and hygienic macros]]: new notation, and names that cannot be captured.
+* [[Lean theorem prover/System/Metaprogramming in Lean|Metaprogramming in Lean]]: programs whose data is Lean itself.
+* [[Lean theorem prover/System/The compiler and runtime|The compiler and runtime]]: from a definition to machine code.
+* [[Lean theorem prover/System/Lake and Lean projects|Lake and Lean projects]]: Lake, Lean's tool for compiling projects, and how a project fixes its version of Lean.
+* [[Lean theorem prover/System/Proof export and independent checkers|Proof export and independent checkers]]: checking a proof again, with other programs.
+* [[Lean theorem prover/System/Monads and do-notation|Monads and do-notation]]: effects as values in a pure language.
+
+=== History ===
+
+* [[Lean theorem prover/History/Automath|Automath]]: the first system for checking mathematics by computer.
+* [[Lean theorem prover/History/LCF and the tactic idea|LCF and the tactic idea]]: protected theorems and programmable tactics.
+* [[Lean theorem prover/History/Martin-Löf type theory|Martin-Löf type theory]]: propositions as types made a foundation.
+* [[Lean theorem prover/History/The Calculus of Constructions|The Calculus of Constructions]]: Coquand and Huet's theory, Coq, and Lean's place in the family.
+* [[Lean theorem prover/History/Lean 1 to Lean 3|Lean 1 to Lean 3]]: the first versions, from 2013.
+* [[Lean theorem prover/History/Lean 4|Lean 4]]: the rewrite in Lean, and the move of the mathematical library.
+* [[Lean theorem prover/History/Mathlib and its community|Mathlib and its community]]: the library, its review and its size.
+* [[Lean theorem prover/History/The Liquid Tensor Experiment|The Liquid Tensor Experiment]]: a challenge from research mathematics, 2020 to 2022.
+* [[Lean theorem prover/History/Lean since 2023|Lean since 2023]]: a version every month, new automation, and two flaws found in the Lean kernel.
+
+=== Applications ===
+
+* [[Lean theorem prover/Applications/Research mathematics|Research mathematics]]: formalised results, and why mathematicians formalise.
+* [[Lean theorem prover/Applications/The polynomial Freiman-Ruzsa conjecture|The polynomial Freiman-Ruzsa conjecture]]: a new theorem checked in three weeks.
+* [[Lean theorem prover/Applications/The Fermat's Last Theorem project|The Fermat's Last Theorem project]]: a funded project, and a machine-written proof.
+* [[Lean theorem prover/Applications/The equational theories project|The equational theories project]]: twenty-two million implications, with Lean as referee.
+* [[Lean theorem prover/Applications/Software verification|Software verification]]: three industrial uses, and what "verified" covers in each.
+* [[Lean theorem prover/Applications/Teaching with Lean|Teaching with Lean]]: a game, textbooks and courses.
+* [[Lean theorem prover/Applications/Machine learning and theorem proving|Machine learning and theorem proving]]: Lean as the checker of machine-written proofs.
+* [[Lean theorem prover/Applications/Physics in Lean|Physics in Lean]]: a library for physics, and what a theorem about a model says.
+* [[Lean theorem prover/Applications/Principia Machina|Principia Machina]]: this wiki's framework for testing physical hypotheses, restated in Lean.
+
+=== Reference pages ===
+
+* [[Lean theorem prover/Chronology|Chronology]]: dated events, from Automath to October 2026.
+* [[Lean theorem prover/Glossary|Glossary]]: the edition's terms, defined.
+* [[Lean theorem prover/Notation|Notation]]: the formulas beside Lean's syntax.
+* [[Lean theorem prover/Sources|Sources]]: what was read for the edition, and what was not.
+* [[Lean theorem prover/Bibliography|Bibliography]]: the works the edition cites.
+* [[Lean theorem prover/Further reading|Further reading]]: books, a game and papers for a reader who wants more.
+
+== Next ==
+
+[[Lean theorem prover/Explainers/What a proof assistant does|What a proof assistant does]], the
+first explainer. A reader who wants the rules first can begin at
+[[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]].
+
+== References ==
+
+<references />

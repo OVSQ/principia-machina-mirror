@@ -1,0 +1,151 @@
+{{DISPLAYTITLE:Strong and weak}}
+{{Technical|Hamilton's principle/Mathematics/The Weierstrass excess function}}
+{{Hamilton's principle map}}
+
+This page explains a second way a stationary path can fail to be the best. It
+uses no mathematics. The technical page it goes with is named above.
+
+== A different kind of failure ==
+
+[[File:OPL-HP-F-13.png|thumb|right|400px|A sawtooth competitor close in position and far in slope.]]
+
+[[Hamilton's principle/Explainers/Where the minimum fails|Where the minimum fails]]
+described one way things go wrong: run a path far enough and nearby paths refocus,
+and minimality is lost.
+
+There is a second way, and it is not a variation on the first. It fails for a
+different reason and needs a different test.
+
+The clue is that there are two different ways for paths to be close, and they are
+not the same.
+
+== Two kinds of nearby ==
+
+[[File:OPL-HP-F-34.png|thumb|right|400px|The Weierstrass excess function as a gap above the tangent.]]
+
+Two paths are close in '''position''' if they never get far apart.
+
+Two paths are close in '''direction''' if they also point the same way all along.
+
+A zigzag that criss-crosses a straight road every few centimetres is close in
+position and far in direction. It never leaves the road's vicinity. It is
+constantly heading somewhere else.
+
+That gap is where this page lives.
+
+== The blind spot ==
+
+[[File:OPL-HP-F-49.png|thumb|right|400px|The four conditions of the sufficiency theory.]]
+
+Everything on
+[[Hamilton's principle/Explainers/Is it really a minimum|Is it really a minimum]] and
+[[Hamilton's principle/Explainers/Where the minimum fails|Where the minimum fails]] tested against
+competitors that are close in '''both''' senses. Gentle nudges. Paths that stay
+near and keep roughly the same heading.
+
+So those tests have a blind spot. They say nothing about zigzag competitors.
+
+A path can therefore beat everything gently nearby and still lose badly to
+something that stays close in position while wobbling furiously in direction.
+
+Beating only the gentle competitors is called a '''weak''' minimum. Beating the
+zigzags too is called a '''strong''' minimum.
+
+The names are unfortunate. A weak minimum is the weaker claim about a stronger
+restriction on competitors. Reading the two words the wrong way round is a common
+slip.
+
+== A case where it happens ==
+
+There is a setup where a path passes every earlier test and still loses.
+
+Arrange a cost rule that charges a little for gentle movement but '''pays out''' for
+violent movement. Nothing forbids such a rule; it is a perfectly ordinary formula.
+
+Now consider staying still. Staying still costs nothing.
+
+Check it against gentle competitors and it wins every time — small movements cost
+a little, so doing nothing is best.
+
+Now try a fine sawtooth: move up and down rapidly, with a very small amplitude,
+hundreds of times over. In position this path barely leaves the original. In
+direction it is nothing like it.
+
+Because it moves violently, the rule pays out. The total comes out '''negative''' —
+better than staying still.
+
+And you can make the teeth as small as you like. There are competitors as close in
+position as you please, all beating the original.
+
+So staying still is a weak minimum and is not a strong one. Every earlier test
+passed. The failure was invisible to all of them.
+
+== The test that catches it ==
+
+The missing test comes from Weierstrass, later in the nineteenth century, and it
+is simple to state.
+
+'''Ask what the rule charges for travelling in a completely different direction,
+not just a slightly different one.'''
+
+Earlier tests only ever asked about small changes of heading. Weierstrass's test
+asks about '''any''' heading — including a wild one.
+
+If setting off in some wild direction is ever cheaper than the rule's own
+prediction, a sawtooth exploiting that direction will beat the path.
+
+That is the whole idea: check all directions, not just nearby ones.
+
+== Why this is not academic ==
+
+Rules that reward violent movement sound artificial. They are not rare.
+
+Anything with a cost that grows and then falls off can behave this way. Some
+materials get easier to deform once past a threshold; some engineering problems
+have costs that drop when you go fast enough.
+
+When a problem is like that, the smooth answer you compute may be a weak minimum
+that a rapidly oscillating solution beats. Physically, the material does not sit
+smoothly. It forms fine layers, alternating between two states, at a scale limited
+only by whatever the model left out.
+
+This is real. Certain alloys form fine twinned structures for exactly this reason,
+and the fineness is set by physics the simple model ignores. The mathematics
+predicting sawtooths is describing something you can photograph under a
+microscope.
+
+== What the whole sufficiency story amounts to ==
+
+Four conditions have now appeared, and it is worth seeing them together.
+
+'''The main equation''' finds stationary paths. Necessary, never sufficient.
+
+'''The local test''' checks that wobbling never pays anywhere. Necessary, not
+sufficient.
+
+'''The refocusing test''' checks the journey is not long enough for nearby paths
+to meet. Together with the first two, enough for a weak minimum.
+
+'''The all-directions test''' checks that no wild heading is cheap. Needed for a
+strong minimum.
+
+Four tests, and only the last two combinations conclude anything positive. That is
+why this volume says '''stationary''' and not '''least''': getting from one to the
+other took a century and four conditions, and even then only locally.
+
+== One thing still missing ==
+
+All of these assume a best path '''exists'''. They compare a candidate against its
+neighbours. None of them shows there is anything to find.
+
+Sometimes there is not. Stretch a soap film between two rings and pull the rings
+apart far enough, and the film snaps into two flat discs. No smooth surface
+connects them any more. The answer did not become worse; it stopped existing.
+
+Proving that a best path exists is a separate subject, and this volume does not
+treat it.
+
+== Where to go next ==
+
+The volume now turns to reorganising what it has, starting at
+[[Hamilton's principle/Explainers/Reading a curve two ways|Reading a curve two ways]].

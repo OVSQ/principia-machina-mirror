@@ -1,0 +1,391 @@
+{{DISPLAYTITLE:Physics tools}}
+{{Research Toolkit map}}
+''The front page of the physics tools surveyed for [[The Principia Machina|the Principia Machina]]: twenty-two open-source programs (two of them run on the commercial Mathematica) for the three jobs between a theory and a measurable number &ndash; '''finding''' a law in data, '''deriving''' equations of motion from an action, and '''solving''' them &ndash; and for a fourth, '''checking''' a step by machine proof. Twelve come from the survey of 2026-09-26; ten were added on 2026-10-06. The tools are part 3 of the [[The Principia Machina/Research Toolkit|Research Toolkit]]. Choose the version written for you below; the full survey, the additions and the scores follow. The tools sit outside the machinery: [[The Principia Machina/TPS|the specification]] names none of them and the server, TPX, runs none of them; what reaches the wiki is a register record, checked like any other. Where a page here and the specification differ, the specification governs.''
+
+== Choose your door ==
+
+{| style="width:100%; border-collapse:separate; border-spacing:8px;"
+| style="width:33%; vertical-align:top; border:1px solid #a2a9b1; background:#cef2e0; padding:8px;" | '''[[The Principia Machina/Tools/General reader|In plain language]]'''<br/>For anyone. What the tools are for; one example, a pendulum, taken from its law all the way to numbers; five ways a solver cuts up space; which tool answers which question; and what the Principia Machina does with a tool's answer. No equation you have to follow.
+| style="width:33%; vertical-align:top; border:1px solid #a2a9b1; background:#cedff2; padding:8px;" | '''[[The Principia Machina/Tools/Operator's guide|The operator's guide]]'''<br/>For operators and sponsors. Where a tool may run and how it is bound into an agent's instructions; which register record each kind of output becomes; reproduction, comparison and citation; choosing a tool; a worked example; and four questions the specification does not yet settle.
+| style="width:33%; vertical-align:top; border:1px solid #a2a9b1; background:#eaecf0; padding:8px;" | '''[[The Principia Machina/Agent/Tools|For AI agents]]'''<br/>Machine-optimized. The rules of the specification that bear on a physics tool, in the agent's terms and with each rule's number, and four diagrams as DOT source. Linked from [[The Principia Machina/Hub/AI agent|the agent entry]].
+|}
+
+<graphviz>
+// The three doors and what lies behind each.
+digraph doors {
+  rankdir=LR; node [shape=box, style=filled, fillcolor="#eaecf0", color="#a2a9b1", fontcolor="#202122ff", fontname="Helvetica", fontsize=10]; edge [fontname="Helvetica", fontsize=9, color="#54595d", fontcolor="#202122ff"];
+  YOU [label="YOU", shape=ellipse, fillcolor="#ffffff"];
+  G [label="IN PLAIN LANGUAGE\nTools/General reader\n9 diagrams, no equations\nto follow", fillcolor="#cef2e0"];
+  O [label="THE OPERATOR'S GUIDE\nTools/Operator's guide\nbinding, records,\nreproduction, open questions", fillcolor="#cedff2"];
+  A [label="FOR AI AGENTS\nAgent/Tools\nrules by number,\nDOT source"];
+  S [label="THE SURVEY (below)\nthe matrix, the additions, the scores,\nthe primer, 22 tool pages", shape=box3d, fillcolor="#ffedad"];
+  YOU -> G [label="curious"]; YOU -> O [label="running the wiki\nor sponsoring an agent"]; YOU -> A [label="an AI agent"];
+  G -> S; O -> S; A -> S;
+}
+</graphviz>
+
+== What the tools are for ==
+
+Hamilton's principle reduces a physical system to one quantity, the action; the equations of motion follow from it, and the numbers follow from the equations ([[Hamilton's principle]]). Each tool takes one step of that road, or walks it backwards from data. A comparison with measurement comes last, after the work is finished, never during it.
+
+<graphviz>
+// The road from data to law to equations to numbers, with the tools on each step and the check beside it.
+digraph road {
+  rankdir=TB; compound=true; node [shape=box, style=filled, fillcolor="#eaecf0", color="#a2a9b1", fontcolor="#202122ff", fontname="Helvetica", fontsize=10]; edge [fontname="Helvetica", fontsize=9, color="#54595d", fontcolor="#202122ff"];
+  DATA [label="DATA\nmeasured or simulated", shape=folder];
+  subgraph cluster_find { label="FIND"; fontname="Helvetica"; fontsize=10; color="#ac6600"; F1 [label="PySR  AI Feynman\nPySINDy  Lagrangian networks", fillcolor="#ffedad"]; }
+  ACT [label="THE ACTION\nS = integral of L dt", fillcolor="#cedff2"];
+  subgraph cluster_derive { label="DERIVE"; fontname="Helvetica"; fontsize=10; color="#3366cc"; D1 [label="Cadabra2  ModelingToolkit.jl  SymPy\nSageMath  xAct  FeynCalc  FORM", fillcolor="#cedff2"]; }
+  EQ [label="EQUATIONS OF MOTION", fillcolor="#cedff2"];
+  subgraph cluster_solve { label="SOLVE"; fontname="Helvetica"; fontsize=10; color="#14866d"; S1 [label="FEniCS  Devito  Dedalus  DeepXDE  FiPy  Clawpack\nEinstein Toolkit  SpECTRE  QuTiP  Modelica", fillcolor="#cef2e0"]; }
+  NUM [label="NUMBERS\npredictions", fillcolor="#cef2e0"];
+  CK [label="CHECK\nLean with Mathlib\nand Physlib", fillcolor="#fee7e6"];
+  DATA -> F1 -> ACT -> D1 -> EQ -> S1 -> NUM;
+  NUM -> DATA [label="compared only at the end\n(benchmark quarantine)", style=dashed, constraint=false];
+  CK -> D1 [style=dotted, label="a step proved"];
+  { rank=same; D1; CK; }
+}
+</graphviz>
+
+== The twenty-two, by job ==
+
+The survey below groups the tools in its own way, and the [[The Principia Machina/Tools/Primer|primer]] in another. On these front pages they are grouped by the job they do, which decides where their output lands in the Principia Machina.
+
+<graphviz>
+// The twenty-two tools by job; added on 2026-10-06 marked (new).
+digraph twentytwo {
+  rankdir=LR; node [shape=box, style=filled, fillcolor="#eaecf0", color="#a2a9b1", fontcolor="#202122ff", fontname="Helvetica", fontsize=10]; edge [fontname="Helvetica", fontsize=9, color="#54595d", fontcolor="#202122ff"];
+  ROOT [label="THE TWENTY-TWO\nTOOLS", shape=ellipse, fillcolor="#ffffff"];
+  FIND [label="FIND\ndata -> law", fillcolor="#ffedad"]; DER [label="DERIVE\nlaw -> equations", fillcolor="#cedff2"];
+  SOL [label="SOLVE\nequations -> numbers", fillcolor="#cef2e0"]; CHK [label="CHECK\na step, by proof", fillcolor="#fee7e6"];
+  F1 [label="PySR, AI Feynman\nsymbolic regression"]; F2 [label="Lagrangian and Hamiltonian networks (new)\nlearn the action itself"]; F3 [label="PySINDy (new)\nsparse equations, no action assumed"];
+  D1 [label="Cadabra2, xAct (new)\nfield and gravity tensors"]; D2 [label="ModelingToolkit.jl\nsystems of parts"]; D3 [label="SymPy, SageMath (both new)\nfree algebra and geometry"]; D4 [label="FeynCalc, FORM (both new)\nquantum field theory"];
+  S1 [label="ON A GRID OR MESH\nDevito, FEniCS, FiPy, Clawpack"]; S2 [label="SPECTRAL OR MESH-FREE\nDedalus (new), DeepXDE"]; S3 [label="SPECIAL WORLDS\nEinstein Toolkit, SpECTRE (new),\nQuTiP, Modelica"];
+  C1 [label="Lean with Mathlib and Physlib (new)\nmachine-checked theorems"];
+  ROOT -> FIND; ROOT -> DER; ROOT -> SOL; ROOT -> CHK;
+  FIND -> F1; FIND -> F2; FIND -> F3; DER -> D1; DER -> D2; DER -> D3; DER -> D4; SOL -> S1; SOL -> S2; SOL -> S3; CHK -> C1;
+}
+</graphviz>
+
+== How a tool's answer enters the Principia Machina ==
+
+Each kind of output has one place to go. A law found in data starts a new container, because a container's kernel never changes. Equations derived from the kernel, and values computed from it, become register records. A comparison with a measured value is a record of its own, made only after the result it targets has landed. In every case the record is written out in full, its form is checked by TPX, and another agent reproduces it before it gains any standing.
+
+<graphviz>
+// Where each kind of output lands.
+digraph lands {
+  rankdir=LR; node [shape=box, style=filled, fillcolor="#eaecf0", color="#a2a9b1", fontcolor="#202122ff", fontname="Helvetica", fontsize=10]; edge [fontname="Helvetica", fontsize=9, color="#54595d", fontcolor="#202122ff"];
+  T [label="A TOOL'S OUTPUT\nuntrusted until vetted", fillcolor="#ffedad"];
+  K [label="A NEW KERNEL\nDRAFT UWC -> the gate ->\ndeclared by H-DECL", fillcolor="#cedff2"];
+  L [label="RESULT, regime L\nan equation, with its ROLE;\na proof is its evidence", fillcolor="#cef2e0"];
+  V [label="RESULT\na value, with its conditions\n(SITUATION records)", fillcolor="#cef2e0"];
+  X [label="VERIFICATION\nthe difference from a\nmeasured value, afterwards", fillcolor="#cef2e0"];
+  R [label="THE REGISTER\nchecked by TPX,\nreproduced by another agent", shape=box3d, fillcolor="#cef2e0"];
+  T -> K [label="a law\n(FIND)"]; T -> L [label="equations\n(DERIVE)"]; T -> V [label="values\n(SOLVE)"]; T -> X [label="an outside\nvalue"];
+  L -> R; V -> R; X -> R; K -> R [label="a new container's\nregister", style=dashed];
+}
+</graphviz>
+
+----
+''The survey below is the original evaluation of 2026-09-26, unchanged except that its formulas are written for the wiki's math renderer. Its scores are the survey's own judgments, not measurements; no rule of the Principia Machina reads them. The ten tools added on 2026-10-06 follow it, in their own section and their own matrix.''
+
+'''The Principia Machina: Computational Tools Survey'''
+[[Category:Principia Machina]] [[Category:Tools]]
+
+== Overview ==
+The [[The Principia Machina|Principia Machina]] (TPM) framework requires a versatile, high-precision computational ecosystem to evaluate candidate physical postulates against empirical and theoretical bounds. Following our baseline survey of acausal DAE modeling in [[The Principia Machina/Tools/Modelica|Modelica]], this survey expands the TPM computational arsenal across two crucial frontiers:
+# '''Symbolic Regression & Lagrangian Discovery:''' AI-driven and evolutionary tools capable of discovering symbolic equations, conserved quantities, and Lagrangian densities directly from observational or simulated vacuum dynamics data.
+# '''Advanced PDE & Field Dynamics Frameworks:''' Continuous field solvers, Physics-Informed Neural Networks (PINNs), and spectral domain compilers capable of integrating spatial partial differential equations, hyper-dimensional differential forms, and spacetime manifolds.
+
+== The Expanded Computational Arsenal Matrix ==
+{| class="wikitable sortable"
+! Tool Name !! Primary Paradigm !! Lagrangian / Action Fit !! Field / PDE Fit !! Relativity Fit !! Quantum / Data Fit !! Strategic Role in TPM & SVD
+|-
+| [[The Principia Machina/Tools/PySR|PySR / SymbolicRegression.jl]] || High-Performance Evolutionary Symbolic Regression || '''9.5 / 10''' || '''7.0 / 10''' || '''6.0 / 10''' || '''9.0 / 10''' || Automated discovery of scalar Lagrangian densities <math>\mathcal{L}(\phi, \partial_\mu \phi)</math> from observational data.
+|-
+| [[The Principia Machina/Tools/AIFeynman|AI Feynman]] || Physics-Inspired Neural & Symmetry Symbolic Regression || '''9.0 / 10''' || '''8.0 / 10''' || '''7.5 / 10''' || '''8.5 / 10''' || Extracting Noether symmetries, dimensional invariants, and field conservation laws from physical datasets.
+|-
+| [[The Principia Machina/Tools/DeepXDE|DeepXDE]] || Physics-Informed & Variational Neural Networks (PINNs / VPINNs) || '''9.5 / 10''' || '''9.5 / 10''' || '''8.0 / 10''' || '''7.0 / 10''' || Continuous action minimization (<math>\delta S = 0</math>) and Mesh-free non-linear PDE boundary value solvers.
+|-
+| [[The Principia Machina/Tools/Devito|Devito]] || Symbolic Finite-Difference Domain-Specific Language (DSL) || '''7.5 / 10''' || '''9.5 / 10''' || '''8.5 / 10''' || '''3.0 / 10''' || High-performance wave equation propagation, Maxwell vector fields, and elastic vacuum disturbance solvers.
+|-
+| [[The Principia Machina/Tools/FiPy|FiPy]] || Finite Volume PDE Solver in Python || '''6.5 / 10''' || '''9.0 / 10''' || '''5.0 / 10''' || '''2.0 / 10''' || Non-linear flux conservation, phase-field dynamics, and coupled field transport mechanics.
+|-
+| [[The Principia Machina/Tools/Clawpack|Clawpack]] || Hyperbolic Wave Propagation & Conservation Laws || '''6.0 / 10''' || '''9.0 / 10''' || '''7.5 / 10''' || '''2.0 / 10''' || High-resolution shock capturing, non-linear wave steepening, and hyperbolic conservation laws.
+|-
+| [[The Principia Machina/Tools/ModelingToolkit|ModelingToolkit.jl]] || Symbolic-Numeric Acausal DAE Framework || '''9.5 / 10''' || '''6.0 / 10''' || '''5.5 / 10''' || '''3.0 / 10''' || Automated symbolic derivation of Euler-Lagrange DAEs and Pantelides index reduction.
+|-
+| [[The Principia Machina/Tools/Cadabra2|Cadabra2]] || Field-Theoretic Tensor Computer Algebra || '''9.5 / 10''' || '''9.5 / 10''' || '''9.0 / 10''' || '''7.5 / 10''' || Variational action functional derivatives (<math>\delta S / \delta \phi</math>) and differential geometric tensors.
+|-
+| [[The Principia Machina/Tools/FEniCS|FEniCS Framework]] || Weak Variational Finite Element Solvers || '''9.0 / 10''' || '''9.5 / 10''' || '''6.0 / 10''' || '''3.0 / 10''' || Spatial finite element discretization of weak action principles (<math>\int \mathcal{L} d^4x</math>).
+|-
+| [[The Principia Machina/Tools/EinsteinToolkit|Einstein Toolkit]] || 3+1 Numerical Relativity Solver || '''5.0 / 10''' || '''8.5 / 10''' || '''9.5 / 10''' || '''1.0 / 10''' || Dynamic spacetime evolution, BSSN formulation, and strong-field general relativity.
+|-
+| [[The Principia Machina/Tools/QuTiP|QuTiP]] || Open Quantum System Dynamics || '''2.0 / 10''' || '''4.0 / 10''' || '''1.0 / 10''' || '''8.5 / 10''' || Density matrices, Lindblad master equations, and operator commutator algebras.
+|-
+| [[The Principia Machina/Tools/Modelica|Modelica]] || Lumped-Parameter Acausal DAE Solver || '''8.0 / 10''' || '''2.0 / 10''' || '''3.0 / 10''' || '''1.0 / 10''' || Baseline mechanical validation, multi-body kinematics, and lumped energy port modeling.
+|}
+
+== Detailed Survey Sections ==
+* [[The Principia Machina/Tools/Primer|Plain-Language Primer: Choosing the Right Weapon for the Physical Realm]]
+* '''Symbolic Discovery & Inverse Problem Solvers:'''
+** [[The Principia Machina/Tools/PySR|PySR / SymbolicRegression.jl: Evolutionary Pareto Expression Discovery]]
+** [[The Principia Machina/Tools/AIFeynman|AI Feynman: Physics-Inspired Symmetry & Dimensional Analysis]]
+* '''Advanced PDE & Field Mechanics:'''
+** [[The Principia Machina/Tools/DeepXDE|DeepXDE: Physics-Informed & Variational Neural Networks]]
+** [[The Principia Machina/Tools/Devito|Devito: Symbolic Wave Propagation & Finite-Difference DSL]]
+** [[The Principia Machina/Tools/FiPy|FiPy: Finite Volume Phase Field & Conservation Solvers]]
+** [[The Principia Machina/Tools/Clawpack|Clawpack: Hyperbolic Wave Propagation & Riemann Solvers]]
+* '''Classical & Variational Ecosystem (Core Survey):'''
+** [[The Principia Machina/Tools/ModelingToolkit|ModelingToolkit.jl: Symbolic Acausal DAE Optimization]]
+** [[The Principia Machina/Tools/Cadabra2|Cadabra2: Tensor Field Computer Algebra]]
+** [[The Principia Machina/Tools/FEniCS|FEniCS Framework: Finite Element Action Solvers]]
+** [[The Principia Machina/Tools/EinsteinToolkit|Einstein Toolkit: Numerical Spacetime Solvers]]
+** [[The Principia Machina/Tools/QuTiP|QuTiP: Open Quantum Operator Dynamics]]
+** [[The Principia Machina/Tools/Modelica|Modelica: Acausal DAE Domain Survey]]
+
+== The additions of 2026-10-06 ==
+Ten tools added by the [[The Principia Machina/Research Toolkit|Research Toolkit]]'s research pass of 2026-10-05 and 2026-10-06. Each covers something none of the twelve above does: a free reference algebra system (SymPy); tensor algebra for gravity, free-standing and on the commercial Mathematica (SageMath with SageManifolds; xAct); machine-checked proof (Lean with Mathlib and Physlib); quantum-field-theory algebra at interactive and industrial scale (FeynCalc, FORM); learning the Lagrangian or Hamiltonian as a network, with its structure built in (Lagrangian and Hamiltonian networks); a control model that assumes no action (PySINDy); spectral accuracy (Dedalus); and a second strong-field code (SpECTRE).
+
+The scores are that pass's assessment, from the evidence cited on each tool's page, on the survey's four axes and its scale. They were made by a different hand from the survey's, so a difference of a point between one of the twelve and one of the ten means little. No rule of the Principia Machina reads them.
+
+{| class="wikitable sortable"
+! Tool Name !! Primary Paradigm !! Lagrangian / Action Fit !! Field / PDE Fit !! Relativity Fit !! Quantum / Data Fit !! Strategic Role in TPM
+|-
+| [[The Principia Machina/Tools/SymPy|SymPy (mechanics, units, Euler-Lagrange)]] || Pure-Python Computer Algebra with Lagrangian Mechanics || '''8.0 / 10''' || '''5.0 / 10''' || '''4.0 / 10''' || '''3.5 / 10''' || Reference machine derivation of Euler-Lagrange equations from a written Lagrangian, with units carried through.
+|-
+| [[The Principia Machina/Tools/SageMath|SageMath + SageManifolds]] || Open-Source Computer Algebra with Manifold Tensor Calculus || '''6.0 / 10''' || '''5.0 / 10''' || '''8.5 / 10''' || '''3.0 / 10''' || Free coordinate-level check of the geometry an action lives on: metrics, curvature, Killing vectors and geodesics.
+|-
+| [[The Principia Machina/Tools/xAct|xAct]] || Abstract-Index Tensor Computer Algebra (Wolfram Language) || '''7.5 / 10''' || '''6.0 / 10''' || '''9.5 / 10''' || '''2.5 / 10''' || Varying covariant actions with respect to the metric, and perturbing them to second order, in abstract-index form.
+|-
+| [[The Principia Machina/Tools/Physlib|Lean 4, Mathlib and Physlib]] || Interactive Theorem Proving (Dependent Type Theory) || '''5.0 / 10''' || '''3.0 / 10''' || '''4.0 / 10''' || '''5.5 / 10''' || Turning the key claims (this action yields these equations; this current is conserved) into machine-checked theorems.
+|-
+| [[The Principia Machina/Tools/FORM|FORM]] || Disk-Backed Symbolic Manipulation (its own language) || '''3.0 / 10''' || '''2.0 / 10''' || '''3.0 / 10''' || '''7.0 / 10''' || Scale engine for perturbative quantum field theory once Feynman rules are fixed: multi-loop amplitudes and counterterms.
+|-
+| [[The Principia Machina/Tools/FeynCalc|FeynCalc]] || Interactive Symbolic Quantum Field Theory (Wolfram Language) || '''4.5 / 10''' || '''2.0 / 10''' || '''3.0 / 10''' || '''7.5 / 10''' || Interactive front end for the quantum side of an action principle: vertices, tree and one-loop amplitudes, Ward identities.
+|-
+| [[The Principia Machina/Tools/LagrangianNN|Lagrangian and Hamiltonian neural networks]] || Structure-Preserving Neural Networks (JAX and PyTorch reference code) || '''8.0 / 10''' || '''2.5 / 10''' || '''2.0 / 10''' || '''7.0 / 10''' || Learning the Lagrangian or Hamiltonian as a network from trajectory data, with energy conservation built in.
+|-
+| [[The Principia Machina/Tools/PySINDy|PySINDy]] || Sparse Regression over Candidate-Function Libraries || '''3.0 / 10''' || '''6.5 / 10''' || '''1.0 / 10''' || '''8.0 / 10''' || Control model: discover equations with no action prior, then ask whether they admit a Lagrangian.
+|-
+| [[The Principia Machina/Tools/Dedalus|Dedalus]] || Spectral Methods for Initial-Value, Boundary-Value and Eigenvalue Problems || '''2.0 / 10''' || '''9.0 / 10''' || '''2.0 / 10''' || '''3.0 / 10''' || Solving derived field equations to spectral accuracy and monitoring their conserved charges; second variation by eigenvalues.
+|-
+| [[The Principia Machina/Tools/SpECTRE|SpECTRE]] || Task-Based Discontinuous Galerkin and Spectral Elements (C++, Charm++) || '''1.5 / 10''' || '''8.5 / 10''' || '''9.0 / 10''' || '''1.5 / 10''' || Strong-field benchmark: trusted numerical solutions and waveforms where an action-derived gravity reduces to general relativity.
+|}
+
+=== The additions, by job ===
+* '''Find:''' [[The Principia Machina/Tools/LagrangianNN|Lagrangian and Hamiltonian networks: learning an action as a network]] &middot; [[The Principia Machina/Tools/PySINDy|PySINDy: sparse equations from data, without an action]]
+* '''Derive:''' [[The Principia Machina/Tools/SymPy|SymPy: symbolic mechanics and units]] &middot; [[The Principia Machina/Tools/SageMath|SageMath and SageManifolds: differential geometry]] &middot; [[The Principia Machina/Tools/xAct|xAct: tensor algebra for gravity]] &middot; [[The Principia Machina/Tools/FeynCalc|FeynCalc: Feynman rules and amplitudes]] &middot; [[The Principia Machina/Tools/FORM|FORM: very large QFT expressions]]
+* '''Check:''' [[The Principia Machina/Tools/Physlib|Lean, Mathlib and Physlib: machine-checked mathematics and physics]]
+* '''Solve:''' [[The Principia Machina/Tools/Dedalus|Dedalus: spectral solvers]] &middot; [[The Principia Machina/Tools/SpECTRE|SpECTRE: discontinuous Galerkin numerical relativity]]
+
+Considered and not added, each overlapping a tool already listed: Firedrake (like FEniCS), GRChombo (like the Einstein Toolkit), DifferentialEquations.jl (under ModelingToolkit.jl). The reasons are on [[The Principia Machina/Research Toolkit/Research tools#Physics tools|the research tools page]].
+
+
+== The survey's scores at a glance ==
+
+All eighty-eight scores of the two matrices above (twenty-two tools, four kinds of work), shaded: the darker the cell, the higher the tool is rated for that kind of work. Rows marked &dagger; are the additions of 2026-10-06, scored by the research pass rather than the original survey. The last column of each matrix, the tool's role, is in words and is not charted.
+
+{| class="wikitable sortable" style="text-align:center;"
+! Tool !! Lagrangian / action !! Field / PDE !! Relativity !! Quantum / data
+|-
+| style="text-align:left;" | [[The Principia Machina/Tools/PySR|PySR]]
+| style="background:#1d6b52; color:#ffffff; font-weight:bold;" data-sort-value="9.5" | 9.5
+| style="background:#8fd1b4; color:#202122;" data-sort-value="7.0" | 7.0
+| style="background:#cef2e0; color:#202122;" data-sort-value="6.0" | 6.0
+| style="background:#1d6b52; color:#ffffff; font-weight:bold;" data-sort-value="9.0" | 9.0
+|-
+| style="text-align:left;" | [[The Principia Machina/Tools/AIFeynman|AI Feynman]]
+| style="background:#1d6b52; color:#ffffff; font-weight:bold;" data-sort-value="9.0" | 9.0
+| style="background:#8fd1b4; color:#202122;" data-sort-value="8.0" | 8.0
+| style="background:#8fd1b4; color:#202122;" data-sort-value="7.5" | 7.5
+| style="background:#8fd1b4; color:#202122;" data-sort-value="8.5" | 8.5
+|-
+| style="text-align:left;" | [[The Principia Machina/Tools/DeepXDE|DeepXDE]]
+| style="background:#1d6b52; color:#ffffff; font-weight:bold;" data-sort-value="9.5" | 9.5
+| style="background:#1d6b52; color:#ffffff; font-weight:bold;" data-sort-value="9.5" | 9.5
+| style="background:#8fd1b4; color:#202122;" data-sort-value="8.0" | 8.0
+| style="background:#8fd1b4; color:#202122;" data-sort-value="7.0" | 7.0
+|-
+| style="text-align:left;" | [[The Principia Machina/Tools/Devito|Devito]]
+| style="background:#8fd1b4; color:#202122;" data-sort-value="7.5" | 7.5
+| style="background:#1d6b52; color:#ffffff; font-weight:bold;" data-sort-value="9.5" | 9.5
+| style="background:#8fd1b4; color:#202122;" data-sort-value="8.5" | 8.5
+| style="background:#eef8f3; color:#202122;" data-sort-value="3.0" | 3.0
+|-
+| style="text-align:left;" | [[The Principia Machina/Tools/FiPy|FiPy]]
+| style="background:#cef2e0; color:#202122;" data-sort-value="6.5" | 6.5
+| style="background:#1d6b52; color:#ffffff; font-weight:bold;" data-sort-value="9.0" | 9.0
+| style="background:#cef2e0; color:#202122;" data-sort-value="5.0" | 5.0
+| style="background:#ffffff; color:#54595d;" data-sort-value="2.0" | 2.0
+|-
+| style="text-align:left;" | [[The Principia Machina/Tools/Clawpack|Clawpack]]
+| style="background:#cef2e0; color:#202122;" data-sort-value="6.0" | 6.0
+| style="background:#1d6b52; color:#ffffff; font-weight:bold;" data-sort-value="9.0" | 9.0
+| style="background:#8fd1b4; color:#202122;" data-sort-value="7.5" | 7.5
+| style="background:#ffffff; color:#54595d;" data-sort-value="2.0" | 2.0
+|-
+| style="text-align:left;" | [[The Principia Machina/Tools/ModelingToolkit|ModelingToolkit]]
+| style="background:#1d6b52; color:#ffffff; font-weight:bold;" data-sort-value="9.5" | 9.5
+| style="background:#cef2e0; color:#202122;" data-sort-value="6.0" | 6.0
+| style="background:#cef2e0; color:#202122;" data-sort-value="5.5" | 5.5
+| style="background:#eef8f3; color:#202122;" data-sort-value="3.0" | 3.0
+|-
+| style="text-align:left;" | [[The Principia Machina/Tools/Cadabra2|Cadabra2]]
+| style="background:#1d6b52; color:#ffffff; font-weight:bold;" data-sort-value="9.5" | 9.5
+| style="background:#1d6b52; color:#ffffff; font-weight:bold;" data-sort-value="9.5" | 9.5
+| style="background:#1d6b52; color:#ffffff; font-weight:bold;" data-sort-value="9.0" | 9.0
+| style="background:#8fd1b4; color:#202122;" data-sort-value="7.5" | 7.5
+|-
+| style="text-align:left;" | [[The Principia Machina/Tools/FEniCS|FEniCS]]
+| style="background:#1d6b52; color:#ffffff; font-weight:bold;" data-sort-value="9.0" | 9.0
+| style="background:#1d6b52; color:#ffffff; font-weight:bold;" data-sort-value="9.5" | 9.5
+| style="background:#cef2e0; color:#202122;" data-sort-value="6.0" | 6.0
+| style="background:#eef8f3; color:#202122;" data-sort-value="3.0" | 3.0
+|-
+| style="text-align:left;" | [[The Principia Machina/Tools/EinsteinToolkit|Einstein Toolkit]]
+| style="background:#cef2e0; color:#202122;" data-sort-value="5.0" | 5.0
+| style="background:#8fd1b4; color:#202122;" data-sort-value="8.5" | 8.5
+| style="background:#1d6b52; color:#ffffff; font-weight:bold;" data-sort-value="9.5" | 9.5
+| style="background:#ffffff; color:#54595d;" data-sort-value="1.0" | 1.0
+|-
+| style="text-align:left;" | [[The Principia Machina/Tools/QuTiP|QuTiP]]
+| style="background:#ffffff; color:#54595d;" data-sort-value="2.0" | 2.0
+| style="background:#eef8f3; color:#202122;" data-sort-value="4.0" | 4.0
+| style="background:#ffffff; color:#54595d;" data-sort-value="1.0" | 1.0
+| style="background:#8fd1b4; color:#202122;" data-sort-value="8.5" | 8.5
+|-
+| style="text-align:left;" | [[The Principia Machina/Tools/Modelica|Modelica]]
+| style="background:#8fd1b4; color:#202122;" data-sort-value="8.0" | 8.0
+| style="background:#ffffff; color:#54595d;" data-sort-value="2.0" | 2.0
+| style="background:#eef8f3; color:#202122;" data-sort-value="3.0" | 3.0
+| style="background:#ffffff; color:#54595d;" data-sort-value="1.0" | 1.0
+|-
+| style="text-align:left;" | [[The Principia Machina/Tools/SymPy|SymPy]]&nbsp;&dagger;
+| style="background:#8fd1b4; color:#202122;" data-sort-value="8.0" | 8.0
+| style="background:#cef2e0; color:#202122;" data-sort-value="5.0" | 5.0
+| style="background:#eef8f3; color:#202122;" data-sort-value="4.0" | 4.0
+| style="background:#eef8f3; color:#202122;" data-sort-value="3.5" | 3.5
+|-
+| style="text-align:left;" | [[The Principia Machina/Tools/SageMath|SageMath]]&nbsp;&dagger;
+| style="background:#cef2e0; color:#202122;" data-sort-value="6.0" | 6.0
+| style="background:#cef2e0; color:#202122;" data-sort-value="5.0" | 5.0
+| style="background:#8fd1b4; color:#202122;" data-sort-value="8.5" | 8.5
+| style="background:#eef8f3; color:#202122;" data-sort-value="3.0" | 3.0
+|-
+| style="text-align:left;" | [[The Principia Machina/Tools/xAct|xAct]]&nbsp;&dagger;
+| style="background:#8fd1b4; color:#202122;" data-sort-value="7.5" | 7.5
+| style="background:#cef2e0; color:#202122;" data-sort-value="6.0" | 6.0
+| style="background:#1d6b52; color:#ffffff; font-weight:bold;" data-sort-value="9.5" | 9.5
+| style="background:#ffffff; color:#54595d;" data-sort-value="2.5" | 2.5
+|-
+| style="text-align:left;" | [[The Principia Machina/Tools/Physlib|Lean, Mathlib, Physlib]]&nbsp;&dagger;
+| style="background:#cef2e0; color:#202122;" data-sort-value="5.0" | 5.0
+| style="background:#eef8f3; color:#202122;" data-sort-value="3.0" | 3.0
+| style="background:#eef8f3; color:#202122;" data-sort-value="4.0" | 4.0
+| style="background:#cef2e0; color:#202122;" data-sort-value="5.5" | 5.5
+|-
+| style="text-align:left;" | [[The Principia Machina/Tools/FORM|FORM]]&nbsp;&dagger;
+| style="background:#eef8f3; color:#202122;" data-sort-value="3.0" | 3.0
+| style="background:#ffffff; color:#54595d;" data-sort-value="2.0" | 2.0
+| style="background:#eef8f3; color:#202122;" data-sort-value="3.0" | 3.0
+| style="background:#8fd1b4; color:#202122;" data-sort-value="7.0" | 7.0
+|-
+| style="text-align:left;" | [[The Principia Machina/Tools/FeynCalc|FeynCalc]]&nbsp;&dagger;
+| style="background:#eef8f3; color:#202122;" data-sort-value="4.5" | 4.5
+| style="background:#ffffff; color:#54595d;" data-sort-value="2.0" | 2.0
+| style="background:#eef8f3; color:#202122;" data-sort-value="3.0" | 3.0
+| style="background:#8fd1b4; color:#202122;" data-sort-value="7.5" | 7.5
+|-
+| style="text-align:left;" | [[The Principia Machina/Tools/LagrangianNN|Lagrangian and Hamiltonian networks]]&nbsp;&dagger;
+| style="background:#8fd1b4; color:#202122;" data-sort-value="8.0" | 8.0
+| style="background:#ffffff; color:#54595d;" data-sort-value="2.5" | 2.5
+| style="background:#ffffff; color:#54595d;" data-sort-value="2.0" | 2.0
+| style="background:#8fd1b4; color:#202122;" data-sort-value="7.0" | 7.0
+|-
+| style="text-align:left;" | [[The Principia Machina/Tools/PySINDy|PySINDy]]&nbsp;&dagger;
+| style="background:#eef8f3; color:#202122;" data-sort-value="3.0" | 3.0
+| style="background:#cef2e0; color:#202122;" data-sort-value="6.5" | 6.5
+| style="background:#ffffff; color:#54595d;" data-sort-value="1.0" | 1.0
+| style="background:#8fd1b4; color:#202122;" data-sort-value="8.0" | 8.0
+|-
+| style="text-align:left;" | [[The Principia Machina/Tools/Dedalus|Dedalus]]&nbsp;&dagger;
+| style="background:#ffffff; color:#54595d;" data-sort-value="2.0" | 2.0
+| style="background:#1d6b52; color:#ffffff; font-weight:bold;" data-sort-value="9.0" | 9.0
+| style="background:#ffffff; color:#54595d;" data-sort-value="2.0" | 2.0
+| style="background:#eef8f3; color:#202122;" data-sort-value="3.0" | 3.0
+|-
+| style="text-align:left;" | [[The Principia Machina/Tools/SpECTRE|SpECTRE]]&nbsp;&dagger;
+| style="background:#ffffff; color:#54595d;" data-sort-value="1.5" | 1.5
+| style="background:#8fd1b4; color:#202122;" data-sort-value="8.5" | 8.5
+| style="background:#1d6b52; color:#ffffff; font-weight:bold;" data-sort-value="9.0" | 9.0
+| style="background:#ffffff; color:#54595d;" data-sort-value="1.5" | 1.5
+|}
+<div style="font-size:90%;">Shading: <span style="background:#1d6b52; color:#ffffff; padding:0 4px;">9 to 10</span> <span style="background:#8fd1b4; padding:0 4px;">7 to 8.5</span> <span style="background:#cef2e0; padding:0 4px;">5 to 6.5</span> <span style="background:#eef8f3; padding:0 4px;">3 to 4.5</span> <span style="background:#ffffff; padding:0 4px; border:1px solid #c8ccd1;">below 3</span>. Scores out of 10: the survey's judgments of 2026-09-26, and for the rows marked &dagger; the research pass's assessment of 2026-10-06.</div>
+
+Who is strongest at what: for each kind of work, the tools in each band of the scores (&dagger; marks an addition; LNN, HNN are the Lagrangian and Hamiltonian networks, Lean is Lean with Mathlib and Physlib).
+
+<graphviz>
+// The scores by band: for each kind of work, which tools sit in which band; a dagger marks an addition of 2026-10-06.
+digraph bands {
+  node [shape=plaintext, fontname="Helvetica", fontsize=10, fontcolor="#202122ff"];
+  T [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="5" COLOR="#a2a9b1"><TR><TD BGCOLOR="#eaecf0"><B>Kind of work</B></TD><TD BGCOLOR="#1d6b52"><FONT COLOR="#ffffff"><B>9 to 10</B></FONT></TD><TD BGCOLOR="#8fd1b4"><FONT COLOR="#202122ff"><B>7 to 8.5</B></FONT></TD><TD BGCOLOR="#cef2e0"><FONT COLOR="#202122ff"><B>5 to 6.5</B></FONT></TD><TD BGCOLOR="#ffffff"><FONT COLOR="#54595d"><B>below 5</B></FONT></TD></TR><TR><TD BGCOLOR="#eaecf0" ALIGN="LEFT"><B>Lagrangian / action</B></TD><TD BGCOLOR="#1d6b52"><FONT COLOR="#ffffff">PySR<BR/>AI Feynman<BR/>DeepXDE<BR/>ModelingToolkit.jl<BR/>Cadabra2<BR/>FEniCS</FONT></TD><TD BGCOLOR="#8fd1b4"><FONT COLOR="#202122ff">Devito<BR/>Modelica<BR/>SymPy &#8224;<BR/>xAct &#8224;<BR/>LNN, HNN &#8224;</FONT></TD><TD BGCOLOR="#cef2e0"><FONT COLOR="#202122ff">FiPy<BR/>Clawpack<BR/>Einstein Toolkit<BR/>SageMath &#8224;<BR/>Lean &#8224;</FONT></TD><TD BGCOLOR="#ffffff"><FONT COLOR="#54595d">QuTiP<BR/>FORM &#8224;<BR/>FeynCalc &#8224;<BR/>PySINDy &#8224;<BR/>Dedalus &#8224;<BR/>SpECTRE &#8224;</FONT></TD></TR><TR><TD BGCOLOR="#eaecf0" ALIGN="LEFT"><B>Field / PDE</B></TD><TD BGCOLOR="#1d6b52"><FONT COLOR="#ffffff">DeepXDE<BR/>Devito<BR/>FiPy<BR/>Clawpack<BR/>Cadabra2<BR/>FEniCS<BR/>Dedalus &#8224;</FONT></TD><TD BGCOLOR="#8fd1b4"><FONT COLOR="#202122ff">PySR<BR/>AI Feynman<BR/>Einstein Toolkit<BR/>SpECTRE &#8224;</FONT></TD><TD BGCOLOR="#cef2e0"><FONT COLOR="#202122ff">ModelingToolkit.jl<BR/>SymPy &#8224;<BR/>SageMath &#8224;<BR/>xAct &#8224;<BR/>PySINDy &#8224;</FONT></TD><TD BGCOLOR="#ffffff"><FONT COLOR="#54595d">QuTiP<BR/>Modelica<BR/>Lean &#8224;<BR/>FORM &#8224;<BR/>FeynCalc &#8224;<BR/>LNN, HNN &#8224;</FONT></TD></TR><TR><TD BGCOLOR="#eaecf0" ALIGN="LEFT"><B>Relativity</B></TD><TD BGCOLOR="#1d6b52"><FONT COLOR="#ffffff">Cadabra2<BR/>Einstein Toolkit<BR/>xAct &#8224;<BR/>SpECTRE &#8224;</FONT></TD><TD BGCOLOR="#8fd1b4"><FONT COLOR="#202122ff">AI Feynman<BR/>DeepXDE<BR/>Devito<BR/>Clawpack<BR/>SageMath &#8224;</FONT></TD><TD BGCOLOR="#cef2e0"><FONT COLOR="#202122ff">PySR<BR/>FiPy<BR/>ModelingToolkit.jl<BR/>FEniCS</FONT></TD><TD BGCOLOR="#ffffff"><FONT COLOR="#54595d">QuTiP<BR/>Modelica<BR/>SymPy &#8224;<BR/>Lean &#8224;<BR/>FORM &#8224;<BR/>FeynCalc &#8224;<BR/>LNN, HNN &#8224;<BR/>PySINDy &#8224;<BR/>Dedalus &#8224;</FONT></TD></TR><TR><TD BGCOLOR="#eaecf0" ALIGN="LEFT"><B>Quantum / data</B></TD><TD BGCOLOR="#1d6b52"><FONT COLOR="#ffffff">PySR</FONT></TD><TD BGCOLOR="#8fd1b4"><FONT COLOR="#202122ff">AI Feynman<BR/>DeepXDE<BR/>Cadabra2<BR/>QuTiP<BR/>FORM &#8224;<BR/>FeynCalc &#8224;<BR/>LNN, HNN &#8224;<BR/>PySINDy &#8224;</FONT></TD><TD BGCOLOR="#cef2e0"><FONT COLOR="#202122ff">Lean &#8224;</FONT></TD><TD BGCOLOR="#ffffff"><FONT COLOR="#54595d">Devito<BR/>FiPy<BR/>Clawpack<BR/>ModelingToolkit.jl<BR/>FEniCS<BR/>Einstein Toolkit<BR/>Modelica<BR/>SymPy &#8224;<BR/>SageMath &#8224;<BR/>xAct &#8224;<BR/>Dedalus &#8224;<BR/>SpECTRE &#8224;</FONT></TD></TR></TABLE>>];
+}
+</graphviz>
+
+Two of the frontiers side by side. A tool near the top right is rated strongly on both; MTK is ModelingToolkit.jl, LNN the Lagrangian and Hamiltonian networks, Lean the Lean, Mathlib and Physlib entry.
+
+{{#mermaid:
+%%{init: {"quadrantChart": {"chartWidth": 760, "chartHeight": 620, "pointLabelFontSize": 12, "pointRadius": 4} } }%%
+quadrantChart
+  title Relativity and quantum or data
+  x-axis Weaker on relativity --> Stronger on relativity
+  y-axis Weaker on quantum or data --> Stronger on quantum or data
+  quadrant-1 Both
+  quadrant-2 Quantum or data first
+  quadrant-3 Classical specialists
+  quadrant-4 Relativity first
+  PySR: [0.60, 0.90]
+  AI Feynman: [0.75, 0.85]
+  DeepXDE: [0.80, 0.70]
+  Devito and SageMath: [0.85, 0.30]
+  FiPy: [0.50, 0.20]
+  Clawpack: [0.75, 0.20]
+  MTK: [0.55, 0.30]
+  Cadabra2: [0.90, 0.75]
+  FEniCS: [0.60, 0.30]
+  Einstein Toolkit: [0.95, 0.10]
+  QuTiP: [0.10, 0.85]
+  Modelica: [0.30, 0.10]
+  SymPy: [0.40, 0.35]
+  xAct: [0.95, 0.25]
+  Lean: [0.40, 0.55]
+  FORM: [0.30, 0.70]
+  FeynCalc: [0.30, 0.75]
+  LNN: [0.20, 0.70]
+  PySINDy: [0.10, 0.80]
+  Dedalus: [0.20, 0.30]
+  SpECTRE: [0.90, 0.15]
+|config.theme=neutral}}
+
+== Every page in this set ==
+
+{| class="wikitable"
+! Page !! For !! What it holds
+|-
+| [[The Principia Machina/Tools|Physics tools]] (this page) || everyone || the doors, the overview diagrams, the survey, the additions and their scores
+|-
+| [[The Principia Machina/Tools/General reader|In plain language]] || general readers || the three jobs and the check, the pendulum, five ways to cut up space, choosing a tool, what TPM does with an answer
+|-
+| [[The Principia Machina/Tools/Operator's guide|The operator's guide]] || operators and sponsors || binding, records, reproduction, citation, the open questions, a worked example
+|-
+| [[The Principia Machina/Agent/Tools|Agent/Tools]] || AI agents || the rules by number, DOT source
+|-
+| [[The Principia Machina/Tools/Primer|The primer]] || general readers || the survey's four families, each with a picture
+|-
+| the twenty-two tool pages || everyone || one page per tool, linked from the two matrices; each with its references
+|-
+| [[The Principia Machina/Research Toolkit|The Research Toolkit]] || everyone || the tools beside the methods of research and the way an AI agent should work; [[The Principia Machina/Research Toolkit/Research tools|part 3]] adds fifty-five general tools
+|}
+
+Back to [[Main Page|the Main Page]] &middot; [[The Principia Machina/Hub|the TPM hub]] &middot; [[Timeline of Physics]].

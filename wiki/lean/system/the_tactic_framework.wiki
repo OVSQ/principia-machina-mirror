@@ -1,0 +1,158 @@
+{{DISPLAYTITLE:The tactic framework}}
+{{Plebeian|Lean theorem prover/Explainers/Tactics|Lean theorem prover/Explainers/Holes and goals}}
+{{Lean theorem prover map}}
+
+A '''tactic''' is a program that constructs part of a proof term. The '''tactic framework''' is what such programs act on: a list of goals, each one a metavariable, inside a monad that gives access to everything the elaborator can do. This page describes the framework in Lean 4.34.1: how a <code>by</code> block enters elaboration, what a goal is, the monad <code>TacticM</code>, the combinators that join tactics, a new tactic defined in three lines, and the library-search tactics <code>exact?</code> and <code>apply?</code>. The idea of a tactic goes back to the LCF system; [[Lean theorem prover/History/LCF and the tactic idea|LCF and the tactic idea]] tells that history.
+
+== A by block is a hole ==
+
+The reference manual states that <code>by tac</code> constructs a term of the expected type by running the tactics <code>tac</code>, and that tactics construct proof terms behind the scenes.<ref name="manual-tactics">Lean Developers, ''The Lean Language Reference'', version 4.34.0, chapter "Tactic Proofs", with its section "Running Tactics". https://lean-lang.org/doc/reference/4.34.0/Tactic-Proofs/</ref> When the elaborator meets <code>by</code>, it does not run the tactics at once. It creates a metavariable of the expected type, of the synthetic opaque kind, and registers the tactic code to be run later.<ref name="src-termelab">Lean 4 source code, version 4.34.1 (2026), file <code>src/Lean/Elab/Term/TermElabM.lean</code>: the function <code>mkTacticMVar</code>. Apache License 2.0. https://github.com/leanprover/lean4/blob/v4.34.1/src/Lean/Elab/Term/TermElabM.lean</ref> Tactic blocks are run in the last round of pending work, after the rest of the surrounding term has been elaborated as far as it can be, so that the goal's type is as complete as possible.<ref name="src-synth">Lean 4 source code, version 4.34.1 (2026), file <code>src/Lean/Elab/SyntheticMVars.lean</code>: the function <code>synthesizeSyntheticMVars</code>. Apache License 2.0. https://github.com/leanprover/lean4/blob/v4.34.1/src/Lean/Elab/SyntheticMVars.lean</ref> The trace option <code>trace.Elab.step</code> shows both moments. These lines are an excerpt from the trace of <code>example (p : Prop) (hp : p) : p ∧ p := by exact ⟨hp, hp⟩</code>:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+[Elab.step] ✅️ expected type: p ∧ p, term
+    by exact ⟨hp, hp⟩
+  [Elab.step.result] ?m.1
+[Elab.step] ✅️ exact ⟨hp, hp⟩
+</pre>
+
+The <code>by</code> term elaborates to the metavariable <code>?m.1</code>. Only afterwards does the tactic <code>exact</code> run, and it is the tactic that assigns <code>?m.1</code>.
+
+== Goals are metavariables ==
+
+The state of the tactic framework is a structure with one field, <code>goals : List MVarId</code>.<ref name="src-tactic">Lean 4 source code, version 4.34.1 (2026), file <code>src/Lean/Elab/Tactic/Basic.lean</code>: the definitions <code>TacticM</code>, <code>Tactic</code>, <code>getGoals</code> and <code>tryCatchRestore</code>, with the structure <code>Tactic.State</code> in <code>src/Lean/Elab/Term/TermElabM.lean</code>. Apache License 2.0. https://github.com/leanprover/lean4/blob/v4.34.1/src/Lean/Elab/Tactic/Basic.lean</ref> Each goal is a metavariable, with its own local context of hypotheses and its type, the statement still to be proved; the first is the '''main goal'''.<ref name="manual-tactics" /> A tactic usually acts on the main goal: it assigns that metavariable a term, which may contain new metavariables, and puts the new metavariables in the goal's place. The goal of a <code>by</code> block, and the goals made by tactics such as <code>intro</code>, are synthetic opaque, the kind that unification never assigns, because a goal counts as solved exactly when its metavariable is assigned.<ref name="src-mctx">Lean 4 source code, version 4.34.1 (2026), file <code>src/Lean/MetavarContext.lean</code>: the design notes at the head of the file. Apache License 2.0. https://github.com/leanprover/lean4/blob/v4.34.1/src/Lean/MetavarContext.lean</ref> [[Lean theorem prover/System/Metavariables and unification|Metavariables and unification]] treats these kinds.
+
+A short tactic that reads the list makes the point concrete:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+import Lean
+open Lean Elab Tactic in
+elab "show_goals" : tactic => do
+  let gs ← getGoals
+  logInfo m!"goals: {gs.map Expr.mvar}"
+
+example (p q : Prop) (hp : p) (hq : q) : p ∧ q := by
+  constructor
+  show_goals
+  all_goals assumption
+</pre>
+
+It prints <code>goals: [?left, ?right]</code>. The tactic <code>constructor</code> assigned the original goal the term <code>And.intro ?left ?right</code> and left the two new metavariables as goals, named after the arguments of <code>And.intro</code>. The built-in <code>trace_state</code> prints the same goals in the familiar form:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem and_swap (p q : Prop) (h : p ∧ q) : q ∧ p := by
+  constructor
+  trace_state
+  · exact h.2
+  · exact h.1
+
+#print and_swap
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+case left
+p q : Prop
+h : p ∧ q
+⊢ q
+
+case right
+p q : Prop
+h : p ∧ q
+⊢ p
+theorem and_swap : ∀ (p q : Prop), p ∧ q → q ∧ p :=
+fun p q h => ⟨h.right, h.left⟩
+</pre>
+
+The last lines are the point of the whole framework. Once every goal is assigned, the <code>by</code> block's metavariable stands for an ordinary term, and that term, not the script, is what the Lean kernel checks and what Lean's environment, its table of definitions and theorems, records. If a goal is left open, the block fails:
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+example (p q : Prop) (hp : p) : p ∧ q := by
+  constructor
+  exact hp
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+error: unsolved goals
+case right
+p q : Prop
+hp : p
+⊢ q
+</pre>
+
+== The monad TacticM ==
+
+In Lean 4.34.1 the tactic monad is defined as
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+abbrev TacticM := ReaderT Context $ StateRefT State TermElabM
+</pre>
+
+Its documentation describes it as the term elaboration monad <code>TermElabM</code> extended with the current goals and some local information, and defines a tactic as a function from syntax to an action in <code>TacticM</code>. Several tactics may be attached to one kind of syntax; they are attempted until one succeeds.<ref name="src-tactic" /> Because <code>TacticM</code> sits on top of the elaborator, a tactic can do anything the elaborator does: elaborate a term against a goal, call the unifier, search for instances, inspect and extend Lean's environment. [[Lean theorem prover/System/Monads and do-notation|Monads and do-notation]] explains the monad stack, and [[Lean theorem prover/System/Metaprogramming in Lean|metaprogramming in Lean]] shows how to write tactics against it. The paper that introduced Lean 4 stresses that tactics are implemented in Lean itself and can be added by users.<ref name="lean4-paper">Leonardo de Moura and Sebastian Ullrich, "The Lean 4 Theorem Prover and Programming Language (System Description)", in ''Automated Deduction – CADE 28'', Lecture Notes in Computer Science 12699, Springer, 2021, pp. 625–635. doi:10.1007/978-3-030-79876-5_37</ref>
+
+None of this is trusted. A tactic may be wrong in any way: it may assign a goal an ill-typed term, or a term of the wrong type. The error surfaces when the term is checked, at the latest by the Lean kernel ([[Lean theorem prover/System/The Lean kernel|the Lean kernel]]).
+
+== Combinators ==
+
+Tactics are joined by combinators, themselves tactics. Their documentation strings in Lean's source give their meaning:<ref name="src-tactics">Lean 4 source code, version 4.34.1 (2026), file <code>src/Init/Tactics.lean</code>: the documentation strings and definitions of <code>all_goals</code>, <code>focus</code>, <code>first</code>, <code>try</code>, <code>&lt;;&gt;</code>, <code>repeat</code>, <code>exact?</code> and <code>apply?</code>. Apache License 2.0. https://github.com/leanprover/lean4/blob/v4.34.1/src/Init/Tactics.lean</ref>
+
+* <code>t₁ &lt;;&gt; t₂</code> runs <code>t₁</code> on the main goal and <code>t₂</code> on each goal it produces, collecting all the goals that result.
+* <code>all_goals t</code> runs <code>t</code> on every goal and fails if it fails on any. <code>focus t</code> runs <code>t</code> on the main goal with the other goals hidden; the bullet <code>· t</code>, used in <code>and_swap</code> above and preferred by the documentation, also requires that <code>t</code> close the goal. In 4.34.1 <code>t₁ &lt;;&gt; t₂</code> is itself a macro built from <code>focus</code> and <code>all_goals</code>.
+* <code>first | t₁ | t₂ | …</code> runs each alternative until one succeeds, and fails if none does.
+* <code>try t</code> runs <code>t</code> and succeeds even if <code>t</code> fails. In 4.34.1 it is not a primitive but a macro: <code>first | t | skip</code>.
+* <code>repeat t</code> applies <code>t</code> for as long as it succeeds, undoing any partial changes of the attempt that fails. If <code>t</code> never fails, <code>repeat t</code> does not stop. <code>repeat' t</code> applies <code>t</code> recursively to every goal produced.
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+example (p q r : Prop) (hp : p) (hq : q) (hr : r) : p ∧ q ∧ r := by
+  constructor &lt;;&gt; (try constructor) &lt;;&gt; assumption
+
+example (n : Nat) : n = n ∨ n = 0 := by
+  first
+  | exact Or.inr rfl
+  | exact Or.inl rfl
+</pre>
+
+In the second example the first alternative fails, since <code>n = 0</code> does not hold for every <code>n</code>, and <code>first</code> backtracks to the second. Before the second alternative runs, the state saved before the first is restored, metavariable assignments included: in <code>TacticM</code> the standard way of catching a failure rolls the state back.<ref name="src-tactic" />
+
+== A new tactic in three lines ==
+
+Since <code>try</code> is a macro, so can a user's tactic be. A '''macro''' tactic rewrites its own syntax into existing tactics, and needs no access to <code>TacticM</code> at all:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+macro "conj_close" : tactic =>
+  `(tactic| (repeat' constructor) &lt;;&gt; assumption)
+
+theorem three (p q r : Prop) (hp : p) (hq : q) (hr : r) : (p ∧ q) ∧ r := by
+  conj_close
+
+#print three
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem three : ∀ (p q r : Prop), p → q → r → (p ∧ q) ∧ r :=
+fun p q r hp hq hr => ⟨⟨hp, hq⟩, hr⟩
+</pre>
+
+The new tactic <code>conj_close</code> splits nested conjunctions as far as they go and closes every resulting goal with a hypothesis. The proof term shows nothing of it. [[Lean theorem prover/System/Syntax extension and hygienic macros|Syntax extension and hygienic macros]] covers the macro system, and [[Lean theorem prover/System/Metaprogramming in Lean|metaprogramming in Lean]] the tactics that need <code>elab</code> and <code>TacticM</code>, as <code>show_goals</code> above did.
+
+== Library search ==
+
+Lean 4.34.1 includes two search tactics in its core. <code>exact?</code> searches Lean's environment for a definition or theorem that closes the goal with <code>exact</code>, discharging side conditions with <code>solve_by_elim</code>; <code>apply?</code> searches for one that refines the goal with <code>apply</code>.<ref name="src-tactics" /> Both report what they found as a suggestion to paste in place of the search:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+example (a b : Nat) : a + b = b + a := by
+  exact?
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+Try this:
+  [apply] exact Nat.add_comm a b
+</pre>
+
+The suggestion is meant to replace the call. A proof that keeps <code>exact?</code> repeats the search every time the file is checked, and may find a different lemma once the library changes.
+
+== Next ==
+
+[[Lean theorem prover/System/Decision procedures|Decision procedures]] describes the tactics that settle whole classes of goals: <code>decide</code>, <code>omega</code>, <code>simp</code>, <code>grind</code> and <code>bv_decide</code>.
+
+== References ==
+
+<references />

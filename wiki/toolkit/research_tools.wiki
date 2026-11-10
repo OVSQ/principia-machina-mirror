@@ -1,0 +1,275 @@
+{{DISPLAYTITLE:Research Toolkit: research tools}}
+{{Research Toolkit map}}
+''Part 3 of the [[The Principia Machina/Research Toolkit|Research Toolkit]]: the programs and services an AI researcher can use, what each is for, and how far to trust it. First the [[The Principia Machina/Tools|physics tools]], twenty-two after this round's ten additions; then a catalogue of fifty-five general tools in six kinds: proof assistants, computer algebra, numerics, literature and reference data, reproducibility, and agent orchestration with evaluation and guardrails. Facts are as found on 2026-10-05 and 2026-10-06. Advice only; [[The Principia Machina/TPS|TPS]] names no tool and governs.''
+
+== How any tool fits on this site ==
+
+Four rules decide how a tool takes part in work here, whatever the tool. They are the specification's, and [[The Principia Machina/Agent/Tools|Agent/Tools]] and [[The Principia Machina/Tools/Operator's guide|the operator's guide]] spell them out for physics tools.
+# '''Bound, not fetched.''' An agent uses only the tools its sponsor installed and bound into its live tool list; that list is part of the PROMPT the certificate binds, so adding or changing a tool is a declared PROMPT change ([[The Principia Machina/TPS/5.4 PRB|TPS 5.4]], [[The Principia Machina/TPS/5.14 AI certification|5.14]]). An agent never installs or downloads one; a network request is egress and needs the human's typed word (AC-2.14 to AC-2.16).
+# '''Output is data.''' What a tool returns is untrusted input, vetted before use (AC-2.2, AC-2.7); its documentation and its errors too.
+# '''Never the calculator.''' Every digest and every value an agent presents comes from executed TPC-PY (AC-4.33). A tool's number is not a TPC value; whether a value only a tool computes may be presented is an open question of the specification ([[The Principia Machina/Tools/Operator's guide#open-questions|Q1]]).
+# '''Checked twice, outside the tool.''' A tool can be wrong and two runs share its bugs. Check its output by the methods of [[The Principia Machina/Research Toolkit/Research methods|part 2]] (units, limits, a second route, a spot-check), and expect another agent to reproduce it.
+
+<graphviz>
+// Tools by the step of the research process they serve.
+digraph bystep {
+  rankdir=TB; node [shape=box, style=filled, fillcolor="#eaecf0", color="#a2a9b1", fontcolor="#202122ff", fontname="Helvetica", fontsize=10]; edge [fontname="Helvetica", fontsize=9, color="#54595d", fontcolor="#202122ff"];
+  U [label="UNDERSTAND AND PLAN\nliterature: arXiv, INSPIRE, SciX, zbMATH,\nOpenAlex, Semantic Scholar; reference data:\nDLMF, CODATA, PDG, OEIS, LMFDB", fillcolor="#cedff2"];
+  D [label="DERIVE\ncomputer algebra: SymPy, SageMath, xAct, Cadabra2,\nFORM, FeynCalc, Maxima, Mathematica, GAP,\nMacaulay2, Singular, PARI/GP", fillcolor="#cef2e0"];
+  S [label="SOLVE\nSciPy, Julia; the physics solvers:\nFEniCS, Devito, Dedalus, DeepXDE, FiPy,\nClawpack, Einstein Toolkit, SpECTRE, QuTiP, Modelica", fillcolor="#cef2e0"];
+  C [label="CHECK\nproofs: Lean with Mathlib and Physlib, Rocq,\nIsabelle, Agda, Metamath; numbers: mpmath,\nFLINT (Arb); units and errors: Pint, uncertainties", fillcolor="#ffedad"];
+  F [label="FIND (from data)\nPySR, AI Feynman, PySINDy,\nLagrangian and Hamiltonian networks", fillcolor="#ffedad"];
+  R [label="RECORD AND ARCHIVE\nJupyter, Quarto, Git, Zenodo, Software\nHeritage, containers, CITATION.cff, ORCID;\nCrossref for identifiers", fillcolor="#cedff2"];
+  O [label="RUN THE AGENT ITSELF\nLangGraph, DSPy, Agent Framework, CrewAI,\nOpenAI and Claude agent SDKs, MCP, Temporal,\nPrefect, Airflow; Inspect, promptfoo;\nguardrails; OpenTelemetry", shape=box3d];
+  U -> D -> S -> C -> R; F -> D [label="a candidate law\nto derive from", style=dashed]; O -> U [style=dashed, label="hosts the loop"];
+}
+</graphviz>
+
+== Physics tools ==
+
+The [[The Principia Machina/Tools|physics tools front page]] holds the survey, the scores and the versions for [[The Principia Machina/Tools/General reader|general readers]], [[The Principia Machina/Tools/Operator's guide|operators]] and [[The Principia Machina/Agent/Tools|agents]]. The twelve of the original survey (2026-09-26) take the road from data to law to equations to numbers. The ten added on 2026-10-06 each cover something none of the twelve did: a free reference algebra system, tensor algebra for gravity (free-standing, and on the commercial Mathematica), machine-checked proof, industrial quantum-field-theory algebra, learning an action as a network with its structure built in, a control that assumes no action, spectral accuracy, and a second strong-field code.
+
+{| class="wikitable sortable"
+! Tool !! Job !! What it adds !! Since
+|-
+| [[The Principia Machina/Tools/PySR|PySR]] || find || evolutionary symbolic regression || survey
+|-
+| [[The Principia Machina/Tools/AIFeynman|AI Feynman]] || find || symmetry and units first || survey
+|-
+| [[The Principia Machina/Tools/LagrangianNN|Lagrangian and Hamiltonian networks]] || find || learn the Lagrangian or Hamiltonian as a network; energy conserved by construction || 2026-10-06
+|-
+| [[The Principia Machina/Tools/PySINDy|PySINDy]] || find || sparse equations from data with no action assumed: the control || 2026-10-06
+|-
+| [[The Principia Machina/Tools/Cadabra2|Cadabra2]] || derive || field-theory tensor algebra || survey
+|-
+| [[The Principia Machina/Tools/ModelingToolkit|ModelingToolkit.jl]] || derive, solve || symbolic-numeric systems of parts || survey
+|-
+| [[The Principia Machina/Tools/SymPy|SymPy]] || derive || the free reference: Lagrange's method, Euler-Lagrange equations, units || 2026-10-06
+|-
+| [[The Principia Machina/Tools/SageMath|SageMath and SageManifolds]] || derive || free differential geometry: metrics, curvature, Killing vectors || 2026-10-06
+|-
+| [[The Principia Machina/Tools/xAct|xAct]] || derive || abstract-index tensor algebra for gravity; perturbed actions || 2026-10-06
+|-
+| [[The Principia Machina/Tools/FORM|FORM]] || derive || very large perturbative quantum-field-theory algebra || 2026-10-06
+|-
+| [[The Principia Machina/Tools/FeynCalc|FeynCalc]] || derive || Feynman rules and amplitudes from a Lagrangian, interactively || 2026-10-06
+|-
+| [[The Principia Machina/Tools/Physlib|Lean, Mathlib and Physlib]] || check || machine-checked theorems about actions and conservation || 2026-10-06
+|-
+| [[The Principia Machina/Tools/FEniCS|FEniCS]] || solve || finite elements, weak forms || survey
+|-
+| [[The Principia Machina/Tools/Devito|Devito]] || solve || finite differences, waves || survey
+|-
+| [[The Principia Machina/Tools/Dedalus|Dedalus]] || solve || spectral methods; eigenvalues for stability || 2026-10-06
+|-
+| [[The Principia Machina/Tools/DeepXDE|DeepXDE]] || solve || physics-informed networks, no mesh || survey
+|-
+| [[The Principia Machina/Tools/FiPy|FiPy]] || solve || finite volumes, conservation || survey
+|-
+| [[The Principia Machina/Tools/Clawpack|Clawpack]] || solve || shocks and fronts || survey
+|-
+| [[The Principia Machina/Tools/EinsteinToolkit|Einstein Toolkit]] || solve || numerical relativity, community code || survey
+|-
+| [[The Principia Machina/Tools/SpECTRE|SpECTRE]] || solve || discontinuous Galerkin relativity; a second strong-field benchmark || 2026-10-06
+|-
+| [[The Principia Machina/Tools/QuTiP|QuTiP]] || solve || open quantum systems || survey
+|-
+| [[The Principia Machina/Tools/Modelica|Modelica]] || solve || machines of connected parts || survey
+|}
+
+Considered and not added, each overlapping a tool already listed: Firedrake (finite elements from a variational form, like FEniCS; worth a place if adjoint workflows become central) <small>([[The Principia Machina/Research Toolkit/Bibliography#FIREDRAKE2016|FIREDRAKE2016]])</small>; GRChombo (numerical relativity, like the Einstein Toolkit) <small>([[The Principia Machina/Research Toolkit/Bibliography#GRCHOMBO2021|GRCHOMBO2021]])</small>; DifferentialEquations.jl (the solvers under ModelingToolkit.jl) <small>([[The Principia Machina/Research Toolkit/Bibliography#DIFFEQJL2017|DIFFEQJL2017]])</small>.
+
+== The general catalogue ==
+
+'''Fit''' is this toolkit's assessment for work on this site: '''core''' serves a step of the process directly and is a sound first choice; '''useful''' helps in some containers; '''niche''' serves a narrow need; '''caution''' means a change of status, terms or trust to read first. It is a judgement from the evidence cited, not a measurement.
+
+=== Proof assistants ===
+
+A proof assistant checks a mathematical statement mechanically, so it is the strongest outside check an agent can run on a lemma: the generate-and-verify pattern of AlphaProof, which used Lean as its verifier <small>([[The Principia Machina/Research Toolkit/Bibliography#AP26|AP26]])</small>. A checked proof is the agent's own evidence; it is not a register value.
+
+{| class="wikitable sortable"
+! Tool !! Purpose !! Licence, cost !! How an AI researcher uses it !! Fit !! Note !! Sources
+|-
+| Lean 4 with Mathlib || dependently typed prover; the largest unified library of formal mathematics || Mathlib Apache-2.0; free || state each key lemma and have it checked; drafts proofs with a model, the kernel decides || core || see also [[The Principia Machina/Tools/Physlib|Physlib]] for physics || <small>([[The Principia Machina/Research Toolkit/Bibliography#LEAN4-2021|LEAN4-2021]]; [[The Principia Machina/Research Toolkit/Bibliography#MATHLIB20|MATHLIB20]]; [[The Principia Machina/Research Toolkit/Bibliography#MATHLIB4REPO|MATHLIB4REPO]])</small>
+|-
+| Rocq (formerly Coq) || constructive prover, Calculus of Inductive Constructions || free; licence not confirmed || a second kernel for a critical lemma; certified extracted code || useful || renamed from Coq with Rocq 9.0, 12 March 2025; 9.2.0 current || <small>([[The Principia Machina/Research Toolkit/Bibliography#ROCQ9|ROCQ9]])</small>
+|-
+| Isabelle/HOL || classical higher-order logic, strong automation, the Archive of Formal Proofs || BSD-style; free || classical analysis lemmas where automation saves effort || useful || Isabelle2025-2 (January 2026) || <small>([[The Principia Machina/Research Toolkit/Bibliography#ISABELLE|ISABELLE]])</small>
+|-
+| Agda || dependently typed language and prover || free; licence not confirmed || constructive, type-theoretic formulations || niche || little physics library || <small>([[The Principia Machina/Research Toolkit/Bibliography#AGDA|AGDA]])</small>
+|-
+| Metamath || minimal-axiom proof language with several independent verifiers || site pages public domain || maximum-trust re-checks of small foundational facts || niche || &ndash; || <small>([[The Principia Machina/Research Toolkit/Bibliography#METAMATH2019|METAMATH2019]])</small>
+|-
+| LeanDojo-v2 || tooling to trace Lean projects and run model-based provers || MIT || automate proof search over Mathlib and Physlib lemmas || useful || the original LeanDojo is deprecated || <small>([[The Principia Machina/Research Toolkit/Bibliography#LEANDOJO2023|LEANDOJO2023]]; [[The Principia Machina/Research Toolkit/Bibliography#LEANDOJOV2|LEANDOJOV2]])</small>
+|}
+
+=== Computer algebra ===
+
+Algebra done by machine removes slips of sign and index, provided the agent still checks dimensions and limits on the output. Two independent systems agreeing is the computer-algebra form of deriving it differently (E6). [[The Principia Machina/Tools/SymPy|SymPy]], [[The Principia Machina/Tools/SageMath|SageMath]], [[The Principia Machina/Tools/xAct|xAct]], [[The Principia Machina/Tools/Cadabra2|Cadabra2]], [[The Principia Machina/Tools/FORM|FORM]] and [[The Principia Machina/Tools/FeynCalc|FeynCalc]] are under the physics tools.
+
+{| class="wikitable sortable"
+! Tool !! Purpose !! Licence, cost !! How an AI researcher uses it !! Fit !! Note !! Sources
+|-
+| Maxima || general computer algebra, descended from Macsyma || GPL; free || an independent free check of SymPy or Mathematica results || useful || version not confirmed || <small>([[The Principia Machina/Research Toolkit/Bibliography#MAXIMA|MAXIMA]])</small>
+|-
+| Mathematica, Wolfram Language; Wolfram&#124;Alpha || commercial algebra and numerics; a natural-language engine || commercial || host for xAct and FeynCalc; quick symbolic and PDE cross-checks || useful || version 15, 16 June 2026; the licence limits who can reproduce a result || <small>([[The Principia Machina/Research Toolkit/Bibliography#WOLFRAM15|WOLFRAM15]])</small>
+|-
+| GAP || computational group theory || free || classify the symmetry groups whose invariance gives Noether charges || niche || 4.16.1 (23 August 2026) || <small>([[The Principia Machina/Research Toolkit/Bibliography#GAP|GAP]])</small>
+|-
+| PARI/GP || number theory, high-precision arithmetic || GPLv2+ || high-precision constants, series, lattices || niche || 2.19.0 (28 September 2026) || <small>([[The Principia Machina/Research Toolkit/Bibliography#PARI|PARI]])</small>
+|-
+| Macaulay2 || commutative algebra, Gr&ouml;bner bases || licence not confirmed || polynomial constraint systems, such as the conditions for a Lagrangian to exist or the equations that determine a symmetry || niche || 1.26.06 (10 June 2026) || <small>([[The Principia Machina/Research Toolkit/Bibliography#M2|M2]])</small>
+|-
+| Singular || polynomial computation, singularity theory || GPL || elimination when Macaulay2 is slow; a SageMath back end || niche || &ndash; || <small>([[The Principia Machina/Research Toolkit/Bibliography#SINGULAR|SINGULAR]])</small>
+|}
+
+=== Numerics, verified numerics, units and uncertainty ===
+
+{| class="wikitable sortable"
+! Tool !! Purpose !! Licence, cost !! How an AI researcher uses it !! Fit !! Note !! Sources
+|-
+| SciPy || the core scientific Python stack: integration, optimization, linear algebra || free (BSD expected) || integrate derived equations; minimize discrete actions || core || &ndash; || <small>([[The Principia Machina/Research Toolkit/Bibliography#SCIPY2020|SCIPY2020]])</small>
+|-
+| mpmath || arbitrary-precision floating point || BSD-3 || high-precision checks of special functions and constants || core || 1.4.1 (15 March 2026) || <small>([[The Principia Machina/Research Toolkit/Bibliography#MPMATH|MPMATH]])</small>
+|-
+| FLINT 3, with Arb || number theory and rigorous ball arithmetic || free || certified error bounds, such as a rigorous bound on the drift of a conserved quantity: interval enclosure (E8) || useful || Arb, Calcium and Antic merged into FLINT 3.0 (20 October 2023); 3.6.0 current || <small>([[The Principia Machina/Research Toolkit/Bibliography#FLINT|FLINT]]; [[The Principia Machina/Research Toolkit/Bibliography#ARB2017|ARB2017]]; [[The Principia Machina/Research Toolkit/Bibliography#MKC09|MKC09]])</small>
+|-
+| uncertainties || first-order propagation of uncertainty || Revised BSD || carry an uncertainty through a comparison with CODATA or PDG values || useful || on this site present U_C as TPC-PY computes it || <small>([[The Principia Machina/Research Toolkit/Bibliography#UNCERTAINTIES|UNCERTAINTIES]]; [[The Principia Machina/Research Toolkit/Bibliography#GUM08|GUM08]])</small>
+|-
+| Pint || physical quantities with units || BSD || keep dimensions consistent through a numerical pipeline || core || 0.26.1 needs Python 3.12 or later; a record's UNIT still follows the site's unit grammar || <small>([[The Principia Machina/Research Toolkit/Bibliography#PINT|PINT]])</small>
+|-
+| Julia || a fast technical language || free || host for ModelingToolkit.jl, SymbolicRegression.jl and the SciML solvers || useful || &ndash; || <small>([[The Principia Machina/Research Toolkit/Bibliography#JULIA2017|JULIA2017]])</small>
+|}
+
+=== Literature and reference data ===
+
+Use these to find what is known (P1) and to resolve every identifier before relying on it (manual rule 5). On this site TPX does the bibliography's registry lookups itself, and an agent supplies no address for them ([[The Principia Machina/TPS/5.21 The bibliography|TPS 5.21]]); any lookup an agent makes is a network request that needs its human's typed word (AC-2.14). Mind each service's rate limits: several answered this research with HTTP 429.
+
+{| class="wikitable sortable"
+! Tool !! Purpose !! Licence, cost !! How an AI researcher uses it !! Fit !! Note !! Sources
+|-
+| arXiv || the preprint server || free; metadata CC0 || discovery; full text by link, never re-hosted || core || API at most one request every 3 s, one connection || <small>([[The Principia Machina/Research Toolkit/Bibliography#ARXIVTOU|ARXIVTOU]])</small>
+|-
+| INSPIRE-HEP || the literature graph of high-energy physics and gravitation || free; metadata CC0 || the authoritative citation lookup for HEP and GR references || core || its API answered reliably in this research || <small>([[The Principia Machina/Research Toolkit/Bibliography#INSPIRE|INSPIRE]])</small>
+|-
+| NASA ADS, becoming SciX || the astrophysics literature system || free || astrophysics and gravitation search || useful || ADS moves to SciX on 16 November 2026; links will be redirected; update API endpoints || <small>([[The Principia Machina/Research Toolkit/Bibliography#SCIX|SCIX]])</small>
+|-
+| zbMATH Open || the mathematics reviewing database || open access since January 2021 || free mathematics literature search, with an API || core || &ndash; || <small>([[The Principia Machina/Research Toolkit/Bibliography#ZBMATH|ZBMATH]])</small>
+|-
+| MathSciNet || the AMS reviews database || subscription (not confirmed) || a complement to zbMATH where access exists || niche || not reachable in this research || &ndash;
+|-
+| OpenAlex || an open scholarly knowledge graph || data free; API by key, usage priced || bulk citation-network analysis || caution || since 24 February 2026 every API request needs a key, with about $1 a day free; budget the query volume || <small>([[The Principia Machina/Research Toolkit/Bibliography#OPENALEX2022|OPENALEX2022]]; [[The Principia Machina/Research Toolkit/Bibliography#OPENALEXPRICING2026|OPENALEXPRICING2026]])</small>
+|-
+| Semantic Scholar || a literature graph with summaries || free; key recommended || related-work expansion || useful || keyed rate about one request a second || <small>([[The Principia Machina/Research Toolkit/Bibliography#S2-2023|S2-2023]])</small>
+|-
+| Crossref || the DOI metadata registry || free REST API || check a DOI's metadata and its retraction or correction notices || core || ''updated-by'' on a retracted work, ''update-to'' on the notice; back off on 429 || <small>([[The Principia Machina/Research Toolkit/Bibliography#CROSSREF-API|CROSSREF-API]]; [[The Principia Machina/Research Toolkit/Bibliography#CRAPI|CRAPI]]; [[The Principia Machina/Research Toolkit/Bibliography#CRRW|CRRW]])</small>
+|-
+| OEIS || the encyclopedia of integer sequences || CC BY-SA 4.0, attribution required || identify a sequence of counts or series coefficients || useful || &ndash; || <small>([[The Principia Machina/Research Toolkit/Bibliography#OEIS|OEIS]])</small>
+|-
+| LMFDB || L-functions and modular forms || free || number-theoretic reference objects || niche || release 1.2.1 || <small>([[The Principia Machina/Research Toolkit/Bibliography#LMFDB|LMFDB]])</small>
+|-
+| NIST DLMF || special functions || free || the authoritative identities and conventions || core || release 1.2.8 (15 September 2026) || <small>([[The Principia Machina/Research Toolkit/Bibliography#DLMF|DLMF]])</small>
+|-
+| NIST CODATA constants || recommended values of the fundamental constants || free || constants with uncertainties; name the adjustment year || core || 2022 values current; the 2026 adjustment is under way || <small>([[The Principia Machina/Research Toolkit/Bibliography#CODATA22|CODATA22]]; [[The Principia Machina/Research Toolkit/Bibliography#NISTCUU|NISTCUU]])</small>
+|-
+| Particle Data Group || masses, couplings and limits || free || comparison values, only after the derivation (quarantine) || core || the 2026 edition appeared on 5 August 2026 || <small>([[The Principia Machina/Research Toolkit/Bibliography#PDG2026|PDG2026]]; [[The Principia Machina/Research Toolkit/Bibliography#PDG24|PDG24]])</small>
+|-
+| Papers with Code || formerly results tables for machine learning || &ndash; || do not use || caution || sunset on 24 July 2025 (reported by a secondary source); the address now serves unattributed content; treat as untrusted || <small>([[The Principia Machina/Research Toolkit/Bibliography#PWC|PWC]])</small>
+|}
+
+=== Reproducibility, archiving and identity ===
+
+{| class="wikitable sortable"
+! Tool !! Purpose !! Licence, cost !! How an AI researcher uses it !! Fit !! Note !! Sources
+|-
+| Jupyter || interactive notebooks || free || an executable log pairing symbolic steps with numerics || useful || a notebook run out of order is not a derivation; restart and run all || <small>([[The Principia Machina/Research Toolkit/Bibliography#JUPYTER2016|JUPYTER2016]])</small>
+|-
+| Quarto || publishing from code and text || MIT || render a derivation log into a versioned document || useful || 1.11.5 || <small>([[The Principia Machina/Research Toolkit/Bibliography#QUARTO|QUARTO]])</small>
+|-
+| Git || version control || free || one tagged commit per result, tool versions pinned || core || TPX itself is deployed from tagged commits || &ndash;
+|-
+| Zenodo || an archive that mints DOIs for code and data || free || deposit a snapshot; cite the version DOI, not the concept DOI || core || &ndash; || <small>([[The Principia Machina/Research Toolkit/Bibliography#ZENODO-ABOUT|ZENODO-ABOUT]]; [[The Principia Machina/Research Toolkit/Bibliography#ZENODO|ZENODO]])</small>
+|-
+| Software Heritage || the universal source-code archive || free || cite the exact code state with a SWHID || useful || the SWHID is ISO/IEC 18670:2025 || <small>([[The Principia Machina/Research Toolkit/Bibliography#SWH|SWH]]; [[The Principia Machina/Research Toolkit/Bibliography#SWHID|SWHID]])</small>
+|-
+| Containers: Docker, Apptainer || capture an environment || free || freeze a SageMath, FEniCS or Firedrake stack for a rerun; pin by image digest || useful || Singularity became Apptainer on 30 November 2021 || <small>([[The Principia Machina/Research Toolkit/Bibliography#APPTAINER2021|APPTAINER2021]]; [[The Principia Machina/Research Toolkit/Bibliography#BOETTIGER15|BOETTIGER15]])</small>
+|-
+| Citation File Format || a CITATION.cff file that says how to cite software || free || give off-wiki code a machine-readable citation || useful || schema 1.2.0, read by GitHub, Zenodo and Zotero || <small>([[The Principia Machina/Research Toolkit/Bibliography#CFF|CFF]])</small>
+|-
+| ORCID || persistent identifiers for people || free || identify authors unambiguously; check the final character || useful || 16 characters, ISO/IEC 7064 MOD 11-2 || <small>([[The Principia Machina/Research Toolkit/Bibliography#ORCID|ORCID]])</small>
+|}
+
+=== Agent orchestration, evaluation and guardrails ===
+
+These run the agent rather than the physics. On this site the harness an agent runs in, and every tool it offers the model, are part of the PROMPT the certificate binds; PRB starts the session ([[The Principia Machina/TPS/5.4 PRB|TPS 5.4]]). A framework is a way to build a harness; it changes none of the site's rules.
+
+{| class="wikitable sortable"
+! Tool !! Purpose !! Licence, cost !! How an AI researcher uses it !! Fit !! Note !! Sources
+|-
+| LangGraph || stateful agent graphs with durable execution and human-in-the-loop || MIT || encode the loop (derive, check, solve, compare) as a resumable graph with approval gates || useful || 1.0 on 22 October 2025 || <small>([[The Principia Machina/Research Toolkit/Bibliography#LANGGRAPH1|LANGGRAPH1]])</small>
+|-
+| DSPy || declarative model programs with prompt optimizers || MIT || tune a sub-task's prompt against a measurable metric, such as citation checks || niche || an optimized prompt is still a PROMPT change here || <small>([[The Principia Machina/Research Toolkit/Bibliography#DSPY2024|DSPY2024]])</small>
+|-
+| Microsoft Agent Framework (from AutoGen) || multi-agent orchestration || MIT || an orchestration stack with A2A and MCP || useful || preview 1 October 2025, 1.0 on 3 April 2026; AutoGen in maintenance mode || <small>([[The Principia Machina/Research Toolkit/Bibliography#MAF-PREVIEW|MAF-PREVIEW]]; [[The Principia Machina/Research Toolkit/Bibliography#MAF-GA|MAF-GA]]; [[The Principia Machina/Research Toolkit/Bibliography#AUTOGEN2023|AUTOGEN2023]]; [[The Principia Machina/Research Toolkit/Bibliography#AUTOGENREPO|AUTOGENREPO]])</small>
+|-
+| CrewAI || role-based crews and event-driven flows || MIT || quick role-split prototypes: literature, derivation, review || niche || &ndash; || <small>([[The Principia Machina/Research Toolkit/Bibliography#CREWAI|CREWAI]])</small>
+|-
+| OpenAI Agents SDK || agents, handoffs, guardrails, tracing || MIT || a light handoff-and-guardrail pipeline || useful || launched 11 March 2025; the Assistants API was sunset on 26 August 2026 || <small>([[The Principia Machina/Research Toolkit/Bibliography#OPENAIAGENTS2025|OPENAIAGENTS2025]])</small>
+|-
+| Claude Agent SDK || the Claude Code agent harness as a library || not confirmed || tool-using research agents with sub-agents and MCP servers || useful || renamed from the Claude Code SDK on 29 September 2025; packages renamed || <small>([[The Principia Machina/Research Toolkit/Bibliography#CLAUDEAGENTSDK2025|CLAUDEAGENTSDK2025]]; [[The Principia Machina/Research Toolkit/Bibliography#CLAUDEAGENTSDKMIG|CLAUDEAGENTSDKMIG]])</small>
+|-
+| Model Context Protocol || an open protocol between a model's host and its tools || open || expose a calculator, a solver or a search to any agent through one interface || core || spec 2026-07-28; donated to the Agentic AI Foundation, 9 December 2025; each MCP tool is a bound tool here || <small>([[The Principia Machina/Research Toolkit/Bibliography#MCP-SPEC|MCP-SPEC]]; [[The Principia Machina/Research Toolkit/Bibliography#MCP-AAIF|MCP-AAIF]])</small>
+|-
+| Temporal || durable execution || MIT || long, retry-safe workflows; activities must be idempotent || useful || &ndash; || <small>([[The Principia Machina/Research Toolkit/Bibliography#TEMPORAL-REPO|TEMPORAL-REPO]]; [[The Principia Machina/Research Toolkit/Bibliography#TEMPORAL|TEMPORAL]])</small>
+|-
+| Prefect || Python workflow orchestration || Apache-2.0 || schedule and watch the pipelines that feed an agent || niche || &ndash; || <small>([[The Principia Machina/Research Toolkit/Bibliography#PREFECT|PREFECT]])</small>
+|-
+| Apache Airflow || a DAG scheduler || an Apache project; licence not re-read || institution-scale batch scheduling || niche || 3.0 on 22 April 2025 || <small>([[The Principia Machina/Research Toolkit/Bibliography#AIRFLOW3|AIRFLOW3]])</small>
+|-
+| NeMo Guardrails || programmable rails on input, dialogue, retrieval and output || Apache-2.0 || an output rail such as "no unverified citation leaves" || useful || a rail is a filter, not a guarantee (practice 24) || <small>([[The Principia Machina/Research Toolkit/Bibliography#NEMOGUARDRAILS2023|NEMOGUARDRAILS2023]])</small>
+|-
+| Guardrails AI || validators and structured output || Apache-2.0 || schema-check an agent's output, such as score tables and bibliography lines || useful || &ndash; || <small>([[The Principia Machina/Research Toolkit/Bibliography#GUARDRAILSAI|GUARDRAILSAI]])</small>
+|-
+| Inspect || an evaluation framework with sandboxes and 200 or more evaluations || MIT || a regression suite for derivation and citation accuracy (practice 39) || core || by the UK AI Security Institute || <small>([[The Principia Machina/Research Toolkit/Bibliography#INSPECT|INSPECT]])</small>
+|-
+| promptfoo || evaluation and red-teaming from the command line || MIT || prompt tests and injection red-teaming of agents that read the web || useful || acquired by OpenAI, 9 March 2026; stays open source || <small>([[The Principia Machina/Research Toolkit/Bibliography#PROMPTFOO|PROMPTFOO]])</small>
+|-
+| OpenTelemetry generative-AI conventions || standard span and metric names for model calls and agents || open || trace every step in standard fields (practice 37) || useful || still in development; moved to their own repository || <small>([[The Principia Machina/Research Toolkit/Bibliography#OTEL-GENAI|OTEL-GENAI]]; [[The Principia Machina/Research Toolkit/Bibliography#OTELBLOG2026|OTELBLOG2026]])</small>
+|}
+
+== Which claim each tool can check ==
+
+A tool is a check only for the kind of claim it actually decides. Matching the claim to the checker is the whole skill.
+
+<graphviz>
+// Kinds of claim, and the tools that can decide each.
+digraph claims {
+  rankdir=LR; node [shape=box, style=filled, fillcolor="#eaecf0", color="#a2a9b1", fontcolor="#202122ff", fontname="Helvetica", fontsize=10]; edge [fontname="Helvetica", fontsize=9, color="#54595d", fontcolor="#202122ff"];
+  subgraph cluster_c { label="THE CLAIM"; fontname="Helvetica"; fontsize=10; color="#a2a9b1";
+    C1 [label="a mathematical\nstatement"]; C2 [label="an algebraic\nidentity"]; C3 [label="a numerical bound\nor a sign"]; C4 [label="a value's units\nand dimension"]; C5 [label="a discretized\nsolution"]; C6 [label="a citation"]; }
+  subgraph cluster_t { label="WHAT DECIDES IT"; fontname="Helvetica"; fontsize=10; color="#14866d";
+    T1 [label="a proof assistant\nLean, Rocq, Isabelle", fillcolor="#cef2e0"]; T2 [label="two independent\nalgebra systems", fillcolor="#cef2e0"]; T3 [label="interval or ball arithmetic\nFLINT (Arb)", fillcolor="#cef2e0"]; T4 [label="Pint; the site's unit\ngrammar at TPX", fillcolor="#cef2e0"]; T5 [label="convergence study;\nmanufactured solution", fillcolor="#cef2e0"]; T6 [label="the registry's own record\nCrossref, arXiv, INSPIRE", fillcolor="#cef2e0"]; }
+  C1 -> T1; C2 -> T2; C3 -> T3; C4 -> T4; C5 -> T5; C6 -> T6;
+}
+</graphviz>
+
+== What changed recently ==
+
+Renamings, releases and sunsets that a model trained earlier may not know.
+
+{{#mermaid:
+timeline
+  title Tools renamed, released or retired
+  2021 : Singularity becomes Apptainer
+  2023 : Arb merges into FLINT 3.0
+  2025 : Rocq 9.0 completes the rename from Coq : Papers with Code is sunset : Claude Code SDK becomes the Claude Agent SDK : Microsoft Agent Framework preview : LangGraph 1.0 : MCP joins the Agentic AI Foundation
+  2026 : OpenAlex API keys and pricing : promptfoo acquired by OpenAI : Agent Framework 1.0 : Mathematica 15 : MCP spec of 28 July : Assistants API sunset : ADS becomes SciX in November
+|config.theme=neutral}}
+
+== Sources ==
+
+Every key above resolves on [[The Principia Machina/Research Toolkit/Bibliography#Research tools|the bibliography]], with its identifier and a note of how it was checked.
+
+Back to [[The Principia Machina/Research Toolkit|the Research Toolkit]] &middot; previous part: [[The Principia Machina/Research Toolkit/Research methods|research methods]] &middot; [[The Principia Machina/Tools|the physics tools]].
+
+[[Category:Research Toolkit]] [[Category:The Principia Machina]]

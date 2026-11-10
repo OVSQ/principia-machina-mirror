@@ -1,0 +1,136 @@
+{{DISPLAYTITLE:Sum over histories}}
+{{Technical|Hamilton's principle/Applications/The Feynman path integral}}
+{{Hamilton's principle map}}
+
+This page explains why the whole idea works, according to quantum mechanics. It
+uses no mathematics. The technical page it goes with is named above.
+
+== The question nobody could answer ==
+
+[[File:OPL-HP-F-15.png|thumb|right|400px|Phases adding near the stationary path and cancelling elsewhere.]]
+
+The volume has spent a long time on a rule: nature picks the path where the action
+is stationary.
+
+The rule works. It reproduces Newton's laws, it explains conservation, it builds
+electromagnetism and gravity.
+
+But it is a strange rule to believe. How would a ball know? To pick the path where
+the action is stationary, something has to compare all the paths. A ball leaving
+your hand does not appear to survey the alternatives.
+
+For three centuries the honest answer was that nature does behave this way, and
+nobody knew why. Some people found the rule so odd that they suspected purpose
+behind it. Maupertuis, who proposed an early version in 1744, thought it showed
+the economy of a wise creator.
+
+The actual answer arrived in 1948, and it is stranger than the puzzle.
+
+== Every path happens ==
+
+The quantum answer is that the ball does not pick a path.
+
+'''It takes all of them.'''
+
+Every path from start to finish contributes. The sensible ones and the ridiculous
+ones. The straight one, the one that loops via the ceiling, the one that goes to
+the Moon and comes back in time for tea. All of them.
+
+And they all contribute '''equally strongly'''. The classical path is not
+weighted more heavily. It is not marked out. Nothing in the rule mentions it.
+
+What differs between paths is not strength but '''timing'''.
+
+== Timing and cancellation ==
+
+Picture each path as carrying a tiny clock hand. As the path is traversed the hand
+rotates. How far it rotates depends on the action of that path — the same quantity
+the volume has been discussing all along.
+
+At the end, add up all the hands, arrow to arrow. The size of the total tells you
+how likely the journey is.
+
+Now think about what happens when you add up an enormous number of arrows pointing
+in random directions. They cancel. Point them every which way and the total is
+close to nothing.
+
+For anything bigger than an atom, the action is huge compared with the natural
+quantum unit. So a tiny change of path spins the clock hand round many times over.
+Neighbouring paths point in wildly different directions.
+
+'''They cancel.''' Almost every path contributes nothing, not because it is
+forbidden, but because a nearby path is pointing the opposite way.
+
+== Except in one place ==
+
+There is one exception, and it is the whole point.
+
+Near a path where the action is '''stationary''', nudging the path barely changes
+the action. That was the definition, from
+[[Hamilton's principle/Explainers/Comparing paths|Comparing paths]].
+
+Barely changing the action means barely rotating the clock hand. So all those
+paths point in nearly the '''same''' direction.
+
+Arrows pointing the same way do not cancel. They add.
+
+So the total is dominated by paths near the stationary one. Everything else
+destroys itself. What survives is what we call the classical path.
+
+== What this changes ==
+
+The rule has not been replaced. It has been explained, and the explanation inverts
+it.
+
+Before: nature picks the path where the action is stationary.
+
+After: nature does not pick anything. It does everything at once, and stationary
+action is simply the place where an enormous cancellation fails to happen.
+
+Hamilton's principle is not a law about nature's preferences. It is a fact about
+adding up a very large number of things that mostly cancel.
+
+That is why the ball does not need to know. There is no survey and no choice. What
+looks like selection is the residue left over after interference.
+
+== It settles the word "least" ==
+
+This volume has insisted throughout that the right word is '''stationary''', not
+'''least'''. The quantum picture confirms it, and from an unexpected angle.
+
+For the arrows to add up rather than cancel, all that is needed is that the action
+'''barely changes''' near the path. It makes no difference whether the action is
+smallest there, largest there, or neither.
+
+A maximum reinforces exactly as well as a minimum does.
+
+So the light path that takes the '''longest''' time, mentioned earlier in the
+volume, is a genuine path for exactly the same reason as any other. Its arrows add
+up. Nothing about the physics prefers small numbers.
+
+Anyone who says "least action" is describing a special case and calling it the
+rule.
+
+== Where the classical picture fails ==
+
+The cancellation argument depended on the action being large compared with the
+quantum unit. For everyday objects it is — by a factor with something like
+twenty-seven zeros.
+
+For an electron it is not. The cancellation is then incomplete, other paths
+survive, and the object stops having a single trajectory in any useful sense.
+
+That is not a failure of measurement or a gap in our knowledge. The electron
+really does go several ways, and the ways interfere. Fire electrons at a screen
+with two slits and you get a pattern that only makes sense if each electron went
+through both.
+
+So classical mechanics is not wrong. It is what quantum mechanics looks like when
+the numbers are large enough for almost everything to cancel.
+
+== Where to go next ==
+
+This is the end of the argument. To see how the rule was found in the first place,
+start at [[Hamilton's principle/Explainers/Comparing paths|Comparing paths]]. To see why it fails
+to mean "least", go to
+[[Hamilton's principle/Explainers/Where the minimum fails|Where the minimum fails]].

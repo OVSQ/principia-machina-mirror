@@ -1,0 +1,886 @@
+{
+ "meta": {
+  "name": "tpc_units_corpus",
+  "version": "0.1.1",
+  "status": "SELECTED D103.1, D104.1, D105.1 (2026-09-22); VERIFIED (both residences)",
+  "conforms_tps": "0.1.0 revision 4: SR3 and SR8 as amended by D40.1 (TPS 4.4.4), C-32 (TPS 3.2.9); unit grammar and KIND text (tpm_units 0.2.0) enters TPS at revision 5",
+  "module": "tpc_units 0.1.1 (proposed) (tpc_zone 0.4.1, tpc_strike 0.1.1)",
+  "note": "Expectations hand-derived: spellings and DIMENSIONs from the catalogue, scales from the SI Brochure's exact values, SR3 results worked on paper. Both residences MUST reproduce every expect. 0.1.1 (S15) appends the s15/ cases and changes no earlier case: a DIMENSION whose bases sum outside -9999..9999 is refused with the reason, and the audit of tpc_units' own sums is pinned."
+ },
+ "cases": [
+  {
+   "id": "parse/newton-base",
+   "fn": "unit_parse",
+   "input": {
+    "u": "kg m s-2"
+   },
+   "note": "catalogue order: m before g; kg is k + g",
+   "expect": "[OK,m kg s-2,L1 M1 T-2,none]"
+  },
+  {
+   "id": "parse/any-order",
+   "fn": "unit_parse",
+   "input": {
+    "u": "s-2 m kg"
+   },
+   "expect": "[OK,m kg s-2,L1 M1 T-2,none]"
+  },
+  {
+   "id": "parse/named",
+   "fn": "unit_parse",
+   "input": {
+    "u": "N"
+   },
+   "expect": "[OK,N,L1 M1 T-2,none]"
+  },
+  {
+   "id": "parse/merge",
+   "fn": "unit_parse",
+   "input": {
+    "u": "m s-1 m"
+   },
+   "expect": "[OK,m2 s-1,L2 T-1,none]"
+  },
+  {
+   "id": "parse/cancel",
+   "fn": "unit_parse",
+   "input": {
+    "u": "m m-1"
+   },
+   "expect": "[OK,1,1,none]"
+  },
+  {
+   "id": "parse/exponent-one",
+   "fn": "unit_parse",
+   "input": {
+    "u": "m1"
+   },
+   "expect": "[OK,m,L1,none]"
+  },
+  {
+   "id": "parse/zero-exponent",
+   "fn": "unit_parse",
+   "input": {
+    "u": "m0 s"
+   },
+   "expect": "[OK,s,T1,none]"
+  },
+  {
+   "id": "parse/one",
+   "fn": "unit_parse",
+   "input": {
+    "u": "1"
+   },
+   "expect": "[OK,1,1,none]"
+  },
+  {
+   "id": "parse/spelling-only",
+   "fn": "unit_parse",
+   "input": {
+    "u": "km m"
+   },
+   "note": "only spelling is canonical: km m is not rewritten as m2",
+   "expect": "[OK,m km,L2,none]"
+  },
+  {
+   "id": "parse/prefix-power-order",
+   "fn": "unit_parse",
+   "input": {
+    "u": "km mm"
+   },
+   "expect": "[OK,mm km,L2,none]"
+  },
+  {
+   "id": "parse/micro-ascii",
+   "fn": "unit_parse",
+   "input": {
+    "u": "uL"
+   },
+   "expect": "[OK,uL,L3,none]"
+  },
+  {
+   "id": "parse/deca",
+   "fn": "unit_parse",
+   "input": {
+    "u": "dam"
+   },
+   "expect": "[OK,dam,L1,none]"
+  },
+  {
+   "id": "parse/hecto",
+   "fn": "unit_parse",
+   "input": {
+    "u": "hPa"
+   },
+   "expect": "[OK,hPa,L-1 M1 T-2,none]"
+  },
+  {
+   "id": "parse/megagram",
+   "fn": "unit_parse",
+   "input": {
+    "u": "Mg"
+   },
+   "expect": "[OK,Mg,M1,none]"
+  },
+  {
+   "id": "parse/megatonne",
+   "fn": "unit_parse",
+   "input": {
+    "u": "Mt"
+   },
+   "note": "the Brochure is silent on prefixed t",
+   "expect": "[OK,Mt,M1,none]"
+  },
+  {
+   "id": "parse/milliarcsecond",
+   "fn": "unit_parse",
+   "input": {
+    "u": "marcsec"
+   },
+   "note": "mas in the Brochure",
+   "expect": "[OK,marcsec,1,rad1]"
+  },
+  {
+   "id": "parse/ohm",
+   "fn": "unit_parse",
+   "input": {
+    "u": "kOhm"
+   },
+   "expect": "[OK,kOhm,L2 M1 T-3 I-2,none]"
+  },
+  {
+   "id": "parse/tesla-vs-tera",
+   "fn": "unit_parse",
+   "input": {
+    "u": "TT"
+   },
+   "note": "tera-tesla; the tesla metre is written T m",
+   "expect": "[OK,TT,M1 T-2 I-1,none]"
+  },
+  {
+   "id": "refused/empty",
+   "fn": "unit_parse",
+   "input": {
+    "u": ""
+   },
+   "expect": "[REFUSED,UNIT  is not a unit]"
+  },
+  {
+   "id": "refused/double-space",
+   "fn": "unit_parse",
+   "input": {
+    "u": "m  s"
+   },
+   "expect": "[REFUSED,UNIT m  s is not a unit]"
+  },
+  {
+   "id": "refused/caret",
+   "fn": "unit_parse",
+   "input": {
+    "u": "m^2"
+   },
+   "expect": "[REFUSED,UNIT m^2 is not a unit]"
+  },
+  {
+   "id": "refused/slash",
+   "fn": "unit_parse",
+   "input": {
+    "u": "m/s"
+   },
+   "expect": "[REFUSED,UNIT m/s is not a unit]"
+  },
+  {
+   "id": "refused/five-digit-exponent",
+   "fn": "unit_parse",
+   "input": {
+    "u": "m10000"
+   },
+   "expect": "[REFUSED,UNIT m10000 is not a unit]"
+  },
+  {
+   "id": "refused/bidi-control",
+   "fn": "unit_parse",
+   "input": {
+    "u": "m‮"
+   },
+   "note": "the quoted input is escaped (zone schemas 6.3)",
+   "expect": "[REFUSED,UNIT m<U+202E> is not a unit]"
+  },
+  {
+   "id": "refused/not-a-string",
+   "fn": "unit_parse",
+   "input": {
+    "u": 5
+   },
+   "expect": "[REFUSED,UNIT ? is not a unit]"
+  },
+  {
+   "id": "refused/merged-range",
+   "fn": "unit_parse",
+   "input": {
+    "u": "m9999 m9999"
+   },
+   "expect": "[REFUSED,UNIT m9999 m9999: an exponent is out of range]"
+  },
+  {
+   "id": "refused/dimension-range",
+   "fn": "unit_parse",
+   "input": {
+    "u": "L3334"
+   },
+   "note": "L3334 is L10002 as a DIMENSION",
+   "expect": "[REFUSED,UNIT L3334: an exponent is out of range]"
+  },
+  {
+   "id": "refused/unknown",
+   "fn": "unit_parse",
+   "input": {
+    "u": "furlong"
+   },
+   "expect": "[REFUSED,UNIT furlong: furlong is not a unit symbol]"
+  },
+  {
+   "id": "refused/double-prefix",
+   "fn": "unit_parse",
+   "input": {
+    "u": "kkg"
+   },
+   "expect": "[REFUSED,UNIT kkg: kkg is not a unit symbol]"
+  },
+  {
+   "id": "refused/day-prefix",
+   "fn": "unit_parse",
+   "input": {
+    "u": "kd"
+   },
+   "note": "the SI Brochure forbids prefixes on the non-SI units of time",
+   "expect": "[REFUSED,UNIT kd: d takes no prefix]"
+  },
+  {
+   "id": "refused/au-prefix",
+   "fn": "unit_parse",
+   "input": {
+    "u": "kau"
+   },
+   "expect": "[REFUSED,UNIT kau: au takes no prefix]"
+  },
+  {
+   "id": "refused/minute-prefix",
+   "fn": "unit_parse",
+   "input": {
+    "u": "mmin"
+   },
+   "expect": "[REFUSED,UNIT mmin: min takes no prefix]"
+  },
+  {
+   "id": "refused/hour-prefix",
+   "fn": "unit_parse",
+   "input": {
+    "u": "hh"
+   },
+   "expect": "[REFUSED,UNIT hh: h takes no prefix]"
+  },
+  {
+   "id": "refused/celsius",
+   "fn": "unit_parse",
+   "input": {
+    "u": "degC"
+   },
+   "expect": "[REFUSED,UNIT degC: degC is refused, an offset scale, not a ratio]"
+  },
+  {
+   "id": "refused/dalton",
+   "fn": "unit_parse",
+   "input": {
+    "u": "mDa"
+   },
+   "expect": "[REFUSED,UNIT mDa: Da is refused, a measured value; the conversion would carry an uncertainty]"
+  },
+  {
+   "id": "refused/decibel",
+   "fn": "unit_parse",
+   "input": {
+    "u": "dB"
+   },
+   "expect": "[REFUSED,UNIT dB: dB is refused, a logarithmic scale]"
+  },
+  {
+   "id": "refused/prefixed-decibel",
+   "fn": "unit_parse",
+   "input": {
+    "u": "kdB"
+   },
+   "expect": "[REFUSED,UNIT kdB: dB is refused, a logarithmic scale]"
+  },
+  {
+   "id": "refused/neper",
+   "fn": "unit_parse",
+   "input": {
+    "u": "Np"
+   },
+   "expect": "[REFUSED,UNIT Np: Np is refused, a logarithmic scale]"
+  },
+  {
+   "id": "kind/hertz",
+   "fn": "unit_parse",
+   "input": {
+    "u": "Hz"
+   },
+   "expect": "[OK,Hz,T-1,Hz1]"
+  },
+  {
+   "id": "kind/rad-per-second",
+   "fn": "unit_parse",
+   "input": {
+    "u": "rad s-1"
+   },
+   "expect": "[OK,s-1 rad,T-1,rad1]"
+  },
+  {
+   "id": "kind/per-second",
+   "fn": "unit_parse",
+   "input": {
+    "u": "s-1"
+   },
+   "expect": "[OK,s-1,T-1,none]"
+  },
+  {
+   "id": "kind/steradian",
+   "fn": "unit_parse",
+   "input": {
+    "u": "sr"
+   },
+   "expect": "[OK,sr,1,rad2]"
+  },
+  {
+   "id": "kind/square-degree",
+   "fn": "unit_parse",
+   "input": {
+    "u": "deg2"
+   },
+   "expect": "[OK,deg2,1,rad2]"
+  },
+  {
+   "id": "kind/lumen",
+   "fn": "unit_parse",
+   "input": {
+    "u": "lm"
+   },
+   "note": "lm = cd sr",
+   "expect": "[OK,lm,J1,rad2]"
+  },
+  {
+   "id": "kind/becquerel",
+   "fn": "unit_parse",
+   "input": {
+    "u": "Bq"
+   },
+   "expect": "[OK,Bq,T-1,Bq1]"
+  },
+  {
+   "id": "kind/gray-sievert",
+   "fn": "unit_parse",
+   "input": {
+    "u": "Gy Sv-1"
+   },
+   "expect": "[OK,Gy Sv-1,1,Gy1 Sv-1]"
+  },
+  {
+   "id": "scale/one",
+   "fn": "unit_scale",
+   "input": {
+    "u": "1"
+   },
+   "expect": "[OK,1]"
+  },
+  {
+   "id": "scale/square-cm",
+   "fn": "unit_scale",
+   "input": {
+    "u": "cm2"
+   },
+   "expect": "[OK,0.0001]"
+  },
+  {
+   "id": "scale/per-minute",
+   "fn": "unit_scale",
+   "input": {
+    "u": "min-1"
+   },
+   "expect": "[OK,0.0166666666667]"
+  },
+  {
+   "id": "scale/hectare",
+   "fn": "unit_scale",
+   "input": {
+    "u": "ha"
+   },
+   "expect": "[OK,10000]"
+  },
+  {
+   "id": "scale/au",
+   "fn": "unit_scale",
+   "input": {
+    "u": "au"
+   },
+   "expect": "[OK,149597870700]"
+  },
+  {
+   "id": "scale/kiloelectronvolt",
+   "fn": "unit_scale",
+   "input": {
+    "u": "keV"
+   },
+   "expect": "[OK,1.602176634e-16]"
+  },
+  {
+   "id": "scale/square-degree",
+   "fn": "unit_scale",
+   "input": {
+    "u": "deg2"
+   },
+   "note": "(pi/180)^2",
+   "expect": "[OK,0.000304617419787]"
+  },
+  {
+   "id": "scale/arcsecond",
+   "fn": "unit_scale",
+   "input": {
+    "u": "arcsec"
+   },
+   "note": "pi/648000",
+   "expect": "[OK,4.8481368111e-06]"
+  },
+  {
+   "id": "scale/megatonne",
+   "fn": "unit_scale",
+   "input": {
+    "u": "Mt"
+   },
+   "expect": "[OK,1000000000]"
+  },
+  {
+   "id": "scale/km-per-hour",
+   "fn": "unit_scale",
+   "input": {
+    "u": "km h-1"
+   },
+   "expect": "[OK,0.277777777778]"
+  },
+  {
+   "id": "scale/overflow",
+   "fn": "unit_scale",
+   "input": {
+    "u": "km9999"
+   },
+   "expect": "[REFUSED,UNIT km9999 has no finite scale]"
+  },
+  {
+   "id": "scale/underflow-reciprocal",
+   "fn": "unit_scale",
+   "input": {
+    "u": "qm-20"
+   },
+   "note": "(1e-30)^20 underflows to zero; the reciprocal is refused, never divided",
+   "expect": "[REFUSED,UNIT qm-20 has no finite scale]"
+  },
+  {
+   "id": "scale/partial-overflow",
+   "fn": "unit_scale",
+   "input": {
+    "u": "Qm11 qm11"
+   },
+   "note": "a recorded limit: the whole is 1 m22, but a partial product leaves the double range",
+   "expect": "[REFUSED,UNIT Qm11 qm11 has no finite scale]"
+  },
+  {
+   "id": "c32/match",
+   "fn": "unit_matches",
+   "input": {
+    "u": "kg m s-2",
+    "dimension": "L1 M1 T-2"
+   },
+   "expect": "[OK,true]"
+  },
+  {
+   "id": "c32/match-any-order",
+   "fn": "unit_matches",
+   "input": {
+    "u": "N",
+    "dimension": "T-2 M1 L1"
+   },
+   "expect": "[OK,true]"
+  },
+  {
+   "id": "c32/mismatch",
+   "fn": "unit_matches",
+   "input": {
+    "u": "J",
+    "dimension": "L1"
+   },
+   "expect": "[OK,false]"
+  },
+  {
+   "id": "c32/angle-is-one",
+   "fn": "unit_matches",
+   "input": {
+    "u": "rad",
+    "dimension": "1"
+   },
+   "expect": "[OK,true]"
+  },
+  {
+   "id": "c32/bad-dimension",
+   "fn": "unit_matches",
+   "input": {
+    "u": "m",
+    "dimension": "X1"
+   },
+   "expect": "[REFUSED,DIMENSION X1 is not a dimension]"
+  },
+  {
+   "id": "c32/bad-unit",
+   "fn": "unit_matches",
+   "input": {
+    "u": "furlong",
+    "dimension": "L1"
+   },
+   "expect": "[REFUSED,UNIT furlong: furlong is not a unit symbol]"
+  },
+  {
+   "id": "norm/cm",
+   "fn": "normalize_measurement",
+   "input": {
+    "value": "5",
+    "uncertainty": "0.1",
+    "u": "cm"
+   },
+   "expect": "[OK,0.05,0.001,L1,none]"
+  },
+  {
+   "id": "norm/spring-x-max",
+   "fn": "normalize_measurement",
+   "input": {
+    "value": "0.05",
+    "uncertainty": "0.001",
+    "u": "m"
+   },
+   "expect": "[OK,0.05,0.001,L1,none]"
+  },
+  {
+   "id": "norm/hours",
+   "fn": "normalize_measurement",
+   "input": {
+    "value": "1.5",
+    "uncertainty": "0.01",
+    "u": "h"
+   },
+   "expect": "[OK,5400,36,T1,none]"
+  },
+  {
+   "id": "norm/negative-zero",
+   "fn": "normalize_measurement",
+   "input": {
+    "value": "-0",
+    "uncertainty": "0",
+    "u": "m"
+   },
+   "expect": "[OK,0,0,L1,none]"
+  },
+  {
+   "id": "norm/not-decimal",
+   "fn": "normalize_measurement",
+   "input": {
+    "value": "x",
+    "uncertainty": "0",
+    "u": "m"
+   },
+   "expect": "[REFUSED,VALUE x is not a decimal]"
+  },
+  {
+   "id": "norm/negative-u",
+   "fn": "normalize_measurement",
+   "input": {
+    "value": "1",
+    "uncertainty": "-1",
+    "u": "m"
+   },
+   "expect": "[REFUSED,UNCERTAINTY -1 is negative]"
+  },
+  {
+   "id": "norm/value-overflow",
+   "fn": "normalize_measurement",
+   "input": {
+    "value": "1e308",
+    "uncertainty": "0",
+    "u": "km"
+   },
+   "expect": "[REFUSED,VALUE 1e308 in UNIT km is not a finite double]"
+  },
+  {
+   "id": "mm/agree-across-prefix",
+   "fn": "mm_contradicts_units",
+   "input": {
+    "x1": "100",
+    "u1": "1",
+    "unit1": "cm",
+    "x2": "1.02",
+    "u2": "0.01",
+    "unit2": "m",
+    "k": 2.0
+   },
+   "note": "|1.00-1.02| = 0.02 <= 2 x 0.01414",
+   "expect": "[OK,false]"
+  },
+  {
+   "id": "mm/contradict-across-prefix",
+   "fn": "mm_contradicts_units",
+   "input": {
+    "x1": "100",
+    "u1": "1",
+    "unit1": "cm",
+    "x2": "1.05",
+    "u2": "0.01",
+    "unit2": "m",
+    "k": 2.0
+   },
+   "note": "0.05 > 0.0283",
+   "expect": "[OK,true]"
+  },
+  {
+   "id": "mm/hz-vs-rad",
+   "fn": "mm_contradicts_units",
+   "input": {
+    "x1": "1",
+    "u1": "0.01",
+    "unit1": "Hz",
+    "x2": "6.2832",
+    "u2": "0.01",
+    "unit2": "rad s-1",
+    "k": 2.0
+   },
+   "note": "the same oscillation; never compared, TPX opens an audit block",
+   "expect": "[CONVENTION,units of different kind: Hz1 and rad1]"
+  },
+  {
+   "id": "mm/hz-vs-per-second",
+   "fn": "mm_contradicts_units",
+   "input": {
+    "x1": "50",
+    "u1": "0.1",
+    "unit1": "Hz",
+    "x2": "50",
+    "u2": "0.1",
+    "unit2": "s-1",
+    "k": 2.0
+   },
+   "expect": "[CONVENTION,units of different kind: Hz1 and none]"
+  },
+  {
+   "id": "mm/gray-vs-sievert",
+   "fn": "mm_contradicts_units",
+   "input": {
+    "x1": "1",
+    "u1": "0.1",
+    "unit1": "Gy",
+    "x2": "1",
+    "u2": "0.1",
+    "unit2": "Sv",
+    "k": 2.0
+   },
+   "expect": "[CONVENTION,units of different kind: Gy1 and Sv1]"
+  },
+  {
+   "id": "mm/cross-dimension",
+   "fn": "mm_contradicts_units",
+   "input": {
+    "x1": "1",
+    "u1": "0.01",
+    "unit1": "m",
+    "x2": "1",
+    "u2": "0.01",
+    "unit2": "s",
+    "k": 2.0
+   },
+   "expect": "[REFUSED,units of different dimension: L1 and T1]"
+  },
+  {
+   "id": "lm/degree-agrees",
+   "fn": "lm_contradicts_units",
+   "input": {
+    "x_l": "180",
+    "unit_l": "deg",
+    "x_m": "3.14159",
+    "u_m": "0.0001",
+    "unit_m": "rad",
+    "k": 2.0
+   },
+   "note": "pi - 3.14159 = 2.65e-6 <= 2e-4",
+   "expect": "[OK,false]"
+  },
+  {
+   "id": "lm/degree-contradicts",
+   "fn": "lm_contradicts_units",
+   "input": {
+    "x_l": "180",
+    "unit_l": "deg",
+    "x_m": "3.1",
+    "u_m": "0.0001",
+    "unit_m": "rad",
+    "k": 2.0
+   },
+   "expect": "[OK,true]"
+  },
+  {
+   "id": "sr8/mixed-prefix",
+   "fn": "sr8_scale_factor_units",
+   "input": {
+    "measurements": [
+     {
+      "x": "1.00",
+      "u": "0.01",
+      "unit": "m"
+     },
+     {
+      "x": "103",
+      "u": "1",
+      "unit": "cm"
+     },
+     {
+      "x": "0.99",
+      "u": "0.01",
+      "unit": "m"
+     }
+    ]
+   },
+   "note": "chi2/(N-1) = 4.3333 over 1.00, 1.03, 0.99 m",
+   "expect": "[OK,2.08166599947]"
+  },
+  {
+   "id": "sr8/convention",
+   "fn": "sr8_scale_factor_units",
+   "input": {
+    "measurements": [
+     {
+      "x": "1",
+      "u": "0.1",
+      "unit": "Hz"
+     },
+     {
+      "x": "1",
+      "u": "0.1",
+      "unit": "s-1"
+     }
+    ]
+   },
+   "expect": "[CONVENTION,units of different kind: Hz1 and none]"
+  },
+  {
+   "id": "sr8/zero-u",
+   "fn": "sr8_scale_factor_units",
+   "input": {
+    "measurements": [
+     {
+      "x": "1",
+      "u": "0",
+      "unit": "m"
+     },
+     {
+      "x": "1",
+      "u": "0.1",
+      "unit": "m"
+     }
+    ]
+   },
+   "expect": "[REFUSED,every M record needs an uncertainty above zero]"
+  },
+  {
+   "id": "sr8/refusal-first",
+   "fn": "sr8_scale_factor_units",
+   "input": {
+    "measurements": [
+     {
+      "x": "1",
+      "u": "0",
+      "unit": "m"
+     },
+     {
+      "x": "1",
+      "u": "0.1",
+      "unit": "Hz"
+     },
+     {
+      "x": "1",
+      "u": "0.1",
+      "unit": "s"
+     }
+    ]
+   },
+   "expect": "[REFUSED,units of different dimension: L1 and T-1]"
+  },
+  {
+   "id": "s15/matches-dimension-out-of-range",
+   "fn": "unit_matches",
+   "input": {
+    "u": "m",
+    "dimension": "L9999 L1"
+   },
+   "note": "S15: the DIMENSION's bases sum to L10000, outside the grammar; tpc_units 0.1.0 answered [OK,false]",
+   "expect": "[REFUSED,DIMENSION L9999 L1: an exponent is out of range]"
+  },
+  {
+   "id": "s15/matches-dimension-bad-token",
+   "fn": "unit_matches",
+   "input": {
+    "u": "m",
+    "dimension": "L9999 L1 Q1"
+   },
+   "expect": "[REFUSED,DIMENSION L9999 L1 Q1 is not a dimension]"
+  },
+  {
+   "id": "s15/matches-sum-at-bound",
+   "fn": "unit_matches",
+   "input": {
+    "u": "m9999",
+    "dimension": "L5000 L4999"
+   },
+   "expect": "[OK,true]"
+  },
+  {
+   "id": "s15/matches-sum-returns",
+   "fn": "unit_matches",
+   "input": {
+    "u": "m",
+    "dimension": "L5000 L-4999"
+   },
+   "expect": "[OK,true]"
+  },
+  {
+   "id": "s15/audit-merged-symbol-sum",
+   "fn": "unit_parse",
+   "input": {
+    "u": "m5000 m5000"
+   },
+   "note": "S15 audit: one symbol's exponents add and are bounded (tpc_units 0.1.0, unchanged)",
+   "expect": "[REFUSED,UNIT m5000 m5000: an exponent is out of range]"
+  },
+  {
+   "id": "s15/audit-dimension-sum-across-symbols",
+   "fn": "unit_parse",
+   "input": {
+    "u": "km5000 m5000"
+   },
+   "note": "S15 audit: the resulting DIMENSION L10000 is bounded (tpc_units 0.1.0, unchanged)",
+   "expect": "[REFUSED,UNIT km5000 m5000: an exponent is out of range]"
+  },
+  {
+   "id": "s15/audit-kind-not-a-grammar-form",
+   "fn": "unit_parse",
+   "input": {
+    "u": "sr5000"
+   },
+   "note": "S15 audit: sr counts as rad2, so the KIND is rad10000; KIND is derived, written by no author and entering no preimage, so it is not bounded here; tpc_form refuses it where it is read (S14)",
+   "expect": "[OK,sr5000,1,rad10000]"
+  }
+ ]
+}

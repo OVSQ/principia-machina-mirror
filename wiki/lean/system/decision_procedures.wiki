@@ -1,0 +1,242 @@
+{{DISPLAYTITLE:Decision procedures}}
+{{Plebeian|Lean theorem prover/Explainers/Automation and its limits|Lean theorem prover/Explainers/Computation inside proofs}}
+{{Lean theorem prover map}}
+
+A '''decision procedure''' is an algorithm that settles every question in a fixed class, answering yes or no. In Lean such an algorithm is useful only when its yes comes with evidence that the Lean kernel accepts. This page treats five tactics that automate whole classes of goals in Lean 4.34.1: <code>decide</code>, <code>omega</code>, <code>simp</code>, <code>grind</code> and <code>bv_decide</code>. For each it says what the tactic covers, what evidence it hands to the Lean kernel, and what a reader must trust beyond the Lean kernel.
+
+== Three kinds of evidence ==
+
+Every tactic ends by assigning a term to the goal's metavariable, as described on [[Lean theorem prover/System/The tactic framework|the tactic framework]], and the Lean kernel checks that term when the theorem is added. The procedures below differ in the shape of the term.
+
+# '''An ordinary proof term.''' The tactic searches, then assembles a proof from library lemmas. <code>omega</code>, <code>simp</code> and <code>grind</code> work this way. The search is untrusted; only its output is checked.
+# '''Proof by reflection.''' A Boolean function is written in Lean and proved correct once. The tactic reduces the goal to the claim that this function returns <code>true</code> on some input, and the Lean kernel confirms the claim by evaluating the function during its definitional equality check. <code>decide</code> works this way.
+# '''An asserted evaluation.''' As in reflection, but the function is run by compiled code and its result is added to Lean's environment, its table of definitions and theorems, as a new axiom. <code>bv_decide</code> works this way. The Lean compiler then joins the trusted base.
+
+The command <code>#print axioms</code> tells the three apart: the first two leave only Lean's standard axioms (described on [[Lean theorem prover/Foundations/The three axioms|the three axioms]]), the third leaves an extra one.
+
+== decide ==
+
+A proposition <code>p</code> is decidable when there is an instance of the class <code>Decidable p</code>. The class is an inductive type with two constructors, one carrying a proof of <code>p</code> and one a proof of its negation:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+#print Decidable
+#synth Decidable (∀ x : Fin 4, x.val * x.val &lt; 10)
+</pre>
+
+Lean 4.34.1 prints:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+inductive Decidable : Prop → Type
+number of parameters: 1
+constructors:
+Decidable.isFalse : {p : Prop} → ¬p → Decidable p
+Decidable.isTrue : {p : Prop} → p → Decidable p
+Nat.decidableForallFin fun x => ↑x * ↑x &lt; 10
+</pre>
+
+Instances compose: a bounded quantifier over <code>Fin 4</code> is decidable because each instance of its body is, and instance resolution (see [[Lean theorem prover/System/Type classes and instance resolution|type classes and instance resolution]]) assembles the instance. The tactic <code>decide</code> synthesises such an instance for the goal and reduces it; if it reaches <code>isTrue h</code>, then <code>h</code> proves the goal.<ref name="src-tactics">Lean 4 source code, version 4.34.1 (2026), file <code>src/Init/Tactics.lean</code>: the documentation strings of the tactics <code>decide</code>, <code>omega</code> and <code>bv_decide</code>. Apache License 2.0. https://github.com/leanprover/lean4/blob/v4.34.1/src/Init/Tactics.lean</ref>
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem small : 2 ^ 10 = 1024 ∧ 3 &lt; 5 := by decide
+#print small
+#print axioms small
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem small : 2 ^ 10 = 1024 ∧ 3 &lt; 5 :=
+of_decide_eq_true (id (Eq.refl true))
+'small' does not depend on any axioms
+</pre>
+
+The proof term is short because the work is moved into checking it. For <code>Eq.refl true</code> to have type <code>decide p = true</code>, the Lean kernel must reduce <code>decide p</code> to <code>true</code>, which is the computation itself. This is [[Lean theorem prover/Foundations/Definitional equality|definitional equality]] put to use. On a false proposition the same evaluation yields a refutation, and the tactic reports it:
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+example : ∀ x : Fin 5, x.val * x.val &lt; 10 := by decide
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+error: Tactic `decide` proved that the proposition
+  ∀ (x : Fin 5), ↑x * ↑x &lt; 10
+is false
+</pre>
+
+The limits follow from the method. The goal may contain no local variables or metavariables; on <code>n + 0 = n</code> for a variable <code>n</code>, Lean says <code>Expected type must not contain free variables</code> and suggests the option <code>+revert</code>, which first moves such variables into the goal as universally quantified ones. Instances defined by well-founded recursion may not reduce, and reduction can get stuck on instances built with rewriting tactics. The option <code>decide +kernel</code> hands the reduction to the Lean kernel directly, and <code>decide +native</code> runs compiled code and admits the result through an axiom. Its documentation says this can be significantly more efficient, but comes "at the cost of increasing the size of the trusted code base".<ref name="src-tactics" />
+
+== omega ==
+
+<code>omega</code> proves goals in linear arithmetic over <code>Int</code> and <code>Nat</code>. It accepts hypotheses of the forms <code>x = y</code>, <code>x &lt; y</code>, <code>x ≤ y</code> and <code>k ∣ x</code> for a literal <code>k</code>, with their negations; it splits both sides into linear combinations of atoms, and for <code>x / k</code> and <code>x % k</code> with a literal <code>k</code> it introduces a new variable together with the two inequalities that bound it.<ref name="src-tactics" /><ref name="src-omega" />
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem bound (x y : Nat) (h₁ : x + 2 * y ≤ 10) (h₂ : 3 &lt; x) : y ≤ 3 := by
+  omega
+
+example (a b : Int) (h : 2 * a + 1 = 2 * b) : False := by
+  omega
+
+example (n : Nat) : n / 2 + n % 2 ≤ n := by
+  omega
+
+#print axioms bound
+</pre>
+
+The last line prints <code>'bound' depends on axioms: [propext, Quot.sound]</code>: the proof is an ordinary term. The method is William Pugh's omega test of 1991, an extension of Fourier–Motzkin variable elimination from the reals to the integers.<ref name="pugh">William Pugh, "The Omega test: a fast and practical integer programming algorithm for dependence analysis", ''Proceedings of the 1991 ACM/IEEE Conference on Supercomputing (Supercomputing '91)'', ACM, 1991, pp. 4–13. doi:10.1145/125826.125848. Read in an expanded version whose first page states that it appeared in ''Communications of the ACM'' in August 1992, there titled "A practical algorithm for exact array dependence analysis", 35(8), pp. 102–114, doi:10.1145/135226.135233.</ref> Eliminating a variable from a set of integer inequalities yields Pugh's '''real shadow''', which may have integer points that lift to no integer solution, and his '''dark shadow''', whose integer points always lift; when the two coincide the elimination is exact.<ref name="pugh" />
+
+Lean's implementation states its own limits. Its notes say that it follows Pugh's paper closely but leaves out the dark and grey shadows, so when the real shadow is satisfiable it fails rather than deciding. It prefers to eliminate a variable for which elimination is exact: all upper bounds, or all lower bounds, with unit coefficient. The notes record that failures from the missing shadows appear to be rare in practice.<ref name="src-omega">Lean 4 source code, version 4.34.1 (2026), file <code>src/Lean/Elab/Tactic/Omega.lean</code>: implementation notes of the <code>omega</code> tactic. Apache License 2.0. https://github.com/leanprover/lean4/blob/v4.34.1/src/Lean/Elab/Tactic/Omega.lean</ref> The tactic's documentation accordingly calls it "not yet a full decision procedure".<ref name="src-tactics" /> Each derived constraint carries a record of how it was obtained, and when a contradiction appears that record is turned into the proof term.<ref name="src-omega" />
+
+Products of variables are outside the fragment. <code>omega</code> treats <code>x * y</code> as an atom, an unknown like any other,<ref name="src-omega" /> and, on failure, prints constraints that a counterexample might satisfy:
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+example (x y : Nat) (h : x * y = 6) : x ≤ 6 := by
+  omega
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≥ 7
+where
+ a := ↑x
+</pre>
+
+== simp ==
+
+<code>simp</code> is not a decision procedure. It is a rewriting engine: the reference manual describes it as performing inside-out rewriting of terms from a database of simplification rules.<ref name="manual-simp">Lean Developers, ''The Lean Language Reference'', version 4.34.0, chapter "The Simplifier". https://lean-lang.org/doc/reference/4.34.0/The-Simplifier/</ref> The database is the '''simp set''': every theorem marked <code>@[simp]</code>, read as an equation to be used from left to right, together with any lemmas named in the call.<ref name="lean4-paper">Leonardo de Moura and Sebastian Ullrich, "The Lean 4 Theorem Prover and Programming Language (System Description)", in ''Automated Deduction – CADE 28'', Lecture Notes in Computer Science 12699, Springer, 2021, pp. 625–635. doi:10.1007/978-3-030-79876-5_37</ref> A goal is closed when it rewrites to <code>True</code>. The option <code>trace.Meta.Tactic.simp.rewrite</code> shows each step:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+def rev : List α → List α
+  | [] => []
+  | a :: as => rev as ++ [a]
+
+@[simp] theorem rev_nil : rev ([] : List α) = [] := rfl
+@[simp] theorem rev_cons (a : α) (as : List α) :
+    rev (a :: as) = rev as ++ [a] := rfl
+
+set_option trace.Meta.Tactic.simp.rewrite true in
+example (a b : Nat) : rev [a, b] = [b, a] := by
+  simp
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+[Meta.Tactic.simp.rewrite] rev_cons:1000:
+      rev [a, b]
+    ==>
+      rev [b] ++ [a]
+[Meta.Tactic.simp.rewrite] rev_cons:1000:
+      rev [b]
+    ==>
+      rev [] ++ [b]
+[Meta.Tactic.simp.rewrite] rev_nil:1000:
+      rev []
+    ==>
+      []
+[Meta.Tactic.simp.rewrite] List.nil_append:1000:
+      [] ++ [b]
+    ==>
+      [b]
+[Meta.Tactic.simp.rewrite] List.cons_append:1000:
+      [b] ++ [a]
+    ==>
+      b :: ([] ++ [a])
+[Meta.Tactic.simp.rewrite] List.nil_append:1000:
+      [] ++ [a]
+    ==>
+      [a]
+[Meta.Tactic.simp.rewrite] eq_self:1000:
+      [b, a] = [b, a]
+    ==>
+      True
+</pre>
+
+The number after each lemma name is its priority. Two of the lemmas come from this page, the rest from Lean's library. The variant <code>simp?</code> reports a <code>simp only [...]</code> call naming just the lemmas used; pasted in its place, it makes the proof independent of later changes to the library's simp set. Whether <code>simp</code> succeeds depends on the simp set as much as on the goal: it answers no question by itself. Its proof is assembled from the lemmas it used and is checked by the Lean kernel like any other term.
+
+== grind ==
+
+<code>grind</code> is part of core Lean in version 4.34.1 and needs no import. Its documentation calls it inspired by modern SMT solvers. It keeps one shared collection of facts, groups terms known to be equal by '''congruence closure''', instantiates theorems by '''E-matching''' (matching a theorem's pattern modulo the equalities known so far), splits cases, and passes facts to specialised solvers for linear integer arithmetic, for commutative rings and fields, and for linear arithmetic (its <code>linarith</code> component).<ref name="src-grind">Lean 4 source code, version 4.34.1 (2026), file <code>src/Init/Grind/Tactics.lean</code>: the documentation string of the <code>grind</code> tactic. Apache License 2.0. https://github.com/leanprover/lean4/blob/v4.34.1/src/Init/Grind/Tactics.lean</ref> The reference manual states that it "produces ordinary Lean proof terms for every fact it adds".<ref name="manual-grind">Lean Developers, ''The Lean Language Reference'', version 4.34.0, chapter "The grind tactic". https://lean-lang.org/doc/reference/4.34.0/The--grind--tactic/</ref>
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+def f (a : Nat) : Nat := a + 1
+def g (a : Nat) : Nat := a - 1
+
+@[grind =] theorem g_f (x : Nat) : g (f x) = x := by
+  simp [f, g]
+
+theorem grind_demo {a b : Nat} (h : f b = a) : g a = b := by
+  grind
+
+example {x y : Int} : 2 * x + 4 * y ≠ 5 := by
+  grind
+
+#print axioms grind_demo
+</pre>
+
+The attribute <code>@[grind =]</code> makes the left side <code>g (f x)</code> a pattern. The goal mentions <code>g a</code>, not <code>g (f b)</code>; but <code>h</code> puts <code>a</code> and <code>f b</code> in one equality class, so the pattern matches modulo that equality and congruence closure finishes the proof. The second example, taken from the tactic's documentation, is linear integer arithmetic: <code>2 * x + 4 * y</code> is even and 5 is not. The last line prints <code>'grind_demo' depends on axioms: [propext, Classical.choice, Quot.sound]</code>, the standard three and nothing more. Its documentation warns that <code>grind</code> is not designed for problems whose search space explodes combinatorially, and points to <code>bv_decide</code> for bit-level and combinatorial problems.<ref name="src-grind" />
+
+== bv_decide ==
+
+<code>bv_decide</code> closes goals about fixed-width bit vectors (<code>BitVec n</code>) and <code>Bool</code>: the Lean counterpart of the SMT-LIB logic QF_BV. It needs <code>import Std.Tactic.BVDecide</code>, and on failure it prints a counterexample.<ref name="src-tactics" /> Its implementation notes give the steps. It starts a proof by contradiction, normalises the hypotheses with a simp set, and represents the problem as a Lean value of a syntax-tree type. A verified bit-blaster turns that value into an and-inverter graph and then into a formula in conjunctive normal form. The SAT solver CaDiCaL, which is shipped beside the <code>lean</code> executable, is asked for an LRAT proof that the formula is unsatisfiable. That proof is checked by an LRAT checker with a soundness proof in Lean, and the proofs so far are chained back to the goal.<ref name="src-bvdecide">Lean 4 source code, version 4.34.1 (2026), file <code>src/Lean/Elab/Tactic/BVDecide.lean</code>: the overview of <code>bv_decide</code>, sections "Architecture" and "Axioms". Apache License 2.0. https://github.com/leanprover/lean4/blob/v4.34.1/src/Lean/Elab/Tactic/BVDecide.lean</ref>
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+import Std.Tactic.BVDecide
+
+theorem add_as_xor (x y : BitVec 8) :
+    x + y = (x ^^^ y) + ((x &amp;&amp;&amp; y) &lt;&lt;&lt; 1) := by
+  bv_decide
+
+#print axioms add_as_xor
+#print add_as_xor._native.bv_decide.ax_1_5
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+'add_as_xor' depends on axioms: [propext, Classical.choice, Quot.sound, add_as_xor._native.bv_decide.ax_1_5]
+axiom add_as_xor._native.bv_decide.ax_1_5 : Std.Tactic.BVDecide.Reflect.verifyBVExpr add_as_xor._expr_def_1_1
+    add_as_xor._cert_def_1_1 =
+  true
+</pre>
+
+The output states the trust story exactly. The fourth axiom says that one Boolean function, <code>verifyBVExpr</code>, returns <code>true</code> on the encoded problem and on the certificate string the solver produced. In Lean's library, <code>verifyBVExpr</code> bit-blasts the problem and checks the certificate against the resulting formula, and the theorem <code>unsat_of_verifyBVExpr_eq_true</code> proves that a <code>true</code> result means the problem is unsatisfiable.<ref name="src-reflect">Lean 4 source code, version 4.34.1 (2026), file <code>src/Std/Tactic/BVDecide/Reflect.lean</code>: the definition <code>verifyBVExpr</code> and the theorem <code>unsat_of_verifyBVExpr_eq_true</code>. Apache License 2.0. https://github.com/leanprover/lean4/blob/v4.34.1/src/Std/Tactic/BVDecide/Reflect.lean</ref> So the result relies on three things: the Lean kernel, which checks the soundness theorems and the chain of reasoning around the axiom; the compiled evaluation of <code>verifyBVExpr</code>, which is what the axiom asserts; and therefore the Lean compiler that produced that code, together with any definition whose compiled form is replaced by another implementation through <code>@[implemented_by]</code>, a dependency the documentation of <code>decide +native</code> spells out for the same mechanism.<ref name="src-tactics" /> The implementation notes say so: the result of the compiled check is added as an axiom, "thus adding the Lean compiler to the trusted code base".<ref name="src-bvdecide" /> The SAT solver is not trusted. A wrong certificate makes the check return <code>false</code> and the tactic fails. The Lean kernel does not repeat the bit-level computation itself.
+
+The reference manual's page on validating proofs records that up to version 4.28.0 every such use showed up in <code>#print axioms</code> as one shared axiom, <code>Lean.trustCompiler</code>, and that since 4.29.0 these tactics instead introduce one dedicated axiom for each computation, as above.<ref name="manual-validating">Lean Developers, ''The Lean Language Reference'', version 4.34.0, "Validating a Lean Proof". https://lean-lang.org/doc/reference/4.34.0/ValidatingProofs/</ref> In 4.34.1 the older primitive <code>Lean.ofReduceBool</code> still exists; <code>#check @Lean.ofReduceBool</code> answers with the warning that native reduction inside the Lean kernel is deprecated. For the older mechanism the manual states that external checkers cannot check such proofs, having no access to the Lean compiler, and that proofs needing that level of checking must avoid native evaluation.<ref name="manual-validating" /> Under the newer one a checker sees, in the list of axioms, exactly which computation it is asked to take on trust. [[Lean theorem prover/System/Proof export and independent checkers|Proof export and independent checkers]] takes this up.
+
+A false bit-vector claim is refuted with values:
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+import Std.Tactic.BVDecide
+
+example (x y : BitVec 4) : x * y = x + y := by
+  bv_decide
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+error: The prover found a counterexample, consider the following assignment:
+[two lines of Lean's output left out here: the values of x and y, given in words below]
+</pre>
+
+The two lines left out set both x and y to 15, as 4-bit vectors (Lean prints each as the value and the width joined by a number sign).
+
+Indeed 15 × 15 = 225, which is 1 modulo 16, while 15 + 15 = 30, which is 14.
+
+== Side by side ==
+
+{| class="wikitable"
+! Tactic !! Covers !! Evidence !! Trusted beyond the Lean kernel
+|-
+| <code>decide</code> || propositions with a <code>Decidable</code> instance that reduces || reflection, evaluated by the Lean kernel || nothing
+|-
+| <code>omega</code> || linear arithmetic over <code>Int</code> and <code>Nat</code> (incomplete) || ordinary proof term || nothing
+|-
+| <code>simp</code> || whatever the simp set rewrites to <code>True</code> || ordinary proof term || nothing
+|-
+| <code>grind</code> || equalities, theorem instances, case splits, arithmetic || ordinary proof term || nothing
+|-
+| <code>bv_decide</code> || fixed-width bit vectors and <code>Bool</code> || asserted evaluation of a verified checker || the Lean compiler and the compiled code
+|}
+
+In every row the search can be wrong without harm: a mistaken search produces a term the Lean kernel rejects, or no term. Only the last row moves part of the checking out of the Lean kernel.
+
+== Next ==
+
+[[Lean theorem prover/System/Syntax extension and hygienic macros|Syntax extension and hygienic macros]] shows how new notation, and new tactics, are added to the language.
+
+== References ==
+
+<references />

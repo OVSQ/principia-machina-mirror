@@ -1,0 +1,113 @@
+{{DISPLAYTITLE:Reading the second theorem backwards}}
+{{Noether's theorems map}}
+
+''Mathematical counterpart: [[Noether's theorems/Second theorem/The converse of the second theorem|The converse of the second theorem]].''
+
+Noether proved both her theorems in both directions. This page is the reverse of
+the second one, and it is the direction working physicists actually use.
+
+== The reverse ==
+
+Forward: the theory has a local symmetry, therefore its equations have relations
+among them.
+
+Reverse: the equations have relations among them, therefore the theory has a local
+symmetry.
+
+== Why the reverse is the working direction ==
+
+You do not usually start by knowing a theory's symmetries. You start with
+equations somebody wrote down, often for reasons that had nothing to do with
+symmetry, and you want to know what you are holding.
+
+So you count. How many equations, how many variables, and do the equations
+determine everything? If you find that some of them follow from the others, the
+reverse direction tells you what that means: there is a local symmetry in there,
+and it is not an accident of how the equations were written.
+
+This is a diagnosis, not a curiosity. Finding a redundancy tells you that some of
+your variables are description rather than physics, that your equations will not
+determine everything, and that you will need to make a choice — fix a convention —
+before you can compute anything. All of that is forced, and the reverse direction
+is what tells you it is forced rather than a mistake.
+
+== A restriction that turns out not to be one ==
+
+Before the reverse direction proper, Noether clears away an assumption she had
+been making, and the argument for it is unusually pretty.
+
+She had assumed the symmetry depends on your free shape in the simplest possible
+way: draw twice the shape and you get twice the effect.
+
+Suppose it did not. Suppose the effect involved the shape squared, or the shape
+multiplied by how fast it varies.
+
+Now do two of these transformations one after the other, and look at what comes
+out. Terms appear that cannot be produced by any single free shape — they need
+more shapes than you started with. But the family was supposed to be built from a
+fixed number of free shapes, and now composing two of its members has produced
+something outside it.
+
+So either the family was never closed under composition, in which case it was not
+the sort of family we are discussing, or the complicated dependence was not there
+after all.
+
+'''The simple dependence is not an assumption. It is forced by the requirement
+that doing two symmetries in a row is a symmetry.'''
+
+== Getting the whole symmetry back ==
+
+The reverse direction proper runs the forward proof backwards, and it recovers the
+smallest steps of the symmetry — the infinitesimal version from
+[[Noether's theorems/Explainers/What a continuous symmetry is|the earlier page]].
+
+Getting from those back to the full-sized transformations is where Noether leans
+on Lie, and it is real work rather than a formality: a result of his guarantees
+that a family of smallest steps of this kind always belongs to a genuine family of
+full-sized transformations, and that every one of those is built up out of the
+small ones.
+
+She notes one wrinkle. Sometimes you have to let your free shape change as you
+build the transformation up, rather than holding it fixed and repeating. When you
+can hold it fixed, everything is simpler.
+
+And, as with
+[[Noether's theorems/Explainers/Reading the theorem backwards|the first theorem's
+reverse]], there is a case involving symmetries that depend on speeds where extra
+care is needed before the same conclusions can be drawn.
+
+== One more assumption removed ==
+
+Throughout, the free shapes were allowed to vary with position but not with the
+quantities being described.
+
+Noether closes the section by showing that this too costs nothing. Allow the
+shapes to depend on the quantities as well and you get relations of the same kind,
+just more of them — and running the reverse direction on those brings you back to
+the case already handled.
+
+The same argument settles the mixed case, where a theory has global knobs and
+local shapes at once, and with that the classification is complete.
+
+== How a symmetry gets discovered ==
+
+The reverse direction is not only a diagnosis. It is sometimes how the symmetry is
+found in the first place.
+
+Somebody writes down equations for a new situation, often by analogy with
+something already understood. They count: so many equations, so many quantities to
+solve for. The count says the problem should be determined.
+
+It is not. Solutions come in families, differing in ways no measurement
+distinguishes.
+
+At that point the reverse direction says something definite. This is not a
+mistake in the equations and not a shortage of data. There is a local symmetry in
+the theory, it is the reason the solutions come in families, and it can be found
+by asking which changes to the description leave every prediction alone.
+
+Several of the symmetries at the centre of modern physics were identified along
+exactly this route, from a redundancy noticed first and explained afterwards.
+
+''No mathematics is used on this page. The mathematical treatment is on the
+counterpart page named above.''

@@ -1,0 +1,100 @@
+{{DISPLAYTITLE:The second theorem, and why it is not the first}}
+{{Noether's theorems map}}
+
+''Mathematical counterpart: [[Noether's theorems/Second theorem/The second theorem stated and proved|The second theorem stated and proved]].''
+
+[[File:NT-F-13.png|thumb|right|360px|alt=Two groups of five bars representing field equations. On the left, without a local symmetry, all five are independent. On the right, one free function makes the fifth follow from the other four, shown by a curved arrow. A caption states the counting: one arbitrary function gives one identity and one equation that was never independent.|Identities among the field equations from a local symmetry]]
+
+If you already know the first theorem, the hardest thing about the second is
+unlearning the shape of the first.
+
+== The statement ==
+
+Take a scoring rule for whole histories. Suppose it survives a symmetry you can
+dial differently at every point, of the kind on
+[[Noether's theorems/Explainers/Symmetry that can differ from place to place|the
+previous page]]. Count the free shapes.
+
+Then for each free shape there is a '''relation among the equations of motion
+themselves''' — a statement that certain combinations of them, and of their rates
+of change, add up to exactly nothing.
+
+Read that twice. Not a flowing quantity. Not a total that stays put. A statement
+that the equations are tied to each other.
+
+== Nine tenths of the proof is shared ==
+
+Here is the part that is genuinely surprising, and it is worth knowing before you
+read either proof.
+
+The two theorems are proved from the same place. Everything — the scoring rule,
+the nudge, the careful business about
+[[Noether's theorems/Explainers/What happens at the edges|which thermometer you
+are reading]], the loss of the integral sign — is common to both. Both proofs
+arrive at a single relation and then stop being the same proof.
+
+They part at exactly one step.
+
+== The one step ==
+
+Suppose the symmetry is global — one knob, one number, the same everywhere.
+
+Then the relation you have arrived at is a sum of independent pieces, one per
+knob, and independent pieces can be separated. Turn one knob and hold the others
+still, and only that piece can be responding. Do it for each knob and the single
+relation falls apart into one relation per knob. Those are the first theorem's
+conserved flows.
+
+Now suppose the symmetry is local — a free shape.
+
+You cannot do that. The pieces are not independent. Your free shape appears in the
+relation, and so does the rate at which your shape varies from place to place, and
+those two are not separate things you can hold still against one another. Choose
+the shape and you have chosen how it varies. There is nothing to pull apart.
+
+So the proof has to do something else, in two moves.
+
+'''First, trade.''' There is a standard manoeuvre for shifting a rate of change
+off one factor and onto the other, at the cost of an extra term that only ever
+contributes at the edges. Apply it repeatedly and the rates of change of your free
+shape are gone. Only the shape itself is left, multiplied by something built out
+of the equations of motion.
+
+'''Second, choose.''' Now use the freedom. Pick a shape that is whatever you like
+in the middle of some region and fades to nothing near its boundary. The
+edge-terms all die, because there is nothing at the edges for them to be made of.
+What survives is a total, over the region, of your arbitrary shape multiplied by
+that combination of equations.
+
+That total is zero, and it is zero for '''every''' shape you could have drawn. The
+only way a quantity can be zero against every possible shape is by being zero
+itself.
+
+'''So the combination of equations is zero.''' Not flowing. Not conserved. Zero.
+
+== Why you could not have done this with numbers ==
+
+The second move is the whole difference. It needed a shape that is busy in the
+middle and quiet at the edges.
+
+A knob cannot do that. A knob is one number applying everywhere, and it cannot be
+told to fade out near a boundary. This is why no amount of adding knobs to a
+global symmetry ever produces this theorem, and it is the precise sense in which
+the two theorems have different inputs rather than different amounts of the same
+input.
+
+== What it does not give you ==
+
+'''No conserved quantity.''' There is no flow and no total. If you go looking for
+the second theorem's conserved charge you will not find one, because there is not
+one.
+
+'''No dependence on physics.''' The relation holds whether or not anything is
+obeying the equations of motion — it is a statement about the equations, not about
+their solutions. What happens when you do impose them is a separate question with
+a surprising answer, on
+[[Noether's theorems/Explainers/Counting the equations a gauge theory really has|its
+own page]].
+
+''No mathematics is used on this page. The mathematical treatment is on the
+counterpart page named above.''

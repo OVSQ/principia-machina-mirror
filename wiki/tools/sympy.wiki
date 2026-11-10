@@ -1,0 +1,35 @@
+{{DISPLAYTITLE:SymPy}}
+'''SymPy: Symbolic Mechanics, Euler-Lagrange Equations and Units in Python'''
+[[Category:Principia Machina]] [[Category:Tools]]
+
+''Added to the survey on 2026-10-06 by the [[The Principia Machina/Research Toolkit|Research Toolkit]]'s research pass. The scores below are that pass's assessment from the evidence cited under References, on the survey's four axes and scale; they are not the original survey's (2026-09-26), and no rule of the Principia Machina reads them. See [[The Principia Machina/Tools#The additions of 2026-10-06|the additions]] on the front page.''
+
+== Overview & Architectural Fit ==
+'''SymPy''' is a computer algebra library written in pure Python. Its mechanics module, <code>sympy.physics.mechanics</code>, derives equations of motion by Lagrange's and Kane's methods; <code>sympy.calculus.euler</code> derives Euler-Lagrange equations for functions of several variables; <code>sympy.physics.units</code> carries units through expressions and converts between systems. It is the free reference for the ''derive by machine'' step: write the Lagrangian once, have the equations derived, and compare them line by line with a hand derivation.
+
+== Mathematical Evaluation for TPM ==
+* '''Lagrangian / Action (8/10):''' <code>LagrangesMethod</code> takes a Lagrangian, generalized coordinates, holonomic and nonholonomic constraints and non-conservative forces, and returns the system in mass-matrix and forcing form, <math>M(q,t)\,\ddot{q} = f(q,\dot{q},t)</math>, from <math>\frac{d}{dt}\frac{\partial L}{\partial \dot{q}_i} - \frac{\partial L}{\partial q_i} = Q_i</math>. No packaged Noether-current routine exists.
+* '''Field / PDE (5/10):''' Field Lagrangian densities can be varied symbolically, but SymPy has no production numerical solver for partial differential equations.
+* '''Relativity (4/10):''' Generic tensor and differential-geometry modules exist; they are much weaker than xAct or SageManifolds for curvature work (not re-tested in this pass).
+* '''Quantum / Data (3.5/10):''' Operator algebra exists in <code>sympy.physics.quantum</code> (not re-checked); nothing learns from data.
+
+== Integration Pipeline ==
+# '''Write the Lagrangian''' in SymPy's symbols, with each coordinate a function of time.
+# '''Derive''' with <code>LagrangesMethod</code> or <code>euler_equations</code>.
+# '''Check''' the result's dimensions with <code>physics.units</code> and its limits by substitution.
+# '''Build conserved quantities by hand''' from <math>p_i = \partial L / \partial \dot{q}_i</math> and check that their time derivatives vanish on the equations of motion.
+# '''Export''' the equations as code for SciPy or [[The Principia Machina/Tools/Dedalus|Dedalus]] to solve.
+
+== Status, Licence and Limits ==
+* '''Status:''' Active. Latest stable release 1.14.0, 27 April 2025; the development documentation shows 1.15.0.dev, with no 1.15 release found.
+* '''Licence:''' New BSD.
+* '''Home:''' https://www.sympy.org
+* '''Limits:''' Expression swell and simplification cost grow quickly for coupled fields. The mechanics module targets multibody systems of ordinary differential equations, not covariant field theory. Noether currents, boundary terms and gauge redundancy are all manual.
+
+== On the Principia Machina ==
+A tool runs only where the sponsor installed and bound it, and what it returns is untrusted input, vetted before use; its numbers are never values of the site's calculator, TPC. An equation it derives is transcribed into the kernel's form grammar before anything checks it, and lands as a RESULT of regime L with EQUATION and ROLE. See [[The Principia Machina/Agent/Tools|Agent/Tools]] and [[The Principia Machina/Tools/Operator's guide|the operator's guide]].
+
+== References ==
+* '''[[The Principia Machina/Research Toolkit/Bibliography#SYMPY2017|SYMPY2017]]''' &ndash; Meurer A., Smith C.P., Paprocki M., Čertík O., Kirpichev S.B., et al. (29 authors) (2017). SymPy: symbolic computing in Python. PeerJ Computer Science 3:e103. [https://doi.org/10.7717/peerj-cs.103 doi:10.7717/peerj-cs.103].
+* '''[[The Principia Machina/Research Toolkit/Bibliography#SYMPYPYPI|SYMPYPYPI]]''' &ndash; SymPy Development Team (2025). sympy 1.14.0. PyPI. [https://pypi.org/project/sympy/ pypi.org/project/sympy/].
+* '''[[The Principia Machina/Research Toolkit/Bibliography#SYMPYMECH|SYMPYMECH]]''' &ndash; SymPy Development Team. Kane's Method &amp; Lagrange's Method (docs). [https://docs.sympy.org/latest/modules/physics/mechanics/api/kane_lagrange.html docs.sympy.org/latest/modules/physics/mechanics/api/kane_lag...].

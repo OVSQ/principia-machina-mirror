@@ -1,0 +1,48 @@
+{{DISPLAYTITLE:Lean 4}}
+{{Lean theorem prover map}}
+Lean 4 is a reimplementation of Lean, written for the most part in Lean itself. Its development began in 2018, it was described at the Conference on Automated Deduction in 2021, and its first stable version, 4.0.0, appeared on 8 September 2023. In the same year the mathematical library was carried over from Lean 3. This page covers the rewrite, the stable versions, and the port.
+
+== Why a rewrite ==
+
+Lean 3 was written in C++. Its developers name two problems with that in the Lean 4 system description. Users could not change many parts of the system without changing the C++ source. And proof automation written as Lean 3 metaprograms was slow compared with the same procedures written in C++ or OCaml, chiefly because Lean 3 interpreted metaprograms in a virtual machine.<ref name="lean4">Leonardo de Moura and Sebastian Ullrich, "The Lean 4 Theorem Prover and Programming Language (System Description)", in ''Automated Deduction – CADE 28'', Lecture Notes in Computer Science 12699, Springer, 2021, pp. 625–635. doi:10.1007/978-3-030-79876-5_37. Author's copy: https://lean-lang.org/papers/lean4.pdf</ref> The Lean reference manual adds that a C++ implementation limited Lean's flexibility and made it harder to develop, because of the range of skills it required.<ref name="refhist">''The Lean Language Reference'', section 1.1 "History", for version 4.34.0 of Lean. https://lean-lang.org/doc/reference/4.34.0/Introduction/</ref> The earlier versions are described at [[Lean theorem prover/History/Lean 1 to Lean 3|Lean 1 to Lean 3]].
+
+== The 2021 system description ==
+
+Leonardo de Moura and Sebastian Ullrich described the new system at CADE-28 in 2021. Their abstract calls Lean 4 a reimplementation of the Lean interactive theorem prover in Lean itself, and says that users can modify and extend the parser, the elaborator, the tactics, the decision procedures, the pretty printer and the code generator.<ref name="lean4" />
+
+The paper lists what was new. A hygienic macro system, designed for theorem provers, lets users add notation without accidental capture of names. Type class resolution uses a tabled procedure, which addressed performance problems reported by users. The compiler produces C code, so that automation written in Lean can be compiled to native code and loaded as a plugin. Memory is managed by reference counting, which lets a function update data in place when nothing else shares it, a style the authors call "functional but in-place". An editor server implements the Language Server Protocol. The paper ends by noting that Lean's trusted kernel is relatively small, and that its interface lets users export their developments to other systems and write their own reference checkers.<ref name="lean4" /> The paper also states that Lean 4 was made public at the beginning of 2021, with the community already porting mathlib.<ref name="lean4" />
+
+The manual gives the result of the rewrite in one figure: from version 4, about 90 per cent of the code that implements Lean is written in Lean.<ref name="refhist" /> The interface the system uses for itself is open to users. The function that runs a tactic, for example, is an ordinary Lean definition:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+import Lean
+#eval Lean.versionString
+#check @Lean.Elab.Tactic.evalTactic
+</pre>
+
+With version 4.34.1, the version used for the code in this edition, Lean prints <code>"4.34.1"</code> and then <code>Lean.Elab.Tactic.evalTactic : Lean.Syntax → Lean.Elab.Tactic.TacticM Unit</code>: a tactic is run by a function from syntax to an action in the tactic monad. How that machinery works is described at [[Lean theorem prover/System/The tactic framework|The tactic framework]] and [[Lean theorem prover/System/Metaprogramming in Lean|Metaprogramming in Lean]]; the macro system at [[Lean theorem prover/System/Syntax extension and hygienic macros|Syntax extension and hygienic macros]]; the compiler at [[Lean theorem prover/System/The compiler and runtime|The compiler and runtime]].
+
+== The first stable version ==
+
+Until September 2023 most of the Lean 4 ecosystem worked with nightly versions.<ref name="firststable" /> Version 4.0.0, dated 8 September 2023, was the first stable version.<ref name="v400">Lean 4 source code, version tag v4.0.0, published 8 September 2023. https://github.com/leanprover/lean4/releases/tag/v4.0.0</ref><ref name="refhist" /> The announcement on the Lean community blog set out a schedule: a new minor version roughly each month, preceded by a candidate version early in the month, with breaking changes documented but no promise yet of backward compatibility.<ref name="firststable">"The first official release of Lean 4", Lean community blog, 8 September 2023. https://leanprover-community.github.io/blog/posts/first-lean-release/</ref> Versions have followed in sequence since; this edition's examples are checked with version 4.34.1. The manual records that the development of Lean 4 took about as long as all earlier versions together, and that no further rewrite is planned.<ref name="refhist" />
+
+== The port of mathlib ==
+
+In December 2021 mathlib, the Lean 3 mathematical library, had more than 700,000 lines. Lean 4 could not run Lean 3 code. The plan, set out on the community blog in December 2021, was a semi-automated port by a tool called Mathport, written mostly by Mario Carneiro and Daniel Selsam.<ref name="mathportpost">"Update on mathport (Dec 2021)", Lean community blog, 22 December 2021. https://leanprover-community.github.io/blog/posts/intro-to-mathport/</ref> Mathport has two parts. One translates the compiled Lean 3 files into compiled Lean 4 files, so that the whole library could be imported at once; the other makes a best-effort translation of the Lean 3 source text into Lean 4 syntax.<ref name="mathportpost" /><ref name="mathportreadme">Mathport, README file. https://github.com/leanprover-community/mathport</ref>
+
+The post explains why the port could not be mechanical. Mathlib kept growing while the port went on, so the plan was not to freeze it until late. Files would move to the new library from the bottom of the import hierarchy up, with Mathport re-run on the still-changing Lean 3 sources and lining up definitions already ported. Mathport did not translate the library's tactics: metaprogramming in Lean 4 differs too much, so they had to be written again by hand.<ref name="mathportpost" />
+
+The manual records that the port was completed in 2023 through a community effort supported by the Lean developers.<ref name="refhist" /> The community's page tracking the port records it as declared complete as of 16 July 2023.<ref name="portstatus">Lean community, "Mathlib porting status" (read 14 October 2026). https://leanprover-community.github.io/mathlib-port-status/</ref> The Lean 3 library is now marked as no longer actively maintained.<ref name="mathlib3readme">Lean 3 mathlib, README file. https://github.com/leanprover-community/mathlib</ref> According to the same manual, mathlib had over one million lines at the end of Lean 3 and has since grown to over 1.5 million, and Lean 4 checks the larger library faster than Lean 3 checked the smaller one.<ref name="refhist" /> The library and the people who maintain it are the subject of [[Lean theorem prover/History/Mathlib and its community|Mathlib and its community]].
+
+In July 2023, two months before the first stable version, de Moura and Ullrich founded the Lean Focused Research Organization, whose staff now work on Lean; its work is followed at [[Lean theorem prover/History/Lean since 2023|Lean since 2023]].<ref name="refhist" />
+
+<blockquote>
+Provenance: the 2021 system description, the Lean reference manual's history section (as of version 4.34.0), the two community blog posts, the community's porting status page and the Mathport and mathlib README files were read. The quotation "functional but in-place" is the 2021 paper's name for its technique. The date on which the port was declared complete is the one given on the community's porting status page.
+</blockquote>
+
+== Next ==
+
+[[Lean theorem prover/History/Mathlib and its community|Mathlib and its community]]
+
+== References ==
+<references />

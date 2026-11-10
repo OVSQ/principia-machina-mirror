@@ -1,0 +1,166 @@
+{{DISPLAYTITLE:Induction, as the machine sees it}}
+{{Technical|Lean theorem prover/Foundations/Inductive types and recursors|Lean theorem prover/Foundations/Structural and well-founded recursion}}
+{{Lean theorem prover map}}
+
+Proof by induction is the standard way to prove something about every natural number. In
+Lean it is not a separate rule added to the logic. It is the recursion principle of
+[[Lean theorem prover/Explainers/Building things from constructors|building things from
+constructors]], put to work on proofs. This page shows the two cases, the tactic that sets
+them up, and what Lean records once the proof is finished.
+
+== The familiar form ==
+
+To prove that a statement holds for every natural number, two things are enough. First,
+prove it for 0: the '''base case'''. Second, prove that whenever it holds for a number k, it
+also holds for k + 1: the '''induction step''', in which "it holds for k" is the
+'''induction hypothesis'''. Then the statement holds for 0, so for 1, so for 2, and so on,
+with no number left out.
+
+== Why it is the recursion principle ==
+
+The natural numbers in Lean are made by two rules: zero, and the successor of a number
+already made. From those rules Lean derives a recursion principle: to produce something for
+every number, give it for zero, and give a way to go from what it is for n to what it is for
+n + 1. Now let the thing produced be a proof of the statement about n. The principle then
+says: given a proof for zero, and a way to turn a proof for k into a proof for k + 1, there
+is a proof for every number. That is induction, word for word. Theorem Proving in Lean 4
+describes the induction principle as just a special case of the recursion principle, the
+case in which what is produced is a proof.<ref name="tpil-ind">Jeremy Avigad, Leonardo de
+Moura, Soonho Kong and Sebastian Ullrich, ''Theorem Proving in Lean 4'' (online edition for
+Lean 4.33.0, lean-lang.org), chapter 7, "Inductive Types".
+https://lean-lang.org/theorem_proving_in_lean4/Inductive-Types/</ref>
+
+Induction is therefore not an extra axiom. It comes with the type of natural numbers,
+derived from its two constructors, and the same holds for every type defined by
+constructors.<ref name="ref-ind">''The Lean Language Reference'', version for Lean 4.34.0
+(lean-lang.org, 2026), section 4.4, "Inductive Types".
+https://lean-lang.org/doc/reference/4.34.0/The-Type-System/Inductive-Types/</ref>
+
+== Two equations that look alike ==
+
+Addition in Lean is defined by recursion on the second number: n + 0 is n, and n + (m + 1)
+is (n + m) + 1.<ref name="tpil-ind" /> That makes one equation true by computation alone.
+<code>rfl</code> is the proof that says "both sides compute to the same thing", and Lean
+accepts it here:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+example (n : Nat) : n + 0 = n := rfl
+</pre>
+
+The mirror image is refused:
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+example (n : Nat) : 0 + n = n := by rfl
+</pre>
+
+Lean 4.34.1 replies <code>Tactic `rfl` failed: The left-hand side</code>, then that
+<code>0 + n</code> "is not definitionally equal to the right-hand side" <code>n</code>. The
+reason is plain once the definition is in view. To compute 0 + n, Lean must know whether n
+is zero or a successor, and n is unknown. Both statements are true; only the first is true
+by computation. The second needs induction.<ref name="tpil-ind" />
+
+== The induction tactic ==
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem zero_add' (n : Nat) : 0 + n = n := by
+  induction n with
+  | zero => rfl
+  | succ k ih => rw [Nat.add_succ, ih]
+
+#print zero_add'
+</pre>
+
+The line <code>induction n</code> replaces one task by two, one for each way a natural number
+can be made, and adds an induction hypothesis wherever a constructor takes a number of the
+same type.<ref name="ref-tacref">''The Lean Language Reference'', version for Lean 4.34.0
+(lean-lang.org, 2026), section 14.5, "Tactic Reference": entries for <code>induction</code>
+and <code>rw</code>. https://lean-lang.org/doc/reference/4.34.0/Tactic-Proofs/Tactic-Reference/</ref>
+Inside the two cases, Lean's display of what remains to be proved reads:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+case zero
+⊢ 0 + 0 = 0
+
+case succ
+k : Nat
+ih : 0 + k = k
+⊢ 0 + (k + 1) = k + 1
+</pre>
+
+The symbol ⊢ marks what must be shown; the lines above it are what may be used. The base
+case, 0 + 0 = 0, holds by computation, and <code>rfl</code> closes it. In the step, Lean has
+named the number <code>k</code> and the induction hypothesis <code>ih</code>. The tactic
+<code>rw</code> rewrites the goal with an equation. First it uses <code>Nat.add_succ</code>,
+the fact that n + (m + 1) equals (n + m) + 1, which turns the goal into (0 + k) + 1 = k + 1.
+Then it uses <code>ih</code> to replace 0 + k by k. The two sides now agree, and
+<code>rw</code> closes the goal by itself.<ref name="ref-tacref" /> How goals are displayed
+and filled is the subject of [[Lean theorem prover/Explainers/Holes and goals|holes and
+goals]].
+
+== What Lean records ==
+
+The <code>#print</code> line shows the proof that Lean actually kept:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem zero_add' : ∀ (n : Nat), 0 + n = n :=
+fun n =>
+  Nat.recAux (Eq.refl (0 + 0))
+    (fun k ih =>
+      Eq.mpr (id (congrArg (fun _a => _a = k + 1) (Nat.add_succ 0 k)))
+        (Eq.mpr (id (congrArg (fun _a => _a.succ = k + 1) ih)) (Eq.refl k.succ)))
+    n
+</pre>
+
+The tactic script is gone. In its place is a single expression, and at its head stands
+<code>Nat.recAux</code>. Asked to print that name, Lean shows that it is
+<code>Nat.rec</code>, the recursion principle itself, written with 0 and n + 1 in place of
+the constructor names. Its first argument, <code>Eq.refl (0 + 0)</code>, is the base case:
+0 + 0 computes to 0, so the equation is an instance of a thing being equal to itself. Its second, <code>fun k ih =&gt;
+...</code>, is the step: a function that takes a number k and a proof for k and returns a
+proof for k + 1. The rest of the step records the two rewrites. This expression, and not the
+script, is what the Lean kernel checks.
+
+== A formula from school ==
+
+The sum 1 + 2 + ... + n is half of n(n + 1). In whole numbers it is cleaner to say that twice
+the sum is n(n + 1):
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+def sumTo : Nat → Nat
+  | 0     => 0
+  | n + 1 => (n + 1) + sumTo n
+
+#eval sumTo 100
+
+theorem two_mul_sumTo (n : Nat) : 2 * sumTo n = n * (n + 1) := by
+  induction n with
+  | zero => rfl
+  | succ k ih =>
+    simp only [sumTo, Nat.mul_add, Nat.add_mul] at *
+    omega
+</pre>
+
+The <code>#eval</code> line prints <code>5050</code>, which is half of 100 × 101. The proof has the same two cases. The base case holds by computation. In the step,
+<code>simp only</code> unfolds <code>sumTo</code> once and multiplies out the brackets, in
+the goal and in the induction hypothesis alike, and <code>omega</code>, an arithmetic
+procedure described in [[Lean theorem prover/Explainers/Automation and its limits|automation
+and its limits]], finishes the sum.
+
+== Other types, other inductions ==
+
+Every type defined by constructors has its own recursor, so every such type has its own
+induction. For lists: prove the statement for the empty list, then prove it for a list with
+an item in front, assuming it for the rest. For the trees of
+[[Lean theorem prover/Explainers/Building things from constructors|building things from
+constructors]]: prove it for a leaf, then for a node, assuming it for both subtrees, since
+the recursor for trees supplies a hypothesis for each. The <code>induction</code> tactic
+works the same way for all of them.<ref name="ref-tacref" />
+
+== Next ==
+
+* [[Lean theorem prover/Explainers/Tactics|Tactics]]: what the commands after <code>by</code> are, and what they produce.
+* [[Lean theorem prover/Foundations/Inductive types and recursors|Inductive types and recursors]]: the technical treatment.
+
+== References ==
+
+<references />

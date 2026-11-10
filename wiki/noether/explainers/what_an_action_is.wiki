@@ -1,0 +1,107 @@
+{{DISPLAYTITLE:What an action is}}
+{{Noether's theorems map}}
+
+''Mathematical counterpart: [[Noether's theorems/First theorem/The action and the variational setup|The action and the variational setup]].''
+
+[[File:NT-F-02.png|thumb|right|360px|alt=Three curves between endpoints. A solid curve is the true path; a dashed curve with the same fixed endpoints is a variation; a third curve offset from both, with its own moved endpoints, is a symmetry-transformed path. A note distinguishes testing the action from mapping the whole problem.|A varied path against a symmetry-transformed path]]
+
+Both of Noether's theorems are about one thing. This page says what that thing
+is.
+
+== A score for a whole history ==
+
+Throw a ball across a room. It follows one path. But you can imagine many other
+paths it might have taken between the same two points: higher, lower, wobblier,
+faster at the start.
+
+Physics has a rule that gives each of those imagined paths a single number. The
+rule looks at the whole path from beginning to end and returns one score. That
+score is called the '''action'''.
+
+The real path is the one whose score does not change when you nudge the path
+slightly. That is the whole of what physics asks of the action, and it is enough
+to determine how the ball moves.
+
+Two features of this matter for everything that follows.
+
+'''The score belongs to a whole history, not to a moment.''' You cannot ask what
+the action is at three o'clock. You can only ask what it is for a complete story
+with a beginning and an end.
+
+'''The rule is separate from the score.''' The rule is a recipe: take the
+position, take the speed, combine them like this. The score is what you get when
+you feed a particular path into the recipe and add everything up. The same recipe
+gives different scores for different paths.
+
+== What it means to say the action does not change ==
+
+Now suppose you change something. Move the whole experiment ten metres to the
+left. Turn it forty degrees. Wait an hour and do it again.
+
+Each of these is a change you can make in a smooth, adjustable amount — ten
+metres or eleven, forty degrees or forty-one. Physics calls a change like this a
+'''transformation'''.
+
+The condition both theorems start from is this: after the transformation, the
+score is the same.
+
+'''Read that carefully, because it is easy to hear as something slightly
+different.''' It does not say the recipe gives the same answer at every point
+along the way. It says the total, added up over the whole path, comes out the
+same.
+
+That distinction sounds fussy. It is not. Two things change when you transform:
+what the recipe returns at each point, and where the points are. Those two
+changes can cancel. When they do, the total is unchanged even though the recipe's
+output changed everywhere along the way.
+
+Almost every mistake made about Noether's theorems traces back to this one point.
+
+== Three things worth fixing now ==
+
+'''The condition is on the action, not on the motion.''' There are
+transformations that turn real motions into other real motions but change the
+score. Those look like symmetries and are not the kind either theorem uses. They
+give nothing.
+
+'''Neither theorem tells you which transformations leave the score alone.''' You
+have to find those yourself, by looking at the recipe. The theorems tell you what
+follows once you have found one.
+
+'''There is a weaker condition that also works, and Noether did not use it.''' It
+allows the score to change by an amount that depends only on the two endpoints.
+That version came three years later, from someone else, and this volume keeps the
+two apart. See
+[[Noether's theorems/Explainers/Two ways a thing can stay the same|Two ways a
+thing can stay the same]].
+
+== Why start here ==
+
+Everything in this volume is downstream of the action. The first theorem takes a
+symmetry of the action and returns a quantity that does not change during the
+motion. The second takes a different kind of symmetry of the same action and
+returns something else entirely.
+
+Neither says anything at all about a system that does not come from an action.
+That is not a small restriction, and it is why this page comes first.
+
+== Why a score, and not a push ==
+
+There is an older way to do all of this. Newton's way: work out the forces acting
+at each instant, and step the system forward moment by moment.
+
+Both ways give the same answers. So why keep a second one?
+
+Because the two ways make different things obvious. The force picture makes it
+obvious what is happening right now. The score picture makes it obvious what is
+symmetric — and symmetry is invisible in the force picture, because forces are
+local and symmetry is a statement about the whole.
+
+Noether's theorems are only available in the second picture. There is no version
+of them that starts from forces, because there is nothing for a symmetry to be a
+symmetry of. That is not a limitation anyone chose. It is the reason the score
+picture, which for two centuries looked like an elegant alternative, turned out to
+be the one modern physics is written in.
+
+''No mathematics is used on this page. The mathematical treatment is on the
+counterpart page named above.''

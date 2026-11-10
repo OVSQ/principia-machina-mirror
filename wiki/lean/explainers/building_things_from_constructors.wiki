@@ -1,0 +1,173 @@
+{{DISPLAYTITLE:Building things from constructors}}
+{{Technical|Lean theorem prover/Foundations/Inductive types and recursors}}
+{{Lean theorem prover map}}
+
+Most of the things Lean reasons about (numbers, lists, trees, true and false) are made in
+one way: by naming a few rules for making values and declaring that nothing else counts.
+This page explains that idea, how Lean takes such values apart again, and the principle of
+recursion that Lean derives from the rules.
+
+== A type given by its rules ==
+
+The natural numbers 0, 1, 2, 3, ... can be described by two rules. Zero is a natural
+number. If n is a natural number, so is the next one after n, its '''successor'''. Every
+natural number is reached from zero by applying the second rule some finite number of
+times, and nothing else is a natural number.
+
+Lean's own definition says exactly this. Asked to print it,
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+#print Nat
+</pre>
+
+Lean 4.34.1 answers:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+inductive Nat : Type
+number of parameters: 0
+constructors:
+Nat.zero : Nat
+Nat.succ : Nat → Nat
+</pre>
+
+A type defined this way is an '''inductive type'''. Its rules are its '''constructors''':
+here <code>Nat.zero</code>, which needs nothing, and <code>Nat.succ</code>, which takes one
+natural number and makes the next. Three is <code>Nat.succ (Nat.succ (Nat.succ
+Nat.zero))</code>, and the numeral 3 names the same number. The values of an
+inductive type are exactly the ones its constructors make; it has no others.<ref name="tpil-ind">Jeremy
+Avigad, Leonardo de Moura, Soonho Kong and Sebastian Ullrich, ''Theorem Proving in Lean 4''
+(online edition for Lean 4.33.0, lean-lang.org), chapter 7, "Inductive Types".
+https://lean-lang.org/theorem_proving_in_lean4/Inductive-Types/</ref>
+
+This is not one device among many. Functions, universes and quotient types are built into
+Lean; every other type is an inductive type or is defined from functions, universes and
+inductive types.<ref name="ref-ind">''The
+Lean Language Reference'', version for Lean 4.34.0 (lean-lang.org, 2026), section 4.4,
+"Inductive Types". https://lean-lang.org/doc/reference/4.34.0/The-Type-System/Inductive-Types/</ref>
+
+== Lists and trees ==
+
+The same pattern makes a list. A list is either empty, or a first item followed by a list.
+Asked for <code>#print List</code>, Lean shows its own definition of lists in the same form:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+inductive List.{u} : Type u → Type u
+number of parameters: 1
+constructors:
+List.nil : {α : Type u} → List α
+List.cons : {α : Type u} → α → List α → List α
+</pre>
+
+The letter α stands for the type of the items, so the one definition gives lists of numbers,
+lists of words and lists of lists. The list <code>[1, 2]</code> is <code>cons</code> of 1
+onto <code>cons</code> of 2 onto the empty list <code>nil</code>.
+
+A tree with numbers at its branch points takes two rules of the same kind, and the size of a
+tree is a short definition on top of them:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+inductive Tree where
+  | leaf : Tree
+  | node : Tree → Nat → Tree → Tree
+
+def Tree.size : Tree → Nat
+  | leaf       => 0
+  | node l _ r => l.size + 1 + r.size
+
+#eval (Tree.node (Tree.node Tree.leaf 5 Tree.leaf) 7 Tree.leaf).size
+</pre>
+
+A leaf carries nothing. A node carries a left tree, a number and a right tree. Because a
+constructor may take values of the very type being defined, a few lines describe trees of
+every finite size. The <code>#eval</code> line asks for the size of a tree with two nodes,
+and Lean prints <code>2</code>.
+
+== Taking values apart ==
+
+To use a value of an inductive type, a definition asks which constructor made it and what
+was put into it. This is '''pattern matching'''. The definition of <code>Tree.size</code>
+above has one line per constructor: a leaf has size zero, and a node has the sizes of its
+two subtrees plus one for itself.
+
+Lean checks that every constructor is covered. A definition that forgets one is refused:
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+def isZero : Nat → Bool
+  | 0 => true
+</pre>
+
+Lean answers <code>Missing cases:</code> and shows the shape left unhandled,
+<code>(Nat.succ _)</code>: a number made by the successor rule, with anything at all inside.
+The check is possible because a natural number can only have come from one of the two rules.
+A definition that handles both handles every number.
+
+== The recursion principle ==
+
+From the constructors alone, Lean derives one more thing: a '''recursion principle''', also
+called the type's '''recursor'''. For the natural numbers, <code>#check Nat.rec</code> prints:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+Nat.rec.{u} {motive : Nat → Sort u} (zero : motive Nat.zero) (succ : (n : Nat) → motive n → motive n.succ) (t : Nat) :
+  motive t
+</pre>
+
+In plain words: to produce something for every natural number <code>t</code>, supply what it
+is for zero, and a way to obtain it for the successor of <code>n</code> from <code>n</code>
+and from what it is for <code>n</code>. The word ''motive'' names the thing being produced,
+which may be different for each number. The recursor then delivers it for every number,
+because every number is zero followed by finitely many successors.
+
+The recursion principle does two jobs, and the Lean Language Reference describes it in both
+roles.<ref name="ref-ind" /> As computation, it defines functions: Lean translates the
+structurally recursive functions of [[Lean theorem prover/Explainers/Functions that always
+finish|functions that always finish]] into uses of it, and that is how the Lean kernel knows
+they end. As logic, where the thing produced for each number is a proof, it is proof by
+induction: prove a statement for zero, show that it passes from each number to the next, and
+it holds for all of them.<ref name="tpil-ind" />
+[[Lean theorem prover/Explainers/Induction, as the machine sees it|Induction, as the machine
+sees it]] follows that second job.
+
+Every inductive type has a recursor, with one case per constructor. The type
+<code>Bool</code> of true and false has two constructors that take nothing, and
+<code>#check Bool.rec</code> shows that its recursor asks for one answer for
+<code>false</code> and one for <code>true</code>. That is a choice between two cases and
+nothing more.
+
+== Structures: the one-constructor case ==
+
+Often a value is several things kept together: a point is an x and a y. A '''structure''' is
+an inductive type with exactly one constructor, whose arguments are called its
+'''fields'''.<ref name="ref-ind" />
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+structure Point where
+  x : Nat
+  y : Nat
+
+#eval (Point.mk 3 4).y
+#print Point
+</pre>
+
+The <code>#eval</code> line prints <code>4</code>. The <code>#print</code> line lists the
+fields <code>Point.x</code> and <code>Point.y</code> and the single constructor
+<code>Point.mk (x y : Nat) : Point</code>. For structures, Lean adds conveniences: a function
+that reads each field, a way to write values by field name, and a way to extend one
+structure with another. These add no power. Everything a structure does could be done with a
+one-constructor inductive type, and the reference manual says so.<ref name="ref-ind" />
+
+== What the idea gives ==
+
+Defining a type by its constructors fixes three things at once. How to make its values is
+the list of constructors. How to take them apart is pattern matching, which Lean checks for
+completeness. How to reason about all of them is the recursion principle, which Lean derives
+without being told, and which serves both to define functions and as the principle of
+induction.
+
+== Next ==
+
+* [[Lean theorem prover/Explainers/Induction, as the machine sees it|Induction, as the machine sees it]]: the recursion principle used for proofs.
+* [[Lean theorem prover/Foundations/Inductive types and recursors|Inductive types and recursors]]: the technical treatment.
+
+== References ==
+
+<references />

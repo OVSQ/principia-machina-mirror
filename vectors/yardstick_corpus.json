@@ -1,0 +1,9249 @@
+{
+ "meta": {
+  "name": "tpc_yardstick_corpus",
+  "version": "0.2.0",
+  "status": "VERIFIED (both residences)",
+  "conforms_tps": "0.1.0 revision 4 (TPS 4.5: SR9 C1, C2, C4 on a declared, executable TMS entry; D100.1)",
+  "module": "tpc_yardstick 0.2.0 (tpc_zone 0.2.0, tpc_sr9 0.1.0)",
+  "suite": "sr9_synthetic_suite 0.1.0, verbatim",
+  "note": "Expectations hand-derived: a() R1=1 R2=2 R3=0 R4=0 R5=1 R6=1 R7=0; steps 3 1 1 1 2 2 2; only R4 fails SR1; R5 in LIM, R6 in OTHER. Both residences MUST reproduce every expect. 0.1.1 (C-MS-5, increment 11, 2026-09-28): six decode/ cases, a JSON {} and [] and an object keyed 0 read as written in both residences; no earlier answer moves. 0.2.0 (increment 12): FIELD:U_C from the field table; the C-16 refusal retired."
+ },
+ "cases": [
+  {
+   "id": "key/skel-R1",
+   "fn": "yardstick_key",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "skel",
+    "rid": "R1",
+    "records": {
+     "R1": {
+      "regime": "L",
+      "assumptions": [
+       "A1"
+      ],
+      "cites": [],
+      "steps": 3,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R2": {
+      "regime": "L",
+      "assumptions": [
+       "A1",
+       "A2"
+      ],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R3": {
+      "regime": "M",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R4": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": true
+     },
+     "R5": {
+      "regime": "L",
+      "assumptions": [
+       "A3"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "LIM",
+      "sr1_fail": false
+     },
+     "R6": {
+      "regime": "M",
+      "assumptions": [
+       "A4"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "OTHER",
+      "sr1_fail": false
+     },
+     "R7": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 2,
+      "domain": "MAIN",
+      "sr1_fail": false
+     }
+    }
+   },
+   "expect": "[OK,[0,1,3]]"
+  },
+  {
+   "id": "key/skel-R4-fails-SR1",
+   "fn": "yardstick_key",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "skel",
+    "rid": "R4",
+    "records": {
+     "R1": {
+      "regime": "L",
+      "assumptions": [
+       "A1"
+      ],
+      "cites": [],
+      "steps": 3,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R2": {
+      "regime": "L",
+      "assumptions": [
+       "A1",
+       "A2"
+      ],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R3": {
+      "regime": "M",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R4": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": true
+     },
+     "R5": {
+      "regime": "L",
+      "assumptions": [
+       "A3"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "LIM",
+      "sr1_fail": false
+     },
+     "R6": {
+      "regime": "M",
+      "assumptions": [
+       "A4"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "OTHER",
+      "sr1_fail": false
+     },
+     "R7": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 2,
+      "domain": "MAIN",
+      "sr1_fail": false
+     }
+    }
+   },
+   "expect": "[OK,[1,0,1]]"
+  },
+  {
+   "id": "key/comb-R1",
+   "fn": "yardstick_key",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "comb",
+    "rid": "R1",
+    "records": {
+     "R1": {
+      "regime": "L",
+      "assumptions": [
+       "A1"
+      ],
+      "cites": [],
+      "steps": 3,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R2": {
+      "regime": "L",
+      "assumptions": [
+       "A1",
+       "A2"
+      ],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R3": {
+      "regime": "M",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R4": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": true
+     },
+     "R5": {
+      "regime": "L",
+      "assumptions": [
+       "A3"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "LIM",
+      "sr1_fail": false
+     },
+     "R6": {
+      "regime": "M",
+      "assumptions": [
+       "A4"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "OTHER",
+      "sr1_fail": false
+     },
+     "R7": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 2,
+      "domain": "MAIN",
+      "sr1_fail": false
+     }
+    }
+   },
+   "note": "a + 0.5 s = 1 + 1.5",
+   "expect": "[OK,[0,2.5,3]]"
+  },
+  {
+   "id": "key/comb-R2",
+   "fn": "yardstick_key",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "comb",
+    "rid": "R2",
+    "records": {
+     "R1": {
+      "regime": "L",
+      "assumptions": [
+       "A1"
+      ],
+      "cites": [],
+      "steps": 3,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R2": {
+      "regime": "L",
+      "assumptions": [
+       "A1",
+       "A2"
+      ],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R3": {
+      "regime": "M",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R4": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": true
+     },
+     "R5": {
+      "regime": "L",
+      "assumptions": [
+       "A3"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "LIM",
+      "sr1_fail": false
+     },
+     "R6": {
+      "regime": "M",
+      "assumptions": [
+       "A4"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "OTHER",
+      "sr1_fail": false
+     },
+     "R7": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 2,
+      "domain": "MAIN",
+      "sr1_fail": false
+     }
+    }
+   },
+   "note": "2 + 0.5; ties R1 on the WSUM, S breaks the tie",
+   "expect": "[OK,[0,2.5,1]]"
+  },
+  {
+   "id": "key/lim-R5-uses-limiting-key",
+   "fn": "yardstick_key",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "lim",
+    "rid": "R5",
+    "records": {
+     "R1": {
+      "regime": "L",
+      "assumptions": [
+       "A1"
+      ],
+      "cites": [],
+      "steps": 3,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R2": {
+      "regime": "L",
+      "assumptions": [
+       "A1",
+       "A2"
+      ],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R3": {
+      "regime": "M",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R4": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": true
+     },
+     "R5": {
+      "regime": "L",
+      "assumptions": [
+       "A3"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "LIM",
+      "sr1_fail": false
+     },
+     "R6": {
+      "regime": "M",
+      "assumptions": [
+       "A4"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "OTHER",
+      "sr1_fail": false
+     },
+     "R7": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 2,
+      "domain": "MAIN",
+      "sr1_fail": false
+     }
+    }
+   },
+   "expect": "[OK,[0,-1,2]]"
+  },
+  {
+   "id": "key/lim-R1-uses-main-key",
+   "fn": "yardstick_key",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "lim",
+    "rid": "R1",
+    "records": {
+     "R1": {
+      "regime": "L",
+      "assumptions": [
+       "A1"
+      ],
+      "cites": [],
+      "steps": 3,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R2": {
+      "regime": "L",
+      "assumptions": [
+       "A1",
+       "A2"
+      ],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R3": {
+      "regime": "M",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R4": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": true
+     },
+     "R5": {
+      "regime": "L",
+      "assumptions": [
+       "A3"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "LIM",
+      "sr1_fail": false
+     },
+     "R6": {
+      "regime": "M",
+      "assumptions": [
+       "A4"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "OTHER",
+      "sr1_fail": false
+     },
+     "R7": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 2,
+      "domain": "MAIN",
+      "sr1_fail": false
+     }
+    }
+   },
+   "expect": "[OK,[0,1,3]]"
+  },
+  {
+   "id": "key/lim_main-R3-no-negative-zero",
+   "fn": "yardstick_key",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "lim_main",
+    "rid": "R3",
+    "records": {
+     "R1": {
+      "regime": "L",
+      "assumptions": [
+       "A1"
+      ],
+      "cites": [],
+      "steps": 3,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R2": {
+      "regime": "L",
+      "assumptions": [
+       "A1",
+       "A2"
+      ],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R3": {
+      "regime": "M",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R4": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": true
+     },
+     "R5": {
+      "regime": "L",
+      "assumptions": [
+       "A3"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "LIM",
+      "sr1_fail": false
+     },
+     "R6": {
+      "regime": "M",
+      "assumptions": [
+       "A4"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "OTHER",
+      "sr1_fail": false
+     },
+     "R7": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 2,
+      "domain": "MAIN",
+      "sr1_fail": false
+     }
+    }
+   },
+   "note": "NEG of a(R3) = 0 is written 0, never -0",
+   "expect": "[OK,[0,0]]"
+  },
+  {
+   "id": "harness/skel",
+   "fn": "yardstick_harness",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "skel",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "note": "the strike skeleton declared in the grammar reproduces increment 3's skeleton fixture",
+   "expect": "[OK,true,true,true,0]"
+  },
+  {
+   "id": "harness/comb",
+   "fn": "yardstick_harness",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "comb",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "expect": "[OK,true,true,true,0]"
+  },
+  {
+   "id": "checks/lim",
+   "fn": "yardstick_checks",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "lim",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "note": "R5 (LIM) is keyed by -a: one more assumption lowers its key, exempt inside the declared DOMAIN",
+   "expect": "[OK,[true,[]],[true,[],[R5]],[true,[]]]"
+  },
+  {
+   "id": "checks/lim_main",
+   "fn": "yardstick_checks",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "lim_main",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "note": "every MAIN record inverted and exempt; R5 (LIM) and R6 (OTHER) keep the main KEY and pass",
+   "expect": "[OK,[true,[]],[true,[],[R1,R2,R3,R4,R7]],[true,[]]]"
+  },
+  {
+   "id": "refused/naive-key-is-not-well-formed",
+   "fn": "yardstick_harness",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "naive",
+       "KEY": [
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "naive",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "note": "C1 fails by construction: KEY must begin with SR1",
+   "expect": "[REFUSED,TMS is not well-formed]"
+  },
+  {
+   "id": "refused/more-is-better-is-not-well-formed",
+   "fn": "yardstick_harness",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "more",
+       "KEY": [
+        "SR1",
+        "NEG:A",
+        "S"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "more",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "note": "static C2 refuses it at entry",
+   "expect": "[REFUSED,TMS is not well-formed]"
+  },
+  {
+   "id": "refused/no-such-yardstick",
+   "fn": "yardstick_harness",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "nope",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "expect": "[REFUSED,no yardstick named nope]"
+  },
+  {
+   "id": "refused/name-escaped",
+   "fn": "yardstick_harness",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "x‮y",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "expect": "[REFUSED,no yardstick named x<U+202E>y]"
+  },
+  {
+   "id": "refused/field-awaits-c16",
+   "fn": "yardstick_harness",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "field",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "note": "0.2.0: the field table holds U_C alone; the C-16 message is retired (RD-RS-35); the id is kept",
+   "expect": "[REFUSED,FIELD VALUE is not in the field table]"
+  },
+  {
+   "id": "refused/weight-not-finite",
+   "fn": "yardstick_harness",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "big",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "expect": "[REFUSED,weight w_big is not a finite double]"
+  },
+  {
+   "id": "refused/value-not-finite",
+   "fn": "yardstick_harness",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "huge",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "note": "1e308*a + 1e308*s overflows to infinity",
+   "expect": "[REFUSED,a yardstick value is not finite]"
+  },
+  {
+   "id": "decode/key-tms-list",
+   "fn": "yardstick_key",
+   "input": {
+    "tms": [],
+    "name": "skel",
+    "rid": "R1",
+    "records": {
+     "R1": {
+      "regime": "L",
+      "assumptions": [
+       "A1"
+      ],
+      "cites": [],
+      "steps": 3,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R2": {
+      "regime": "L",
+      "assumptions": [
+       "A1",
+       "A2"
+      ],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R3": {
+      "regime": "M",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R4": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": true
+     },
+     "R5": {
+      "regime": "L",
+      "assumptions": [
+       "A3"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "LIM",
+      "sr1_fail": false
+     },
+     "R6": {
+      "regime": "M",
+      "assumptions": [
+       "A4"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "OTHER",
+      "sr1_fail": false
+     },
+     "R7": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 2,
+      "domain": "MAIN",
+      "sr1_fail": false
+     }
+    }
+   },
+   "expect": "[REFUSED,TMS is not well-formed]"
+  },
+  {
+   "id": "decode/key-yardsticks-object",
+   "fn": "yardstick_key",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": {}
+    },
+    "name": "skel",
+    "rid": "R1",
+    "records": {
+     "R1": {
+      "regime": "L",
+      "assumptions": [
+       "A1"
+      ],
+      "cites": [],
+      "steps": 3,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R2": {
+      "regime": "L",
+      "assumptions": [
+       "A1",
+       "A2"
+      ],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R3": {
+      "regime": "M",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R4": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": true
+     },
+     "R5": {
+      "regime": "L",
+      "assumptions": [
+       "A3"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "LIM",
+      "sr1_fail": false
+     },
+     "R6": {
+      "regime": "M",
+      "assumptions": [
+       "A4"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "OTHER",
+      "sr1_fail": false
+     },
+     "R7": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 2,
+      "domain": "MAIN",
+      "sr1_fail": false
+     }
+    }
+   },
+   "note": "YARDSTICKS {} is not a list (it read as none: no yardstick named skel)",
+   "expect": "[REFUSED,TMS is not well-formed]"
+  },
+  {
+   "id": "decode/key-yardsticks-zero-keyed",
+   "fn": "yardstick_key",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": {
+      "0": {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      }
+     }
+    },
+    "name": "skel",
+    "rid": "R1",
+    "records": {
+     "R1": {
+      "regime": "L",
+      "assumptions": [
+       "A1"
+      ],
+      "cites": [],
+      "steps": 3,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R2": {
+      "regime": "L",
+      "assumptions": [
+       "A1",
+       "A2"
+      ],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R3": {
+      "regime": "M",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R4": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": true
+     },
+     "R5": {
+      "regime": "L",
+      "assumptions": [
+       "A3"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "LIM",
+      "sr1_fail": false
+     },
+     "R6": {
+      "regime": "M",
+      "assumptions": [
+       "A4"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "OTHER",
+      "sr1_fail": false
+     },
+     "R7": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 2,
+      "domain": "MAIN",
+      "sr1_fail": false
+     }
+    }
+   },
+   "note": "it read as the list [skel] and keyed R1 [0,1,3]",
+   "expect": "[REFUSED,TMS is not well-formed]"
+  },
+  {
+   "id": "decode/harness-limiting-object",
+   "fn": "yardstick_harness",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": {}
+      }
+     ]
+    },
+    "name": "skel",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "expect": "[REFUSED,TMS is not well-formed]"
+  },
+  {
+   "id": "decode/checks-constants-zero-keyed",
+   "fn": "yardstick_checks",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": {
+      "0": {
+       "NAME": "w_a",
+       "VALUE": "1"
+      }
+     },
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "skel",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "expect": "[REFUSED,TMS is not well-formed]"
+  },
+  {
+   "id": "decode/harness-parameters-list",
+   "fn": "yardstick_harness",
+   "input": {
+    "tms": {
+     "PARAMETERS": [],
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "skel",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "expect": "[REFUSED,TMS is not well-formed]"
+  },
+  {
+   "id": "fields/key-uc-R1",
+   "fn": "yardstick_key",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc",
+       "KEY": [
+        "SR1",
+        "FIELD:U_C",
+        "A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_s*FIELD:U_C;w_a*A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_neg",
+       "KEY": [
+        "SR1",
+        "NEG:FIELD:U_C"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "field_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*FIELD:VALUE"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "uc",
+    "rid": "R1",
+    "records": {
+     "R1": {
+      "regime": "L",
+      "assumptions": [
+       "A1"
+      ],
+      "cites": [],
+      "steps": 3,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R2": {
+      "regime": "L",
+      "assumptions": [
+       "A1",
+       "A2"
+      ],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R3": {
+      "regime": "M",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R4": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": true
+     },
+     "R5": {
+      "regime": "L",
+      "assumptions": [
+       "A3"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "LIM",
+      "sr1_fail": false
+     },
+     "R6": {
+      "regime": "M",
+      "assumptions": [
+       "A4"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "OTHER",
+      "sr1_fail": false
+     },
+     "R7": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 2,
+      "domain": "MAIN",
+      "sr1_fail": false
+     }
+    },
+    "fields": {
+     "R1": {
+      "U_C": "0"
+     },
+     "R2": {
+      "U_C": "0"
+     },
+     "R3": {
+      "U_C": "5e-2"
+     },
+     "R4": {
+      "U_C": "0"
+     },
+     "R5": {
+      "U_C": "0"
+     },
+     "R6": {
+      "U_C": "1e-3"
+     },
+     "R7": {
+      "U_C": "0"
+     }
+    }
+   },
+   "note": "an L record's U_C is 0",
+   "expect": "[OK,[0,0,1]]"
+  },
+  {
+   "id": "fields/key-uc-R5",
+   "fn": "yardstick_key",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc",
+       "KEY": [
+        "SR1",
+        "FIELD:U_C",
+        "A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_s*FIELD:U_C;w_a*A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_neg",
+       "KEY": [
+        "SR1",
+        "NEG:FIELD:U_C"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "field_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*FIELD:VALUE"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "uc",
+    "rid": "R5",
+    "records": {
+     "R1": {
+      "regime": "L",
+      "assumptions": [
+       "A1"
+      ],
+      "cites": [],
+      "steps": 3,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R2": {
+      "regime": "L",
+      "assumptions": [
+       "A1",
+       "A2"
+      ],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R3": {
+      "regime": "M",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R4": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": true
+     },
+     "R5": {
+      "regime": "L",
+      "assumptions": [
+       "A3"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "LIM",
+      "sr1_fail": false
+     },
+     "R6": {
+      "regime": "M",
+      "assumptions": [
+       "A4"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "OTHER",
+      "sr1_fail": false
+     },
+     "R7": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 2,
+      "domain": "MAIN",
+      "sr1_fail": false
+     }
+    },
+    "fields": {
+     "R1": {
+      "U_C": "0"
+     },
+     "R2": {
+      "U_C": "0"
+     },
+     "R3": {
+      "U_C": "5e-2"
+     },
+     "R4": {
+      "U_C": "0"
+     },
+     "R5": {
+      "U_C": "0"
+     },
+     "R6": {
+      "U_C": "1e-3"
+     },
+     "R7": {
+      "U_C": "0"
+     }
+    }
+   },
+   "note": "an L record at 0 in a limiting-free key",
+   "expect": "[OK,[0,0,1]]"
+  },
+  {
+   "id": "fields/key-uc-R3",
+   "fn": "yardstick_key",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc",
+       "KEY": [
+        "SR1",
+        "FIELD:U_C",
+        "A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_s*FIELD:U_C;w_a*A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_neg",
+       "KEY": [
+        "SR1",
+        "NEG:FIELD:U_C"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "field_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*FIELD:VALUE"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "uc",
+    "rid": "R3",
+    "records": {
+     "R1": {
+      "regime": "L",
+      "assumptions": [
+       "A1"
+      ],
+      "cites": [],
+      "steps": 3,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R2": {
+      "regime": "L",
+      "assumptions": [
+       "A1",
+       "A2"
+      ],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R3": {
+      "regime": "M",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R4": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": true
+     },
+     "R5": {
+      "regime": "L",
+      "assumptions": [
+       "A3"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "LIM",
+      "sr1_fail": false
+     },
+     "R6": {
+      "regime": "M",
+      "assumptions": [
+       "A4"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "OTHER",
+      "sr1_fail": false
+     },
+     "R7": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 2,
+      "domain": "MAIN",
+      "sr1_fail": false
+     }
+    },
+    "fields": {
+     "R1": {
+      "U_C": "0"
+     },
+     "R2": {
+      "U_C": "0"
+     },
+     "R3": {
+      "U_C": "5e-2"
+     },
+     "R4": {
+      "U_C": "0"
+     },
+     "R5": {
+      "U_C": "0"
+     },
+     "R6": {
+      "U_C": "1e-3"
+     },
+     "R7": {
+      "U_C": "0"
+     }
+    }
+   },
+   "note": "an M record: U_C 5e-2 read as the double 0.05",
+   "expect": "[OK,[0,0.05,0]]"
+  },
+  {
+   "id": "fields/key-uc-R6",
+   "fn": "yardstick_key",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc",
+       "KEY": [
+        "SR1",
+        "FIELD:U_C",
+        "A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_s*FIELD:U_C;w_a*A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_neg",
+       "KEY": [
+        "SR1",
+        "NEG:FIELD:U_C"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "field_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*FIELD:VALUE"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "uc",
+    "rid": "R6",
+    "records": {
+     "R1": {
+      "regime": "L",
+      "assumptions": [
+       "A1"
+      ],
+      "cites": [],
+      "steps": 3,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R2": {
+      "regime": "L",
+      "assumptions": [
+       "A1",
+       "A2"
+      ],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R3": {
+      "regime": "M",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R4": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": true
+     },
+     "R5": {
+      "regime": "L",
+      "assumptions": [
+       "A3"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "LIM",
+      "sr1_fail": false
+     },
+     "R6": {
+      "regime": "M",
+      "assumptions": [
+       "A4"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "OTHER",
+      "sr1_fail": false
+     },
+     "R7": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 2,
+      "domain": "MAIN",
+      "sr1_fail": false
+     }
+    },
+    "fields": {
+     "R1": {
+      "U_C": "0"
+     },
+     "R2": {
+      "U_C": "0"
+     },
+     "R3": {
+      "U_C": "5e-2"
+     },
+     "R4": {
+      "U_C": "0"
+     },
+     "R5": {
+      "U_C": "0"
+     },
+     "R6": {
+      "U_C": "1e-3"
+     },
+     "R7": {
+      "U_C": "0"
+     }
+    }
+   },
+   "note": "another prefix upstream: 1e-3",
+   "expect": "[OK,[0,0.001,1]]"
+  },
+  {
+   "id": "fields/key-uc_wsum-R6",
+   "fn": "yardstick_key",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc",
+       "KEY": [
+        "SR1",
+        "FIELD:U_C",
+        "A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_s*FIELD:U_C;w_a*A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_neg",
+       "KEY": [
+        "SR1",
+        "NEG:FIELD:U_C"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "field_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*FIELD:VALUE"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "uc_wsum",
+    "rid": "R6",
+    "records": {
+     "R1": {
+      "regime": "L",
+      "assumptions": [
+       "A1"
+      ],
+      "cites": [],
+      "steps": 3,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R2": {
+      "regime": "L",
+      "assumptions": [
+       "A1",
+       "A2"
+      ],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R3": {
+      "regime": "M",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R4": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": true
+     },
+     "R5": {
+      "regime": "L",
+      "assumptions": [
+       "A3"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "LIM",
+      "sr1_fail": false
+     },
+     "R6": {
+      "regime": "M",
+      "assumptions": [
+       "A4"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "OTHER",
+      "sr1_fail": false
+     },
+     "R7": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 2,
+      "domain": "MAIN",
+      "sr1_fail": false
+     }
+    },
+    "fields": {
+     "R1": {
+      "U_C": "0"
+     },
+     "R2": {
+      "U_C": "0"
+     },
+     "R3": {
+      "U_C": "5e-2"
+     },
+     "R4": {
+      "U_C": "0"
+     },
+     "R5": {
+      "U_C": "0"
+     },
+     "R6": {
+      "U_C": "1e-3"
+     },
+     "R7": {
+      "U_C": "0"
+     }
+    }
+   },
+   "note": "WSUM in canonical atom order: 1 * a + 0.5 * U_C",
+   "expect": "[OK,[0,1.0005]]"
+  },
+  {
+   "id": "fields/key-uc_neg-R3",
+   "fn": "yardstick_key",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc",
+       "KEY": [
+        "SR1",
+        "FIELD:U_C",
+        "A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_s*FIELD:U_C;w_a*A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_neg",
+       "KEY": [
+        "SR1",
+        "NEG:FIELD:U_C"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "field_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*FIELD:VALUE"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "uc_neg",
+    "rid": "R3",
+    "records": {
+     "R1": {
+      "regime": "L",
+      "assumptions": [
+       "A1"
+      ],
+      "cites": [],
+      "steps": 3,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R2": {
+      "regime": "L",
+      "assumptions": [
+       "A1",
+       "A2"
+      ],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R3": {
+      "regime": "M",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R4": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": true
+     },
+     "R5": {
+      "regime": "L",
+      "assumptions": [
+       "A3"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "LIM",
+      "sr1_fail": false
+     },
+     "R6": {
+      "regime": "M",
+      "assumptions": [
+       "A4"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "OTHER",
+      "sr1_fail": false
+     },
+     "R7": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 2,
+      "domain": "MAIN",
+      "sr1_fail": false
+     }
+    },
+    "fields": {
+     "R1": {
+      "U_C": "0"
+     },
+     "R2": {
+      "U_C": "0"
+     },
+     "R3": {
+      "U_C": "5e-2"
+     },
+     "R4": {
+      "U_C": "0"
+     },
+     "R5": {
+      "U_C": "0"
+     },
+     "R6": {
+      "U_C": "1e-3"
+     },
+     "R7": {
+      "U_C": "0"
+     }
+    }
+   },
+   "expect": "[OK,[0,-0.05]]"
+  },
+  {
+   "id": "fields/key-uc_neg-R1",
+   "fn": "yardstick_key",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc",
+       "KEY": [
+        "SR1",
+        "FIELD:U_C",
+        "A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_s*FIELD:U_C;w_a*A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_neg",
+       "KEY": [
+        "SR1",
+        "NEG:FIELD:U_C"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "field_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*FIELD:VALUE"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "uc_neg",
+    "rid": "R1",
+    "records": {
+     "R1": {
+      "regime": "L",
+      "assumptions": [
+       "A1"
+      ],
+      "cites": [],
+      "steps": 3,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R2": {
+      "regime": "L",
+      "assumptions": [
+       "A1",
+       "A2"
+      ],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R3": {
+      "regime": "M",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R4": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": true
+     },
+     "R5": {
+      "regime": "L",
+      "assumptions": [
+       "A3"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "LIM",
+      "sr1_fail": false
+     },
+     "R6": {
+      "regime": "M",
+      "assumptions": [
+       "A4"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "OTHER",
+      "sr1_fail": false
+     },
+     "R7": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 2,
+      "domain": "MAIN",
+      "sr1_fail": false
+     }
+    },
+    "fields": {
+     "R1": {
+      "U_C": "0"
+     },
+     "R2": {
+      "U_C": "0"
+     },
+     "R3": {
+      "U_C": "5e-2"
+     },
+     "R4": {
+      "U_C": "0"
+     },
+     "R5": {
+      "U_C": "0"
+     },
+     "R6": {
+      "U_C": "1e-3"
+     },
+     "R7": {
+      "U_C": "0"
+     }
+    }
+   },
+   "note": "NEG of 0 is written 0, never -0",
+   "expect": "[OK,[0,0]]"
+  },
+  {
+   "id": "fields/key-uc-R3-other-missing",
+   "fn": "yardstick_key",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc",
+       "KEY": [
+        "SR1",
+        "FIELD:U_C",
+        "A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_s*FIELD:U_C;w_a*A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_neg",
+       "KEY": [
+        "SR1",
+        "NEG:FIELD:U_C"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "field_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*FIELD:VALUE"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "uc",
+    "rid": "R3",
+    "records": {
+     "R1": {
+      "regime": "L",
+      "assumptions": [
+       "A1"
+      ],
+      "cites": [],
+      "steps": 3,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R2": {
+      "regime": "L",
+      "assumptions": [
+       "A1",
+       "A2"
+      ],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R3": {
+      "regime": "M",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R4": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": true
+     },
+     "R5": {
+      "regime": "L",
+      "assumptions": [
+       "A3"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "LIM",
+      "sr1_fail": false
+     },
+     "R6": {
+      "regime": "M",
+      "assumptions": [
+       "A4"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "OTHER",
+      "sr1_fail": false
+     },
+     "R7": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 2,
+      "domain": "MAIN",
+      "sr1_fail": false
+     }
+    },
+    "fields": {
+     "R1": {
+      "U_C": "0"
+     },
+     "R2": {
+      "U_C": "0"
+     },
+     "R3": {
+      "U_C": "5e-2"
+     },
+     "R4": {
+      "U_C": "0"
+     },
+     "R5": {
+      "U_C": "0"
+     },
+     "R7": {
+      "U_C": "0"
+     }
+    }
+   },
+   "note": "only the keyed record's value is read",
+   "expect": "[OK,[0,0.05,0]]"
+  },
+  {
+   "id": "fields/key-uc-R6-missing",
+   "fn": "yardstick_key",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc",
+       "KEY": [
+        "SR1",
+        "FIELD:U_C",
+        "A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_s*FIELD:U_C;w_a*A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_neg",
+       "KEY": [
+        "SR1",
+        "NEG:FIELD:U_C"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "field_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*FIELD:VALUE"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "uc",
+    "rid": "R6",
+    "records": {
+     "R1": {
+      "regime": "L",
+      "assumptions": [
+       "A1"
+      ],
+      "cites": [],
+      "steps": 3,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R2": {
+      "regime": "L",
+      "assumptions": [
+       "A1",
+       "A2"
+      ],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R3": {
+      "regime": "M",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R4": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": true
+     },
+     "R5": {
+      "regime": "L",
+      "assumptions": [
+       "A3"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "LIM",
+      "sr1_fail": false
+     },
+     "R6": {
+      "regime": "M",
+      "assumptions": [
+       "A4"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "OTHER",
+      "sr1_fail": false
+     },
+     "R7": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 2,
+      "domain": "MAIN",
+      "sr1_fail": false
+     }
+    },
+    "fields": {
+     "R1": {
+      "U_C": "0"
+     },
+     "R2": {
+      "U_C": "0"
+     },
+     "R3": {
+      "U_C": "5e-2"
+     },
+     "R4": {
+      "U_C": "0"
+     },
+     "R5": {
+      "U_C": "0"
+     },
+     "R7": {
+      "U_C": "0"
+     }
+    }
+   },
+   "expect": "[REFUSED,FIELD U_C has no value for R6]"
+  },
+  {
+   "id": "fields/key-uc-R1-no-table",
+   "fn": "yardstick_key",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc",
+       "KEY": [
+        "SR1",
+        "FIELD:U_C",
+        "A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_s*FIELD:U_C;w_a*A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_neg",
+       "KEY": [
+        "SR1",
+        "NEG:FIELD:U_C"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "field_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*FIELD:VALUE"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "uc",
+    "rid": "R1",
+    "records": {
+     "R1": {
+      "regime": "L",
+      "assumptions": [
+       "A1"
+      ],
+      "cites": [],
+      "steps": 3,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R2": {
+      "regime": "L",
+      "assumptions": [
+       "A1",
+       "A2"
+      ],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R3": {
+      "regime": "M",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R4": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": true
+     },
+     "R5": {
+      "regime": "L",
+      "assumptions": [
+       "A3"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "LIM",
+      "sr1_fail": false
+     },
+     "R6": {
+      "regime": "M",
+      "assumptions": [
+       "A4"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "OTHER",
+      "sr1_fail": false
+     },
+     "R7": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 2,
+      "domain": "MAIN",
+      "sr1_fail": false
+     }
+    }
+   },
+   "expect": "[REFUSED,FIELD U_C has no value for R1]"
+  },
+  {
+   "id": "fields/key-uc-R3-not-canonical",
+   "fn": "yardstick_key",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc",
+       "KEY": [
+        "SR1",
+        "FIELD:U_C",
+        "A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_s*FIELD:U_C;w_a*A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_neg",
+       "KEY": [
+        "SR1",
+        "NEG:FIELD:U_C"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "field_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*FIELD:VALUE"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "uc",
+    "rid": "R3",
+    "records": {
+     "R1": {
+      "regime": "L",
+      "assumptions": [
+       "A1"
+      ],
+      "cites": [],
+      "steps": 3,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R2": {
+      "regime": "L",
+      "assumptions": [
+       "A1",
+       "A2"
+      ],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R3": {
+      "regime": "M",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R4": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": true
+     },
+     "R5": {
+      "regime": "L",
+      "assumptions": [
+       "A3"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "LIM",
+      "sr1_fail": false
+     },
+     "R6": {
+      "regime": "M",
+      "assumptions": [
+       "A4"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "OTHER",
+      "sr1_fail": false
+     },
+     "R7": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 2,
+      "domain": "MAIN",
+      "sr1_fail": false
+     }
+    },
+    "fields": {
+     "R1": {
+      "U_C": "0"
+     },
+     "R2": {
+      "U_C": "0"
+     },
+     "R3": {
+      "U_C": "0.050"
+     },
+     "R4": {
+      "U_C": "0"
+     },
+     "R5": {
+      "U_C": "0"
+     },
+     "R6": {
+      "U_C": "1e-3"
+     },
+     "R7": {
+      "U_C": "0"
+     }
+    }
+   },
+   "note": "the table holds canonical decimals (field_values); 0.050 is not one (RD-TQ reading)",
+   "expect": "[REFUSED,FIELD U_C has no value for R3]"
+  },
+  {
+   "id": "fields/key-uc-R3-empty-row",
+   "fn": "yardstick_key",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc",
+       "KEY": [
+        "SR1",
+        "FIELD:U_C",
+        "A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_s*FIELD:U_C;w_a*A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_neg",
+       "KEY": [
+        "SR1",
+        "NEG:FIELD:U_C"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "field_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*FIELD:VALUE"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "uc",
+    "rid": "R3",
+    "records": {
+     "R1": {
+      "regime": "L",
+      "assumptions": [
+       "A1"
+      ],
+      "cites": [],
+      "steps": 3,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R2": {
+      "regime": "L",
+      "assumptions": [
+       "A1",
+       "A2"
+      ],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R3": {
+      "regime": "M",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R4": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": true
+     },
+     "R5": {
+      "regime": "L",
+      "assumptions": [
+       "A3"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "LIM",
+      "sr1_fail": false
+     },
+     "R6": {
+      "regime": "M",
+      "assumptions": [
+       "A4"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "OTHER",
+      "sr1_fail": false
+     },
+     "R7": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 2,
+      "domain": "MAIN",
+      "sr1_fail": false
+     }
+    },
+    "fields": {
+     "R1": {
+      "U_C": "0"
+     },
+     "R2": {
+      "U_C": "0"
+     },
+     "R3": {},
+     "R4": {
+      "U_C": "0"
+     },
+     "R5": {
+      "U_C": "0"
+     },
+     "R6": {
+      "U_C": "1e-3"
+     },
+     "R7": {
+      "U_C": "0"
+     }
+    }
+   },
+   "expect": "[REFUSED,FIELD U_C has no value for R3]"
+  },
+  {
+   "id": "fields/key-uc-R3-table-list",
+   "fn": "yardstick_key",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc",
+       "KEY": [
+        "SR1",
+        "FIELD:U_C",
+        "A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_s*FIELD:U_C;w_a*A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_neg",
+       "KEY": [
+        "SR1",
+        "NEG:FIELD:U_C"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "field_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*FIELD:VALUE"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "uc",
+    "rid": "R3",
+    "records": {
+     "R1": {
+      "regime": "L",
+      "assumptions": [
+       "A1"
+      ],
+      "cites": [],
+      "steps": 3,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R2": {
+      "regime": "L",
+      "assumptions": [
+       "A1",
+       "A2"
+      ],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R3": {
+      "regime": "M",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R4": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": true
+     },
+     "R5": {
+      "regime": "L",
+      "assumptions": [
+       "A3"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "LIM",
+      "sr1_fail": false
+     },
+     "R6": {
+      "regime": "M",
+      "assumptions": [
+       "A4"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "OTHER",
+      "sr1_fail": false
+     },
+     "R7": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 2,
+      "domain": "MAIN",
+      "sr1_fail": false
+     }
+    },
+    "fields": []
+   },
+   "note": "a JSON [] is not the table (C-MS-5)",
+   "expect": "[REFUSED,FIELD U_C has no value for R3]"
+  },
+  {
+   "id": "fields/key-field-R1",
+   "fn": "yardstick_key",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc",
+       "KEY": [
+        "SR1",
+        "FIELD:U_C",
+        "A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_s*FIELD:U_C;w_a*A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_neg",
+       "KEY": [
+        "SR1",
+        "NEG:FIELD:U_C"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "field_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*FIELD:VALUE"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "field",
+    "rid": "R1",
+    "records": {
+     "R1": {
+      "regime": "L",
+      "assumptions": [
+       "A1"
+      ],
+      "cites": [],
+      "steps": 3,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R2": {
+      "regime": "L",
+      "assumptions": [
+       "A1",
+       "A2"
+      ],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R3": {
+      "regime": "M",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R4": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": true
+     },
+     "R5": {
+      "regime": "L",
+      "assumptions": [
+       "A3"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "LIM",
+      "sr1_fail": false
+     },
+     "R6": {
+      "regime": "M",
+      "assumptions": [
+       "A4"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "OTHER",
+      "sr1_fail": false
+     },
+     "R7": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 2,
+      "domain": "MAIN",
+      "sr1_fail": false
+     }
+    },
+    "fields": {
+     "R1": {
+      "U_C": "0"
+     },
+     "R2": {
+      "U_C": "0"
+     },
+     "R3": {
+      "U_C": "5e-2"
+     },
+     "R4": {
+      "U_C": "0"
+     },
+     "R5": {
+      "U_C": "0"
+     },
+     "R6": {
+      "U_C": "1e-3"
+     },
+     "R7": {
+      "U_C": "0"
+     }
+    }
+   },
+   "expect": "[REFUSED,FIELD VALUE is not in the field table]"
+  },
+  {
+   "id": "fields/key-field_wsum-R1",
+   "fn": "yardstick_key",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc",
+       "KEY": [
+        "SR1",
+        "FIELD:U_C",
+        "A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_s*FIELD:U_C;w_a*A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_neg",
+       "KEY": [
+        "SR1",
+        "NEG:FIELD:U_C"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "field_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*FIELD:VALUE"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "field_wsum",
+    "rid": "R1",
+    "records": {
+     "R1": {
+      "regime": "L",
+      "assumptions": [
+       "A1"
+      ],
+      "cites": [],
+      "steps": 3,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R2": {
+      "regime": "L",
+      "assumptions": [
+       "A1",
+       "A2"
+      ],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R3": {
+      "regime": "M",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": false
+     },
+     "R4": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 1,
+      "domain": "MAIN",
+      "sr1_fail": true
+     },
+     "R5": {
+      "regime": "L",
+      "assumptions": [
+       "A3"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "LIM",
+      "sr1_fail": false
+     },
+     "R6": {
+      "regime": "M",
+      "assumptions": [
+       "A4"
+      ],
+      "cites": [],
+      "steps": 2,
+      "domain": "OTHER",
+      "sr1_fail": false
+     },
+     "R7": {
+      "regime": "L",
+      "assumptions": [],
+      "cites": [],
+      "steps": 2,
+      "domain": "MAIN",
+      "sr1_fail": false
+     }
+    },
+    "fields": {
+     "R1": {
+      "U_C": "0"
+     },
+     "R2": {
+      "U_C": "0"
+     },
+     "R3": {
+      "U_C": "5e-2"
+     },
+     "R4": {
+      "U_C": "0"
+     },
+     "R5": {
+      "U_C": "0"
+     },
+     "R6": {
+      "U_C": "1e-3"
+     },
+     "R7": {
+      "U_C": "0"
+     }
+    }
+   },
+   "note": "inside a WSUM too",
+   "expect": "[REFUSED,FIELD VALUE is not in the field table]"
+  },
+  {
+   "id": "fields/harness-uc",
+   "fn": "yardstick_harness",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc",
+       "KEY": [
+        "SR1",
+        "FIELD:U_C",
+        "A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_s*FIELD:U_C;w_a*A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_neg",
+       "KEY": [
+        "SR1",
+        "NEG:FIELD:U_C"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "field_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*FIELD:VALUE"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "uc",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ],
+     "fields": {
+      "R1": {
+       "U_C": "0"
+      },
+      "R2": {
+       "U_C": "0"
+      },
+      "R3": {
+       "U_C": "5e-2"
+      },
+      "R4": {
+       "U_C": "0"
+      },
+      "R5": {
+       "U_C": "0"
+      },
+      "R6": {
+       "U_C": "1e-3"
+      },
+      "R7": {
+       "U_C": "0"
+      }
+     }
+    }
+   },
+   "note": "FIELD is independent of the assumption count: r+ carries r's U_C, so C2 holds",
+   "expect": "[OK,true,true,true,0]"
+  },
+  {
+   "id": "fields/harness-uc_wsum",
+   "fn": "yardstick_harness",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc",
+       "KEY": [
+        "SR1",
+        "FIELD:U_C",
+        "A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_s*FIELD:U_C;w_a*A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_neg",
+       "KEY": [
+        "SR1",
+        "NEG:FIELD:U_C"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "field_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*FIELD:VALUE"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "uc_wsum",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ],
+     "fields": {
+      "R1": {
+       "U_C": "0"
+      },
+      "R2": {
+       "U_C": "0"
+      },
+      "R3": {
+       "U_C": "5e-2"
+      },
+      "R4": {
+       "U_C": "0"
+      },
+      "R5": {
+       "U_C": "0"
+      },
+      "R6": {
+       "U_C": "1e-3"
+      },
+      "R7": {
+       "U_C": "0"
+      }
+     }
+    }
+   },
+   "expect": "[OK,true,true,true,0]"
+  },
+  {
+   "id": "fields/harness-uc_neg",
+   "fn": "yardstick_harness",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc",
+       "KEY": [
+        "SR1",
+        "FIELD:U_C",
+        "A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_s*FIELD:U_C;w_a*A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_neg",
+       "KEY": [
+        "SR1",
+        "NEG:FIELD:U_C"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "field_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*FIELD:VALUE"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "uc_neg",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ],
+     "fields": {
+      "R1": {
+       "U_C": "0"
+      },
+      "R2": {
+       "U_C": "0"
+      },
+      "R3": {
+       "U_C": "5e-2"
+      },
+      "R4": {
+       "U_C": "0"
+      },
+      "R5": {
+       "U_C": "0"
+      },
+      "R6": {
+       "U_C": "1e-3"
+      },
+      "R7": {
+       "U_C": "0"
+      }
+     }
+    }
+   },
+   "expect": "[OK,true,true,true,0]"
+  },
+  {
+   "id": "fields/checks-uc",
+   "fn": "yardstick_checks",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc",
+       "KEY": [
+        "SR1",
+        "FIELD:U_C",
+        "A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_s*FIELD:U_C;w_a*A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_neg",
+       "KEY": [
+        "SR1",
+        "NEG:FIELD:U_C"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "field_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*FIELD:VALUE"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "uc",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ],
+     "fields": {
+      "R1": {
+       "U_C": "0"
+      },
+      "R2": {
+       "U_C": "0"
+      },
+      "R3": {
+       "U_C": "5e-2"
+      },
+      "R4": {
+       "U_C": "0"
+      },
+      "R5": {
+       "U_C": "0"
+      },
+      "R6": {
+       "U_C": "1e-3"
+      },
+      "R7": {
+       "U_C": "0"
+      }
+     }
+    }
+   },
+   "expect": "[OK,[true,[]],[true,[],[]],[true,[]]]"
+  },
+  {
+   "id": "fields/harness-uc-missing",
+   "fn": "yardstick_harness",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc",
+       "KEY": [
+        "SR1",
+        "FIELD:U_C",
+        "A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_s*FIELD:U_C;w_a*A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_neg",
+       "KEY": [
+        "SR1",
+        "NEG:FIELD:U_C"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "field_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*FIELD:VALUE"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "uc",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ],
+     "fields": {
+      "R1": {
+       "U_C": "0"
+      },
+      "R2": {
+       "U_C": "0"
+      },
+      "R3": {
+       "U_C": "5e-2"
+      },
+      "R4": {
+       "U_C": "0"
+      },
+      "R5": {
+       "U_C": "0"
+      },
+      "R7": {
+       "U_C": "0"
+      }
+     }
+    }
+   },
+   "expect": "[REFUSED,FIELD U_C has no value for R6]"
+  },
+  {
+   "id": "fields/harness-uc-no-table",
+   "fn": "yardstick_harness",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc",
+       "KEY": [
+        "SR1",
+        "FIELD:U_C",
+        "A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_s*FIELD:U_C;w_a*A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_neg",
+       "KEY": [
+        "SR1",
+        "NEG:FIELD:U_C"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "field_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*FIELD:VALUE"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "uc",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "note": "C1 keys the SR1-failing records first (tpc_sr9 sr9_c1)",
+   "expect": "[REFUSED,FIELD U_C has no value for R4]"
+  },
+  {
+   "id": "fields/harness-skel-table-ignored",
+   "fn": "yardstick_harness",
+   "input": {
+    "tms": {
+     "PARAMETERS": {
+      "STEP_CONVENTION": "one inference rule is one step",
+      "K": "2",
+      "N_X": 2,
+      "S_MAX": 10
+     },
+     "CONSTANTS": [
+      {
+       "NAME": "w_a",
+       "VALUE": "1"
+      },
+      {
+       "NAME": "w_s",
+       "VALUE": "0.5"
+      },
+      {
+       "NAME": "w_big",
+       "VALUE": "1e400"
+      },
+      {
+       "NAME": "w_huge",
+       "VALUE": "1e308"
+      }
+     ],
+     "YARDSTICKS": [
+      {
+       "NAME": "skel",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "comb",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*A;w_s*S",
+        "S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "lim",
+       "KEY": [
+        "SR1",
+        "A",
+        "S"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "LIM",
+         "KEY": [
+          "SR1",
+          "NEG:A",
+          "S"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "lim_main",
+       "KEY": [
+        "SR1",
+        "A"
+       ],
+       "LIMITING": [
+        {
+         "DOMAIN": "MAIN",
+         "KEY": [
+          "SR1",
+          "NEG:A"
+         ]
+        }
+       ]
+      },
+      {
+       "NAME": "field",
+       "KEY": [
+        "SR1",
+        "FIELD:VALUE"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "big",
+       "KEY": [
+        "SR1",
+        "WSUM:w_big*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "huge",
+       "KEY": [
+        "SR1",
+        "WSUM:w_huge*A;w_huge*S"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc",
+       "KEY": [
+        "SR1",
+        "FIELD:U_C",
+        "A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_s*FIELD:U_C;w_a*A"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "uc_neg",
+       "KEY": [
+        "SR1",
+        "NEG:FIELD:U_C"
+       ],
+       "LIMITING": []
+      },
+      {
+       "NAME": "field_wsum",
+       "KEY": [
+        "SR1",
+        "WSUM:w_a*FIELD:VALUE"
+       ],
+       "LIMITING": []
+      }
+     ]
+    },
+    "name": "skel",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ],
+     "fields": {
+      "R1": {
+       "U_C": "0"
+      },
+      "R2": {
+       "U_C": "0"
+      },
+      "R3": {
+       "U_C": "5e-2"
+      },
+      "R4": {
+       "U_C": "0"
+      },
+      "R5": {
+       "U_C": "0"
+      },
+      "R6": {
+       "U_C": "1e-3"
+      },
+      "R7": {
+       "U_C": "0"
+      }
+     }
+    }
+   },
+   "note": "a FIELD-free yardstick reads no table",
+   "expect": "[OK,true,true,true,0]"
+  }
+ ]
+}

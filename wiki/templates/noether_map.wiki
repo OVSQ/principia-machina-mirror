@@ -1,0 +1,11 @@
+<includeonly>{{Section map
+| title = Noether's theorems: map
+| label1 = Reading the volume
+| links1 = [[Noether's theorems#How to read this volume|How to read this volume]]<br />[[Noether's theorems/Notation|Notation]]<br />[[Noether's theorems/Glossary|Glossary]]<br />[[Noether's theorems/Index of symmetries|Index of symmetries]]<br />[[Noether's theorems/Figure gallery|Figure gallery]]
+| label2 = Reading by level
+| links2 = [[Noether's theorems/Explainers/Symmetry and conservation, the first theorem|Start here: the plain-language primer]]<br />[[Noether's theorems/First theorem/The first theorem stated and proved|The first theorem, stated and proved]]<br />[[Noether's theorems/Second theorem/The second theorem stated and proved|The second theorem, stated and proved]]<br />[[Noether's theorems/Second theorem/The two theorems side by side|The two theorems side by side]]<br />[[Noether's theorems/Mathematics/Lie groups and Lie algebras|The mathematics: Lie groups and Lie algebras]]<br />[[Noether's theorems/Applications/General relativity and the energy question|The applications: General relativity and the energy question]]<br />[[Noether's theorems/History/Gottingen and the energy problem|The history: Göttingen and the energy problem]]
+| label3 = Sources
+| links3 = [[Noether's theorems/Sources|Sources]]<br />[[Noether's theorems/Bibliography|Bibliography]]<br />[[Noether's theorems/Chronology|Chronology]]<br />[[Noether's theorems/Further reading|Further reading]]
+| label4 = Related
+| links4 = [[Hamilton's principle|Hamilton's principle]]<br />[[On Physical Lines of Force|On Physical Lines of Force]]
+}}</includeonly><noinclude>The navigation panel of Noether's theorems, carried by the root, the explainers and the reference pages. Its frame is [[Template:Section map]]. Published from the Principia Machina source; an edit made here is overwritten.</noinclude>

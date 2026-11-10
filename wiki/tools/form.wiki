@@ -1,0 +1,33 @@
+{{DISPLAYTITLE:FORM}}
+'''FORM: Symbolic Manipulation of Very Large Expressions for Quantum Field Theory'''
+[[Category:Principia Machina]] [[Category:Tools]]
+
+''Added to the survey on 2026-10-06 by the [[The Principia Machina/Research Toolkit|Research Toolkit]]'s research pass. The scores below are that pass's assessment from the evidence cited under References, on the survey's four axes and scale; they are not the original survey's (2026-09-26), and no rule of the Principia Machina reads them. See [[The Principia Machina/Tools#The additions of 2026-10-06|the additions]] on the front page.''
+
+== Overview & Architectural Fit ==
+'''FORM''' is a symbolic manipulation system built for expressions too large for memory, which it streams from disk; TFORM runs it in parallel. FORM 5 adds a Feynman-diagram generator based on GRACE, arbitrary-precision floating-point coefficients and polynomial arithmetic from FLINT. It is built for the very large expressions of multi-loop calculations in particle physics.
+
+== Mathematical Evaluation for TPM ==
+* '''Lagrangian / Action (3/10):''' No variational machinery: FORM works after the Feynman rules are fixed.
+* '''Field / PDE (2/10):''' Not a field or PDE tool.
+* '''Relativity (3/10):''' Lorentz and Dirac algebra in ''d'' dimensions, not curved spacetime.
+* '''Quantum / Data (7/10):''' Industrial-scale perturbative quantum-field-theory algebra, including multi-loop work.
+
+== Integration Pipeline ==
+# '''Derive the Feynman rules''' from the Lagrangian, for example with [[The Principia Machina/Tools/FeynCalc|FeynCalc]].
+# '''Generate''' the diagrams with FORM 5's generator, or import them.
+# '''Reduce''' the amplitudes: Dirac traces, colour algebra, tensor reduction, in batch scripts.
+# '''Check numerically''' with arbitrary-precision coefficients at chosen kinematic points.
+
+== Status, Licence and Limits ==
+* '''Status:''' Active. Latest tagged release 5.0.1, 24 June 2024; the FORM 5 paper was posted on 27 January 2026, so check which of its features the build in use carries.
+* '''Licence:''' GPL-3.0.
+* '''Home:''' https://github.com/form-dev/form and https://www.nikhef.nl/~form
+* '''Limits:''' The language is idiosyncratic and favours batch scripts. Interactive exploration is better done in FeynCalc.
+
+== On the Principia Machina ==
+A tool runs only where the sponsor installed and bound it, and what it returns is untrusted input, vetted before use; its numbers are never values of the site's calculator, TPC. An equation it derives is transcribed into the kernel's form grammar before anything checks it, and lands as a RESULT of regime L with EQUATION and ROLE. See [[The Principia Machina/Agent/Tools|Agent/Tools]] and [[The Principia Machina/Tools/Operator's guide|the operator's guide]].
+
+== References ==
+* '''[[The Principia Machina/Research Toolkit/Bibliography#FORM5-2026|FORM5-2026]]''' &ndash; Davies J., Kaneko T., Marinissen C., Ueda T., Vermaseren J.A.M. (2026). FORM Version 5.0. [https://arxiv.org/abs/2601.19982 arXiv:2601.19982].
+* '''[[The Principia Machina/Research Toolkit/Bibliography#FORMREPO|FORMREPO]]''' &ndash; FORM developers. form-dev/form (releases, COPYING). [https://github.com/form-dev/form github.com/form-dev/form].

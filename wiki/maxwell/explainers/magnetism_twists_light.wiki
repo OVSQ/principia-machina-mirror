@@ -1,0 +1,84 @@
+{{DISPLAYTITLE:Magnetism twists light}}
+{{On Physical Lines of Force map}}
+''[[On Physical Lines of Force]] → [[On Physical Lines of Force/Explainers|Explainers]] → Magnetic rotation''
+
+<blockquote>
+'''In one sentence.''' A magnet can turn a beam of light, and Maxwell treated that as proof that magnetism is something spinning rather than something flowing.
+</blockquote>
+
+Part IV, published in February 1862, is the last instalment and the only one that begins from an optical experiment. Maxwell had built a machine of spinning cells to account for magnets and currents. Here he asks whether there is independent evidence that magnetism really involves spinning. He thinks there is one piece, and that it is decisive.
+
+== What Faraday found ==
+
+Light wobbles across the direction it travels, and in ordinary light the wobble takes every direction across the beam at once. Light can be filtered so the wobble keeps to a single plane; light in that condition is called '''polarised''', and the plane it keeps to is the '''plane of polarisation'''.
+
+In 1845 Faraday sent polarised light through a transparent substance, along the lines of magnetic force running through it, and found that the plane of polarisation came out turned. The substance was not doing anything on its own. Take the magnet away and the twist goes away with it.
+
+[[File:OPL-fig-faraday-rotation.svg|thumb|center|620px|Polarised light travelling along the magnetic lines emerges with its plane turned]]
+
+Magnetism was about iron and compass needles; polarisation was about crystals and reflected light. Faraday had joined two subjects that had nothing else to do with one another, and nobody knew how.
+
+== Rotation, not straight-line movement ==
+
+Maxwell's use of the result is an argument about kinds of motion. There are two broad kinds. Things can be carried from one place to another, which is '''translation'''; or things can turn on the spot, which is '''rotation'''. His claim is that electricity is the first kind and magnetism the second, and that Faraday's experiment settles it.
+
+An electric current plainly transfers things in a definite direction. It carries charge from one end of a wire to the other. Pass it through a dissolved compound and it carries the parts of that compound in opposite directions, which is why one substance collects at each electrode. A current has a direction in the strongest sense: reverse it and everything it does is reversed. But a current does not turn the plane of polarised light.
+
+Magnetism is the reverse case on both counts. Its two poles differ only in name. You could swap the words ''north'' and ''south'' throughout every book on magnetism and not a single statement in it would become false. There is no transfer of the sort a current performs. Yet magnetism does produce a genuine turning, as Faraday showed. Rotation, Maxwell concludes, belongs to magnetism.
+
+=== The test that separates the two cases ===
+
+There is an obvious objection. Some substances turn the plane of polarised light with no magnet near — quartz does, and so does turpentine. If matter can do this by itself, why credit the field?
+
+Maxwell points to a difference between the two cases, and it is the sharpest fact on the page. In quartz or turpentine, reversing the light reverses the twist: send the beam back through the same substance the way it came and the twist unwinds. In the magnetic case the direction of the twist is the same whether the light travels north to south or south to north, so a second pass adds to the first instead of cancelling it.
+
+That difference tells you where the effect lives. In quartz the handedness belongs to the substance, which the light meets one way going out and the other coming back. In the magnetic case the handedness is fixed by the magnetic lines and does not care which way the light travels. It is a property not of the material but of the field in it.
+
+=== Thomson's argument ===
+
+Maxwell credits William Thomson with the reasoning that turns this into a claim about rotation.
+
+Consider light whose wobble does not stay in one plane but corkscrews around the direction of travel — '''circularly polarised''' light. Take a right-handed ray of this kind. Its shape in space is the same whether it is moving north or south; all that differs is which way the circling goes. If the medium were sitting still, nothing would tell the two cases apart and they would travel at the same speed. If the medium is already turning, there is something to tell them apart, and they need not.
+
+So a medium at rest cannot produce what Faraday saw. Something in the field must already be in rotation.
+
+== What the spinning cells predicted ==
+
+Maxwell then works out what his model says the size of the twist should depend on. He gets six results, labelled (A) to (F).
+
+{| class="wikitable"
+! &nbsp; !! The rotation is proportional to …
+|-
+| (A) || the thickness of the substance the light passes through
+|-
+| (B) || the part of the magnetic force lying along the ray
+|-
+| (C) || the index of refraction of the substance
+|-
+| (D) || inversely, the square of the wavelength of the light in air
+|-
+| (E) || the mean radius of the vortices
+|-
+| (F) || the capacity for magnetic induction
+|}
+
+Two had already been checked: Maxwell notes that Verdet confirmed (A) and (B) by experiment, and that Verdet found the rotation goes the opposite way in paramagnetic substances.
+
+Result (E) is the interesting one, because it concerns something nobody could see. The cells have a size, and the model says the twist depends on it. Maxwell draws the consequence:
+
+<blockquote>
+The relation (E) between the amount of rotation and the size of the vortices shows that different substances may differ in rotating power independently of any observable difference in other respects. We know nothing of the absolute size of the vortices; and on our hypothesis the optical phenomena are probably the only data for determining their relative size in different substances.
+</blockquote>
+
+That is a fair statement of where the model stood. It had turned an optical measurement into a claim about the hidden structure of matter, with no other way of checking that claim. The vortices did not survive. The argument that magnetism is rotational did.
+
+== Where this is in the paper ==
+
+* [[On Physical Lines of Force/Part IV/Why magnetism must be rotatory|Part IV — Why magnetism must be rotatory]]
+* [[On Physical Lines of Force/Part IV/The six results|Part IV — The six results, (A) to (F)]]
+* [[On Physical Lines of Force/Part IV/What became of the vortices|Part IV — What became of the vortices]]
+* [[On Physical Lines of Force/Modern derivations/Faraday rotation today|Modern: magnetic rotation of the plane of polarisation]]
+
+----
+
+''Next: [[On Physical Lines of Force/Explainers/Two ways to measure electricity|Two ways to measure electricity]] · Previous: [[On Physical Lines of Force/Explainers/How Maxwell found the speed of light|How Maxwell found the speed of light]]''

@@ -1,0 +1,3702 @@
+{
+ "cases": [
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "EQUATION": "D(u, t) = 0",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-1",
+     "ROLE": "EOM(u)"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"EQUATION\":\"D(u, t) = 0\",\"ID\":\"RR-1\",\"ROLE\":\"EOM(u)\",\"STATUS\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT001 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "EQUATION": "D(v, D_) = 0",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-1",
+     "ROLE": "EOM(v)"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"EQUATION\":\"D(v, D_) = 0\",\"ID\":\"RR-1\",\"ROLE\":\"EOM(v)\",\"STATUS\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT002 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "EQUATION": "D(v, t) = -k_s * x / m",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-2",
+     "ROLE": "EOM(v)"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"EQUATION\":\"D(v, t) = -k_s * x / m\",\"ID\":\"RR-2\",\"ROLE\":\"EOM(v)\",\"STATUS\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT003 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "EQUATION": "D(v, t) = 0",
+     "GRADE": "VOID",
+     "ID": "RR-2",
+     "ROLE": "EOM(v)"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"EQUATION\":\"D(v, t) = 0\",\"ID\":\"RR-2\",\"ROLE\":\"EOM(v)\",\"STATUS\":\"VOID\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT004 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "EQUATION": "D(v, t) = g",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-1",
+     "ROLE": "EOM(v)"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"EQUATION\":\"D(v, t) = g\",\"ID\":\"RR-1\",\"ROLE\":\"EOM(v)\",\"STATUS\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT005 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "EQUATION": "D(v, t) == 0",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-1",
+     "ROLE": "EOM(v)"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"EQUATION\":\"D(v, t) == 0\",\"ID\":\"RR-1\",\"ROLE\":\"EOM(v)\",\"STATUS\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT006 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "EQUATION": "D(x, k_s) = v",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-5",
+     "ROLE": "CONSTRAINT"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"EQUATION\":\"D(x, k_s) = v\",\"ID\":\"RR-5\",\"ROLE\":\"CONSTRAINT\",\"STATUS\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT007 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "EQUATION": "D(x, t) = -a_r * x",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-1",
+     "ROLE": "EOM(x)"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"EQUATION\":\"D(x, t) = -a_r * x\",\"ID\":\"RR-1\",\"ROLE\":\"EOM(x)\",\"STATUS\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT008 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "EQUATION": "D(x, t) = v",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-1",
+     "ROLE": "EOM v"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"EQUATION\":\"D(x, t) = v\",\"ID\":\"RR-1\",\"ROLE\":\"EOM v\",\"STATUS\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT009 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "EQUATION": "D(x, t) = v",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-1",
+     "ROLE": "EOM(m)"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"EQUATION\":\"D(x, t) = v\",\"ID\":\"RR-1\",\"ROLE\":\"EOM(m)\",\"STATUS\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT010 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "EQUATION": "D(x, t) = v",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-1",
+     "ROLE": "EOM(x)"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"EQUATION\":\"D(x, t) = v\",\"ID\":\"RR-1\",\"ROLE\":\"EOM(x)\",\"STATUS\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT011 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "EQUATION": "D(x, t) = v",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-1",
+     "ROLE": 5
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"EQUATION\":\"D(x, t) = v\",\"ID\":\"RR-1\",\"ROLE\":5,\"STATUS\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT012 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "EQUATION": "D(x, t) = v",
+     "ID": "RR-4",
+     "ROLE": "EOM(x)",
+     "STATUS": "HELD"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"EQUATION\":\"D(x, t) = v\",\"ID\":\"RR-4\",\"ROLE\":\"EOM(x)\",\"STATUS\":\"HELD\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT013 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "EQUATION": "a = k",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-1",
+     "ROLE": "CONSTRAINT"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"EQUATION\":\"a = k\",\"ID\":\"RR-1\",\"ROLE\":\"CONSTRAINT\",\"STATUS\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT014 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "EQUATION": "b = L_2",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-1",
+     "ROLE": "CONSTRAINT"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"EQUATION\":\"b = L_2\",\"ID\":\"RR-1\",\"ROLE\":\"CONSTRAINT\",\"STATUS\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT015 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "EQUATION": "k_s = m * k_s / m",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-10",
+     "ROLE": "DEFINITION"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"EQUATION\":\"k_s = m * k_s / m\",\"ID\":\"RR-10\",\"ROLE\":\"DEFINITION\",\"STATUS\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT016 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "EQUATION": "m * D(v, t) = -k_s * g",
+     "ID": "RR-1",
+     "ROLE": "EOM(v)",
+     "STATUS": "HELD"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"EQUATION\":\"m * D(v, t) = -k_s * g\",\"ID\":\"RR-1\",\"ROLE\":\"EOM(v)\",\"STATUS\":\"HELD\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT017 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "EQUATION": "m * D(v, t) = -k_s * x",
+     "ID": "RR-1",
+     "ROLE": "EOM(v)",
+     "STATUS": "HELD"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"EQUATION\":\"m * D(v, t) = -k_s * x\",\"ID\":\"RR-1\",\"ROLE\":\"EOM(v)\",\"STATUS\":\"HELD\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT018 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "EQUATION": "m * D(v, t) = -k_s * x",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-1",
+     "ROLE": "EOM(v)"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"EQUATION\":\"m * D(v, t) = -k_s * x\",\"ID\":\"RR-1\",\"ROLE\":\"EOM(v)\",\"STATUS\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT019 EOM lossless (increment 10 x7, increment 11 x7)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "EQUATION": "m * D(v, t) = -k_s * x",
+     "ID": "RR-1",
+     "ROLE": "EOM(v)",
+     "STATUS": "REFUTED"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"EQUATION\":\"m * D(v, t) = -k_s * x\",\"ID\":\"RR-1\",\"ROLE\":\"EOM(v)\",\"STATUS\":\"REFUTED\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT020 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "EQUATION": "m * D(v, t) = -k_s * x",
+     "GRADE": "STRUCK",
+     "ID": "RR-1",
+     "ROLE": "EOM(v)"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"EQUATION\":\"m * D(v, t) = -k_s * x\",\"ID\":\"RR-1\",\"ROLE\":\"EOM(v)\",\"STATUS\":\"STRUCK\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT021 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "EQUATION": "m * D(v, t) = -k_s * x",
+     "GRADE": "VOID",
+     "ID": "RR-1",
+     "ROLE": "EOM(v)"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"EQUATION\":\"m * D(v, t) = -k_s * x\",\"ID\":\"RR-1\",\"ROLE\":\"EOM(v)\",\"STATUS\":\"VOID\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT022 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "EQUATION": "m * D(v, t) = -k_s * x",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-2",
+     "ROLE": "INVARIANT"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"EQUATION\":\"m * D(v, t) = -k_s * x\",\"ID\":\"RR-2\",\"ROLE\":\"INVARIANT\",\"STATUS\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT023 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "EQUATION": "m * D(v, t) = -k_s * x",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-2"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"EQUATION\":\"m * D(v, t) = -k_s * x\",\"ID\":\"RR-2\",\"STATUS\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT024 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "EQUATION": "m * D(v, t) = -k_s * x",
+     "GRADE": "ESTABLISHED",
+     "ID": "RR-3",
+     "ROLE": "EOM(v)"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"EQUATION\":\"m * D(v, t) = -k_s * x\",\"ID\":\"RR-3\",\"ROLE\":\"EOM(v)\",\"STATUS\":\"ESTABLISHED\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT025 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "EQUATION": "m * D(v, t) = -k_s * x",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-9",
+     "ROLE": "EOM(v)"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"EQUATION\":\"m * D(v, t) = -k_s * x\",\"ID\":\"RR-9\",\"ROLE\":\"EOM(v)\",\"STATUS\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT026 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "EQUATION": "x = x_max",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-7",
+     "ROLE": "CONSTRAINT"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"EQUATION\":\"x = x_max\",\"ID\":\"RR-7\",\"ROLE\":\"CONSTRAINT\",\"STATUS\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT027 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "EQUATION": "x = x_max",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-7"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"EQUATION\":\"x = x_max\",\"ID\":\"RR-7\",\"STATUS\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT028 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "EQUATION": "x_max = x_max",
+     "GRADE": "PROVISIONAL",
+     "ID": "AB-3",
+     "ROLE": "CONSTITUTIVE"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"EQUATION\":\"x_max = x_max\",\"ID\":\"AB-3\",\"ROLE\":\"CONSTITUTIVE\",\"STATUS\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT029 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "EQUATION": 5,
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-1",
+     "ROLE": "EOM(v)"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"EQUATION\":5,\"ID\":\"RR-1\",\"ROLE\":\"EOM(v)\",\"STATUS\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT030 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "GRADE": "PROVISIONAL",
+     "ID": "-1"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"ID\":\"-1\",\"STATUS\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT031 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "GRADE": "PROVISIONAL",
+     "ID": "R R-1"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"ID\":\"R R-1\",\"STATUS\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT032 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "GRADE": "PROVISIONAL",
+     "ID": "RR"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"ID\":\"RR\",\"STATUS\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT033 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-0"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"ID\":\"RR-0\",\"STATUS\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT034 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-01"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"ID\":\"RR-01\",\"STATUS\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT035 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "GRADE": "",
+     "ID": "RR-1"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"ID\":\"RR-1\",\"STATUS\":\"\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT036 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ID": "RR-1",
+     "STATUS": "HELD"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"ID\":\"RR-1\",\"STATUS\":\"HELD\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT037 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-1"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"ID\":\"RR-1\",\"STATUS\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT038 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "GRADE": "held",
+     "ID": "RR-1"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"ID\":\"RR-1\",\"STATUS\":\"held\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT039 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "GRADE": 1,
+     "ID": "RR-1"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"ID\":\"RR-1\",\"STATUS\":1}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT040 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ID": "RR-1"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"ID\":\"RR-1\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT041 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-1a"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"ID\":\"RR-1a\",\"STATUS\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT042 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-2",
+     "ROLE": "EOM(v)"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"ID\":\"RR-2\",\"ROLE\":\"EOM(v)\",\"STATUS\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT043 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "GRADE": "held",
+     "ID": "RR-2"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"ID\":\"RR-2\",\"STATUS\":\"held\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT044 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-BIB1"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"ID\":\"RR-BIB1\",\"STATUS\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT045 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "GRADE": "PROVISIONAL",
+     "ID": 1
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"ID\":1,\"STATUS\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT046 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "EOM"
+   },
+   "expected": "[\"OK\",{\"STATUS\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT047 EOM lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "A-1",
+      "TFK-A"
+     ],
+     "AUTHOR": "other",
+     "BLOCK": "B9",
+     "CITES": [],
+     "CLASS": "RESULT",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-8"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"A-1\",\"TFK-A\"],\"author\":\"other\",\"block_id\":\"B9\",\"cites\":[],\"id\":\"RR-8\",\"kind\":\"RESULT\",\"status\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT048 HOLD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "TFK-A"
+     ],
+     "AUTHOR": "other",
+     "BLOCK": "B9",
+     "CITES": [],
+     "CLASS": "RESULT",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-9"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"TFK-A\"],\"author\":\"other\",\"block_id\":\"B9\",\"cites\":[],\"id\":\"RR-9\",\"kind\":\"RESULT\",\"status\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT049 HOLD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "acct",
+     "BLOCK": "B3",
+     "CITES": [
+      "RR-1"
+     ],
+     "CLASS": "CORROBORATION",
+     "GRADE": "PROVISIONAL",
+     "ID": "CO-2",
+     "LANDED_BY": "TPX"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"TPX\",\"block_id\":\"B3\",\"cites\":[\"RR-1\"],\"id\":\"CO-2\",\"kind\":\"CORROBORATION\",\"status\":\"PROVISIONAL\",\"supplied_by\":\"acct\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT050 HOLD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "acct",
+     "BLOCK": "B1",
+     "CITES": [
+      "RR-1"
+     ],
+     "CLASS": "CORROBORATION",
+     "GRADE": "PROVISIONAL",
+     "ID": "CO-3"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"acct\",\"block_id\":\"B1\",\"cites\":[\"RR-1\"],\"id\":\"CO-3\",\"kind\":\"CORROBORATION\",\"status\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT051 HOLD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "acct",
+     "BLOCK": "B1",
+     "CITES": [],
+     "CLASS": "RESULT",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-1"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"acct\",\"block_id\":\"B1\",\"cites\":[],\"id\":\"RR-1\",\"kind\":\"RESULT\",\"status\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT052 HOLD lossless (increment 10 x25, increment 11 x55)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "acct",
+     "BLOCK": "B2",
+     "CITES": "RR-2",
+     "CLASS": "RESULT",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-1"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"acct\",\"block_id\":\"B2\",\"cites\":\"RR-2\",\"id\":\"RR-1\",\"kind\":\"RESULT\",\"status\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT053 HOLD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "acct",
+     "BLOCK": "B2",
+     "CITES": [
+      "RR-2"
+     ],
+     "CLASS": "RESULT",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-1"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"acct\",\"block_id\":\"B2\",\"cites\":[\"RR-2\"],\"id\":\"RR-1\",\"kind\":\"RESULT\",\"status\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT054 HOLD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "acct",
+     "BLOCK": "B2",
+     "CITES": [
+      "RR-2\u200b"
+     ],
+     "CLASS": "RESULT",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-1"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"acct\",\"block_id\":\"B2\",\"cites\":[\"RR-2\u200b\"],\"id\":\"RR-1\",\"kind\":\"RESULT\",\"status\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT055 HOLD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "acct",
+     "BLOCK": "B2",
+     "CITES": [],
+     "CLASS": "ASSUMPTION",
+     "GRADE": "PROVISIONAL",
+     "ID": "A-1"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"acct\",\"block_id\":\"B2\",\"cites\":[],\"id\":\"A-1\",\"kind\":\"ASSUMPTION\",\"status\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT056 HOLD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "acct",
+     "BLOCK": "B2",
+     "CITES": [],
+     "CLASS": "RESULT",
+     "ID": "RR-1",
+     "STATUS": "HELD"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"acct\",\"block_id\":\"B2\",\"cites\":[],\"id\":\"RR-1\",\"kind\":\"RESULT\",\"status\":\"HELD\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT057 HOLD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "acct",
+     "BLOCK": "B2",
+     "CITES": [],
+     "CLASS": "RESULT",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-1",
+     "LANDED_BY": 5
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"acct\",\"block_id\":\"B2\",\"cites\":[],\"id\":\"RR-1\",\"kind\":\"RESULT\",\"status\":\"PROVISIONAL\",\"vetted_by\":5}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT058 HOLD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "acct",
+     "BLOCK": "B2",
+     "CITES": [],
+     "CLASS": "RESULT",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-1"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"acct\",\"block_id\":\"B2\",\"cites\":[],\"id\":\"RR-1\",\"kind\":\"RESULT\",\"status\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT059 HOLD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "acct",
+     "BLOCK": "B2",
+     "CITES": [],
+     "CLASS": "RESULT",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-10"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"acct\",\"block_id\":\"B2\",\"cites\":[],\"id\":\"RR-10\",\"kind\":\"RESULT\",\"status\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT060 HOLD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "acct",
+     "BLOCK": "B2",
+     "CITES": [],
+     "CLASS": "RESULT",
+     "GRADE": "ESTABLISHED",
+     "ID": "RR-2"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"acct\",\"block_id\":\"B2\",\"cites\":[],\"id\":\"RR-2\",\"kind\":\"RESULT\",\"status\":\"ESTABLISHED\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT061 HOLD lossless (increment 10 x5, increment 11 x7)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "acct",
+     "BLOCK": "B2",
+     "CITES": [],
+     "CLASS": "RESULT",
+     "ID": "RR-2",
+     "STATUS": "HELD"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"acct\",\"block_id\":\"B2\",\"cites\":[],\"id\":\"RR-2\",\"kind\":\"RESULT\",\"status\":\"HELD\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT062 HOLD lossless (increment 10 x20, increment 11 x48)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "acct",
+     "BLOCK": "B2",
+     "CITES": [],
+     "CLASS": "RESULT",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-2"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"acct\",\"block_id\":\"B2\",\"cites\":[],\"id\":\"RR-2\",\"kind\":\"RESULT\",\"status\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT063 HOLD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "acct",
+     "BLOCK": "B2",
+     "CITES": [],
+     "CLASS": "RESULT",
+     "ID": "RR-2",
+     "STATUS": "REFUTED"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"acct\",\"block_id\":\"B2\",\"cites\":[],\"id\":\"RR-2\",\"kind\":\"RESULT\",\"status\":\"REFUTED\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT064 HOLD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "acct",
+     "BLOCK": "B2",
+     "CITES": {},
+     "CLASS": "RESULT",
+     "GRADE": "ESTABLISHED",
+     "ID": "RR-2"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"acct\",\"block_id\":\"B2\",\"cites\":{},\"id\":\"RR-2\",\"kind\":\"RESULT\",\"status\":\"ESTABLISHED\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT065 HOLD lossless (increment 10 x0, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "acct",
+     "BLOCK": "B3",
+     "CITES": [
+      "RR-1"
+     ],
+     "CLASS": "CORROBORATION",
+     "GRADE": "PROVISIONAL",
+     "ID": "CO-1"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"acct\",\"block_id\":\"B3\",\"cites\":[\"RR-1\"],\"id\":\"CO-1\",\"kind\":\"CORROBORATION\",\"status\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT066 HOLD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "acct",
+     "BLOCK": "B3",
+     "CITES": [],
+     "CLASS": "RESULT",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-1"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"acct\",\"block_id\":\"B3\",\"cites\":[],\"id\":\"RR-1\",\"kind\":\"RESULT\",\"status\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT067 HOLD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "acct",
+     "BLOCK": "B4",
+     "CITES": [
+      "RR-3"
+     ],
+     "CLASS": "RESULT",
+     "ID": "RR-4",
+     "STATUS": "HELD"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"acct\",\"block_id\":\"B4\",\"cites\":[\"RR-3\"],\"id\":\"RR-4\",\"kind\":\"RESULT\",\"status\":\"HELD\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT068 HOLD lossless (increment 10 x20, increment 11 x48)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "acct",
+     "BLOCK": "B4",
+     "CITES": [
+      "RR-3"
+     ],
+     "CLASS": "RESULT",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-4"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"acct\",\"block_id\":\"B4\",\"cites\":[\"RR-3\"],\"id\":\"RR-4\",\"kind\":\"RESULT\",\"status\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT069 HOLD lossless (increment 10 x5, increment 11 x7)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "co",
+     "BLOCK": "B3",
+     "CITES": [],
+     "CLASS": "RESULT",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-3",
+     "LANDED_BY": "acct"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"co\",\"block_id\":\"B3\",\"cites\":[],\"id\":\"RR-3\",\"kind\":\"RESULT\",\"status\":\"PROVISIONAL\",\"vetted_by\":\"acct\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT070 HOLD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "co",
+     "BLOCK": "B3",
+     "CITES": [],
+     "CLASS": "RESULT",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-4",
+     "LANDED_BY": "lead2"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"co\",\"block_id\":\"B3\",\"cites\":[],\"id\":\"RR-4\",\"kind\":\"RESULT\",\"status\":\"PROVISIONAL\",\"vetted_by\":\"lead2\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT071 HOLD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "co",
+     "BLOCK": "B7",
+     "CITES": [],
+     "CLASS": "RESULT",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-1",
+     "LANDED_BY": "acct",
+     "VETTED_IN": "B3"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"co\",\"block_id\":\"B7\",\"cites\":[],\"id\":\"RR-1\",\"kind\":\"RESULT\",\"status\":\"PROVISIONAL\",\"vetted_by\":\"acct\",\"vetted_in\":\"B3\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT072 HOLD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "co",
+     "BLOCK": "B7",
+     "CITES": [],
+     "CLASS": "RESULT",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-2",
+     "LANDED_BY": "acct",
+     "VETTED_IN": "B8"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"co\",\"block_id\":\"B7\",\"cites\":[],\"id\":\"RR-2\",\"kind\":\"RESULT\",\"status\":\"PROVISIONAL\",\"vetted_by\":\"acct\",\"vetted_in\":\"B8\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT073 HOLD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "other",
+     "BLOCK": "B3",
+     "CITES": [
+      "RR-1"
+     ],
+     "CLASS": "CORROBORATION",
+     "GRADE": "PROVISIONAL",
+     "ID": "CO-4"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"other\",\"block_id\":\"B3\",\"cites\":[\"RR-1\"],\"id\":\"CO-4\",\"kind\":\"CORROBORATION\",\"status\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT074 HOLD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "other",
+     "BLOCK": "B3",
+     "CITES": [],
+     "CLASS": "RESULT",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-3"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"other\",\"block_id\":\"B3\",\"cites\":[],\"id\":\"RR-3\",\"kind\":\"RESULT\",\"status\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT075 HOLD lossless (increment 10 x25, increment 11 x55)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "other",
+     "BLOCK": "B9",
+     "CITES": [
+      "RR-1"
+     ],
+     "CLASS": "RESULT",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-2"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"other\",\"block_id\":\"B9\",\"cites\":[\"RR-1\"],\"id\":\"RR-2\",\"kind\":\"RESULT\",\"status\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT076 HOLD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "other",
+     "BLOCK": "B9",
+     "CITES": [
+      "RR-1"
+     ],
+     "CLASS": "RESULT",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-5"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"other\",\"block_id\":\"B9\",\"cites\":[\"RR-1\"],\"id\":\"RR-5\",\"kind\":\"RESULT\",\"status\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT077 HOLD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "other",
+     "BLOCK": "B9",
+     "CITES": [
+      "RR-1"
+     ],
+     "CLASS": "RESULT",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-7"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"other\",\"block_id\":\"B9\",\"cites\":[\"RR-1\"],\"id\":\"RR-7\",\"kind\":\"RESULT\",\"status\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT078 HOLD lossless (increment 10 x24, increment 11 x54)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "other",
+     "BLOCK": "B9",
+     "CITES": [
+      "RR-10"
+     ],
+     "CLASS": "RESULT",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-1"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"other\",\"block_id\":\"B9\",\"cites\":[\"RR-10\"],\"id\":\"RR-1\",\"kind\":\"RESULT\",\"status\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT079 HOLD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "other",
+     "BLOCK": "B9",
+     "CITES": [
+      "RR-2"
+     ],
+     "CLASS": "RESULT",
+     "GRADE": "ESTABLISHED",
+     "ID": "RR-3"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"other\",\"block_id\":\"B9\",\"cites\":[\"RR-2\"],\"id\":\"RR-3\",\"kind\":\"RESULT\",\"status\":\"ESTABLISHED\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT080 HOLD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "other",
+     "BLOCK": "B9",
+     "CITES": [
+      "RR-2"
+     ],
+     "CLASS": "RESULT",
+     "ID": "RR-5",
+     "STATUS": "HELD"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"other\",\"block_id\":\"B9\",\"cites\":[\"RR-2\"],\"id\":\"RR-5\",\"kind\":\"RESULT\",\"status\":\"HELD\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT081 HOLD lossless (increment 10 x19, increment 11 x47)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "other",
+     "BLOCK": "B9",
+     "CITES": [
+      "RR-2"
+     ],
+     "CLASS": "RESULT",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-5"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"other\",\"block_id\":\"B9\",\"cites\":[\"RR-2\"],\"id\":\"RR-5\",\"kind\":\"RESULT\",\"status\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT082 HOLD lossless (increment 10 x5, increment 11 x7)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "other",
+     "BLOCK": "B9",
+     "CITES": [
+      "RR-3"
+     ],
+     "CLASS": "RESULT",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-3"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"other\",\"block_id\":\"B9\",\"cites\":[\"RR-3\"],\"id\":\"RR-3\",\"kind\":\"RESULT\",\"status\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT083 HOLD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "other",
+     "BLOCK": "B9",
+     "CITES": [
+      "RR-5"
+     ],
+     "CLASS": "RESULT",
+     "ID": "RR-6",
+     "STATUS": "HELD"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"other\",\"block_id\":\"B9\",\"cites\":[\"RR-5\"],\"id\":\"RR-6\",\"kind\":\"RESULT\",\"status\":\"HELD\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT084 HOLD lossless (increment 10 x19, increment 11 x47)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "other",
+     "BLOCK": "B9",
+     "CITES": [
+      "RR-5"
+     ],
+     "CLASS": "RESULT",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-6"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"other\",\"block_id\":\"B9\",\"cites\":[\"RR-5\"],\"id\":\"RR-6\",\"kind\":\"RESULT\",\"status\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT085 HOLD lossless (increment 10 x5, increment 11 x7)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "other",
+     "BLOCK": "B9",
+     "CITES": [],
+     "CLASS": "RESULT",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-1"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"author\":\"other\",\"block_id\":\"B9\",\"cites\":[],\"id\":\"RR-1\",\"kind\":\"RESULT\",\"status\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT086 HOLD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "AUTHOR": "acct",
+     "BLOCK": "B2",
+     "CLASS": "RESULT",
+     "ID": "RR-1"
+    },
+    "view": "HOLD"
+   },
+   "expected": "[\"OK\",{\"author\":\"acct\",\"block_id\":\"B2\",\"id\":\"RR-1\",\"kind\":\"RESULT\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT087 HOLD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-1",
+     "LITERATURE": [
+      "RR-BIB1",
+      "RR-BIB1"
+     ]
+    },
+    "view": "LITERATURE"
+   },
+   "expected": "[\"OK\",{\"id\":\"RR-1\",\"literature\":[\"RR-BIB1\",\"RR-BIB1\"],\"status\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT088 LITERATURE lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-1",
+     "LITERATURE": [
+      "RR-BIB1",
+      "RR-BIB3"
+     ]
+    },
+    "view": "LITERATURE"
+   },
+   "expected": "[\"OK\",{\"id\":\"RR-1\",\"literature\":[\"RR-BIB1\",\"RR-BIB3\"],\"status\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT089 LITERATURE lossless (increment 10 x7, increment 11 x7)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-1",
+     "LITERATURE": [
+      "RR-BIB9"
+     ]
+    },
+    "view": "LITERATURE"
+   },
+   "expected": "[\"OK\",{\"id\":\"RR-1\",\"literature\":[\"RR-BIB9\"],\"status\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT090 LITERATURE lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-1",
+     "LITERATURE": []
+    },
+    "view": "LITERATURE"
+   },
+   "expected": "[\"OK\",{\"id\":\"RR-1\",\"literature\":[],\"status\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT091 LITERATURE lossless (increment 10 x2, increment 11 x2)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ID": "RR-1",
+     "LITERATURE": []
+    },
+    "view": "LITERATURE"
+   },
+   "expected": "[\"OK\",{\"id\":\"RR-1\",\"literature\":[]}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT092 LITERATURE lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "GRADE": "ESTABLISHED",
+     "ID": "RR-10",
+     "LITERATURE": [
+      "RR-BIB5",
+      "RR-BIB2"
+     ]
+    },
+    "view": "LITERATURE"
+   },
+   "expected": "[\"OK\",{\"id\":\"RR-10\",\"literature\":[\"RR-BIB5\",\"RR-BIB2\"],\"status\":\"ESTABLISHED\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT093 LITERATURE lossless (increment 10 x8, increment 11 x8)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "GRADE": "STRUCK",
+     "ID": "RR-2",
+     "LITERATURE": [
+      "RR-BIB2"
+     ]
+    },
+    "view": "LITERATURE"
+   },
+   "expected": "[\"OK\",{\"id\":\"RR-2\",\"literature\":[\"RR-BIB2\"],\"status\":\"STRUCK\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT094 LITERATURE lossless (increment 10 x7, increment 11 x7)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ID": "RR-3",
+     "LITERATURE": [
+      "RR-BIB5"
+     ],
+     "STATUS": "HELD"
+    },
+    "view": "LITERATURE"
+   },
+   "expected": "[\"OK\",{\"id\":\"RR-3\",\"literature\":[\"RR-BIB5\"],\"status\":\"HELD\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT095 LITERATURE lossless (increment 10 x7, increment 11 x7)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ID": "RR-4",
+     "LITERATURE": [
+      "RR-BIB1"
+     ],
+     "STATUS": "REFUTED"
+    },
+    "view": "LITERATURE"
+   },
+   "expected": "[\"OK\",{\"id\":\"RR-4\",\"literature\":[\"RR-BIB1\"],\"status\":\"REFUTED\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT096 LITERATURE lossless (increment 10 x7, increment 11 x7)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-5",
+     "LITERATURE": [
+      "RR-BIB3"
+     ]
+    },
+    "view": "LITERATURE"
+   },
+   "expected": "[\"OK\",{\"id\":\"RR-5\",\"literature\":[\"RR-BIB3\"],\"status\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT097 LITERATURE lossless (increment 10 x7, increment 11 x7)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-6",
+     "LITERATURE": []
+    },
+    "view": "LITERATURE"
+   },
+   "expected": "[\"OK\",{\"id\":\"RR-6\",\"literature\":[],\"status\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT098 LITERATURE lossless (increment 10 x7, increment 11 x7)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-7",
+     "LITERATURE": [
+      "RR-BIB4"
+     ]
+    },
+    "view": "LITERATURE"
+   },
+   "expected": "[\"OK\",{\"id\":\"RR-7\",\"literature\":[\"RR-BIB4\"],\"status\":\"PROVISIONAL\"}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT099 LITERATURE lossless (increment 10 x8, increment 11 x8)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "VALUE": "-0"
+    },
+    "view": "PROBE_L"
+   },
+   "expected": "[\"OK\",{\"finding\":{\"type\":\"DECIMAL\",\"value\":\"-0\"}}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT100 PROBE_L lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "VALUE": "-5e-2"
+    },
+    "view": "PROBE_L"
+   },
+   "expected": "[\"OK\",{\"finding\":{\"type\":\"DECIMAL\",\"value\":\"-5e-2\"}}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT101 PROBE_L lossless (increment 10 x2, increment 11 x2)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "VALUE": "0"
+    },
+    "view": "PROBE_L"
+   },
+   "expected": "[\"OK\",{\"finding\":{\"type\":\"DECIMAL\",\"value\":\"0\"}}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT102 PROBE_L lossless (increment 10 x3, increment 11 x3)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "VALUE": "05"
+    },
+    "view": "PROBE_L"
+   },
+   "expected": "[\"OK\",{\"finding\":{\"type\":\"DECIMAL\",\"value\":\"05\"}}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT103 PROBE_L lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "VALUE": "1500"
+    },
+    "view": "PROBE_L"
+   },
+   "expected": "[\"OK\",{\"finding\":{\"type\":\"DECIMAL\",\"value\":\"1500\"}}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT104 PROBE_L lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "VALUE": "15e2"
+    },
+    "view": "PROBE_L"
+   },
+   "expected": "[\"OK\",{\"finding\":{\"type\":\"DECIMAL\",\"value\":\"15e2\"}}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT105 PROBE_L lossless (increment 10 x4, increment 11 x4)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "VALUE": "16e2"
+    },
+    "view": "PROBE_L"
+   },
+   "expected": "[\"OK\",{\"finding\":{\"type\":\"DECIMAL\",\"value\":\"16e2\"}}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT106 PROBE_L lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "VALUE": "5"
+    },
+    "view": "PROBE_L"
+   },
+   "expected": "[\"OK\",{\"finding\":{\"type\":\"DECIMAL\",\"value\":\"5\"}}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT107 PROBE_L lossless (increment 10 x3, increment 11 x3)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "VALUE": "5e0"
+    },
+    "view": "PROBE_L"
+   },
+   "expected": "[\"OK\",{\"finding\":{\"type\":\"DECIMAL\",\"value\":\"5e0\"}}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT108 PROBE_L lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {},
+    "view": "PROBE_L"
+   },
+   "expected": "[\"OK\",{}]",
+   "fn": "record_view",
+   "harness": {
+    "finding": {
+     "type": "PROSE",
+     "value": "5"
+    }
+   },
+   "name": "RT109 PROBE_L whole (increment 10 x2, increment 11 x2)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "STATEMENT": "5"
+    },
+    "view": "PROBE_L"
+   },
+   "expected": "[\"OK\",{\"finding\":{\"type\":\"TEXT\",\"value\":\"5\"}}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT110 PROBE_L lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "STATEMENT": "a\nb"
+    },
+    "view": "PROBE_L"
+   },
+   "expected": "[\"OK\",{\"finding\":{\"type\":\"TEXT\",\"value\":\"a\\u000ab\"}}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT111 PROBE_L lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "STATEMENT": "a\r\nb"
+    },
+    "view": "PROBE_L"
+   },
+   "expected": "[\"OK\",{\"finding\":{\"type\":\"TEXT\",\"value\":\"a\\u000d\\u000ab\"}}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT112 PROBE_L lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "STATEMENT": "a|b\nc"
+    },
+    "view": "PROBE_L"
+   },
+   "expected": "[\"OK\",{\"finding\":{\"type\":\"TEXT\",\"value\":\"a|b\\u000ac\"}}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT113 PROBE_L lossless (increment 10 x2, increment 11 x2)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "STATEMENT": "caf\u00e9"
+    },
+    "view": "PROBE_L"
+   },
+   "expected": "[\"OK\",{\"finding\":{\"type\":\"TEXT\",\"value\":\"caf\u00e9\"}}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT114 PROBE_L lossless (increment 10 x3, increment 11 x3)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "STATEMENT": "cafe\u0301"
+    },
+    "view": "PROBE_L"
+   },
+   "expected": "[\"OK\",{\"finding\":{\"type\":\"TEXT\",\"value\":\"cafe\u0301\"}}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT115 PROBE_L lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "STATEMENT": "x = 1"
+    },
+    "view": "PROBE_L"
+   },
+   "expected": "[\"OK\",{\"finding\":{\"type\":\"TEXT\",\"value\":\"x = 1\"}}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT116 PROBE_L lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "STATEMENT": "x=1"
+    },
+    "view": "PROBE_L"
+   },
+   "expected": "[\"OK\",{\"finding\":{\"type\":\"TEXT\",\"value\":\"x=1\"}}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT117 PROBE_L lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "TFK-1",
+      "b"
+     ],
+     "CITES": [],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"TFK-1\",\"b\"],\"cites\":[],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT118 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "c"
+     ],
+     "CITES": [],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"c\"],\"cites\":[],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT119 PROBE_LOAD lossless (increment 10 x4, increment 11 x4)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n0"
+     ],
+     "CITES": [
+      "n0"
+     ],
+     "GRADE": "WITHDRAWN"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n0\"],\"cites\":[\"n0\"],\"standing\":false}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT120 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n0"
+     ],
+     "CITES": [
+      "n1"
+     ],
+     "GRADE": "WITHDRAWN"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n0\"],\"cites\":[\"n1\"],\"standing\":false}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT121 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n0"
+     ],
+     "CITES": [
+      "n2"
+     ],
+     "GRADE": "WITHDRAWN"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n0\"],\"cites\":[\"n2\"],\"standing\":false}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT122 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n0"
+     ],
+     "CITES": [
+      "n5"
+     ],
+     "GRADE": "WITHDRAWN"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n0\"],\"cites\":[\"n5\"],\"standing\":false}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT123 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n0"
+     ],
+     "CITES": [
+      "n6"
+     ],
+     "GRADE": "WITHDRAWN"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n0\"],\"cites\":[\"n6\"],\"standing\":false}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT124 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n0"
+     ],
+     "CITES": [
+      "n7"
+     ],
+     "GRADE": "WITHDRAWN"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n0\"],\"cites\":[\"n7\"],\"standing\":false}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT125 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n1"
+     ],
+     "CITES": [
+      "n0"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n1\"],\"cites\":[\"n0\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT126 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n1"
+     ],
+     "CITES": [
+      "n1"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n1\"],\"cites\":[\"n1\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT127 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n1"
+     ],
+     "CITES": [
+      "n2"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n1\"],\"cites\":[\"n2\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT128 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n1"
+     ],
+     "CITES": [
+      "n3"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n1\"],\"cites\":[\"n3\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT129 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n1"
+     ],
+     "CITES": [
+      "n4"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n1\"],\"cites\":[\"n4\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT130 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n1"
+     ],
+     "CITES": [
+      "n5"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n1\"],\"cites\":[\"n5\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT131 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n2"
+     ],
+     "CITES": [
+      "n0"
+     ],
+     "GRADE": "WITHDRAWN"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n2\"],\"cites\":[\"n0\"],\"standing\":false}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT132 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n2"
+     ],
+     "CITES": [
+      "n3"
+     ],
+     "GRADE": "WITHDRAWN"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n2\"],\"cites\":[\"n3\"],\"standing\":false}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT133 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n2"
+     ],
+     "CITES": [
+      "n4"
+     ],
+     "GRADE": "WITHDRAWN"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n2\"],\"cites\":[\"n4\"],\"standing\":false}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT134 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n2"
+     ],
+     "CITES": [
+      "n5"
+     ],
+     "GRADE": "WITHDRAWN"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n2\"],\"cites\":[\"n5\"],\"standing\":false}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT135 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n2"
+     ],
+     "CITES": [
+      "n6"
+     ],
+     "GRADE": "WITHDRAWN"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n2\"],\"cites\":[\"n6\"],\"standing\":false}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT136 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n2"
+     ],
+     "CITES": [
+      "n7"
+     ],
+     "GRADE": "WITHDRAWN"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n2\"],\"cites\":[\"n7\"],\"standing\":false}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT137 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n3"
+     ],
+     "CITES": [
+      "n0"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n3\"],\"cites\":[\"n0\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT138 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n3"
+     ],
+     "CITES": [
+      "n1"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n3\"],\"cites\":[\"n1\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT139 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n3"
+     ],
+     "CITES": [
+      "n2"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n3\"],\"cites\":[\"n2\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT140 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n3"
+     ],
+     "CITES": [
+      "n3"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n3\"],\"cites\":[\"n3\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT141 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n3"
+     ],
+     "CITES": [
+      "n6"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n3\"],\"cites\":[\"n6\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT142 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n3"
+     ],
+     "CITES": [
+      "n7"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n3\"],\"cites\":[\"n7\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT143 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n4"
+     ],
+     "CITES": [
+      "n1"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n4\"],\"cites\":[\"n1\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT144 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n4"
+     ],
+     "CITES": [
+      "n2"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n4\"],\"cites\":[\"n2\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT145 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n4"
+     ],
+     "CITES": [
+      "n3"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n4\"],\"cites\":[\"n3\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT146 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n4"
+     ],
+     "CITES": [
+      "n4"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n4\"],\"cites\":[\"n4\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT147 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n4"
+     ],
+     "CITES": [
+      "n5"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n4\"],\"cites\":[\"n5\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT148 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n4"
+     ],
+     "CITES": [
+      "n6"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n4\"],\"cites\":[\"n6\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT149 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n5"
+     ],
+     "CITES": [
+      "n0"
+     ],
+     "GRADE": "WITHDRAWN"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n5\"],\"cites\":[\"n0\"],\"standing\":false}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT150 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n5"
+     ],
+     "CITES": [
+      "n1"
+     ],
+     "GRADE": "WITHDRAWN"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n5\"],\"cites\":[\"n1\"],\"standing\":false}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT151 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n5"
+     ],
+     "CITES": [
+      "n4"
+     ],
+     "GRADE": "WITHDRAWN"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n5\"],\"cites\":[\"n4\"],\"standing\":false}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT152 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n5"
+     ],
+     "CITES": [
+      "n5"
+     ],
+     "GRADE": "WITHDRAWN"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n5\"],\"cites\":[\"n5\"],\"standing\":false}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT153 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n5"
+     ],
+     "CITES": [
+      "n6"
+     ],
+     "GRADE": "WITHDRAWN"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n5\"],\"cites\":[\"n6\"],\"standing\":false}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT154 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n5"
+     ],
+     "CITES": [
+      "n7"
+     ],
+     "GRADE": "WITHDRAWN"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n5\"],\"cites\":[\"n7\"],\"standing\":false}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT155 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n6"
+     ],
+     "CITES": [
+      "n0"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n6\"],\"cites\":[\"n0\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT156 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n6"
+     ],
+     "CITES": [
+      "n1"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n6\"],\"cites\":[\"n1\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT157 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n6"
+     ],
+     "CITES": [
+      "n2"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n6\"],\"cites\":[\"n2\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT158 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n6"
+     ],
+     "CITES": [
+      "n3"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n6\"],\"cites\":[\"n3\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT159 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n6"
+     ],
+     "CITES": [
+      "n4"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n6\"],\"cites\":[\"n4\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT160 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n6"
+     ],
+     "CITES": [
+      "n7"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n6\"],\"cites\":[\"n7\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT161 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n7"
+     ],
+     "CITES": [
+      "n2"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n7\"],\"cites\":[\"n2\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT162 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n7"
+     ],
+     "CITES": [
+      "n3"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n7\"],\"cites\":[\"n3\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT163 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n7"
+     ],
+     "CITES": [
+      "n4"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n7\"],\"cites\":[\"n4\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT164 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n7"
+     ],
+     "CITES": [
+      "n5"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n7\"],\"cites\":[\"n5\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT165 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n7"
+     ],
+     "CITES": [
+      "n6"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n7\"],\"cites\":[\"n6\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT166 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "n7"
+     ],
+     "CITES": [
+      "n7"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"n7\"],\"cites\":[\"n7\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT167 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "CITES": "b",
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"cites\":\"b\",\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT168 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "CITES": [
+      ""
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"cites\":[\"\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT169 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "CITES": [
+      "a"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"cites\":[\"a\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT170 PROBE_LOAD lossless (increment 10 x7, increment 11 x7)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "CITES": [
+      "a|b"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"cites\":[\"a|b\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT171 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "CITES": [
+      "b",
+      "c"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"cites\":[\"b\",\"c\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT172 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "CITES": [
+      "b"
+     ],
+     "GRADE": "WITHDRAWN"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"cites\":[\"b\"],\"standing\":false}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT173 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "CITES": [
+      "b"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"cites\":[\"b\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT174 PROBE_LOAD lossless (increment 10 x5, increment 11 x5)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "CITES": [
+      "c"
+     ],
+     "GRADE": "WITHDRAWN"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"cites\":[\"c\"],\"standing\":false}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT175 PROBE_LOAD lossless (increment 10 x4, increment 11 x4)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "CITES": [
+      "d"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"cites\":[\"d\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT176 PROBE_LOAD lossless (increment 10 x2, increment 11 x2)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "CITES": [
+      "r1"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"cites\":[\"r1\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT177 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "CITES": [
+      "r2"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"cites\":[\"r2\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT178 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "CITES": [
+      "r3"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"cites\":[\"r3\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT179 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "CITES": [
+      "r4"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"cites\":[\"r4\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT180 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "CITES": [
+      "r5"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"cites\":[\"r5\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT181 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "CITES": [
+      "x"
+     ],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"cites\":[\"x\"],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT182 PROBE_LOAD lossless (increment 10 x3, increment 11 x3)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "CITES": []
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"cites\":[]}]",
+   "fn": "record_view",
+   "harness": {
+    "standing": 1
+   },
+   "name": "RT183 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "CITES": [],
+     "GRADE": "PROVISIONAL"
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"cites\":[],\"standing\":true}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT184 PROBE_LOAD lossless (increment 10 x14, increment 11 x14)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "CITES": []
+    },
+    "view": "PROBE_LOAD"
+   },
+   "expected": "[\"OK\",{\"cites\":[]}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT185 PROBE_LOAD lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {},
+    "view": "PROBE_M"
+   },
+   "expected": "[\"OK\",{}]",
+   "fn": "record_view",
+   "harness": {
+    "finding": {
+     "type": "TEXT",
+     "value": "5"
+    }
+   },
+   "name": "RT186 PROBE_M whole (increment 10 x2, increment 11 x2)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {},
+    "view": "PROBE_M"
+   },
+   "expected": "[\"OK\",{}]",
+   "fn": "record_view",
+   "harness": {
+    "finding": {
+     "type": "TEXT",
+     "value": "x"
+    }
+   },
+   "name": "RT187 PROBE_M whole (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "UNIT": "m",
+     "U_C": 0.0,
+     "VALUE": 1.0
+    },
+    "view": "PROBE_M"
+   },
+   "expected": "[\"OK\",{\"u\":0,\"unit\":\"m\",\"x\":1}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT188 PROBE_M lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "UNIT": "m",
+     "U_C": 0.05,
+     "VALUE": 1.05
+    },
+    "view": "PROBE_M"
+   },
+   "expected": "[\"OK\",{\"u\":0.05,\"unit\":\"m\",\"x\":1.05}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT189 PROBE_M lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "UNIT": "m",
+     "U_C": 0.1,
+     "VALUE": 1.0
+    },
+    "view": "PROBE_M"
+   },
+   "expected": "[\"OK\",{\"u\":0.1,\"unit\":\"m\",\"x\":1}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT190 PROBE_M lossless (increment 10 x19, increment 11 x19)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "UNIT": "m",
+     "U_C": 0.1,
+     "VALUE": 1.15
+    },
+    "view": "PROBE_M"
+   },
+   "expected": "[\"OK\",{\"u\":0.1,\"unit\":\"m\",\"x\":1.15}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT191 PROBE_M lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "UNIT": "m",
+     "U_C": 0.1,
+     "VALUE": 1.3
+    },
+    "view": "PROBE_M"
+   },
+   "expected": "[\"OK\",{\"u\":0.1,\"unit\":\"m\",\"x\":1.3}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT192 PROBE_M lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "UNIT": "m",
+     "U_C": 0.1,
+     "VALUE": 1.4
+    },
+    "view": "PROBE_M"
+   },
+   "expected": "[\"OK\",{\"u\":0.1,\"unit\":\"m\",\"x\":1.4}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT193 PROBE_M lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "UNIT": "m",
+     "U_C": 0.1,
+     "VALUE": 1.5
+    },
+    "view": "PROBE_M"
+   },
+   "expected": "[\"OK\",{\"u\":0.1,\"unit\":\"m\",\"x\":1.5}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT194 PROBE_M lossless (increment 10 x3, increment 11 x3)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "UNIT": "m|s",
+     "U_C": 0.1,
+     "VALUE": 1.0
+    },
+    "view": "PROBE_M"
+   },
+   "expected": "[\"OK\",{\"u\":0.1,\"unit\":\"m|s\",\"x\":1}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT195 PROBE_M lossless (increment 10 x2, increment 11 x2)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "UNIT": "m",
+     "U_C": 0.1000001,
+     "VALUE": 1.0
+    },
+    "view": "PROBE_M"
+   },
+   "expected": "[\"OK\",{\"u\":0.1000001,\"unit\":\"m\",\"x\":1}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT196 PROBE_M lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "UNIT": "m",
+     "U_C": 0.19,
+     "VALUE": 1.05
+    },
+    "view": "PROBE_M"
+   },
+   "expected": "[\"OK\",{\"u\":0.19,\"unit\":\"m\",\"x\":1.05}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT197 PROBE_M lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "UNIT": "m",
+     "U_C": 0.2,
+     "VALUE": 1.15
+    },
+    "view": "PROBE_M"
+   },
+   "expected": "[\"OK\",{\"u\":0.2,\"unit\":\"m\",\"x\":1.15}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT198 PROBE_M lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "UNIT": "m",
+     "U_C": 0.5,
+     "VALUE": -2.0
+    },
+    "view": "PROBE_M"
+   },
+   "expected": "[\"OK\",{\"u\":0.5,\"unit\":\"m\",\"x\":-2}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT199 PROBE_M lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "UNIT": "m",
+     "U_C": 0.5,
+     "VALUE": -2.5
+    },
+    "view": "PROBE_M"
+   },
+   "expected": "[\"OK\",{\"u\":0.5,\"unit\":\"m\",\"x\":-2.5}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT200 PROBE_M lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "UNIT": "cm",
+     "U_C": 10.0,
+     "VALUE": 100.0
+    },
+    "view": "PROBE_M"
+   },
+   "expected": "[\"OK\",{\"u\":10,\"unit\":\"cm\",\"x\":100}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT201 PROBE_M lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "UNIT": "m",
+     "U_C": 3.0,
+     "VALUE": 0.0
+    },
+    "view": "PROBE_M"
+   },
+   "expected": "[\"OK\",{\"u\":3,\"unit\":\"m\",\"x\":0}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT202 PROBE_M lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "UNIT": "m",
+     "U_C": 4.0,
+     "VALUE": 10.0
+    },
+    "view": "PROBE_M"
+   },
+   "expected": "[\"OK\",{\"u\":4,\"unit\":\"m\",\"x\":10}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT203 PROBE_M lossless (increment 10 x1, increment 11 x1)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "a1",
+      "a3"
+     ],
+     "CITES": [
+      "A",
+      "B"
+     ],
+     "DERIVATION": {
+      "STEPS": 1
+     }
+    },
+    "view": "STRIKE"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"a1\",\"a3\"],\"cites\":[\"A\",\"B\"],\"steps\":1}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT204 STRIKE lossless (increment 10 x4, increment 11 x4)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "a1"
+     ],
+     "CITES": [],
+     "DERIVATION": {
+      "STEPS": 2
+     }
+    },
+    "view": "STRIKE"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"a1\"],\"cites\":[],\"steps\":2}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT205 STRIKE lossless (increment 10 x4, increment 11 x4)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "a2"
+     ],
+     "CITES": [
+      "A"
+     ],
+     "DERIVATION": {
+      "STEPS": 3
+     }
+    },
+    "view": "STRIKE"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"a2\"],\"cites\":[\"A\"],\"steps\":3}]",
+   "fn": "record_view",
+   "harness": {},
+   "name": "RT206 STRIKE lossless (increment 10 x4, increment 11 x4)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "A1",
+      "A2"
+     ],
+     "CITES": [],
+     "DERIVATION": {
+      "STEPS": 1
+     },
+     "DOMAIN": "MAIN",
+     "REGIME": "L"
+    },
+    "view": "SUITE"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"A1\",\"A2\"],\"cites\":[],\"domain\":\"MAIN\",\"regime\":\"L\",\"steps\":1}]",
+   "fn": "record_view",
+   "harness": {
+    "sr1_fail": false
+   },
+   "name": "RT207 SUITE lossless (increment 10 x46, increment 11 x52)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "A1"
+     ],
+     "CITES": [],
+     "DERIVATION": {
+      "STEPS": 3
+     },
+     "DOMAIN": "MAIN",
+     "REGIME": "L"
+    },
+    "view": "SUITE"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"A1\"],\"cites\":[],\"domain\":\"MAIN\",\"regime\":\"L\",\"steps\":3}]",
+   "fn": "record_view",
+   "harness": {
+    "sr1_fail": false
+   },
+   "name": "RT208 SUITE lossless (increment 10 x46, increment 11 x52)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "A3"
+     ],
+     "CITES": [],
+     "DERIVATION": {
+      "STEPS": 2
+     },
+     "DOMAIN": "LIM",
+     "REGIME": "L"
+    },
+    "view": "SUITE"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"A3\"],\"cites\":[],\"domain\":\"LIM\",\"regime\":\"L\",\"steps\":2}]",
+   "fn": "record_view",
+   "harness": {
+    "sr1_fail": false
+   },
+   "name": "RT209 SUITE lossless (increment 10 x46, increment 11 x52)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [
+      "A4"
+     ],
+     "CITES": [],
+     "DERIVATION": {
+      "STEPS": 2
+     },
+     "DOMAIN": "OTHER",
+     "REGIME": "M"
+    },
+    "view": "SUITE"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"A4\"],\"cites\":[],\"domain\":\"OTHER\",\"regime\":\"M\",\"steps\":2}]",
+   "fn": "record_view",
+   "harness": {
+    "sr1_fail": false
+   },
+   "name": "RT210 SUITE lossless (increment 10 x46, increment 11 x52)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "CITES": [],
+     "DERIVATION": {
+      "STEPS": 2
+     },
+     "DOMAIN": "MAIN",
+     "REGIME": "L"
+    },
+    "view": "SUITE"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"cites\":[],\"domain\":\"MAIN\",\"regime\":\"L\",\"steps\":2}]",
+   "fn": "record_view",
+   "harness": {
+    "sr1_fail": false
+   },
+   "name": "RT211 SUITE lossless (increment 10 x46, increment 11 x52)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "CITES": [],
+     "DERIVATION": {
+      "STEPS": 1
+     },
+     "DOMAIN": "MAIN",
+     "REGIME": "L"
+    },
+    "view": "SUITE"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"cites\":[],\"domain\":\"MAIN\",\"regime\":\"L\",\"steps\":1}]",
+   "fn": "record_view",
+   "harness": {
+    "sr1_fail": true
+   },
+   "name": "RT212 SUITE lossless (increment 10 x46, increment 11 x52)"
+  },
+  {
+   "args": {
+    "grade": null,
+    "record": {
+     "ASSUMPTIONS": [],
+     "CITES": [],
+     "DERIVATION": {
+      "STEPS": 1
+     },
+     "DOMAIN": "MAIN",
+     "REGIME": "M"
+    },
+    "view": "SUITE"
+   },
+   "expected": "[\"OK\",{\"assumptions\":[],\"cites\":[],\"domain\":\"MAIN\",\"regime\":\"M\",\"steps\":1}]",
+   "fn": "record_view",
+   "harness": {
+    "sr1_fail": false
+   },
+   "name": "RT213 SUITE lossless (increment 10 x46, increment 11 x52)"
+  }
+ ],
+ "corpus": "record_view",
+ "note": "the round trip over agent RC's 820 pinned fixture records (increment 10: 815 lossless, 5 carried whole) and increment 11's 1073 (1068, 5), 213 distinct; expected: the module record less the harness extras",
+ "spec": "tpm_record_schema 0.3.0, 10.5 and 14.3",
+ "version": "0.1.0"
+}

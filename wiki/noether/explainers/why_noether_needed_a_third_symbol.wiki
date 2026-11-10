@@ -1,0 +1,106 @@
+{{DISPLAYTITLE:Why Noether needed a third symbol}}
+{{Noether's theorems map}}
+
+''Mathematical counterpart: [[Noether's theorems/Mathematics/Jet space and prolongation|Jet space and prolongation]].''
+
+Noether uses three different symbols for "the change in something". Most later
+accounts use two. She never explains why she needed the third. This page gives
+the reason, and it is a good one.
+
+== The three, briefly ==
+
+They were introduced on
+[[Noether's theorems/Explainers/What happens at the edges|the edges page]] as
+thermometers.
+
+The '''drifting''' one floats downstream and records everything that changed,
+including the fact that it has arrived somewhere new.
+
+The '''fixed''' one is bolted to the bridge and records the change at one place.
+
+The '''nudge''' is not a thermometer at all — it is you poking the system to see if
+it pushes back.
+
+Two of these get kept in modern accounts. The fixed one is usually the casualty.
+
+== The reason ==
+
+Here is what the fixed thermometer can do that the drifting one cannot.
+
+Ask how fast a temperature is changing '''along the river''' — the difference
+between here and a metre downstream. Now ask two questions in the other order:
+first work out that difference, then apply the change; or first apply the change,
+then work out the difference.
+
+For the fixed thermometer, you get the same answer either way. It is comparing
+readings at the same place, so nothing about the comparison cares which order you
+did things in.
+
+For the drifting thermometer, you do not. It moved, so the two places you are
+differencing between are not the two places you started with, and a correction
+appears.
+
+'''One of the two comparisons can be swapped with differentiation. The other
+cannot.'''
+
+== Why that decides the whole calculation ==
+
+Noether's proof integrates by parts, over and over. Integration by parts is the
+manoeuvre that moves a rate of change from one factor to the other, and her
+argument does it dozens of times, sometimes to high order.
+
+Every one of those moves requires swapping a change with a differentiation.
+
+With the fixed-thermometer comparison, every swap is free. With the drifting one,
+every swap leaves a correction behind — and the corrections pile up, each carrying
+its own correction at the next step.
+
+So the third symbol is not fastidiousness. '''It is what makes the calculation
+finite.''' Her proof written in two symbols would not be a slightly untidier proof;
+it would be an unmanageable one.
+
+== The tidy modern version ==
+
+There is a device for handling all of this systematically.
+
+Take a moving object and bundle it together with its speed, its acceleration, and
+however many further rates of change you need. Treat the whole bundle as a single
+point in a larger space. Then a transformation that mixes positions with speeds is
+just an ordinary transformation of that larger space, and the bookkeeping about
+which corrections appear takes care of itself.
+
+The device is called a '''jet''', and it is genuinely useful in modern work.
+
+It is not needed here. Noether did the bookkeeping by hand and both theorems come
+out. This volume treats the device as its own subject rather than as something you
+have to learn first, and the reason her third symbol exists is a better thing to
+carry away than the apparatus that would have saved her the trouble.
+
+== The everyday version of the same distinction ==
+
+You are on a train, walking towards the front.
+
+Ask how fast you are moving. Relative to the carriage, a walking pace. Relative to
+the ground, a walking pace plus the train's.
+
+Both are correct and they answer different questions. Now ask how fast your speed
+is changing — are you accelerating? Relative to the carriage, no. Relative to the
+ground, only if the train is.
+
+The two answers can be worked out from each other, but the correction is not the
+same at the level of position as it is at the level of speed, and it is different
+again for acceleration. Every time you differentiate, you pick up another piece of
+bookkeeping about the moving frame.
+
+That is the drifting thermometer, and it is why calculations done in a moving frame
+are fiddly rather than merely different.
+
+The fixed thermometer has no such problem, because nothing is moving. Its
+corrections are zero at every level of differentiation, forever.
+
+Noether's proof differentiates constantly. Working in the frame where the
+corrections are zero is not a preference; it is the difference between a proof
+that fits in a section and one that does not fit at all.
+
+''No mathematics is used on this page. The mathematical treatment is on the
+counterpart page named above.''

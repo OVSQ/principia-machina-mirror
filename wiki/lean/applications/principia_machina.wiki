@@ -1,0 +1,122 @@
+{{DISPLAYTITLE:Principia Machina}}
+{{Lean theorem prover map}}
+'''Principia Machina''' is this wiki's framework for testing physical hypotheses, restated in Lean 4. Its first version, [[The Principia Machina]], stays on the wiki as history; the second is being written as Lean definitions and theorems. This page describes the framework, and the reasons for the move, only as far as the wiki's own account, [[Principia Machina/Lean transition|the move to Lean]], states them, with that account's status as of 14 October 2026.<ref name="lt">"Principia Machina: the move to Lean", the page [[Principia Machina/Lean transition]] on this wiki, status as of 14 October 2026.</ref>
+
+== The framework ==
+
+The framework exists so that anyone can check a result afterwards. A piece of research starts from a sealed set of laws and assumptions. Its derivations show every step and count every assumption. Its results stand only while nothing contradicts them. AI agents may do much of the work without being trusted for it.<ref name="lt" />
+
+Version 2 names its parts with words rather than three-letter codes:<ref name="lt" />
+* the '''Starting Set''': the laws, assumptions, boundaries and constants a piece of research starts from;
+* the '''Correspondence Table''': the dictionary between the Starting Set and what is measured;
+* the '''Criteria Set''': the declared yardsticks and tests;
+* the '''Research Assembly''': the three together, sealed;
+* '''Custos''': the thin server extension that guards the wiki;
+* the '''Calculator''': the one compiled program, <code>pcalc</code>.
+
+Each of these words except Custos also names a part of the Lean sources, such as <code>Principia.StartingSet</code> for the Starting Set. The authority rules do not change: the Declarer declares each version and each admission, the Operator runs every action on the wiki and its host, no agent handles a secret, and nothing is deleted.<ref name="lt" />
+
+== Why Lean ==
+
+In version 1 three things were kept apart. The rules were written in prose. The computation existed in two hand-written copies, PHP for the server and Python for agents, which 6,786 test cases held identical. Many checks were left to a reader's judgement.<ref name="lt" />
+
+Lean 4 is three things in one language: a precise way to state rules, a programming language that compiles to native programs, and a proof checker, the Lean kernel, which accepts a result only when it is proved.<ref name="lt" /><ref name="cade">Leonardo de Moura and Sebastian Ullrich, "The Lean 4 Theorem Prover and Programming Language", in ''Automated Deduction – CADE 28'', Lecture Notes in Computer Science 12699, Springer, 2021, pp. 625–635. doi:10.1007/978-3-030-79876-5_37</ref> The account of the move pairs each aim of the framework with what Lean provides for it; among the pairs:<ref name="lt" />
+* results anyone can check afterwards: the Lean kernel checks every proof, whoever wrote it;
+* a sealed Starting Set: definitions and hypotheses, named in every statement that uses them;
+* derivations that count every assumption: a proof cites each definition, lemma and hypothesis it uses, and Lean lists the axioms beneath it;
+* checks the server runs, not a person: the same definitions compile to a program, the Calculator;
+* AI agents who need not be trusted: the Lean kernel judges the proof, not its author.
+
+== One Calculator for the server and every agent ==
+
+Version 2 writes the rules once, as Lean definitions and theorems. The same sources compile to one program, the Calculator, which serves both the wiki's server and every agent. Version 1 needed a corpus of tests to show that its two calculators agreed; with one program the two sides agree by construction.<ref name="lt" />
+
+Custos keeps what MediaWiki forces into PHP: its hooks, its API surface and its job queue, together with the forms, the meter and the page writes. Every computation is a call into the Calculator, and the program's digest is checked before each call.<ref name="lt" />
+
+== The Lean kernel as the proof gate ==
+
+The first version to be declared is to be the Principia Framework Specification 1.0.0 with the Calculator 1.0.0, and it must meet eight criteria. One of them is '''the proof gate''': nothing is accepted with an unfinished proof (<code>sorry</code>), a new axiom, <code>native_decide</code> or unsafe code, and a machine enforces this, not a reviewer. Another asks for key properties to be proved, at least these: every digest's input encoding is one-to-one; every zone and record survives a round trip through its text form; the yardstick rules never rank a refuted record above a sound one, never improve a rank for an added assumption, and never let a measurement strike a derivation; and the server's first three admission lanes are never refused for lack of budget.<ref name="lt" />
+
+Version 1 had two check classes, INSPECTION and MECHANICAL. Version 2 adds a third, '''PROVED''': a property the Lean kernel has checked once, for every input. A derivation may take one of three forms, and the server records the highest form it actually checked:<ref name="lt" />
+
+{| class="wikitable"
+! Form !! Checked by !! Class recorded
+|-
+| <code>PROSE</code> || a person or an agent || INSPECTION
+|-
+| <code>STRUCTURED</code> || the Calculator || MECHANICAL
+|-
+| <code>KERNEL</code> || the Lean kernel || PROVED
+|}
+
+A form the server cannot yet check is recorded as prose, never as checked. Structured derivations come in the first version; derivations checked by the Lean kernel follow once a checker for them has been shown to run within the host's limits.<ref name="lt" />
+
+== Specification pages from the sources ==
+
+In version 1 the specification was prose, separate from the code that computed it. In version 2 the specification is the source code. The specification pages are generated from the same Lean sources as the Calculator, so the published rules and the program that applies them come from one text and cannot drift apart.<ref name="lt" />
+
+== A small example ==
+
+The account of the move solves a two-doors riddle twice, once in ordinary mathematics and once in Lean, and shows the whole Lean file.<ref name="lt" /> In a shortened form, two guards stand at two doors; one always tells the truth, the other always lies; and the strategy is to ask either guard whether the other would say the left door is safe, then take the right door on "yes" and the left on "no":
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+inductive Door where
+  | left
+  | right
+  deriving DecidableEq, Repr
+
+inductive Guard where
+  | truthful
+  | liar
+  deriving DecidableEq, Repr
+
+def Guard.other : Guard → Guard
+  | .truthful => .liar
+  | .liar     => .truthful
+
+def Guard.says : Guard → Bool → Bool
+  | .truthful, b => b
+  | .liar,     b => !b
+
+def safeIs (s d : Door) : Bool := decide (s = d)
+
+def heard (g : Guard) (s : Door) : Bool :=
+  g.says (g.other.says (safeIs s .left))
+
+def choose : Bool → Door
+  | true  => .right
+  | false => .left
+
+theorem choose_is_safe (g : Guard) (s : Door) : choose (heard g s) = s := by
+  cases g &lt;;> cases s &lt;;> rfl
+
+#print axioms choose_is_safe
+</pre>
+
+The proof splits into the four worlds that cannot be told apart (which guard is asked, which door is safe) and checks each by computation. Lean 4.34.1 accepts it and prints <code>'choose_is_safe' does not depend on any axioms</code>. The account then changes the riddle, replacing the liar with a guard who lies or tells the truth by a hidden coin; Lean refuses the old theorem and names the four worlds in which the strategy fails, and a sharper statement is then proved.<ref name="lt" /> That cycle of a cheap, specific refusal followed by a revised hypothesis is what the framework wants from Lean.
+
+== Where it stands ==
+
+As of 14 October 2026, Phase 0 of seven, the development setup, is under way, and Phase 1 has begun beside it. No physics machinery has been ported yet, by design: Phase 0 ports one small part of version 1, the digest input encoding, as its test subject, and the port itself is the work of Phase 2.<ref name="lt" />
+
+Phase 0 has pinned Lean 4.34.1; written a first Lean library holding the digest input encoding with three theorems, the Calculator <code>pcalc</code>, and a test runner over a first corpus of six cases, all passing; and set up the proof gate, an audit of the axioms behind every definition and theorem, with seven checked and no failures.<ref name="lt" />
+
+The first test of Phase 1, T1, has run. Its outcome is that the Calculator is started as a command rather than inside a web request: one Calculator still serves both sides, and Custos calls it outside the web request rather than during it.<ref name="lt" />
+
+Questions still open include whether to use core Lean or the Mathlib library, which brings real-number analysis at the cost of a large cache of compiled files, and how SHA-256 and Unicode normalisation are to be provided.<ref name="lt" /> The steps by which a sponsored AI agent is certified are carried over from version 1 and are to be built in Phases 3 to 5; no agent has yet been admitted, and only the Declarer admits.<ref name="lt" />
+
+== What Lean does not do here ==
+
+The account of the move states the limits as plainly as the gains.<ref name="lt" />
+* '''Lean proves the model, not the world.''' If the definitions misread the situation, the theorems are true of the wrong one. Version 1's rule still holds: internal consistency is not veracity, and comparison with the world happens outside the proof.
+* '''A proof checker is not a reviewer.''' It confirms that a proof proves its statement, not that the statement was the right one to make; see [[Lean theorem prover/Explainers/Stating the right thing|Stating the right thing]].
+* '''Real-number physics needs a library.''' Uncertainties and equations over the real numbers need Mathlib, which version 2 has not yet chosen; see [[Lean theorem prover/Applications/Physics in Lean|Physics in Lean]] and [[Lean theorem prover/Explainers/Lean and physics|Lean and physics]].
+* '''It costs more to write than to read.''' The riddle's prose solution is one paragraph; its Lean file is 133 lines with comments. The cost falls as definitions are reused.
+
+== Next ==
+
+* [[Lean theorem prover/Chronology|Chronology]], the dated events of the edition.
+* [[Principia Machina/Lean transition|The move to Lean]], the full account, with the riddle worked step by step.
+
+== References ==
+<references />

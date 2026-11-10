@@ -1,0 +1,285 @@
+{{DISPLAYTITLE:Glossary}}
+{{Lean theorem prover map}}
+Terms the pages of this edition define, each where it is first set out in bold, with the page that defines it and, where there is one, the page that explains it in plain language. The definitions here are short; the pages carry the working ones, with their sources. Symbols are on [[Lean theorem prover/Notation|the notation page]].
+
+== A ==
+
+'''Automated theorem prover.''' A program built to find proofs by itself, for statements in a restricted form, rather than to check proofs that a person supplies. See [[Lean theorem prover/Explainers/What a proof assistant does|What a proof assistant does]].
+
+'''Automath.''' The formal language for mathematics, and the project around it, that N. G. de Bruijn designed at Eindhoven in the late 1960s; its checkers confirmed proofs written out in full. See [[Lean theorem prover/History/Automath|Automath]]; in plain language, [[Lean theorem prover/Explainers/Checking instead of convincing|Checking instead of convincing]].
+
+'''Axiom.''' A constant of a given type that is simply postulated; when its type is a proposition, an assumed proof of it. Lean cannot check that an axiom is consistent, and <code>#print axioms</code> lists the axioms a theorem rests on. See [[Lean theorem prover/Foundations/The three axioms|The three axioms]]; in plain language, [[Lean theorem prover/Explainers/What the axioms are|What the axioms are]].
+
+'''Axiom K.''' Streicher's principle that every proof of <code>a = a</code> is <code>Eq.refl a</code>. It is equivalent to uniqueness of identity proofs, and in Lean it holds by definition. See [[Lean theorem prover/Foundations/Propositional equality|Propositional equality]].
+
+== B ==
+
+'''Beta reduction.''' The rule that applying a function abstraction to an argument substitutes the argument for the bound variable. It is one of the reductions that make up definitional equality.<ref name="gl-types">''The Lean Language Reference'', version for Lean 4.34.0, chapter 4, "The Type System". [https://lean-lang.org/doc/reference/4.34.0/The-Type-System/ lean-lang.org/doc/reference/4.34.0/The-Type-System/], consulted 14 October 2026.</ref> See [[Lean theorem prover/Foundations/Definitional equality|Definitional equality]] and [[Lean theorem prover/Foundations/Dependent function types|Dependent function types]].
+
+'''Blueprint.''' A tool written by Patrick Massot that links a human-readable account of a proof, lemma by lemma, to its Lean counterparts, and draws their dependency graph with the progress of each. See [[Lean theorem prover/Applications/The polynomial Freiman-Ruzsa conjecture|The polynomial Freiman-Ruzsa conjecture]].
+
+== C ==
+
+'''Calculus of Inductive Constructions.''' The Calculus of Constructions extended with primitive inductive definitions. Coq, now Rocq, was named after it. See [[Lean theorem prover/History/The Calculus of Constructions|The Calculus of Constructions]].
+
+'''Comparator.''' A tool that checks a proposed proof against a theorem statement written beforehand in a trusted setting: it compiles the proof in a sandbox, exports it, replays the export with the Lean kernel or an independent checker, and confirms that exactly the stated theorems were proved. See [[Lean theorem prover/System/Proof export and independent checkers|Proof export and independent checkers]].
+
+'''Condensed mathematics.''' The framework begun by Clausen and Scholze that proposes condensed sets in place of topological spaces in the foundations of mathematics. The theorem checked in the Liquid Tensor Experiment belongs to it. See [[Lean theorem prover/History/The Liquid Tensor Experiment|The Liquid Tensor Experiment]].
+
+'''Congruence closure.''' Grouping terms known to be equal, together with what follows from the rule that equal arguments give equal results. It is one of the methods of <code>grind</code>. See [[Lean theorem prover/System/Decision procedures|Decision procedures]].
+
+'''Constructive logic.''' A logic in which a proof of "P or Q" must say which side holds, so that the law of the excluded middle is not available in general. Lean's logic without axioms is constructive. See [[Lean theorem prover/Foundations/Classical logic from choice|Classical logic from choice]]; in plain language, [[Lean theorem prover/Explainers/What the axioms are|What the axioms are]] and [[Lean theorem prover/Explainers/Propositions as types|Propositions as types]].
+
+'''Constructor.''' One of the rules that make the values of an inductive type. The values of the type are exactly those its constructors make. See [[Lean theorem prover/Foundations/Inductive types and recursors|Inductive types and recursors]]; in plain language, [[Lean theorem prover/Explainers/Building things from constructors|Building things from constructors]].
+
+'''Context.''' A list of variables with their types, each type able to mention the variables before it. A typing judgment is made in a context. See [[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]].
+
+'''Conversion rule.''' The typing rule that a term of type <math>A</math> also has every type definitionally equal to <math>A</math>. It is where computation enters typing. See [[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]].
+
+'''Course-of-values recursion.''' Structural recursion in which a call may use the results for any smaller argument, not only for the immediately smaller one. Lean provides it through the constructions <code>below</code> and <code>brecOn</code>. See [[Lean theorem prover/Foundations/Structural and well-founded recursion|Structural and well-founded recursion]].
+
+'''Curry–Howard correspondence.''' Another name for propositions as types, after two of the logicians who found it. See [[Lean theorem prover/Explainers/Propositions as types|Propositions as types]].
+
+== D ==
+
+'''de Bruijn criterion.''' The requirement that a proof assistant's proofs can be checked independently by a small program, one that a person can inspect; named after N. G. de Bruijn. In Lean the small program is the Lean kernel. See [[Lean theorem prover/Explainers/The small trusted core|The small trusted core]] and [[Lean theorem prover/Explainers/Checking instead of convincing|Checking instead of convincing]] and [[Lean theorem prover/History/Automath|Automath]].
+
+'''de Bruijn factor.''' The ratio between the size of a formal text and the size of the informal original it renders, both compressed. For the Automath translation of Landau's ''Grundlagen'' it is about 3.7. See [[Lean theorem prover/History/Automath|Automath]].
+
+'''de Bruijn index.''' A number standing for a bound variable: the count of binders between the variable and the binder that introduces it. In Lean the nearest binder has index 0. See [[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]] and [[Lean theorem prover/System/Metaprogramming in Lean|Metaprogramming in Lean]].
+
+'''<code>decide</code>.''' The tactic that proves a statement by finding a procedure that decides it and running it. It works when the statement has no unknowns and such a procedure is available. See [[Lean theorem prover/System/Decision procedures|Decision procedures]]; in plain language, [[Lean theorem prover/Explainers/Automation and its limits|Automation and its limits]].
+
+'''Decision procedure.''' An algorithm that settles every question in a fixed class with yes or no. In Lean it is useful only when its yes comes with evidence the Lean kernel accepts. See [[Lean theorem prover/System/Decision procedures|Decision procedures]].
+
+'''Default instance.''' An instance tried when a search for instances would otherwise fail without selecting one. It is why <code>fun x => x + 1</code> elaborates to a function on <code>Nat</code>. See [[Lean theorem prover/System/Type classes and instance resolution|Type classes and instance resolution]] and [[Lean theorem prover/System/Elaboration|Elaboration]].
+
+'''Definitional equality.''' The equality that holds between two terms by computation and the unfolding of definitions, without proof. Lean's checker tests it for itself, and no proof records it.<ref name="gl-types" /> See [[Lean theorem prover/Foundations/Definitional equality|Definitional equality]]; in plain language, [[Lean theorem prover/Explainers/Two kinds of equality|Two kinds of equality]].
+
+'''Delta reduction.''' The rule that a defined constant equals its definition.<ref name="gl-types" /> See [[Lean theorem prover/Foundations/Definitional equality|Definitional equality]].
+
+'''Dependent function type.''' The type of functions whose result type may depend on the argument, written <code>(x : A) → B</code>; also called a dependent product or Π-type. It is the only kind of function type in Lean's core theory: ordinary function types, "for all" and implication are special cases. See [[Lean theorem prover/Foundations/Dependent function types|Dependent function types]]; in plain language, [[Lean theorem prover/Explainers/Types as specifications|Types as specifications]].
+
+'''Dependent type.''' A type that depends on a value, such as the type of lists of a given length. See [[Lean theorem prover/Explainers/Types as specifications|Types as specifications]] and [[Lean theorem prover/Explainers/Propositions as types|Propositions as types]].
+
+'''do-notation.''' Lean's syntax for writing programs that use a monad in an imperative style, with sequencing, mutable local variables, loops and early return. A <code>do</code> block is translated into an ordinary term. See [[Lean theorem prover/System/Monads and do-notation|Monads and do-notation]].
+
+== E ==
+
+'''E-matching.''' Instantiating a theorem by matching its pattern against terms, up to the equalities known so far. It is one of the methods of <code>grind</code>. See [[Lean theorem prover/System/Decision procedures|Decision procedures]].
+
+'''Elaboration.''' The step that turns what a person types into a fully explicit term of Lean's core type theory, supplying omitted arguments, instances, coercions and universe levels. The program that does it, the elaborator, need not be trusted, because its output goes to the Lean kernel. See [[Lean theorem prover/System/Elaboration|Elaboration]]; in plain language, [[Lean theorem prover/Explainers/The small trusted core|The small trusted core]] and [[Lean theorem prover/Explainers/When Lean says no|When Lean says no]].
+
+'''elan.''' The toolchain manager, which installs versions of Lean and selects the one a project names. A toolchain is the set of programs and files for one version of Lean. See [[Lean theorem prover/System/Lake and Lean projects|Lake and Lean projects]].
+
+'''Equational law.''' An identity that a binary operation may satisfy for all values of its variables, such as the commutative law. A magma is a set with one such operation and no further rules; one law implies another when every magma satisfying the first satisfies the second. See [[Lean theorem prover/Applications/The equational theories project|The equational theories project]].
+
+'''Eta.''' For functions, the rule that <math>\lambda x.\, f\,x</math> equals <math>f</math>; for structures, the rule that a value equals the constructor applied to its fields. Both are part of Lean's definitional equality. See [[Lean theorem prover/Foundations/Definitional equality|Definitional equality]] and [[Lean theorem prover/Foundations/Dependent function types|Dependent function types]].
+
+'''External checker.''' A second program, written separately, that reads a proof exported from Lean and checks it again. See [[Lean theorem prover/System/Proof export and independent checkers|Proof export and independent checkers]]; in plain language, [[Lean theorem prover/Explainers/What has to be trusted|What has to be trusted]] and [[Lean theorem prover/Explainers/Checking a proof again later|Checking a proof again later]].
+
+== F ==
+
+'''Function extensionality.''' The principle that functions giving equal results on every argument are equal. In Lean it is a theorem, proved from quotients. See [[Lean theorem prover/Foundations/Propositional equality|Propositional equality]]; in plain language, [[Lean theorem prover/Explainers/What the axioms are|What the axioms are]].
+
+== G ==
+
+'''Global choice.''' The axiom <code>Classical.choice</code>: from a proof that a type has a value, it gives a value of the type. See [[Lean theorem prover/Foundations/The three axioms|The three axioms]]; in plain language, [[Lean theorem prover/Explainers/What the axioms are|What the axioms are]].
+
+'''Goal.''' A statement still to be proved, with the hypotheses that may be used to prove it. In Lean's tactic framework each goal is a metavariable; the first in the list is the main goal. See [[Lean theorem prover/System/The tactic framework|The tactic framework]]; in plain language, [[Lean theorem prover/Explainers/Holes and goals|Holes and goals]] and [[Lean theorem prover/Explainers/What a proof assistant does|What a proof assistant does]].
+
+'''<code>grind</code>.''' A tactic that collects facts in one shared store and works on them with several methods at once, among them congruence closure, E-matching, case splits and solvers for arithmetic. See [[Lean theorem prover/System/Decision procedures|Decision procedures]]; in plain language, [[Lean theorem prover/Explainers/Automation and its limits|Automation and its limits]].
+
+== H ==
+
+'''Heterogeneous equality.''' An equality between terms whose types are not known to be definitionally equal, written <code>a ≍ b</code> in Lean 4.34.1. See [[Lean theorem prover/Foundations/Propositional equality|Propositional equality]].
+
+'''Higher-order unification.''' Unification in which a metavariable stands for a function applied to arguments. It is undecidable in general, and decidable for patterns, in which a metavariable is applied only to distinct bound variables. See [[Lean theorem prover/System/Metavariables and unification|Metavariables and unification]].
+
+'''Hygiene.''' The property of Lean's macros that a name a macro introduces cannot capture a name the user wrote, nor the reverse. It is implemented by macro scopes, which tag each name a macro introduces. See [[Lean theorem prover/System/Syntax extension and hygienic macros|Syntax extension and hygienic macros]].
+
+== I ==
+
+'''Implicit argument.''' An argument the caller does not write. An implicit argument is filled by unification; a strict implicit one likewise, but only once a later explicit argument is given; an instance-implicit one by instance resolution. See [[Lean theorem prover/Foundations/Dependent function types|Dependent function types]].
+
+'''Impredicativity.''' The property of <code>Prop</code> that a proposition may quantify over all propositions, or over types at any level, and still be a proposition. Its opposite, predicativity, holds for the universes <code>Type u</code>. See [[Lean theorem prover/Foundations/Universes and Prop|Universes and Prop]]; in plain language, [[Lean theorem prover/Explainers/Why there is no type of all types|Why there is no type of all types]].
+
+'''Index.''' An argument of an inductive family that may differ from one constructor to another; a parameter is fixed across the whole definition. In <code>a = b</code>, <code>b</code> is an index. See [[Lean theorem prover/Foundations/Inductive types and recursors|Inductive types and recursors]] and [[Lean theorem prover/Foundations/Propositional equality|Propositional equality]].
+
+'''Induction hypothesis.''' In a proof by induction on the natural numbers, the assumption that the statement holds for <math>k</math>, used in the induction step to prove it for <math>k + 1</math>; the base case is the proof for 0. See [[Lean theorem prover/Explainers/Induction, as the machine sees it|Induction, as the machine sees it]].
+
+'''Inductive family.''' An inductive definition with indices, which defines a whole family of types at once. The notion is Dybjer's. See [[Lean theorem prover/Foundations/Inductive types and recursors|Inductive types and recursors]].
+
+'''Inductive type.''' A type whose values are exactly those made by its constructors. Apart from functions, universes and quotient types, which are built into Lean, every type in Lean is an inductive type or is defined from these. See [[Lean theorem prover/Foundations/Inductive types and recursors|Inductive types and recursors]]; in plain language, [[Lean theorem prover/Explainers/Building things from constructors|Building things from constructors]].
+
+'''Instance.''' A definition registered for a type class, which the elaborator finds by itself when a term needs it; for example, the definition that says how to add two values of given types. See [[Lean theorem prover/System/Type classes and instance resolution|Type classes and instance resolution]]; in plain language, [[Lean theorem prover/Explainers/When Lean says no|When Lean says no]].
+
+'''Instance resolution.''' The search by which the elaborator finds instances, also called instance synthesis. Lean's is tabled. See [[Lean theorem prover/System/Type classes and instance resolution|Type classes and instance resolution]].
+
+'''Iota reduction.''' The rule that a recursor applied to a constructor reduces to the corresponding minor premise. It is part of definitional equality.<ref name="gl-types" /> See [[Lean theorem prover/Foundations/Inductive types and recursors|Inductive types and recursors]] and [[Lean theorem prover/Foundations/Definitional equality|Definitional equality]].
+
+'''IR.''' The compiler's lower-level form of a definition, translated from LCNF, which Lean prints on request and which its interpreter runs. See [[Lean theorem prover/System/The compiler and runtime|The compiler and runtime]].
+
+== L ==
+
+'''Lake.''' The tool that ships with every version of Lean for compiling Lean code and fetching what a project depends on; a project organised for it is a Lake package. It records the exact version of each dependency in the file <code>lake-manifest.json</code>. See [[Lean theorem prover/System/Lake and Lean projects|Lake and Lean projects]]; in plain language, [[Lean theorem prover/Explainers/A library of mathematics|A library of mathematics]].
+
+'''Large elimination.''' Eliminating a proof of a proposition into any universe, so as to produce data. Lean allows it only when the proposition is a syntactic subsingleton. See [[Lean theorem prover/Foundations/Proof irrelevance and subsingleton elimination|Proof irrelevance and subsingleton elimination]].
+
+'''Law of the excluded middle.''' The principle that every proposition is either true or false. It cannot be proved in Lean's logic without axioms; with choice and the two extensionality principles it can (Diaconescu's theorem). See [[Lean theorem prover/Foundations/Classical logic from choice|Classical logic from choice]]; in plain language, [[Lean theorem prover/Explainers/What the axioms are|What the axioms are]].
+
+'''LCNF.''' Lean Compiler Normal Form: the compiler's representation of a definition in A-normal form, in which every intermediate result is bound to a name. See [[Lean theorem prover/System/The compiler and runtime|The compiler and runtime]].
+
+'''Lean kernel.''' The type checker that decides whether a definition, theorem, axiom or inductive type may enter Lean's environment, its table of definitions and theorems. It is the small part of Lean that has to be trusted. It has no termination checker and performs no unification.<ref name="gl-kernel">''The Lean Language Reference'', version for Lean 4.34.0, section 2.3, "The Kernel". [https://lean-lang.org/doc/reference/4.34.0/Elaboration-and-Compilation/ lean-lang.org/doc/reference/4.34.0/Elaboration-and-Compilation/], consulted 14 October 2026.</ref> See [[Lean theorem prover/System/The Lean kernel|The Lean kernel]]; in plain language, [[Lean theorem prover/Explainers/The small trusted core|The small trusted core]].
+
+'''Lean Kernel Arena.''' A site that runs checkers for Lean on the same exported tests, some to be accepted and some to be rejected, and publishes the results. See [[Lean theorem prover/System/Proof export and independent checkers|Proof export and independent checkers]]; in plain language, [[Lean theorem prover/Explainers/Checking a proof again later|Checking a proof again later]].
+
+'''<code>lean4export</code>.''' A program that writes the constants of a Lean module, and everything they depend on, to a file of terms alone, for other checkers to read. See [[Lean theorem prover/System/Proof export and independent checkers|Proof export and independent checkers]].
+
+'''Lean4Lean.''' A type checker for Lean 4 written in Lean by Mario Carneiro, parts of which have been proved correct against a formalisation of Lean's type theory. See [[Lean theorem prover/System/Proof export and independent checkers|Proof export and independent checkers]]; in plain language, [[Lean theorem prover/Explainers/Checking a proof again later|Checking a proof again later]].
+
+'''<code>leanchecker</code>.''' The program, part of the Lean toolchain, that replays every definition and theorem in compiled Lean files through the Lean kernel. See [[Lean theorem prover/System/Proof export and independent checkers|Proof export and independent checkers]].
+
+'''Locally nameless.''' The representation of terms with de Bruijn indices for bound variables and names for free ones, which Lean uses. See [[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]].
+
+== M ==
+
+'''Macro.''' A rule that rewrites one piece of syntax into another before it is given meaning. Macro expansion is interleaved with elaboration, and Lean's macros are hygienic. See [[Lean theorem prover/System/Syntax extension and hygienic macros|Syntax extension and hygienic macros]] and [[Lean theorem prover/System/Elaboration|Elaboration]].
+
+'''Mathlib.''' The single library of mathematics formalised in Lean and maintained by its community, begun in 2017 for Lean 3 and later translated to Lean 4. See [[Lean theorem prover/Explainers/A library of mathematics|A library of mathematics]] and [[Lean theorem prover/Applications/Research mathematics|Research mathematics]].
+
+'''Measure.''' A quantity that must be smaller at every recursive call, named with <code>termination_by</code>; it justifies a definition by well-founded recursion. See [[Lean theorem prover/Foundations/Structural and well-founded recursion|Structural and well-founded recursion]]; in plain language, [[Lean theorem prover/Explainers/Functions that always finish|Functions that always finish]].
+
+'''Metaprogram.''' A Lean program whose data is Lean itself: syntax, terms, goals and Lean's environment. Tactics and elaborators are metaprograms. See [[Lean theorem prover/System/Metaprogramming in Lean|Metaprogramming in Lean]].
+
+'''Metatheory.''' What can be proved about Lean's type theory rather than in it; chiefly its consistency, which has been proved, for the type theory of Lean 3, relative to set theory with inaccessible cardinals. See [[Lean theorem prover/Foundations/Consistency and the metatheory|Consistency and the metatheory]].
+
+'''Metavariable.''' A named hole in a term: a placeholder for a subterm not yet known, which may be filled only with a term whose free variables are in its local context. Metavariables are natural, synthetic or synthetic opaque, according to who may fill them. See [[Lean theorem prover/System/Metavariables and unification|Metavariables and unification]]; in plain language, [[Lean theorem prover/Explainers/Holes and goals|Holes and goals]].
+
+'''Monad.''' A type constructor, with operations for sequencing computations, that Lean uses to represent effects such as failure, state, input and output as values. See [[Lean theorem prover/System/Monads and do-notation|Monads and do-notation]].
+
+'''Motive.''' The argument of a recursor that says what is produced, or proved, for each value. A recursor also takes one minor premise for each constructor, and the major premise, the value the recursion runs on. See [[Lean theorem prover/Foundations/Inductive types and recursors|Inductive types and recursors]].
+
+== N ==
+
+'''<code>nanoda</code>.''' A checker for exported Lean proofs written in Rust, developed independently of Lean. See [[Lean theorem prover/System/Proof export and independent checkers|Proof export and independent checkers]]; in plain language, [[Lean theorem prover/Explainers/Checking a proof again later|Checking a proof again later]].
+
+'''Nested inductive type.''' An inductive type that occurs, in its own definition, as an argument of another inductive type, as in a tree whose nodes hold lists of subtrees. Lean's kernel accepts one by translating it into a mutual definition. See [[Lean theorem prover/Foundations/Inductive types and recursors|Inductive types and recursors]].
+
+== O ==
+
+'''<code>omega</code>.''' The tactic for linear arithmetic over the integers and the natural numbers, after Pugh's omega test. See [[Lean theorem prover/System/Decision procedures|Decision procedures]]; in plain language, [[Lean theorem prover/Explainers/Automation and its limits|Automation and its limits]].
+
+'''Opaque constant.''' A constant with a type and no definition that the Lean kernel may unfold. A <code>partial</code> definition enters the logic as one. See [[Lean theorem prover/Foundations/Structural and well-founded recursion|Structural and well-founded recursion]].
+
+== P ==
+
+'''<code>partial</code>.''' A mark for a recursive definition whose termination is not proved: it is compiled as written, and enters the logic as an opaque constant. See [[Lean theorem prover/Foundations/Structural and well-founded recursion|Structural and well-founded recursion]].
+
+'''Pattern matching.''' Defining a function by one case for each constructor of its argument's type. Lean checks that every case is covered. See [[Lean theorem prover/Explainers/Building things from constructors|Building things from constructors]].
+
+'''Pre-definition.''' The form a recursive definition takes first, elaborated as if the core language had recursion. The compiler uses it, and termination analysis turns it into a non-recursive term for the Lean kernel. See [[Lean theorem prover/Foundations/Structural and well-founded recursion|Structural and well-founded recursion]].
+
+'''Proof assistant.''' A program that checks proofs written in a formal language, step by step, while a person writes them. A formal language is a notation with fixed rules for what counts as a statement and what counts as a valid step. See [[Lean theorem prover/Explainers/What a proof assistant does|What a proof assistant does]].
+
+'''Proof irrelevance.''' The rule that any two proofs of the same proposition are interchangeable. In Lean they are definitionally equal. The name goes back to the Automath project, in 1974. See [[Lean theorem prover/Foundations/Proof irrelevance and subsingleton elimination|Proof irrelevance and subsingleton elimination]]; in plain language, [[Lean theorem prover/Explainers/Propositions as types|Propositions as types]].
+
+'''Proof object.''' A complete record of a proof, in which every step is explicit, that a small program can check. See [[Lean theorem prover/Explainers/Checking instead of convincing|Checking instead of convincing]].
+
+'''Proof state.''' The list of goals at a point in a tactic proof. The proof is complete when the list is empty. See [[Lean theorem prover/Explainers/Holes and goals|Holes and goals]] and [[Lean theorem prover/Explainers/Tactics|Tactics]].
+
+'''Proposition.''' A statement. In Lean a proposition is a type in the universe <code>Prop</code>, and its values are its proofs. See [[Lean theorem prover/Explainers/Propositions as types|Propositions as types]] and [[Lean theorem prover/Foundations/Universes and Prop|Universes and Prop]].
+
+'''Propositional equality.''' The proposition <code>a = b</code>: an inductive family with a single constructor, whose proofs are terms. It differs from definitional equality, which the checker tests and no term records. See [[Lean theorem prover/Foundations/Propositional equality|Propositional equality]]; in plain language, [[Lean theorem prover/Explainers/Two kinds of equality|Two kinds of equality]].
+
+'''Propositional extensionality.''' The axiom <code>propext</code>: propositions that imply each other are equal. See [[Lean theorem prover/Foundations/The three axioms|The three axioms]]; in plain language, [[Lean theorem prover/Explainers/What the axioms are|What the axioms are]].
+
+'''Propositions as types.''' The correspondence under which a statement is a type and a proof of it is a value of that type. See [[Lean theorem prover/Explainers/Propositions as types|Propositions as types]].
+
+== Q ==
+
+'''Quotient type.''' A type whose elements are those of an existing type, with every pair related by a given relation made equal. Quotients are primitive in Lean, with one axiom, quotient soundness (<code>Quot.sound</code>). See [[Lean theorem prover/Foundations/Quotient types|Quotient types]]; in plain language, [[Lean theorem prover/Explainers/What the axioms are|What the axioms are]].
+
+== R ==
+
+'''Ramified theory of types.''' The more elaborate of Russell's theories of types, set out in a paper of 1908. See [[Lean theorem prover/Explainers/Why there is no type of all types|Why there is no type of all types]].
+
+'''Recursor.''' The constant Lean derives from an inductive definition, which is at once the type's induction principle and its means of primitive recursion; also called its recursion principle. See [[Lean theorem prover/Foundations/Inductive types and recursors|Inductive types and recursors]]; in plain language, [[Lean theorem prover/Explainers/Building things from constructors|Building things from constructors]] and [[Lean theorem prover/Explainers/Induction, as the machine sees it|Induction, as the machine sees it]].
+
+'''Reducibility hint.''' The mark stored with every definition, <code>opaque</code>, <code>abbrev</code>, or <code>regular</code> with a definitional height, that decides which side Lean's kernel unfolds first when it compares two terms. See [[Lean theorem prover/Foundations/Definitional equality|Definitional equality]].
+
+'''Reference counting.''' Lean's way of managing memory: each object counts the references to it and is freed when the count reaches zero. A value that is not shared may be changed in place, so code written as pure functions can run with updates in place. See [[Lean theorem prover/System/The compiler and runtime|The compiler and runtime]].
+
+'''Reflexivity.''' The principle that everything is equal to itself. The proof <code>rfl</code> proves an equation exactly when the two sides are definitionally equal. See [[Lean theorem prover/Explainers/Two kinds of equality|Two kinds of equality]].
+
+'''Restricted elimination.''' The rule that a proof can be taken apart to produce data only when its proposition is a subsingleton. See [[Lean theorem prover/Foundations/Proof irrelevance and subsingleton elimination|Proof irrelevance and subsingleton elimination]] and [[Lean theorem prover/Foundations/Universes and Prop|Universes and Prop]].
+
+== S ==
+
+'''Setoid.''' A type with a chosen relation and a proof that the relation is reflexive, symmetric and transitive; Lean's <code>Quotient</code> is the quotient by a setoid's relation. See [[Lean theorem prover/Foundations/Quotient types|Quotient types]].
+
+'''<code>simp</code>.''' The simplifier: a tactic that rewrites the goal with the simp set, the theorems marked <code>@[simp]</code>, each read as an equation from left to right. See [[Lean theorem prover/System/Decision procedures|Decision procedures]]; in plain language, [[Lean theorem prover/Explainers/Automation and its limits|Automation and its limits]].
+
+'''Specification.''' A precise statement of what is required of a program or a value. A type can serve as one. See [[Lean theorem prover/Explainers/Types as specifications|Types as specifications]] and [[Lean theorem prover/Applications/Software verification|Software verification]].
+
+'''Strict positivity.''' The condition that the type being defined occur in the argument types of its constructors only to the right of every arrow, or as an argument of another inductive type. Lean's kernel enforces it, because a type breaking it would prove <code>False</code>. See [[Lean theorem prover/Foundations/Inductive types and recursors|Inductive types and recursors]].
+
+'''Structural recursion.''' Recursion in which every call is on a strict part of one fixed argument. Lean compiles it through the recursor, so no separate test of termination is needed. See [[Lean theorem prover/Foundations/Structural and well-founded recursion|Structural and well-founded recursion]]; in plain language, [[Lean theorem prover/Explainers/Functions that always finish|Functions that always finish]].
+
+'''Structure.''' An inductive type with exactly one constructor, whose arguments are called its fields. See [[Lean theorem prover/Explainers/Building things from constructors|Building things from constructors]].
+
+'''Subject reduction.''' The property that a term which type-checks still type-checks after it is reduced. Lean's typing, with the algorithmic definitional equality that the Lean kernel checks, lacks it. See [[Lean theorem prover/Foundations/Definitional equality|Definitional equality]].
+
+'''Subsingleton.''' A proposition that, by its shape, can have at most one proof. Subsingleton elimination is the permission such a proposition has to be eliminated into any universe. See [[Lean theorem prover/Foundations/Proof irrelevance and subsingleton elimination|Proof irrelevance and subsingleton elimination]] and [[Lean theorem prover/Foundations/Inductive types and recursors|Inductive types and recursors]].
+
+'''Subtype.''' The type of the values of a given type that have a given property, written <code>{x : A // p x}</code>. Each of its values is a value together with a proof. See [[Lean theorem prover/Explainers/Types as specifications|Types as specifications]].
+
+'''Syntax quotation.''' Syntax written inside <code>`(...)</code>, used in a macro to match syntax or to produce it; antiquotations inside it are the holes. Each grammar rule belongs to a syntax category, such as <code>term</code>. See [[Lean theorem prover/System/Syntax extension and hygienic macros|Syntax extension and hygienic macros]].
+
+'''Synthetic metavariable.''' A metavariable that unification avoids assigning, because another procedure, usually instance resolution, is responsible for it; the elaborator uses them for postponed work. A synthetic opaque metavariable is never assigned by unification; goals are of this kind. See [[Lean theorem prover/System/Metavariables and unification|Metavariables and unification]] and [[Lean theorem prover/System/Elaboration|Elaboration]].
+
+== T ==
+
+'''Tabled typeclass resolution.''' Lean's method of instance resolution, which keeps a table from each subgoal to the solutions already found for it and reuses them. Its authors proposed it to remove the exponential cost of diamonds in a hierarchy of classes and the loops caused by cycles of instances. See [[Lean theorem prover/System/Type classes and instance resolution|Type classes and instance resolution]].
+
+'''Tactic.''' A program that constructs part of a proof term, acting on goals. The name is Milner's, from LCF: there a tactic was a function reducing a goal to subgoals, and tacticals combined tactics. See [[Lean theorem prover/System/The tactic framework|The tactic framework]] and [[Lean theorem prover/History/LCF and the tactic idea|LCF and the tactic idea]]; in plain language, [[Lean theorem prover/Explainers/Tactics|Tactics]].
+
+'''Term.''' Anything in Lean's type theory: a number, a function, a type, a proposition, a proof. In a proof written as a term, the term is an expression whose type is the statement. See [[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]]; in plain language, [[Lean theorem prover/Explainers/Tactics|Tactics]].
+
+'''Total function.''' A function defined on every argument, which returns in finitely many steps. Lean's logic treats every function as total. See [[Lean theorem prover/Foundations/Structural and well-founded recursion|Structural and well-founded recursion]].
+
+'''Transport.''' Obtaining, from a proof of <code>a = b</code> and a term whose type mentions <code>a</code>, the same term at <code>b</code>. It is derived from the eliminator of equality. See [[Lean theorem prover/Foundations/Propositional equality|Propositional equality]].
+
+'''Type class.''' A structure whose values, the instances, Lean finds by itself: a description of what a type must provide. See [[Lean theorem prover/System/Type classes and instance resolution|Type classes and instance resolution]]; in plain language, [[Lean theorem prover/Explainers/A library of mathematics|A library of mathematics]].
+
+'''Type inference.''' Computing a type for a term in a context. Type checking, by contrast, decides whether a term has a given type. Lean's kernel is built around inference. See [[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]].
+
+'''Typing judgment.''' The basic statement of the theory, <math>\Gamma \vdash e : A</math>: in the context <math>\Gamma</math>, the term <math>e</math> has type <math>A</math>. A term is well-typed when such a judgment can be derived for it. See [[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]].
+
+== U ==
+
+'''Unification.''' The search for values of metavariables that make two terms definitionally equal. See [[Lean theorem prover/System/Metavariables and unification|Metavariables and unification]]; in plain language, [[Lean theorem prover/Explainers/Holes and goals|Holes and goals]].
+
+'''Uniqueness of identity proofs.''' The principle that any two proofs of <code>a = b</code> are equal. In Lean it holds by definitional proof irrelevance. See [[Lean theorem prover/Foundations/Propositional equality|Propositional equality]].
+
+'''Universe.''' A type whose members are types; also called a sort.<ref name="gl-universes">''The Lean Language Reference'', version for Lean 4.34.0, section 4.3, "Universes". [https://lean-lang.org/doc/reference/4.34.0/The-Type-System/Universes/ lean-lang.org/doc/reference/4.34.0/The-Type-System/Universes/], consulted 14 October 2026.</ref> Lean's universes <code>Sort u</code> form a hierarchy without top, each a member of the next, with <code>Prop</code> at the bottom; they are not cumulative. See [[Lean theorem prover/Foundations/Universes and Prop|Universes and Prop]]; in plain language, [[Lean theorem prover/Explainers/Why there is no type of all types|Why there is no type of all types]].
+
+'''<code>unsafe</code>.''' A mark that frees a definition from Lean's restrictions, at the price that only other unsafe definitions may use it and no theorem may. See [[Lean theorem prover/Foundations/Structural and well-founded recursion|Structural and well-founded recursion]].
+
+== W ==
+
+'''Weak head normal form.''' The result of reducing a term at its head until no rule applies: a sort, a function type, an abstraction, a literal, a constructor application, or an application whose head cannot be unfolded or reduced. See [[Lean theorem prover/Foundations/Definitional equality|Definitional equality]].
+
+'''Well-founded recursion.''' Recursion justified by a quantity, or a well-founded relation, that decreases at every call. A relation is well-founded when it has no infinite descending chain. See [[Lean theorem prover/Foundations/Structural and well-founded recursion|Structural and well-founded recursion]]; in plain language, [[Lean theorem prover/Explainers/Functions that always finish|Functions that always finish]].
+
+== Z ==
+
+'''Zeta reduction.''' The rule that a local definition equals its body with the defined value substituted.<ref name="gl-types" /> See [[Lean theorem prover/Foundations/Definitional equality|Definitional equality]].
+
+== Next ==
+
+* [[Lean theorem prover/Notation|Notation]]
+
+== References ==
+
+<references />

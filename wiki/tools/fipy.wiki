@@ -1,0 +1,18 @@
+{{DISPLAYTITLE:FiPy}}
+'''FiPy: Finite Volume Phase-Field & Conservation PDE Solver'''
+[[Category:Principia Machina]] [[Category:Tools]]
+
+== Overview & Architectural Fit ==
+'''FiPy''' is an open-source, object-oriented finite volume PDE solver developed in Python by the National Institute of Standards and Technology (NIST). It is engineered specifically for coupled, non-linear partial differential equations, phase-field models, and advection-diffusion-reaction dynamics.
+
+== Mathematical Evaluation for TPM & SVD ==
+* '''Conservation Law Enforcement (9.0/10):''' By utilizing the finite volume method (FVM), FiPy guarantees strict cell-by-cell numerical conservation of physical fluxes (charge, energy, momentum), directly upholding conservation laws required by Noether's theorems.
+* '''Implicit & Explicit Coupled Solvers:''' Seamlessly handles stiff coupled non-linear PDE systems through underlying linear solvers (Trilinos, SciPy, PyAMG).
+* '''Phase-Field Mechanics:''' Ideal for modeling continuous vacuum state transitions, domain walls, and topological field boundaries.
+
+== Strategic Role in SVD ==
+FiPy provides the continuous flux-conserving simulation layer for evaluating vacuum phase transitions and scalar-vector field couplings.
+
+== References ==
+''Added on 2026-10-06 by the [[The Principia Machina/Research Toolkit|Research Toolkit]]: the tool's citations, each checked against the registry or the project's own page that day. The text above is the survey's own.''
+* '''[[The Principia Machina/Research Toolkit/Bibliography#FIPY09|FIPY09]]''' &ndash; Guyer, J. E., Wheeler, D., Warren, J. A. (2009). FiPy: Partial Differential Equations with Python. Computing in Science &amp; Engineering 11(3), 6–15. [https://doi.org/10.1109/MCSE.2009.52 doi:10.1109/MCSE.2009.52].

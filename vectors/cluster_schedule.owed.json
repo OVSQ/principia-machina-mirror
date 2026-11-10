@@ -1,0 +1,8 @@
+{
+  "owed": [
+    {
+      "name": "OWED: a failing source no longer declared",
+      "reason": "the sources do not say what becomes of a failing source's state once the SOURCE DECLARATION no longer names it"
+    }
+  ]
+}

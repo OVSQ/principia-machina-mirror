@@ -1,0 +1,123 @@
+{{DISPLAYTITLE:Multipliers}}
+{{Technical|Hamilton's principle/Mathematics/Lagrange multipliers}}
+{{Hamilton's principle map}}
+
+This page explains how to keep a constraint and still use the method. It uses no
+mathematics. The technical page it goes with is named above.
+
+== The trade ==
+
+[[File:OPL-HP-F-19.png|thumb|right|400px|Tension in a swinging load.]]
+
+[[Hamilton's principle/Explainers/Constraints|Constraints]] left a problem. A constraint stops
+you nudging one part at a time, and the whole method depended on being able to.
+
+The method of '''multipliers''' fixes this by making a trade.
+
+You give up nothing in your description. You keep all the original quantities, and
+you do not have to find a clever way of building the constraint in.
+
+In exchange, you accept one new unknown for each constraint.
+
+That sounds like a bad deal — you had too many unknowns already. It is not, and
+the reason is that the new unknown turns out to be something you wanted.
+
+== How it works, in words ==
+
+Instead of forbidding paths that break the constraint, you '''charge''' for
+breaking it.
+
+Add a penalty to the cost rule: a price, times the amount by which the constraint
+is violated. Now every path is allowed. Paths that obey the constraint pay
+nothing, because they violate it by zero.
+
+The price is the new unknown. It is not fixed in advance. It is whatever it needs
+to be.
+
+With no forbidden paths, you can nudge one part at a time again, and the original
+method runs.
+
+Then you set the price. It has to be exactly high enough that the cheapest path
+happens to be one that obeys the constraint. Set it too low and cheating pays. Set
+it correctly and the winner obeys the rule without being forced to.
+
+== The price is the force ==
+
+Here is why the trade is good.
+
+The price is not bookkeeping. '''It is the constraint force''' — the pull in the
+rod, the push from the wire, the tension in the cable.
+
+Come back to the crane. Describing the swinging load by a single angle gives you
+the motion and never mentions the cable. The multiplier method gives you the
+motion '''and''' the tension, in the same calculation.
+
+The tension is what the engineer needs, because it is what determines whether the
+cable holds.
+
+So the extra unknown is not overhead. It is usually the answer.
+
+== The pendulum, both ways ==
+
+Take a weight on a rigid rod, swinging under gravity.
+
+'''By clever description.''' Use the angle from vertical. Out comes the equation
+of the swing: how the angle changes with time, and hence the period. Nothing about
+the rod appears, and the rod's tension cannot be recovered from the result.
+
+'''By multipliers.''' Keep the sideways and vertical positions, add the price for
+stretching the rod, and run the method. Out comes the same swing — and out comes
+the tension as well.
+
+The tension has two parts, and both make sense. One is the share of the weight the
+rod carries, which depends on the angle. The other comes from swinging the weight
+in a circle, which depends on speed.
+
+That is why a rope holding a swinging load is under most strain at the '''bottom'''
+of the swing, where the load is moving fastest and hanging straight down. Both
+parts are largest at the same moment.
+
+An engineer sizing that rope needs exactly that number.
+
+== Two kinds of constraint, two kinds of price ==
+
+There is a distinction here that trips people up, and it is easy to state.
+
+Some constraints apply '''at every point'''. The rod has fixed length now, and in
+one second, and always. Such a constraint needs a price that can vary from moment
+to moment.
+
+Other constraints apply '''once, to the whole thing'''. A chain has a fixed total
+length. That is one fact about the chain as a whole. It says nothing about any
+particular point.
+
+A constraint of the second kind needs a single fixed price, not a varying one.
+
+Getting these the wrong way round is the commonest mistake in this area. The test
+is simple: '''ask whether the constraint is one rule per moment, or one rule for
+the whole journey.'''
+
+The second kind has its own page, at
+[[Hamilton's principle/Explainers/Fixed length problems|Fixed length problems]].
+
+== A familiar version ==
+
+You may have met this before, outside physics.
+
+In economics, a firm minimising cost subject to producing a given output uses the
+same method, and the multiplier is called the '''shadow price''' — how much the
+cost would rise if the output requirement went up by one unit.
+
+That is the same idea. The multiplier measures how much the answer would change if
+the constraint were loosened slightly.
+
+For the pendulum: how much the energy would change if the rod were slightly
+longer. For the crane: how hard the cable is pulling.
+
+'''The multiplier always measures the cost of the constraint.''' Whatever the
+setting, that is what it is telling you.
+
+== Where to go next ==
+
+The single-price case, for constraints that apply to a whole path at once, is at
+[[Hamilton's principle/Explainers/Fixed length problems|Fixed length problems]].

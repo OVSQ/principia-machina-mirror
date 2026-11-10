@@ -1,0 +1,69 @@
+{{DISPLAYTITLE:Bibliography}}
+{{Noether's theorems map}}
+
+Weighted toward primary sources, and '''every entry carries its reachability'''.
+That last column is unusual in a bibliography and it is the point: five of the
+nine primary sources below were not read during the writing of this volume, and a
+reader is entitled to know which.
+
+The full account of what that cost is on
+[[Noether's theorems/Sources|the sources page]].
+
+== Primary ==
+
+{| class="wikitable"
+! work !! reachability !! consequence for this volume
+|-
+| Noether, ''Invariante Variationsprobleme'', Göttinger ''Nachrichten'', Math.-Phys. Klasse (1918), 235–257 || '''read in full.''' German original, public domain, text-bearing with the mathematics intact || her equations are reproduced verbatim in her notation. This is the only source in the volume that is quotable
+|-
+| Tavel, English translation, ''Transport Theory and Statistical Physics'' 1:3 (1971), 183–207 || located, reachable || '''under copyright.''' No English wording of Noether's is transcribed anywhere in this volume
+|-
+| Klein, ''Über die Differentialgesetze für die Erhaltung von Impuls und Energie'', ''Nachrichten'' (1918), 171–189 || read in a modern English translation, mathematics intact; the German original was not reached || content verified, wording not quotable, since the translation's terms of reuse were not established
+|-
+| Klein, ''Zu Hilberts erster Note über die Grundlagen der Physik'', ''Nachrichten'' (1917), 469–482 || an open English translation was located but not read || summarised only
+|-
+| Klein, on the integral form of the conservation laws, ''Nachrichten'' (1918), 394–423 || not reached || not used
+|-
+| Hilbert, ''Die Grundlagen der Physik'', first communication, ''Nachrichten'' (1915), 395–407 || '''not reached.''' Only an OCR-damaged copy of the second communication was located || summarised, never quoted
+|-
+| Bessel-Hagen, ''Über die Erhaltungssätze der Elektrodynamik'', ''Mathematische Annalen'' 84 (1921), 258–276 || '''not reached.''' Indexed and digitised, but no copy was retrievable || the divergence-invariance account is from secondary literature
+|-
+| Weyl, ''Gravitation und Elektrizität'', Sitzungsberichte der Preussischen Akademie (1918), 465–480 || '''not reached''' || cited only as a precursor Noether names
+|-
+| Lie, ''Grundlagen für die Theorie der unendlichen kontinuierlichen Transformationsgruppen'', Berichte der Sächsischen Gesellschaft (1891) || '''not reached''' || Noether's three citations to it are reported as hers, including Theorem VII at page 391
+|}
+
+== Precursors Noether names herself ==
+
+From her own footnotes, with the loci she gives. None was read.
+
+Hamel, ''Mathematische Annalen'' 59, and ''Zeitschrift für Mathematik und
+Physik'' 50. Herglotz, ''Annalen der Physik'' fourth series 36, section 9 at page
+511. Fokker, ''Verslag'' of the Amsterdam Academy, 27 January 1917. Kneser,
+''Mathematische Zeitschrift'' 2. Engel, Göttinger ''Nachrichten'' 1916, page 270.
+She also refers the reader to Klein's second note for further literature.
+
+'''A caution.''' Secondary reference lists sometimes give different Hamel papers
+from the ones she cites. The loci above are hers, read from her footnotes.
+
+== Secondary ==
+
+Kosmann-Schwarzbach, ''The Noether Theorems: Invariance and Conservation Laws in
+the Twentieth Century'', Springer 2011, translated from the French of 2004. The
+standard scholarly treatment. Under copyright and not read. Her own open-access
+article on the theorems in context was located and carries much of the same
+historical material, including the correspondence chronology used on
+[[Noether's theorems/Chronology|the chronology page]].
+
+Hilbert's consolidated reprint of both communications, ''Mathematische Annalen''
+92 (1924), 1–32, which records the division of credit between Klein and Noether.
+Not reached in full text.
+
+== Also cited, none read ==
+
+Belinfante and Rosenfeld on the improvement of the stress-energy tensor; Hill's
+1951 review; Yang and Mills 1954; Utiyama 1956 and Kibble 1961; Trautman from
+1962; Ward and Takahashi. These are the waypoints the secondary literature
+commonly gives for the theorem's return to physics, and
+[[Noether's theorems/History/The recovery in field theory|the page carrying
+them]] states that none was checked against the primary papers.

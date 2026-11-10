@@ -1,0 +1,94 @@
+{{DISPLAYTITLE:Equations that were never independent}}
+{{Noether's theorems map}}
+
+''Mathematical counterpart: [[Noether's theorems/Second theorem/The Noether identities|The Noether identities]].''
+
+The second theorem's output has a name in the later literature: the Noether
+identities. This page says what sort of thing they are.
+
+== A committee that is smaller than it looks ==
+
+Five people on a committee, five votes. But one member has a standing rule: she
+always votes with the majority of the other four.
+
+You have five votes and four decisions. The fifth vote is real, it is cast, it is
+counted — and it tells you nothing you did not already know.
+
+That is the shape of a Noether identity. A theory has some number of equations of
+motion. The second theorem says a certain number of them are, in this sense,
+voting with the others. They are true. They are not extra.
+
+== What kind of statement it is ==
+
+Compare with the first theorem's output.
+
+The first theorem says: a certain combination of things flows without piling up
+anywhere. That is a statement that something is happening.
+
+The second theorem says: a certain combination of things equals zero. That is a
+statement that nothing is happening, and specifically that the pieces were never
+free of each other in the first place.
+
+'''Nothing flows. There is no current, there is no total, and there is nothing to
+measure.''' A reader who has met only the first theorem naturally expects a
+conserved quantity to come out of the second, and the expectation is the single
+most common source of error about it.
+
+== The simplest case ==
+
+Draw a curve on paper and describe it by saying where your pen is at each moment.
+
+You had a free choice about pace — fast, slow, a pause in the middle. The curve
+does not care. That freedom is the simplest possible local symmetry: one free
+shape, and the rule does not even care how quickly your choice varies.
+
+The theorem promises, for that case, exactly one relation among the equations, of
+the simplest kind. And that is what turns up: a single statement tying the
+equations directly to one another, with no rates of change involved.
+
+The practical meaning is exactly what you would guess. A description of a curve
+that never commits to a pace cannot determine its own pace. One of its equations
+is therefore redundant, and the theorem tells you in advance that exactly one will
+be.
+
+'''That is not a flaw in the description. It is the cost of the freedom you
+wanted.''' You asked to describe a curve without committing to how it is traced,
+and the redundancy is the bill.
+
+== The case that started everything ==
+
+In general relativity the free shape is your choice of coordinate labels, one
+shape for each dimension of spacetime, so four in the world we live in. And the
+rule cares not only about your labels but about how quickly they change from place
+to place.
+
+So the theorem promises four relations among the field equations and their rates
+of change.
+
+Those four relations were already known before Noether's paper. Hilbert had
+asserted them for one particular scoring rule, and Klein had derived them
+generally, and there was an argument at Göttingen about what they meant.
+[[Noether's theorems/History/Hilbert and Klein|The history track]] tells that
+story.
+
+What Noether added was not the four relations. It was the theorem that has them as
+one instance among many — and that says, in advance, exactly how many to expect for
+any theory of this kind.
+
+== Both at once ==
+
+A theory can have both kinds of symmetry: global knobs and local shapes together.
+Then both theorems apply, independently, and you get conserved quantities from one
+and identities from the other. Neither interferes with the other.
+
+Noether says this in a single sentence and it is the cleanest possible statement
+that her two theorems are not rival readings of one result. They can both be true
+of the same theory at the same time, and they say different things.
+
+== A word about the name ==
+
+Noether calls them dependencies. The term "Noether identities" is later, and this
+volume uses it because it is standard, while noting that it is not her word.
+
+''No mathematics is used on this page. The mathematical treatment is on the
+counterpart page named above.''

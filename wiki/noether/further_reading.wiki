@@ -1,0 +1,79 @@
+{{DISPLAYTITLE:Further reading}}
+{{Noether's theorems map}}
+
+This page names what the volume declined, and why, so that a reader knows where
+its edges are rather than discovering them.
+
+== Read the paper ==
+
+Before anything else. The German original is public domain, is freely available
+online in a transcription proofread against the source, and carries its
+mathematics intact — which was not true for most of the period during which the
+textbook version of "Noether's theorem" formed.
+
+It is twenty-three pages in six sections.
+[[Noether's theorems/History/The 1918 paper read in its own order|A guide to
+reading it in its own order]] is in this volume.
+
+The English translations are all under copyright, and this volume quotes none of
+them. If you read English only, the paper is still worth having beside a
+translation you obtain elsewhere, because the equations are legible in any
+language.
+
+== What this volume does not derive ==
+
+Each item below is discussed somewhere in the volume, marked as underived, and
+would need a text of its own.
+
+'''Lie theory proper.''' The classification of continuous groups. Neither theorem
+needs it;
+[[Noether's theorems/Mathematics/Lie groups and Lie algebras|the Lie page]]
+carries only the commutator and the closure condition.
+
+'''Jet bundles and the variational bicomplex.''' The modern framework in which
+both theorems are corollaries of a statement about a differential complex.
+Noether proves both without it.
+[[Noether's theorems/Mathematics/Jet space and prolongation|Discussion]], or [[Noether's theorems/Explainers/Why Noether needed a third symbol|in plain language]].
+
+'''The general moment map.''' Existence, equivariance, and the relation to the
+Lie algebra's structure. Two cases are checked in this volume and the general
+construction is not.
+[[Noether's theorems/Mathematics/The symplectic form of the theorem and the moment map|Discussion]], or [[Noether's theorems/Explainers/Why the moment map resists plain language|in plain language]].
+
+'''Quantum field theory.''' The Ward-Takahashi identity and the anomaly are
+named, their shape is described, and neither is derived. This is the ceiling of
+the volume.
+[[Noether's theorems/Mathematics/Anomalies|Discussion]], or [[Noether's theorems/Explainers/When a symmetry does not survive|in plain language]].
+
+'''The Belinfante construction.''' Why the improvement is permitted is derived
+here; that a symmetrising choice always exists is not.
+[[Noether's theorems/Mathematics/The Belinfante-Rosenfeld improvement|Discussion]], or [[Noether's theorems/Explainers/Moving the bookkeeping without changing the total|in plain language]].
+
+'''The symmetry behind the Runge-Lenz vector.''' The conserved quantity is
+exhibited and checked; the symmetry is not.
+[[Noether's theorems/Applications/The Runge-Lenz vector|Discussion]].
+
+== Open questions this volume leaves ==
+
+'''Which precursor anticipated what.''' Noether names eight people. Measuring
+what each of them established, and under what restriction, requires reading eight
+papers against her two theorems. No priority verdict is made or implied.
+[[Noether's theorems/History/The precursors|Discussion]].
+
+'''How the paper was actually received between 1918 and 1960.''' No citation
+trace was performed. The usual explanations are recorded as claims.
+[[Noether's theorems/History/The long neglect|Discussion]].
+
+'''Which theorem Kelvin's circulation theorem belongs to.''' The symmetry is a
+free shape, which puts it on the second theorem's side, and the derivation that
+would settle it was not done.
+[[Noether's theorems/Applications/Kelvin's circulation theorem|Discussion]].
+
+== For the mathematics without the history ==
+
+Any graduate text on classical field theory carries the first theorem in its
+field-theory special case. Be aware, reading one, of the four things that version
+usually drops: the second theorem, both converses, the general derivative order,
+and the correct attribution of divergence invariance.
+[[Noether's theorems/History/The recovery in field theory|The page on the
+recovery]] explains how each was lost.

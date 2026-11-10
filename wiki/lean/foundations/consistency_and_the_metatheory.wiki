@@ -1,0 +1,186 @@
+{{DISPLAYTITLE:Consistency and the metatheory}}
+{{Plebeian|Lean theorem prover/Explainers/What has to be trusted}}
+{{Lean theorem prover map}}
+
+The '''metatheory''' of Lean is what can be proved ''about'' its type theory rather than
+''in'' it. The central question is consistency: whether a closed proof of
+<code>False</code> can ever pass Lean's kernel. The answer known today is relative, and it was proved for the type
+theory of Lean 3. That theory, with its three axioms, can be interpreted in Zermelo–Fraenkel
+set theory with choice (ZFC) extended by inaccessible cardinals, one axiom "there are <math>n</math> inaccessible
+cardinals" for each natural number <math>n</math>, so it is consistent if that set theory
+is. Several properties one might expect of a type theory fail for Lean, among them
+decidability of definitional equality and normalisation, and none of these failures makes
+the checker unsound. If Lean is consistent, it cannot prove its own consistency. This page sets
+out each of these points and its source.
+
+== The consistency theorem ==
+
+Carneiro's thesis of 2019 writes down the type theory of Lean 3<ref name="lean4lean" /> in
+full, including [[Lean theorem prover/Foundations/The three axioms|the three axioms]], and constructs a
+set-theoretic model of it. Its conclusion, Corollary 6.8, is that Lean is consistent if ZFC
+together with the axioms "there are <math>n</math> inaccessible cardinals", for every
+natural number <math>n</math>, is consistent: there is no proof of <code>False</code> that
+the Lean kernel verifies.<ref name="carneiro">Mario Carneiro, ''The Type Theory of Lean'', Master's thesis, Carnegie Mellon University, 2019; abstract, §1.2 (pp. 4–5), §3 (pp. 15–19), Theorem 4.1 (p. 19), Theorem 6.7 (p. 37) and Corollary 6.8 (p. 41). https://github.com/digama0/lean-type-theory/releases/tag/v1.0</ref>
+
+:<math>\mathrm{Con}\bigl(\mathrm{ZFC} + \{\exists\, n \text{ inaccessible cardinals} : n < \omega\}\bigr) \;\Rightarrow\; \mathrm{Con}(\mathrm{Lean})</math>
+
+The model is the expected one. Types are sets and terms are their elements.
+<code>Prop</code> is a two-element set whose members are the empty set and a one-element
+set, so every proposition is interpreted as empty or as a one-element set, which validates
+proof irrelevance. Each higher universe is interpreted inside a level of the cumulative hierarchy
+cut off at an inaccessible cardinal, because universes are closed under function types and
+inductive types, which makes them Grothendieck universes. Lean has a universe for every
+natural number, so the full hierarchy calls for an inaccessible for each of them; a single
+proof mentions only finitely many universes, which is why the hypothesis is stated one
+<math>n</math> at a time. The impredicativity of <code>Prop</code> corresponds to full power
+sets in ZFC.<ref name="carneiro" />
+
+Carneiro calls the assumption optimal, for the following reason. Inside Lean one can build a
+model of ZFC in each universe above the lowest, and define inaccessible cardinals in the
+larger ones, so Lean proves the consistency of ZFC with any given finite number of
+inaccessibles.<ref name="carneiro" />
+
+== Relative consistency and Werner's theorem ==
+
+The two directions were matched for the Calculus of Inductive Constructions, the theory
+behind Coq, by Werner in 1997.<ref name="werner">Benjamin Werner, "Sets in types, types in sets", in Martín Abadi and Takayasu Ito (eds.), ''Theoretical Aspects of Computer Software (TACS 1997)'', Lecture Notes in Computer Science 1281, Springer, 1997, pp. 530–546. https://doi.org/10.1007/BFb0014566</ref> Writing <math>\mathrm{ZFC}_n</math>
+for ZFC with <math>n</math> inaccessibles and <math>\mathrm{CIC}_n</math> for the calculus
+with <math>n</math> universes, Carneiro summarises Werner's result as<ref name="carneiro" />
+
+:<math>\mathrm{ZFC}_n \vdash \mathrm{Con}(\mathrm{CIC}_{n+1}) \qquad\qquad \mathrm{CIC}_{n+2} \vdash \mathrm{Con}(\mathrm{ZFC}_n)</math>
+
+so that the unions over all <math>n</math> are equiconsistent. Werner's encoding of set theory in
+the calculus also assumes excluded middle and a type-theoretic axiom of choice.<ref name="werner" /> Werner's construction of
+set theory inside type theory has been replicated in Lean with minor changes, which gives
+<math>\mathrm{Lean}_{n+2} \vdash \mathrm{Con}(\mathrm{ZFC}_n)</math>. Carneiro's model
+supplies the other direction, <math>\mathrm{ZFC}_{n+1} \vdash \mathrm{Con}(\mathrm{Lean}_{n+1})</math>,
+so Lean with all its universes is equiconsistent with both. He does not attempt sharp
+universe bounds, and notes that matching Werner's exactly would require global choice, a
+choice function on the whole set-theoretic universe, to interpret Lean's choice
+axiom.<ref name="carneiro" /> Lean's consistency strength is thus that of the union of the
+theories <math>\mathrm{ZFC}_n</math>.
+
+== What fails ==
+
+The same thesis records negative results, and later work adds one more.<ref name="carneiro" />
+
+'''Definitional equality is undecidable, and so is type checking.''' The accessibility
+predicate, together with proof irrelevance, lets a definitional-equality question encode
+the halting problem. The argument is on
+[[Lean theorem prover/Foundations/Proof irrelevance and subsingleton elimination|proof irrelevance and subsingleton elimination]].
+
+'''The checker's equality is weaker than the theory's.''' Lean's kernel implements a
+decidable approximation, algorithmic equality, which is not transitive. Typing measured by
+it fails subject reduction, and the reduction relation is not confluent (the Church–Rosser
+property fails), so reducing both sides to normal form is not a decision procedure. A
+modified reduction restores confluence at the cost of termination, enough to prove that
+every term has a unique type up to definitional equality.<ref name="carneiro" />
+
+'''Normalisation fails.''' Abel and Coquand showed that a type theory with an impredicative
+<code>Prop</code> and a proof-irrelevant equality loses normalisation. One of their
+counterexamples uses only <code>propext</code>, one of Lean's standard axioms, and gives a
+closed proof with no weak head normal form; they note that it replays directly in Lean 3.4.2.<ref name="abel-coquand">Andreas Abel and Thierry Coquand, "Failure of normalization in impredicative type theory with proof-irrelevant propositional equality", ''Logical Methods in Computer Science'' 16(2) (2020), paper 14. https://doi.org/10.23638/LMCS-16(2:14)2020</ref> It
+transcribes directly into Lean 4.34.1:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+set_option linter.defProp false
+
+def T : Prop := ∀ A : Prop, A → A
+
+def delta : T → T := fun z => z (T → T) id z
+
+def omega : T := fun A a => cast (propext ⟨fun _ => a, fun _ => id⟩ : (T → T) = A) delta
+
+def Omega : T := delta omega
+
+#print axioms Omega
+</pre>
+
+This prints <code>'Omega' depends on axioms: [propext]</code>. The type <code>T</code>
+quantifies over all propositions, which is possible only because <code>Prop</code> is
+impredicative. Given any proposition <code>A</code> and a proof <code>a</code> of it,
+<code>propext</code> makes <code>T → T</code> equal to <code>A</code>, because both are
+true; <code>omega</code> casts <code>delta</code> along that equation. When the cast is
+used at <code>A = T → T</code> itself the two sides of the equation coincide, the cast
+reduces away, and <code>delta omega</code> unfolds back to <code>delta omega</code>. Asked
+to normalise the proof, Lean gives up, even with its recursion limit raised to 20,000:
+
+<pre class="lean lean-cont lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+set_option maxRecDepth 20000 in
+#reduce (proofs := true) Omega
+</pre>
+
+The error is <code>maximum recursion depth has been reached</code>. The failure reaches
+beyond proofs. Carneiro's later paper on an
+independent checker gives a variant in which a natural number defined by eliminating a
+proof built from <code>Omega</code> sends a definitional-equality check into the same
+loop:<ref name="lean4lean">Mario Carneiro, "Lean4Lean: Verifying a typechecker for Lean, in Lean", arXiv:2403.14064, version 3, 14 September 2025; abstract, §1, §3.2.1, §4.1 and §9. https://arxiv.org/abs/2403.14064</ref>
+
+<pre class="lean lean-cont lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+inductive Foo : Prop
+  | mk : T → Foo
+
+def foo : Foo := Omega Foo (Foo.mk fun _ => id)
+
+example : foo.recOn (motive := fun _ => Nat) (fun _ => 1) = 1 := by
+  rfl
+</pre>
+
+Lean again reports <code>maximum recursion depth has been reached</code>. Abel and Coquand
+stress what is not at stake: consistency and canonicity are unaffected, and they compare the
+situation to extensional type theory, which has an equality reflection rule.<ref name="abel-coquand" />
+
+== Why the checker is still sound ==
+
+Carneiro's argument needs one thing: whatever the checker accepts must be derivable in a
+theory that has a model. He proves that algorithmic equality implies the ideal definitional
+equality for well-typed terms. So if a term of type <code>False</code> passed the algorithmic
+typing judgment, his description of what Lean's kernel checks, that term would have type
+<code>False</code> in the ideal system, and the model would then contain
+an element of the empty set. This is precisely the proof of Corollary 6.8.<ref name="carneiro" />
+
+The failures above are therefore failures of completeness and of termination, not of
+soundness. A checker that is incomplete rejects some correct terms. A checker that may not
+terminate either loops or, as Lean does in the examples above, stops at a resource limit
+and reports an error. Neither outcome accepts a false statement. Carneiro observes that the soundness proof of his
+thesis, unlike MetaRocq's, does not depend on termination.<ref name="lean4lean" />
+
+== Proving consistency inside Lean ==
+
+Gödel's second incompleteness theorem sets the limit. A consistent formal system in which a
+modest amount of arithmetic can be carried out cannot prove its own
+consistency.<ref name="godel">Kurt Gödel, "Über formal unentscheidbare Sätze der Principia Mathematica und verwandter Systeme I", ''Monatshefte für Mathematik und Physik'' 38 (1931), 173–198. https://doi.org/10.1007/BF01700692</ref><ref name="sep-godel">Panu Raatikainen, "Gödel's Incompleteness Theorems", ''Stanford Encyclopedia of Philosophy'', substantive revision of 8 October 2025, §1 and §3. https://plato.stanford.edu/entries/goedel-incompleteness/</ref> Lean formalises far more than
+that arithmetic, so if Lean is consistent, no Lean proof of "Lean is consistent" exists.
+Carneiro's theorem respects the limit in the usual way: it is a proof in a different
+system, ZFC with inaccessibles, and its conclusion is relative to that system's
+consistency. The independent-checker project names Gödel's theorem as the reason
+that nothing implying the unconditional soundness of Lean will be directly provable in Lean,
+and plans to formalise Carneiro's relative consistency proof, which assumes large
+cardinals.<ref name="lean4lean" />
+
+== The theory and the implementation ==
+
+A consistency proof covers a mathematical description of the theory, not the program that
+checks it. The Lean 4 kernel extended the theory Carneiro analysed with features such as
+nested inductive types and η for structures. Carneiro writes that these change the theory
+enough that the 2019 proof no longer applies directly, pointing to later work that covers
+some of the changes, and that some soundness bugs entered Lean's kernel during the move to
+Lean 4.<ref name="lean4lean" /> One response is independent checking: a
+second complete type checker written in Lean, able to check all of Mathlib, with part of it
+formally verified against a formalisation of the type theory. That work has already found and
+reported one soundness bug in Lean's kernel, since fixed.<ref name="lean4lean" /> The reference
+manual's guide to validating proofs lists the soundness of Lean's logic among the
+assumptions that remain even after the strictest checks.<ref name="refman-validating">''The Lean Language Reference'', version 4.34.0, "Validating a Lean Proof", section "Remaining Issues". https://lean-lang.org/doc/reference/4.34.0/ValidatingProofs/</ref>
+The checkers themselves are the subject of
+[[Lean theorem prover/System/Proof export and independent checkers|proof export and independent checkers]].
+
+== Next ==
+
+[[Lean theorem prover/System/Elaboration|Elaboration]] begins the pages on how Lean works,
+from the text a person types to the term the Lean kernel checks.
+[[Lean theorem prover/System/The Lean kernel|The Lean kernel]] describes the program whose
+soundness this page has been about.
+
+== References ==
+
+<references />

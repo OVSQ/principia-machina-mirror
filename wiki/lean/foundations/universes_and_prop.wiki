@@ -1,0 +1,262 @@
+{{DISPLAYTITLE:Universes and Prop}}
+{{Plebeian|Lean theorem prover/Explainers/Why there is no type of all types}}
+{{Lean theorem prover map}}
+
+In Lean every type is itself a term, so every type has a type. The types of types are called
+'''universes''' or '''sorts'''. They form a hierarchy: <code>Sort 0</code>,
+<code>Sort 1</code>, <code>Sort 2</code> and so on, each a member of the next, with no top.
+The bottom level, <code>Sort 0</code>, is <code>Prop</code>, the universe of propositions,
+and it obeys different rules from the levels above it. This page sets out the hierarchy, the
+rule that assigns a universe to a function type, the operation <math>\mathrm{imax}</math> that
+rule needs, universe polymorphism, and the paradox that makes a hierarchy necessary.
+
+== Sorts and their names ==
+
+Each universe has a '''level''', and <code>Sort u</code> is the universe at level
+<code>u</code>. Two abbreviations name the cases that matter in practice:
+<code>Prop</code> is <code>Sort 0</code>, and <code>Type u</code> is
+<code>Sort (u + 1)</code>, with <code>Type</code> alone meaning <code>Type 0</code>, that is,
+<code>Sort 1</code>.<ref name="refman-univ">''The Lean Language Reference'', for Lean
+4.34.0, lean-lang.org, 2026, section 4.3, "Universes".
+https://lean-lang.org/doc/reference/4.34.0/The-Type-System/Universes/</ref>
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+#check Prop
+#check Type
+#check Type 3
+#check Sort 0
+example : Sort 0 = Prop := rfl
+example : Sort 1 = Type := rfl
+example : Sort (3 + 1) = Type 3 := rfl
+</pre>
+
+Lean prints <code>Prop : Type</code>, <code>Type : Type 1</code>,
+<code>Type 3 : Type 4</code> and <code>Prop : Type</code>, and accepts the three equations
+by <code>rfl</code>: the names are notation for the same terms. The typing rule behind the
+first four lines is the sort rule of
+[[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]],
+
+:<math>\frac{}{\Gamma \vdash \mathrm{Sort}\,u : \mathrm{Sort}\,(u+1)}</math>
+
+and nothing else gives a universe a type. In particular no universe is a member of itself:
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+example : Type := Type
+</pre>
+
+Lean 4.34.1 rejects it:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+Type mismatch
+  Type
+has type
+  Type 1
+of sort `Type 2` but is expected to have type
+  Type
+of sort `Type 1`
+</pre>
+
+Lean's universes are also '''not cumulative''': a type in <code>Type 0</code> is not
+thereby in <code>Type 1</code>, and each type has exactly one universe.<ref name="refman-univ" />
+A type is moved up explicitly, by wrapping it:
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+example : Type 1 := Nat
+</pre>
+
+fails with <code>Type mismatch</code>, reporting that <code>Nat</code> has type
+<code>Type</code> but is expected to have type <code>Type 1</code>. The standard wrapper is
+<code>ULift</code>, a structure with one field, <code>down</code>, whose universe parameter
+says how far to lift:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+#check (ULift.{1} Nat)
+example : Type 1 := ULift.{1} Nat
+</pre>
+
+Lean prints <code>ULift Nat : Type 1</code> and accepts the example. Coq, by contrast, has cumulative universes; Carneiro notes that
+cumulativity breaks the unique-typing theorem his analysis of Lean relies on.<ref name="carneiro2019">Mario
+Carneiro, ''The Type Theory of Lean'', MSc thesis, Carnegie Mellon University, 2019.
+https://github.com/digama0/lean-type-theory/releases/tag/v1.0</ref>
+
+== The universe of a function type ==
+
+A dependent function type <code>(x : A) → B</code> is a type, so it lives in some universe.
+The formation rule decides which:
+
+:<math>\frac{\Gamma \vdash A : \mathrm{Sort}\,u \qquad \Gamma, x : A \vdash B : \mathrm{Sort}\,v}{\Gamma \vdash (x : A) \to B : \mathrm{Sort}\,(\mathrm{imax}\,u\,v)}</math>
+
+where
+
+:<math>\mathrm{imax}\,u\,v = \begin{cases} 0 & \text{if } v = 0 \\ \max(u, v) & \text{otherwise.} \end{cases}</math>
+
+There are two cases.<ref name="refman-univ" /><ref name="carneiro2019" />
+
+* '''The codomain is data''' (<math>v \geq 1</math>). The function type lives in the larger of the two universes. A type in <code>Type u</code> may only quantify over types in universes no larger than its own; this is '''predicativity'''.
+* '''The codomain is a proposition''' (<math>v = 0</math>). The function type is a proposition, whatever the domain. A proposition may quantify over all propositions, or over all types at any level, and still be a proposition; this is '''impredicativity'''.
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+#check ∀ (p : Prop), p → p
+#check (α : Type) → α → α
+#check (α : Type 2) → Prop
+#check (n : Nat) → n = n
+</pre>
+
+The output is
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+∀ (p : Prop), p → p : Prop
+(α : Type) → α → α : Type 1
+Type 2 → Prop : Type 3
+∀ (n : Nat), n = n : Prop
+</pre>
+
+The first statement quantifies over every proposition, including itself, and is a
+proposition. The second, the type of the polymorphic identity function on
+<code>Type</code>, quantifies over <code>Type</code> and so lands one level up, in
+<code>Type 1</code>. The third is a function type into <code>Prop</code>, not a function type
+whose values are proofs, so it is data: its codomain <code>Prop</code> lives in
+<code>Sort 1</code>, and the result is in <math>\mathrm{Sort}\,(\max(4, 1)) =</math>
+<code>Type 3</code>.
+
+== Why imax ==
+
+The two cases could be stated as two rules. A single operation on levels is needed because of
+universe polymorphism. A definition may be stated for an arbitrary level variable
+<code>v</code>, and the rule must give the function type a universe without knowing whether
+<code>v</code> will later be 0. With <math>\max</math> alone that is impossible. The obvious
+candidate, <math>\max\,u\,v</math>, goes wrong when <code>v</code> is set to 0: a
+proposition that quantifies over a type in <code>Sort u</code> would land in
+<math>\mathrm{Sort}\,(\max(u, 0)) = \mathrm{Sort}\,u</math> instead of in
+<code>Prop</code>, and <code>Prop</code> would not be impredicative. No other expression
+built from <math>\max</math> and successor does better: one that mentions <code>u</code> is
+never below <code>u</code>, so it is not 0 when <code>v</code> is 0 and <code>u</code> is
+not, and one that does not mention <code>u</code> cannot equal <math>\max(u, v)</math>
+for every <code>u</code>. <math>\mathrm{imax}</math> is the level expression that reduces
+to the right case once <code>v</code> is known.<ref name="refman-univ" />
+
+Level expressions are built from numerals, variables, successor, <math>\max</math> and
+<math>\mathrm{imax}</math>, and two levels are equal when they denote the same number under
+every assignment of numbers to their variables.<ref name="carneiro2019" /> Lean will not
+treat <math>\mathrm{imax}\,u\,v</math> as <math>\max\,u\,v</math>, because the two differ
+when <code>v</code> is 0:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+universe u v
+
+def Fn (α : Sort u) (β : Sort v) : Sort (imax u v) := α → β
+
+#check Fn.{1, 0}
+#check Fn.{1, 1}
+#check Fn.{0, 2}
+</pre>
+
+The three instances print as <code>Fn : Type → Prop → Prop</code>,
+<code>Fn : Type → Type → Type</code> and <code>Fn : Prop → Type 1 → Type 1</code>: the
+same definition gives a proposition-valued result in the first case and data in the other
+two. Stating the result universe as <code>Sort (max u v)</code> instead is rejected:
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+universe u v
+
+def Fn2 (α : Sort u) (β : Sort v) : Sort (max u v) := α → β
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+Type mismatch
+  α → β
+has type
+  Sort (imax u v)
+of sort `Type (imax u v)` but is expected to have type
+  Sort (max u v)
+of sort `Type (max u v)`
+</pre>
+
+== Universe polymorphism ==
+
+A definition may take '''universe parameters''', written after its name as
+<code>.{u, v}</code>. It is then a schema: each use instantiates the parameters with level
+expressions, and instantiations at different levels need not be definitionally
+equal.<ref name="refman-univ" />
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+set_option pp.universes true in
+#check @id
+#check @id.{0}
+#check List.{0}
+</pre>
+
+Lean prints <code>@id.{u_1} : {α : Sort u_1} → α → α</code>, then
+<code>@id : ∀ {α : Prop}, α → α</code> for the instance at level 0, where the identity
+function on proofs is itself a proof of a proposition, and <code>List : Type → Type</code>.
+This is what lets one identity function, one list type and one equality serve at every
+level. Without it each would have to be defined once per universe.
+
+== Prop ==
+
+<code>Prop</code> is the universe of propositions. Besides impredicativity, it has
+properties that the levels above it lack:<ref name="refman-props">''The Lean Language
+Reference'', for Lean 4.34.0, lean-lang.org, 2026, section 4.2, "Propositions".
+https://lean-lang.org/doc/reference/4.34.0/The-Type-System/Propositions/</ref>
+
+* '''Definitional proof irrelevance''': any two proofs of the same proposition are definitionally equal.
+* '''Run-time irrelevance''': proofs are erased from compiled code.
+* '''Restricted elimination''': except for a class of propositions with at most one proof, a proof cannot be used to produce data, only other proofs.
+* '''Extensionality''': logically equivalent propositions are equal, by the axiom <code>propext</code>.
+
+An impredicative universe of propositions is a feature of the Calculus of Constructions of
+Coquand and Huet, and the theory implemented by Lean's kernel is a version of that
+calculus.<ref name="refman-elab">''The Lean Language Reference'', for Lean 4.34.0,
+lean-lang.org, 2026, section 2.3, "The Kernel".
+https://lean-lang.org/doc/reference/4.34.0/Elaboration-and-Compilation/</ref><ref name="coc">Thierry Coquand and Gérard Huet, "The calculus of
+constructions", ''Information and Computation'' 76(2–3), 1988, pp. 95–120.
+https://doi.org/10.1016/0890-5401(88)90005-3</ref><ref name="abelcoquand">Andreas Abel and
+Thierry Coquand, "Failure of Normalization in Impredicative Type Theory with Proof-Irrelevant
+Propositional Equality", ''Logical Methods in Computer Science'' 16(2), 2020.
+https://doi.org/10.23638/LMCS-16(2:14)2020</ref> Its strength is real: Carneiro observes that
+impredicativity corresponds, in a set-theoretic model, to having full power sets.<ref name="carneiro2019" />
+The restriction on elimination is how the rules ensure that no computation can tell which
+proof of a proposition it has received, as proof irrelevance
+requires;<ref name="refman-subsing">''The Lean Language Reference'', for Lean 4.34.0,
+lean-lang.org, 2026, section 4.4.3.1.1.1, "Subsingleton Elimination".
+https://lean-lang.org/doc/reference/4.34.0/The-Type-System/Inductive-Types/</ref> it is
+treated on [[Lean theorem prover/Foundations/Proof irrelevance and subsingleton elimination|Proof irrelevance and subsingleton elimination]].
+
+== Why there is a hierarchy ==
+
+The simplest design would be a single universe containing every type, itself included:
+<code>Type : Type</code>. That design is inconsistent. In 1972 Girard derived a
+contradiction in a type system called System U, by formalising a paradox in the style of
+Burali-Forti's paradox of the largest ordinal. The same argument shows that the first version
+of Martin-Löf's type theory, which had <code>Type : Type</code>, proves falsity; in type
+theory the argument is known as '''Girard's paradox'''.<ref name="nlab">nLab, "Burali-Forti's paradox", section "In type theory: Girard's
+paradox", revision of 24 November 2023. https://ncatlab.org/nlab/show/Girard%27s+paradox</ref><ref name="hurkens">Antonius
+J. C. Hurkens, "A simplification of Girard's paradox", in ''Typed Lambda Calculi and
+Applications'' (TLCA 1995), Lecture Notes in Computer Science 902, Springer, 1995,
+pp. 266–278. https://doi.org/10.1007/BFb0014058</ref> The ''Homotopy Type Theory'' book makes
+the same point for a universe that contains itself: every type, including the empty one,
+becomes inhabited.<ref name="hott">The Univalent Foundations Program, ''Homotopy Type
+Theory: Univalent Foundations of Mathematics'', Institute for Advanced Study, 2013,
+section 1.3, "Universes and families". https://homotopytypetheory.org/book/</ref>
+
+Hurkens's paper locates the problem precisely. Higher-order logic, in which propositions may
+quantify over all propositions, is consistent. Adding a single rule, which lets a type be
+formed by quantifying over the sort of all types, gives the system called
+<math>\lambda U^-</math>, which Coquand had already shown inconsistent; Hurkens gives a short
+term in it whose type is falsity.<ref name="hurkens" /> Impredicativity for propositions
+alone is therefore consistent, and adding it for types as well is not. Lean's design
+follows the line exactly: <code>Prop</code> is impredicative, and every universe above it is
+predicative and contained in the next. The plain-language account is
+[[Lean theorem prover/Explainers/Why there is no type of all types|Why there is no type of all types]].
+
+How strong the resulting hierarchy is, measured against set theory, is the subject of
+[[Lean theorem prover/Foundations/Consistency and the metatheory|Consistency and the metatheory]].
+
+== Next ==
+
+[[Lean theorem prover/Foundations/Inductive types and recursors|Inductive types and recursors]] shows how every type other than universes and function types is introduced, and
+how the universe rules constrain it.
+
+== References ==
+
+<references />

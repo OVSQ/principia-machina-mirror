@@ -1,0 +1,79 @@
+{{DISPLAYTITLE:The sea of spinning cells}}
+{{On Physical Lines of Force map}}
+''[[On Physical Lines of Force]] → [[On Physical Lines of Force/Explainers|Explainers]] → The vortex sea''
+
+<blockquote>
+'''In one sentence.''' Maxwell supposed that all of space is packed with tiny whirling cells, lined up with their spin axes along the lines of force, and that their spinning is what magnetism is.
+</blockquote>
+
+Maxwell had decided that a magnetic field must be a region under mechanical load: a pull along each line of force, and a push crossways to it. That is a demanding thing to ask for. Squeeze a block of rubber and it resists in every direction at once. What could pull in one direction and push in every direction at right angles to it, everywhere, all the time, throughout empty space?
+
+== The proposal ==
+
+Maxwell's answer is the idea the paper is named after, and he introduces it with striking caution:
+
+<blockquote>
+The explanation which most readily occurs to the mind is that the excess of pressure in the equatorial direction arises from the centrifugal force of vortices or eddies in the medium.
+</blockquote>
+
+Read that opening clause again. Not "the explanation is", but "the explanation which most readily occurs to the mind is". This is the central hypothesis of a four-part paper, put forward in about the most tentative form the language allows.
+
+A '''vortex''' is a small region of some substance turning about an axis — an eddy, a spinning parcel of stuff. Water circling a drain is a vortex; so is the swirl behind an oar. Maxwell asks us to imagine space filled with these, packed together like a foam of bubbles, every one of them spinning. He calls them molecular vortices, and elsewhere simply cells.
+
+[[File:OPL-fig-vortex-single.svg|thumb|center|620px|A single spinning cell, and the pressures it produces]]
+
+The arrangement is not random. Wherever a magnetic force is present, the cells turn about axes that point along the lines of force, all in the same sense. Move to another part of the field and the axes tip round to follow the lines there. The pattern the iron filings make is, on this account, a map of which way the local cells are spinning.
+
+== Each cell carries two quantities ==
+
+The model earns its keep by being specific. Two properties of a cell stand for two things that can be measured in a laboratory.
+
+{| class="wikitable"
+! Property of the cell !! What it stands for
+|-
+| how fast it spins || the strength of the magnetic force at that place
+|-
+| how dense the substance inside it is || the magnetic permeability of the material there
+|}
+
+The first is straightforward. A strong field is one where the cells whirl quickly; a weak field one where they barely turn. Move a compass needle into a stronger field and it is pushed harder because the local cells are spinning faster.
+
+The second needs a word explained. '''Permeability''' is a property of materials, and it measures how readily a substance takes up the magnetic state. Iron has a high permeability, which is why a magnet's influence seems to concentrate itself in an iron bar. Air has a low one. In Maxwell's model this difference is a difference in the stuff the cells are made of: in iron, the whirling substance is dense and heavy; in air, thin.
+
+That is a real gain. Before this, permeability was a number you measured and put in a table. Here it becomes a property of a thing, with a mechanical meaning attached.
+
+== Why an eddy and not something simpler ==
+
+The strongest argument for vortices is one Maxwell makes immediately, and it goes back to a fact from the first page of these explainers: a line of force has two distinct ends, a north end and a south end.
+
+Almost nothing in mechanics has that property built in. A stretched spring has two ends, but they are the same as each other. A push is just a push. Spin, though, is different. Look at a spinning top from above and it turns clockwise. Walk round and look at the same top from below and the very same motion now appears anticlockwise. The two ends of the axis are genuinely distinguishable, and nothing had to be added to make them so.
+
+Maxwell puts it in one line:
+
+<blockquote>
+Every vortex is essentially dipolar, the two extremities of its axis being distinguished by the direction of its revolution as observed from those points.
+</blockquote>
+
+'''Dipolar''' means having two ends of opposite character — exactly the north-and-south quality that magnetism has, and that any candidate mechanism had to reproduce. Maxwell did not have to bolt the two ends on. They came free with the choice of spinning as the underlying motion.
+
+[[File:OPL-fig-vortex-array.svg|thumb|center|620px|Parallel spinning cells, packed side by side]]
+
+== How big are these cells? ==
+
+The obvious objection arrives at once. Whirlpools how large? If the theory only works for eddies of a particular size, and Maxwell has no way of saying what that size is, then the theory is empty.
+
+He disposes of this before anyone can raise it, in the first formal proposition of the paper. Proposition I establishes that the pressure a spinning cell produces depends on two things only: the density of the substance in it, and the square of the speed at its rim. The size of the cell does not enter the result at all. Two cells, one enormous and one microscopic, produce the same pressures provided their densities match and their rims move at the same speed.
+
+That single result is what lets Maxwell write the word "molecular" without ever having to say how small a molecule is. He need not specify a scale, because no answer he could give would change anything he goes on to calculate. It is a small piece of work, placed first, and it clears away an objection that would otherwise have hung over the entire paper.
+
+What remains is to show that the spinning really does produce the stress that magnetism needs. That is the next page.
+
+== Where this is in the paper ==
+
+* [[On Physical Lines of Force/Part I/The introductory discussion|Part I: the introductory discussion]] — the hypothesis of molecular vortices in Maxwell's own words, including the dipolar argument.
+* [[On Physical Lines of Force/Part I/Prop. I|Part I, Prop. I]] — the proof that the pressure of a vortex does not depend on its size.
+* [[On Physical Lines of Force/Part II|Part II]] — how neighbouring cells can all spin the same way without grinding on each other.
+
+----
+
+''Next: [[On Physical Lines of Force/Explainers/Why spinning makes a pull|Why spinning makes a pull]] · Previous: [[On Physical Lines of Force/Explainers/Why Maxwell wanted a mechanism|Why Maxwell wanted a mechanism]]''

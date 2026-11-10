@@ -1,0 +1,2675 @@
+{
+ "meta": {
+  "name": "tpc_sr9_corpus",
+  "version": "0.1.0",
+  "conforms_tps": "0.1.0 revision 4 (discharges TPS 4.5.3 OWED C-08 for SR9)",
+  "module": "tpc_sr9 0.1.0",
+  "suite": "sr9_synthetic_suite 0.1.0 (the synthetic record suite for C1, C2, C4)",
+  "note": "Expected values hand-derived. a(): R1=1 R2=2 R3=0 R4=0 R5=1 R6=1 R7=0; steps as listed; only R4 fails SR1. C1: naive key (a,s) puts R4=(0,1) strictly above R1,R2,R5,R6,R7 (tie with R3 is not 'above'). C2: adding one fresh assumption must not lower the key; more_is_better lowers it for all 7; the LIM/OTHER inversions lower it only for R5/R6. C4: L-M pairs R1|R3, R2|R3, R7|R3; R3 has the smallest skeleton key, so an entry that applies SR5 across regimes strikes each L record. Both residences MUST reproduce every expect."
+ },
+ "cases": [
+  {
+   "id": "sr9_c1/skeleton",
+   "fn": "sr9_c1",
+   "input": {
+    "entry": "skeleton",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "expect": "[true,[]]"
+  },
+  {
+   "id": "sr9_c2/skeleton",
+   "fn": "sr9_c2",
+   "input": {
+    "entry": "skeleton",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "expect": "[true,[],[]]"
+  },
+  {
+   "id": "sr9_c4/skeleton",
+   "fn": "sr9_c4",
+   "input": {
+    "entry": "skeleton",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "expect": "[true,[]]"
+  },
+  {
+   "id": "sr9_harness/skeleton",
+   "fn": "sr9_harness",
+   "input": {
+    "entry": "skeleton",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "expect": "[true,true,true,0]"
+  },
+  {
+   "id": "sr9_c1/naive_d",
+   "fn": "sr9_c1",
+   "input": {
+    "entry": "naive_d",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "expect": "[false,[R4>R1,R4>R2,R4>R5,R4>R6,R4>R7]]"
+  },
+  {
+   "id": "sr9_c2/naive_d",
+   "fn": "sr9_c2",
+   "input": {
+    "entry": "naive_d",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "expect": "[true,[],[]]"
+  },
+  {
+   "id": "sr9_c4/naive_d",
+   "fn": "sr9_c4",
+   "input": {
+    "entry": "naive_d",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "expect": "[true,[]]"
+  },
+  {
+   "id": "sr9_harness/naive_d",
+   "fn": "sr9_harness",
+   "input": {
+    "entry": "naive_d",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "expect": "[false,true,true,5]"
+  },
+  {
+   "id": "sr9_c1/more_is_better",
+   "fn": "sr9_c1",
+   "input": {
+    "entry": "more_is_better",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "expect": "[true,[]]"
+  },
+  {
+   "id": "sr9_c2/more_is_better",
+   "fn": "sr9_c2",
+   "input": {
+    "entry": "more_is_better",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "expect": "[false,[R1,R2,R3,R4,R5,R6,R7],[]]"
+  },
+  {
+   "id": "sr9_c4/more_is_better",
+   "fn": "sr9_c4",
+   "input": {
+    "entry": "more_is_better",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "expect": "[true,[]]"
+  },
+  {
+   "id": "sr9_harness/more_is_better",
+   "fn": "sr9_harness",
+   "input": {
+    "entry": "more_is_better",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "expect": "[true,false,true,7]"
+  },
+  {
+   "id": "sr9_c1/ignores_regime",
+   "fn": "sr9_c1",
+   "input": {
+    "entry": "ignores_regime",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "expect": "[true,[]]"
+  },
+  {
+   "id": "sr9_c2/ignores_regime",
+   "fn": "sr9_c2",
+   "input": {
+    "entry": "ignores_regime",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "expect": "[true,[],[]]"
+  },
+  {
+   "id": "sr9_c4/ignores_regime",
+   "fn": "sr9_c4",
+   "input": {
+    "entry": "ignores_regime",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "expect": "[false,[R1|R3,R2|R3,R7|R3]]"
+  },
+  {
+   "id": "sr9_harness/ignores_regime",
+   "fn": "sr9_harness",
+   "input": {
+    "entry": "ignores_regime",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "expect": "[true,true,false,3]"
+  },
+  {
+   "id": "sr9_c1/limiting_declared",
+   "fn": "sr9_c1",
+   "input": {
+    "entry": "limiting_declared",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "expect": "[true,[]]"
+  },
+  {
+   "id": "sr9_c2/limiting_declared",
+   "fn": "sr9_c2",
+   "input": {
+    "entry": "limiting_declared",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "expect": "[true,[],[R5]]"
+  },
+  {
+   "id": "sr9_c4/limiting_declared",
+   "fn": "sr9_c4",
+   "input": {
+    "entry": "limiting_declared",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "expect": "[true,[]]"
+  },
+  {
+   "id": "sr9_harness/limiting_declared",
+   "fn": "sr9_harness",
+   "input": {
+    "entry": "limiting_declared",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "expect": "[true,true,true,0]"
+  },
+  {
+   "id": "sr9_c1/limiting_undeclared",
+   "fn": "sr9_c1",
+   "input": {
+    "entry": "limiting_undeclared",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "expect": "[true,[]]"
+  },
+  {
+   "id": "sr9_c2/limiting_undeclared",
+   "fn": "sr9_c2",
+   "input": {
+    "entry": "limiting_undeclared",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "expect": "[false,[R5],[]]"
+  },
+  {
+   "id": "sr9_c4/limiting_undeclared",
+   "fn": "sr9_c4",
+   "input": {
+    "entry": "limiting_undeclared",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "expect": "[true,[]]"
+  },
+  {
+   "id": "sr9_harness/limiting_undeclared",
+   "fn": "sr9_harness",
+   "input": {
+    "entry": "limiting_undeclared",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "expect": "[true,false,true,1]"
+  },
+  {
+   "id": "sr9_c1/limiting_leak",
+   "fn": "sr9_c1",
+   "input": {
+    "entry": "limiting_leak",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "expect": "[true,[]]"
+  },
+  {
+   "id": "sr9_c2/limiting_leak",
+   "fn": "sr9_c2",
+   "input": {
+    "entry": "limiting_leak",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "expect": "[false,[R6],[]]"
+  },
+  {
+   "id": "sr9_c4/limiting_leak",
+   "fn": "sr9_c4",
+   "input": {
+    "entry": "limiting_leak",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "expect": "[true,[]]"
+  },
+  {
+   "id": "sr9_harness/limiting_leak",
+   "fn": "sr9_harness",
+   "input": {
+    "entry": "limiting_leak",
+    "suite": {
+     "name": "sr9_synthetic_suite",
+     "version": "0.1.0",
+     "tfk_assumptions": [],
+     "records": {
+      "R1": {
+       "regime": "L",
+       "assumptions": [
+        "A1"
+       ],
+       "cites": [],
+       "steps": 3,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R2": {
+       "regime": "L",
+       "assumptions": [
+        "A1",
+        "A2"
+       ],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R3": {
+       "regime": "M",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": false
+      },
+      "R4": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 1,
+       "domain": "MAIN",
+       "sr1_fail": true
+      },
+      "R5": {
+       "regime": "L",
+       "assumptions": [
+        "A3"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "LIM",
+       "sr1_fail": false
+      },
+      "R6": {
+       "regime": "M",
+       "assumptions": [
+        "A4"
+       ],
+       "cites": [],
+       "steps": 2,
+       "domain": "OTHER",
+       "sr1_fail": false
+      },
+      "R7": {
+       "regime": "L",
+       "assumptions": [],
+       "cites": [],
+       "steps": 2,
+       "domain": "MAIN",
+       "sr1_fail": false
+      }
+     },
+     "contradictions": [
+      [
+       "R1",
+       "R3"
+      ],
+      [
+       "R2",
+       "R3"
+      ],
+      [
+       "R7",
+       "R3"
+      ]
+     ]
+    }
+   },
+   "expect": "[true,false,true,1]"
+  },
+  {
+   "id": "tms_params/all-declared",
+   "fn": "tms_params_ok",
+   "input": {
+    "params": {
+     "k": 2,
+     "step_convention": "one inference rule application = one step",
+     "n_x": 2
+    }
+   },
+   "expect": "[true,[]]"
+  },
+  {
+   "id": "tms_params/no-step-convention-nx-too-small",
+   "fn": "tms_params_ok",
+   "input": {
+    "params": {
+     "k": 2,
+     "n_x": 1
+    }
+   },
+   "expect": "[false,[step_convention,n_x]]"
+  },
+  {
+   "id": "tms_params/none-declared",
+   "fn": "tms_params_ok",
+   "input": {
+    "params": {}
+   },
+   "expect": "[false,[k,step_convention,n_x]]"
+  }
+ ]
+}

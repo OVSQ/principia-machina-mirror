@@ -1,0 +1,291 @@
+{{DISPLAYTITLE:Inductive types and recursors}}
+{{Plebeian|Lean theorem prover/Explainers/Building things from constructors|Lean theorem prover/Explainers/Induction, as the machine sees it}}
+{{Lean theorem prover map}}
+
+Apart from universes, function types and quotient types, which are built in, every type in
+Lean is an '''inductive type''' or is defined in terms of universes, functions and inductive
+types.<ref name="refman-ind">''The Lean Language Reference'', for Lean 4.34.0, lean-lang.org,
+2026, section 4.4, "Inductive Types".
+https://lean-lang.org/doc/reference/4.34.0/The-Type-System/Inductive-Types/</ref> The
+natural numbers, lists, pairs, conjunction and disjunction, equality and the existential
+quantifier are all inductive types. An inductive type is given by its constructors, and from
+them Lean derives one more constant, the '''recursor''', which is at once the type's induction
+principle and its means of primitive recursion. This page describes what an inductive
+definition adds to Lean's environment, its table of definitions and theorems; the reduction
+rule that makes recursors compute; the strict positivity condition and why it is needed; and,
+briefly, indexed, mutual and nested types.
+
+== What a definition adds ==
+
+An inductive definition names a '''type constructor''' and a list of '''constructors''':
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+#print Nat
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+inductive Nat : Type
+number of parameters: 0
+constructors:
+Nat.zero : Nat
+Nat.succ : Nat → Nat
+</pre>
+
+The type constructor <code>Nat</code>, the constructors <code>Nat.zero</code> and
+<code>Nat.succ</code>, and the recursor <code>Nat.rec</code> are new constants with no
+defining term: Lean adds them as axiomatic constants.<ref name="carneiro2019">Mario
+Carneiro, ''The Type Theory of Lean'', MSc thesis, Carnegie Mellon University, 2019.
+https://github.com/digama0/lean-type-theory/releases/tag/v1.0</ref> The
+recursor in particular has a function type but is primitive, and cannot be defined using
+<code>fun</code>.<ref name="refman-ind" />
+What makes them more than arbitrary axioms is that their types are computed from the
+definition by a fixed scheme, and that the definition must pass checks, described below,
+which guarantee that adding them cannot make the logic inconsistent. The checks are
+conservative: some harmless definitions are rejected too.<ref name="refman-ind" />
+
+Every other property of the type is derived from the recursor. Injectivity of the
+constructors, the fact that distinct constructors give distinct values, case analysis and
+structural recursion are theorems and definitions built from <code>Nat.rec</code>, not
+further primitives.<ref name="refman-ind" />
+
+== The recursor ==
+
+<pre class="lean lean-cont" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+#check Nat.rec
+</pre>
+
+Lean 4.34.1 prints
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+Nat.rec.{u} {motive : Nat → Sort u} (zero : motive Nat.zero) (succ : (n : Nat) → motive n → motive n.succ) (t : Nat) :
+  motive t
+</pre>
+
+The arguments have standard names.<ref name="refman-ind" /><ref name="carneiro2019" />
+
+* The '''motive''' is a family of types indexed by the inductive type, <code>motive : Nat → Sort u</code>. It says what is being constructed or proved for each number.
+* There is one '''minor premise''' per constructor. The one for <code>zero</code> is a value of <code>motive zero</code>. The one for <code>succ</code> takes <code>n</code> and a value of <code>motive n</code>, the result for the recursive argument, and returns a value of <code>motive (n + 1)</code>.
+* The '''major premise''' <code>t</code> is the value the recursion runs on, and the result has type <code>motive t</code>.
+
+Because the motive may land in any universe <code>Sort u</code>, the same constant does two
+jobs. With a motive into <code>Prop</code>, <code>Nat.rec</code> is mathematical induction:
+the minor premises are the base case and the induction step. With a motive into
+<code>Type</code>, it is primitive recursion. Both uses below are checked by the same rule:
+
+<pre class="lean lean-cont" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+def double (n : Nat) : Nat :=
+  Nat.rec (motive := fun _ => Nat) 0 (fun _ ih => ih + 2) n
+
+#reduce double 3
+
+theorem zero_add' (n : Nat) : 0 + n = n :=
+  Nat.rec (motive := fun k => 0 + k = k) rfl (fun _ ih => congrArg Nat.succ ih) n
+</pre>
+
+<code>#reduce double 3</code> prints <code>6</code>. In general the recursor's type is
+determined by the constructors alone: each constructor contributes a minor premise that
+assumes the motive for each of its recursive arguments.<ref name="carneiro2019" /> Dybjer
+gave a general formulation of this idea for Martin-Löf's type theory, in which the
+elimination and equality rules of a new type are derived from its formation and introduction
+rules, and Lean's treatment of inductive types is based on his.<ref name="lean4lean">Mario Carneiro, "Lean4Lean: Verifying a
+Typechecker for Lean, in Lean", in ''31st International Conference on Types for Proofs and
+Programs (TYPES 2025)'', LIPIcs vol. 384, pp. 2:1–2:23, 2026.
+https://doi.org/10.4230/LIPIcs.TYPES.2025.2 (read in the version arXiv:2403.14064v2)</ref><ref name="dybjer1994">Peter Dybjer, "Inductive families", ''Formal Aspects of
+Computing'' 6(4), 1994, pp. 440–465. https://doi.org/10.1007/BF01211308</ref>
+
+Lean's core has recursors but no pattern matching and no recursive definitions. Pattern
+matching and recursion in source text are compiled into uses of the recursor, so the
+recursor is also what guarantees that recursive functions terminate; how that is done is the
+subject of [[Lean theorem prover/Foundations/Structural and well-founded recursion|Structural and well-founded recursion]].
+
+== Iota reduction ==
+
+A recursor applied to a constructor reduces to the corresponding minor premise, applied to
+the constructor's arguments. This is
+'''iota reduction''', and it is part of definitional equality. For <code>Nat</code> the two
+rules are
+
+:<math>\mathrm{Nat.rec}\;C\;z\;s\;\mathrm{zero} \equiv z \qquad \mathrm{Nat.rec}\;C\;z\;s\;(\mathrm{succ}\;n) \equiv s\;n\;(\mathrm{Nat.rec}\;C\;z\;s\;n)</math>
+
+When a constructor has recursive arguments, the minor premise receives the recursor applied
+to them, which is how recursion proceeds.<ref name="refman-ind" /><ref name="carneiro2019" />
+Both rules hold by <code>rfl</code>, with the step function and the starting value left as
+variables:
+
+<pre class="lean lean-cont" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+example (z : Nat) (s : Nat → Nat → Nat) :
+    Nat.rec (motive := fun _ => Nat) z s 0 = z := rfl
+
+example (z : Nat) (s : Nat → Nat → Nat) (n : Nat) :
+    Nat.rec (motive := fun _ => Nat) z s (n + 1)
+      = s n (Nat.rec (motive := fun _ => Nat) z s n) := rfl
+</pre>
+
+The second example is stated with <code>n + 1</code>, which is definitionally equal to
+<code>Nat.succ n</code>. Iota
+reduction is the computational content of an inductive type. Without it the recursor would
+be an axiom stating that induction holds; with it, <code>double 3</code> is
+<code>6</code> by calculation, and a proof by <code>rfl</code> is a computation the Lean kernel
+carries out. See [[Lean theorem prover/Foundations/Definitional equality|Definitional equality]].
+
+== Strict positivity ==
+
+Not every list of constructors is acceptable. Every occurrence of the type being defined in
+the type of a constructor argument must be '''strictly positive''': it may not appear to the
+left of an arrow, however deeply nested, and it may appear as an argument only of the type
+constructor of another inductive type.<ref name="refman-ind" /> The following definition
+breaks the rule, because <code>Liar</code> appears as the domain of a function argument:
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+inductive Liar where
+  | mk : (Liar → False) → Liar
+</pre>
+
+Lean 4.34.1 rejects it with a message marked <code>(kernel)</code>: the first argument of <code>'Liar.mk'</code>
+has a non positive occurrence of the datatypes being declared.
+
+The message comes from Lean's kernel, not the elaborator: the check is part of the trusted
+core.
+
+The reason is that such a type would prove <code>False</code>. If <code>Liar</code> existed,
+its constructor would give <code>mk : (Liar → False) → Liar</code>, and case analysis on its
+one constructor would give a function <code>unmk : Liar → (Liar → False)</code> that returns
+the function a value was built from. Those two functions are all that is needed:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+example (L : Type) (mk : (L → False) → L) (unmk : L → L → False) : False :=
+  let notL : L → False := fun l => unmk l l
+  notL (mk notL)
+</pre>
+
+Lean accepts this. <code>notL</code> applies a value to itself, as in Russell's paradox, and
+feeding it its own image under <code>mk</code> yields a proof of <code>False</code> with no
+induction at all. Strict positivity excludes every definition of this shape. Its exclusion of
+an occurrence nested under an arbitrary function, as in
+<code>f (Fix f) → Fix f</code> for a parameter <code>f</code>, is needed because a suitable
+<code>f</code> would rebuild the same circularity.<ref name="refman-ind" /> Dybjer's criteria
+for well-formed inductive families are likewise stated for strictly positive
+definitions.<ref name="dybjer1994" />
+
+Other checks concern universes: the arguments of a constructor must live in universes no
+larger than that of the type being defined, except that a type in <code>Prop</code> may take
+arguments from any universe. A type in <code>Prop</code> also has a restricted recursor whose motive can only be
+a proposition, unless it has at most one constructor whose arguments are all propositions,
+parameters or indices; this is '''subsingleton elimination''', treated on
+[[Lean theorem prover/Foundations/Proof irrelevance and subsingleton elimination|Proof irrelevance and subsingleton elimination]].<ref name="refman-ind" />
+
+== Indexed families ==
+
+A type constructor may take two kinds of argument. '''Parameters''' are fixed across the whole
+definition. '''Indices''' may differ from one constructor to another, so an indexed
+definition defines a whole family of types at once, each member with its own
+constructors.<ref name="refman-ind" /> Equality is the leading example:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+#print Eq
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+inductive Eq.{u_1} : {α : Sort u_1} → α → α → Prop
+number of parameters: 2
+constructors:
+Eq.refl : ∀ {α : Sort u_1} (a : α), a = a
+</pre>
+
+The type <code>α</code> and the left-hand side <code>a</code> are parameters; the right-hand
+side is an index. There is one constructor, and it produces only <code>a = a</code>. The
+family <code>a = b</code> is therefore inhabited exactly when <code>b</code> is
+<code>a</code>, and its recursor, <code>Eq.rec</code>, is the principle of substituting equals
+for equals; [[Lean theorem prover/Foundations/Propositional equality|Propositional equality]] follows it further.
+
+A second example is a list whose length is part of its type:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+inductive Vect (α : Type u) : Nat → Type u where
+  | nil : Vect α 0
+  | cons : α → Vect α n → Vect α (n + 1)
+
+def Vect.head : Vect α (n + 1) → α
+  | cons a _ => a
+
+#eval (Vect.cons 1 (Vect.cons 2 Vect.nil)).head
+#check Vect.rec
+</pre>
+
+The evaluation prints <code>1</code>. <code>Vect.head</code> needs no case for
+<code>nil</code>: an argument of type <code>Vect α (n + 1)</code> cannot be <code>nil</code>,
+whose index is 0, and the pattern-match compiler uses the index to see this. The recursor's
+motive now takes the index as well as the value,
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+Vect.rec.{u_1, u} {α : Type u} {motive : (a : Nat) → Vect α a → Sort u_1} (nil : motive 0 Vect.nil)
+  (cons : {n : Nat} → (a : α) → (a_1 : Vect α n) → motive n a_1 → motive (n + 1) (Vect.cons a a_1)) {a✝ : Nat}
+  (t : Vect α a✝) : motive a✝ t
+</pre>
+
+and each minor premise fixes the index that its constructor produces. Indexed definitions of
+this kind are Dybjer's '''inductive families'''.<ref name="dybjer1994" />
+
+== Mutual and nested types ==
+
+Several types may be defined together in a <code>mutual</code> block, each constructor
+referring to any of them; the predicates "even" and "odd" on the natural numbers are a
+standard case. The recursor of a mutual group takes one motive per type and one minor
+premise per constructor of every type in the group.<ref name="refman-ind" />
+
+A '''nested''' type is one in which the type being defined occurs as an argument of another
+inductive type, as in a tree whose node holds a list of subtrees:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+inductive Tree (α : Type) where
+  | node : α → List (Tree α) → Tree α
+
+#check @Tree.rec
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+@Tree.rec : {α : Type} →
+  {motive_1 : Tree α → Sort u_1} →
+    {motive_2 : List (Tree α) → Sort u_1} →
+      ((a : α) → (a_1 : List (Tree α)) → motive_2 a_1 → motive_1 (Tree.node a a_1)) →
+        motive_2 [] →
+          ((head : Tree α) → (tail : List (Tree α)) → motive_1 head → motive_2 tail → motive_2 (head :: tail)) →
+            (t : Tree α) → motive_1 t
+</pre>
+
+The recursor has a second motive, for lists of trees, with minor premises for the empty list
+and for a list cell. It has the shape of the recursor of a mutual pair of types, trees and
+lists of trees, because that is how Lean's kernel justifies a nested type: it translates the
+nested definition into a mutual one and accepts the original only if the translation
+succeeds.<ref name="refman-ind" /> Direct support for nested types is one of the extensions of
+the Lean 4 kernel over its predecessor, and Carneiro identifies it, with eta for structures,
+as one of the two extensions that change the theory rather than abbreviate it.<ref name="lean4lean" />
+
+== Where the scheme comes from ==
+
+In the pure Calculus of Constructions, data and predicates could be represented by
+higher-order quantification, an encoding that was inefficient as a program and weak as a
+logic; the calculus was therefore extended with a primitive notion of inductive
+definition.<ref name="pm1993">Christine Paulin-Mohring, "Inductive definitions in the
+system Coq: rules and properties", in ''Typed Lambda Calculi and Applications'' (TLCA 1993),
+Lecture Notes in Computer Science, Springer, 1993, pp. 328–345.
+https://doi.org/10.1007/BFb0037116</ref> The result, the Calculus of Inductive
+Constructions, is the theory Lean was based on when the project began in 2013.<ref name="lean4">Leonardo de
+Moura and Sebastian Ullrich, "The Lean 4 Theorem Prover and Programming Language (System
+Description)", in ''Automated Deduction – CADE 28'', Lecture Notes in Computer Science,
+Springer, 2021, pp. 625–635. https://doi.org/10.1007/978-3-030-79876-5_37</ref> Lean's
+presentation differs visibly from Coq's here: Coq's core uses primitive
+<code>fix</code> and <code>match</code>, with a check that each recursive call is made on a
+component produced by a <code>match</code>, while Lean's core has only recursors, and
+definitions written with recursion and matching are compiled into them before the Lean kernel
+sees them.<ref name="carneiro2019" /> The history is told on
+[[Lean theorem prover/History/The Calculus of Constructions|The Calculus of Constructions]].
+
+== Next ==
+
+[[Lean theorem prover/Foundations/Structural and well-founded recursion|Structural and well-founded recursion]] shows how ordinary recursive definitions
+are turned into recursor applications, and what happens when they cannot be.
+
+== References ==
+
+<references />

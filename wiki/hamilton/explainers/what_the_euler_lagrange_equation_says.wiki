@@ -1,0 +1,134 @@
+{{DISPLAYTITLE:What the Euler-Lagrange equation says}}
+{{Technical|Hamilton's principle/Mathematics/The fundamental lemma|Hamilton's principle/Mathematics/The Euler-Lagrange equation}}
+{{Hamilton's principle map}}
+
+This page explains the central equation of the subject. It uses no mathematics.
+The technical pages it goes with are named above.
+
+== The problem so far ==
+
+[[File:OPL-HP-F-03.png|thumb|right|400px|A localised test function.]]
+
+[[Hamilton's principle/Explainers/Comparing paths|Comparing paths]] set things up. You have a rule
+that gives a number for any whole path. You want the path where that number stops
+changing when you nudge it.
+
+Turning the dial and watching the number tells you something, but it tells you
+something about the '''whole path at once'''. It says the total stops changing.
+
+That is not yet useful. What you want is a rule the path obeys at '''each
+point''', so you can work the path out step by step. Getting from the first kind
+of statement to the second is the job of this page.
+
+== Adding up to zero ==
+
+[[File:OPL-HP-F-39.png|thumb|right|400px|The two rates the Euler-Lagrange equation balances.]]
+
+Here is the difficulty, in everyday terms.
+
+Suppose a shop's takings for the day come to exactly zero. There are two possible
+reasons.
+
+Every single sale might have been for nothing. Or there might have been large
+sales and large refunds that happened to cancel out.
+
+The first tells you a lot. The second tells you almost nothing.
+
+When physics says the total change in the number is zero, it faces the same
+ambiguity. Perhaps nothing is changing anywhere along the path. Or perhaps changes
+in one stretch are being cancelled by opposite changes elsewhere.
+
+To get a rule at each point, the second possibility has to be ruled out.
+
+== Ruling out the cancellation ==
+
+The way to rule it out is to be greedy about the comparisons.
+
+Remember that you get to choose the nudge. Any smooth nudge is allowed, as long as
+it is zero at both ends.
+
+So choose a nudge that is zero everywhere except in one small stretch. This is
+like poking the path with a finger in one place and leaving the rest alone.
+
+If something were wrong in that stretch, this nudge would change the total. There
+is no other stretch involved, so nothing can cancel it.
+
+Now do the same thing everywhere. Poke every stretch of the path in turn. If the
+total refuses to change no matter where you poke, then nothing is wrong anywhere.
+
+That argument, done properly, is what mathematicians call the '''fundamental
+lemma'''. It has a long name and a simple idea: if you can test anywhere, and
+every test comes back clean, then everything is clean.
+
+The greediness is essential. If you were only allowed a few fixed nudges, the
+cancellation dodge would still be open.
+
+== The rule at each point ==
+
+Once the cancellation is ruled out, a rule at each point drops out. It is called
+the '''Euler-Lagrange equation''', after the two people who found it in the
+1740s and 1750s.
+
+In words, and with no symbols, it says this.
+
+'''At every moment, the rate at which the path's cost changes because of where you
+are must be exactly balanced by the rate at which it changes because of how fast
+you are going.'''
+
+For a moving object that turns out to be Newton's second law: force equals mass
+times acceleration. The two statements say the same thing.
+
+That is worth pausing on. A rule about total cost over a whole journey, and a rule
+about the push on an object at one instant, are the same rule. One is expressed as
+a statement about the journey. The other as a statement about the moment.
+
+== What you get for free ==
+
+The equation has a feature that saves an enormous amount of work.
+
+'''If the cost rule does not care where you are, something is conserved.''' A
+skater on flat ice feels the same conditions everywhere. Nothing about the ice
+depends on position. As a result the skater's momentum does not change.
+
+'''If the cost rule does not care what time it is, something else is
+conserved.''' The laws of physics were the same yesterday. As a result energy does
+not change.
+
+You can read these off without solving anything. Look at the rule, see what it
+leaves out, and you know what stays constant.
+
+This is one of the most useful habits in physics. Later in the volume it turns out
+to be an instance of a general theorem — every symmetry gives a conserved
+quantity — and that is explained at
+[[Hamilton's principle/Explainers/Symmetry and conservation|Symmetry and conservation]].
+
+== What this does not tell you ==
+
+One warning, and it runs through the whole volume.
+
+The equation finds paths where the number stops changing. It does '''not''' tell
+you the number is smallest.
+
+The straight line on paper really is the shortest. But that is an extra fact,
+proved separately. The equation on its own does not establish it.
+
+There are cases where the equation is satisfied and the path is not shortest at
+all. The clearest is the long way round a globe: it obeys the rule at every point
+and is obviously not the short route.
+
+Paths found by this equation are called '''extremals'''. The name records that
+the rule is satisfied, and nothing more. Whether an extremal is best is a separate
+question with its own answer, and that answer is at
+[[Hamilton's principle/Explainers/Is it really a minimum|Is it really a minimum]].
+
+== What comes next ==
+
+Two things are still missing.
+
+Everything so far assumed both ends of the path are pinned down. What if one end
+is free to move? That is at
+[[Hamilton's principle/Explainers/Free ends|Free ends]].
+
+And everything so far assumed one thing is moving. Real systems have many parts.
+That is at
+[[Hamilton's principle/Explainers/More than one variable|More than one variable]].

@@ -1,0 +1,58 @@
+{{DISPLAYTITLE:The Liquid Tensor Experiment}}
+{{Lean theorem prover map}}
+The Liquid Tensor Experiment was the formalisation in Lean of a recent and difficult theorem by Dustin Clausen and Peter Scholze. Scholze posed it as a public challenge in December 2020. The part of the proof he was unsure of was checked by June 2021, and the whole statement was proved on 14 July 2022. The project was led by Johan Commelin. This page states what the challenge was, how the work went, what it found, and what it did and did not show.
+
+== The challenge ==
+
+On 5 December 2020 Kevin Buzzard's Xena Project blog carried a guest post by Scholze headed "Liquid tensor experiment". It asked for a formal proof of a theorem of Clausen and Scholze: for real numbers 0 &lt; ''p''′ &lt; ''p'' ≤ 1, a profinite set ''S'' and a ''p''-Banach space ''V'', the Ext groups from the space of ''p''′-measures on ''S'' to ''V'' vanish in all positive degrees. Scholze described this as a special case of Theorem 9.1 of his lecture notes on analytic geometry, and as the essence of the proof of Theorem 6.5 of the same notes.<ref name="final" /><ref name="challenge">Peter Scholze, "Liquid tensor experiment", guest post on the Xena Project blog, 5 December 2020. https://xenaproject.wordpress.com/2020/12/05/liquid-tensor-experiment/</ref>
+
+The theorem belongs to '''condensed mathematics''', which Clausen and Scholze had begun to develop about two years before. It proposes condensed sets as a replacement for topological spaces in the foundations of mathematics. Scholze wrote that this claim stands only if the condensed approach also works in real functional analysis, and that this theorem decides whether it does.<ref name="challenge" />
+
+He gave his reasons for wanting a formal proof. The theorem was of foundational importance, so being "99.9% sure is not enough". It would be used as a black box, where a mistake could go unnoticed. He had spent much of 2019 on the proof, and did not think anyone else had checked its details. He noted that he had in the past been persuasive with wrong arguments. And success would be a strong signal that computer verification of current research in very abstract mathematics had become possible.<ref name="challenge" />
+
+== The first half ==
+
+Six months later Scholze reported on the project in a second guest post. The Lean and mathlib community had discussed the challenge on the Lean Zulip immediately after it was posted. Reid Barton did important early work, and Commelin then took the lead: he worked directly towards the proof and handed self-contained lemmas to others. By 14 January 2021 he had formalised the statement of Theorem 9.4 of the lecture notes, the technical core of the argument, and its proof was completed on 28 May 2021 with the help of many members of the community.<ref name="halfway">Peter Scholze, "Half a year of the Liquid Tensor Experiment: Amazing developments", guest post on the Xena Project blog, 5 June 2021. https://xenaproject.wordpress.com/2021/06/05/half-a-year-of-the-liquid-tensor-experiment-amazing-developments/</ref>
+
+Scholze wrote that Theorem 9.4 was the only result he had been worried about, and that with its formal verification he had no remaining doubts about the correctness of the main proof. To him the experiment had succeeded, though the challenge itself was perhaps half done. The remaining half needed condensed abelian groups, Ext groups in abelian categories and the surrounding theory to be formalised.<ref name="halfway" />
+
+The work did not proceed as he had expected. He had imagined that a group would first rewrite the proof as many small lemmas and only then formalise them. Instead the formalisation followed the lecture notes lemma by lemma, typed directly into Lean. The human-readable "blueprint" was written afterwards, from the formal proof, not before it.<ref name="halfway" />
+
+== What the formalisation found ==
+
+Scholze answered the question whether the proof in his notes was correct: yes, up to the usual slight imprecisions.<ref name="halfway" /> He named them.
+
+* One subtlety concerned quotient norms: the infimum that defines a quotient norm need not be attained. He thought an informal check would probably have missed it. It caused unexpected difficulty but needed only very minor changes to the argument.
+* A hypothesis of Lemma 9.6 and some imprecision around Proposition 8.17 had to be corrected.
+* Commelin found that the Breen–Deligne resolution, a non-explicit object whose existence uses stable homotopy theory, could be replaced for this purpose by an explicit complex with the same key properties. This made the rest of the proof more elementary.
+* The formalisation of convex geometry needed for Gordan's lemma showed Scholze what makes the proof work: a reduction from a non-convex problem over the reals to a convex problem over the integers.
+* Question 9.9 of the notes, on the growth of certain constants, was answered: explicit recursive definitions were verified, and the constants grow roughly doubly exponentially.
+
+He estimated the ratio of the formal proof's length to the human proof's, the de Bruijn factor named after [[Lean theorem prover/History/Automath|Automath]]'s designer, at about 20.<ref name="halfway" />
+
+== Completion ==
+
+The Lean community announced that the experiment was completed at 15:46:13 (Eastern time) on Thursday 14 July 2022, a year and a half after the challenge. The project was led by Commelin with continuous mathematical support from Scholze; Adam Topaz contributed much of the homological algebra and condensed mathematics, and sixteen other people are named as contributors. The work was finished at ICERM in Providence, Rhode Island, during the workshop "Lean for the Curious Mathematician 2022", and relied heavily on mathlib.<ref name="final">"Completion of the Liquid Tensor Experiment", Lean community blog, 15 July 2022. https://leanprover-community.github.io/blog/posts/lte-final/</ref>
+
+A formal proof is only as good as its statement. A theorem that Ext groups vanish proves nothing if Ext has been defined wrongly. Topaz described how the team addressed this: a separate collection of examples, written to be readable by mathematicians with little Lean, checks that each definition in the final statement behaves as expected.<ref name="lteexamples">Adam Topaz, "Definitions in the liquid tensor experiment", Lean community blog, 14 October 2022. https://leanprover-community.github.io/blog/posts/lte-examples/</ref> The general problem is the subject of [[Lean theorem prover/Explainers/Stating the right thing|Stating the right thing]].
+
+== Coverage ==
+
+The first milestone was reported in ''Nature'' on 18 June 2021, in a news article by Davide Castelvecchi.<ref name="lteupdate">Johan Commelin, "Liquid Tensor Experiment: an update", Lean community blog, 31 December 2021. https://leanprover-community.github.io/blog/posts/lte-update/</ref><ref name="nature">Davide Castelvecchi, "Mathematicians welcome computer-assisted proof in 'grand unification' theory", ''Nature'' 595, 2021, pp. 18–19 (news, 18 June 2021). doi:10.1038/d41586-021-01627-2</ref> Its summary says that proof-assistant software had handled an abstract concept at the cutting edge of research.<ref name="nature" /> ''Quanta Magazine'' followed on 28 July 2021 with an article by Kevin Hartnett. It describes Commelin posting parts of the proof on Zulip for volunteers to formalise, about a dozen mathematicians contributing, and Scholze answering their questions there, and it quotes him as saying that the experiment had drastically changed his impression of what proof assistants can do.<ref name="quanta">Kevin Hartnett, "Proof Assistant Makes Jump to Big-League Math", ''Quanta Magazine'', 28 July 2021. https://www.quantamagazine.org/lean-computer-program-confirms-peter-scholze-proof-20210728/</ref>
+
+== What it showed, and what it did not ==
+
+The experiment showed that a proof at the edge of current research, in abstract mathematics, could be formalised within a reasonable time by following the author's own notes. Scholze called this a landmark, and wrote that the proof assistant had helped in understanding the proof, because it always stated the current goal clearly.<ref name="halfway" />
+
+He was also clear about the limits. He could read the Lean definitions and statements without training, but not the proofs. The formal proof gave him reassurance that the route up the mountain could be climbed, he wrote, but no sense of the surrounding terrain.<ref name="halfway" /> A checked proof establishes that a statement follows from the axioms; it does not by itself explain why. Other large projects that followed are described at [[Lean theorem prover/Applications/Research mathematics|Research mathematics]].
+
+<blockquote>
+Provenance: Scholze's two posts and the community blog's posts on completion and on definitions were read. The ''Nature'' article was read only in its headline, summary and first paragraph, the rest being behind a paywall; the ''Quanta'' article was read in full. The one quotation, "99.9% sure is not enough", is Scholze's.
+</blockquote>
+
+== Next ==
+
+[[Lean theorem prover/History/Lean since 2023|Lean since 2023]]
+
+== References ==
+<references />

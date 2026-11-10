@@ -1,0 +1,11 @@
+<includeonly>{{Section map
+| title = On Physical Lines of Force: map
+| label1 = Reading the edition
+| links1 = [[On Physical Lines of Force#Start here|Start here]]<br />[[On Physical Lines of Force/Notation and concordance|Notation and concordance]]<br />[[On Physical Lines of Force/Glossary|Glossary]]<br />[[On Physical Lines of Force/Index of numbered equations|Index of numbered equations]]<br />[[On Physical Lines of Force/Figures|Figures]]
+| label2 = Reading by level
+| links2 = [[On Physical Lines of Force/Introduction|The story: Introduction]]<br />[[On Physical Lines of Force/Explainers|Plain language: the explainers]]<br />[[On Physical Lines of Force/Modern derivations|The modern equations, derived]]
+| label3 = Maxwell's paper
+| links3 = [[On Physical Lines of Force/Part I|Part I]]<br />[[On Physical Lines of Force/Part II|Part II]]<br />[[On Physical Lines of Force/Part III|Part III]]<br />[[On Physical Lines of Force/Part IV|Part IV]]<br />[[On Physical Lines of Force/Sources and editorial method|Sources and editorial method]]<br />[[On Physical Lines of Force/Chronology|Chronology]]
+| label4 = Related
+| links4 = [[Hamilton's principle|Hamilton's principle]]<br />[[Noether's theorems|Noether's theorems]]
+}}</includeonly><noinclude>The navigation panel of On Physical Lines of Force, carried by the root, the Introduction, the explainers and the reference pages. Its frame is [[Template:Section map]]. Published from the Principia Machina source; an edit made here is overwritten.</noinclude>

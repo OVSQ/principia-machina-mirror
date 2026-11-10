@@ -1,0 +1,86 @@
+{{DISPLAYTITLE:How Maxwell found the speed of light}}
+{{On Physical Lines of Force map}}
+''[[On Physical Lines of Force]] → [[On Physical Lines of Force/Explainers|Explainers]] → Speed of light''
+
+<blockquote>
+'''In one sentence.''' Maxwell worked out how fast a ripple would travel through his imaginary machine of spinning cells, using only numbers that had been measured with magnets and batteries, and the answer came out at the speed of light.
+</blockquote>
+
+The calculation is short. It sits near the end of Part III, in Proposition XVI, published in January 1862, and it is so brief that its equations carry no printed numbers at all, unlike almost everything else in the paper. It is also the most consequential thing Maxwell ever wrote down.
+
+== What decides how fast a wave travels ==
+
+Stretch a long rope between two people and flick one end. A hump runs down the rope. The rope itself does not travel. Each short length of it moves only up and down, while the hump moves along. A wave of this kind is called '''transverse''', which means the wobble is at right angles to the direction of travel.
+
+Light is a transverse wave. Physicists were confident of that long before Maxwell, from the way light behaves when it is polarised — that is, filtered so that its wobble lies in one plane instead of every plane at once.
+
+[[File:OPL-fig-transverse-wave.svg|thumb|center|620px|A transverse wave: the material moves across the direction of travel]]
+
+Two properties of a material fix the speed of a transverse wave through it.
+
+* '''Stiffness''' — how strongly the material resists being pushed out of shape, and how briskly it pulls itself back. Stiffer means faster.
+* '''Density''' — how much matter has to be shifted to make the wobble. Denser means slower.
+
+Nothing else is needed. Tighten a guitar string and its note rises; fit a thicker one and the note falls. If you know the two properties, the speed follows.
+
+== Maxwell already had both numbers ==
+
+Maxwell's medium was made of spinning cells whose substance is elastic. A cell can be squeezed out of shape, and it pushes back. That is the subject of the [[On Physical Lines of Force/Explainers/Why the cells had to be springy|springy cells]] explainer, and it is what makes the medium capable of carrying a wave at all.
+
+The important point is what Maxwell had already done with those two properties. He had not left them as free numbers to be adjusted. He had tied each to a quantity experimenters could measure with ordinary electrical apparatus:
+
+* the '''stiffness''' of the cell substance to the '''dielectric constant''' — the measurable property of an insulating material that says how strongly it responds to electric force
+* the '''density''' of the cell substance to the '''magnetic permeability''', which Maxwell called the capacity for magnetic induction — how readily a material carries magnetism
+
+Both of those are electrical and magnetic quantities. Neither of them is measured with light. So Maxwell could calculate the speed of a wave in his medium with no optical input whatever.
+
+The one experimental number he needed was the ratio between the two ways of defining a unit of electric charge — one based on charges sitting still, the other on currents flowing. Wilhelm Weber and Rudolf Kohlrausch had measured it in the 1850s, and it carries the units of a speed. See the [[On Physical Lines of Force/Explainers/Two ways to measure electricity|units]] explainer.
+
+== The two numbers, side by side ==
+
+{| class="wikitable"
+! Quantity !! Value, in Maxwell's units
+|-
+| Speed of transverse waves in his medium, '''calculated''' from electrical measurements || 310,740,000,000 millimetres per second
+|-
+| Speed of light, '''measured''' by Fizeau || 314,858,000,000 millimetres per second
+|}
+
+Millimetres per second was Maxwell's own choice of unit. In today's terms his two figures are about 310,740 and 314,858 kilometres per second. They differ from each other by a little over one per cent.
+
+Maxwell gives Fizeau's 1849 figure in the units of the original report:
+
+<blockquote>
+70,843 leagues per second (25 leagues to a degree).
+</blockquote>
+
+Both numbers are high. The modern value is 299,792 kilometres per second, so the 1860s measurements were each a few per cent above the truth, and the two figures agreed with each other more closely than either agreed with reality. That is worth knowing, but better measurements later kept the agreement.
+
+== What he concluded ==
+
+Maxwell states the result plainly, and with no hedging:
+
+<blockquote>
+The velocity of transverse undulations in our hypothetical medium, calculated from the electro-magnetic experiments of MM. Kohlrausch and Weber, agrees so exactly with the velocity of light calculated from the optical experiments of M. Fizeau, that we can scarcely avoid the inference that light consists in the transverse undulations of the same medium which is the cause of electric and magnetic phenomena.
+</blockquote>
+
+Earlier in Part III he had put the same claim a different way, and gone one step further with it:
+
+<blockquote>
+I have deduced from this result the relation between the statical and dynamical measures of electricity, and have shown, by a comparison of the electro-magnetic experiments of MM. Kohlrausch and Weber with the velocity of light as found by M. Fizeau, that the elasticity of the magnetic medium in air is the same as that of the luminiferous medium, if these two coexistent, coextensive, and equally elastic media are not rather one medium.
+</blockquote>
+
+That last clause is the whole point. Nineteenth-century physics had two invisible media: one to carry light, and one to carry magnetic and electric action. They were separate subjects with separate instruments. Maxwell has just found that they have the same stiffness, and his suggestion is that they are not two media at all.
+
+The strength of the argument lies in where the numbers came from. Nobody shone a light in the course of the calculation. The medium was invented to explain why magnets attract iron and why a current deflects a compass needle. It turned out to carry waves at the speed light travels. Light, on this account, is not merely ''like'' an electromagnetic effect. It is one.
+
+== Where this is in the paper ==
+
+* [[On Physical Lines of Force/Part III/Prop. XVI|Part III, Prop. XVI]] — the velocity of transverse undulations, where the calculation is made
+* [[On Physical Lines of Force/Part III/Prop. XIII|Part III, Prop. XIII]] — electromotive force and displacement, where the stiffness is tied to the dielectric constant
+* [[On Physical Lines of Force/Part III|Part III]] — the whole January 1862 instalment
+* [[On Physical Lines of Force/Modern derivations/The electromagnetic wave equation|Modern: the wave equation]] and [[On Physical Lines of Force/Modern derivations/The unit ratio|Modern: units and the speed of light]]
+
+----
+
+''Next: [[On Physical Lines of Force/Explainers/Magnetism twists light|Magnetism twists light]] · Previous: [[On Physical Lines of Force/Explainers/The missing term|The missing term]]''

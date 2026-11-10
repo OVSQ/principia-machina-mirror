@@ -1,0 +1,6286 @@
+{
+ "corpus": "falcon_hand",
+ "version": "1",
+ "note": "Hand vectors for Principia.Falcon: inputs chosen by hand to reach paths version 1's corpus leaves out (RFC 3986's dot segments, SM2's decodings, the accounting reading, the stop's resumption, equal times in the stage, the draw with kept and prior accounts, the reconciliation's dispositions); every expectation is v1's own answer, computed by docs/v1/tpc_py/tpc_falcon.py's run_case at Unicode 15.1.0. The HV-DH draws hold accounts equal on window and share, which DW2's SHA-256 h(r, account) orders, and the HV-FD cases are the output schemas' SHA-256 digests.",
+ "cases": [
+  {
+   "name": "HV-URL01 http://a/b/c/./../../g",
+   "fn": "canon",
+   "args": {
+    "value": "http://a/b/c/./../../g",
+    "spec": {
+     "name": "x",
+     "type": "url",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|http://a/g"
+  },
+  {
+   "name": "HV-URL02 http://a/b/c/g;x=1/./y",
+   "fn": "canon",
+   "args": {
+    "value": "http://a/b/c/g;x=1/./y",
+    "spec": {
+     "name": "x",
+     "type": "url",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|http://a/b/c/g;x=1/y"
+  },
+  {
+   "name": "HV-URL03 http://a/b/c/../../../../g",
+   "fn": "canon",
+   "args": {
+    "value": "http://a/b/c/../../../../g",
+    "spec": {
+     "name": "x",
+     "type": "url",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|http://a/g"
+  },
+  {
+   "name": "HV-URL04 HTTP://Example.COM:80/%7Efoo/%2a?Q=%5a#F",
+   "fn": "canon",
+   "args": {
+    "value": "HTTP://Example.COM:80/%7Efoo/%2a?Q=%5a#F",
+    "spec": {
+     "name": "x",
+     "type": "url",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|http://example.com:80/~foo/%2A?Q=Z#F"
+  },
+  {
+   "name": "HV-URL05 https://u%41b@h.example/a/../b",
+   "fn": "canon",
+   "args": {
+    "value": "https://u%41b@h.example/a/../b",
+    "spec": {
+     "name": "x",
+     "type": "url",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|https://uAb@h.example/b"
+  },
+  {
+   "name": "HV-URL06 http://[::1]:8080/a/./b",
+   "fn": "canon",
+   "args": {
+    "value": "http://[::1]:8080/a/./b",
+    "spec": {
+     "name": "x",
+     "type": "url",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|http://[::1]:8080/a/b"
+  },
+  {
+   "name": "HV-URL07 http://[::1/a",
+   "fn": "canon",
+   "args": {
+    "value": "http://[::1/a",
+    "spec": {
+     "name": "x",
+     "type": "url",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "ERROR:url"
+  },
+  {
+   "name": "HV-URL08 http://h:8x/",
+   "fn": "canon",
+   "args": {
+    "value": "http://h:8x/",
+    "spec": {
+     "name": "x",
+     "type": "url",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "ERROR:url"
+  },
+  {
+   "name": "HV-URL09 x:mid/content=5/../6",
+   "fn": "canon",
+   "args": {
+    "value": "x:mid/content=5/../6",
+    "spec": {
+     "name": "x",
+     "type": "url",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|x:mid/content=5/../6"
+  },
+  {
+   "name": "HV-URL10 x:/a/../b",
+   "fn": "canon",
+   "args": {
+    "value": "x:/a/../b",
+    "spec": {
+     "name": "x",
+     "type": "url",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|x:/b"
+  },
+  {
+   "name": "HV-URL11 //h/a",
+   "fn": "canon",
+   "args": {
+    "value": "//h/a",
+    "spec": {
+     "name": "x",
+     "type": "url",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "ERROR:url"
+  },
+  {
+   "name": "HV-URL12 http://h/%zz",
+   "fn": "canon",
+   "args": {
+    "value": "http://h/%zz",
+    "spec": {
+     "name": "x",
+     "type": "url",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "ERROR:url"
+  },
+  {
+   "name": "HV-URL13 http://h/a b",
+   "fn": "canon",
+   "args": {
+    "value": "http://h/a b",
+    "spec": {
+     "name": "x",
+     "type": "url",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "ERROR:url"
+  },
+  {
+   "name": "HV-URL14 http://a@b@c/",
+   "fn": "canon",
+   "args": {
+    "value": "http://a@b@c/",
+    "spec": {
+     "name": "x",
+     "type": "url",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "ERROR:url"
+  },
+  {
+   "name": "HV-URL15 http://h:/",
+   "fn": "canon",
+   "args": {
+    "value": "http://h:/",
+    "spec": {
+     "name": "x",
+     "type": "url",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|http://h:/"
+  },
+  {
+   "name": "HV-URL16 mailto:A@Example.COM",
+   "fn": "canon",
+   "args": {
+    "value": "mailto:A@Example.COM",
+    "spec": {
+     "name": "x",
+     "type": "url",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|mailto:A@Example.COM"
+  },
+  {
+   "name": "HV-URL17 http://h/a/..",
+   "fn": "canon",
+   "args": {
+    "value": "http://h/a/..",
+    "spec": {
+     "name": "x",
+     "type": "url",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|http://h/"
+  },
+  {
+   "name": "HV-URL18 http://h/a/.",
+   "fn": "canon",
+   "args": {
+    "value": "http://h/a/.",
+    "spec": {
+     "name": "x",
+     "type": "url",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|http://h/a/"
+  },
+  {
+   "name": "HV-URL19 http://h/.",
+   "fn": "canon",
+   "args": {
+    "value": "http://h/.",
+    "spec": {
+     "name": "x",
+     "type": "url",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|http://h/"
+  },
+  {
+   "name": "HV-URL20 http://h/..",
+   "fn": "canon",
+   "args": {
+    "value": "http://h/..",
+    "spec": {
+     "name": "x",
+     "type": "url",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|http://h/"
+  },
+  {
+   "name": "HV-URL21 http://h/./a/../../b/./c/..",
+   "fn": "canon",
+   "args": {
+    "value": "http://h/./a/../../b/./c/..",
+    "spec": {
+     "name": "x",
+     "type": "url",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|http://h/b/"
+  },
+  {
+   "name": "HV-URL22 https://h.example/%2F%2f%5c%7e%41",
+   "fn": "canon",
+   "args": {
+    "value": "https://h.example/%2F%2f%5c%7e%41",
+    "spec": {
+     "name": "x",
+     "type": "url",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|https://h.example/%2F%2F%5C~A"
+  },
+  {
+   "name": "HV-URL23 a1+.-:x",
+   "fn": "canon",
+   "args": {
+    "value": "a1+.-:x",
+    "spec": {
+     "name": "x",
+     "type": "url",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|a1+.-:x"
+  },
+  {
+   "name": "HV-URL24 1a:x",
+   "fn": "canon",
+   "args": {
+    "value": "1a:x",
+    "spec": {
+     "name": "x",
+     "type": "url",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "ERROR:url"
+  },
+  {
+   "name": "HV-URL25 http://H%41ST/",
+   "fn": "canon",
+   "args": {
+    "value": "http://H%41ST/",
+    "spec": {
+     "name": "x",
+     "type": "url",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|http://hast/"
+  },
+  {
+   "name": "HV-URL26 http://h?q#f",
+   "fn": "canon",
+   "args": {
+    "value": "http://h?q#f",
+    "spec": {
+     "name": "x",
+     "type": "url",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|http://h?q#f"
+  },
+  {
+   "name": "HV-URL27 http://h#f?x",
+   "fn": "canon",
+   "args": {
+    "value": "http://h#f?x",
+    "spec": {
+     "name": "x",
+     "type": "url",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|http://h#f?x"
+  },
+  {
+   "name": "HV-URL28 http://h/a?b/../c",
+   "fn": "canon",
+   "args": {
+    "value": "http://h/a?b/../c",
+    "spec": {
+     "name": "x",
+     "type": "url",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|http://h/a?b/../c"
+  },
+  {
+   "name": "HV-DATE01 0000-02-29",
+   "fn": "canon",
+   "args": {
+    "value": "0000-02-29",
+    "spec": {
+     "name": "x",
+     "type": "date",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|0000-02-29"
+  },
+  {
+   "name": "HV-DATE02 1900-02-29",
+   "fn": "canon",
+   "args": {
+    "value": "1900-02-29",
+    "spec": {
+     "name": "x",
+     "type": "date",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "ERROR:date"
+  },
+  {
+   "name": "HV-DATE03 2000-02-29",
+   "fn": "canon",
+   "args": {
+    "value": "2000-02-29",
+    "spec": {
+     "name": "x",
+     "type": "date",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|2000-02-29"
+  },
+  {
+   "name": "HV-DATE04 20240230",
+   "fn": "canon",
+   "args": {
+    "value": "20240230",
+    "spec": {
+     "name": "x",
+     "type": "date",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "ERROR:date"
+  },
+  {
+   "name": "HV-DATE05 2024-1-01",
+   "fn": "canon",
+   "args": {
+    "value": "2024-1-01",
+    "spec": {
+     "name": "x",
+     "type": "date",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "ERROR:date"
+  },
+  {
+   "name": "HV-DATE06 9999-12-31",
+   "fn": "canon",
+   "args": {
+    "value": "9999-12-31",
+    "spec": {
+     "name": "x",
+     "type": "date",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|9999-12-31"
+  },
+  {
+   "name": "HV-DATE07 2023-04-31",
+   "fn": "canon",
+   "args": {
+    "value": "2023-04-31",
+    "spec": {
+     "name": "x",
+     "type": "date",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "ERROR:date"
+  },
+  {
+   "name": "HV-DATE08 20231301",
+   "fn": "canon",
+   "args": {
+    "value": "20231301",
+    "spec": {
+     "name": "x",
+     "type": "date",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "ERROR:date"
+  },
+  {
+   "name": "HV-DATE09 2024-02-29",
+   "fn": "canon",
+   "args": {
+    "value": "2024-02-29",
+    "spec": {
+     "name": "x",
+     "type": "date",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|2024-02-29"
+  },
+  {
+   "name": "HV-DATE10 2024/02/29",
+   "fn": "canon",
+   "args": {
+    "value": "2024/02/29",
+    "spec": {
+     "name": "x",
+     "type": "date",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "ERROR:date"
+  },
+  {
+   "name": "HV-DEC01 -0.000",
+   "fn": "canon",
+   "args": {
+    "value": "-0.000",
+    "spec": {
+     "name": "x",
+     "type": "decimal",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|0"
+  },
+  {
+   "name": "HV-DEC02 1.50e-3",
+   "fn": "canon",
+   "args": {
+    "value": "1.50e-3",
+    "spec": {
+     "name": "x",
+     "type": "decimal",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|15e-4"
+  },
+  {
+   "name": "HV-DEC03 007",
+   "fn": "canon",
+   "args": {
+    "value": "007",
+    "spec": {
+     "name": "x",
+     "type": "decimal",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|7"
+  },
+  {
+   "name": "HV-DEC04 1e9999",
+   "fn": "canon",
+   "args": {
+    "value": "1e9999",
+    "spec": {
+     "name": "x",
+     "type": "decimal",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|1e9999"
+  },
+  {
+   "name": "HV-DEC05 1e10000",
+   "fn": "canon",
+   "args": {
+    "value": "1e10000",
+    "spec": {
+     "name": "x",
+     "type": "decimal",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "ERROR:decimal"
+  },
+  {
+   "name": "HV-DEC06 -12.3400E+2",
+   "fn": "canon",
+   "args": {
+    "value": "-12.3400E+2",
+    "spec": {
+     "name": "x",
+     "type": "decimal",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|-1234"
+  },
+  {
+   "name": "HV-DEC07 .5",
+   "fn": "canon",
+   "args": {
+    "value": ".5",
+    "spec": {
+     "name": "x",
+     "type": "decimal",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "ERROR:decimal"
+  },
+  {
+   "name": "HV-DEC08 5.",
+   "fn": "canon",
+   "args": {
+    "value": "5.",
+    "spec": {
+     "name": "x",
+     "type": "decimal",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "ERROR:decimal"
+  },
+  {
+   "name": "HV-DEC09 +5",
+   "fn": "canon",
+   "args": {
+    "value": "+5",
+    "spec": {
+     "name": "x",
+     "type": "decimal",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "ERROR:decimal"
+  },
+  {
+   "name": "HV-DEC10 0e5",
+   "fn": "canon",
+   "args": {
+    "value": "0e5",
+    "spec": {
+     "name": "x",
+     "type": "decimal",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|0"
+  },
+  {
+   "name": "HV-DEC11 1_000",
+   "fn": "canon",
+   "args": {
+    "value": "1_000",
+    "spec": {
+     "name": "x",
+     "type": "decimal",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "ERROR:decimal"
+  },
+  {
+   "name": "HV-UV01 5 km2 m-1",
+   "fn": "canon",
+   "args": {
+    "value": "5 km2 m-1",
+    "spec": {
+     "name": "x",
+     "type": "unitvalue",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|5 m-1 km2"
+  },
+  {
+   "name": "HV-UV02 5 1",
+   "fn": "canon",
+   "args": {
+    "value": "5 1",
+    "spec": {
+     "name": "x",
+     "type": "unitvalue",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|5 1"
+  },
+  {
+   "name": "HV-UV03 5 m m-1",
+   "fn": "canon",
+   "args": {
+    "value": "5 m m-1",
+    "spec": {
+     "name": "x",
+     "type": "unitvalue",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|5 1"
+  },
+  {
+   "name": "HV-UV04 0.050 cm",
+   "fn": "canon",
+   "args": {
+    "value": "0.050 cm",
+    "spec": {
+     "name": "x",
+     "type": "unitvalue",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|5e-2 cm"
+  },
+  {
+   "name": "HV-UV05 5  m",
+   "fn": "canon",
+   "args": {
+    "value": "5  m",
+    "spec": {
+     "name": "x",
+     "type": "unitvalue",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "ERROR:unitvalue"
+  },
+  {
+   "name": "HV-UV06 5 mDa",
+   "fn": "canon",
+   "args": {
+    "value": "5 mDa",
+    "spec": {
+     "name": "x",
+     "type": "unitvalue",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "ERROR:unitvalue"
+  },
+  {
+   "name": "HV-UV07 5 dam",
+   "fn": "canon",
+   "args": {
+    "value": "5 dam",
+    "spec": {
+     "name": "x",
+     "type": "unitvalue",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|5 dam"
+  },
+  {
+   "name": "HV-UV08 5 hPa",
+   "fn": "canon",
+   "args": {
+    "value": "5 hPa",
+    "spec": {
+     "name": "x",
+     "type": "unitvalue",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|5 hPa"
+  },
+  {
+   "name": "HV-UV09 5 m9999 m1",
+   "fn": "canon",
+   "args": {
+    "value": "5 m9999 m1",
+    "spec": {
+     "name": "x",
+     "type": "unitvalue",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "ERROR:unitvalue"
+  },
+  {
+   "name": "HV-UV10 5 kmin",
+   "fn": "canon",
+   "args": {
+    "value": "5 kmin",
+    "spec": {
+     "name": "x",
+     "type": "unitvalue",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "ERROR:unitvalue"
+  },
+  {
+   "name": "HV-UV11 5",
+   "fn": "canon",
+   "args": {
+    "value": "5",
+    "spec": {
+     "name": "x",
+     "type": "unitvalue",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "ERROR:unitvalue"
+  },
+  {
+   "name": "HV-CN01",
+   "fn": "canon",
+   "args": {
+    "value": "\ta|b\\c\u007f\r\n d ",
+    "spec": {
+     "name": "x",
+     "type": "text",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "OK|a\\|b\\\\c\\x7f d"
+  },
+  {
+   "name": "HV-CN02",
+   "fn": "canon",
+   "args": {
+    "value": "x",
+    "spec": {
+     "name": "IV",
+     "type": "text",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "ERROR:schema"
+  },
+  {
+   "name": "HV-CN03",
+   "fn": "canon",
+   "args": {
+    "value": "x",
+    "spec": {
+     "name": "a b",
+     "type": "text",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "ERROR:schema"
+  },
+  {
+   "name": "HV-CN04",
+   "fn": "canon",
+   "args": {
+    "value": "A",
+    "spec": {
+     "name": "e",
+     "type": "enum",
+     "class": "MECHANICAL",
+     "values": [
+      "A",
+      "B"
+     ]
+    }
+   },
+   "expected": "OK|A"
+  },
+  {
+   "name": "HV-CN05",
+   "fn": "canon",
+   "args": {
+    "value": "a",
+    "spec": {
+     "name": "e",
+     "type": "enum",
+     "class": "MECHANICAL",
+     "values": [
+      "A",
+      "B"
+     ]
+    }
+   },
+   "expected": "ERROR:enum"
+  },
+  {
+   "name": "HV-CN06",
+   "fn": "canon",
+   "args": {
+    "value": "A",
+    "spec": {
+     "name": "e",
+     "type": "enum",
+     "class": "MECHANICAL",
+     "values": [
+      "A",
+      "A"
+     ]
+    }
+   },
+   "expected": "ERROR:schema"
+  },
+  {
+   "name": "HV-CN07",
+   "fn": "canon",
+   "args": {
+    "value": true,
+    "spec": {
+     "name": "b",
+     "type": "boolean",
+     "class": "INSPECTION"
+    }
+   },
+   "expected": "OK|true"
+  },
+  {
+   "name": "HV-CN08",
+   "fn": "canon",
+   "args": {
+    "value": 1,
+    "spec": {
+     "name": "b",
+     "type": "boolean",
+     "class": "MECHANICAL"
+    }
+   },
+   "expected": "ERROR:boolean"
+  },
+  {
+   "name": "HV-CN09",
+   "fn": "canon",
+   "args": {
+    "value": "5",
+    "spec": {
+     "name": "d",
+     "type": "decimal",
+     "class": "MECHANICAL",
+     "quote": true,
+     "affix": "%"
+    }
+   },
+   "expected": "OK|5"
+  },
+  {
+   "name": "HV-CN10",
+   "fn": "canon",
+   "args": {
+    "value": "5",
+    "spec": {
+     "name": "d",
+     "type": "decimal",
+     "class": "MECHANICAL",
+     "affix": "%"
+    }
+   },
+   "expected": "ERROR:schema"
+  },
+  {
+   "name": "HV-CN11",
+   "fn": "canon",
+   "args": {
+    "value": "5",
+    "spec": {
+     "name": "d",
+     "type": "decimal",
+     "class": "MECHANICAL",
+     "quote": true,
+     "scale": "km"
+    }
+   },
+   "expected": "ERROR:schema"
+  },
+  {
+   "name": "HV-CN12",
+   "fn": "canon",
+   "args": {
+    "value": "5",
+    "spec": {
+     "name": "d",
+     "type": "text",
+     "class": "MECHANICAL",
+     "quote": true,
+     "affix": "%"
+    }
+   },
+   "expected": "ERROR:schema"
+  },
+  {
+   "name": "HV-CN13",
+   "fn": "canon",
+   "args": {
+    "value": "5",
+    "spec": {
+     "name": "d",
+     "type": "rows",
+     "class": "MECHANICAL",
+     "key": [
+      "a"
+     ],
+     "columns": [
+      {
+       "name": "x",
+       "type": "text",
+       "class": "MECHANICAL"
+      }
+     ]
+    }
+   },
+   "expected": "ERROR:schema"
+  },
+  {
+   "name": "HV-QM01",
+   "fn": "qmatch",
+   "args": {
+    "value": "-1,234",
+    "quote": "a loss of (1,234) in all",
+    "accounting": true
+   },
+   "expected": "quote|PASS"
+  },
+  {
+   "name": "HV-QM02",
+   "fn": "qmatch",
+   "args": {
+    "value": "1,234",
+    "quote": "a loss of (1,234) in all",
+    "accounting": true
+   },
+   "expected": "quote|FAIL"
+  },
+  {
+   "name": "HV-QM03",
+   "fn": "qmatch",
+   "args": {
+    "value": "1,234",
+    "quote": "a loss of (1,234) in all"
+   },
+   "expected": "quote|PASS"
+  },
+  {
+   "name": "HV-QM04",
+   "fn": "qmatch",
+   "args": {
+    "value": "5",
+    "quote": "5 x 10^3"
+   },
+   "expected": "quote|FAIL"
+  },
+  {
+   "name": "HV-QM05",
+   "fn": "qmatch",
+   "args": {
+    "value": "10",
+    "quote": "10**5"
+   },
+   "expected": "quote|FAIL"
+  },
+  {
+   "name": "HV-QM06",
+   "fn": "qmatch",
+   "args": {
+    "value": "5",
+    "quote": "per cent 5",
+    "affix": "per cent"
+   },
+   "expected": "quote|PASS"
+  },
+  {
+   "name": "HV-QM07",
+   "fn": "qmatch",
+   "args": {
+    "value": "5",
+    "quote": "per  cent 5",
+    "affix": "per cent"
+   },
+   "expected": "quote|PASS"
+  },
+  {
+   "name": "HV-QM08",
+   "fn": "qmatch",
+   "args": {
+    "value": "5",
+    "quote": "percent 5",
+    "affix": "per cent"
+   },
+   "expected": "quote|FAIL"
+  },
+  {
+   "name": "HV-QM09",
+   "fn": "qmatch",
+   "args": {
+    "value": "5",
+    "quote": "5 basis point",
+    "affix": "basis points"
+   },
+   "expected": "quote|PASS"
+  },
+  {
+   "name": "HV-QM10",
+   "fn": "qmatch",
+   "args": {
+    "value": "5",
+    "quote": "5 Millions",
+    "scale": "million"
+   },
+   "expected": "quote|PASS"
+  },
+  {
+   "name": "HV-QM11",
+   "fn": "qmatch",
+   "args": {
+    "value": "5",
+    "quote": "$5 bn",
+    "affix": "$",
+    "scale": "bn"
+   },
+   "expected": "quote|PASS"
+  },
+  {
+   "name": "HV-QM12",
+   "fn": "qmatch",
+   "args": {
+    "value": "5",
+    "quote": "5 bn$",
+    "affix": "$",
+    "scale": "bn"
+   },
+   "expected": "quote|PASS"
+  },
+  {
+   "name": "HV-QM13",
+   "fn": "qmatch",
+   "args": {
+    "value": "5",
+    "quote": "5 MM",
+    "scale": "MM"
+   },
+   "expected": "quote|PASS"
+  },
+  {
+   "name": "HV-QM14",
+   "fn": "qmatch",
+   "args": {
+    "value": "5",
+    "quote": "5 mm",
+    "scale": "MM"
+   },
+   "expected": "quote|PASS"
+  },
+  {
+   "name": "HV-QM15",
+   "fn": "qmatch",
+   "args": {
+    "value": "5",
+    "quote": "5 e 3"
+   },
+   "expected": "quote|FAIL"
+  },
+  {
+   "name": "HV-QM16",
+   "fn": "qmatch",
+   "args": {
+    "value": "5",
+    "quote": "5 times 10^3"
+   },
+   "expected": "quote|FAIL"
+  },
+  {
+   "name": "HV-QM17",
+   "fn": "qmatch",
+   "args": {
+    "value": "12",
+    "quote": "(12)"
+   },
+   "expected": "quote|PASS"
+  },
+  {
+   "name": "HV-QM18",
+   "fn": "qmatch",
+   "args": {
+    "value": "12",
+    "quote": "(12)",
+    "accounting": true
+   },
+   "expected": "quote|FAIL"
+  },
+  {
+   "name": "HV-QM19",
+   "fn": "qmatch",
+   "args": {
+    "value": "5",
+    "quote": "a-5"
+   },
+   "expected": "quote|FAIL"
+  },
+  {
+   "name": "HV-QM20",
+   "fn": "qmatch",
+   "args": {
+    "value": "5",
+    "quote": "x - 5"
+   },
+   "expected": "quote|FAIL"
+  },
+  {
+   "name": "HV-QM21",
+   "fn": "qmatch",
+   "args": {
+    "value": "5",
+    "quote": "5-shot"
+   },
+   "expected": "quote|PASS"
+  },
+  {
+   "name": "HV-QM22",
+   "fn": "qmatch",
+   "args": {
+    "value": "3",
+    "quote": "3:1"
+   },
+   "expected": "quote|FAIL"
+  },
+  {
+   "name": "HV-QM23",
+   "fn": "qmatch",
+   "args": {
+    "value": "5",
+    "quote": "5 1/2"
+   },
+   "expected": "quote|FAIL"
+  },
+  {
+   "name": "HV-QM24",
+   "fn": "qmatch",
+   "args": {
+    "value": "1",
+    "quote": "1 234"
+   },
+   "expected": "quote|FAIL"
+  },
+  {
+   "name": "HV-QM25",
+   "fn": "qmatch",
+   "args": {
+    "value": "234",
+    "quote": "1 234 5"
+   },
+   "expected": "quote|FAIL"
+  },
+  {
+   "name": "HV-QM26",
+   "fn": "qmatch",
+   "args": {
+    "value": "5",
+    "quote": "5",
+    "affix": "bp"
+   },
+   "expected": "quote|PASS"
+  },
+  {
+   "name": "HV-QM27",
+   "fn": "qmatch",
+   "args": {
+    "value": "5",
+    "quote": "5",
+    "affix": 5
+   },
+   "expected": "ERROR:affix"
+  },
+  {
+   "name": "HV-QM28",
+   "fn": "qmatch",
+   "args": {
+    "value": "5",
+    "quote": "5",
+    "scale": "kilo"
+   },
+   "expected": "ERROR:scale"
+  },
+  {
+   "name": "HV-QM29",
+   "fn": "qmatch",
+   "args": {
+    "value": "5",
+    "quote": "5",
+    "accounting": 1
+   },
+   "expected": "ERROR:accounting"
+  },
+  {
+   "name": "HV-QM30",
+   "fn": "qmatch",
+   "args": {
+    "value": "",
+    "quote": "5"
+   },
+   "expected": "quote|FAIL"
+  },
+  {
+   "name": "HV-QM31",
+   "fn": "qmatch",
+   "args": {
+    "value": "5",
+    "quote": 5
+   },
+   "expected": "ERROR:text"
+  },
+  {
+   "name": "HV-QM32",
+   "fn": "qmatch",
+   "args": {
+    "value": "5",
+    "quote": "e5"
+   },
+   "expected": "quote|FAIL"
+  },
+  {
+   "name": "HV-QM33",
+   "fn": "qmatch",
+   "args": {
+    "value": "5",
+    "quote": "1e5"
+   },
+   "expected": "quote|FAIL"
+  },
+  {
+   "name": "HV-QM34",
+   "fn": "qmatch",
+   "args": {
+    "value": "5",
+    "quote": "5^2"
+   },
+   "expected": "quote|FAIL"
+  },
+  {
+   "name": "HV-QM35",
+   "fn": "qmatch",
+   "args": {
+    "value": "72.4",
+    "quote": "72.4 %",
+    "affix": "%"
+   },
+   "expected": "quote|PASS"
+  },
+  {
+   "name": "HV-QM36",
+   "fn": "qmatch",
+   "args": {
+    "value": ".5",
+    "quote": "is .5"
+   },
+   "expected": "quote|PASS"
+  },
+  {
+   "name": "HV-QM37",
+   "fn": "qmatch",
+   "args": {
+    "value": "5.",
+    "quote": "5."
+   },
+   "expected": "quote|PASS"
+  },
+  {
+   "name": "HV-QM38",
+   "fn": "qmatch",
+   "args": {
+    "value": "5",
+    "quote": "5 pct",
+    "affix": "pct"
+   },
+   "expected": "quote|PASS"
+  },
+  {
+   "name": "HV-QM39",
+   "fn": "qmatch",
+   "args": {
+    "value": "5",
+    "quote": "PCT 5",
+    "affix": "pct"
+   },
+   "expected": "quote|PASS"
+  },
+  {
+   "name": "HV-QC01",
+   "fn": "qcheck",
+   "args": {
+    "page": "Revenue was 5 million.",
+    "quote": "was 5 million",
+    "value": "5",
+    "scale": "million"
+   },
+   "expected": "quote|PASS"
+  },
+  {
+   "name": "HV-QC02",
+   "fn": "qcheck",
+   "args": {
+    "page": "Revenue was 5 million.",
+    "quote": "was 5 million",
+    "value": "5"
+   },
+   "expected": "quote|FAIL"
+  },
+  {
+   "name": "HV-QC03",
+   "fn": "qcheck",
+   "args": {
+    "page": null,
+    "quote": "x",
+    "value": "5"
+   },
+   "expected": "quote|UNKNOWN"
+  },
+  {
+   "name": "HV-QC04",
+   "fn": "qcheck",
+   "args": {
+    "page": null,
+    "quote": 5,
+    "value": "5"
+   },
+   "expected": "ERROR:text"
+  },
+  {
+   "name": "HV-QC05",
+   "fn": "qcheck",
+   "args": {
+    "page": "p",
+    "quote": "q",
+    "value": "5",
+    "affix": "?"
+   },
+   "expected": "ERROR:affix"
+  },
+  {
+   "name": "HV-QC06",
+   "fn": "qcheck",
+   "args": {
+    "page": 7,
+    "quote": "q",
+    "value": "5"
+   },
+   "expected": "ERROR:text"
+  },
+  {
+   "name": "HV-SM01",
+   "fn": "source",
+   "args": {
+    "cited": "https://h.example/a/%252E%252E/x",
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example/a/"
+     ],
+     [
+      "EXACT",
+      "https://h.example/x?q=1"
+     ],
+     [
+      "SERVED",
+      "https://h.example/s;v=1"
+     ]
+    ]
+   },
+   "expected": "source|UNKNOWN|path"
+  },
+  {
+   "name": "HV-SM02",
+   "fn": "source",
+   "args": {
+    "cited": "https://h.example/a/%C0%AE",
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example/a/"
+     ],
+     [
+      "EXACT",
+      "https://h.example/x?q=1"
+     ],
+     [
+      "SERVED",
+      "https://h.example/s;v=1"
+     ]
+    ]
+   },
+   "expected": "source|UNKNOWN|path"
+  },
+  {
+   "name": "HV-SM03",
+   "fn": "source",
+   "args": {
+    "cited": "https://h.example/a/%E2%82",
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example/a/"
+     ],
+     [
+      "EXACT",
+      "https://h.example/x?q=1"
+     ],
+     [
+      "SERVED",
+      "https://h.example/s;v=1"
+     ]
+    ]
+   },
+   "expected": "source|UNKNOWN|path"
+  },
+  {
+   "name": "HV-SM04",
+   "fn": "source",
+   "args": {
+    "cited": "https://h.example/a/%E2%82%AC",
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example/a/"
+     ],
+     [
+      "EXACT",
+      "https://h.example/x?q=1"
+     ],
+     [
+      "SERVED",
+      "https://h.example/s;v=1"
+     ]
+    ]
+   },
+   "expected": "source|ENTRY|0|PREFIX|https://h.example/a/\nfetch|https://h.example/a/%E2%82%AC"
+  },
+  {
+   "name": "HV-SM05",
+   "fn": "source",
+   "args": {
+    "cited": "https://h.example/a/%ED%A0%80",
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example/a/"
+     ],
+     [
+      "EXACT",
+      "https://h.example/x?q=1"
+     ],
+     [
+      "SERVED",
+      "https://h.example/s;v=1"
+     ]
+    ]
+   },
+   "expected": "source|UNKNOWN|path"
+  },
+  {
+   "name": "HV-SM06",
+   "fn": "source",
+   "args": {
+    "cited": "https://h.example/a/%F4%90%80%80",
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example/a/"
+     ],
+     [
+      "EXACT",
+      "https://h.example/x?q=1"
+     ],
+     [
+      "SERVED",
+      "https://h.example/s;v=1"
+     ]
+    ]
+   },
+   "expected": "source|UNKNOWN|path"
+  },
+  {
+   "name": "HV-SM07",
+   "fn": "source",
+   "args": {
+    "cited": "https://h.example/a/%25252525252525252E",
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example/a/"
+     ],
+     [
+      "EXACT",
+      "https://h.example/x?q=1"
+     ],
+     [
+      "SERVED",
+      "https://h.example/s;v=1"
+     ]
+    ]
+   },
+   "expected": "source|UNKNOWN|path"
+  },
+  {
+   "name": "HV-SM08",
+   "fn": "source",
+   "args": {
+    "cited": "https://h.example/a/%2525252525252E",
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example/a/"
+     ],
+     [
+      "EXACT",
+      "https://h.example/x?q=1"
+     ],
+     [
+      "SERVED",
+      "https://h.example/s;v=1"
+     ]
+    ]
+   },
+   "expected": "source|UNKNOWN|path"
+  },
+  {
+   "name": "HV-SM09",
+   "fn": "source",
+   "args": {
+    "cited": "https://h.example/x?q=1#f",
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example/a/"
+     ],
+     [
+      "EXACT",
+      "https://h.example/x?q=1"
+     ],
+     [
+      "SERVED",
+      "https://h.example/s;v=1"
+     ]
+    ]
+   },
+   "expected": "source|ENTRY|1|EXACT|https://h.example/x?q=1\nfetch|https://h.example/x?q=1"
+  },
+  {
+   "name": "HV-SM10",
+   "fn": "source",
+   "args": {
+    "cited": "https://h.example/x",
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example/a/"
+     ],
+     [
+      "EXACT",
+      "https://h.example/x?q=1"
+     ],
+     [
+      "SERVED",
+      "https://h.example/s;v=1"
+     ]
+    ]
+   },
+   "expected": "source|UNKNOWN|none"
+  },
+  {
+   "name": "HV-SM11",
+   "fn": "source",
+   "args": {
+    "cited": "https://h.example/x?q=2",
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example/a/"
+     ],
+     [
+      "EXACT",
+      "https://h.example/x?q=1"
+     ],
+     [
+      "SERVED",
+      "https://h.example/s;v=1"
+     ]
+    ]
+   },
+   "expected": "source|UNKNOWN|none"
+  },
+  {
+   "name": "HV-SM12",
+   "fn": "source",
+   "args": {
+    "cited": "https://h.example/s;v=1",
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example/a/"
+     ],
+     [
+      "EXACT",
+      "https://h.example/x?q=1"
+     ],
+     [
+      "SERVED",
+      "https://h.example/s;v=1"
+     ]
+    ]
+   },
+   "expected": "source|ENTRY|2|SERVED|https://h.example/s;v=1\nfetch|STORE"
+  },
+  {
+   "name": "HV-SM13",
+   "fn": "source",
+   "args": {
+    "cited": "https://h.example/s;v=1?z",
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example/a/"
+     ],
+     [
+      "EXACT",
+      "https://h.example/x?q=1"
+     ],
+     [
+      "SERVED",
+      "https://h.example/s;v=1"
+     ]
+    ]
+   },
+   "expected": "source|UNKNOWN|path"
+  },
+  {
+   "name": "HV-SM14",
+   "fn": "source",
+   "args": {
+    "cited": "https://H.EXAMPLE/a/b",
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example/a/"
+     ],
+     [
+      "EXACT",
+      "https://h.example/x?q=1"
+     ],
+     [
+      "SERVED",
+      "https://h.example/s;v=1"
+     ]
+    ]
+   },
+   "expected": "source|ENTRY|0|PREFIX|https://h.example/a/\nfetch|https://h.example/a/b"
+  },
+  {
+   "name": "HV-SM15",
+   "fn": "source",
+   "args": {
+    "cited": "https://h.example:443/a/b",
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example/a/"
+     ],
+     [
+      "EXACT",
+      "https://h.example/x?q=1"
+     ],
+     [
+      "SERVED",
+      "https://h.example/s;v=1"
+     ]
+    ]
+   },
+   "expected": "source|UNKNOWN|none"
+  },
+  {
+   "name": "HV-SM16",
+   "fn": "source",
+   "args": {
+    "cited": "https://h.example/ab",
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example/a/"
+     ],
+     [
+      "EXACT",
+      "https://h.example/x?q=1"
+     ],
+     [
+      "SERVED",
+      "https://h.example/s;v=1"
+     ]
+    ]
+   },
+   "expected": "source|UNKNOWN|none"
+  },
+  {
+   "name": "HV-SM17",
+   "fn": "source",
+   "args": {
+    "cited": "https://h.example/a",
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example/a/"
+     ],
+     [
+      "EXACT",
+      "https://h.example/x?q=1"
+     ],
+     [
+      "SERVED",
+      "https://h.example/s;v=1"
+     ]
+    ]
+   },
+   "expected": "source|UNKNOWN|none"
+  },
+  {
+   "name": "HV-SM18",
+   "fn": "source",
+   "args": {
+    "cited": "http://h.example/a/b",
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example/a/"
+     ],
+     [
+      "EXACT",
+      "https://h.example/x?q=1"
+     ],
+     [
+      "SERVED",
+      "https://h.example/s;v=1"
+     ]
+    ]
+   },
+   "expected": "source|UNKNOWN|scheme"
+  },
+  {
+   "name": "HV-SM19",
+   "fn": "source",
+   "args": {
+    "cited": "https://u@h.example/a/b",
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example/a/"
+     ],
+     [
+      "EXACT",
+      "https://h.example/x?q=1"
+     ],
+     [
+      "SERVED",
+      "https://h.example/s;v=1"
+     ]
+    ]
+   },
+   "expected": "source|UNKNOWN|userinfo"
+  },
+  {
+   "name": "HV-SM20",
+   "fn": "source",
+   "args": {
+    "cited": "https://1.2.3.4/a/b",
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example/a/"
+     ],
+     [
+      "EXACT",
+      "https://h.example/x?q=1"
+     ],
+     [
+      "SERVED",
+      "https://h.example/s;v=1"
+     ]
+    ]
+   },
+   "expected": "source|UNKNOWN|host"
+  },
+  {
+   "name": "HV-SM21",
+   "fn": "source",
+   "args": {
+    "cited": "https://h%2e/a",
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example/a/"
+     ],
+     [
+      "EXACT",
+      "https://h.example/x?q=1"
+     ],
+     [
+      "SERVED",
+      "https://h.example/s;v=1"
+     ]
+    ]
+   },
+   "expected": "source|UNKNOWN|none"
+  },
+  {
+   "name": "HV-SM22",
+   "fn": "source",
+   "args": {
+    "cited": "https://[::1]/a",
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example/a/"
+     ],
+     [
+      "EXACT",
+      "https://h.example/x?q=1"
+     ],
+     [
+      "SERVED",
+      "https://h.example/s;v=1"
+     ]
+    ]
+   },
+   "expected": "source|UNKNOWN|host"
+  },
+  {
+   "name": "HV-SM23",
+   "fn": "source",
+   "args": {
+    "cited": "mailto:x@h.example",
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example/a/"
+     ],
+     [
+      "EXACT",
+      "https://h.example/x?q=1"
+     ],
+     [
+      "SERVED",
+      "https://h.example/s;v=1"
+     ]
+    ]
+   },
+   "expected": "source|UNKNOWN|url"
+  },
+  {
+   "name": "HV-SM24",
+   "fn": "source",
+   "args": {
+    "cited": 7,
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example/a/"
+     ],
+     [
+      "EXACT",
+      "https://h.example/x?q=1"
+     ],
+     [
+      "SERVED",
+      "https://h.example/s;v=1"
+     ]
+    ]
+   },
+   "expected": "source|UNKNOWN|url"
+  },
+  {
+   "name": "HV-SM25",
+   "fn": "source",
+   "args": {
+    "cited": "https://h.example/a/b;c",
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example/a/"
+     ],
+     [
+      "EXACT",
+      "https://h.example/x?q=1"
+     ],
+     [
+      "SERVED",
+      "https://h.example/s;v=1"
+     ]
+    ]
+   },
+   "expected": "source|UNKNOWN|path"
+  },
+  {
+   "name": "HV-SL01",
+   "fn": "source",
+   "args": {
+    "cited": "https://g.example/o/r/tree/main/f",
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example/"
+     ]
+    ]
+   },
+   "expected": "ERROR:publisher"
+  },
+  {
+   "name": "HV-SL02",
+   "fn": "source",
+   "args": {
+    "cited": "https://g.example/o/r/tree/main/f",
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example"
+     ]
+    ]
+   },
+   "expected": "ERROR:publisher"
+  },
+  {
+   "name": "HV-SL03",
+   "fn": "source",
+   "args": {
+    "cited": "https://g.example/o/r/tree/main/f",
+    "sources": [
+     [
+      "CODE HOST",
+      "g.example",
+      "/*/*/tree/*/"
+     ],
+     [
+      "PREFIX",
+      "https://g.example/o/r/tree/main/"
+     ]
+    ]
+   },
+   "expected": "source|ENTRY|1|PREFIX|https://g.example/o/r/tree/main/\nfetch|https://g.example/o/r/tree/main/f"
+  },
+  {
+   "name": "HV-SL04",
+   "fn": "source",
+   "args": {
+    "cited": "https://g.example/o/r/tree/main/f",
+    "sources": [
+     [
+      "CODE HOST",
+      "g.example",
+      "/*/*/tree/*/"
+     ],
+     [
+      "PREFIX",
+      "https://g.example/o/r/"
+     ]
+    ]
+   },
+   "expected": "ERROR:publisher"
+  },
+  {
+   "name": "HV-SL05",
+   "fn": "source",
+   "args": {
+    "cited": "https://g.example/o/r/tree/main/f",
+    "sources": [
+     [
+      "CODE HOST",
+      "g.example",
+      "/*/*/tree/*/"
+     ],
+     [
+      "PREFIX",
+      "https://g.example/o/r/tree/REFS/x"
+     ]
+    ]
+   },
+   "expected": "ERROR:publisher"
+  },
+  {
+   "name": "HV-SL06",
+   "fn": "source",
+   "args": {
+    "cited": "https://g.example/o/r/tree/main/f",
+    "sources": [
+     [
+      "CODE HOST",
+      "g.example"
+     ],
+     [
+      "PREFIX",
+      "https://g.example/o/r/tree/main/"
+     ]
+    ]
+   },
+   "expected": "ERROR:publisher"
+  },
+  {
+   "name": "HV-SL07",
+   "fn": "source",
+   "args": {
+    "cited": "https://g.example/o/r/tree/main/f",
+    "sources": [
+     [
+      "CODE HOST",
+      "g.example"
+     ],
+     [
+      "CODE HOST",
+      "g.example"
+     ]
+    ]
+   },
+   "expected": "ERROR:sources"
+  },
+  {
+   "name": "HV-SL08",
+   "fn": "source",
+   "args": {
+    "cited": "https://g.example/o/r/tree/main/f",
+    "sources": [
+     [
+      "CODE HOST",
+      "G.example"
+     ]
+    ]
+   },
+   "expected": "ERROR:sources"
+  },
+  {
+   "name": "HV-SL09",
+   "fn": "source",
+   "args": {
+    "cited": "https://g.example/o/r/tree/main/f",
+    "sources": [
+     [
+      "CODE HOST",
+      "1.2.3"
+     ]
+    ]
+   },
+   "expected": "ERROR:sources"
+  },
+  {
+   "name": "HV-SL10",
+   "fn": "source",
+   "args": {
+    "cited": "https://g.example/o/r/tree/main/f",
+    "sources": [
+     [
+      "CODE HOST",
+      "g.example",
+      "/a"
+     ]
+    ]
+   },
+   "expected": "ERROR:sources"
+  },
+  {
+   "name": "HV-SL11",
+   "fn": "source",
+   "args": {
+    "cited": "https://g.example/o/r/tree/main/f",
+    "sources": [
+     [
+      "CODE HOST"
+     ]
+    ]
+   },
+   "expected": "ERROR:sources"
+  },
+  {
+   "name": "HV-SL12",
+   "fn": "source",
+   "args": {
+    "cited": "https://g.example/o/r/tree/main/f",
+    "sources": [
+     [
+      "EXACT",
+      "https://h.example:/a"
+     ]
+    ]
+   },
+   "expected": "ERROR:sources"
+  },
+  {
+   "name": "HV-SL13",
+   "fn": "source",
+   "args": {
+    "cited": "https://g.example/o/r/tree/main/f",
+    "sources": [
+     [
+      "EXACT",
+      "https://h.example:8443/a"
+     ]
+    ]
+   },
+   "expected": "source|UNKNOWN|none"
+  },
+  {
+   "name": "HV-SL14",
+   "fn": "source",
+   "args": {
+    "cited": "https://g.example/o/r/tree/main/f",
+    "sources": [
+     [
+      "EXACT",
+      "https://h.example/a#f"
+     ]
+    ]
+   },
+   "expected": "ERROR:sources"
+  },
+  {
+   "name": "HV-SL15",
+   "fn": "source",
+   "args": {
+    "cited": "https://g.example/o/r/tree/main/f",
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example/a/?q"
+     ]
+    ]
+   },
+   "expected": "ERROR:sources"
+  },
+  {
+   "name": "HV-SL16",
+   "fn": "source",
+   "args": {
+    "cited": "https://g.example/o/r/tree/main/f",
+    "sources": [
+     [
+      "SERVED",
+      "https://h.example/a/%2e%2e/b"
+     ]
+    ]
+   },
+   "expected": "source|UNKNOWN|none"
+  },
+  {
+   "name": "HV-SL17",
+   "fn": "source",
+   "args": {
+    "cited": "https://g.example/o/r/tree/main/f",
+    "sources": [
+     [
+      "EXACT",
+      "https://h.example/a/%2e%2e/b"
+     ]
+    ]
+   },
+   "expected": "ERROR:sources"
+  },
+  {
+   "name": "HV-SL18",
+   "fn": "source",
+   "args": {
+    "cited": "https://g.example/o/r/tree/main/f",
+    "sources": [
+     [
+      "EXACT",
+      5
+     ]
+    ]
+   },
+   "expected": "ERROR:sources"
+  },
+  {
+   "name": "HV-SL19",
+   "fn": "source",
+   "args": {
+    "cited": "https://g.example/o/r/tree/main/f",
+    "sources": [
+     [
+      "OTHER",
+      "https://h.example/a"
+     ]
+    ]
+   },
+   "expected": "ERROR:sources"
+  },
+  {
+   "name": "HV-SL20",
+   "fn": "source",
+   "args": {
+    "cited": "https://g.example/o/r/tree/main/f",
+    "sources": "x"
+   },
+   "expected": "ERROR:sources"
+  },
+  {
+   "name": "HV-SL21",
+   "fn": "source",
+   "args": {
+    "cited": "https://g.example/o/r/tree/main/f",
+    "sources": [
+     [
+      "EXACT",
+      "https://h.example/a",
+      1
+     ]
+    ]
+   },
+   "expected": "ERROR:sources"
+  },
+  {
+   "name": "HV-HP01",
+   "fn": "hop",
+   "args": {
+    "hop": "https://h.example/a/z",
+    "matched": 0,
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example/a/"
+     ],
+     [
+      "PREFIX",
+      "https://h.example/b/"
+     ],
+     [
+      "SERVED",
+      "https://h.example/s"
+     ],
+     [
+      "CODE HOST",
+      "g.example",
+      "/*/*/tree/*/"
+     ]
+    ]
+   },
+   "expected": "source|ENTRY|0|PREFIX|https://h.example/a/\nfetch|https://h.example/a/z\nhop|SAME"
+  },
+  {
+   "name": "HV-HP02",
+   "fn": "hop",
+   "args": {
+    "hop": "https://h.example/b/z",
+    "matched": 0,
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example/a/"
+     ],
+     [
+      "PREFIX",
+      "https://h.example/b/"
+     ],
+     [
+      "SERVED",
+      "https://h.example/s"
+     ],
+     [
+      "CODE HOST",
+      "g.example",
+      "/*/*/tree/*/"
+     ]
+    ]
+   },
+   "expected": "source|ENTRY|1|PREFIX|https://h.example/b/\nfetch|https://h.example/b/z\nhop|OTHER"
+  },
+  {
+   "name": "HV-HP03",
+   "fn": "hop",
+   "args": {
+    "hop": "https://h.example/s",
+    "matched": 0,
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example/a/"
+     ],
+     [
+      "PREFIX",
+      "https://h.example/b/"
+     ],
+     [
+      "SERVED",
+      "https://h.example/s"
+     ],
+     [
+      "CODE HOST",
+      "g.example",
+      "/*/*/tree/*/"
+     ]
+    ]
+   },
+   "expected": "source|UNKNOWN|none\nhop|END"
+  },
+  {
+   "name": "HV-HP04",
+   "fn": "hop",
+   "args": {
+    "hop": "https://h.example/c",
+    "matched": 0,
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example/a/"
+     ],
+     [
+      "PREFIX",
+      "https://h.example/b/"
+     ],
+     [
+      "SERVED",
+      "https://h.example/s"
+     ],
+     [
+      "CODE HOST",
+      "g.example",
+      "/*/*/tree/*/"
+     ]
+    ]
+   },
+   "expected": "source|UNKNOWN|none\nhop|END"
+  },
+  {
+   "name": "HV-HP05",
+   "fn": "hop",
+   "args": {
+    "hop": "https://h.example/a/z",
+    "matched": 2,
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example/a/"
+     ],
+     [
+      "PREFIX",
+      "https://h.example/b/"
+     ],
+     [
+      "SERVED",
+      "https://h.example/s"
+     ],
+     [
+      "CODE HOST",
+      "g.example",
+      "/*/*/tree/*/"
+     ]
+    ]
+   },
+   "expected": "ERROR:matched"
+  },
+  {
+   "name": "HV-HP06",
+   "fn": "hop",
+   "args": {
+    "hop": "https://h.example/a/z",
+    "matched": 3,
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example/a/"
+     ],
+     [
+      "PREFIX",
+      "https://h.example/b/"
+     ],
+     [
+      "SERVED",
+      "https://h.example/s"
+     ],
+     [
+      "CODE HOST",
+      "g.example",
+      "/*/*/tree/*/"
+     ]
+    ]
+   },
+   "expected": "ERROR:matched"
+  },
+  {
+   "name": "HV-HP07",
+   "fn": "hop",
+   "args": {
+    "hop": "https://h.example/a/z",
+    "matched": 4,
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example/a/"
+     ],
+     [
+      "PREFIX",
+      "https://h.example/b/"
+     ],
+     [
+      "SERVED",
+      "https://h.example/s"
+     ],
+     [
+      "CODE HOST",
+      "g.example",
+      "/*/*/tree/*/"
+     ]
+    ]
+   },
+   "expected": "ERROR:matched"
+  },
+  {
+   "name": "HV-HP08",
+   "fn": "hop",
+   "args": {
+    "hop": "https://h.example/a/z",
+    "matched": true,
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example/a/"
+     ],
+     [
+      "PREFIX",
+      "https://h.example/b/"
+     ],
+     [
+      "SERVED",
+      "https://h.example/s"
+     ],
+     [
+      "CODE HOST",
+      "g.example",
+      "/*/*/tree/*/"
+     ]
+    ]
+   },
+   "expected": "ERROR:matched"
+  },
+  {
+   "name": "HV-HP09",
+   "fn": "hop",
+   "args": {
+    "hop": "https://h.example/a/z",
+    "matched": -1,
+    "sources": [
+     [
+      "PREFIX",
+      "https://h.example/a/"
+     ],
+     [
+      "PREFIX",
+      "https://h.example/b/"
+     ],
+     [
+      "SERVED",
+      "https://h.example/s"
+     ],
+     [
+      "CODE HOST",
+      "g.example",
+      "/*/*/tree/*/"
+     ]
+    ]
+   },
+   "expected": "ERROR:matched"
+  },
+  {
+   "name": "HV-SP01",
+   "fn": "stop",
+   "args": {
+    "counts": [
+     [
+      "ISSUED",
+      "a"
+     ],
+     [
+      "FINISHED",
+      "a",
+      10,
+      1,
+      0
+     ]
+    ],
+    "limits": {
+     "breaker": "0.0999",
+     "window": 20
+    }
+   },
+   "expected": "stop|STOPPED\nshare|1|10|1\nalone|-\nin_flight|0"
+  },
+  {
+   "name": "HV-SP02",
+   "fn": "stop",
+   "args": {
+    "counts": [
+     [
+      "ISSUED",
+      "a"
+     ],
+     [
+      "FINISHED",
+      "a",
+      10,
+      1,
+      0
+     ]
+    ],
+    "limits": {
+     "breaker": "0.1",
+     "window": 20
+    }
+   },
+   "expected": "stop|ISSUING\nshare|1|10|1\nalone|-\nin_flight|0"
+  },
+  {
+   "name": "HV-SP03",
+   "fn": "stop",
+   "args": {
+    "counts": [
+     [
+      "ISSUED",
+      "a"
+     ],
+     [
+      "FINISHED",
+      "a",
+      10,
+      1,
+      0
+     ]
+    ],
+    "limits": {
+     "breaker": "1.0000",
+     "window": 20
+    }
+   },
+   "expected": "stop|ISSUING\nshare|1|10|1\nalone|-\nin_flight|0"
+  },
+  {
+   "name": "HV-SP04",
+   "fn": "stop",
+   "args": {
+    "counts": [],
+    "limits": {
+     "breaker": "1.00001",
+     "window": 20
+    }
+   },
+   "expected": "ERROR:limits"
+  },
+  {
+   "name": "HV-SP05",
+   "fn": "stop",
+   "args": {
+    "counts": [],
+    "limits": {
+     "breaker": "0.",
+     "window": 20
+    }
+   },
+   "expected": "ERROR:limits"
+  },
+  {
+   "name": "HV-SP06",
+   "fn": "stop",
+   "args": {
+    "counts": [],
+    "limits": {
+     "breaker": "0",
+     "window": 0
+    }
+   },
+   "expected": "ERROR:limits"
+  },
+  {
+   "name": "HV-SP07",
+   "fn": "stop",
+   "args": {
+    "counts": [],
+    "limits": {
+     "breaker": "0",
+     "window": 1,
+     "x": 1
+    }
+   },
+   "expected": "ERROR:limits"
+  },
+  {
+   "name": "HV-SP08",
+   "fn": "stop",
+   "args": {
+    "counts": [
+     [
+      "ISSUED",
+      "a"
+     ],
+     [
+      "ISSUED",
+      "b"
+     ],
+     [
+      "FINISHED",
+      "a",
+      1,
+      1,
+      0
+     ],
+     [
+      "RESUMED"
+     ],
+     [
+      "ISSUED",
+      "c"
+     ],
+     [
+      "FINISHED",
+      "b",
+      1,
+      0,
+      0
+     ]
+    ],
+    "limits": {
+     "breaker": "0.5",
+     "window": 2
+    }
+   },
+   "expected": "ERROR:counts"
+  },
+  {
+   "name": "HV-SP09",
+   "fn": "stop",
+   "args": {
+    "counts": [
+     [
+      "ISSUED",
+      "a"
+     ],
+     [
+      "FINISHED",
+      "a",
+      1,
+      1,
+      0
+     ],
+     [
+      "RESUMED"
+     ],
+     [
+      "RESUMED"
+     ],
+     [
+      "ISSUED",
+      "c"
+     ],
+     [
+      "FINISHED",
+      "c",
+      4,
+      0,
+      0
+     ],
+     [
+      "ISSUED",
+      "d"
+     ]
+    ],
+    "limits": {
+     "breaker": "0.5",
+     "window": 2
+    }
+   },
+   "expected": "stop|ISSUING\nshare|0|4|1\nalone|-\nin_flight|1"
+  },
+  {
+   "name": "HV-SP10",
+   "fn": "stop",
+   "args": {
+    "counts": [
+     [
+      "ISSUED",
+      "a"
+     ],
+     [
+      "FINISHED",
+      "a",
+      1,
+      1,
+      1
+     ]
+    ],
+    "limits": {
+     "breaker": "0",
+     "window": 1
+    }
+   },
+   "expected": "ERROR:counts"
+  },
+  {
+   "name": "HV-SP11",
+   "fn": "stop",
+   "args": {
+    "counts": [
+     [
+      "ISSUED",
+      "a"
+     ],
+     [
+      "FINISHED",
+      "a",
+      2,
+      1,
+      0
+     ],
+     [
+      "ISSUED",
+      "b"
+     ]
+    ],
+    "limits": {
+     "breaker": "0.4",
+     "window": 1
+    }
+   },
+   "expected": "ERROR:counts"
+  },
+  {
+   "name": "HV-SP12",
+   "fn": "stop",
+   "args": {
+    "counts": [
+     [
+      "ISSUED",
+      "a"
+     ],
+     [
+      "ISSUED",
+      "a"
+     ]
+    ],
+    "limits": {
+     "breaker": "0",
+     "window": 1
+    }
+   },
+   "expected": "ERROR:counts"
+  },
+  {
+   "name": "HV-SP13",
+   "fn": "stop",
+   "args": {
+    "counts": [
+     [
+      "ISSUED",
+      "a|b"
+     ]
+    ],
+    "limits": {
+     "breaker": "0",
+     "window": 1
+    }
+   },
+   "expected": "stop|ISSUING\nshare|0|0|0\nalone|-\nin_flight|1"
+  },
+  {
+   "name": "HV-SP14",
+   "fn": "stop",
+   "args": {
+    "counts": [
+     [
+      "PAUSED"
+     ]
+    ],
+    "limits": {
+     "breaker": "0",
+     "window": 1
+    }
+   },
+   "expected": "ERROR:counts"
+  },
+  {
+   "name": "HV-SP15",
+   "fn": "stop",
+   "args": {
+    "counts": [
+     [
+      "ISSUED",
+      "a"
+     ],
+     [
+      "FINISHED",
+      "a",
+      3,
+      0,
+      0
+     ],
+     [
+      "ISSUED",
+      "b"
+     ],
+     [
+      "FINISHED",
+      "b",
+      1,
+      1,
+      0
+     ],
+     [
+      "ISSUED",
+      "c"
+     ],
+     [
+      "FINISHED",
+      "c",
+      1,
+      1,
+      0
+     ]
+    ],
+    "limits": {
+     "breaker": "0.5",
+     "window": 2
+    }
+   },
+   "expected": "stop|STOPPED\nshare|2|2|2\nalone|-\nin_flight|0"
+  },
+  {
+   "name": "HV-ST01",
+   "fn": "stage",
+   "args": {
+    "events": [
+     [
+      "LANDED",
+      0,
+      "a"
+     ],
+     [
+      "LANDED",
+      86400,
+      "a"
+     ]
+    ],
+    "as_of": 172800,
+    "thresholds": {
+     "blocks": 2,
+     "dates": 2,
+     "span_days": 1,
+     "dormant_days": 1
+    }
+   },
+   "expected": "stage|SERIOUS\ndormant|true\ncounts|2|2|86400|86400\ngraduated|86400|2|2|86400"
+  },
+  {
+   "name": "HV-ST02",
+   "fn": "stage",
+   "args": {
+    "events": [
+     [
+      "LANDED",
+      86400,
+      "a"
+     ],
+     [
+      "SUSPENDED",
+      86400,
+      "a"
+     ],
+     [
+      "LANDED",
+      0,
+      "b"
+     ]
+    ],
+    "as_of": 172800,
+    "thresholds": {
+     "blocks": 2,
+     "dates": 2,
+     "span_days": 1,
+     "dormant_days": 1
+    }
+   },
+   "expected": "stage|WORKING\ndormant|true\ncounts|2|2|86400|86400\ngraduated|-"
+  },
+  {
+   "name": "HV-ST03",
+   "fn": "stage",
+   "args": {
+    "events": [
+     [
+      "LANDED",
+      86400,
+      "a"
+     ],
+     [
+      "RESTORED",
+      86400,
+      "a"
+     ],
+     [
+      "SUSPENDED",
+      86399,
+      "a"
+     ],
+     [
+      "LANDED",
+      0,
+      "b"
+     ]
+    ],
+    "as_of": 259200,
+    "thresholds": {
+     "blocks": 2,
+     "dates": 2,
+     "span_days": 1,
+     "dormant_days": 1
+    }
+   },
+   "expected": "stage|SERIOUS\ndormant|true\ncounts|2|2|86400|86400\ngraduated|86400|2|2|86400"
+  },
+  {
+   "name": "HV-ST04",
+   "fn": "stage",
+   "args": {
+    "events": [
+     [
+      "BLOCKED",
+      5
+     ],
+     [
+      "LANDED",
+      0,
+      "a"
+     ],
+     [
+      "LANDED",
+      86400,
+      "a"
+     ],
+     [
+      "UNBLOCKED",
+      259200
+     ],
+     [
+      "EVALUATED",
+      259200
+     ]
+    ],
+    "as_of": 345600,
+    "thresholds": {
+     "blocks": 2,
+     "dates": 2,
+     "span_days": 1,
+     "dormant_days": 1
+    }
+   },
+   "expected": "stage|SERIOUS\ndormant|true\ncounts|2|2|86400|86400\ngraduated|259200|2|2|86400"
+  },
+  {
+   "name": "HV-ST05",
+   "fn": "stage",
+   "args": {
+    "events": [
+     [
+      "VIOLATION",
+      0,
+      "a"
+     ],
+     [
+      "LANDED",
+      0,
+      "a"
+     ],
+     [
+      "LANDED",
+      86400,
+      "a"
+     ]
+    ],
+    "as_of": 172800,
+    "thresholds": {
+     "blocks": 2,
+     "dates": 2,
+     "span_days": 1,
+     "dormant_days": 1
+    }
+   },
+   "expected": "stage|WORKING\ndormant|true\ncounts|2|2|86400|86400\ngraduated|-"
+  },
+  {
+   "name": "HV-ST06",
+   "fn": "stage",
+   "args": {
+    "events": [
+     [
+      "LANDED",
+      0,
+      "a"
+     ],
+     [
+      "LANDED",
+      86400,
+      "a"
+     ]
+    ],
+    "as_of": 86399,
+    "thresholds": {
+     "blocks": 2,
+     "dates": 2,
+     "span_days": 1,
+     "dormant_days": 1
+    }
+   },
+   "expected": "stage|WORKING\ndormant|false\ncounts|1|1|0|0\ngraduated|-"
+  },
+  {
+   "name": "HV-ST07",
+   "fn": "stage",
+   "args": {
+    "events": [],
+    "as_of": 0,
+    "thresholds": {
+     "blocks": 2,
+     "dates": 2,
+     "span_days": 1,
+     "dormant_days": 1
+    }
+   },
+   "expected": "stage|NEW\ndormant|false\ncounts|0|0|0|-\ngraduated|-"
+  },
+  {
+   "name": "HV-ST08",
+   "fn": "stage",
+   "args": {
+    "events": [
+     [
+      "LANDED",
+      0,
+      "a"
+     ]
+    ],
+    "as_of": 0,
+    "thresholds": {
+     "blocks": 1,
+     "dates": 1,
+     "span_days": 0,
+     "dormant_days": 1
+    }
+   },
+   "expected": "stage|SERIOUS\ndormant|false\ncounts|1|1|0|0\ngraduated|0|1|1|0"
+  },
+  {
+   "name": "HV-ST09",
+   "fn": "stage",
+   "args": {
+    "events": [
+     [
+      "LANDED",
+      0
+     ]
+    ],
+    "as_of": 0,
+    "thresholds": {
+     "blocks": 2,
+     "dates": 2,
+     "span_days": 1,
+     "dormant_days": 1
+    }
+   },
+   "expected": "ERROR:events"
+  },
+  {
+   "name": "HV-ST10",
+   "fn": "stage",
+   "args": {
+    "events": [
+     [
+      "EVALUATED",
+      0,
+      "a"
+     ]
+    ],
+    "as_of": 0,
+    "thresholds": {
+     "blocks": 2,
+     "dates": 2,
+     "span_days": 1,
+     "dormant_days": 1
+    }
+   },
+   "expected": "ERROR:events"
+  },
+  {
+   "name": "HV-ST11",
+   "fn": "stage",
+   "args": {
+    "events": [
+     [
+      "LANDED",
+      -1,
+      "a"
+     ]
+    ],
+    "as_of": 0,
+    "thresholds": {
+     "blocks": 2,
+     "dates": 2,
+     "span_days": 1,
+     "dormant_days": 1
+    }
+   },
+   "expected": "ERROR:events"
+  },
+  {
+   "name": "HV-ST12",
+   "fn": "stage",
+   "args": {
+    "events": [],
+    "as_of": 0,
+    "thresholds": {
+     "blocks": 0,
+     "dates": 1,
+     "span_days": 0,
+     "dormant_days": 1
+    }
+   },
+   "expected": "ERROR:thresholds"
+  },
+  {
+   "name": "HV-ST13",
+   "fn": "stage",
+   "args": {
+    "events": [],
+    "as_of": true,
+    "thresholds": {
+     "blocks": 2,
+     "dates": 2,
+     "span_days": 1,
+     "dormant_days": 1
+    }
+   },
+   "expected": "ERROR:as_of"
+  },
+  {
+   "name": "HV-DR01",
+   "fn": "draw",
+   "args": {
+    "candidates": [
+     {
+      "account": "a",
+      "sponsor": "S1",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "b",
+      "sponsor": "S2",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 1,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "c",
+      "sponsor": "S3",
+      "family": "F2",
+      "snapshot": "M2",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 2,
+      "ontime": 0,
+      "assigned": 0
+     }
+    ],
+    "n": 2,
+    "state": {
+     "kept": [],
+     "prior": [],
+     "drafted": 0,
+     "now": 10,
+     "falcon_wait": 100
+    },
+    "r": "0123456789abcdef0123456789abcdef"
+   },
+   "expected": "draw|OK|T3\nassignee|a\nassignee|c\nmarks|-\nthin|false\npool|3|3"
+  },
+  {
+   "name": "HV-DR02",
+   "fn": "draw",
+   "args": {
+    "candidates": [
+     {
+      "account": "a",
+      "sponsor": "S1",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": true,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "b",
+      "sponsor": "S1",
+      "family": "F2",
+      "snapshot": "M2",
+      "tier": true,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 1,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "c",
+      "sponsor": "S1",
+      "family": "F3",
+      "snapshot": "M3",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 2,
+      "ontime": 0,
+      "assigned": 0
+     }
+    ],
+    "n": 2,
+    "state": {
+     "kept": [],
+     "prior": [],
+     "drafted": 0,
+     "now": 10,
+     "falcon_wait": 100
+    },
+    "r": "0123456789abcdef0123456789abcdef"
+   },
+   "expected": "draw|OK|T4\nassignee|a\nassignee|b\nmarks|SAME-SPONSOR\nthin|true\npool|3|1"
+  },
+  {
+   "name": "HV-DR03",
+   "fn": "draw",
+   "args": {
+    "candidates": [
+     {
+      "account": "a",
+      "sponsor": "S1",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": true,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "b",
+      "sponsor": "S2",
+      "family": "F2",
+      "snapshot": "M2",
+      "tier": true,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 1,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "c",
+      "sponsor": "S3",
+      "family": "F3",
+      "snapshot": "M3",
+      "tier": true,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 2,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "d",
+      "sponsor": "S4",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": true,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 3,
+      "ontime": 0,
+      "assigned": 0
+     }
+    ],
+    "n": 3,
+    "state": {
+     "kept": [],
+     "prior": [],
+     "drafted": 0,
+     "now": 10,
+     "falcon_wait": 100
+    },
+    "r": "0123456789abcdef0123456789abcdef"
+   },
+   "expected": "draw|OK|T1\nassignee|a\nassignee|b\nassignee|c\nmarks|-\nthin|false\npool|4|4"
+  },
+  {
+   "name": "HV-DR04",
+   "fn": "draw",
+   "args": {
+    "candidates": [
+     {
+      "account": "a",
+      "sponsor": "S1",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "b",
+      "sponsor": "S2",
+      "family": "F2",
+      "snapshot": "M2",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 1,
+      "ontime": 0,
+      "assigned": 0
+     }
+    ],
+    "n": 1,
+    "state": {
+     "kept": [
+      "a"
+     ],
+     "prior": [],
+     "drafted": 0,
+     "now": 10,
+     "falcon_wait": 100
+    },
+    "r": "0123456789abcdef0123456789abcdef"
+   },
+   "expected": "draw|OK|T3\nassignee|b\nmarks|-\nthin|true\npool|1|1"
+  },
+  {
+   "name": "HV-DR05",
+   "fn": "draw",
+   "args": {
+    "candidates": [
+     {
+      "account": "a",
+      "sponsor": "S1",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "b",
+      "sponsor": "S1",
+      "family": "F2",
+      "snapshot": "M2",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 1,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "c",
+      "sponsor": "S2",
+      "family": "F3",
+      "snapshot": "M3",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 2,
+      "ontime": 0,
+      "assigned": 0
+     }
+    ],
+    "n": 1,
+    "state": {
+     "kept": [
+      "a"
+     ],
+     "prior": [
+      "c"
+     ],
+     "drafted": 0,
+     "now": 10,
+     "falcon_wait": 100
+    },
+    "r": "0123456789abcdef0123456789abcdef"
+   },
+   "expected": "draw|OK|T5\nassignee|b\nmarks|SAME-SPONSOR\nthin|true\npool|1|1"
+  },
+  {
+   "name": "HV-DR06",
+   "fn": "draw",
+   "args": {
+    "candidates": [
+     {
+      "account": "a",
+      "sponsor": "S1",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "b",
+      "sponsor": "S1",
+      "family": "F2",
+      "snapshot": "M2",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 1,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "c",
+      "sponsor": "S2",
+      "family": "F3",
+      "snapshot": "M3",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 2,
+      "ontime": 0,
+      "assigned": 0
+     }
+    ],
+    "n": 1,
+    "state": {
+     "kept": [
+      "a"
+     ],
+     "prior": [
+      "c"
+     ],
+     "drafted": 0,
+     "now": 100,
+     "falcon_wait": 100
+    },
+    "r": "0123456789abcdef0123456789abcdef"
+   },
+   "expected": "draw|OK|T5\nassignee|b\nmarks|SAME-SPONSOR\nthin|true\npool|1|1"
+  },
+  {
+   "name": "HV-DR07",
+   "fn": "draw",
+   "args": {
+    "candidates": [
+     {
+      "account": "a",
+      "sponsor": "S1",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 1,
+      "assigned": 3
+     },
+     {
+      "account": "b",
+      "sponsor": "S2",
+      "family": "F2",
+      "snapshot": "M2",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 2,
+      "assigned": 3
+     },
+     {
+      "account": "c",
+      "sponsor": "S3",
+      "family": "F3",
+      "snapshot": "M3",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     }
+    ],
+    "n": 2,
+    "state": {
+     "kept": [],
+     "prior": [],
+     "drafted": 0,
+     "now": 10,
+     "falcon_wait": 100
+    },
+    "r": "0123456789abcdef0123456789abcdef"
+   },
+   "expected": "draw|OK|T3\nassignee|c\nassignee|b\nmarks|-\nthin|false\npool|3|3"
+  },
+  {
+   "name": "HV-DR08",
+   "fn": "draw",
+   "args": {
+    "candidates": [
+     {
+      "account": "a",
+      "sponsor": "S1",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     }
+    ],
+    "n": 2,
+    "state": {
+     "kept": [],
+     "prior": [],
+     "drafted": 0,
+     "now": 10,
+     "falcon_wait": 100
+    },
+    "r": "0123456789abcdef0123456789abcdef"
+   },
+   "expected": "draw|SHORT\nthin|true\npool|1|1"
+  },
+  {
+   "name": "HV-DR09",
+   "fn": "draw",
+   "args": {
+    "candidates": [
+     {
+      "account": "a",
+      "sponsor": "S1",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     }
+    ],
+    "n": 1,
+    "state": {
+     "kept": [],
+     "prior": [],
+     "drafted": 0,
+     "now": 10,
+     "falcon_wait": 100
+    },
+    "r": "0123456789abcdef0123456789abcdef"
+   },
+   "expected": "ERROR:n"
+  },
+  {
+   "name": "HV-DR10",
+   "fn": "draw",
+   "args": {
+    "candidates": [
+     {
+      "account": "a",
+      "sponsor": "S1",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 2,
+      "assigned": 1
+     }
+    ],
+    "n": 2,
+    "state": {
+     "kept": [],
+     "prior": [],
+     "drafted": 0,
+     "now": 10,
+     "falcon_wait": 100
+    },
+    "r": "0123456789abcdef0123456789abcdef"
+   },
+   "expected": "ERROR:candidates"
+  },
+  {
+   "name": "HV-DR11",
+   "fn": "draw",
+   "args": {
+    "candidates": [
+     {
+      "account": "a",
+      "sponsor": "S1",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "a",
+      "sponsor": "S2",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 1,
+      "ontime": 0,
+      "assigned": 0
+     }
+    ],
+    "n": 2,
+    "state": {
+     "kept": [],
+     "prior": [],
+     "drafted": 0,
+     "now": 10,
+     "falcon_wait": 100
+    },
+    "r": "0123456789abcdef0123456789abcdef"
+   },
+   "expected": "ERROR:candidates"
+  },
+  {
+   "name": "HV-DR12",
+   "fn": "draw",
+   "args": {
+    "candidates": [
+     {
+      "account": "a",
+      "sponsor": "S1",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "b",
+      "sponsor": "S2",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 1,
+      "ontime": 0,
+      "assigned": 0
+     }
+    ],
+    "n": 4,
+    "state": {
+     "kept": [],
+     "prior": [],
+     "drafted": 0,
+     "now": 10,
+     "falcon_wait": 100
+    },
+    "r": "0123456789abcdef0123456789abcdef"
+   },
+   "expected": "ERROR:n"
+  },
+  {
+   "name": "HV-DR13",
+   "fn": "draw",
+   "args": {
+    "candidates": [
+     {
+      "account": "a",
+      "sponsor": "S1",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "b",
+      "sponsor": "S2",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 1,
+      "ontime": 0,
+      "assigned": 0
+     }
+    ],
+    "n": 2,
+    "state": {
+     "kept": [
+      "z"
+     ],
+     "prior": [],
+     "drafted": 0,
+     "now": 10,
+     "falcon_wait": 100
+    },
+    "r": "0123456789abcdef0123456789abcdef"
+   },
+   "expected": "ERROR:state"
+  },
+  {
+   "name": "HV-DR14",
+   "fn": "draw",
+   "args": {
+    "candidates": [
+     {
+      "account": "a",
+      "sponsor": "S1",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "b",
+      "sponsor": "S2",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 1,
+      "ontime": 0,
+      "assigned": 0
+     }
+    ],
+    "n": 2,
+    "state": {
+     "kept": [],
+     "prior": [],
+     "drafted": 0,
+     "now": -1,
+     "falcon_wait": 100
+    },
+    "r": "0123456789abcdef0123456789abcdef"
+   },
+   "expected": "ERROR:state"
+  },
+  {
+   "name": "HV-DR15",
+   "fn": "draw",
+   "args": {
+    "candidates": [
+     {
+      "account": "a",
+      "sponsor": "S1",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "b",
+      "sponsor": "S2",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 1,
+      "ontime": 0,
+      "assigned": 0
+     }
+    ],
+    "n": 2,
+    "state": {
+     "kept": [],
+     "prior": [],
+     "drafted": 0,
+     "now": 10,
+     "falcon_wait": 100
+    },
+    "r": "0123456789ABCDEF0123456789ABCDEF"
+   },
+   "expected": "ERROR:r"
+  },
+  {
+   "name": "HV-DR16",
+   "fn": "draw",
+   "args": {
+    "candidates": [
+     {
+      "account": "a",
+      "sponsor": "S1",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "b",
+      "sponsor": "S2",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 1,
+      "ontime": 0,
+      "assigned": 0
+     }
+    ],
+    "n": 2,
+    "state": {
+     "kept": [],
+     "prior": [],
+     "drafted": 0,
+     "now": 10,
+     "falcon_wait": 100
+    },
+    "r": "0123456789abcdef0123456789abcde"
+   },
+   "expected": "ERROR:r"
+  },
+  {
+   "name": "HV-DR17",
+   "fn": "draw",
+   "args": {
+    "candidates": [
+     {
+      "account": "a|1",
+      "sponsor": "S1",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "b\\2",
+      "sponsor": "S2",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 1,
+      "ontime": 0,
+      "assigned": 0
+     }
+    ],
+    "n": 2,
+    "state": {
+     "kept": [],
+     "prior": [],
+     "drafted": 0,
+     "now": 10,
+     "falcon_wait": 100
+    },
+    "r": "0123456789abcdef0123456789abcdef"
+   },
+   "expected": "draw|OK|T3\nassignee|a\\|1\nassignee|b\\\\2\nmarks|SAME-VENDOR,SAME-MODEL\nthin|false\npool|2|2"
+  },
+  {
+   "name": "HV-DH01",
+   "fn": "draw",
+   "args": {
+    "candidates": [
+     {
+      "account": "a",
+      "sponsor": "S1",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "b",
+      "sponsor": "S2",
+      "family": "F2",
+      "snapshot": "M2",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "c",
+      "sponsor": "S3",
+      "family": "F3",
+      "snapshot": "M3",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     }
+    ],
+    "n": 2,
+    "state": {
+     "kept": [],
+     "prior": [],
+     "drafted": 0,
+     "now": 10,
+     "falcon_wait": 100
+    },
+    "r": "0123456789abcdef0123456789abcdef"
+   },
+   "expected": "draw|OK|T3\nassignee|c\nassignee|a\nmarks|-\nthin|false\npool|3|3"
+  },
+  {
+   "name": "HV-DH02",
+   "fn": "draw",
+   "args": {
+    "candidates": [
+     {
+      "account": "a",
+      "sponsor": "S1",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "b",
+      "sponsor": "S2",
+      "family": "F2",
+      "snapshot": "M2",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "c",
+      "sponsor": "S3",
+      "family": "F3",
+      "snapshot": "M3",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     }
+    ],
+    "n": 2,
+    "state": {
+     "kept": [],
+     "prior": [],
+     "drafted": 0,
+     "now": 10,
+     "falcon_wait": 100
+    },
+    "r": "ffffffffffffffffffffffffffffffff"
+   },
+   "expected": "draw|OK|T3\nassignee|b\nassignee|a\nmarks|-\nthin|false\npool|3|3"
+  },
+  {
+   "name": "HV-DH03",
+   "fn": "draw",
+   "args": {
+    "candidates": [
+     {
+      "account": "a",
+      "sponsor": "S1",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "b",
+      "sponsor": "S2",
+      "family": "F2",
+      "snapshot": "M2",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "c",
+      "sponsor": "S3",
+      "family": "F3",
+      "snapshot": "M3",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     }
+    ],
+    "n": 2,
+    "state": {
+     "kept": [],
+     "prior": [],
+     "drafted": 0,
+     "now": 10,
+     "falcon_wait": 100
+    },
+    "r": "00000000000000000000000000000000"
+   },
+   "expected": "draw|OK|T3\nassignee|a\nassignee|b\nmarks|-\nthin|false\npool|3|3"
+  },
+  {
+   "name": "HV-DH04",
+   "fn": "draw",
+   "args": {
+    "candidates": [
+     {
+      "account": "a",
+      "sponsor": "S1",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 1,
+      "ontime": 1,
+      "assigned": 3
+     },
+     {
+      "account": "b",
+      "sponsor": "S2",
+      "family": "F2",
+      "snapshot": "M2",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 1,
+      "ontime": 2,
+      "assigned": 6
+     },
+     {
+      "account": "c",
+      "sponsor": "S3",
+      "family": "F3",
+      "snapshot": "M3",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 1,
+      "ontime": 3,
+      "assigned": 9
+     }
+    ],
+    "n": 2,
+    "state": {
+     "kept": [],
+     "prior": [],
+     "drafted": 0,
+     "now": 10,
+     "falcon_wait": 100
+    },
+    "r": "0123456789abcdef0123456789abcdef"
+   },
+   "expected": "draw|OK|T3\nassignee|c\nassignee|a\nmarks|-\nthin|false\npool|3|3"
+  },
+  {
+   "name": "HV-DH05",
+   "fn": "draw",
+   "args": {
+    "candidates": [
+     {
+      "account": "a",
+      "sponsor": "S1",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 1,
+      "ontime": 1,
+      "assigned": 3
+     },
+     {
+      "account": "b",
+      "sponsor": "S2",
+      "family": "F2",
+      "snapshot": "M2",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 1,
+      "ontime": 2,
+      "assigned": 6
+     },
+     {
+      "account": "c",
+      "sponsor": "S3",
+      "family": "F3",
+      "snapshot": "M3",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 1,
+      "ontime": 3,
+      "assigned": 9
+     }
+    ],
+    "n": 2,
+    "state": {
+     "kept": [],
+     "prior": [],
+     "drafted": 0,
+     "now": 10,
+     "falcon_wait": 100
+    },
+    "r": "ffffffffffffffffffffffffffffffff"
+   },
+   "expected": "draw|OK|T3\nassignee|b\nassignee|a\nmarks|-\nthin|false\npool|3|3"
+  },
+  {
+   "name": "HV-DH06",
+   "fn": "draw",
+   "args": {
+    "candidates": [
+     {
+      "account": "a",
+      "sponsor": "S1",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "b",
+      "sponsor": "S1",
+      "family": "F2",
+      "snapshot": "M2",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "c",
+      "sponsor": "S2",
+      "family": "F3",
+      "snapshot": "M3",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     }
+    ],
+    "n": 2,
+    "state": {
+     "kept": [],
+     "prior": [],
+     "drafted": 0,
+     "now": 10,
+     "falcon_wait": 100
+    },
+    "r": "0123456789abcdef0123456789abcdef"
+   },
+   "expected": "draw|OK|T3\nassignee|c\nassignee|a\nmarks|-\nthin|false\npool|3|2"
+  },
+  {
+   "name": "HV-DH07",
+   "fn": "draw",
+   "args": {
+    "candidates": [
+     {
+      "account": "a",
+      "sponsor": "S1",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "b",
+      "sponsor": "S1",
+      "family": "F2",
+      "snapshot": "M2",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "c",
+      "sponsor": "S2",
+      "family": "F3",
+      "snapshot": "M3",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     }
+    ],
+    "n": 2,
+    "state": {
+     "kept": [],
+     "prior": [],
+     "drafted": 0,
+     "now": 10,
+     "falcon_wait": 100
+    },
+    "r": "00000000000000000000000000000000"
+   },
+   "expected": "draw|OK|T3\nassignee|a\nassignee|c\nmarks|-\nthin|false\npool|3|2"
+  },
+  {
+   "name": "HV-DH08",
+   "fn": "draw",
+   "args": {
+    "candidates": [
+     {
+      "account": "a",
+      "sponsor": "S1",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": true,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "b",
+      "sponsor": "S2",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": true,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "c",
+      "sponsor": "S3",
+      "family": "F2",
+      "snapshot": "M1",
+      "tier": true,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "d",
+      "sponsor": "S4",
+      "family": "F2",
+      "snapshot": "M2",
+      "tier": true,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "e",
+      "sponsor": "S5",
+      "family": "F3",
+      "snapshot": "M3",
+      "tier": true,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     }
+    ],
+    "n": 3,
+    "state": {
+     "kept": [],
+     "prior": [],
+     "drafted": 0,
+     "now": 10,
+     "falcon_wait": 100
+    },
+    "r": "0123456789abcdef0123456789abcdef"
+   },
+   "expected": "draw|OK|T1\nassignee|e\nassignee|a\nassignee|d\nmarks|-\nthin|false\npool|5|5"
+  },
+  {
+   "name": "HV-DH09",
+   "fn": "draw",
+   "args": {
+    "candidates": [
+     {
+      "account": "a",
+      "sponsor": "S1",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": true,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "b",
+      "sponsor": "S2",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": true,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "c",
+      "sponsor": "S3",
+      "family": "F2",
+      "snapshot": "M1",
+      "tier": true,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "d",
+      "sponsor": "S4",
+      "family": "F2",
+      "snapshot": "M2",
+      "tier": true,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "e",
+      "sponsor": "S5",
+      "family": "F3",
+      "snapshot": "M3",
+      "tier": true,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     }
+    ],
+    "n": 3,
+    "state": {
+     "kept": [],
+     "prior": [],
+     "drafted": 0,
+     "now": 10,
+     "falcon_wait": 100
+    },
+    "r": "ffffffffffffffffffffffffffffffff"
+   },
+   "expected": "draw|OK|T1\nassignee|b\nassignee|d\nassignee|e\nmarks|-\nthin|false\npool|5|5"
+  },
+  {
+   "name": "HV-DH10",
+   "fn": "draw",
+   "args": {
+    "candidates": [
+     {
+      "account": "k",
+      "sponsor": "S1",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "a",
+      "sponsor": "S2",
+      "family": "F2",
+      "snapshot": "M2",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "b",
+      "sponsor": "S3",
+      "family": "F3",
+      "snapshot": "M3",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "c",
+      "sponsor": "S4",
+      "family": "F4",
+      "snapshot": "M4",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     }
+    ],
+    "n": 1,
+    "state": {
+     "kept": [
+      "k"
+     ],
+     "prior": [],
+     "drafted": 0,
+     "now": 10,
+     "falcon_wait": 100
+    },
+    "r": "0123456789abcdef0123456789abcdef"
+   },
+   "expected": "draw|OK|T3\nassignee|c\nmarks|-\nthin|false\npool|3|3"
+  },
+  {
+   "name": "HV-DH11",
+   "fn": "draw",
+   "args": {
+    "candidates": [
+     {
+      "account": "k",
+      "sponsor": "S1",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "a",
+      "sponsor": "S2",
+      "family": "F2",
+      "snapshot": "M2",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "b",
+      "sponsor": "S3",
+      "family": "F3",
+      "snapshot": "M3",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "c",
+      "sponsor": "S4",
+      "family": "F4",
+      "snapshot": "M4",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     }
+    ],
+    "n": 2,
+    "state": {
+     "kept": [
+      "k"
+     ],
+     "prior": [
+      "b"
+     ],
+     "drafted": 0,
+     "now": 10,
+     "falcon_wait": 100
+    },
+    "r": "00000000000000000000000000000000"
+   },
+   "expected": "draw|OK|T3\nassignee|a\nassignee|c\nmarks|-\nthin|false\npool|2|2"
+  },
+  {
+   "name": "HV-DH12",
+   "fn": "draw",
+   "args": {
+    "candidates": [
+     {
+      "account": "a",
+      "sponsor": "S1",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "b",
+      "sponsor": "S2",
+      "family": "F2",
+      "snapshot": "M2",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 1,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "c",
+      "sponsor": "S3",
+      "family": "F3",
+      "snapshot": "M3",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 1,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "d",
+      "sponsor": "S4",
+      "family": "F4",
+      "snapshot": "M4",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 1,
+      "ontime": 0,
+      "assigned": 0
+     }
+    ],
+    "n": 2,
+    "state": {
+     "kept": [],
+     "prior": [],
+     "drafted": 0,
+     "now": 10,
+     "falcon_wait": 100
+    },
+    "r": "0123456789abcdef0123456789abcdef"
+   },
+   "expected": "draw|OK|T3\nassignee|a\nassignee|c\nmarks|-\nthin|false\npool|4|4"
+  },
+  {
+   "name": "HV-DH13",
+   "fn": "draw",
+   "args": {
+    "candidates": [
+     {
+      "account": "x|1",
+      "sponsor": "S1",
+      "family": "F1",
+      "snapshot": "M1",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "x\\2",
+      "sponsor": "S2",
+      "family": "F2",
+      "snapshot": "M2",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     },
+     {
+      "account": "x3",
+      "sponsor": "S3",
+      "family": "F3",
+      "snapshot": "M3",
+      "tier": false,
+      "good_standing": true,
+      "sandbox": false,
+      "over_cap": false,
+      "window": 0,
+      "ontime": 0,
+      "assigned": 0
+     }
+    ],
+    "n": 2,
+    "state": {
+     "kept": [],
+     "prior": [],
+     "drafted": 0,
+     "now": 10,
+     "falcon_wait": 100
+    },
+    "r": "ffffffffffffffffffffffffffffffff"
+   },
+   "expected": "draw|OK|T3\nassignee|x3\nassignee|x\\\\2\nmarks|-\nthin|false\npool|3|3"
+  },
+  {
+   "name": "HV-RC01",
+   "fn": "reconcile",
+   "args": {
+    "outputs": [
+     {
+      "account": "a",
+      "status": "RETURNED",
+      "result": {
+       "v": "1.0",
+       "t": [
+        {
+         "k": "x",
+         "w": "HTTP://H/a/../b"
+        }
+       ]
+      }
+     },
+     {
+      "account": "b",
+      "status": "RETURNED",
+      "result": {
+       "v": "1",
+       "t": [
+        {
+         "k": " x ",
+         "w": "http://h/b"
+        }
+       ]
+      }
+     }
+    ],
+    "quotes": [
+     {},
+     {}
+    ],
+    "schema": {
+     "class": "FINDINGS",
+     "narrow": false,
+     "fields": [
+      {
+       "name": "v",
+       "type": "decimal",
+       "class": "MECHANICAL",
+       "quote": true
+      },
+      {
+       "name": "t",
+       "type": "rows",
+       "class": "MECHANICAL",
+       "key": [
+        "k"
+       ],
+       "columns": [
+        {
+         "name": "k",
+         "type": "text",
+         "class": "MECHANICAL"
+        },
+        {
+         "name": "w",
+         "type": "url",
+         "class": "MECHANICAL"
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "expected": "output|0|a|OK|iv=0\noutput|1|b|OK|iv=0\nitem|v|AGREED|1|2\nitem|t[1:x].w|AGREED|http://h/b|2\nsummary|agreed=2|quote=0|majority=0|split=0|unresolved=0|inspection=0|single=0\ndisposition|REPORTED|single=-"
+  },
+  {
+   "name": "HV-RC02",
+   "fn": "reconcile",
+   "args": {
+    "outputs": [
+     {
+      "account": "a",
+      "status": "RETURNED",
+      "result": {
+       "v": "1",
+       "t": []
+      }
+     },
+     {
+      "account": "b",
+      "status": "RETURNED",
+      "result": {
+       "v": "2",
+       "t": []
+      }
+     }
+    ],
+    "quotes": [
+     {
+      "v": "PASS"
+     },
+     {
+      "v": "FAIL"
+     }
+    ],
+    "schema": {
+     "class": "FINDINGS",
+     "narrow": false,
+     "fields": [
+      {
+       "name": "v",
+       "type": "decimal",
+       "class": "MECHANICAL",
+       "quote": true
+      },
+      {
+       "name": "t",
+       "type": "rows",
+       "class": "MECHANICAL",
+       "key": [
+        "k"
+       ],
+       "columns": [
+        {
+         "name": "k",
+         "type": "text",
+         "class": "MECHANICAL"
+        },
+        {
+         "name": "w",
+         "type": "url",
+         "class": "MECHANICAL"
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "expected": "output|0|a|OK|iv=0\noutput|1|b|OK|iv=0\nitem|v|QUOTE|1|2\nvalue|v|0|1|PASS\nvalue|v|1|2|FAIL\nsummary|agreed=0|quote=1|majority=0|split=0|unresolved=0|inspection=0|single=0\ndisposition|REPORTED|single=-"
+  },
+  {
+   "name": "HV-RC03",
+   "fn": "reconcile",
+   "args": {
+    "outputs": [
+     {
+      "account": "a",
+      "status": "RETURNED",
+      "result": {
+       "v": "1",
+       "t": []
+      }
+     },
+     {
+      "account": "b",
+      "status": "RETURNED",
+      "result": {
+       "v": "2",
+       "t": []
+      }
+     },
+     {
+      "account": "c",
+      "status": "RETURNED",
+      "result": {
+       "v": "2",
+       "t": []
+      }
+     }
+    ],
+    "quotes": [
+     {},
+     {},
+     {}
+    ],
+    "schema": {
+     "class": "FINDINGS",
+     "narrow": false,
+     "fields": [
+      {
+       "name": "v",
+       "type": "decimal",
+       "class": "MECHANICAL",
+       "quote": true
+      },
+      {
+       "name": "t",
+       "type": "rows",
+       "class": "MECHANICAL",
+       "key": [
+        "k"
+       ],
+       "columns": [
+        {
+         "name": "k",
+         "type": "text",
+         "class": "MECHANICAL"
+        },
+        {
+         "name": "w",
+         "type": "url",
+         "class": "MECHANICAL"
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "expected": "output|0|a|OK|iv=0\noutput|1|b|OK|iv=0\noutput|2|c|OK|iv=0\nitem|v|MAJORITY|2|2/3\nvalue|v|0|1|UNKNOWN\nvalue|v|1|2|UNKNOWN\nvalue|v|2|2|UNKNOWN\nsummary|agreed=0|quote=0|majority=1|split=0|unresolved=0|inspection=0|single=0\ndisposition|REPORTED|single=-"
+  },
+  {
+   "name": "HV-RC04",
+   "fn": "reconcile",
+   "args": {
+    "outputs": [
+     {
+      "account": "a",
+      "status": "RETURNED",
+      "result": {
+       "v": "1",
+       "t": []
+      }
+     },
+     {
+      "account": "b",
+      "status": "RETURNED",
+      "result": {
+       "v": "2",
+       "t": []
+      }
+     },
+     {
+      "account": "c",
+      "status": "RETURNED",
+      "result": {
+       "v": "3",
+       "t": []
+      }
+     }
+    ],
+    "quotes": [
+     {},
+     {},
+     {}
+    ],
+    "schema": {
+     "class": "FINDINGS",
+     "narrow": false,
+     "fields": [
+      {
+       "name": "v",
+       "type": "decimal",
+       "class": "MECHANICAL",
+       "quote": true
+      },
+      {
+       "name": "t",
+       "type": "rows",
+       "class": "MECHANICAL",
+       "key": [
+        "k"
+       ],
+       "columns": [
+        {
+         "name": "k",
+         "type": "text",
+         "class": "MECHANICAL"
+        },
+        {
+         "name": "w",
+         "type": "url",
+         "class": "MECHANICAL"
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "expected": "output|0|a|OK|iv=0\noutput|1|b|OK|iv=0\noutput|2|c|OK|iv=0\nitem|v|UNRESOLVED|-|3\nvalue|v|0|1|UNKNOWN\nvalue|v|1|2|UNKNOWN\nvalue|v|2|3|UNKNOWN\nsummary|agreed=0|quote=0|majority=0|split=0|unresolved=1|inspection=0|single=0\ndisposition|REPORTED|single=-"
+  },
+  {
+   "name": "HV-RC05",
+   "fn": "reconcile",
+   "args": {
+    "outputs": [
+     {
+      "account": "a",
+      "status": "RETURNED",
+      "result": {
+       "v": "1",
+       "t": [
+        {
+         "k": "x",
+         "w": "http://h/"
+        }
+       ]
+      }
+     },
+     {
+      "account": "b",
+      "status": "RETURNED",
+      "result": {
+       "v": "1",
+       "t": []
+      }
+     }
+    ],
+    "quotes": [
+     {},
+     {}
+    ],
+    "schema": {
+     "class": "FINDINGS",
+     "narrow": false,
+     "fields": [
+      {
+       "name": "v",
+       "type": "decimal",
+       "class": "MECHANICAL",
+       "quote": true
+      },
+      {
+       "name": "t",
+       "type": "rows",
+       "class": "MECHANICAL",
+       "key": [
+        "k"
+       ],
+       "columns": [
+        {
+         "name": "k",
+         "type": "text",
+         "class": "MECHANICAL"
+        },
+        {
+         "name": "w",
+         "type": "url",
+         "class": "MECHANICAL"
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "expected": "output|0|a|OK|iv=0\noutput|1|b|OK|iv=0\nitem|v|AGREED|1|2\nitem|t[1:x]|SINGLE|-|0\nsummary|agreed=1|quote=0|majority=0|split=0|unresolved=0|inspection=0|single=1\ndisposition|NARROW|single=narrow"
+  },
+  {
+   "name": "HV-RC06",
+   "fn": "reconcile",
+   "args": {
+    "outputs": [
+     {
+      "account": "a",
+      "status": "RETURNED",
+      "result": {
+       "v": "1",
+       "t": [
+        {
+         "k": "x",
+         "w": "http://h/"
+        }
+       ]
+      }
+     },
+     {
+      "account": "b",
+      "status": "RETURNED",
+      "result": {
+       "v": "1",
+       "t": []
+      }
+     }
+    ],
+    "quotes": [
+     {},
+     {}
+    ],
+    "schema": {
+     "class": "FINDINGS",
+     "narrow": true,
+     "fields": [
+      {
+       "name": "v",
+       "type": "decimal",
+       "class": "MECHANICAL",
+       "quote": true
+      },
+      {
+       "name": "t",
+       "type": "rows",
+       "class": "MECHANICAL",
+       "key": [
+        "k"
+       ],
+       "columns": [
+        {
+         "name": "k",
+         "type": "text",
+         "class": "MECHANICAL"
+        },
+        {
+         "name": "w",
+         "type": "url",
+         "class": "MECHANICAL"
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "expected": "output|0|a|OK|iv=0\noutput|1|b|OK|iv=0\nitem|v|AGREED|1|2\nitem|t[1:x]|SINGLE|-|0\nsummary|agreed=1|quote=0|majority=0|split=0|unresolved=0|inspection=0|single=1\ndisposition|REPORTED|single=mark"
+  },
+  {
+   "name": "HV-RC07",
+   "fn": "reconcile",
+   "args": {
+    "outputs": [
+     {
+      "account": "a",
+      "status": "RETURNED",
+      "result": {
+       "v": "1",
+       "t": [
+        {
+         "k": "x",
+         "w": "http://h/"
+        }
+       ]
+      }
+     },
+     {
+      "account": "b",
+      "status": "RETURNED",
+      "result": {
+       "v": "1",
+       "t": []
+      }
+     }
+    ],
+    "quotes": [
+     {},
+     {}
+    ],
+    "schema": {
+     "class": "FINDINGS",
+     "narrow": false,
+     "fields": [
+      {
+       "name": "v",
+       "type": "decimal",
+       "class": "MECHANICAL",
+       "quote": true
+      },
+      {
+       "name": "t",
+       "type": "rows",
+       "class": "MECHANICAL",
+       "key": [
+        "k"
+       ],
+       "columns": [
+        {
+         "name": "k",
+         "type": "text",
+         "class": "MECHANICAL"
+        },
+        {
+         "name": "w",
+         "type": "url",
+         "class": "MECHANICAL"
+        }
+       ]
+      }
+     ],
+     "confidential": true
+    }
+   },
+   "expected": "output|0|a|OK|iv=0\noutput|1|b|OK|iv=0\nitem|v|AGREED|1|2\nitem|t[1:x]|SINGLE|-|0\nsummary|agreed=1|quote=0|majority=0|split=0|unresolved=0|inspection=0|single=1\ndisposition|PRIVATE REPORT|single=mark"
+  },
+  {
+   "name": "HV-RC08",
+   "fn": "reconcile",
+   "args": {
+    "outputs": [
+     {
+      "account": "a",
+      "status": "RETURNED",
+      "result": {
+       "v": "1",
+       "t": [
+        {
+         "k": "x",
+         "w": "http://h/"
+        },
+        {
+         "k": "x",
+         "w": "http://g/"
+        }
+       ]
+      }
+     },
+     {
+      "account": "b",
+      "status": "RETURNED",
+      "result": null
+     },
+     {
+      "account": "c",
+      "status": "OVERDUE",
+      "result": null
+     }
+    ],
+    "quotes": [
+     {},
+     {},
+     {}
+    ],
+    "schema": {
+     "class": "FINDINGS",
+     "narrow": false,
+     "fields": [
+      {
+       "name": "v",
+       "type": "decimal",
+       "class": "MECHANICAL",
+       "quote": true
+      },
+      {
+       "name": "t",
+       "type": "rows",
+       "class": "MECHANICAL",
+       "key": [
+        "k"
+       ],
+       "columns": [
+        {
+         "name": "k",
+         "type": "text",
+         "class": "MECHANICAL"
+        },
+        {
+         "name": "w",
+         "type": "url",
+         "class": "MECHANICAL"
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "expected": "output|0|a|MALFORMED|t\noutput|1|b|MALFORMED|refusal\noutput|2|c|OVERDUE\ndisposition|REISSUE|0,1,2"
+  },
+  {
+   "name": "HV-RC09",
+   "fn": "reconcile",
+   "args": {
+    "outputs": [
+     {
+      "account": "a",
+      "status": "RETURNED",
+      "result": {
+       "v": "1",
+       "t": [],
+       "IV": [
+        "n"
+       ]
+      }
+     },
+     {
+      "account": "b",
+      "status": "RETURNED",
+      "result": {
+       "v": "1",
+       "t": [],
+       "IV": [
+        1
+       ]
+      }
+     },
+     {
+      "account": "c",
+      "status": "RETURNED",
+      "result": {
+       "v": "1"
+      }
+     }
+    ],
+    "quotes": [
+     {},
+     {},
+     {}
+    ],
+    "schema": {
+     "class": "FINDINGS",
+     "narrow": false,
+     "fields": [
+      {
+       "name": "v",
+       "type": "decimal",
+       "class": "MECHANICAL",
+       "quote": true
+      },
+      {
+       "name": "t",
+       "type": "rows",
+       "class": "MECHANICAL",
+       "key": [
+        "k"
+       ],
+       "columns": [
+        {
+         "name": "k",
+         "type": "text",
+         "class": "MECHANICAL"
+        },
+        {
+         "name": "w",
+         "type": "url",
+         "class": "MECHANICAL"
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "expected": "output|0|a|OK|iv=1\noutput|1|b|MALFORMED|IV\noutput|2|c|MALFORMED|shape\ndisposition|REISSUE|1,2"
+  },
+  {
+   "name": "HV-RC10",
+   "fn": "reconcile",
+   "args": {
+    "outputs": [
+     {
+      "account": "a",
+      "status": "RETURNED",
+      "result": {
+       "v": "1",
+       "t": []
+      }
+     },
+     {
+      "account": "a",
+      "status": "RETURNED",
+      "result": {
+       "v": "1",
+       "t": []
+      }
+     }
+    ],
+    "quotes": [
+     {},
+     {}
+    ],
+    "schema": {
+     "class": "FINDINGS",
+     "narrow": false,
+     "fields": [
+      {
+       "name": "v",
+       "type": "decimal",
+       "class": "MECHANICAL",
+       "quote": true
+      },
+      {
+       "name": "t",
+       "type": "rows",
+       "class": "MECHANICAL",
+       "key": [
+        "k"
+       ],
+       "columns": [
+        {
+         "name": "k",
+         "type": "text",
+         "class": "MECHANICAL"
+        },
+        {
+         "name": "w",
+         "type": "url",
+         "class": "MECHANICAL"
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "expected": "ERROR:outputs"
+  },
+  {
+   "name": "HV-RC11",
+   "fn": "reconcile",
+   "args": {
+    "outputs": [
+     {
+      "account": "a",
+      "status": "RETURNED",
+      "result": {
+       "v": "1",
+       "t": []
+      }
+     },
+     {
+      "account": "b",
+      "status": "OVERDUE",
+      "result": 5
+     }
+    ],
+    "quotes": [
+     {},
+     {}
+    ],
+    "schema": {
+     "class": "FINDINGS",
+     "narrow": false,
+     "fields": [
+      {
+       "name": "v",
+       "type": "decimal",
+       "class": "MECHANICAL",
+       "quote": true
+      },
+      {
+       "name": "t",
+       "type": "rows",
+       "class": "MECHANICAL",
+       "key": [
+        "k"
+       ],
+       "columns": [
+        {
+         "name": "k",
+         "type": "text",
+         "class": "MECHANICAL"
+        },
+        {
+         "name": "w",
+         "type": "url",
+         "class": "MECHANICAL"
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "expected": "ERROR:outputs"
+  },
+  {
+   "name": "HV-RC12",
+   "fn": "reconcile",
+   "args": {
+    "outputs": [
+     {
+      "account": "a",
+      "status": "RETURNED",
+      "result": {
+       "v": "1",
+       "t": []
+      }
+     },
+     {
+      "account": "b",
+      "status": "RETURNED",
+      "result": {
+       "v": "1",
+       "t": []
+      }
+     }
+    ],
+    "quotes": [
+     {}
+    ],
+    "schema": {
+     "class": "FINDINGS",
+     "narrow": false,
+     "fields": [
+      {
+       "name": "v",
+       "type": "decimal",
+       "class": "MECHANICAL",
+       "quote": true
+      },
+      {
+       "name": "t",
+       "type": "rows",
+       "class": "MECHANICAL",
+       "key": [
+        "k"
+       ],
+       "columns": [
+        {
+         "name": "k",
+         "type": "text",
+         "class": "MECHANICAL"
+        },
+        {
+         "name": "w",
+         "type": "url",
+         "class": "MECHANICAL"
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "expected": "ERROR:quotes"
+  },
+  {
+   "name": "HV-RC13",
+   "fn": "reconcile",
+   "args": {
+    "outputs": [
+     {
+      "account": "a",
+      "status": "RETURNED",
+      "result": {
+       "v": "1",
+       "t": []
+      }
+     },
+     {
+      "account": "b",
+      "status": "RETURNED",
+      "result": {
+       "v": "1",
+       "t": []
+      }
+     }
+    ],
+    "quotes": [
+     {},
+     {
+      "v": "MAYBE"
+     }
+    ],
+    "schema": {
+     "class": "FINDINGS",
+     "narrow": false,
+     "fields": [
+      {
+       "name": "v",
+       "type": "decimal",
+       "class": "MECHANICAL",
+       "quote": true
+      },
+      {
+       "name": "t",
+       "type": "rows",
+       "class": "MECHANICAL",
+       "key": [
+        "k"
+       ],
+       "columns": [
+        {
+         "name": "k",
+         "type": "text",
+         "class": "MECHANICAL"
+        },
+        {
+         "name": "w",
+         "type": "url",
+         "class": "MECHANICAL"
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "expected": "ERROR:quotes"
+  },
+  {
+   "name": "HV-RC14",
+   "fn": "reconcile",
+   "args": {
+    "outputs": [
+     {
+      "account": "a",
+      "status": "RETURNED",
+      "result": {
+       "v": "1",
+       "t": []
+      }
+     },
+     {
+      "account": "b",
+      "status": "RETURNED",
+      "result": {
+       "v": "1",
+       "t": []
+      }
+     }
+    ],
+    "quotes": [
+     {},
+     {}
+    ],
+    "schema": {
+     "class": "PATCH",
+     "narrow": false,
+     "fields": [
+      {
+       "name": "v",
+       "type": "decimal",
+       "class": "MECHANICAL",
+       "quote": true
+      },
+      {
+       "name": "t",
+       "type": "rows",
+       "class": "MECHANICAL",
+       "key": [
+        "k"
+       ],
+       "columns": [
+        {
+         "name": "k",
+         "type": "text",
+         "class": "MECHANICAL"
+        },
+        {
+         "name": "w",
+         "type": "url",
+         "class": "MECHANICAL"
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "expected": "output|0|a|OK|iv=0\noutput|1|b|OK|iv=0\nitem|v|AGREED|1|2\nsummary|agreed=1|quote=0|majority=0|split=0|unresolved=0|inspection=0|single=0\ndisposition|AWAITING APPROVAL|single=-"
+  },
+  {
+   "name": "HV-RC15",
+   "fn": "reconcile",
+   "args": {
+    "outputs": [
+     {
+      "account": "a",
+      "status": "RETURNED",
+      "result": {
+       "v": "1",
+       "t": []
+      }
+     },
+     {
+      "account": "b",
+      "status": "RETURNED",
+      "result": {
+       "v": "1",
+       "t": []
+      }
+     }
+    ],
+    "quotes": [
+     {},
+     {}
+    ],
+    "schema": {
+     "class": "FINDINGS",
+     "narrow": false,
+     "fields": []
+    }
+   },
+   "expected": "ERROR:schema"
+  },
+  {
+   "name": "HV-RC16",
+   "fn": "reconcile",
+   "args": {
+    "outputs": [
+     {
+      "account": "a|",
+      "status": "RETURNED",
+      "result": {
+       "v": "1",
+       "t": []
+      }
+     },
+     {
+      "account": "b",
+      "status": "RETURNED",
+      "result": {
+       "v": "1",
+       "t": []
+      }
+     }
+    ],
+    "quotes": [
+     {},
+     {}
+    ],
+    "schema": {
+     "class": "SURVEY",
+     "narrow": false,
+     "fields": [
+      {
+       "name": "v",
+       "type": "decimal",
+       "class": "MECHANICAL",
+       "quote": true
+      },
+      {
+       "name": "t",
+       "type": "rows",
+       "class": "MECHANICAL",
+       "key": [
+        "k"
+       ],
+       "columns": [
+        {
+         "name": "k",
+         "type": "text",
+         "class": "MECHANICAL"
+        },
+        {
+         "name": "w",
+         "type": "url",
+         "class": "MECHANICAL"
+        }
+       ]
+      }
+     ],
+     "confidential": false
+    }
+   },
+   "expected": "output|0|a\\||OK|iv=0\noutput|1|b|OK|iv=0\nitem|v|AGREED|1|2\nsummary|agreed=1|quote=0|majority=0|split=0|unresolved=0|inspection=0|single=0\ndisposition|AWAITING APPROVAL|single=-"
+  },
+  {
+   "name": "HV-FS01",
+   "fn": "schema_canon",
+   "args": {
+    "schema": {
+     "class": "FINDINGS",
+     "narrow": false,
+     "fields": [
+      {
+       "name": "v",
+       "type": "decimal",
+       "class": "MECHANICAL",
+       "quote": true
+      },
+      {
+       "name": "t",
+       "type": "rows",
+       "class": "MECHANICAL",
+       "key": [
+        "k"
+       ],
+       "columns": [
+        {
+         "name": "k",
+         "type": "text",
+         "class": "MECHANICAL"
+        },
+        {
+         "name": "w",
+         "type": "url",
+         "class": "MECHANICAL"
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "expected": "canon|{\"class\":\"FINDINGS\",\"fields\":[{\"class\":\"MECHANICAL\",\"name\":\"v\",\"quote\":true,\"type\":\"decimal\"},{\"class\":\"MECHANICAL\",\"columns\":[{\"class\":\"MECHANICAL\",\"name\":\"k\",\"type\":\"text\"},{\"class\":\"MECHANICAL\",\"name\":\"w\",\"type\":\"url\"}],\"key\":[\"k\"],\"name\":\"t\",\"type\":\"rows\"}]}"
+  },
+  {
+   "name": "HV-FD01",
+   "fn": "schema_digest",
+   "args": {
+    "schema": {
+     "class": "FINDINGS",
+     "narrow": false,
+     "fields": [
+      {
+       "name": "v",
+       "type": "decimal",
+       "class": "MECHANICAL",
+       "quote": true
+      },
+      {
+       "name": "t",
+       "type": "rows",
+       "class": "MECHANICAL",
+       "key": [
+        "k"
+       ],
+       "columns": [
+        {
+         "name": "k",
+         "type": "text",
+         "class": "MECHANICAL"
+        },
+        {
+         "name": "w",
+         "type": "url",
+         "class": "MECHANICAL"
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "expected": "digest|7647349ab9232d9f1406b0902c94fbe2680cfcd7cc5aedff7118cfb2835ebd75"
+  },
+  {
+   "name": "HV-FS02",
+   "fn": "schema_canon",
+   "args": {
+    "schema": {
+     "class": "FINDINGS",
+     "narrow": true,
+     "fields": [
+      {
+       "name": "v",
+       "type": "decimal",
+       "class": "MECHANICAL",
+       "quote": true
+      },
+      {
+       "name": "t",
+       "type": "rows",
+       "class": "MECHANICAL",
+       "key": [
+        "k"
+       ],
+       "columns": [
+        {
+         "name": "k",
+         "type": "text",
+         "class": "MECHANICAL"
+        },
+        {
+         "name": "w",
+         "type": "url",
+         "class": "MECHANICAL"
+        }
+       ]
+      }
+     ],
+     "confidential": false
+    }
+   },
+   "expected": "canon|{\"class\":\"FINDINGS\",\"fields\":[{\"class\":\"MECHANICAL\",\"name\":\"v\",\"quote\":true,\"type\":\"decimal\"},{\"class\":\"MECHANICAL\",\"columns\":[{\"class\":\"MECHANICAL\",\"name\":\"k\",\"type\":\"text\"},{\"class\":\"MECHANICAL\",\"name\":\"w\",\"type\":\"url\"}],\"key\":[\"k\"],\"name\":\"t\",\"type\":\"rows\"}]}"
+  },
+  {
+   "name": "HV-FD02",
+   "fn": "schema_digest",
+   "args": {
+    "schema": {
+     "class": "FINDINGS",
+     "narrow": true,
+     "fields": [
+      {
+       "name": "v",
+       "type": "decimal",
+       "class": "MECHANICAL",
+       "quote": true
+      },
+      {
+       "name": "t",
+       "type": "rows",
+       "class": "MECHANICAL",
+       "key": [
+        "k"
+       ],
+       "columns": [
+        {
+         "name": "k",
+         "type": "text",
+         "class": "MECHANICAL"
+        },
+        {
+         "name": "w",
+         "type": "url",
+         "class": "MECHANICAL"
+        }
+       ]
+      }
+     ],
+     "confidential": false
+    }
+   },
+   "expected": "digest|7647349ab9232d9f1406b0902c94fbe2680cfcd7cc5aedff7118cfb2835ebd75"
+  },
+  {
+   "name": "HV-FS03",
+   "fn": "schema_canon",
+   "args": {
+    "schema": {
+     "class": "FINDINGS",
+     "narrow": false,
+     "fields": [
+      {
+       "name": "v",
+       "type": "decimal",
+       "class": "MECHANICAL",
+       "quote": true
+      },
+      {
+       "name": "t",
+       "type": "rows",
+       "class": "MECHANICAL",
+       "key": [
+        "k"
+       ],
+       "columns": [
+        {
+         "name": "k",
+         "type": "text",
+         "class": "MECHANICAL"
+        },
+        {
+         "name": "w",
+         "type": "url",
+         "class": "MECHANICAL"
+        }
+       ]
+      }
+     ],
+     "confidential": true
+    }
+   },
+   "expected": "canon|{\"class\":\"FINDINGS\",\"confidential\":true,\"fields\":[{\"class\":\"MECHANICAL\",\"name\":\"v\",\"quote\":true,\"type\":\"decimal\"},{\"class\":\"MECHANICAL\",\"columns\":[{\"class\":\"MECHANICAL\",\"name\":\"k\",\"type\":\"text\"},{\"class\":\"MECHANICAL\",\"name\":\"w\",\"type\":\"url\"}],\"key\":[\"k\"],\"name\":\"t\",\"type\":\"rows\"}]}"
+  },
+  {
+   "name": "HV-FD03",
+   "fn": "schema_digest",
+   "args": {
+    "schema": {
+     "class": "FINDINGS",
+     "narrow": false,
+     "fields": [
+      {
+       "name": "v",
+       "type": "decimal",
+       "class": "MECHANICAL",
+       "quote": true
+      },
+      {
+       "name": "t",
+       "type": "rows",
+       "class": "MECHANICAL",
+       "key": [
+        "k"
+       ],
+       "columns": [
+        {
+         "name": "k",
+         "type": "text",
+         "class": "MECHANICAL"
+        },
+        {
+         "name": "w",
+         "type": "url",
+         "class": "MECHANICAL"
+        }
+       ]
+      }
+     ],
+     "confidential": true
+    }
+   },
+   "expected": "digest|f8de1fa419a70e95f7afe4cffbe23a35dc0ac35a14b7962cf607aaa3773e5991"
+  },
+  {
+   "name": "HV-FS04",
+   "fn": "schema_canon",
+   "args": {
+    "schema": {
+     "class": "FINDINGS",
+     "narrow": false,
+     "fields": [
+      {
+       "name": "e",
+       "type": "enum",
+       "class": "MECHANICAL",
+       "values": [
+        "a\"b",
+        "c\\d",
+        "e\u0001f"
+       ]
+      }
+     ]
+    }
+   },
+   "expected": "canon|{\"class\":\"FINDINGS\",\"fields\":[{\"class\":\"MECHANICAL\",\"name\":\"e\",\"type\":\"enum\",\"values\":[\"a\\\"b\",\"c\\\\d\",\"e\\u0001f\"]}]}"
+  },
+  {
+   "name": "HV-FD04",
+   "fn": "schema_digest",
+   "args": {
+    "schema": {
+     "class": "FINDINGS",
+     "narrow": false,
+     "fields": [
+      {
+       "name": "e",
+       "type": "enum",
+       "class": "MECHANICAL",
+       "values": [
+        "a\"b",
+        "c\\d",
+        "e\u0001f"
+       ]
+      }
+     ]
+    }
+   },
+   "expected": "digest|a35d888a6a5dd9093331df1cf1a40c8eabf3e8ed0fb3d6f6187e600f6ecceade"
+  },
+  {
+   "name": "HV-FS05",
+   "fn": "schema_canon",
+   "args": {
+    "schema": {
+     "class": "FINDINGS",
+     "narrow": false,
+     "fields": [
+      {
+       "name": "e",
+       "type": "enum",
+       "class": "MECHANICAL",
+       "values": [
+        "a\rb"
+       ]
+      }
+     ]
+    }
+   },
+   "expected": "ERROR:schema"
+  },
+  {
+   "name": "HV-FD05",
+   "fn": "schema_digest",
+   "args": {
+    "schema": {
+     "class": "FINDINGS",
+     "narrow": false,
+     "fields": [
+      {
+       "name": "e",
+       "type": "enum",
+       "class": "MECHANICAL",
+       "values": [
+        "a\rb"
+       ]
+      }
+     ]
+    }
+   },
+   "expected": "ERROR:schema"
+  },
+  {
+   "name": "HV-FS06",
+   "fn": "schema_canon",
+   "args": {
+    "schema": {
+     "class": "FINDINGS",
+     "narrow": 1,
+     "fields": [
+      {
+       "name": "v",
+       "type": "decimal",
+       "class": "MECHANICAL",
+       "quote": true
+      },
+      {
+       "name": "t",
+       "type": "rows",
+       "class": "MECHANICAL",
+       "key": [
+        "k"
+       ],
+       "columns": [
+        {
+         "name": "k",
+         "type": "text",
+         "class": "MECHANICAL"
+        },
+        {
+         "name": "w",
+         "type": "url",
+         "class": "MECHANICAL"
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "expected": "ERROR:schema"
+  },
+  {
+   "name": "HV-FD06",
+   "fn": "schema_digest",
+   "args": {
+    "schema": {
+     "class": "FINDINGS",
+     "narrow": 1,
+     "fields": [
+      {
+       "name": "v",
+       "type": "decimal",
+       "class": "MECHANICAL",
+       "quote": true
+      },
+      {
+       "name": "t",
+       "type": "rows",
+       "class": "MECHANICAL",
+       "key": [
+        "k"
+       ],
+       "columns": [
+        {
+         "name": "k",
+         "type": "text",
+         "class": "MECHANICAL"
+        },
+        {
+         "name": "w",
+         "type": "url",
+         "class": "MECHANICAL"
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "expected": "ERROR:schema"
+  }
+ ]
+}

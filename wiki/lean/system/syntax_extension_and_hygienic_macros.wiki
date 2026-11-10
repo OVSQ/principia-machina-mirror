@@ -1,0 +1,282 @@
+{{DISPLAYTITLE:Syntax extension and hygienic macros}}
+{{Plebeian|Lean theorem prover/Explainers/Programs and proofs in one language}}
+{{Lean theorem prover map}}
+
+Lean's grammar is not fixed. A Lean source file can add operators, notations and whole new
+syntactic forms, and say what each one means by rewriting it into syntax Lean already
+understands. The rewriting is done by '''macros''', and Lean's macros are '''hygienic''': a
+name that a macro introduces cannot capture a name the user wrote, and a name the user wrote
+cannot capture one the macro relies on. This page shows the commands, from the simplest
+(<code>infixl</code>) to the most general (<code>macro_rules</code>), and what hygiene
+prevents, with examples compiled by Lean 4.34.1. The design is set out by Ullrich and de
+Moura.<ref name="bn">Sebastian Ullrich and Leonardo de Moura, "Beyond Notations: Hygienic Macro Expansion for Theorem Proving Languages", ''Logical Methods in Computer Science'' 18(2), 2022, article 1, 21 pp. Extended version of the paper in ''Automated Reasoning: IJCAR 2020'', Lecture Notes in Computer Science 12167, Springer, 2020, pp. 167–182 (doi:10.1007/978-3-030-51054-1_10). doi:[https://doi.org/10.46298/lmcs-18(2:1)2022 10.46298/lmcs-18(2:1)2022]; preprint [https://arxiv.org/abs/2001.10490 arXiv:2001.10490].</ref>
+
+== Where syntax extension sits ==
+
+Lean reads a source file one command at a time. Each command is parsed, then
+[[Lean theorem prover/System/Elaboration|elaborated]] into terms of the type theory, and only
+the elaborated result is passed to the Lean kernel. Macro expansion happens after parsing, as
+part of elaboration: before a piece of syntax is elaborated, any macro at its outermost layer
+is expanded.<ref name="rm-macros" /> A macro takes a piece of syntax and returns another piece of syntax; the
+reference manual calls the expansion of a notation "a purely syntactic process that occurs
+prior to elaboration or code generation".<ref name="rm-notations">"Notations", section 23.3 of ''The Lean Language Reference'' (edition covering Lean 4.34.0). [https://lean-lang.org/doc/reference/4.34.0/Notations-and-Macros/Notations/ lean-lang.org/doc/reference/4.34.0/Notations-and-Macros/Notations/]</ref>
+Whatever a macro produces is then elaborated and checked exactly as if the user had typed
+it. A macro can change what is written; it cannot prove anything that the text it produces
+could not prove if typed by hand.
+
+The commands form a tower. The operator commands are shorthands for <code>notation</code>.
+In Ullrich and de Moura's account, <code>notation</code> is itself a macro that generates a
+<code>macro</code>, and <code>macro</code> expands into a grammar rule (<code>syntax</code>)
+paired with a rewriting rule (<code>macro_rules</code>).<ref name="bn" /><ref name="rm-ops" />
+In Lean 4.34.1, <code>notation</code> and <code>macro</code> are each handled by an
+elaborator that produces this pair directly.<ref name="src-notation">Lean 4 source code, version 4.34.1 (2026), files <code>src/Lean/Elab/Notation.lean</code> (the functions <code>elabNotation</code> and <code>mkUnexpander</code>) and <code>src/Lean/Elab/Macro.lean</code> (the function <code>elabMacro</code>). Apache License 2.0. https://github.com/leanprover/lean4/blob/v4.34.1/src/Lean/Elab/Notation.lean</ref> The
+<code>syntax</code> and <code>macro_rules</code> commands in turn become ordinary Lean
+definitions that the parser and the macro expander consult.<ref name="bn" />
+
+== Operators ==
+
+The smallest extension names a binary operator.
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+def avg (a b : Nat) : Nat := (a + b) / 2
+
+infixl:65 " ⊞ " => avg
+
+#eval 2 ⊞ 4 ⊞ 10
+#check fun (a b : Nat) => avg a b
+</pre>
+
+The <code>#eval</code> prints <code>6</code>: the operator associates to the left, so the
+expression is <code>avg (avg 2 4) 10</code>, that is <code>avg 3 10</code>. The reference
+manual gives the expansion exactly: <code>infixl:prec "op" => f</code> stands for
+<code>notation:prec x:prec "op" y:prec1 => f x y</code>, where <code>prec1</code> is one more
+than <code>prec</code>, so the left operand may itself be a use of the operator and the right
+operand may not. A custom operator must state its precedence; there is no default.<ref name="rm-ops">"Custom Operators", section 23.1 of ''The Lean Language Reference'' (edition covering Lean 4.34.0). [https://lean-lang.org/doc/reference/4.34.0/Notations-and-Macros/Custom-Operators/ lean-lang.org/doc/reference/4.34.0/Notations-and-Macros/Custom-Operators/]</ref>
+
+The <code>#check</code> shows the other direction. Asked to print <code>avg a b</code>, Lean
+prints
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">fun a b => a ⊞ b : Nat → Nat → Nat</pre>
+
+The command has also generated an '''unexpander''', a rule used when terms are displayed. A
+notation gets one when its right-hand side applies a named function and each of its term
+positions occurs there exactly once; a notation that expands to an anonymous function gets
+none.<ref name="rm-notations" /><ref name="rm-ops" />
+The operator therefore appears in goals and error messages, not only in source text.
+
+== Notation, syntax and macro rules ==
+
+<code>notation</code> accepts any mixture of tokens and term positions, and its right-hand
+side is a template. When a template is not enough, the two halves can be written separately.
+<code>syntax</code> adds a grammar rule to a '''syntax category''' (here <code>term</code>),
+and <code>macro_rules</code> says how to rewrite it.
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+syntax "∑ " ident " ∈ " term ", " term : term
+
+macro_rules
+  | `(∑ $i ∈ $xs, $body) => `(List.foldl (fun acc $i => acc + $body) 0 $xs)
+
+#eval ∑ i ∈ [1, 2, 3, 4], i * i
+</pre>
+
+The output is <code>30</code>, the sum of the squares of 1 to 4. The pattern on the left of
+<code>=></code> and the result on the right are '''syntax quotations''', written
+<code>`(...)</code>. Inside them <code>$i</code>, <code>$xs</code> and <code>$body</code> are
+'''antiquotations''': holes that match syntax in a pattern and insert it in a result. A
+quotation produces syntax, not a term; it is parsed but not elaborated.<ref name="rm-macros">"Macros", section 23.5 of ''The Lean Language Reference'' (edition covering Lean 4.34.0), including 23.5.1 "Hygiene", 23.5.3 "Quotation" and 23.5.5 "Defining Macros". [https://lean-lang.org/doc/reference/4.34.0/Notations-and-Macros/Macros/ lean-lang.org/doc/reference/4.34.0/Notations-and-Macros/Macros/]</ref>
+
+<code>macro_rules</code> is open. More rules for the same syntax may be added later, in the
+same file or another, and the most recently defined is tried first. A rule that does not
+apply hands the syntax on to the next one, by throwing the exception
+<code>unsupportedSyntax</code>; any other exception is reported as an error. Only the
+outermost layer of syntax is expanded at a time, and nested macros are expanded when the
+elaborator reaches them.<ref name="rm-macros" />
+
+Syntax categories are not limited to terms. Commands and tactics are categories too, and a
+library may declare its own with <code>declare_syntax_cat</code>. Ullrich and de Moura give an
+example of why this matters: a big-operator file in Coq's Mathematical Components library
+repeats twelve notations for index ranges once for each of three operators, because Coq's
+notation system cannot abstract over the index syntax; with a category for index ranges,
+each range form is interpreted once and every operator reuses it.<ref name="bn" />
+
+== What hygiene prevents ==
+
+A macro is a function on syntax, and syntax contains names. Two kinds of accident follow
+from that.
+
+The first is '''variable capture''': a binder the macro introduces captures a name the user
+supplied. Ullrich and de Moura's example is a notation for constant
+functions.<ref name="bn" />
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+notation "const" e => fun x => e
+
+#check fun (x : Nat) => const x
+#eval (fun (x : Nat) => const x) 1 2
+</pre>
+
+Read as text substitution, <code>const x</code> becomes <code>fun x => x</code>, the
+identity, and the whole expression would return its second argument. Lean prints
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">fun x x_1 => x : (x : Nat) → ?m.2 x → Nat
+1</pre>
+
+The binder that the notation introduced has been renamed (Lean displays it as
+<code>x_1</code>), the user's <code>x</code> still refers to the outer binder, and the
+function returns its first argument. The mechanism is the '''macro scope'''. Each expansion of
+a macro tags every identifier it introduces with a fresh scope, and a binder and a use of a
+name match only if their tags agree.<ref name="rm-macros" /><ref name="bn" /> The user's
+<code>x</code> carries no tag and the macro's carries one, so they are different names.
+
+Hygiene can be switched off, and the same notation then captures.
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+set_option hygiene false in
+notation "const'" e => fun x => e
+
+#eval (fun (x : Nat) => const' x) 1 2
+</pre>
+
+This prints <code>2</code>, and Lean's linter warns that the outer <code>x</code> is never
+referenced: the macro's binder has taken it. The summation notation above is protected in
+the same way. Its accumulator is called <code>acc</code>, and a user's variable of that name
+is not affected.
+
+<pre class="lean lean-cont" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+#eval let acc := 100; ∑ i ∈ [1, 2, 3], acc * i
+</pre>
+
+The result is <code>600</code>. Rewritten by plain substitution, the body
+<code>acc * i</code> would refer to the accumulator, which starts at 0, and the result would
+be 0.
+
+The second kind of accident runs the other way: a local name at the use site captures a
+global name the macro relies on.
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+def double (n : Nat) : Nat := 2 * n
+
+macro "dbl! " e:term : term => `(double $e)
+
+#eval let double := fun (n : Nat) => n; dbl! 5
+</pre>
+
+The output is <code>10</code>, and Lean warns that the local variable <code>double</code> is
+not referenced. The identifier <code>double</code> in the quotation carries the macro's scope
+and the local binding at the use site does not, so the two do not match. When the quotation
+<code>`(double $e)</code> was compiled, the name was also resolved to the global function and
+recorded with it, so a global of the same name introduced later cannot redirect it
+either.<ref name="rm-macros" /><ref name="bn" />
+
+== Hygiene in tactics ==
+
+Tactics form a syntax category, so a tactic can be a macro (the
+[[Lean theorem prover/System/The tactic framework|tactic framework]] treats the result like
+any other tactic). This one introduces a hypothesis and uses it.
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+macro "intro_assumption" : tactic => `(tactic| (intro h; exact h))
+
+example (p : Prop) : p → p := by intro_assumption
+</pre>
+
+The proof is accepted. The name <code>h</code>, however, belongs to the macro. A script that
+uses a macro to introduce <code>h</code> and then refers to <code>h</code> itself fails.
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+macro "intro_hyp" : tactic => `(tactic| intro h)
+
+example (p : Prop) : p → p := by
+  intro_hyp
+  exact h
+</pre>
+
+Lean reports <code>Unknown identifier `h`</code> at the last line. The hypothesis exists,
+but under a name the user cannot type:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+macro "intro_hyp" : tactic => `(tactic| intro h)
+
+example (p : Prop) : p → p := by
+  intro_hyp
+  trace_state
+  assumption
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">p : Prop
+h✝ : p
+⊢ p</pre>
+
+The dagger marks an inaccessible name, and <code>assumption</code>, which does not need the
+name, closes the goal. Ullrich and de Moura report that Lean 3's tactic quotations had both
+faults: a short tactic script for injectivity lemmas broke when it was used from a library
+for homotopy type theory that defined its own <code>propext</code> and
+<code>Iff.intro</code>, and scripts could refer to names a tactic had introduced. They
+describe Lean 4's tactic language as, to their knowledge, the first in an established theorem
+prover to be hygienic automatically in this sense.<ref name="bn" />
+
+== Mathematics in its own notation ==
+
+Mathematics is written in notation that varies by field and by author, and much of it binds
+variables: sums, products, integrals, set-builder notation, quantifiers over a finite set. A
+fixed grammar forces a formal text away from that notation. Lean's macros let a library add
+it, with three properties that matter in practice.
+
+Binding notation is safe to define. A notation that introduces its own bound variables, such
+as the sum above, does not interfere with the names its user chooses, and the user need not
+know which names it uses inside. Without hygiene, every such notation would be a hazard of
+the kind shown in the <code>const</code> example.
+
+Notation is printed back. Because an unexpander is generated where possible, goals and error
+messages show the notation the reader wrote, not the function it stands for.
+
+Notation can be confined. A notation marked <code>scoped</code> is active only where its
+namespace is open, so a field's notation need not occupy the grammar of every other field.
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+def avg (a b : Nat) : Nat := (a + b) / 2
+
+namespace Averages
+scoped infixl:65 " ⊞ " => avg
+end Averages
+
+open Averages in
+#eval 2 ⊞ 4 ⊞ 10
+</pre>
+
+This prints <code>6</code>. Without the <code>open</code>, <code>⊞</code> is not part of the
+grammar:
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+def avg (a b : Nat) : Nat := (a + b) / 2
+
+namespace Averages
+scoped infixl:65 " ⊞ " => avg
+end Averages
+
+#check (2 ⊞ 4 : Nat)
+</pre>
+
+Lean stops at the operator with the parse error <code>expected token</code>.
+
+What notation does not do is add meaning. It changes how a statement is written and read,
+and nothing that the Lean kernel checks. That is also its risk. A statement that uses
+unfamiliar notation may not say what it appears to say, and the reference manual's guidance
+on validating a proof names custom notation among the things to investigate when there is
+doubt that a theorem states what was intended.<ref name="rm-validating">"Validating a Lean Proof", a chapter of ''The Lean Language Reference'' (edition covering Lean 4.34.0), section "Remaining Issues". [https://lean-lang.org/doc/reference/4.34.0/ValidatingProofs/ lean-lang.org/doc/reference/4.34.0/ValidatingProofs/]</ref>
+
+A macro sees only syntax. When a translation depends on types, for example on whether an
+argument is a natural number or a set, a macro cannot decide it, and an '''elaborator''' is
+needed: a Lean program that runs inside the elaborator and constructs terms directly.
+
+== Next ==
+
+[[Lean theorem prover/System/Metaprogramming in Lean|Metaprogramming in Lean]] shows how
+elaborators and tactics are written as Lean programs.
+[[Lean theorem prover/System/Monads and do-notation|Monads and do-notation]] describes a
+piece of syntax that Lean translates into ordinary terms: the <code>do</code> block.
+
+== References ==
+
+<references />

@@ -1,0 +1,97 @@
+{{DISPLAYTITLE:On Physical Lines of Force — Glossary}}
+{{On Physical Lines of Force map}}
+''[[On Physical Lines of Force]] → Glossary''
+
+Terms as Maxwell uses them in 1861–62, with their modern equivalents. Several have drifted enough to mislead a reader who assumes the current meaning.
+
+== Terms that have changed meaning ==
+
+'''Actual energy''' — kinetic energy, as opposed to potential energy. Nothing to do with "actual" in the modern sense. Used in [[On Physical Lines of Force/Part II/Prop. VI|Prop. VI]].
+
+'''Capacity for magnetic induction''' — magnetic permeability, <math>\mu</math>. Equal to 1 in air. On the vortex hypothesis it is also the ''density'' of the substance in the cells.
+
+'''Duplicate ratio''' — the ratio of the squares. "Varies in the duplicate ratio of the velocities" means "varies as the square of the velocity". Used in [[On Physical Lines of Force/Part I/Prop. I|Prop. I]].
+
+'''Electric tension''' — electric potential, <math>\psi</math>. On the vortex hypothesis, the pressure the particles exert on one another.
+
+'''Electromotive force''' — for Maxwell, a force acting on the particles at ''every point of the medium'', components <math>P, Q, R</math>. It is what is now called the electric field. It is ''not'' a voltage round a circuit, though the modern circuit quantity descends from it.
+
+'''Electrotonic state''' — Faraday's name for the condition of a body under induction, which he posited without being able to say what it was. Maxwell gives it the components <math>F, G, H</math>, calls it the ''electromagnetic momentum'', and it becomes the modern vector potential <math>\mathbf{A}</math>. See [[On Physical Lines of Force/Modern derivations/The vector potential|the vector potential]].
+
+'''Geometer''' — mathematician, in the broad sense. "To lay before the mind of the geometer" means to set out for a mathematical reader.
+
+'''Imaginary magnetic matter''' — fictitious magnetic charge, used as a computational device for the field of a magnet. Maxwell uses the language while denying, at [[On Physical Lines of Force/Part II/Prop. VIII|equation (56)]], that magnetic sources exist. The device is still used today.
+
+'''Intensity''' — the strength of the driving agency, as against '''quantity''', which is what flows. Roughly: intensity is field or potential difference, quantity is charge or current.
+
+'''Molecule''' (of the medium) — not a chemical molecule. Maxwell's "complete molecule of the medium" contains "a great many vortices, with their surrounding particles". Resistance arises when particles pass from one such molecule to another.
+
+'''Statical''' and '''dynamical''' measures of electricity — the electrostatic and electromagnetic units. Their ratio is [[On Physical Lines of Force/Modern derivations/The unit ratio|a velocity]].
+
+'''Vitreous electricity''' — positive charge, from the charge acquired by rubbed glass. Its counterpart, ''resinous'', is negative.
+
+== Terms of the model ==
+
+'''Cell''' — one vortex, considered as a region of the medium bounded by a wall of particles.
+
+'''Displacement''' (electric) — the shift of the particles when they are pushed but cannot flow away, the cells distorting elastically to resist. Maxwell's <math>h</math>; modern <math>\mathbf{D}</math>, up to a factor of <math>4\pi</math>. Its ''variation'' is the displacement current. See [[On Physical Lines of Force/Part III/Conduction and induction|Part III]].
+
+'''Elasticity of figure''' — resistance to being changed in shape, as opposed to resistance to being compressed. Solids have it; ordinary liquids do not. Maxwell has to attribute it to the cell substance to explain how rotation is communicated from the outside of a cell to its inside, and it is that assumption which produces both the displacement current and the wave.
+
+'''Idle wheel''' — in a gear train, a wheel placed between two others so that both turn the same way. Maxwell's particles act as idle wheels between vortices, and unlike ordinary idle wheels their centres are free to move. See [[On Physical Lines of Force/Part II/The mechanism of idle wheels|the mechanism]].
+
+'''Line of force''' — a line drawn so that at every point along it, it lies in the direction of the force at that point. Maxwell's own definition is quoted in [[On Physical Lines of Force/Part I/The introductory discussion|the introductory discussion]].
+
+'''Particles''' — the small spheres between the cells. On this hypothesis they ''are'' electricity. They must roll without sliding on the cells, and must not touch each other.
+
+'''Unit-line of force''' — a line of force drawn so that the number of lines crossing an area measures the strength of the field. From Maxwell's 1855–56 paper.
+
+'''Vortex''' — a small eddy in the medium, its axis along the local line of force, its rim speed proportional to the magnetic force, the density of its substance equal to <math>\mu</math>.
+
+== Apparatus and substances mentioned ==
+
+'''Anchor ring''' — a toroid: a ring of uniform section wound evenly with wire. Maxwell uses it to show that induction needs only that lines of force pass ''through the circuit'', not near the wire. See [[On Physical Lines of Force/Part II/Induced currents|induced currents]].
+
+'''Coil machine''' — an induction coil, used to charge a Leyden jar from a magnetically generated electromotive force.
+
+'''Diamagnetic''' — repelled by a magnet; <math>\mu</math> less than that of air. Maxwell's examples: water, melted bismuth.
+
+'''Leyden jar''' — a capacitor: two conducting surfaces separated by a dielectric. Its capacity is the subject of [[On Physical Lines of Force/Part III/Prop. XVII|Prop. XVII]].
+
+'''Paramagnetic''' — attracted by a magnet; <math>\mu</math> greater than that of air. Maxwell's examples: oxygen, solutions of salts of iron.
+
+'''Turpentine''' — used as an example of a dielectric with a specific inductive capacity differing from air's, and also, separately, as a substance showing natural optical activity.
+
+== People named in the paper ==
+
+'''Ampère''' — for the law of force between currents, and for the view that currents are linear phenomena.
+
+'''Challis''' — James Challis, Plumian Professor at Cambridge, who held that magnetism consists in currents of a fluid. Maxwell takes the opposite view and says so in [[On Physical Lines of Force/Part IV|Part IV]].
+
+'''Faraday''' — cited by paragraph number of the ''Experimental Researches''. The lines of force, induction, specific inductive capacity, and the magneto-optical rotation are all his.
+
+'''Fizeau''' — Hippolyte Fizeau, whose 1849 toothed-wheel measurement of the velocity of light Maxwell compares with his own computed velocity.
+
+'''Green''' — George Green, whose ''Essay on Electricity'' supplies the integration by parts in [[On Physical Lines of Force/Part III/Prop. XV|Prop. XV]].
+
+'''Helmholtz''' — for the motion of an incompressible fluid, and for the analogy Maxwell explicitly declines to follow.
+
+'''Kohlrausch and Weber''' — Rudolf Kohlrausch and Wilhelm Weber, who measured the ratio of the electrostatic to the electromagnetic unit of electricity.
+
+'''Mossotti''' — cited for the analytical treatment of dielectric polarization.
+
+'''Rankine''' — cited for the elasticity of a "perfect solid" in [[On Physical Lines of Force/Part III/Prop. XII|Prop. XII]].
+
+'''Siemens''' — for a steam-engine governor using idle wheels whose centres can move.
+
+'''Thomson''' — William Thomson, later Lord Kelvin. Cited for the 1847 mechanical representation of electric and magnetic forces, for the preservation of charge in a glass vessel, and — most importantly — for the argument in [[On Physical Lines of Force/Part IV/Why magnetism must be rotatory|Part IV]] that the magnetic action on light requires a real rotation in the field.
+
+'''Verdet''' — Émile Verdet, who measured the magneto-optical rotation and confirmed Maxwell's results (A) and (B). The Verdet constant is named for him.
+
+== Spelling ==
+
+Maxwell writes '''connexion''', '''neighbourhood''', '''polarization''', '''magnetized''', and '''&c.''' for etc. The 1861 printing would also have '''shewn''' and '''shewed''' where the transcription used for this edition prints "shown" and "showed" — see [[On Physical Lines of Force/Sources and editorial method|Sources]].
+
+----
+
+''See also: [[On Physical Lines of Force/Notation and concordance|Notation and concordance]] · [[On Physical Lines of Force/Index of numbered equations|Index of numbered equations]]''

@@ -1,0 +1,29 @@
+{
+  "meta": {
+    "what": "SHA-256 (FIPS 180-4) in Lean, Principia/Sha256.lean, run by Tests/Sha256.lean: NIST's CAVP response files for SHA-256, FIPS 180-4's examples, and the padding's size at each boundary of a block",
+    "cavp_source": "NIST, Cryptographic Algorithm Validation Program, SHA test vectors for byte-oriented implementations: https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Algorithm-Validation-Program/documents/shs/shabytetestvectors.zip, downloaded 2026-10-15, 4909729 bytes, SHA-256 929ef80b7b3418aca026643f6f248815913b60e01741a44bba9e118067f4c9b8; its members shabytetestvectors/SHA256ShortMsg.rsp and shabytetestvectors/SHA256LongMsg.rsp copied byte for byte (CRLF line ends) to vectors/",
+    "examples_source": "FIPS 180-4's examples, as NIST publishes them beside the standard: https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/SHA256.pdf (\"abc\" and the 448-bit two-block message; downloaded 2026-10-15, SHA-256 7006b6549dad2fc8c6f29417a921f2e48208157ef496a7e1e1d7d17c5cc1e7db), and FIPS 180-2, Appendix B.3 (one million \"a\"): https://csrc.nist.gov/files/pubs/fips/180-2/final/docs/fips180-2.pdf (downloaded 2026-10-15, SHA-256 1ac8c64a78c0b1e2fdb4c346da117fdf6bea713220a3b6d932080f1834d517c1)",
+    "checked": "before commit, every MD of the two response files (65 and 64 messages) and the three examples' digests were checked with Python 3's hashlib.sha256, an implementation independent of this one; all agree",
+    "padding": "a message of size bytes, each byte i % 251; padded is the padded message's size: the least multiple of 64 at least size + 9"
+  },
+  "cavp": [
+    {"file": "SHA256ShortMsg.rsp", "sha256": "75e1cb83994638481808e225b9eb0c1ebd0c232d952ac42b61abce6363be283c", "cases": 65},
+    {"file": "SHA256LongMsg.rsp", "sha256": "6fac36f37360bcf74ffcf4465c18e30d6d5a04cc90885b901fc3130c16060974", "cases": 64}
+  ],
+  "examples": [
+    {"id": "fips/one-block", "text": "abc", "repeat": 1, "expect": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"},
+    {"id": "fips/two-block", "text": "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq", "repeat": 1, "expect": "248d6a61d20638b8e5c026930c3e6039a33ce45964ff2167f6ecedd419db06c1"},
+    {"id": "fips/long", "text": "a", "repeat": 1000000, "expect": "cdc76e5c9914fb9281a1c7e284d73e67f1809a48a497200e046d39ccc7112cd0"}
+  ],
+  "padding": [
+    {"size": 0, "padded": 64},
+    {"size": 1, "padded": 64},
+    {"size": 55, "padded": 64},
+    {"size": 56, "padded": 128},
+    {"size": 63, "padded": 128},
+    {"size": 64, "padded": 128},
+    {"size": 119, "padded": 128},
+    {"size": 120, "padded": 192},
+    {"size": 1000000, "padded": 1000064}
+  ]
+}

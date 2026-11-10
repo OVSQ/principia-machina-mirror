@@ -1,0 +1,138 @@
+{{DISPLAYTITLE:Propositions as types}}
+{{Technical|Lean theorem prover/Foundations/Terms, types and judgments|Lean theorem prover/Foundations/Dependent function types}}
+{{Lean theorem prover map}}
+
+Lean checks proofs with the same machinery a programming language uses to check
+that a program is put together correctly. This works because of one idea: a
+statement can be treated as a '''type''', and a proof of the statement as a
+'''value''' of that type. The idea is called '''propositions as types''', or the
+'''Curry–Howard correspondence''' after two of the logicians who found it. This
+page explains it without notation, apart from three short lines of Lean.
+
+== What a type is ==
+
+In a programming language every value has a type. The number 3 is a whole number;
+the word "hello" is a piece of text; a list of numbers is a list of numbers. A
+function that adds two whole numbers will accept two whole numbers and nothing
+else, and a program that tries to give it a piece of text is rejected before it
+runs.
+
+Checking types is a mechanical job. It needs no insight, only care, and a computer
+does it reliably. Propositions as types turns proof checking into this same
+job.
+
+== A statement is a type ==
+
+Take any mathematical statement, for instance "every even number greater than 2 is
+the sum of two primes". Now imagine a type whose values are exactly the proofs of
+that statement. If the statement has a proof, the type has at least one value. If
+it has none, the type is empty. For this particular statement nobody yet knows
+which.
+
+Then two questions become one. "Is this a proof of that statement?" is the same
+question as "does this value have that type?" A program that checks types can
+therefore check proofs.<ref name="tpil-props">Jeremy Avigad, Leonardo de Moura, Soonho Kong and Sebastian Ullrich, with contributions from the Lean Community, ''Theorem Proving in Lean 4'', chapter 3, "Propositions and Proofs", section 3.1, online book for Lean 4.33.0. [https://lean-lang.org/theorem_proving_in_lean4/Propositions-and-Proofs/ lean-lang.org/theorem_proving_in_lean4/Propositions-and-Proofs/] (accessed 13 October 2026).</ref>
+
+Lean reads statements this way. In Lean a statement is called a '''proposition''',
+and when Lean is told that something is a proof of a proposition, what it checks is
+that the thing has the proposition as its type.<ref name="tpil-props" />
+
+== The dictionary ==
+
+The idea would be a curiosity if it applied only to single statements. It is
+useful because the ways of combining statements match ways of combining types,
+and the rules of logic match the rules for building and using values.<ref name="wadler2015">Philip Wadler, "Propositions as types", ''Communications of the ACM'' 58 (12), 2015, pp. 75–84. [https://doi.org/10.1145/2699407 doi:10.1145/2699407]</ref>
+
+'''"If P then Q" is a function.''' A proof that P implies Q is a procedure that
+turns any proof of P into a proof of Q. A function from type P to type Q does
+exactly that. Using an implication, the old rule that from "P" and "if P then Q"
+one may conclude "Q", is applying the function to its input.
+
+'''"P and Q" is a pair.''' A proof of "P and Q" consists of a proof of P together
+with a proof of Q. A value of a pair type consists of a value of the first type
+together with a value of the second.
+
+'''"P or Q" is a tagged choice.''' A proof of "P or Q" is either a proof of P or a
+proof of Q, together with an indication of which one it is. A value of a choice
+type is either a value of the first type or of the second, with a tag saying
+which.<ref name="wadler2015" />
+
+'''"False" is the empty type.''' A statement that is simply false has no proof,
+so it corresponds to a type with no values at all. Lean defines falsehood in
+exactly this way: a type with no way of making a value.<ref name="tpil-inductive">Jeremy Avigad, Leonardo de Moura, Soonho Kong and Sebastian Ullrich, ''Theorem Proving in Lean 4'', chapter 7, "Inductive Types", section 7.3, "Inductively Defined Propositions". [https://lean-lang.org/theorem_proving_in_lean4/Inductive-Types/ lean-lang.org/theorem_proving_in_lean4/Inductive-Types/] (accessed 13 October 2026).</ref>
+A consequence is the old principle that anything follows from a contradiction. A
+function out of an empty type never has to produce anything, because it can never
+be given an input, so a "proof from falsehood" of any statement exists.
+
+In Lean, three of these entries look like this. Each line is about any two
+propositions <code>p</code> and <code>q</code>. The brackets name what is assumed,
+so <code>(hp : p)</code> reads "hp is a proof of p"; the part between the last
+colon and <code>:=</code> is what is proved; the part after <code>:=</code> is
+the proof.
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+example (p q : Prop) (hp : p) (hq : q) : p ∧ q := ⟨hp, hq⟩
+example (p q : Prop) (f : p → q) (hp : p) : q := f hp
+example (p q : Prop) (hp : p) : p ∨ q := Or.inl hp
+</pre>
+
+The first line pairs a proof of <code>p</code> with a proof of <code>q</code> to
+prove "p and q". The second applies a proof of "if p then q", a function, to a
+proof of <code>p</code>. The third proves "p or q" by choosing the left side,
+tagged <code>Or.inl</code>, and handing over a proof of <code>p</code>. Lean
+accepts all three without comment.
+
+== Three levels ==
+
+Philip Wadler, in a survey of the idea, describes the correspondence at three
+depths.<ref name="wadler2015" /> At the surface, each proposition corresponds to a
+type: '''propositions as types'''. Below that, each proof corresponds to a program
+of that type: '''proofs as programs'''. Deepest, each way of simplifying a proof,
+removing a detour from it, corresponds to a step in running a program:
+'''simplification of proofs as evaluation of programs'''.
+
+The third level is why a proof in Lean can sometimes be checked by computing; see
+[[Lean theorem prover/Explainers/Two kinds of equality|two kinds of equality]].
+
+== Where it came from ==
+
+In 1934 Haskell Curry observed that in the theory of functions he was studying,
+the type of each function, read as a statement of implication, was a provable
+statement, and that each such provable statement was the type of some
+function.<ref name="curry1934">H. B. Curry, "Functionality in combinatory logic", ''Proceedings of the National Academy of Sciences'' 20 (11), 1934, pp. 584–590. [https://doi.org/10.1073/pnas.20.11.584 doi:10.1073/pnas.20.11.584]</ref><ref name="wadler2015" /> In 1969 William Howard wrote out the correspondence
+between a standard system of logical proof and a typed notation for functions,
+covered "and" and "or" as well as "implies", and made explicit that simplifying a
+proof matches running a program. His notes circulated privately and were published
+only in 1980, in a collection of essays dedicated to Curry.<ref name="howard1980">W. A. Howard, "The formulae-as-types notion of construction", in J. P. Seldin and J. R. Hindley (eds.), ''To H. B. Curry: Essays on Combinatory Logic, Lambda Calculus and Formalism'', Academic Press, 1980, pp. 479–490. Written and circulated in 1969.</ref><ref name="wadler2015" />
+
+Howard also proposed that "for every" and "there exists" correspond to a richer
+kind of type, now called a '''dependent type''', in which a type can depend on a
+value.<ref name="wadler2015" /> That is the subject of the next page. Nicolaas de
+Bruijn reached related ideas independently in his Automath project, and Per
+Martin-Löf built on Howard's work; Wadler traces the line from there to the
+proof assistants of today.<ref name="wadler2015" />
+
+== Two ways to read it ==
+
+The authors of ''Theorem Proving in Lean 4'' point out that the idea can be held in
+two ways.<ref name="tpil-props" /> On a '''constructive''' reading, a proof really
+is a piece of data, and what it contains matters. On a more relaxed reading,
+propositions as types is a convenient coding device: a true proposition is a type
+with one value, a false one a type with none, and a proof is just a witness that the
+type is not empty.
+
+Lean's rules fit the second reading. Lean's kernel treats any two proofs of the
+same proposition as interchangeable, a rule called '''proof irrelevance''', which
+matches the picture of a true proposition as a type with a single
+value.<ref name="tpil-props" /> And the dictionary above, on its own,
+gives the logic of the constructive mathematicians, in which "P or not P" is not
+available for free.<ref name="wadler2015" /> Lean adds it through an axiom, as
+[[Lean theorem prover/Explainers/What the axioms are|what the axioms are]] explains.
+
+== Next ==
+
+* [[Lean theorem prover/Explainers/Types as specifications|Types as specifications]]: types that carry claims about the values they hold.
+
+== References ==
+
+<references />

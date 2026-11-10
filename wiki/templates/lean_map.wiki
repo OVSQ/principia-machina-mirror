@@ -1,0 +1,11 @@
+<includeonly>{{Section map
+| title = Lean theorem prover: map
+| label1 = Reading the edition
+| links1 = [[Lean theorem prover#Three levels of reading|Three levels of reading]]<br />[[Lean theorem prover/Glossary|Glossary]]<br />[[Lean theorem prover/Notation|Notation]]<br />[[Lean theorem prover/Chronology|Chronology]]
+| label2 = Reading by level
+| links2 = [[Lean theorem prover/Explainers/What a proof assistant does|Start here: What a proof assistant does]]<br />[[Lean theorem prover/Foundations/Terms, types and judgments|The type theory: Terms, types and judgments]]<br />[[Lean theorem prover/System/Elaboration|How Lean works: Elaboration]]<br />[[Lean theorem prover/History/Automath|The history: Automath]]<br />[[Lean theorem prover/Applications/Research mathematics|The applications: Research mathematics]]
+| label3 = Sources
+| links3 = [[Lean theorem prover/Sources|Sources]]<br />[[Lean theorem prover/Bibliography|Bibliography]]<br />[[Lean theorem prover/Further reading|Further reading]]
+| label4 = Related
+| links4 = [[Principia Machina/Lean transition|The move to Lean]]
+}}</includeonly><noinclude>The navigation panel of the Lean theorem prover edition, carried by every page of the edition, which is one walk in one reading order. Its frame is [[Template:Section map]]. Published from the Principia Machina source; an edit made here is overwritten.</noinclude>

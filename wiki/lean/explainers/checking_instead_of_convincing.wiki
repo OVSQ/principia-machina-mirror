@@ -1,0 +1,129 @@
+{{DISPLAYTITLE:Checking instead of convincing}}
+{{Technical|Lean theorem prover/Foundations/Terms, types and judgments|Lean theorem prover/System/The Lean kernel}}
+{{Lean theorem prover map}}
+
+Mathematics accepts a proof when the people competent to judge it are convinced.
+This page describes how that works, two well-documented cases in which it came
+under strain, what a mechanical check adds to it, and the principle, known as
+'''de Bruijn's criterion''', that keeps a mechanical checker small enough to be
+trusted itself.
+
+== How a proof is accepted ==
+
+A proof written for a journal does two jobs at once. It '''convinces''': it gives
+enough steps for a reader to verify, one by one, that the statement holds. And it
+'''explains''': it shows why the statement is true, and how one might have found
+the argument.<ref name="geuvers2009">Herman Geuvers, "Proof assistants: history, ideas and future", ''Sādhanā'' 34 (1), 2009, pp. 3–25. [https://doi.org/10.1007/s12046-009-0001-5 doi:10.1007/s12046-009-0001-5]</ref>
+
+Acceptance runs through people. A journal sends the paper to experts, the
+'''referees''', who read it, test the steps they doubt, and report. If they are
+satisfied, the paper is published, and other mathematicians read it, use it and
+sometimes find faults later. The arrangement rests on a reasonable bet: one reader
+may overlook a mistake, but many readers are unlikely to overlook the same
+one.<ref name="geuvers2009" />
+
+For most proofs this works well. It strains when a proof is too long or too
+computational for a person to read in full, or when too few people have read it at
+all.
+
+== The Kepler conjecture ==
+
+In 1611 Johannes Kepler stated that no way of packing equal balls in space is
+denser than the familiar stack in which greengrocers pile oranges, the
+face-centred cubic packing. Thomas Hales, working with Samuel Ferguson, settled
+the question in 1998.<ref name="flyspeck">Thomas Hales and 21 co-authors, "A formal proof of the Kepler conjecture", ''Forum of Mathematics, Pi'' 5, e2, 2017. [https://doi.org/10.1017/fmp.2017.1 doi:10.1017/fmp.2017.1]; preprint [https://arxiv.org/abs/1501.02155 arXiv:1501.02155].</ref> The argument reduced the problem to
+about a thousand complicated inequalities, which Hales checked with computer
+programs.<ref name="geuvers2009" />
+
+The referees were in a difficult position. Checking the inequalities by hand was
+out of reach, and checking the programs themselves was never
+attempted.<ref name="geuvers2009" /> After years of work they reported a strong
+conviction that the approach was essentially correct, having found the specific
+claims they examined to be right; but they could not certify every step. The proof
+was published without that certification.<ref name="flyspeck" /><ref name="hales2005">Thomas C. Hales, "A proof of the Kepler conjecture", ''Annals of Mathematics'' 162 (3), 2005, pp. 1065–1185. [https://doi.org/10.4007/annals.2005.162.1065 doi:10.4007/annals.2005.162.1065]</ref>
+
+Hales answered by setting out to check the whole proof by machine. He announced
+the '''Flyspeck''' project in 2003. It used two proof assistants, HOL Light and
+Isabelle, and formalised both the written argument and the computer
+calculations. The nonlinear inequalities were checked with HOL Light in July and
+August 2014, and checked again that October on different machines, with identical
+results.<ref name="flyspeck" />
+
+== A proof only its authors had read ==
+
+In December 2020 Peter Scholze asked for a theorem of his and Dustin Clausen's to
+be checked in Lean. He counted it among his most important results, others
+would rely on it without rereading it, and nobody besides its authors had gone
+through the details; he wrote that he still had small doubts.<ref name="scholze2020">Peter Scholze, "Liquid tensor experiment", guest post on the ''Xena'' blog, 5 December 2020. [https://xenaproject.wordpress.com/2020/12/05/liquid-tensor-experiment/ xenaproject.wordpress.com] (accessed 13 October 2026).</ref>
+
+A group led by Johan Commelin completed the check of the main proof on 28 May
+2021. The work found some imprecisions and oversights, each repaired with minor changes, and Scholze
+wrote afterwards that he had no remaining doubts about the main
+proof.<ref name="scholze2021">Peter Scholze, "Half a year of the Liquid Tensor Experiment: amazing developments", guest post on the ''Xena'' blog, 5 June 2021. [https://xenaproject.wordpress.com/2021/06/05/half-a-year-of-the-liquid-tensor-experiment-amazing-developments/ xenaproject.wordpress.com] (accessed 13 October 2026).</ref> The history page on
+[[Lean theorem prover/History/The Liquid Tensor Experiment|the Liquid Tensor Experiment]]
+tells the story.
+
+== What a mechanical check adds ==
+
+'''Every step, not a sample.''' A referee reads with judgement and tests what looks
+doubtful. A proof assistant checks every step, including the dull ones, and
+cannot be tired or hurried.
+
+'''The same verdict for every reader.''' Anyone can run the check again and get
+the same answer. The verdict does not depend on who wrote the proof, how famous
+they are, or how patient the reader is.
+
+'''A smaller question for people.''' Once the steps are checked, specialist
+judgement is needed for a much smaller part of the work. The Flyspeck authors put
+it this way: a proof assistant largely takes the mathematical referees out of the
+verification, but someone must still confirm that the statement proved is the
+theorem everyone means, and that no unapproved axioms were
+added.<ref name="flyspeck" /> The page on
+[[Lean theorem prover/Explainers/Stating the right thing|stating the right thing]]
+is about that remaining question.
+
+'''What it does not add.''' A mechanical check convinces; it does not explain. Its
+level of detail is usually a hindrance to understanding why a theorem
+holds.<ref name="geuvers2009" /> Nor does it end doubt for ever. A checker is a
+program, and a machine-checked proof may still be faulty; the most that can be
+done is to make that as unlikely as possible.<ref name="geuvers2009" />
+
+== De Bruijn's criterion ==
+
+That last point raises an obvious objection. If the checker is a large and
+complicated program, there is no clear reason to trust it more than a careful
+referee.
+
+An answer goes back to '''Automath''', a project begun by Nicolaas de Bruijn in
+1967.<ref name="geuvers2009" /> The idea is to separate the work in two. The large,
+clever program that helps a person write a proof should also produce a complete
+record of it, a '''proof object''' in which every step is explicit. A second
+program, small and simple, then checks that record. It should be simple enough
+that a sceptical reader could write such a checker for themselves. Henk Barendregt
+named this requirement the '''de Bruijn criterion'''.<ref name="geuvers2009" />
+
+The effect is that trust no longer depends on the size of the system. The parts
+that search, guess and automate may be large and may contain faults; a fault there
+can stop a proof from being found, but whatever they produce is checked by the
+small program before it is accepted.
+
+Lean is built this way. A finished Lean proof is a term that records the whole
+argument, enough to be checked independently.<ref name="ref-types">The Lean Developers, "The type system", ''The Lean Language Reference'', for Lean 4.35.0. [https://lean-lang.org/doc/reference/4.35.0/The-Type-System/ lean-lang.org/doc/reference/4.35.0/The-Type-System/] (accessed 13 October 2026).</ref> The part of
+Lean that has the last word, Lean's kernel, was meant from the start to be small
+and independently implementable, and independent implementations of it
+exist.<ref name="ref-intro">The Lean Developers, "Introduction", ''The Lean Language Reference'', for Lean 4.35.0, section 1.1, "History". [https://lean-lang.org/doc/reference/4.35.0/Introduction/ lean-lang.org/doc/reference/4.35.0/Introduction/] (accessed 13 October 2026).</ref> The pages on
+[[Lean theorem prover/Explainers/The small trusted core|the small trusted core]] and
+[[Lean theorem prover/Explainers/Checking a proof again later|checking a proof again later]]
+describe both.
+
+What the small checker checks is a proof written in a particular logic. The next
+page describes the idea at the centre of that logic: that a statement can be
+treated as a type, and its proof as a thing of that type.
+
+== Next ==
+
+* [[Lean theorem prover/Explainers/Propositions as types|Propositions as types]]: the idea that makes a proof something a program can check.
+
+== References ==
+
+<references />

@@ -1,0 +1,2349 @@
+{
+ "cases": [
+  {
+   "args": {
+    "event": {
+     "kind": "CE-F1"
+    },
+    "facts": {
+     "blocks": 100,
+     "first_violation_block": null,
+     "named": true,
+     "period_taken": false,
+     "predecessor": null
+    }
+   },
+   "expected": "FOR|CLEAN",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S01 CE-F1: 100 clean blocks, no predecessor: FOR"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-F1"
+    },
+    "facts": {
+     "blocks": 99,
+     "first_violation_block": null,
+     "named": true,
+     "period_taken": false,
+     "predecessor": null
+    }
+   },
+   "expected": "PENDING|WINDOW",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S02 CE-F1: 99 blocks: PENDING (window boundary)"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-F1"
+    },
+    "facts": {
+     "blocks": 101,
+     "first_violation_block": null,
+     "named": true,
+     "period_taken": false,
+     "predecessor": null
+    }
+   },
+   "expected": "FOR|CLEAN",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S03 CE-F1: 101 blocks: FOR"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-F1"
+    },
+    "facts": {
+     "blocks": 150,
+     "first_violation_block": 100,
+     "named": true,
+     "period_taken": false,
+     "predecessor": null
+    }
+   },
+   "expected": "NEUTRAL|VIOLATION",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S04 CE-F1: a confirmed violation at block 100: NEUTRAL (inclusive)"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-F1"
+    },
+    "facts": {
+     "blocks": 150,
+     "first_violation_block": 101,
+     "named": true,
+     "period_taken": false,
+     "predecessor": null
+    }
+   },
+   "expected": "FOR|CLEAN",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S05 CE-F1: a confirmed violation at block 101: FOR (outside the window)"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-F1"
+    },
+    "facts": {
+     "blocks": 5,
+     "first_violation_block": 5,
+     "named": true,
+     "period_taken": false,
+     "predecessor": null
+    }
+   },
+   "expected": "NEUTRAL|VIOLATION",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S06 CE-F1: a violation at block 5 with 5 blocks landed: NEUTRAL at once"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-F1"
+    },
+    "facts": {
+     "blocks": 100,
+     "first_violation_block": null,
+     "named": true,
+     "period_taken": false,
+     "predecessor": {
+      "pending": 0,
+      "state": "GREEN"
+     }
+    }
+   },
+   "expected": "FOR|CLEAN",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S07 CE-F1: the predecessor GREEN with nothing pending: FOR"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-F1"
+    },
+    "facts": {
+     "blocks": 100,
+     "first_violation_block": null,
+     "named": true,
+     "period_taken": false,
+     "predecessor": {
+      "pending": 0,
+      "state": "YELLOW"
+     }
+    }
+   },
+   "expected": "NEUTRAL|PREDECESSOR",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S08 CE-F1: the predecessor YELLOW: NEUTRAL"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-F1"
+    },
+    "facts": {
+     "blocks": 100,
+     "first_violation_block": null,
+     "named": true,
+     "period_taken": false,
+     "predecessor": {
+      "pending": 1,
+      "state": "GREEN"
+     }
+    }
+   },
+   "expected": "NEUTRAL|PREDECESSOR",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S09 CE-F1: the predecessor GREEN with one PENDING item: NEUTRAL"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-F1"
+    },
+    "facts": {
+     "blocks": 100,
+     "first_violation_block": null,
+     "named": false,
+     "period_taken": false,
+     "predecessor": null
+    }
+   },
+   "expected": "NEUTRAL|NOT NAMED",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S10 CE-F1: not named: NEUTRAL"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-F1"
+    },
+    "facts": {
+     "blocks": 100,
+     "first_violation_block": null,
+     "named": true,
+     "period_taken": true,
+     "predecessor": null
+    }
+   },
+   "expected": "NEUTRAL|PERIOD",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S11 CE-F1: the RATING PERIOD's CE-F1 already taken: NEUTRAL"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-F1"
+    },
+    "facts": {
+     "blocks": 0,
+     "first_violation_block": null,
+     "named": true,
+     "period_taken": false,
+     "predecessor": null
+    }
+   },
+   "expected": "PENDING|WINDOW",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S12 CE-F1: zero blocks: PENDING"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-F2"
+    },
+    "facts": {
+     "blocks": 100,
+     "declared": true,
+     "first_canary_failure_block": null,
+     "first_violation_block": null
+    }
+   },
+   "expected": "FOR|CLEAN",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S13 CE-F2: 100 clean blocks after the declared change: FOR"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-F2"
+    },
+    "facts": {
+     "blocks": 99,
+     "declared": true,
+     "first_canary_failure_block": null,
+     "first_violation_block": null
+    }
+   },
+   "expected": "PENDING|WINDOW",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S14 CE-F2: 99 blocks: PENDING"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-F2"
+    },
+    "facts": {
+     "blocks": 120,
+     "declared": true,
+     "first_canary_failure_block": 100,
+     "first_violation_block": null
+    }
+   },
+   "expected": "NEUTRAL|CANARY",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S15 CE-F2: a canary failure at block 100: NEUTRAL"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-F2"
+    },
+    "facts": {
+     "blocks": 120,
+     "declared": true,
+     "first_canary_failure_block": 101,
+     "first_violation_block": null
+    }
+   },
+   "expected": "FOR|CLEAN",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S16 CE-F2: a canary failure at block 101: FOR"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-F2"
+    },
+    "facts": {
+     "blocks": 1,
+     "declared": true,
+     "first_canary_failure_block": null,
+     "first_violation_block": 1
+    }
+   },
+   "expected": "NEUTRAL|VIOLATION",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S17 CE-F2: a violation at block 1: NEUTRAL"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-F2"
+    },
+    "facts": {
+     "blocks": 100,
+     "declared": false,
+     "first_canary_failure_block": null,
+     "first_violation_block": null
+    }
+   },
+   "expected": "NEUTRAL|NOT DECLARED",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S18 CE-F2: not declared: NEUTRAL (CE-A1's matter)"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-A1"
+    },
+    "facts": {
+     "audit": "CONFIRMED"
+    }
+   },
+   "expected": "AGAINST|AUDIT",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S19 CE-A1: audit CONFIRMED: AGAINST"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-A1"
+    },
+    "facts": {
+     "audit": "OPEN"
+    }
+   },
+   "expected": "PENDING|AUDIT",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S20 CE-A1: audit OPEN: PENDING"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-A1"
+    },
+    "facts": {
+     "audit": "DISMISSED"
+    }
+   },
+   "expected": "NEUTRAL|DISMISSED",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S21 CE-A1: audit DISMISSED: NEUTRAL"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-A2"
+    },
+    "facts": {
+     "audit": "CONFIRMED"
+    }
+   },
+   "expected": "AGAINST|AUDIT",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S22 CE-A2: audit CONFIRMED: AGAINST"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-A3"
+    },
+    "facts": {
+     "audit": "OPEN"
+    }
+   },
+   "expected": "PENDING|AUDIT",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S23 CE-A3: audit OPEN: PENDING"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-A4"
+    },
+    "facts": {
+     "admission": 2593000,
+     "exit": 1000,
+     "pending": 0,
+     "state": "YELLOW",
+     "window": 2592000
+    }
+   },
+   "expected": "AGAINST|WHITEWASH",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S24 CE-A4: admitted 30 days after a YELLOW agent's lapse: AGAINST (window boundary, inclusive)"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-A4"
+    },
+    "facts": {
+     "admission": 2593001,
+     "exit": 1000,
+     "pending": 0,
+     "state": "YELLOW",
+     "window": 2592000
+    }
+   },
+   "expected": "NEUTRAL|OUTSIDE WINDOW",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S25 CE-A4: admitted 30 days and one second after: NEUTRAL"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-A4"
+    },
+    "facts": {
+     "admission": 1000,
+     "exit": 2593000,
+     "pending": 2,
+     "state": "ORANGE",
+     "window": 2592000
+    }
+   },
+   "expected": "AGAINST|WHITEWASH",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S26 CE-A4: admitted before the exit, inside the window: AGAINST (either side)"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-A4"
+    },
+    "facts": {
+     "admission": 2000,
+     "exit": 1000,
+     "pending": 0,
+     "state": "GREEN",
+     "window": 2592000
+    }
+   },
+   "expected": "NEUTRAL|GREEN",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S27 CE-A4: the other agent GREEN with nothing pending: NEUTRAL"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-A4"
+    },
+    "facts": {
+     "admission": 2000,
+     "exit": 1000,
+     "pending": 1,
+     "state": "GREEN",
+     "window": 2592000
+    }
+   },
+   "expected": "AGAINST|WHITEWASH",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S28 CE-A4: GREEN with a PENDING item: AGAINST"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-A4"
+    },
+    "facts": {
+     "admission": 1000,
+     "exit": 1000,
+     "pending": 0,
+     "state": "SUSPENDED",
+     "window": 0
+    }
+   },
+   "expected": "AGAINST|WHITEWASH",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S29 CE-A4: SUSPENDED, same second: AGAINST"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-A5"
+    },
+    "facts": {
+     "cause": "CANARY",
+     "removed": true
+    }
+   },
+   "expected": "AGAINST|CANARY",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S30 CE-A5: removed after a canary failure: AGAINST"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-A5"
+    },
+    "facts": {
+     "cause": "TRIP",
+     "removed": true
+    }
+   },
+   "expected": "AGAINST|TRIP",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S31 CE-A5: removed after a trip: AGAINST"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-A5"
+    },
+    "facts": {
+     "cause": "OTHER",
+     "removed": true
+    }
+   },
+   "expected": "NEUTRAL|NOT FOR CAUSE",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S32 CE-A5: removed for another reason: NEUTRAL"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-A5"
+    },
+    "facts": {
+     "cause": "CANARY",
+     "removed": false
+    }
+   },
+   "expected": "PENDING|DECISION ITEM",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S33 CE-A5: the decision item open: PENDING"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-X"
+    },
+    "facts": {}
+   },
+   "expected": "ERROR:event",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S34 an unknown kind is refused"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-F1"
+    },
+    "facts": {
+     "audit": "OPEN"
+    }
+   },
+   "expected": "ERROR:facts",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S35 facts of another kind are refused"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-F1"
+    },
+    "facts": {
+     "blocks": 100,
+     "first_violation_block": 0,
+     "named": true,
+     "period_taken": false,
+     "predecessor": null
+    }
+   },
+   "expected": "ERROR:facts",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S36 a violation block of 0 is refused (blocks are 1-based)"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-F1"
+    },
+    "facts": {
+     "blocks": true,
+     "first_violation_block": null,
+     "named": true,
+     "period_taken": false,
+     "predecessor": null
+    }
+   },
+   "expected": "ERROR:facts",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S37 a boolean blocks count is refused"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-A2"
+    },
+    "facts": {
+     "audit": "MAYBE"
+    }
+   },
+   "expected": "ERROR:facts",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S38 an unknown audit state is refused"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-A4"
+    },
+    "facts": {
+     "admission": 2000,
+     "exit": 1000,
+     "pending": 0,
+     "state": "RED",
+     "window": 2592000
+    }
+   },
+   "expected": "ERROR:facts",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S39 an unknown state at exit is refused"
+  },
+  {
+   "args": {
+    "event": {
+     "kind": "CE-A5"
+    },
+    "facts": {
+     "cause": null,
+     "removed": true
+    }
+   },
+   "expected": "NEUTRAL|NOT FOR CAUSE",
+   "fn": "resolve",
+   "hand_checked": true,
+   "name": "S40 CE-A5 with a null cause, removed: NEUTRAL"
+  },
+  {
+   "args": {
+    "a0": 1,
+    "ages": [],
+    "b0": 1,
+    "events": [],
+    "g": {
+     "CE-F1": 1,
+     "CE-F2": 1
+    },
+    "h": {
+     "CE-A1": 2,
+     "CE-A2": 3,
+     "CE-A3": 3,
+     "CE-A4": 2,
+     "CE-A5": 3
+    },
+    "half_life": 500
+   },
+   "expected": "0|0|0|0.5|0.025|0.975",
+   "fn": "evidence",
+   "hand_checked": true,
+   "name": "E01 no events: the prior, E 0.5, interval 0.025..0.975, n 0"
+  },
+  {
+   "args": {
+    "a0": 1,
+    "ages": [
+     0
+    ],
+    "b0": 1,
+    "events": [
+     {
+      "kind": "CE-F1",
+      "resolution": "FOR"
+     }
+    ],
+    "g": {
+     "CE-F1": 1,
+     "CE-F2": 1
+    },
+    "h": {
+     "CE-A1": 2,
+     "CE-A2": 3,
+     "CE-A3": 3,
+     "CE-A4": 2,
+     "CE-A5": 3
+    },
+    "half_life": 500
+   },
+   "expected": "1|0|1|0.666666666667|0.158113883008|0.987420882907",
+   "fn": "evidence",
+   "hand_checked": true,
+   "name": "E02 one CE-F1 FOR at age 0: F 1, E 2/3"
+  },
+  {
+   "args": {
+    "a0": 1,
+    "ages": [
+     0
+    ],
+    "b0": 1,
+    "events": [
+     {
+      "kind": "CE-A5",
+      "resolution": "AGAINST"
+     }
+    ],
+    "g": {
+     "CE-F1": 1,
+     "CE-F2": 1
+    },
+    "h": {
+     "CE-A1": 2,
+     "CE-A2": 3,
+     "CE-A3": 3,
+     "CE-A4": 2,
+     "CE-A5": 3
+    },
+    "half_life": 500
+   },
+   "expected": "0|3|1|0.2|0.00630946320971|0.602364635616",
+   "fn": "evidence",
+   "hand_checked": true,
+   "name": "E03 one CE-A5 AGAINST at age 0: A 3, E 1/5"
+  },
+  {
+   "args": {
+    "a0": 1,
+    "ages": [
+     500
+    ],
+    "b0": 1,
+    "events": [
+     {
+      "kind": "CE-F1",
+      "resolution": "FOR"
+     }
+    ],
+    "g": {
+     "CE-F1": 1,
+     "CE-F2": 1
+    },
+    "h": {
+     "CE-A1": 2,
+     "CE-A2": 3,
+     "CE-A3": 3,
+     "CE-A4": 2,
+     "CE-A5": 3
+    },
+    "half_life": 500
+   },
+   "expected": "0.5|0|1|0.6|0.0854987973338|0.98326310584",
+   "fn": "evidence",
+   "hand_checked": true,
+   "name": "E04 a CE-F1 FOR at age 500 (one half-life): F 0.5"
+  },
+  {
+   "args": {
+    "a0": 1,
+    "ages": [
+     1000
+    ],
+    "b0": 1,
+    "events": [
+     {
+      "kind": "CE-A1",
+      "resolution": "AGAINST"
+     }
+    ],
+    "g": {
+     "CE-F1": 1,
+     "CE-F2": 1
+    },
+    "h": {
+     "CE-A1": 2,
+     "CE-A2": 3,
+     "CE-A3": 3,
+     "CE-A4": 2,
+     "CE-A5": 3
+    },
+    "half_life": 500
+   },
+   "expected": "0|0.5|1|0.4|0.0167368941596|0.914501202666",
+   "fn": "evidence",
+   "hand_checked": true,
+   "name": "E05 a CE-A1 AGAINST at age 1000 (two half-lives): A 0.5"
+  },
+  {
+   "args": {
+    "a0": 1,
+    "ages": [
+     0,
+     0
+    ],
+    "b0": 1,
+    "events": [
+     {
+      "kind": "AGENT",
+      "resolution": "FOR",
+      "weight": 0.8
+     },
+     {
+      "kind": "AGENT",
+      "resolution": "AGAINST",
+      "weight": 2
+     }
+    ],
+    "g": {
+     "CE-F1": 1,
+     "CE-F2": 1
+    },
+    "h": {
+     "CE-A1": 2,
+     "CE-A2": 3,
+     "CE-A3": 3,
+     "CE-A4": 2,
+     "CE-A5": 3
+    },
+    "half_life": 500
+   },
+   "expected": "0.8|2|2|0.375|0.052884628566|0.792219700257",
+   "fn": "evidence",
+   "hand_checked": true,
+   "name": "E06 agent events carry their own weights: FOR 0.8 and AGAINST 2 at age 0"
+  },
+  {
+   "args": {
+    "a0": 1,
+    "ages": [
+     10,
+     250,
+     0,
+     700
+    ],
+    "b0": 1,
+    "events": [
+     {
+      "kind": "AGENT",
+      "resolution": "FOR",
+      "weight": 1
+     },
+     {
+      "kind": "AGENT",
+      "resolution": "FOR",
+      "weight": 0.5
+     },
+     {
+      "kind": "CE-F2",
+      "resolution": "FOR"
+     },
+     {
+      "kind": "CE-A4",
+      "resolution": "AGAINST"
+     }
+    ],
+    "g": {
+     "CE-F1": 1,
+     "CE-F2": 1
+    },
+    "h": {
+     "CE-A1": 2,
+     "CE-A2": 3,
+     "CE-A3": 3,
+     "CE-A4": 2,
+     "CE-A5": 3
+    },
+    "half_life": 500
+   },
+   "expected": "2.33978609509|0.757858283255|4|0.655162629484|0.244457410254|0.954616419618",
+   "fn": "evidence",
+   "hand_checked": false,
+   "name": "E07 both parts: two agent FOR events, a CE-F2 FOR, a CE-A4 AGAINST, aged"
+  },
+  {
+   "args": {
+    "a0": 1,
+    "ages": [
+     0,
+     0,
+     0
+    ],
+    "b0": 1,
+    "events": [
+     {
+      "kind": "CE-F1",
+      "resolution": "NEUTRAL"
+     },
+     {
+      "kind": "CE-A2",
+      "resolution": "NEUTRAL"
+     },
+     {
+      "kind": "CE-F2",
+      "resolution": "FOR"
+     }
+    ],
+    "g": {
+     "CE-F1": 1,
+     "CE-F2": 1
+    },
+    "h": {
+     "CE-A1": 2,
+     "CE-A2": 3,
+     "CE-A3": 3,
+     "CE-A4": 2,
+     "CE-A5": 3
+    },
+    "half_life": 500
+   },
+   "expected": "1|0|1|0.666666666667|0.158113883008|0.987420882907",
+   "fn": "evidence",
+   "hand_checked": true,
+   "name": "E08 a NEUTRAL conduct event adds nothing and is not counted"
+  },
+  {
+   "args": {
+    "a0": 1,
+    "ages": [
+     0
+    ],
+    "b0": 1,
+    "events": [
+     {
+      "kind": "CE-A1",
+      "resolution": "PENDING"
+     }
+    ],
+    "g": {
+     "CE-F1": 1,
+     "CE-F2": 1
+    },
+    "h": {
+     "CE-A1": 2,
+     "CE-A2": 3,
+     "CE-A3": 3,
+     "CE-A4": 2,
+     "CE-A5": 3
+    },
+    "half_life": 500
+   },
+   "expected": "ERROR:events",
+   "fn": "evidence",
+   "hand_checked": true,
+   "name": "E09 a PENDING event is refused (resolved events only)"
+  },
+  {
+   "args": {
+    "a0": 1,
+    "ages": [
+     0
+    ],
+    "b0": 1,
+    "events": [
+     {
+      "kind": "CE-A1",
+      "resolution": "FOR"
+     }
+    ],
+    "g": {
+     "CE-F1": 1,
+     "CE-F2": 1
+    },
+    "h": {
+     "CE-A1": 2,
+     "CE-A2": 3,
+     "CE-A3": 3,
+     "CE-A4": 2,
+     "CE-A5": 3
+    },
+    "half_life": 500
+   },
+   "expected": "ERROR:events",
+   "fn": "evidence",
+   "hand_checked": true,
+   "name": "E10 a FOR resolution on an AGAINST kind is refused"
+  },
+  {
+   "args": {
+    "a0": 1,
+    "ages": [
+     0
+    ],
+    "b0": 1,
+    "events": [
+     {
+      "kind": "CE-F1",
+      "resolution": "FOR",
+      "weight": 5
+     }
+    ],
+    "g": {
+     "CE-F1": 1,
+     "CE-F2": 1
+    },
+    "h": {
+     "CE-A1": 2,
+     "CE-A2": 3,
+     "CE-A3": 3,
+     "CE-A4": 2,
+     "CE-A5": 3
+    },
+    "half_life": 500
+   },
+   "expected": "ERROR:events",
+   "fn": "evidence",
+   "hand_checked": true,
+   "name": "E11 a weight on a conduct event is refused"
+  },
+  {
+   "args": {
+    "a0": 1,
+    "ages": [
+     0
+    ],
+    "b0": 1,
+    "events": [
+     {
+      "kind": "AGENT",
+      "resolution": "FOR"
+     }
+    ],
+    "g": {
+     "CE-F1": 1,
+     "CE-F2": 1
+    },
+    "h": {
+     "CE-A1": 2,
+     "CE-A2": 3,
+     "CE-A3": 3,
+     "CE-A4": 2,
+     "CE-A5": 3
+    },
+    "half_life": 500
+   },
+   "expected": "ERROR:events",
+   "fn": "evidence",
+   "hand_checked": true,
+   "name": "E12 an agent event without a weight is refused"
+  },
+  {
+   "args": {
+    "a0": 1,
+    "ages": [],
+    "b0": 1,
+    "events": [
+     {
+      "kind": "CE-F1",
+      "resolution": "FOR"
+     }
+    ],
+    "g": {
+     "CE-F1": 1,
+     "CE-F2": 1
+    },
+    "h": {
+     "CE-A1": 2,
+     "CE-A2": 3,
+     "CE-A3": 3,
+     "CE-A4": 2,
+     "CE-A5": 3
+    },
+    "half_life": 500
+   },
+   "expected": "ERROR:events",
+   "fn": "evidence",
+   "hand_checked": true,
+   "name": "E13 ages of the wrong length are refused"
+  },
+  {
+   "args": {
+    "a0": 1,
+    "ages": [
+     -1
+    ],
+    "b0": 1,
+    "events": [
+     {
+      "kind": "CE-F1",
+      "resolution": "FOR"
+     }
+    ],
+    "g": {
+     "CE-F1": 1,
+     "CE-F2": 1
+    },
+    "h": {
+     "CE-A1": 2,
+     "CE-A2": 3,
+     "CE-A3": 3,
+     "CE-A4": 2,
+     "CE-A5": 3
+    },
+    "half_life": 500
+   },
+   "expected": "ERROR:ages",
+   "fn": "evidence",
+   "hand_checked": true,
+   "name": "E14 a negative age is refused"
+  },
+  {
+   "args": {
+    "a0": 1,
+    "ages": [
+     0
+    ],
+    "b0": 1,
+    "events": [
+     {
+      "kind": "CE-F1",
+      "resolution": "FOR"
+     }
+    ],
+    "g": {
+     "CE-F1": 1,
+     "CE-F2": 1
+    },
+    "h": {
+     "CE-A1": 2
+    },
+    "half_life": 500
+   },
+   "expected": "ERROR:weights",
+   "fn": "evidence",
+   "hand_checked": true,
+   "name": "E15 h missing a kind is refused"
+  },
+  {
+   "args": {
+    "a0": 0,
+    "ages": [
+     0
+    ],
+    "b0": 1,
+    "events": [
+     {
+      "kind": "CE-F1",
+      "resolution": "FOR"
+     }
+    ],
+    "g": {
+     "CE-F1": 1,
+     "CE-F2": 1
+    },
+    "h": {
+     "CE-A1": 2,
+     "CE-A2": 3,
+     "CE-A3": 3,
+     "CE-A4": 2,
+     "CE-A5": 3
+    },
+    "half_life": 500
+   },
+   "expected": "ERROR:prior",
+   "fn": "evidence",
+   "hand_checked": true,
+   "name": "E16 a0 of 0 is refused"
+  },
+  {
+   "args": {
+    "a0": 1,
+    "ages": [
+     0
+    ],
+    "b0": 1,
+    "events": [
+     {
+      "kind": "CE-F1",
+      "resolution": "FOR"
+     }
+    ],
+    "g": {
+     "CE-F1": 1,
+     "CE-F2": 1
+    },
+    "h": {
+     "CE-A1": 2,
+     "CE-A2": 3,
+     "CE-A3": 3,
+     "CE-A4": 2,
+     "CE-A5": 3
+    },
+    "half_life": 0
+   },
+   "expected": "ERROR:half_life",
+   "fn": "evidence",
+   "hand_checked": true,
+   "name": "E17 half_life of 0 is refused"
+  },
+  {
+   "args": {
+    "a0": 1,
+    "ages": [
+     0,
+     0,
+     0
+    ],
+    "b0": 1,
+    "events": [
+     {
+      "kind": "CE-A2",
+      "resolution": "AGAINST"
+     },
+     {
+      "kind": "CE-A4",
+      "resolution": "AGAINST"
+     },
+     {
+      "kind": "CE-F1",
+      "resolution": "FOR"
+     }
+    ],
+    "g": {
+     "CE-F1": 1,
+     "CE-F2": 1
+    },
+    "h": {
+     "CE-A1": 2,
+     "CE-A2": 3,
+     "CE-A3": 3,
+     "CE-A4": 2,
+     "CE-A5": 3
+    },
+    "half_life": 500
+   },
+   "expected": "1|5|3|0.25|0.0366925661761|0.578723197043",
+   "fn": "evidence",
+   "hand_checked": true,
+   "name": "E18 tuning weights as declared: CE-A2 3, CE-A4 2, CE-F1 1"
+  },
+  {
+   "args": {
+    "a0": 1,
+    "ages": [
+     0,
+     0
+    ],
+    "b0": 1,
+    "events": [
+     {
+      "kind": "CE-A2",
+      "resolution": "AGAINST"
+     },
+     {
+      "kind": "CE-F1",
+      "resolution": "FOR"
+     }
+    ],
+    "g": {
+     "CE-F1": 2,
+     "CE-F2": 2
+    },
+    "h": {
+     "CE-A1": 1,
+     "CE-A2": 1,
+     "CE-A3": 1,
+     "CE-A4": 1,
+     "CE-A5": 1
+    },
+    "half_life": 500
+   },
+   "expected": "2|1|2|0.6|0.194120449683|0.932414013511",
+   "fn": "evidence",
+   "hand_checked": true,
+   "name": "E19 other tuning weights: g 2, h 1"
+  },
+  {
+   "args": {
+    "a0": 1,
+    "ages": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "b0": 1,
+    "events": [
+     {
+      "kind": "AGENT",
+      "resolution": "FOR",
+      "weight": 1
+     },
+     {
+      "kind": "AGENT",
+      "resolution": "FOR",
+      "weight": 1
+     },
+     {
+      "kind": "AGENT",
+      "resolution": "FOR",
+      "weight": 1
+     },
+     {
+      "kind": "AGENT",
+      "resolution": "FOR",
+      "weight": 1
+     },
+     {
+      "kind": "AGENT",
+      "resolution": "FOR",
+      "weight": 1
+     },
+     {
+      "kind": "AGENT",
+      "resolution": "FOR",
+      "weight": 1
+     },
+     {
+      "kind": "AGENT",
+      "resolution": "FOR",
+      "weight": 1
+     },
+     {
+      "kind": "AGENT",
+      "resolution": "FOR",
+      "weight": 1
+     },
+     {
+      "kind": "AGENT",
+      "resolution": "FOR",
+      "weight": 1
+     },
+     {
+      "kind": "AGENT",
+      "resolution": "FOR",
+      "weight": 1
+     },
+     {
+      "kind": "AGENT",
+      "resolution": "FOR",
+      "weight": 1
+     },
+     {
+      "kind": "AGENT",
+      "resolution": "FOR",
+      "weight": 1
+     },
+     {
+      "kind": "AGENT",
+      "resolution": "FOR",
+      "weight": 1
+     },
+     {
+      "kind": "AGENT",
+      "resolution": "FOR",
+      "weight": 1
+     },
+     {
+      "kind": "AGENT",
+      "resolution": "FOR",
+      "weight": 1
+     },
+     {
+      "kind": "AGENT",
+      "resolution": "FOR",
+      "weight": 1
+     },
+     {
+      "kind": "AGENT",
+      "resolution": "FOR",
+      "weight": 1
+     },
+     {
+      "kind": "AGENT",
+      "resolution": "FOR",
+      "weight": 1
+     },
+     {
+      "kind": "AGENT",
+      "resolution": "FOR",
+      "weight": 1
+     },
+     {
+      "kind": "AGENT",
+      "resolution": "FOR",
+      "weight": 1
+     },
+     {
+      "kind": "AGENT",
+      "resolution": "FOR",
+      "weight": 1
+     },
+     {
+      "kind": "AGENT",
+      "resolution": "FOR",
+      "weight": 1
+     },
+     {
+      "kind": "AGENT",
+      "resolution": "FOR",
+      "weight": 1
+     },
+     {
+      "kind": "AGENT",
+      "resolution": "FOR",
+      "weight": 1
+     },
+     {
+      "kind": "AGENT",
+      "resolution": "FOR",
+      "weight": 1
+     },
+     {
+      "kind": "AGENT",
+      "resolution": "AGAINST",
+      "weight": 1
+     },
+     {
+      "kind": "AGENT",
+      "resolution": "AGAINST",
+      "weight": 1
+     },
+     {
+      "kind": "AGENT",
+      "resolution": "AGAINST",
+      "weight": 1
+     }
+    ],
+    "g": {
+     "CE-F1": 1,
+     "CE-F2": 1
+    },
+    "h": {
+     "CE-A1": 2,
+     "CE-A2": 3,
+     "CE-A3": 3,
+     "CE-A4": 2,
+     "CE-A5": 3
+    },
+    "half_life": 500
+   },
+   "expected": "25|3|28|0.866666666667|0.726484802108|0.961105168705",
+   "fn": "evidence",
+   "hand_checked": false,
+   "name": "E20 a thin file's neighbour: 25 FOR of weight 1 and 3 AGAINST of weight 1, unaged"
+  },
+  {
+   "args": {
+    "a0": 2,
+    "ages": [
+     0
+    ],
+    "b0": 2,
+    "events": [
+     {
+      "kind": "CE-F1",
+      "resolution": "FOR"
+     }
+    ],
+    "g": {
+     "CE-F1": 1,
+     "CE-F2": 1
+    },
+    "h": {
+     "CE-A1": 2,
+     "CE-A2": 3,
+     "CE-A3": 3,
+     "CE-A4": 2,
+     "CE-A5": 3
+    },
+    "half_life": 500
+   },
+   "expected": "1|0|1|0.6|0.194120449683|0.932414013511",
+   "fn": "evidence",
+   "hand_checked": true,
+   "name": "E21 another prior: a0 2, b0 2"
+  },
+  {
+   "args": {
+    "a0": 1,
+    "ages": [
+     50000
+    ],
+    "b0": 1,
+    "events": [
+     {
+      "kind": "CE-F1",
+      "resolution": "FOR"
+     }
+    ],
+    "g": {
+     "CE-F1": 1,
+     "CE-F2": 1
+    },
+    "h": {
+     "CE-A1": 2,
+     "CE-A2": 3,
+     "CE-A3": 3,
+     "CE-A4": 2,
+     "CE-A5": 3
+    },
+    "half_life": 500
+   },
+   "expected": "7.88860905221e-31|0|1|0.5|0.025|0.975",
+   "fn": "evidence",
+   "hand_checked": true,
+   "name": "E22 a very old event: age 50000 at half-life 500"
+  },
+  {
+   "args": {
+    "a0": 1,
+    "ages": [
+     0
+    ],
+    "b0": 1,
+    "events": [
+     {
+      "kind": "CE-Z",
+      "resolution": "FOR"
+     }
+    ],
+    "g": {
+     "CE-F1": 1,
+     "CE-F2": 1
+    },
+    "h": {
+     "CE-A1": 2,
+     "CE-A2": 3,
+     "CE-A3": 3,
+     "CE-A4": 2,
+     "CE-A5": 3
+    },
+    "half_life": 500
+   },
+   "expected": "ERROR:events",
+   "fn": "evidence",
+   "hand_checked": true,
+   "name": "E23 an unknown kind is refused"
+  },
+  {
+   "args": {
+    "admissions": [
+     {
+      "agent": "N1",
+      "time": 1000
+     }
+    ],
+    "retirements": [
+     {
+      "agent": "A",
+      "time": 500
+     }
+    ],
+    "states": {
+     "A": {
+      "pending": 0,
+      "state": "YELLOW"
+     },
+     "B": {
+      "pending": 0,
+      "state": "GREEN"
+     },
+     "C": {
+      "pending": 2,
+      "state": "GREEN"
+     },
+     "D": {
+      "pending": 1,
+      "state": "SUSPENDED"
+     }
+    },
+    "window": 2592000
+   },
+   "expected": "count|1\nmatch|N1|A",
+   "fn": "whitewash",
+   "hand_checked": true,
+   "name": "W01 one admission within the window of a YELLOW agent's lapse: 1"
+  },
+  {
+   "args": {
+    "admissions": [
+     {
+      "agent": "N1",
+      "time": 1000
+     }
+    ],
+    "retirements": [
+     {
+      "agent": "B",
+      "time": 500
+     }
+    ],
+    "states": {
+     "A": {
+      "pending": 0,
+      "state": "YELLOW"
+     },
+     "B": {
+      "pending": 0,
+      "state": "GREEN"
+     },
+     "C": {
+      "pending": 2,
+      "state": "GREEN"
+     },
+     "D": {
+      "pending": 1,
+      "state": "SUSPENDED"
+     }
+    },
+    "window": 2592000
+   },
+   "expected": "count|0",
+   "fn": "whitewash",
+   "hand_checked": true,
+   "name": "W02 the retired agent GREEN with nothing pending: 0"
+  },
+  {
+   "args": {
+    "admissions": [
+     {
+      "agent": "N1",
+      "time": 1000
+     }
+    ],
+    "retirements": [
+     {
+      "agent": "C",
+      "time": 500
+     }
+    ],
+    "states": {
+     "A": {
+      "pending": 0,
+      "state": "YELLOW"
+     },
+     "B": {
+      "pending": 0,
+      "state": "GREEN"
+     },
+     "C": {
+      "pending": 2,
+      "state": "GREEN"
+     },
+     "D": {
+      "pending": 1,
+      "state": "SUSPENDED"
+     }
+    },
+    "window": 2592000
+   },
+   "expected": "count|1\nmatch|N1|C",
+   "fn": "whitewash",
+   "hand_checked": true,
+   "name": "W03 GREEN with a PENDING item: 1"
+  },
+  {
+   "args": {
+    "admissions": [
+     {
+      "agent": "N1",
+      "time": 2592500
+     }
+    ],
+    "retirements": [
+     {
+      "agent": "A",
+      "time": 500
+     }
+    ],
+    "states": {
+     "A": {
+      "pending": 0,
+      "state": "YELLOW"
+     },
+     "B": {
+      "pending": 0,
+      "state": "GREEN"
+     },
+     "C": {
+      "pending": 2,
+      "state": "GREEN"
+     },
+     "D": {
+      "pending": 1,
+      "state": "SUSPENDED"
+     }
+    },
+    "window": 2592000
+   },
+   "expected": "count|1\nmatch|N1|A",
+   "fn": "whitewash",
+   "hand_checked": true,
+   "name": "W04 exactly the window apart: 1 (inclusive)"
+  },
+  {
+   "args": {
+    "admissions": [
+     {
+      "agent": "N1",
+      "time": 2592501
+     }
+    ],
+    "retirements": [
+     {
+      "agent": "A",
+      "time": 500
+     }
+    ],
+    "states": {
+     "A": {
+      "pending": 0,
+      "state": "YELLOW"
+     },
+     "B": {
+      "pending": 0,
+      "state": "GREEN"
+     },
+     "C": {
+      "pending": 2,
+      "state": "GREEN"
+     },
+     "D": {
+      "pending": 1,
+      "state": "SUSPENDED"
+     }
+    },
+    "window": 2592000
+   },
+   "expected": "count|0",
+   "fn": "whitewash",
+   "hand_checked": true,
+   "name": "W05 one second past the window: 0"
+  },
+  {
+   "args": {
+    "admissions": [
+     {
+      "agent": "N1",
+      "time": 400
+     }
+    ],
+    "retirements": [
+     {
+      "agent": "A",
+      "time": 500
+     }
+    ],
+    "states": {
+     "A": {
+      "pending": 0,
+      "state": "YELLOW"
+     },
+     "B": {
+      "pending": 0,
+      "state": "GREEN"
+     },
+     "C": {
+      "pending": 2,
+      "state": "GREEN"
+     },
+     "D": {
+      "pending": 1,
+      "state": "SUSPENDED"
+     }
+    },
+    "window": 2592000
+   },
+   "expected": "count|1\nmatch|N1|A",
+   "fn": "whitewash",
+   "hand_checked": true,
+   "name": "W06 the admission before the exit, inside the window: 1"
+  },
+  {
+   "args": {
+    "admissions": [
+     {
+      "agent": "N1",
+      "time": 600
+     },
+     {
+      "agent": "N2",
+      "time": 700
+     }
+    ],
+    "retirements": [
+     {
+      "agent": "A",
+      "time": 500
+     }
+    ],
+    "states": {
+     "A": {
+      "pending": 0,
+      "state": "YELLOW"
+     },
+     "B": {
+      "pending": 0,
+      "state": "GREEN"
+     },
+     "C": {
+      "pending": 2,
+      "state": "GREEN"
+     },
+     "D": {
+      "pending": 1,
+      "state": "SUSPENDED"
+     }
+    },
+    "window": 2592000
+   },
+   "expected": "count|2\nmatch|N1|A\nmatch|N2|A",
+   "fn": "whitewash",
+   "hand_checked": true,
+   "name": "W07 two admissions, one troubled exit: each counts once: 2"
+  },
+  {
+   "args": {
+    "admissions": [
+     {
+      "agent": "N1",
+      "time": 600
+     }
+    ],
+    "retirements": [
+     {
+      "agent": "D",
+      "time": 550
+     },
+     {
+      "agent": "A",
+      "time": 500
+     }
+    ],
+    "states": {
+     "A": {
+      "pending": 0,
+      "state": "YELLOW"
+     },
+     "B": {
+      "pending": 0,
+      "state": "GREEN"
+     },
+     "C": {
+      "pending": 2,
+      "state": "GREEN"
+     },
+     "D": {
+      "pending": 1,
+      "state": "SUSPENDED"
+     }
+    },
+    "window": 2592000
+   },
+   "expected": "count|1\nmatch|N1|D",
+   "fn": "whitewash",
+   "hand_checked": true,
+   "name": "W08 one admission, two troubled exits: counts once, the first named"
+  },
+  {
+   "args": {
+    "admissions": [
+     {
+      "agent": "A",
+      "time": 600
+     }
+    ],
+    "retirements": [
+     {
+      "agent": "A",
+      "time": 500
+     }
+    ],
+    "states": {
+     "A": {
+      "pending": 0,
+      "state": "YELLOW"
+     },
+     "B": {
+      "pending": 0,
+      "state": "GREEN"
+     },
+     "C": {
+      "pending": 2,
+      "state": "GREEN"
+     },
+     "D": {
+      "pending": 1,
+      "state": "SUSPENDED"
+     }
+    },
+    "window": 2592000
+   },
+   "expected": "count|0",
+   "fn": "whitewash",
+   "hand_checked": true,
+   "name": "W09 the same account retired and re-admitted: not another agent: 0"
+  },
+  {
+   "args": {
+    "admissions": [
+     {
+      "agent": "N1",
+      "time": 600
+     }
+    ],
+    "retirements": [],
+    "states": {
+     "A": {
+      "pending": 0,
+      "state": "YELLOW"
+     },
+     "B": {
+      "pending": 0,
+      "state": "GREEN"
+     },
+     "C": {
+      "pending": 2,
+      "state": "GREEN"
+     },
+     "D": {
+      "pending": 1,
+      "state": "SUSPENDED"
+     }
+    },
+    "window": 2592000
+   },
+   "expected": "count|0",
+   "fn": "whitewash",
+   "hand_checked": true,
+   "name": "W10 no retirements: 0"
+  },
+  {
+   "args": {
+    "admissions": [],
+    "retirements": [
+     {
+      "agent": "A",
+      "time": 500
+     }
+    ],
+    "states": {
+     "A": {
+      "pending": 0,
+      "state": "YELLOW"
+     },
+     "B": {
+      "pending": 0,
+      "state": "GREEN"
+     },
+     "C": {
+      "pending": 2,
+      "state": "GREEN"
+     },
+     "D": {
+      "pending": 1,
+      "state": "SUSPENDED"
+     }
+    },
+    "window": 2592000
+   },
+   "expected": "count|0",
+   "fn": "whitewash",
+   "hand_checked": true,
+   "name": "W11 no admissions: 0"
+  },
+  {
+   "args": {
+    "admissions": [
+     {
+      "agent": "N1",
+      "time": 600
+     }
+    ],
+    "retirements": [
+     {
+      "agent": "Z",
+      "time": 500
+     }
+    ],
+    "states": {
+     "A": {
+      "pending": 0,
+      "state": "YELLOW"
+     },
+     "B": {
+      "pending": 0,
+      "state": "GREEN"
+     },
+     "C": {
+      "pending": 2,
+      "state": "GREEN"
+     },
+     "D": {
+      "pending": 1,
+      "state": "SUSPENDED"
+     }
+    },
+    "window": 2592000
+   },
+   "expected": "ERROR:states",
+   "fn": "whitewash",
+   "hand_checked": true,
+   "name": "W12 a retired agent without a state entry is refused"
+  },
+  {
+   "args": {
+    "admissions": [
+     {
+      "agent": "N1",
+      "time": 600
+     }
+    ],
+    "retirements": [
+     {
+      "agent": "A",
+      "time": 500
+     }
+    ],
+    "states": {
+     "A": {
+      "pending": 0,
+      "state": "YELLOW"
+     },
+     "B": {
+      "pending": 0,
+      "state": "GREEN"
+     },
+     "C": {
+      "pending": 2,
+      "state": "GREEN"
+     },
+     "D": {
+      "pending": 1,
+      "state": "SUSPENDED"
+     }
+    },
+    "window": -1
+   },
+   "expected": "ERROR:window",
+   "fn": "whitewash",
+   "hand_checked": true,
+   "name": "W13 a negative window is refused"
+  },
+  {
+   "args": {
+    "admissions": [
+     {
+      "agent": "N1",
+      "time": 500
+     },
+     {
+      "agent": "N2",
+      "time": 501
+     }
+    ],
+    "retirements": [
+     {
+      "agent": "A",
+      "time": 500
+     }
+    ],
+    "states": {
+     "A": {
+      "pending": 0,
+      "state": "YELLOW"
+     },
+     "B": {
+      "pending": 0,
+      "state": "GREEN"
+     },
+     "C": {
+      "pending": 2,
+      "state": "GREEN"
+     },
+     "D": {
+      "pending": 1,
+      "state": "SUSPENDED"
+     }
+    },
+    "window": 0
+   },
+   "expected": "count|1\nmatch|N1|A",
+   "fn": "whitewash",
+   "hand_checked": true,
+   "name": "W14 a window of 0: only the same second counts"
+  },
+  {
+   "args": {
+    "admissions": [
+     {
+      "agent": "N1"
+     }
+    ],
+    "retirements": [
+     {
+      "agent": "A",
+      "time": 500
+     }
+    ],
+    "states": {
+     "A": {
+      "pending": 0,
+      "state": "YELLOW"
+     },
+     "B": {
+      "pending": 0,
+      "state": "GREEN"
+     },
+     "C": {
+      "pending": 2,
+      "state": "GREEN"
+     },
+     "D": {
+      "pending": 1,
+      "state": "SUSPENDED"
+     }
+    },
+    "window": 2592000
+   },
+   "expected": "ERROR:lists",
+   "fn": "whitewash",
+   "hand_checked": true,
+   "name": "W15 an admission missing its time is refused"
+  },
+  {
+   "args": {
+    "admissions": [
+     {
+      "agent": "N1",
+      "time": 600
+     }
+    ],
+    "retirements": [
+     {
+      "agent": "A",
+      "time": 500
+     }
+    ],
+    "states": {
+     "A": {
+      "pending": 0,
+      "state": "RED"
+     }
+    },
+    "window": 2592000
+   },
+   "expected": "ERROR:states",
+   "fn": "whitewash",
+   "hand_checked": true,
+   "name": "W16 a bad state value is refused"
+  },
+  {
+   "args": {
+    "admissions": [
+     {
+      "agent": "N|1",
+      "time": 600
+     }
+    ],
+    "retirements": [
+     {
+      "agent": "αβ",
+      "time": 500
+     }
+    ],
+    "states": {
+     "αβ": {
+      "pending": 0,
+      "state": "ORANGE"
+     }
+    },
+    "window": 2592000
+   },
+   "expected": "count|1\nmatch|N\\|1|αβ",
+   "fn": "whitewash",
+   "hand_checked": true,
+   "name": "W17 agent names with | and unicode, escaped in the render"
+  },
+  {
+   "args": {
+    "admissions": [
+     {
+      "agent": "N1",
+      "time": 100
+     },
+     {
+      "agent": "N2",
+      "time": 5000000
+     },
+     {
+      "agent": "N3",
+      "time": 2000000
+     }
+    ],
+    "retirements": [
+     {
+      "agent": "A",
+      "time": 200
+     },
+     {
+      "agent": "B",
+      "time": 4999999
+     },
+     {
+      "agent": "C",
+      "time": 1000000
+     }
+    ],
+    "states": {
+     "A": {
+      "pending": 0,
+      "state": "YELLOW"
+     },
+     "B": {
+      "pending": 0,
+      "state": "GREEN"
+     },
+     "C": {
+      "pending": 2,
+      "state": "GREEN"
+     },
+     "D": {
+      "pending": 1,
+      "state": "SUSPENDED"
+     }
+    },
+    "window": 2592000
+   },
+   "expected": "count|2\nmatch|N1|A\nmatch|N3|A",
+   "fn": "whitewash",
+   "hand_checked": true,
+   "name": "W18 mixed: three admissions, three exits, two count"
+  },
+  {
+   "args": {
+    "admissions": [
+     {
+      "agent": "N1",
+      "time": 600
+     }
+    ],
+    "retirements": [
+     {
+      "agent": "A",
+      "time": 500
+     }
+    ],
+    "states": [],
+    "window": 2592000
+   },
+   "expected": "ERROR:states",
+   "fn": "whitewash",
+   "hand_checked": true,
+   "name": "W19 states not an object is refused"
+  },
+  {
+   "args": {
+    "admissions": [
+     {
+      "agent": "",
+      "time": 600
+     }
+    ],
+    "retirements": [
+     {
+      "agent": "A",
+      "time": 500
+     }
+    ],
+    "states": {
+     "A": {
+      "pending": 0,
+      "state": "YELLOW"
+     },
+     "B": {
+      "pending": 0,
+      "state": "GREEN"
+     },
+     "C": {
+      "pending": 2,
+      "state": "GREEN"
+     },
+     "D": {
+      "pending": 1,
+      "state": "SUSPENDED"
+     }
+    },
+    "window": 2592000
+   },
+   "expected": "ERROR:lists",
+   "fn": "whitewash",
+   "hand_checked": true,
+   "name": "W20 an empty agent name is refused"
+  }
+ ],
+ "corpus": "sponsor",
+ "version": "0.1.0"
+}

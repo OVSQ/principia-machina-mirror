@@ -1,0 +1,220 @@
+{{DISPLAYTITLE:Classical logic from choice}}
+{{Plebeian|Lean theorem prover/Explainers/What the axioms are}}
+{{Lean theorem prover map}}
+
+The rules of Lean's type theory, taken alone, are constructive: to assert <code>p ∨ ¬p</code>
+is to know which of the two disjuncts holds, and for an arbitrary <code>p</code> that is not
+known.<ref name="tpil-logic">Jeremy Avigad, Leonardo de Moura, Soonho Kong and Sebastian Ullrich, ''Theorem Proving in Lean 4'', chapter 3 "Propositions and Proofs", §3.5 "Classical Logic". https://lean-lang.org/theorem_proving_in_lean4/Propositions-and-Proofs/</ref> Lean does not add excluded middle as an axiom. It proves it, as the theorem
+<code>Classical.em</code>, from the axiom of choice together with propositional and function
+extensionality. The argument is known as '''Diaconescu's theorem'''. This page follows the
+proof as Lean's core library carries it, then the decidability of every proposition that
+follows from it, the <code>noncomputable</code> marker, and what is lost computationally.
+
+== The statement ==
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+#check @Classical.em
+#print axioms Classical.em
+</pre>
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+Classical.em : ∀ (p : Prop), p ∨ ¬p
+'Classical.em' depends on axioms: [propext, Classical.choice, Quot.sound]
+</pre>
+
+All three axioms of [[Lean theorem prover/Foundations/The three axioms|the three axioms]]
+appear. <code>Quot.sound</code> enters through <code>funext</code>, which Lean proves from
+quotients.
+
+== The argument ==
+
+Fix a proposition <math>p</math>. Define two predicates on propositions:
+
+:<math>U(x) \;:\equiv\; (x = \mathrm{True}) \lor p \qquad\qquad V(x) \;:\equiv\; (x = \mathrm{False}) \lor p</math>
+
+Each is inhabited: <math>U(\mathrm{True})</math> and <math>V(\mathrm{False})</math> hold by
+their left disjuncts. Choice therefore yields a proposition <math>u</math> with
+<math>U(u)</math> and a proposition <math>v</math> with <math>V(v)</math>. Two facts follow.
+
+'''First, either <math>u \neq v</math> or <math>p</math>.''' Each of <math>U(u)</math> and
+<math>V(v)</math> is a disjunction, giving four cases. If either right disjunct holds,
+<math>p</math> holds. In the remaining case <math>u = \mathrm{True}</math> and
+<math>v = \mathrm{False}</math>, and since <math>\mathrm{True} \neq \mathrm{False}</math>,
+<math>u \neq v</math>. This step is a case analysis on proofs of disjunctions, and it
+produces a proposition, so it is permitted.
+
+'''Second, <math>p</math> implies <math>u = v</math>.''' If <math>p</math> holds, both
+predicates are true of every <math>x</math>, so <math>U(x)</math> and <math>V(x)</math> are
+equivalent for each <math>x</math>. Propositional extensionality makes them equal for each
+<math>x</math>, and function extensionality makes <math>U = V</math>. The choice function
+applied to equal predicates gives equal results, so <math>u = v</math>.
+
+Combining the two: if <math>u \neq v</math>, the second fact gives <math>\neg p</math>;
+otherwise <math>p</math>. Either way <math>p \lor \neg p</math>.
+
+The core library's proof, in <code>Init/Classical.lean</code>, follows exactly these
+steps.<ref name="classical">Lean 4 source, file <code>src/Init/Classical.lean</code>, version 4.34.1: <code>Classical.em</code> ("Diaconescu's theorem"), <code>Classical.choose</code> and <code>Classical.propDecidable</code>. Apache License 2.0. https://github.com/leanprover/lean4/blob/v4.34.1/src/Init/Classical.lean</ref> Below is a copy, lightly condensed, in which one case is closed
+by an explicit term where the original calls <code>simp</code>:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+open Classical in
+theorem em' (p : Prop) : p ∨ ¬p :=
+  let U (x : Prop) : Prop := x = True ∨ p
+  let V (x : Prop) : Prop := x = False ∨ p
+  have exU : ∃ x, U x := ⟨True, Or.inl rfl⟩
+  have exV : ∃ x, V x := ⟨False, Or.inl rfl⟩
+  let u : Prop := choose exU
+  let v : Prop := choose exV
+  have u_def : U u := choose_spec exU
+  have v_def : V v := choose_spec exV
+  have not_uv_or_p : u ≠ v ∨ p :=
+    match u_def, v_def with
+    | Or.inr h, _ => Or.inr h
+    | _, Or.inr h => Or.inr h
+    | Or.inl hut, Or.inl hvf =>
+      Or.inl fun huv => true_ne_false (hut.symm.trans (huv.trans hvf))
+  have p_implies_uv : p → u = v := fun hp =>
+    have hpred : U = V :=
+      funext fun _ => propext ⟨fun _ => Or.inr hp, fun _ => Or.inr hp⟩
+    have h₀ : ∀ exU exV, @choose _ U exU = @choose _ V exV := by
+      rw [hpred]; intros; rfl
+    h₀ _ _
+  match not_uv_or_p with
+  | Or.inl hne => Or.inr (mt p_implies_uv hne)
+  | Or.inr h => Or.inl h
+
+#print axioms em'
+</pre>
+
+The last line prints <code>'em'' depends on axioms: [propext, Classical.choice, Quot.sound]</code>.
+The step <code>h₀</code> is where the choice function is shown to respect equality of
+predicates. After rewriting <code>U</code> to <code>V</code>, the two sides are
+<code>choose</code> applied to the same predicate and to two proofs of the same
+proposition, and <code>rfl</code> closes the goal because those proofs are definitionally
+equal.
+
+== Where the strength comes from ==
+
+The essential ingredient is not choice alone but choice combined with extensionality.
+Constructive systems such as Bishop's constructive analysis and Martin-Löf's type theory
+affirm a form of the axiom of choice, the statement that
+<math>\forall x\, \exists y\, \phi(x,y)</math> gives a function <math>f</math> with
+<math>\forall x\, \phi(x, f(x))</math>, without affirming excluded middle. Bell's survey
+explains why there is no conflict. On a constructive reading that choice principle follows
+from what existence means. The derivation of excluded middle needs more: besides choice, it
+uses a comprehension principle and the extensionality of functions on predicates, so a
+constructive system that affirms choice but not excluded middle must give up one of the two;
+Bell finds a constructive justification for comprehension but none for extensionality.<ref name="sep">John L. Bell, "The Axiom of Choice", ''Stanford Encyclopedia of Philosophy'', substantive revision of 10 December 2021, §5 "The Axiom of Choice and Logic" and note 15. https://plato.stanford.edu/entries/axiom-choice/</ref> Lean asserts both. Its <code>Classical.choice</code> is a single
+global choice function on all inhabited types, and <code>propext</code> with
+<code>funext</code> makes it extensional. Once a choice function must give equal answers on
+equivalent predicates, it can be made to decide <math>p</math>.
+
+Diaconescu first derived excluded middle from the axiom of choice, in 1975, in a
+category-theoretic setting.<ref name="diaconescu">Radu Diaconescu, "Axiom of choice and complementation", ''Proceedings of the American Mathematical Society'' 51 (1975), 176–178. https://doi.org/10.1090/S0002-9939-1975-0373893-X</ref><ref name="sep" /> Goodman and Myhill's
+note of 1978 is titled "Choice implies excluded middle".<ref name="goodman-myhill">Nicolas D. Goodman and John Myhill, "Choice implies excluded middle", ''Zeitschrift für mathematische Logik und Grundlagen der Mathematik'' 24 (1978), 461. https://doi.org/10.1002/malq.19780242514</ref> Bell
+traces the idea of the proof presented above, with two predicates and an extensional choice function,
+to Goodman and Myhill, whose note built on Diaconescu's result.<ref name="sep" /> Lean's documentation names the theorem after
+Diaconescu.<ref name="classical" />
+
+== Decidable and propDecidable ==
+
+The disjunction <code>p ∨ ¬p</code> is a proposition, and an inductive proposition with two
+constructors can be eliminated only into propositions. A program therefore cannot branch on it. For
+branching Lean uses a different type, <code>Decidable p</code>, whose two constructors carry
+the same information as the two disjuncts but which lives in <code>Type</code>:<ref name="tpil">Jeremy Avigad, Leonardo de Moura, Soonho Kong and Sebastian Ullrich, ''Theorem Proving in Lean 4'', chapter 12 "Axioms and Computation", the introduction, §12.5 "Choice" and §12.6 "The Law of the Excluded Middle". https://lean-lang.org/theorem_proving_in_lean4/Axioms-and-Computation/</ref>
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+#print Decidable
+#check @Classical.propDecidable
+#eval decide (2 &lt; 3)
+example : decide (2 &lt; 3) = true := rfl
+</pre>
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+inductive Decidable : Prop → Type
+number of parameters: 1
+constructors:
+Decidable.isFalse : {p : Prop} → ¬p → Decidable p
+Decidable.isTrue : {p : Prop} → p → Decidable p
+Classical.propDecidable : (a : Prop) → Decidable a
+true
+</pre>
+
+An <code>if</code> expression asks for a <code>Decidable</code> instance of its condition.
+For <code>2 &lt; 3</code> the instance is an algorithm on natural numbers, so
+<code>decide (2 &lt; 3)</code> evaluates to <code>true</code>, both in compiled code and by
+<code>rfl</code>. <code>Classical.propDecidable</code> supplies an instance for every
+proposition. It is defined by applying <code>Classical.choice</code> to the fact, given by
+<code>Classical.em</code>, that <code>Decidable a</code> is inhabited. It is a scoped
+instance of low priority, active only after <code>open Classical</code>, so that where an
+ordinary instance also applies, the ordinary one is tried first.<ref name="classical" />
+
+== Noncomputable definitions ==
+
+A definition that uses the classical instance to produce data cannot be compiled, and Lean
+requires it to say so:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+open Classical in
+noncomputable def classify (p : Prop) : Bool := if p then true else false
+
+theorem classify_true : classify True = true := by
+  simp [classify]
+
+#print axioms classify
+#print axioms classify_true
+#reduce classify True
+</pre>
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+'classify' depends on axioms: [propext, Classical.choice, Quot.sound]
+'classify_true' depends on axioms: [propext, Classical.choice, Quot.sound]
+Decidable.rec (fun h => false) (fun h => true) (Classical.choice ⋯)
+</pre>
+
+Without the marker the same definition is refused:
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+open Classical in
+def classify' (p : Prop) : Bool := if p then true else false
+</pre>
+
+Lean reports: <code>failed to compile definition, consider marking it as 'noncomputable'
+because it depends on 'propDecidable', which is 'noncomputable'</code>.
+
+== What is lost ==
+
+Three things are lost when data is obtained from choice, and one is kept.
+
+'''Evaluation.''' <code>#reduce classify True</code> stops at
+<code>Classical.choice</code>, an axiom with nothing to unfold. The term is a closed
+<code>Bool</code> that is neither <code>true</code> nor <code>false</code> by computation,
+although <code>classify_true</code> proves that it equals <code>true</code>. ''Theorem Proving in Lean 4'' describes a
+"computationally pure" fragment of Lean in which every closed term of type
+<code>Nat</code> reduces to a numeral; a definition that uses choice for data lies outside
+it.<ref name="tpil" />
+
+'''Compilation.''' There is no code to generate for an axiom, so such a definition cannot
+be run, as the refusal above shows.
+
+'''Information.''' A classical existence proof does not say how to find the object, and a
+function defined with <code>Classical.choose</code> does not say which object it picked.
+''Theorem Proving in Lean 4'' illustrates this with a left inverse of an injective function:
+a function from a classical point of view, unacceptable from a constructive one, since
+there is in general no way to implement it.<ref name="tpil" />
+
+'''What is kept''' is classical reasoning in proofs. Proofs are erased when Lean compiles a
+definition, so excluded middle, proof by contradiction and the other classical principles
+may be used freely to establish properties of programs that themselves compute.
+''Theorem Proving in Lean 4'' puts the line exactly there: classical principles are
+compatible with code generation so long as they are not used to manufacture data.<ref name="tpil" />
+The <code>noncomputable</code> marker, not the axiom list, shows on which side of the line a
+definition falls: a theorem proved with excluded middle lists <code>Classical.choice</code>
+among its axioms, yet the programs it is about still run.
+
+== Next ==
+
+[[Lean theorem prover/Foundations/Proof irrelevance and subsingleton elimination|Proof irrelevance and subsingleton elimination]]
+explains why a proof of <code>p ∨ ¬p</code> cannot be used to branch, while a proof of an
+equation can be used to cast.
+
+== References ==
+
+<references />

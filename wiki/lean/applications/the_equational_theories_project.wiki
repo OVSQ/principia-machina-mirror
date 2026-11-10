@@ -1,0 +1,75 @@
+{{DISPLAYTITLE:The equational theories project}}
+{{Lean theorem prover map}}
+The '''equational theories project''' was an online collaboration, proposed by Terence Tao in September 2024, to settle every implication between 4,694 simple algebraic laws. It ended with all 22,028,942 implications decided, on the strength of proofs and refutations checked by Lean.<ref name="etp">Matthew Bolan, Joachim Breitner, Jose Brox, et al. (34 authors, including Terence Tao), "The Equational Theories Project: Advancing Collaborative Mathematical Research at Scale", arXiv:2512.07087, December 2025 (revised 16 December 2025). https://arxiv.org/abs/2512.07087</ref> It was also an experiment in how mathematicians, automated provers and a proof checker can share one piece of research. This page describes the question, the scale, the tools and the result.
+
+== The question ==
+
+A '''magma''' is a set with one binary operation, written here <math>x \diamond y</math>, and no further rules. An '''equational law''' is an identity that the operation may satisfy for all values of its variables: the commutative law <math>x \diamond y = y \diamond x</math> is one, the associative law another. One law '''implies''' another when every magma that satisfies the first also satisfies the second.<ref name="etp" />
+
+Tao proposed the project on his blog on 25 September 2024. He suggested taking every law in which the operation appears at most four times, up to renaming of variables and the symmetry of equality, and finding out which of them imply which.<ref name="proposal">Terence Tao, "A pilot project in universal algebra to explore new ways to collaborate and use machine assistance?", ''What's new'' (blog), 25 September 2024. https://terrytao.wordpress.com/2024/09/25/a-pilot-project-in-universal-algebra-to-explore-new-ways-to-collaborate-and-use-machine-assistance/</ref> There are 4,694 such laws, so there are <math>4694 \times 4693 = 22{,}028{,}942</math> ordered pairs of distinct laws to decide. No algorithm can decide such implications in general, and even for short laws some known implications had needed long computer-assisted proofs. A second goal was added as the work went on: to decide the same implications for finite magmas only, where the answers can differ.<ref name="etp" />
+
+== How it was done ==
+
+Each claim had to be entered as Lean code, so that it could be checked mechanically rather than read by a moderator; the paper notes that review by people, as in earlier online collaborations, would not have scaled to over twenty million statements.<ref name="etp" /> Contributors claimed tasks from a shared dashboard, and every submission was checked automatically to compile.<ref name="etp" />
+
+Two kinds of result were needed. An implication is proved by deriving the second law from the first. A non-implication is refuted by exhibiting a magma that satisfies the first law but not the second. Both kinds fit in a few lines of Lean. The block below defines a magma and states three laws, proves that the law <math>x = y \diamond z</math> implies that all elements are equal, and refutes the claim that commutativity implies associativity with a two-element magma, the operation "not both" on the truth values:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+class Magma (G : Type) where
+  op : G → G → G
+
+infixl:65 " ◇ " => Magma.op
+
+def SingletonLaw (G : Type) [Magma G] : Prop := ∀ x y : G, x = y
+def CommutativeLaw (G : Type) [Magma G] : Prop := ∀ x y : G, x ◇ y = y ◇ x
+def AssociativeLaw (G : Type) [Magma G] : Prop := ∀ x y z : G, x ◇ (y ◇ z) = (x ◇ y) ◇ z
+def CollapseLaw (G : Type) [Magma G] : Prop := ∀ x y z : G, x = y ◇ z
+
+/-- An implication: the law x = y ◇ z forces every element to equal every other. -/
+theorem collapse_implies_singleton (G : Type) [Magma G] (h : CollapseLaw G) :
+    SingletonLaw G := by
+  intro a b
+  calc a = a ◇ a := h a a a
+    _ = b := (h b a a).symm
+
+/-- A refutation: on the two truth values, "not both" is commutative but not associative. -/
+instance nand : Magma Bool where
+  op a b := !(a &amp;&amp; b)
+
+theorem commutative_not_implies_associative :
+    ∃ (G : Type) (_ : Magma G), CommutativeLaw G ∧ ¬ AssociativeLaw G := by
+  refine ⟨Bool, nand, ?_, ?_⟩
+  · intro x y
+    cases x &lt;;> cases y &lt;;> rfl
+  · intro h
+    exact absurd (h true true false) (by decide)
+
+#print axioms collapse_implies_singleton
+#print axioms commutative_not_implies_associative
+</pre>
+
+Lean 4.34.1 accepts both theorems and reports that neither depends on any axioms. The project's own code worked the same way at scale, with a custom magma class and a command that generated each numbered law.<ref name="etp" />
+
+Most of the work was done by machines, and most of the machine output was not trusted directly. Tao's proposal already named the automated prover Prover9 for implications and the model finder Mace4 for counterexamples, with their output to be converted into Lean.<ref name="proposal" /> In the event the project used several automated theorem provers, among them Vampire, and SAT solvers such as Kissat. For proofs found by Vampire, contributors implemented its inference steps as Lean tactics, so that each proof could be replayed and checked by Lean. Rules of order and of duality cut the work sharply: only 10,657 of the true implications needed a direct proof, the rest following from those.<ref name="etp" />
+
+Large language models played a small part. They helped write code for the project's user interfaces and completed Lean code during formalisation, and in one case a chat model guessed a complete rewriting system for a law, which was then verified formally. For the hardest implications, the authors found that such models offered nothing beyond what the human participants could already propose.<ref name="etp" />
+
+== The result ==
+
+The project reached its primary goal on 14 April 2025. Counting each law's implication of itself, 8,178,279 of the 22,033,636 possible implications (37.12 per cent) are true and 13,855,357 (62.88 per cent) are false. Lean checked a generating set of 10,657 proofs and 586,925 refutations; the step from these to the whole graph, by transitivity and duality, is carried out by programs outside Lean, though the authors note that it could in principle be done inside it. Some refutations needed new constructions; the hardest single one took several months and just over 4,000 lines of Lean from several contributors.<ref name="etp" />
+
+For finite magmas, all but two implications were settled, one and its mirror image under reversing the operation. The authors were unable to prove or refute that pair and tentatively conjecture that the implication is false.<ref name="etp" /> The work also turned up new structures. Finite magmas satisfying one of the laws, which the authors call weak central groupoids, have been observed always to have <math>n^2</math> or <math>2n^2</math> elements, a pattern they report without proof.<ref name="etp" />
+
+The account of the project was posted in December 2025 as a paper with 34 authors.<ref name="etp" /> It reports the mathematics and also the organisation: how tasks were assigned, how automated output was turned into checked proofs, and how a proof checker let many people contribute to one result without each contribution being read by a person.
+
+== What it showed ==
+
+The project took the method of [[Lean theorem prover/Applications/The polynomial Freiman-Ruzsa conjecture|the polynomial Freiman–Ruzsa formalisation]] to a far larger number of statements, citing that project as its precedent and automating the assignment of tasks that had been done by hand there.<ref name="etp" /> Lean's role was that of a common referee. A human proof, a proof replayed from an automated prover and a counterexample found by a SAT solver all entered on the same terms: they counted once Lean had checked them. What Lean cannot check is whether the laws were stated as intended, which is the subject of [[Lean theorem prover/Explainers/Stating the right thing|Stating the right thing]].
+
+== Next ==
+
+* [[Lean theorem prover/Applications/Software verification|Software verification]], where the same checker is applied to programs.
+* [[Lean theorem prover/Explainers/Automation and its limits|Automation and its limits]], on what automated tactics can and cannot do.
+
+== References ==
+<references />

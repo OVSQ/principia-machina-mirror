@@ -1,0 +1,108 @@
+{{DISPLAYTITLE:Where the light's energy goes}}
+{{Noether's theorems map}}
+
+''Mathematical counterpart: [[Noether's theorems/Applications/Photon energy in an expanding universe|Photon energy in an expanding universe]].''
+
+Light from a distant galaxy arrives redder than it left. Redder means less
+energetic. So where did the energy go?
+
+The honest answer is that the question is malformed, and seeing why is the best
+single illustration of what these theorems actually claim.
+
+== The universe is expanding ==
+
+Distances between galaxies grow. Not because the galaxies are flying apart through
+space, but because the space between them is getting bigger. There is a number
+that says how much bigger — call it the stretch factor — and it increases with
+time.
+
+Now ask which symmetries this universe has, in the sense of
+[[Noether's theorems/Explainers/Symmetries of a curved space|the curved space
+page]]: which directions can you slide it along without distorting anything?
+
+'''Sliding through space: yes.''' The universe looks the same everywhere. Move to
+a different place and nothing about the geometry has changed.
+
+'''Sliding through time: no.''' Move to a different time and the stretch factor is
+different, so distances are different. The geometry is not the same. Time
+translation is not a symmetry of an expanding universe.
+
+== So there is no conserved energy ==
+
+That is the whole answer, and it is one sentence.
+
+[[Noether's theorems/Explainers/Why energy and momentum are conserved|Energy is
+conserved because time is uniform]]. In an expanding universe time is not uniform —
+the rules governing how far apart things are genuinely differ between one era and
+the next. The condition fails, so the conclusion does not follow.
+
+Nothing broke. A conditional statement was applied to a case that does not meet
+its condition, and it correctly returned nothing.
+
+== What is conserved, and what it implies ==
+
+Space is still symmetric, so something does survive.
+
+What survives is momentum measured against the '''grid''' — against the coordinate
+labels of the expanding universe, rather than against physical distance. That
+quantity is exactly constant, by the result on the curved space page: one symmetry
+direction, one conserved quantity along every path.
+
+But physical distances are grid distances multiplied by the stretch factor. So
+physical momentum is grid momentum divided by the stretch factor, and as the
+universe grows, physical momentum falls in proportion.
+
+For light, energy and momentum are the same thing up to the speed of light. So the
+energy of a photon falls in inverse proportion to the stretch factor. Double the
+size of the universe and every photon in it has half the energy.
+
+'''That is the redshift, derived from a symmetry count and nothing else.'''
+
+== Where the energy goes ==
+
+Nowhere.
+
+The instinct is to look for it — in the gravitational field, in the expansion, in
+some reservoir. That search assumes energy must be conserved and asks where it
+went. The theorem says the assumption was the mistake.
+
+It is worth sitting with how unusual that is as a piece of physics. Ordinarily,
+when a quantity seems to disappear, you look harder. Here the theorem licenses you
+to stop looking, and to say with confidence that there is nothing to find, because
+the symmetry that would have guaranteed the conservation is demonstrably absent.
+
+== Not the same as the gravity problem ==
+
+On
+[[Noether's theorems/Explainers/Why gravity has no local energy|the gravity page]]
+energy conservation also fails, and for a completely different reason: the symmetry
+is present but swallowed by a local one, so the conservation law exists and is
+empty.
+
+Here the symmetry is simply not there. Same theory, two unrelated failures, and
+they are constantly conflated.
+
+== A check you can do ==
+
+The result has a consequence that can be tested against something else you may
+know, which is a good sign it is not sleight of hand.
+
+Ordinary matter thins out as the universe expands. Double the size and the same
+particles occupy eight times the volume, so the density of matter falls by a
+factor of eight — the cube of the stretch.
+
+Radiation thins out faster. Double the size and the density of radiation falls by
+a factor of sixteen: the same cube from the volume, and '''one extra factor from
+the redshift''', because each photon also carries less energy than before.
+
+Those two rates are different, and the difference is exactly the effect derived on
+this page. It is not a separate fact about light; it is the same fact, showing up
+in the bookkeeping of the whole universe.
+
+It also has a consequence for history. Going backwards in time, radiation gains on
+matter, and far enough back it dominates. The early universe was radiation's, and
+matter took over later. That transition is a real, dated event in cosmology, and
+its existence traces back to the missing symmetry on this page.
+
+''No mathematics is used on this page. The mathematical treatment is on the
+counterpart page named above.''

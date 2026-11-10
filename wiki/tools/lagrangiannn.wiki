@@ -1,0 +1,33 @@
+{{DISPLAYTITLE:Lagrangian and Hamiltonian Neural Networks}}
+'''Lagrangian and Hamiltonian Neural Networks: Learning an Action from Trajectories'''
+[[Category:Principia Machina]] [[Category:Tools]]
+
+''Added to the survey on 2026-10-06 by the [[The Principia Machina/Research Toolkit|Research Toolkit]]'s research pass. The scores below are that pass's assessment from the evidence cited under References, on the survey's four axes and scale; they are not the original survey's (2026-09-26), and no rule of the Principia Machina reads them. See [[The Principia Machina/Tools#The additions of 2026-10-06|the additions]] on the front page.''
+
+== Overview & Architectural Fit ==
+A '''Lagrangian neural network''' parameterizes a scalar <math>L_\theta(q, \dot{q})</math> with a network and gets the dynamics from the Euler-Lagrange equations by automatic differentiation; a '''Hamiltonian neural network''' parameterizes <math>H_\theta(q, p)</math> and uses Hamilton's equations, <math>\dot{q} = \partial H/\partial p</math>, <math>\dot{p} = -\partial H/\partial q</math>. Either way, energy conservation is built into the model rather than learned. They are the only tools in the survey that learn the Lagrangian or Hamiltonian itself as a network, with its structure built in; PySR, by contrast, searches for a symbolic one. The Lagrangian network's reference code is in JAX; the Hamiltonian network's is in PyTorch.
+
+== Mathematical Evaluation for TPM ==
+* '''Lagrangian / Action (8/10):''' Learns <math>L</math> itself as a network; the accelerations follow as <math>\ddot{q} = \left(\nabla_{\dot{q}}\nabla_{\dot{q}}^{\top} L\right)^{-1}\left[\nabla_{q} L - \left(\nabla_{q}\nabla_{\dot{q}}^{\top} L\right)\dot{q}\right]</math>.
+* '''Field / PDE (2.5/10):''' The reference code targets finite-dimensional systems; fields would need graph or grid architectures.
+* '''Relativity (2/10):''' Nothing specific to relativity.
+* '''Quantum / Data (7/10):''' Learning from data is the core, for classical systems only.
+
+== Integration Pipeline ==
+# '''Fit''' <math>L_\theta</math> to trajectory data, and an unstructured network to the same data as a control.
+# '''Test''' whether the learned Lagrangian reproduces the dynamics and conserves energy where the control does not: evidence that the data come from an action.
+# '''Look for cyclic coordinates''' (<math>\partial L/\partial q_i \approx 0</math>), which predict conserved momenta to confirm in the data.
+# '''Distil''' a symbolic Lagrangian from the network with [[The Principia Machina/Tools/PySR|PySR]].
+
+== Status, Licence and Limits ==
+* '''Status:''' Frozen research reference code with no releases; the Lagrangian network's README keeps the original versions to reproduce the paper's environment.
+* '''Licence:''' Apache-2.0 for both reference repositories.
+* '''Home:''' https://github.com/MilesCranmer/lagrangian_nns and https://github.com/greydanus/hamiltonian-nn
+* '''Limits:''' A Lagrangian is not unique (total time derivatives, overall scale), so a learned one is identified only up to equivalence. The inverse of the Hessian <math>\partial^2 L/\partial \dot{q}^2</math> can be ill-conditioned. Dissipative or driven systems need extensions beyond the original papers. The publication venue of the Lagrangian network paper is not confirmed.
+
+== On the Principia Machina ==
+A tool runs only where the sponsor installed and bound it, and what it returns is untrusted input, vetted before use; its numbers are never values of the site's calculator, TPC. A law it finds is not a register record: it can enter only as the kernel of a new container, and the data it was fitted to can never be the outside value of that law's verification. See [[The Principia Machina/Agent/Tools|Agent/Tools]] and [[The Principia Machina/Tools/Operator's guide|the operator's guide]].
+
+== References ==
+* '''[[The Principia Machina/Research Toolkit/Bibliography#LNN2020|LNN2020]]''' &ndash; Cranmer M., Greydanus S., Hoyer S., Battaglia P., Spergel D., Ho S. (2020). Lagrangian Neural Networks. [https://arxiv.org/abs/2003.04630 arXiv:2003.04630].
+* '''[[The Principia Machina/Research Toolkit/Bibliography#HNN2019|HNN2019]]''' &ndash; Greydanus S., Dzamba M., Yosinski J. (2019). Hamiltonian Neural Networks. NeurIPS 2019, 15353–15363. [https://arxiv.org/abs/1906.01563 arXiv:1906.01563].

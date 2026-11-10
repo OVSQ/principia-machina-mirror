@@ -1,0 +1,21 @@
+name = "principia"
+version = "0.1.0"
+defaultTargets = ["Principia", "pcalc"]
+testDriver = "PrincipiaTests"
+
+[[lean_lib]]
+name = "Principia"
+
+# The vector runner's files: Tests.Main (the root of PrincipiaTests) and one file per
+# function family, which Lake builds only as members of a library.
+[[lean_lib]]
+name = "Tests"
+globs = ["Tests.+"]
+
+[[lean_exe]]
+name = "pcalc"
+root = "Main"
+
+[[lean_exe]]
+name = "PrincipiaTests"
+root = "Tests.Main"

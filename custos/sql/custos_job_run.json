@@ -1,0 +1,54 @@
+[
+	{
+		"name": "custos_job_run",
+		"comment": "One row per run of a batch job (the re-audit, the cluster month, the bibliography recheck), written by the shared frame at the start and again at the end of the run. A later column is a schema update, never a reinterpretation of one of these.",
+		"columns": [
+			{
+				"name": "cj_id",
+				"comment": "The run",
+				"type": "integer",
+				"options": { "unsigned": true, "notnull": true, "autoincrement": true }
+			},
+			{
+				"name": "cj_job",
+				"comment": "The job's name: reaudit, cluster or recheck",
+				"type": "binary",
+				"options": { "notnull": true, "length": 32 }
+			},
+			{
+				"name": "cj_started",
+				"comment": "When the run began",
+				"type": "mwtimestamp",
+				"options": { "notnull": true }
+			},
+			{
+				"name": "cj_done",
+				"comment": "When the run ended; NULL while it runs (a run that never ended stays NULL)",
+				"type": "mwtimestamp",
+				"options": { "notnull": false }
+			},
+			{
+				"name": "cj_outcome",
+				"comment": "DONE, NOTHING DUE, DEFERRED, JOB CONTEXT, SOURCE FAILING, REFUSED, FAULT or INTEGRITY HALT; empty until the run ends",
+				"type": "binary",
+				"options": { "notnull": true, "length": 32 }
+			},
+			{
+				"name": "cj_detail",
+				"comment": "The run's scrubbed words: no path, no query, no server name",
+				"type": "blob",
+				"options": { "notnull": true, "length": 65535 }
+			},
+			{
+				"name": "cj_counts",
+				"comment": "The run's counts as a JSON object text; the empty object when it counted nothing",
+				"type": "blob",
+				"options": { "notnull": true, "length": 65535 }
+			}
+		],
+		"indexes": [
+			{ "name": "cj_job_id", "columns": [ "cj_job", "cj_id" ], "unique": false }
+		],
+		"pk": [ "cj_id" ]
+	}
+]

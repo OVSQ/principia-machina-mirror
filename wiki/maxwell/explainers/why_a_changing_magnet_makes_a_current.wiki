@@ -1,0 +1,71 @@
+{{DISPLAYTITLE:Why a changing magnet makes a current}}
+{{On Physical Lines of Force map}}
+''[[On Physical Lines of Force]] → [[On Physical Lines of Force/Explainers|Explainers]] → Induction''
+
+<blockquote>
+'''In one sentence.''' A nearby wire carries a current only while the magnetism is changing, because Maxwell's spinning cells have inertia and take time to speed up, and the particles get shoved backwards for as long as that takes.
+</blockquote>
+
+Move a magnet towards a coil of wire and a current flows in the coil. Hold the magnet still, however close, and nothing flows. Pull it away and a current flows again, the other way. Faraday had established this. Nobody could say why the ''change'' was the thing that mattered. Maxwell's answer comes from a property every mechanic understands: heavy things take time to get going.
+
+== Cells have to be spun up ==
+
+Recall the picture from the previous page. Space is packed with spinning cells, with a layer of rolling particles between every pair. A drift of those particles is an electric current. The spin rate of the cells is the strength of the magnetic field.
+
+Now switch on a current in a wire. The particles beside the wire begin to drift. Rolling against the neighbouring cells, they set those cells turning. But the cells are not weightless. Like a flywheel, a cell resists being started. Push on the rim of a heavy wheel and for a moment the wheel pushes back.
+
+That push-back is the whole story. Its resistance presses on the particles on its ''far'' side and drives them the opposite way. Those particles are in the next part of the field, perhaps in a second wire. Their backward movement is the induced current.
+
+[[File:OPL-fig-induction-sequence.svg|thumb|center|620px|A current starts, the cells resist being spun up, and the next layer of particles is driven backwards]]
+
+So an induced current is not a separate effect bolted on to the model. It is what the model does while magnetism spreads from one place to another. Maxwell puts it in a single sentence.
+
+<blockquote>
+It appears therefore that the phenomena of induced currents are part of the process of communicating the rotatory velocity of the vortices from one part of the field to another.
+</blockquote>
+
+== Why it stops ==
+
+Follow the process to its end. The cells nearest the wire come up to speed. They spin up the ones beyond them, which resist in their turn and drive another layer of particles backwards. Layer by layer, every cell reaches the speed the new current calls for.
+
+Then it is over. When every cell is turning at its final rate, no cell is being pushed and no cell is pushing back. There is nothing left to shove the particles. The induced current dies away, even though the current in the wire keeps flowing.
+
+This is the point the model was built to make. Induction is not caused by magnetism. It is caused by magnetism '''changing'''. A steady magnet next to a steady coil is a machine at rest, however strong the magnet.
+
+== The push exists even when nothing moves ==
+
+Ordinary language runs two ideas together here. A '''current''' is electricity actually moving. An '''electromotive force''' is the push that would move it. Maxwell separates them carefully.
+
+<blockquote>
+We may now perceive that induced currents are produced when the electricity yields to the electromotive force, — this force, however, still existing when the formation of a sensible current is prevented by the resistance of the circuit.
+</blockquote>
+
+In the mechanical picture, the resisting cells shove the neighbouring particles whatever those particles do next. If the particles are free to move, they move, and a current is measured. If the circuit is broken, or too resistant for anything to flow, the shove is still there. The push does not go away because nothing yields to it.
+
+== The anchor ring ==
+
+The most striking evidence in this part of the paper is an experiment on a ring.
+
+Take a ring of uniform cross-section — the shape of a doughnut — and wind wire evenly all the way round it. Send a current through the winding. Outside the ring there is no detectable magnetic effect at all. Every line of force is shut inside the ring.
+
+Now loop a second wire around the body of the ring, so that it encircles the ring's substance but sits outside the magnetism. Change the current in the winding. The second wire feels an electromotive force.
+
+<blockquote>
+This experiment shows that, in order to produce the electromotive force, it is not necessary that the conducting wire should be placed in a field of magnetic force, or that lines of magnetic force should pass through the substance of the wire or near it. All that is required is that lines of force should pass through the circuit of the conductor, and that these lines of force should vary in quantity during the experiment.
+</blockquote>
+
+Read what that rules out. The wire is not sitting in a magnetic field. No lines of force run through the metal or alongside it. Whatever produces the push, it is not the local field at the wire. Two things and only two things are required. Lines of force must pass through the ''circuit'' — through the loop the wire encloses. And the number of them must change while the experiment runs.
+
+That is a statement about a region of space, not about a piece of metal. It is one of the clearest early signs that the field, and not the wire, is where the physics lives.
+
+== Where this is in the paper ==
+
+* [[On Physical Lines of Force/Part II/Induced currents|Part II — Induced currents]] — the argument and the anchor-ring experiment
+* [[On Physical Lines of Force/Part II/Prop. VI|Prop. VI]] — the energy stored in the spinning cells
+* [[On Physical Lines of Force/Part II/Prop. VIII|Prop. VIII]] — electromotive force from a changing state of motion
+* [[On Physical Lines of Force/Part II/Prop. XI|Prop. XI]] — electromotive force in a body that is itself moving
+* [[On Physical Lines of Force/Modern derivations/Faraday's law of induction|Faraday's law today]] — the same statement in modern form
+
+----
+
+''Next: [[On Physical Lines of Force/Explainers/Why the cells had to be springy|Why the cells had to be springy]] · Previous: [[On Physical Lines of Force/Explainers/What is an electric current|What is an electric current?]]''

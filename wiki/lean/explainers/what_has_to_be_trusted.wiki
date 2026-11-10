@@ -1,0 +1,156 @@
+{{DISPLAYTITLE:What has to be trusted}}
+{{Technical|Lean theorem prover/System/The Lean kernel|Lean theorem prover/Foundations/Consistency and the metatheory}}
+{{Lean theorem prover map}}
+
+A proof that Lean accepts is not a proof that rests on nothing. It rests on a short list of
+things that Lean itself does not check. This page gives the list, shows what two features of Lean
+add to it, and says how independent checkers make it shorter. The list cannot be made empty, and
+the page ends with what remains.
+
+== Two questions, not one ==
+
+Pollack divided the problem of believing a machine-checked proof into two questions. The first
+is whether the proof really is a derivation in the formal system it claims to use. That is a
+formal question, and a machine can answer it. The second is whether the theorem it derives
+means what is claimed for it. That is an informal question, because one side of the comparison
+is a human idea, and no machine can answer it.<ref name="pollack">R. Pollack, "How to believe a machine-checked proof", in Giovanni Sambin and Jan M. Smith (eds), ''Twenty Five Years of Constructive Type Theory'', Oxford University Press, 1998, chapter 11 (from p. 205); first issued as BRICS Report RS-97-18, Aarhus University, 1997. [https://doi.org/10.7146/brics.v4i18.18945 doi:10.7146/brics.v4i18.18945]</ref>
+
+Lean's own guide to validating a proof draws the same line. It separates "does the theorem have a
+valid proof" from "what does the theorem statement mean", and every check it describes speaks
+only to the first.<ref name="refval">''The Lean Language Reference'', version for Lean 4.34.0, section "Validating a Lean Proof". [https://lean-lang.org/doc/reference/4.34.0/ValidatingProofs/ lean-lang.org/doc/reference/4.34.0/ValidatingProofs], consulted 14 October 2026.</ref>
+The list below follows that division.
+
+== The list ==
+
+'''The Lean kernel is correct.''' Every proof is checked by the Lean kernel (see
+[[Lean theorem prover/Explainers/The small trusted core|the small trusted core]]). If it had a
+fault, it could accept a proof that is not one. Such faults have been found and fixed: work on
+an independent checker written in Lean led to one being spotted and fixed.<ref name="l4l">Mario Carneiro, "Lean4Lean: Verifying a Typechecker for Lean, in Lean", arXiv:2403.14064, version 3, 14 September 2025. [https://arxiv.org/abs/2403.14064 arxiv.org/abs/2403.14064]</ref>
+Two more were reported and fixed in July 2026, in Lean 4.32.1 and 4.32.2: each could be used by a
+program written for the purpose to make the Lean kernel accept a proof of <code>False</code>, from
+which anything follows (see [[Lean theorem prover/History/Lean since 2023|Lean since 2023]]). The
+version of Lean this edition uses, 4.34.1, is later.<ref name="rn4321">''The Lean Language Reference'', version for Lean 4.34.0, "Lean 4.32.1 (2026-07-22)", release notes. [https://lean-lang.org/doc/reference/4.34.0/releases/v4.32.1/ lean-lang.org/doc/reference/4.34.0/releases/v4.32.1], consulted 14 October 2026.</ref><ref name="rn4322">''The Lean Language Reference'', version for Lean 4.34.0, "Lean 4.32.2 (2026-07-28)", release notes. [https://lean-lang.org/doc/reference/4.34.0/releases/v4.32.2/ lean-lang.org/doc/reference/4.34.0/releases/v4.32.2], consulted 14 October 2026.</ref>
+
+'''Lean's logic is consistent.''' The rules of Lean's type theory, with its three standard axioms,
+must not allow a proof of a contradiction (see
+[[Lean theorem prover/Explainers/What the axioms are|what the axioms are]]). By Gödel's second
+incompleteness theorem, a consistent system strong enough for arithmetic cannot prove its own
+consistency, so this rests on an argument made outside Lean. One such argument, from 2019, showed
+Lean's logic consistent provided that standard set theory, strengthened by assuming certain very
+large infinite sets, is consistent; features added in Lean 4 mean that the argument no longer
+applies directly to Lean as it now stands.<ref name="l4l" />
+
+'''No other axiom has crept in.''' Anyone can add an axiom to Lean, and an unsound one proves
+anything. The command <code>#print axioms</code> lists every axiom a theorem depends on, directly
+or through the results it uses. Lean's guide says that only the built-in axioms
+<code>propext</code>, <code>Classical.choice</code> and <code>Quot.sound</code> should appear;
+any other name marks an unfinished proof, native evaluation, or an axiom that someone
+declared.<ref name="refval" /> Pollack adds a point that is easy
+to miss: the tool that lists the assumptions must itself be trusted, because nobody can read a
+large proof to confirm the list.<ref name="pollack" />
+
+'''The machine works.''' The checker runs on a processor, under an operating system, after a
+compiler has turned its source into a program. Pollack placed all of these in a stack beneath the
+checker, and pointed out that belief in a machine-checked proof therefore depends on empirical
+knowledge of how physical hardware behaves, which belief in a proof on paper does not.<ref name="pollack" />
+Running the check again on different machines and with different compilers makes it most
+unlikely that a fault in the platform is the cause of an acceptance; it leaves a fault in the
+checker itself untouched, which is why independent checkers matter more.<ref name="pollack" />
+
+'''The libraries were written in good faith.''' A proof usually rests on imported definitions and
+theorems. Lean's guide assumes that their authors were honest and declared no unsound
+axioms.<ref name="refval" />
+
+'''The statement is the right one.''' This is the second of Pollack's questions, and it is left to
+people. See [[Lean theorem prover/Explainers/Stating the right thing|stating the right thing]].
+
+== What native evaluation adds ==
+
+Lean is also a programming language, and some of its features let a compiled program stand in
+for the Lean kernel's own computation. Lean's guide names two consequences. A proof by native
+evaluation (the tactic <code>native_decide</code>, or <code>decide +native</code>)
+depends on the correctness of the Lean compiler and of every definition marked
+<code>@[implemented_by]</code>; and any such replacement in a library, made with
+<code>implemented_by</code> or <code>extern</code>, becomes part of the trusted code, since it must
+mean the same as what it replaces.<ref name="refval" /> The following lines
+show why. The attribute tells Lean to run one function in place of another that is not the same:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+def other (n : Nat) : Nat := n + 1
+
+@[implemented_by other]
+def same (n : Nat) : Nat := n
+
+theorem same_five : same 5 = 5 := rfl
+
+#eval same 5
+#print axioms same_five
+</pre>
+
+Lean 4.34.1 proves that <code>same 5</code> is 5, runs it and prints 6, and reports no axioms:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+6
+'same_five' does not depend on any axioms
+</pre>
+
+The theorem is still sound: the Lean kernel reasons about the definition, never about the program
+that runs in its place. Trouble starts when a proof takes the running program's word. Continuing
+the same file:
+
+<pre class="lean lean-cont" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem same_six : same 5 = 6 := by native_decide
+
+theorem oops : False := by
+  have h := same_five.symm.trans same_six
+  contradiction
+
+#print axioms oops
+</pre>
+
+Lean accepts this proof of <code>False</code>, built on purpose to show the danger, and
+<code>#print axioms</code> prints:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+'oops' depends on axioms: [same_six._native.native_decide.ax_1_1]
+</pre>
+
+The axiom list is what gives it away. Since Lean 4.29.0, each computation asserted by native
+evaluation enters as an axiom of its own,<ref name="refval" /> and a theorem that depends on one is
+believed only as far as the compiler and every <code>implemented_by</code> beneath it are believed.
+The project this wiki records refuses <code>native_decide</code> in its proofs altogether
+(see [[Principia Machina/Lean transition|the move to Lean]]).
+
+== Making the list shorter ==
+
+An '''external checker''' is a second program, written separately, that reads a proof exported
+from Lean and checks it again. It removes the need to trust the parts of Lean outside the Lean
+kernel, which an exported proof no longer passes through, and, if its author made different
+mistakes, the need to trust any one implementation of the checking rules.<ref name="tcl4">''Type Checking in Lean 4'', online book, chapter "Trust". [https://ammkrn.github.io/type_checking_in_lean4/trust/trust.html ammkrn.github.io/type_checking_in_lean4], consulted 14 October 2026.</ref>
+Lean's guide describes its strongest procedure in these terms: the proof is compiled in a sandbox,
+exported, and checked by the Lean kernel or by an independent checker, and the statement proved is
+compared with a statement written separately, in a trusted setting.<ref name="refval" />
+[[Lean theorem prover/Explainers/Checking a proof again later|Checking a proof again later]]
+describes these tools.
+
+They have a price. A checker that reads exported proofs has no access to Lean's compiler, so it
+cannot check a proof that relies on native evaluation; such proofs have to avoid it if that level
+of checking is wanted.<ref name="refval" />
+
+== What remains ==
+
+Even at its strongest, the procedure leaves a list. Lean's guide gives it: that Lean's logic is
+sound, that the tool joining the steps together is correct, that the sandbox holds, that no fault is
+shared by every checker used, and that the trusted statement contains no human error and is not
+presented in a misleading way.<ref name="refval" /> Two of these are of a different kind from the
+rest. Consistency is a mathematical question, argued outside any checker. The statement is a
+human question, settled by reading.
+
+== Next ==
+
+[[Lean theorem prover/Explainers/Checking a proof again later|Checking a proof again later]]
+describes the independent checkers and how a proof is kept checkable as Lean changes.
+
+== References ==
+
+<references />

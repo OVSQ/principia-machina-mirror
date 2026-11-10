@@ -1,0 +1,3631 @@
+{
+ "meta": {
+  "name": "tpc_dis_corpus",
+  "version": "0.2.0",
+  "status": "PROPOSED 2026-09-30 (D216.1, taken 2026-09-29; tpm_post_tpcpy_wave4_pause 0.2.0 D216 Option 1 (c)): the tps_pages cases; the cases of 0.1.0, declared with TPC-PY 0.2.0 on 2026-09-30, unchanged; not declared",
+  "conforms_tps": "0.5.0 (proposed; revision 8 states D216.1)",
+  "module": "tpc_digest 0.3.0 (proposed with TPC-PY 0.3.0)",
+  "spec": "tpm_tps_digest_spec 0.1.0; tps_pages_definition 0.1.0 (D216.1)",
+  "note": "Every expectation is hand-derived: refusals written literally, each digest from a field list written in gen_dis_corpus.py and hashed apart from tpc_digest; 'preimage' is the exact bytes hashed; each tps_pages list read back from a d_tps case's preimage or written from literal titles and block texts. The page sets are synthetic; the real TPS 0.3.0 and 0.4.0 page sets are fixtures outside tpc/ (S97). Both residences MUST reproduce every expect."
+ },
+ "cases": [
+  {
+   "id": "pre/one-block",
+   "fn": "pre_texts",
+   "input": {
+    "wikitext": "''banner''\n\n<pre>\nA\nB\n</pre>\n\n[[Category:X]]\n"
+   },
+   "expect": "[OK,[A\nB\n]]"
+  },
+  {
+   "id": "pre/two-blocks",
+   "fn": "pre_texts",
+   "input": {
+    "wikitext": "<pre>\nX\n</pre>\nbetween\n<pre>\nY\n</pre>\n"
+   },
+   "expect": "[OK,[X\n,Y\n]]"
+  },
+  {
+   "id": "pre/no-block",
+   "fn": "pre_texts",
+   "input": {
+    "wikitext": "just text\n"
+   },
+   "expect": "[OK,[]]"
+  },
+  {
+   "id": "pre/empty-text",
+   "fn": "pre_texts",
+   "input": {
+    "wikitext": ""
+   },
+   "expect": "[OK,[]]"
+  },
+  {
+   "id": "pre/empty-block (canon writes [] as for no block; d_tps pins the difference)",
+   "fn": "pre_texts",
+   "input": {
+    "wikitext": "<pre>\n</pre>"
+   },
+   "expect": "[OK,[]]"
+  },
+  {
+   "id": "pre/text-after-closing-ignored",
+   "fn": "pre_texts",
+   "input": {
+    "wikitext": "<pre>\nA\n</pre>tail <b>x</b>\n"
+   },
+   "expect": "[OK,[A\n]]"
+  },
+  {
+   "id": "pre/prefix-inside-is-text (TPS 0.3.0 writes <prefix>-n)",
+   "fn": "pre_texts",
+   "input": {
+    "wikitext": "<pre>\n<prefix>-n and </prefix> x\n</pre>\n"
+   },
+   "expect": "[OK,[<prefix>-n and </prefix> x\n]]"
+  },
+  {
+   "id": "pre/pretty-and-preamble-outside-are-text",
+   "fn": "pre_texts",
+   "input": {
+    "wikitext": "<pretty> </preamble>\n<pre>\nA\n</pre>\n<presence/>\n"
+   },
+   "expect": "[OK,[A\n]]"
+  },
+  {
+   "id": "pre/non-ascii",
+   "fn": "pre_texts",
+   "input": {
+    "wikitext": "<pre>\ncaf\u00e9 \u2014 \u00b5 \ud83d\ude00\n</pre>\n"
+   },
+   "expect": "[OK,[caf\u00e9 \u2014 \u00b5 \ud83d\ude00\n]]"
+  },
+  {
+   "id": "pre/crlf-inside-kept-as-is",
+   "fn": "pre_texts",
+   "input": {
+    "wikitext": "<pre>\nA\r\nB\n</pre>"
+   },
+   "expect": "[OK,[A\r\nB\n]]"
+  },
+  {
+   "id": "pre/opening-without-lf",
+   "fn": "pre_texts",
+   "input": {
+    "wikitext": "<pre>A\n</pre>"
+   },
+   "expect": "[REFUSED,pre]"
+  },
+  {
+   "id": "pre/opening-then-cr",
+   "fn": "pre_texts",
+   "input": {
+    "wikitext": "<pre>\r\nA\n</pre>"
+   },
+   "expect": "[REFUSED,pre]"
+  },
+  {
+   "id": "pre/unclosed",
+   "fn": "pre_texts",
+   "input": {
+    "wikitext": "<pre>\nA\n"
+   },
+   "expect": "[REFUSED,pre]"
+  },
+  {
+   "id": "pre/closing-before-opening",
+   "fn": "pre_texts",
+   "input": {
+    "wikitext": "</pre>\n<pre>\nA\n</pre>"
+   },
+   "expect": "[REFUSED,pre]"
+  },
+  {
+   "id": "pre/second-opening-inside",
+   "fn": "pre_texts",
+   "input": {
+    "wikitext": "<pre>\nA\n<pre>\nB\n</pre>"
+   },
+   "expect": "[REFUSED,pre]"
+  },
+  {
+   "id": "pre/upper-case-tags",
+   "fn": "pre_texts",
+   "input": {
+    "wikitext": "<PRE>\nA\n</PRE>"
+   },
+   "expect": "[REFUSED,pre]"
+  },
+  {
+   "id": "pre/mixed-case-opening",
+   "fn": "pre_texts",
+   "input": {
+    "wikitext": "<Pre>\nA\n</pre>"
+   },
+   "expect": "[REFUSED,pre]"
+  },
+  {
+   "id": "pre/attribute",
+   "fn": "pre_texts",
+   "input": {
+    "wikitext": "<pre class=\"x\">\nA\n</pre>"
+   },
+   "expect": "[REFUSED,pre]"
+  },
+  {
+   "id": "pre/self-closing",
+   "fn": "pre_texts",
+   "input": {
+    "wikitext": "<pre />\n"
+   },
+   "expect": "[REFUSED,pre]"
+  },
+  {
+   "id": "pre/self-closing-no-space",
+   "fn": "pre_texts",
+   "input": {
+    "wikitext": "<pre/>\n"
+   },
+   "expect": "[REFUSED,pre]"
+  },
+  {
+   "id": "pre/tab-in-opening",
+   "fn": "pre_texts",
+   "input": {
+    "wikitext": "<pre\t>\nA\n</pre>"
+   },
+   "expect": "[REFUSED,pre]"
+  },
+  {
+   "id": "pre/space-in-closing",
+   "fn": "pre_texts",
+   "input": {
+    "wikitext": "<pre>\nA\n</pre >"
+   },
+   "expect": "[REFUSED,pre]"
+  },
+  {
+   "id": "pre/upper-case-closing",
+   "fn": "pre_texts",
+   "input": {
+    "wikitext": "<pre>\nA\n</PRE>"
+   },
+   "expect": "[REFUSED,pre]"
+  },
+  {
+   "id": "pre/tag-name-at-end-of-text",
+   "fn": "pre_texts",
+   "input": {
+    "wikitext": "x <pre"
+   },
+   "expect": "[REFUSED,pre]"
+  },
+  {
+   "id": "pre/closing-name-at-end-of-text",
+   "fn": "pre_texts",
+   "input": {
+    "wikitext": "<pre>\nA\n</pre"
+   },
+   "expect": "[REFUSED,pre]"
+  },
+  {
+   "id": "pre/tag-in-comment-is-read-as-tag (named limit)",
+   "fn": "pre_texts",
+   "input": {
+    "wikitext": "<!-- <pre> -->\nx\n"
+   },
+   "expect": "[REFUSED,pre]"
+  },
+  {
+   "id": "pre/not-a-string",
+   "fn": "pre_texts",
+   "input": {
+    "wikitext": 5
+   },
+   "expect": "[REFUSED,pre]"
+  },
+  {
+   "id": "pre/null",
+   "fn": "pre_texts",
+   "input": {
+    "wikitext": null
+   },
+   "expect": "[REFUSED,pre]"
+  },
+  {
+   "id": "tps/root-and-sections-out-of-order: 0.1 < 5.9 < 5.10 as integers",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ]
+    ]
+   },
+   "preimage": "7:TPC-TPS1:15:0.3.01:425:The Principia Machina/TPS64:4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e70135:The Principia Machina/TPS/0.1 Front64:d352c5bc04da9d2378412a550d8d49f80aee389a9ce3df8866e600c5dc0b533a34:The Principia Machina/TPS/5.9 Nine64:fc043f4808932b036e2c7daa89ec16ef66426f76e5f5de571bac18a6824d415234:The Principia Machina/TPS/5.10 Ten64:ca42dd9852b1771ab62d154f163cf627147af5649c780160e5a99940e1f456b7",
+   "expect": "[OK,51dd698e25a04b8a6d51b5301066ce9af3e708ae8d3412cbd985e66a8509a180]"
+  },
+  {
+   "id": "tps/input-order-reversed: equal",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ]
+    ]
+   },
+   "preimage": "7:TPC-TPS1:15:0.3.01:425:The Principia Machina/TPS64:4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e70135:The Principia Machina/TPS/0.1 Front64:d352c5bc04da9d2378412a550d8d49f80aee389a9ce3df8866e600c5dc0b533a34:The Principia Machina/TPS/5.9 Nine64:fc043f4808932b036e2c7daa89ec16ef66426f76e5f5de571bac18a6824d415234:The Principia Machina/TPS/5.10 Ten64:ca42dd9852b1771ab62d154f163cf627147af5649c780160e5a99940e1f456b7",
+   "expect": "[OK,51dd698e25a04b8a6d51b5301066ce9af3e708ae8d3412cbd985e66a8509a180]"
+  },
+  {
+   "id": "tps/banners-changed: equal",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "<pre>\nSECTION 5.10\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''another banner, [[a link]]''\n\n<pre>\nROOT ONE\n</pre>\n<pre>\nROOT TWO\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "new banner\n<pre>\nSECTION 5.9\n</pre>\n\n[[Category:Y]]"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "x\n<pre>\nFRONT\n</pre>\ny"
+     ]
+    ]
+   },
+   "preimage": "7:TPC-TPS1:15:0.3.01:425:The Principia Machina/TPS64:4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e70135:The Principia Machina/TPS/0.1 Front64:d352c5bc04da9d2378412a550d8d49f80aee389a9ce3df8866e600c5dc0b533a34:The Principia Machina/TPS/5.9 Nine64:fc043f4808932b036e2c7daa89ec16ef66426f76e5f5de571bac18a6824d415234:The Principia Machina/TPS/5.10 Ten64:ca42dd9852b1771ab62d154f163cf627147af5649c780160e5a99940e1f456b7",
+   "expect": "[OK,51dd698e25a04b8a6d51b5301066ce9af3e708ae8d3412cbd985e66a8509a180]"
+  },
+  {
+   "id": "tps/contents-without-block: left out, equal",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/Contents",
+      "== Parts ==\n* a list\n"
+     ]
+    ]
+   },
+   "preimage": "7:TPC-TPS1:15:0.3.01:425:The Principia Machina/TPS64:4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e70135:The Principia Machina/TPS/0.1 Front64:d352c5bc04da9d2378412a550d8d49f80aee389a9ce3df8866e600c5dc0b533a34:The Principia Machina/TPS/5.9 Nine64:fc043f4808932b036e2c7daa89ec16ef66426f76e5f5de571bac18a6824d415234:The Principia Machina/TPS/5.10 Ten64:ca42dd9852b1771ab62d154f163cf627147af5649c780160e5a99940e1f456b7",
+   "expect": "[OK,51dd698e25a04b8a6d51b5301066ce9af3e708ae8d3412cbd985e66a8509a180]"
+  },
+  {
+   "id": "tps/contents-with-a-block: left out by title, equal",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/Contents",
+      "<pre>\nNOT RULE TEXT\n</pre>\n"
+     ]
+    ]
+   },
+   "preimage": "7:TPC-TPS1:15:0.3.01:425:The Principia Machina/TPS64:4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e70135:The Principia Machina/TPS/0.1 Front64:d352c5bc04da9d2378412a550d8d49f80aee389a9ce3df8866e600c5dc0b533a34:The Principia Machina/TPS/5.9 Nine64:fc043f4808932b036e2c7daa89ec16ef66426f76e5f5de571bac18a6824d415234:The Principia Machina/TPS/5.10 Ten64:ca42dd9852b1771ab62d154f163cf627147af5649c780160e5a99940e1f456b7",
+   "expect": "[OK,51dd698e25a04b8a6d51b5301066ce9af3e708ae8d3412cbd985e66a8509a180]"
+  },
+  {
+   "id": "tps/section-without-block: left out, equal",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/6.1 Empty",
+      "no block here\n"
+     ]
+    ]
+   },
+   "preimage": "7:TPC-TPS1:15:0.3.01:425:The Principia Machina/TPS64:4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e70135:The Principia Machina/TPS/0.1 Front64:d352c5bc04da9d2378412a550d8d49f80aee389a9ce3df8866e600c5dc0b533a34:The Principia Machina/TPS/5.9 Nine64:fc043f4808932b036e2c7daa89ec16ef66426f76e5f5de571bac18a6824d415234:The Principia Machina/TPS/5.10 Ten64:ca42dd9852b1771ab62d154f163cf627147af5649c780160e5a99940e1f456b7",
+   "expect": "[OK,51dd698e25a04b8a6d51b5301066ce9af3e708ae8d3412cbd985e66a8509a180]"
+  },
+  {
+   "id": "tps/one-character-inside-a-block-changed: moves",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.8\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ]
+    ]
+   },
+   "preimage": "7:TPC-TPS1:15:0.3.01:425:The Principia Machina/TPS64:4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e70135:The Principia Machina/TPS/0.1 Front64:d352c5bc04da9d2378412a550d8d49f80aee389a9ce3df8866e600c5dc0b533a34:The Principia Machina/TPS/5.9 Nine64:e8fca60762aded19a96f8e787a85008c3d10fe41e51e6b4aba6ef66a541b4a8c34:The Principia Machina/TPS/5.10 Ten64:ca42dd9852b1771ab62d154f163cf627147af5649c780160e5a99940e1f456b7",
+   "expect": "[OK,6435a66b0c5afd6bd66c217d8ff9cfc314753dca99e19c3aa9d9c0118a325f45]"
+  },
+  {
+   "id": "tps/two-pages-contents-swapped-between-titles: moves",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ]
+    ]
+   },
+   "preimage": "7:TPC-TPS1:15:0.3.01:425:The Principia Machina/TPS64:4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e70135:The Principia Machina/TPS/0.1 Front64:d352c5bc04da9d2378412a550d8d49f80aee389a9ce3df8866e600c5dc0b533a34:The Principia Machina/TPS/5.9 Nine64:ca42dd9852b1771ab62d154f163cf627147af5649c780160e5a99940e1f456b734:The Principia Machina/TPS/5.10 Ten64:fc043f4808932b036e2c7daa89ec16ef66426f76e5f5de571bac18a6824d4152",
+   "expect": "[OK,a7d13ce2454d3cfd6cd5a993b40e79541b625197d8ef5299a45da289d59ffeb3]"
+  },
+  {
+   "id": "tps/section-with-an-empty-block: kept, n = 5",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/6.1 Empty",
+      "<pre>\n</pre>\n"
+     ]
+    ]
+   },
+   "preimage": "7:TPC-TPS1:15:0.3.01:525:The Principia Machina/TPS64:4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e70135:The Principia Machina/TPS/0.1 Front64:d352c5bc04da9d2378412a550d8d49f80aee389a9ce3df8866e600c5dc0b533a34:The Principia Machina/TPS/5.9 Nine64:fc043f4808932b036e2c7daa89ec16ef66426f76e5f5de571bac18a6824d415234:The Principia Machina/TPS/5.10 Ten64:ca42dd9852b1771ab62d154f163cf627147af5649c780160e5a99940e1f456b735:The Principia Machina/TPS/6.1 Empty64:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "expect": "[OK,61ecd61506b018e365c54527b92338c3cedc7691eba1230cebe8ddaaed539c10]"
+  },
+  {
+   "id": "tps/version-inside: 0.3.1 over the same pages moves",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.1",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ]
+    ]
+   },
+   "preimage": "7:TPC-TPS1:15:0.3.11:425:The Principia Machina/TPS64:4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e70135:The Principia Machina/TPS/0.1 Front64:d352c5bc04da9d2378412a550d8d49f80aee389a9ce3df8866e600c5dc0b533a34:The Principia Machina/TPS/5.9 Nine64:fc043f4808932b036e2c7daa89ec16ef66426f76e5f5de571bac18a6824d415234:The Principia Machina/TPS/5.10 Ten64:ca42dd9852b1771ab62d154f163cf627147af5649c780160e5a99940e1f456b7",
+   "expect": "[OK,c3745b9a3b8a715aaf02879e5a52d7eabd1ae57236c472b030524c1840a12f82]"
+  },
+  {
+   "id": "tps/version-with-several-digits",
+   "fn": "d_tps",
+   "input": {
+    "version": "10.20.30",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ]
+    ]
+   },
+   "preimage": "7:TPC-TPS1:18:10.20.301:425:The Principia Machina/TPS64:4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e70135:The Principia Machina/TPS/0.1 Front64:d352c5bc04da9d2378412a550d8d49f80aee389a9ce3df8866e600c5dc0b533a34:The Principia Machina/TPS/5.9 Nine64:fc043f4808932b036e2c7daa89ec16ef66426f76e5f5de571bac18a6824d415234:The Principia Machina/TPS/5.10 Ten64:ca42dd9852b1771ab62d154f163cf627147af5649c780160e5a99940e1f456b7",
+   "expect": "[OK,690f0e2293d19cd8909bf33f460986af3a1e9f353bba3d00d51d55c439d9720c]"
+  },
+  {
+   "id": "tps/three-part-numbers: 5.1 < 5.1.2 < 5.2",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.4.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.2 C",
+      "<pre>\nc\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/5.1.2 B",
+      "<pre>\nb\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.1 A",
+      "<pre>\na\n</pre>"
+     ]
+    ]
+   },
+   "preimage": "7:TPC-TPS1:15:0.4.01:425:The Principia Machina/TPS64:4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e70131:The Principia Machina/TPS/5.1 A64:87428fc522803d31065e7bce3cf03fe475096631e5e07bbd7a0fde60c4cf25c733:The Principia Machina/TPS/5.1.2 B64:0263829989b6fd954f72baaf2fc64bc2e2f01d692d4de72986ea808f6e99813f31:The Principia Machina/TPS/5.2 C64:a3a5e715f0cc574a73c3f9bebb6bc24f32ffd5b67b387244c2c909da779a1478",
+   "expect": "[OK,f2dd06f3cf6b14d8727413efdf79dc91ab9e25ed5d77c0706bcee3cf3da98830]"
+  },
+  {
+   "id": "tps/root-only: n = 1",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ]
+    ]
+   },
+   "preimage": "7:TPC-TPS1:15:0.3.01:125:The Principia Machina/TPS64:4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e701",
+   "expect": "[OK,95917e54fbdac52b1a330d96a805144bff54e15e7653f7e5a40e1d05f32b4190]"
+  },
+  {
+   "id": "tps/root-without-block: left out, n = 1",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS",
+      "no block\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ]
+    ]
+   },
+   "preimage": "7:TPC-TPS1:15:0.3.01:134:The Principia Machina/TPS/5.9 Nine64:fc043f4808932b036e2c7daa89ec16ef66426f76e5f5de571bac18a6824d4152",
+   "expect": "[OK,57ff41c53d2ab5257c88e9b7d1fbf4e087ce94b932410a28f1f89def807b5698]"
+  },
+  {
+   "id": "tps/four-digit-parts",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/9999.9999 Last",
+      "<pre>\nz\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ]
+    ]
+   },
+   "preimage": "7:TPC-TPS1:15:0.3.01:225:The Principia Machina/TPS64:4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e70140:The Principia Machina/TPS/9999.9999 Last64:c865f6c5ab8d1b0bcd383a5e1e3879d22681c96bf462c269b7581d523fbe70ab",
+   "expect": "[OK,39dc621310f0c80527785bdb29e6dd8ff6721f1b91f8787c3f7badf225e95bdd]"
+  },
+  {
+   "id": "tps/zero-parts",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.0 Zero",
+      "<pre>\n0\n</pre>"
+     ]
+    ]
+   },
+   "preimage": "7:TPC-TPS1:15:0.3.01:225:The Principia Machina/TPS64:4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e70134:The Principia Machina/TPS/0.0 Zero64:9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+   "expect": "[OK,7d90e224461bb2cc051eacb5b69d8450bb21fd5b019949e5d71dea36e515db30]"
+  },
+  {
+   "id": "tps/non-ascii-title-and-text",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/2.1 Caf\u00e9 and more",
+      "<pre>\n\u00e9\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ]
+    ]
+   },
+   "preimage": "7:TPC-TPS1:15:0.3.01:225:The Principia Machina/TPS64:4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e70144:The Principia Machina/TPS/2.1 Caf\u00e9 and more64:edd3a863872a04239eb29ad4bc12fc892b3d4ae57cc7e786a3697816f8e141c2",
+   "expect": "[OK,1579e18bfc1970bba980c76f3d147b8213658c0d087d6d83c67c23b427d19d5a]"
+  },
+  {
+   "id": "tps/version-two-parts",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,version]"
+  },
+  {
+   "id": "tps/version-prefixed",
+   "fn": "d_tps",
+   "input": {
+    "version": "v0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,version]"
+  },
+  {
+   "id": "tps/version-leading-zero",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.03.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,version]"
+  },
+  {
+   "id": "tps/version-suffix",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0-rc1",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,version]"
+  },
+  {
+   "id": "tps/version-trailing-lf",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0\n",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,version]"
+  },
+  {
+   "id": "tps/version-empty",
+   "fn": "d_tps",
+   "input": {
+    "version": "",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,version]"
+  },
+  {
+   "id": "tps/version-not-a-string",
+   "fn": "d_tps",
+   "input": {
+    "version": 3,
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,version]"
+  },
+  {
+   "id": "tps/version-checked-before-pages",
+   "fn": "d_tps",
+   "input": {
+    "version": "x",
+    "pages": {}
+   },
+   "expect": "[REFUSED,version]"
+  },
+  {
+   "id": "tps/pages-an-object",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": {}
+   },
+   "expect": "[REFUSED,pages]"
+  },
+  {
+   "id": "tps/pages-a-string",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": "x"
+   },
+   "expect": "[REFUSED,pages]"
+  },
+  {
+   "id": "tps/page-not-a-pair",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,pages]"
+  },
+  {
+   "id": "tps/page-of-three",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS",
+      "",
+      ""
+     ]
+    ]
+   },
+   "expect": "[REFUSED,pages]"
+  },
+  {
+   "id": "tps/page-text-not-a-string",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS",
+      5
+     ]
+    ]
+   },
+   "expect": "[REFUSED,pages]"
+  },
+  {
+   "id": "tps/page-as-an-object",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     {
+      "title": "The Principia Machina/TPS",
+      "text": "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     }
+    ]
+   },
+   "expect": "[REFUSED,pages]"
+  },
+  {
+   "id": "tps/duplicate-title",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "tps/duplicate-section-number",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Other",
+      "<pre>\nq\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "tps/duplicate-root",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "<pre>\nq\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "tps/title-outside-the-tree",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "Main Page",
+      "<pre>\nq\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "tps/title-with-underscores",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The_Principia_Machina/TPS",
+      "<pre>\nq\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "tps/section-with-underscore",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/5.9_Nine",
+      "<pre>\nq\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "tps/section-leading-zero",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/05.9 Nine",
+      "<pre>\nq\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "tps/section-one-part",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/5 Nine",
+      "<pre>\nq\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "tps/section-without-name",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/5.9",
+      "<pre>\nq\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "tps/section-five-digit-part",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/5.10000 Big",
+      "<pre>\nq\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "tps/section-subpage",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine/sub",
+      "<pre>\nq\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "tps/section-two-spaces",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/5.9  Nine",
+      "<pre>\nq\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "tps/section-trailing-space",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine ",
+      "<pre>\nq\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "tps/section-trailing-dot",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/5.9. Nine",
+      "<pre>\nq\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "tps/contents-in-lower-case",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/contents",
+      "<pre>\nq\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "tps/root-with-trailing-slash",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/",
+      "<pre>\nq\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "tps/title-with-lf",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS\n",
+      "<pre>\nq\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "tps/section-unicode-digit",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/5.\u0669 Nine",
+      "<pre>\nq\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "tps/title-empty",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "",
+      "<pre>\nq\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "tps/root-absent",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,root]"
+  },
+  {
+   "id": "tps/no-page",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": []
+   },
+   "expect": "[REFUSED,root]"
+  },
+  {
+   "id": "tps/root-absent-contents-present",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/Contents",
+      "x"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,root]"
+  },
+  {
+   "id": "tps/a-page-pre-refused",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/6.1 Bad",
+      "<pre>\nunclosed\n"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,pre]"
+  },
+  {
+   "id": "tps/contents-pre-refused-too",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/Contents",
+      "<PRE>x</PRE>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,pre]"
+  },
+  {
+   "id": "tps/title-reason-before-pre, bad title last",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/6.1 Bad",
+      "<pre>\nx\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "Main Page",
+      "x"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "tps/title-reason-before-pre, bad title first",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "Main Page",
+      "x"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/6.1 Bad",
+      "<pre>\nx\n"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "tps/root-reason-before-pre",
+   "fn": "d_tps",
+   "input": {
+    "version": "0.3.0",
+    "pages": [
+     [
+      "The Principia Machina/TPS/6.1 Bad",
+      "<pre>\nx\n"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,root]"
+  },
+  {
+   "id": "dis/m-0 over tps/root-and-sections-out-of-order",
+   "fn": "d_is",
+   "input": {
+    "version": "0.3.0",
+    "d_tps": "51dd698e25a04b8a6d51b5301066ce9af3e708ae8d3412cbd985e66a8509a180",
+    "members": []
+   },
+   "preimage": "7:TPC-DIS1:15:0.3.064:51dd698e25a04b8a6d51b5301066ce9af3e708ae8d3412cbd985e66a8509a1801:0",
+   "expect": "[OK,4655b1c67aabbf509351d8069b4a0f53d03ae3431cf3aa0d16daf34ee4943688]"
+  },
+  {
+   "id": "dis/m-1",
+   "fn": "d_is",
+   "input": {
+    "version": "0.3.0",
+    "d_tps": "51dd698e25a04b8a6d51b5301066ce9af3e708ae8d3412cbd985e66a8509a180",
+    "members": [
+     [
+      "The Principia Machina/Member A",
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+     ]
+    ]
+   },
+   "preimage": "7:TPC-DIS1:15:0.3.064:51dd698e25a04b8a6d51b5301066ce9af3e708ae8d3412cbd985e66a8509a1801:130:The Principia Machina/Member A64:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+   "expect": "[OK,9bad84a6b47188637baf777d707abd10126f508c9460ea022de292a36b485f27]"
+  },
+  {
+   "id": "dis/m-2 in index order",
+   "fn": "d_is",
+   "input": {
+    "version": "0.3.0",
+    "d_tps": "51dd698e25a04b8a6d51b5301066ce9af3e708ae8d3412cbd985e66a8509a180",
+    "members": [
+     [
+      "The Principia Machina/Member A",
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+     ],
+     [
+      "The Principia Machina/Member B",
+      "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+     ]
+    ]
+   },
+   "preimage": "7:TPC-DIS1:15:0.3.064:51dd698e25a04b8a6d51b5301066ce9af3e708ae8d3412cbd985e66a8509a1801:230:The Principia Machina/Member A64:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa30:The Principia Machina/Member B64:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+   "expect": "[OK,671f0b15c492e8f30a574333b84278be35a4a956d4305d140b30cb086bf98006]"
+  },
+  {
+   "id": "dis/m-2 the other order: moves (the caller's order is kept)",
+   "fn": "d_is",
+   "input": {
+    "version": "0.3.0",
+    "d_tps": "51dd698e25a04b8a6d51b5301066ce9af3e708ae8d3412cbd985e66a8509a180",
+    "members": [
+     [
+      "The Principia Machina/Member B",
+      "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+     ],
+     [
+      "The Principia Machina/Member A",
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+     ]
+    ]
+   },
+   "preimage": "7:TPC-DIS1:15:0.3.064:51dd698e25a04b8a6d51b5301066ce9af3e708ae8d3412cbd985e66a8509a1801:230:The Principia Machina/Member B64:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef30:The Principia Machina/Member A64:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+   "expect": "[OK,257a953d5ebe3bb5b16304a7f0c7734ee94265660664e6398518b2e80700a88b]"
+  },
+  {
+   "id": "dis/version-inside",
+   "fn": "d_is",
+   "input": {
+    "version": "0.4.0",
+    "d_tps": "51dd698e25a04b8a6d51b5301066ce9af3e708ae8d3412cbd985e66a8509a180",
+    "members": []
+   },
+   "preimage": "7:TPC-DIS1:15:0.4.064:51dd698e25a04b8a6d51b5301066ce9af3e708ae8d3412cbd985e66a8509a1801:0",
+   "expect": "[OK,adc9c7d94c5b32380253846667aded4fbf0819f965cc8d776906c242e3cd8d8b]"
+  },
+  {
+   "id": "dis/version-bad",
+   "fn": "d_is",
+   "input": {
+    "version": "0.4",
+    "d_tps": "51dd698e25a04b8a6d51b5301066ce9af3e708ae8d3412cbd985e66a8509a180",
+    "members": []
+   },
+   "expect": "[REFUSED,version]"
+  },
+  {
+   "id": "dis/d_tps-upper-case",
+   "fn": "d_is",
+   "input": {
+    "version": "0.3.0",
+    "d_tps": "51DD698E25A04B8A6D51B5301066CE9AF3E708AE8D3412CBD985E66A8509A180",
+    "members": []
+   },
+   "expect": "[REFUSED,digest]"
+  },
+  {
+   "id": "dis/d_tps-63-characters",
+   "fn": "d_is",
+   "input": {
+    "version": "0.3.0",
+    "d_tps": "51dd698e25a04b8a6d51b5301066ce9af3e708ae8d3412cbd985e66a8509a18",
+    "members": []
+   },
+   "expect": "[REFUSED,digest]"
+  },
+  {
+   "id": "dis/d_tps-not-a-string",
+   "fn": "d_is",
+   "input": {
+    "version": "0.3.0",
+    "d_tps": 0,
+    "members": []
+   },
+   "expect": "[REFUSED,digest]"
+  },
+  {
+   "id": "dis/members-an-object",
+   "fn": "d_is",
+   "input": {
+    "version": "0.3.0",
+    "d_tps": "51dd698e25a04b8a6d51b5301066ce9af3e708ae8d3412cbd985e66a8509a180",
+    "members": {}
+   },
+   "expect": "[REFUSED,members]"
+  },
+  {
+   "id": "dis/member-not-a-pair",
+   "fn": "d_is",
+   "input": {
+    "version": "0.3.0",
+    "d_tps": "51dd698e25a04b8a6d51b5301066ce9af3e708ae8d3412cbd985e66a8509a180",
+    "members": [
+     [
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,members]"
+  },
+  {
+   "id": "dis/member-hash-upper-case",
+   "fn": "d_is",
+   "input": {
+    "version": "0.3.0",
+    "d_tps": "51dd698e25a04b8a6d51b5301066ce9af3e708ae8d3412cbd985e66a8509a180",
+    "members": [
+     [
+      "M",
+      "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,members]"
+  },
+  {
+   "id": "dis/member-title-empty",
+   "fn": "d_is",
+   "input": {
+    "version": "0.3.0",
+    "d_tps": "51dd698e25a04b8a6d51b5301066ce9af3e708ae8d3412cbd985e66a8509a180",
+    "members": [
+     [
+      "",
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,members]"
+  },
+  {
+   "id": "dis/member-title-not-a-string",
+   "fn": "d_is",
+   "input": {
+    "version": "0.3.0",
+    "d_tps": "51dd698e25a04b8a6d51b5301066ce9af3e708ae8d3412cbd985e66a8509a180",
+    "members": [
+     [
+      7,
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,members]"
+  },
+  {
+   "id": "dis/member-titles-duplicate",
+   "fn": "d_is",
+   "input": {
+    "version": "0.3.0",
+    "d_tps": "51dd698e25a04b8a6d51b5301066ce9af3e708ae8d3412cbd985e66a8509a180",
+    "members": [
+     [
+      "M",
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+     ],
+     [
+      "M",
+      "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,members]"
+  },
+  {
+   "id": "pages/as tps/root-and-sections-out-of-order: 0.1 < 5.9 < 5.10 as integers",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS,4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e701],[The Principia Machina/TPS/0.1 Front,d352c5bc04da9d2378412a550d8d49f80aee389a9ce3df8866e600c5dc0b533a],[The Principia Machina/TPS/5.9 Nine,fc043f4808932b036e2c7daa89ec16ef66426f76e5f5de571bac18a6824d4152],[The Principia Machina/TPS/5.10 Ten,ca42dd9852b1771ab62d154f163cf627147af5649c780160e5a99940e1f456b7]]]"
+  },
+  {
+   "id": "pages/as tps/input-order-reversed: equal",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS,4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e701],[The Principia Machina/TPS/0.1 Front,d352c5bc04da9d2378412a550d8d49f80aee389a9ce3df8866e600c5dc0b533a],[The Principia Machina/TPS/5.9 Nine,fc043f4808932b036e2c7daa89ec16ef66426f76e5f5de571bac18a6824d4152],[The Principia Machina/TPS/5.10 Ten,ca42dd9852b1771ab62d154f163cf627147af5649c780160e5a99940e1f456b7]]]"
+  },
+  {
+   "id": "pages/as tps/banners-changed: equal",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "<pre>\nSECTION 5.10\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''another banner, [[a link]]''\n\n<pre>\nROOT ONE\n</pre>\n<pre>\nROOT TWO\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "new banner\n<pre>\nSECTION 5.9\n</pre>\n\n[[Category:Y]]"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "x\n<pre>\nFRONT\n</pre>\ny"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS,4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e701],[The Principia Machina/TPS/0.1 Front,d352c5bc04da9d2378412a550d8d49f80aee389a9ce3df8866e600c5dc0b533a],[The Principia Machina/TPS/5.9 Nine,fc043f4808932b036e2c7daa89ec16ef66426f76e5f5de571bac18a6824d4152],[The Principia Machina/TPS/5.10 Ten,ca42dd9852b1771ab62d154f163cf627147af5649c780160e5a99940e1f456b7]]]"
+  },
+  {
+   "id": "pages/as tps/contents-without-block: left out, equal",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/Contents",
+      "== Parts ==\n* a list\n"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS,4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e701],[The Principia Machina/TPS/0.1 Front,d352c5bc04da9d2378412a550d8d49f80aee389a9ce3df8866e600c5dc0b533a],[The Principia Machina/TPS/5.9 Nine,fc043f4808932b036e2c7daa89ec16ef66426f76e5f5de571bac18a6824d4152],[The Principia Machina/TPS/5.10 Ten,ca42dd9852b1771ab62d154f163cf627147af5649c780160e5a99940e1f456b7]]]"
+  },
+  {
+   "id": "pages/as tps/contents-with-a-block: left out by title, equal",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/Contents",
+      "<pre>\nNOT RULE TEXT\n</pre>\n"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS,4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e701],[The Principia Machina/TPS/0.1 Front,d352c5bc04da9d2378412a550d8d49f80aee389a9ce3df8866e600c5dc0b533a],[The Principia Machina/TPS/5.9 Nine,fc043f4808932b036e2c7daa89ec16ef66426f76e5f5de571bac18a6824d4152],[The Principia Machina/TPS/5.10 Ten,ca42dd9852b1771ab62d154f163cf627147af5649c780160e5a99940e1f456b7]]]"
+  },
+  {
+   "id": "pages/as tps/section-without-block: left out, equal",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/6.1 Empty",
+      "no block here\n"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS,4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e701],[The Principia Machina/TPS/0.1 Front,d352c5bc04da9d2378412a550d8d49f80aee389a9ce3df8866e600c5dc0b533a],[The Principia Machina/TPS/5.9 Nine,fc043f4808932b036e2c7daa89ec16ef66426f76e5f5de571bac18a6824d4152],[The Principia Machina/TPS/5.10 Ten,ca42dd9852b1771ab62d154f163cf627147af5649c780160e5a99940e1f456b7]]]"
+  },
+  {
+   "id": "pages/as tps/one-character-inside-a-block-changed: moves",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.8\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS,4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e701],[The Principia Machina/TPS/0.1 Front,d352c5bc04da9d2378412a550d8d49f80aee389a9ce3df8866e600c5dc0b533a],[The Principia Machina/TPS/5.9 Nine,e8fca60762aded19a96f8e787a85008c3d10fe41e51e6b4aba6ef66a541b4a8c],[The Principia Machina/TPS/5.10 Ten,ca42dd9852b1771ab62d154f163cf627147af5649c780160e5a99940e1f456b7]]]"
+  },
+  {
+   "id": "pages/as tps/two-pages-contents-swapped-between-titles: moves",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS,4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e701],[The Principia Machina/TPS/0.1 Front,d352c5bc04da9d2378412a550d8d49f80aee389a9ce3df8866e600c5dc0b533a],[The Principia Machina/TPS/5.9 Nine,ca42dd9852b1771ab62d154f163cf627147af5649c780160e5a99940e1f456b7],[The Principia Machina/TPS/5.10 Ten,fc043f4808932b036e2c7daa89ec16ef66426f76e5f5de571bac18a6824d4152]]]"
+  },
+  {
+   "id": "pages/as tps/section-with-an-empty-block: kept, n = 5",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/6.1 Empty",
+      "<pre>\n</pre>\n"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS,4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e701],[The Principia Machina/TPS/0.1 Front,d352c5bc04da9d2378412a550d8d49f80aee389a9ce3df8866e600c5dc0b533a],[The Principia Machina/TPS/5.9 Nine,fc043f4808932b036e2c7daa89ec16ef66426f76e5f5de571bac18a6824d4152],[The Principia Machina/TPS/5.10 Ten,ca42dd9852b1771ab62d154f163cf627147af5649c780160e5a99940e1f456b7],[The Principia Machina/TPS/6.1 Empty,e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855]]]"
+  },
+  {
+   "id": "pages/as tps/version-inside: 0.3.1 over the same pages moves",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS,4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e701],[The Principia Machina/TPS/0.1 Front,d352c5bc04da9d2378412a550d8d49f80aee389a9ce3df8866e600c5dc0b533a],[The Principia Machina/TPS/5.9 Nine,fc043f4808932b036e2c7daa89ec16ef66426f76e5f5de571bac18a6824d4152],[The Principia Machina/TPS/5.10 Ten,ca42dd9852b1771ab62d154f163cf627147af5649c780160e5a99940e1f456b7]]]"
+  },
+  {
+   "id": "pages/as tps/version-with-several-digits",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS,4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e701],[The Principia Machina/TPS/0.1 Front,d352c5bc04da9d2378412a550d8d49f80aee389a9ce3df8866e600c5dc0b533a],[The Principia Machina/TPS/5.9 Nine,fc043f4808932b036e2c7daa89ec16ef66426f76e5f5de571bac18a6824d4152],[The Principia Machina/TPS/5.10 Ten,ca42dd9852b1771ab62d154f163cf627147af5649c780160e5a99940e1f456b7]]]"
+  },
+  {
+   "id": "pages/as tps/three-part-numbers: 5.1 < 5.1.2 < 5.2",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.2 C",
+      "<pre>\nc\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/5.1.2 B",
+      "<pre>\nb\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.1 A",
+      "<pre>\na\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS,4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e701],[The Principia Machina/TPS/5.1 A,87428fc522803d31065e7bce3cf03fe475096631e5e07bbd7a0fde60c4cf25c7],[The Principia Machina/TPS/5.1.2 B,0263829989b6fd954f72baaf2fc64bc2e2f01d692d4de72986ea808f6e99813f],[The Principia Machina/TPS/5.2 C,a3a5e715f0cc574a73c3f9bebb6bc24f32ffd5b67b387244c2c909da779a1478]]]"
+  },
+  {
+   "id": "pages/as tps/root-only: n = 1",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS,4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e701]]]"
+  },
+  {
+   "id": "pages/as tps/root-without-block: left out, n = 1",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS",
+      "no block\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS/5.9 Nine,fc043f4808932b036e2c7daa89ec16ef66426f76e5f5de571bac18a6824d4152]]]"
+  },
+  {
+   "id": "pages/as tps/four-digit-parts",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/9999.9999 Last",
+      "<pre>\nz\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS,4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e701],[The Principia Machina/TPS/9999.9999 Last,c865f6c5ab8d1b0bcd383a5e1e3879d22681c96bf462c269b7581d523fbe70ab]]]"
+  },
+  {
+   "id": "pages/as tps/zero-parts",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.0 Zero",
+      "<pre>\n0\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS,4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e701],[The Principia Machina/TPS/0.0 Zero,9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa]]]"
+  },
+  {
+   "id": "pages/as tps/non-ascii-title-and-text",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/2.1 Caf\u00e9 and more",
+      "<pre>\n\u00e9\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS,4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e701],[The Principia Machina/TPS/2.1 Caf\u00e9 and more,edd3a863872a04239eb29ad4bc12fc892b3d4ae57cc7e786a3697816f8e141c2]]]"
+  },
+  {
+   "id": "pages/as tps/version-two-parts (tps_pages takes no version)",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS,4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e701],[The Principia Machina/TPS/0.1 Front,d352c5bc04da9d2378412a550d8d49f80aee389a9ce3df8866e600c5dc0b533a],[The Principia Machina/TPS/5.9 Nine,fc043f4808932b036e2c7daa89ec16ef66426f76e5f5de571bac18a6824d4152],[The Principia Machina/TPS/5.10 Ten,ca42dd9852b1771ab62d154f163cf627147af5649c780160e5a99940e1f456b7]]]"
+  },
+  {
+   "id": "pages/as tps/version-prefixed (tps_pages takes no version)",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS,4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e701],[The Principia Machina/TPS/0.1 Front,d352c5bc04da9d2378412a550d8d49f80aee389a9ce3df8866e600c5dc0b533a],[The Principia Machina/TPS/5.9 Nine,fc043f4808932b036e2c7daa89ec16ef66426f76e5f5de571bac18a6824d4152],[The Principia Machina/TPS/5.10 Ten,ca42dd9852b1771ab62d154f163cf627147af5649c780160e5a99940e1f456b7]]]"
+  },
+  {
+   "id": "pages/as tps/version-leading-zero (tps_pages takes no version)",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS,4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e701],[The Principia Machina/TPS/0.1 Front,d352c5bc04da9d2378412a550d8d49f80aee389a9ce3df8866e600c5dc0b533a],[The Principia Machina/TPS/5.9 Nine,fc043f4808932b036e2c7daa89ec16ef66426f76e5f5de571bac18a6824d4152],[The Principia Machina/TPS/5.10 Ten,ca42dd9852b1771ab62d154f163cf627147af5649c780160e5a99940e1f456b7]]]"
+  },
+  {
+   "id": "pages/as tps/version-suffix (tps_pages takes no version)",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS,4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e701],[The Principia Machina/TPS/0.1 Front,d352c5bc04da9d2378412a550d8d49f80aee389a9ce3df8866e600c5dc0b533a],[The Principia Machina/TPS/5.9 Nine,fc043f4808932b036e2c7daa89ec16ef66426f76e5f5de571bac18a6824d4152],[The Principia Machina/TPS/5.10 Ten,ca42dd9852b1771ab62d154f163cf627147af5649c780160e5a99940e1f456b7]]]"
+  },
+  {
+   "id": "pages/as tps/version-trailing-lf (tps_pages takes no version)",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS,4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e701],[The Principia Machina/TPS/0.1 Front,d352c5bc04da9d2378412a550d8d49f80aee389a9ce3df8866e600c5dc0b533a],[The Principia Machina/TPS/5.9 Nine,fc043f4808932b036e2c7daa89ec16ef66426f76e5f5de571bac18a6824d4152],[The Principia Machina/TPS/5.10 Ten,ca42dd9852b1771ab62d154f163cf627147af5649c780160e5a99940e1f456b7]]]"
+  },
+  {
+   "id": "pages/as tps/version-empty (tps_pages takes no version)",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS,4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e701],[The Principia Machina/TPS/0.1 Front,d352c5bc04da9d2378412a550d8d49f80aee389a9ce3df8866e600c5dc0b533a],[The Principia Machina/TPS/5.9 Nine,fc043f4808932b036e2c7daa89ec16ef66426f76e5f5de571bac18a6824d4152],[The Principia Machina/TPS/5.10 Ten,ca42dd9852b1771ab62d154f163cf627147af5649c780160e5a99940e1f456b7]]]"
+  },
+  {
+   "id": "pages/as tps/version-not-a-string (tps_pages takes no version)",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS,4ed88dbcdbdd217397e786fcf9eaf25862cffe65a38fdd121db0a6c88018e701],[The Principia Machina/TPS/0.1 Front,d352c5bc04da9d2378412a550d8d49f80aee389a9ce3df8866e600c5dc0b533a],[The Principia Machina/TPS/5.9 Nine,fc043f4808932b036e2c7daa89ec16ef66426f76e5f5de571bac18a6824d4152],[The Principia Machina/TPS/5.10 Ten,ca42dd9852b1771ab62d154f163cf627147af5649c780160e5a99940e1f456b7]]]"
+  },
+  {
+   "id": "pages/as tps/version-checked-before-pages (tps_pages takes no version)",
+   "fn": "tps_pages",
+   "input": {
+    "pages": {}
+   },
+   "expect": "[REFUSED,pages]"
+  },
+  {
+   "id": "pages/as tps/pages-an-object",
+   "fn": "tps_pages",
+   "input": {
+    "pages": {}
+   },
+   "expect": "[REFUSED,pages]"
+  },
+  {
+   "id": "pages/as tps/pages-a-string",
+   "fn": "tps_pages",
+   "input": {
+    "pages": "x"
+   },
+   "expect": "[REFUSED,pages]"
+  },
+  {
+   "id": "pages/as tps/page-not-a-pair",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,pages]"
+  },
+  {
+   "id": "pages/as tps/page-of-three",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS",
+      "",
+      ""
+     ]
+    ]
+   },
+   "expect": "[REFUSED,pages]"
+  },
+  {
+   "id": "pages/as tps/page-text-not-a-string",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS",
+      5
+     ]
+    ]
+   },
+   "expect": "[REFUSED,pages]"
+  },
+  {
+   "id": "pages/as tps/page-as-an-object",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     {
+      "title": "The Principia Machina/TPS",
+      "text": "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     }
+    ]
+   },
+   "expect": "[REFUSED,pages]"
+  },
+  {
+   "id": "pages/as tps/duplicate-title",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "pages/as tps/duplicate-section-number",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Other",
+      "<pre>\nq\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "pages/as tps/duplicate-root",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "<pre>\nq\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "pages/as tps/title-outside-the-tree",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "Main Page",
+      "<pre>\nq\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "pages/as tps/title-with-underscores",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The_Principia_Machina/TPS",
+      "<pre>\nq\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "pages/as tps/section-with-underscore",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/5.9_Nine",
+      "<pre>\nq\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "pages/as tps/section-leading-zero",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/05.9 Nine",
+      "<pre>\nq\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "pages/as tps/section-one-part",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/5 Nine",
+      "<pre>\nq\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "pages/as tps/section-without-name",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/5.9",
+      "<pre>\nq\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "pages/as tps/section-five-digit-part",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/5.10000 Big",
+      "<pre>\nq\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "pages/as tps/section-subpage",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine/sub",
+      "<pre>\nq\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "pages/as tps/section-two-spaces",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/5.9  Nine",
+      "<pre>\nq\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "pages/as tps/section-trailing-space",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine ",
+      "<pre>\nq\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "pages/as tps/section-trailing-dot",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/5.9. Nine",
+      "<pre>\nq\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "pages/as tps/contents-in-lower-case",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/contents",
+      "<pre>\nq\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "pages/as tps/root-with-trailing-slash",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/",
+      "<pre>\nq\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "pages/as tps/title-with-lf",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS\n",
+      "<pre>\nq\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "pages/as tps/section-unicode-digit",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/5.\u0669 Nine",
+      "<pre>\nq\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "pages/as tps/title-empty",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "",
+      "<pre>\nq\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "pages/as tps/root-absent",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,root]"
+  },
+  {
+   "id": "pages/as tps/no-page",
+   "fn": "tps_pages",
+   "input": {
+    "pages": []
+   },
+   "expect": "[REFUSED,root]"
+  },
+  {
+   "id": "pages/as tps/root-absent-contents-present",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/Contents",
+      "x"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,root]"
+  },
+  {
+   "id": "pages/as tps/a-page-pre-refused",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/6.1 Bad",
+      "<pre>\nunclosed\n"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,pre]"
+  },
+  {
+   "id": "pages/as tps/contents-pre-refused-too",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/5.10 Ten",
+      "''b''\n<pre>\nSECTION 5.10\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/5.9 Nine",
+      "''b''\n<pre>\nSECTION 5.9\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\nFRONT\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/Contents",
+      "<PRE>x</PRE>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,pre]"
+  },
+  {
+   "id": "pages/as tps/title-reason-before-pre, bad title last",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/6.1 Bad",
+      "<pre>\nx\n"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "Main Page",
+      "x"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "pages/as tps/title-reason-before-pre, bad title first",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "Main Page",
+      "x"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "''root banner''\n<pre>\nROOT ONE\n</pre>\nmiddle\n<pre>\nROOT TWO\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/6.1 Bad",
+      "<pre>\nx\n"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,title]"
+  },
+  {
+   "id": "pages/as tps/root-reason-before-pre",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/6.1 Bad",
+      "<pre>\nx\n"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,root]"
+  },
+  {
+   "id": "pages/three-blocks-joined-by-one-lf",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS",
+      "<pre>\nA\n</pre>\n<pre>\nB\n</pre>x<pre>\nC\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS,30a7f9c96f8f81fc38c2d13aa04444390e4a4bd98b9ea9664087ef00356a4af8]]]"
+  },
+  {
+   "id": "pages/block-without-final-lf: none added",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS",
+      "<pre>\nA</pre>"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS,559aead08264d5795d3909718cdd05abd49572e84fe55590eef31a88a08fdffd]]]"
+  },
+  {
+   "id": "pages/first-block-without-final-lf: one lf between",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS",
+      "<pre>\nA</pre><pre>\nB\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS,daee1cd25194ae952d046ad9b9c81d3c07dc5332440b58d6d7461b248be56712]]]"
+  },
+  {
+   "id": "pages/cr-lf-inside-a-block-kept: no line-end conversion",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS",
+      "<pre>\nA\r\nB\n</pre>\r\n"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS,4251f6fcb362ff199d419e7f08a23653701a09b70b08c10d3d0ed4ed2dbd5b92]]]"
+  },
+  {
+   "id": "pages/lone-cr-inside-a-block-kept",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS",
+      "<pre>\nA\rB\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS,c33b275aff9abcebf680b6c374f61899eae86b1c1dc9578d2be032261eeed8ca]]]"
+  },
+  {
+   "id": "pages/decomposed-text-kept: no Unicode normalization",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS",
+      "<pre>\nR\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/1.1 Decomposed",
+      "<pre>\ne\u0301\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS,13b30eab8afdfab285103004686b2e6140ce53aa45a4f917341c740dfdb6e956],[The Principia Machina/TPS/1.1 Decomposed,f979a211b00b61497349a7c753652a3d173550a368711a9f9f9845e6383db7cb]]]"
+  },
+  {
+   "id": "pages/precomposed-text: another h",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS",
+      "<pre>\nR\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/1.1 Decomposed",
+      "<pre>\n\u00e9\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS,13b30eab8afdfab285103004686b2e6140ce53aa45a4f917341c740dfdb6e956],[The Principia Machina/TPS/1.1 Decomposed,edd3a863872a04239eb29ad4bc12fc892b3d4ae57cc7e786a3697816f8e141c2]]]"
+  },
+  {
+   "id": "pages/trailing-spaces-and-tab-kept",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS",
+      "<pre>\nA  \t\n \n</pre>"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS,422c0aa64065d8d5c8752f8af3e78761032e5a7e7e960b8134ea20d7d38553b5]]]"
+  },
+  {
+   "id": "pages/astral-and-non-ascii-text",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS",
+      "<pre>\n\u00b5 \u2014 \ud83d\ude00\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS,d131222b4e6fa03cf386e70e1218eecbd6ceb727e05e49a5e8325a4850850099]]]"
+  },
+  {
+   "id": "pages/text-outside-the-blocks-not-read",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS",
+      "== x ==\n<pre>\nR\n</pre>\n[[Category:TPS]] {{DISPLAYTITLE:y}}\n"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS,13b30eab8afdfab285103004686b2e6140ce53aa45a4f917341c740dfdb6e956]]]"
+  },
+  {
+   "id": "pages/empty-block-on-the-root: kept, h of the empty text",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS",
+      "<pre>\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS,e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855]]]"
+  },
+  {
+   "id": "pages/two-empty-blocks: h of one lf",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS",
+      "<pre>\n</pre><pre>\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS,01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b]]]"
+  },
+  {
+   "id": "pages/root-only-without-block: the empty list",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS",
+      "no block\n"
+     ]
+    ]
+   },
+   "expect": "[OK,[]]"
+  },
+  {
+   "id": "pages/root-without-block, contents with a block: the empty list",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/Contents",
+      "<pre>\nq\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS",
+      ""
+     ]
+    ]
+   },
+   "expect": "[OK,[]]"
+  },
+  {
+   "id": "pages/root-without-block, a section kept",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/7.1 Kept",
+      "<pre>\nk\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "none"
+     ],
+     [
+      "The Principia Machina/TPS/7.2 Left",
+      "none"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS/7.1 Kept,19732980d68fbd00358a0a4d98246c960400b87e4fa2a2e155db98be2b42ed6c]]]"
+  },
+  {
+   "id": "pages/order: 0.1 1.1 1.1.1 1.2 1.10 2.1 10.1, given scrambled, root last",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/10.1 Ten one",
+      "<pre>\n10.1\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/2.1 Two one",
+      "<pre>\n2.1\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/1.10 One ten",
+      "<pre>\n1.10\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/0.1 Front",
+      "<pre>\n0.1\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/1.2 One two",
+      "<pre>\n1.2\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/1.1 One one",
+      "<pre>\n1.1\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS/1.1.1 Deep",
+      "<pre>\n1.1.1\n</pre>"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "<pre>\nR\n</pre>\n"
+     ]
+    ]
+   },
+   "expect": "[OK,[[The Principia Machina/TPS,13b30eab8afdfab285103004686b2e6140ce53aa45a4f917341c740dfdb6e956],[The Principia Machina/TPS/0.1 Front,a6311009c6c322ca8ac2e620cff5204f0c3af23115d403293a0cb5be36796688],[The Principia Machina/TPS/1.1 One one,1523e9e982ff804c6d979e1bb2c6f3d7bae35307e8ce458bffc0d12a442b98da],[The Principia Machina/TPS/1.1.1 Deep,cc52f678848b814373757b460383bf61960e4943c203735adde0a350b3e50989],[The Principia Machina/TPS/1.2 One two,44804414f85bef9588f60086587fd6e8871b39123c831ec129624f4d81a95fea],[The Principia Machina/TPS/1.10 One ten,abbc1dfa005442cde25131e583640f0259dfabc4fd0b8c43690f6e5ebb872609],[The Principia Machina/TPS/2.1 Two one,bf8bd8826b985abf5e6347211af927ee7130a5df00cfed5f1517cbcc1134b0c3],[The Principia Machina/TPS/10.1 Ten one,0b83812be9e42962848761706b46e294343f0ae9c8315f8c6ebfe617e019e124]]]"
+  },
+  {
+   "id": "pages/pages-an-object",
+   "fn": "tps_pages",
+   "input": {
+    "pages": {}
+   },
+   "expect": "[REFUSED,pages]"
+  },
+  {
+   "id": "pages/pages-a-string",
+   "fn": "tps_pages",
+   "input": {
+    "pages": "x"
+   },
+   "expect": "[REFUSED,pages]"
+  },
+  {
+   "id": "pages/pages-null",
+   "fn": "tps_pages",
+   "input": {
+    "pages": null
+   },
+   "expect": "[REFUSED,pages]"
+  },
+  {
+   "id": "pages/pages-a-number",
+   "fn": "tps_pages",
+   "input": {
+    "pages": 5
+   },
+   "expect": "[REFUSED,pages]"
+  },
+  {
+   "id": "pages/page-not-a-pair",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,pages]"
+  },
+  {
+   "id": "pages/page-of-three",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS",
+      "",
+      ""
+     ]
+    ]
+   },
+   "expect": "[REFUSED,pages]"
+  },
+  {
+   "id": "pages/page-text-not-a-string",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS",
+      5
+     ]
+    ]
+   },
+   "expect": "[REFUSED,pages]"
+  },
+  {
+   "id": "pages/page-text-null",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS",
+      null
+     ]
+    ]
+   },
+   "expect": "[REFUSED,pages]"
+  },
+  {
+   "id": "pages/page-title-not-a-string",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      5,
+      "x"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,pages]"
+  },
+  {
+   "id": "pages/page-as-an-object",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     {
+      "title": "The Principia Machina/TPS",
+      "text": "x"
+     }
+    ]
+   },
+   "expect": "[REFUSED,pages]"
+  },
+  {
+   "id": "pages/pages-reason-before-title: a bad title then a bad pair",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "Main Page",
+      "x"
+     ],
+     [
+      "The Principia Machina/TPS"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,pages]"
+  },
+  {
+   "id": "pages/root-pre-refused: an opening inside a block",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS",
+      "<pre>\nA\n<pre>\nB\n</pre>"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,pre]"
+  },
+  {
+   "id": "pages/pre-refused on a page given before the root",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS/6.2 Open",
+      "<pre>\nx"
+     ],
+     [
+      "The Principia Machina/TPS",
+      "<pre>\nR\n</pre>\n"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,pre]"
+  },
+  {
+   "id": "pages/pre-refused on a page with no block: a tag of another case",
+   "fn": "tps_pages",
+   "input": {
+    "pages": [
+     [
+      "The Principia Machina/TPS",
+      "<pre>\nR\n</pre>\n"
+     ],
+     [
+      "The Principia Machina/TPS/6.3 Tag",
+      "text <PRE> text"
+     ]
+    ]
+   },
+   "expect": "[REFUSED,pre]"
+  }
+ ]
+}

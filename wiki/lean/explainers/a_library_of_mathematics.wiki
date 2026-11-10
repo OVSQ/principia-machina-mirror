@@ -1,0 +1,132 @@
+{{DISPLAYTITLE:A library of mathematics}}
+{{Technical|Lean theorem prover/System/Type classes and instance resolution|Lean theorem prover/System/Lake and Lean projects}}
+{{Lean theorem prover map}}
+
+A proof assistant without a library can prove only what someone has first defined from nothing.
+This page describes what Lean users build on: the libraries that come with Lean, and Mathlib, the
+community's library of mathematics. It says what Mathlib is, how it grows, how changes to it are
+reviewed, how it is organised, and how a project obtains it.
+
+== What comes with Lean ==
+
+Lean arrives with a core library: natural numbers, integers, lists, arrays, strings, and the
+logic and tactics used throughout this edition. It also ships a library named <code>Std</code>,
+with data structures for programs, such as the lookup table <code>Std.HashMap</code>:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+import Std.Data.HashMap
+
+#eval ((∅ : Std.HashMap String Nat).insert "one" 1).get? "one"
+#eval [3, 1, 2].reverse
+</pre>
+
+Lean 4.34.1 prints <code>some 1</code> and <code>[2, 1, 3]</code>. A further community library,
+Batteries, describes itself as the "batteries included" extended library for Lean 4, with data
+structures and tactics for both programming and mathematics.<ref name="batteries">''Batteries'' (README). [https://github.com/leanprover-community/batteries github.com/leanprover-community/batteries], consulted 14 October 2026.</ref>
+
+What core Lean does not have is most of mathematics. It does not even have the real numbers:
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+#check Real
+</pre>
+
+Lean answers: Unknown identifier `Real`. The real numbers, and almost everything built on them,
+come from Mathlib.
+
+== Mathlib ==
+
+'''Mathlib''' is a single, unified library of mathematics formalised in Lean, built by a community
+rather than by one research group. A paper of 2020 describing it, written by "the mathlib Community", stressed
+its focus on classical mathematics, its large hierarchy of mathematical structures, and its
+distributed organisation.<ref name="cpp2020">The mathlib Community, "The Lean mathematical library", in ''Proceedings of the 9th ACM SIGPLAN International Conference on Certified Programs and Proofs (CPP 2020)'', ACM, 2020, pp. 367–381. [https://doi.org/10.1145/3372885.3373824 doi:10.1145/3372885.3373824]; also arXiv:1910.09336.</ref>
+It was begun in 2017.<ref name="growing">Anne Baanen, Matthew R. Ballard, Johan Commelin, Bryan Gin-ge Chen, Michael Rothgang and Damiano Testa, "Growing Mathlib: maintenance of a large scale mathematical library", arXiv:2508.21593, version 2, 7 October 2025; to appear at the Conference on Intelligent Computer Mathematics (CICM) 2025. [https://arxiv.org/abs/2508.21593 arxiv.org/abs/2508.21593]</ref>
+It was first written for Lean 3 and later translated to Lean 4 (see
+[[Lean theorem prover/History/Mathlib and its community|Mathlib and its community]]).
+
+Its size has been reported at several dates, each counted in its own way:
+
+* in the 2020 paper (figures of 2019): 140,000 lines of code, not counting blank lines and comments, from 73 contributors, with 11 maintainers;<ref name="cpp2020" />
+* in a paper of 2025 on Mathlib's maintenance: 1.9 million lines of code, with about 30 maintainers;<ref name="growing" />
+* on the community's statistics page, consulted on 14 October 2026: 137,993 definitions, 290,354 theorems and 772 contributors.<ref name="stats">Lean community, "Mathlib statistics". [https://leanprover-community.github.io/mathlib_stats.html leanprover-community.github.io/mathlib_stats.html], consulted 14 October 2026.</ref>
+
+The 2020 paper gives a reason, drawn from mathematics itself, for one library rather than
+many: its topics are intertwined, and rather than each building a separate project on a small common core,
+the mathematicians involved joined their work to each other's and to Mathlib.<ref name="cpp2020" />
+
+== How changes are reviewed ==
+
+Anyone may propose a change to Mathlib, and everyone is allowed, and encouraged, to review the
+changes others propose. A reviewer who is satisfied passes the change to the maintainers, who have
+the final say; in the year before the 2025 paper on Mathlib's maintenance, about one change in three that was
+accepted had first been approved by a reviewer in this way. Automatic checks called linters point
+out common mistakes before a person looks.<ref name="growing" /> The 2020 paper describes the
+same open arrangement: design is discussed in public, with little central control over what the
+library contains.<ref name="cpp2020" />
+
+Review is what makes a shared library trustworthy in the sense that matters for
+[[Lean theorem prover/Explainers/Stating the right thing|stating the right thing]]: a definition that
+many people have read and used is more likely to mean what it says than one written for a single
+proof.
+
+== Organised by structures ==
+
+Much of mathematics is organised by structures: a group, a ring, a field, an ordered field, a
+topological space. A theorem proved for every group holds for each particular group. Mathlib
+expresses each structure as a '''type class''': a description of what a type must provide, which
+Lean finds automatically for a particular type when a theorem needs it.<ref name="cpp2020" /> A
+small version, in core Lean:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+class Semigroup' (α : Type) extends Mul α where
+  mul_assoc : ∀ a b c : α, a * b * c = a * (b * c)
+
+theorem regroup {α : Type} [Semigroup' α] (a b c d : α) :
+    a * b * c * d = a * (b * (c * d)) := by
+  rw [Semigroup'.mul_assoc, Semigroup'.mul_assoc]
+
+instance : Semigroup' Nat where
+  mul_assoc := Nat.mul_assoc
+
+instance : Semigroup' Int where
+  mul_assoc := Int.mul_assoc
+
+example (a b c d : Nat) : a * b * c * d = a * (b * (c * d)) := regroup a b c d
+example (a b c d : Int) : a * b * c * d = a * (b * (c * d)) := regroup a b c d
+</pre>
+
+The class says what a semigroup is: a multiplication in which brackets can be moved. The theorem
+<code>regroup</code> is proved once, for every semigroup. The two instances declare that natural
+numbers and integers are semigroups, and the last two lines use the one theorem for both; Lean
+finds the right instance itself. Lean accepts all of it.
+
+Mathlib's version of this is large. Its class for fields, for instance, has 19 fields that carry
+data, and keeping the automatic search for instances fast is a continuing part of the work of
+maintaining it.<ref name="growing" />
+
+== Getting a library ==
+
+A Lean project obtains its libraries through '''Lake''', the tool that comes with Lean for
+compiling Lean code and fetching what it depends on. A project names its dependencies; Lake records
+the exact version of each in a file, <code>lake-manifest.json</code>, which Lean's reference says
+should be kept with the project's own code; and before compiling, Lake brings each dependency to
+the recorded version. The command <code>lake update</code> looks for newer versions, fetches them
+and updates that record.<ref name="lake">''The Lean Language Reference'', version for Lean 4.34.0, section "Lake". [https://lean-lang.org/doc/reference/4.34.0/Build-Tools-and-Distribution/Lake/ lean-lang.org/doc/reference/4.34.0/Build-Tools-and-Distribution/Lake], consulted 14 October 2026.</ref>
+
+Rather than compile all of Mathlib from its source, a project can download Mathlib's compiled
+files with a command the community provides, <code>lake exe cache get</code>. The community's
+instructions also advise giving a project the same version of Lean as Mathlib uses.<ref name="install">Lean community, "Lean projects" (installation instructions). [https://leanprover-community.github.io/install/project.html leanprover-community.github.io/install/project.html], consulted 14 October 2026.</ref>
+Together with the version file described on
+[[Lean theorem prover/Explainers/Checking a proof again later|checking a proof again later]],
+this fixes the version of everything a proof depends on.
+
+Whether the project this wiki records will adopt Mathlib or stay with core Lean is one of its open
+questions (see [[Principia Machina/Lean transition|the move to Lean]]).
+
+== Next ==
+
+[[Lean theorem prover/Explainers/Lean and physics|Lean and physics]] asks what such a library can
+and cannot do for physics.
+
+== References ==
+
+<references />

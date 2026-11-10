@@ -1,0 +1,206 @@
+{
+	"name": "Custos",
+	"version": "0.3.0",
+	"author": [ "Principia Machina" ],
+	"descriptionmsg": "custos-desc",
+	"type": "other",
+	"requires": {
+		"MediaWiki": ">= 1.46.0"
+	},
+	"AutoloadNamespaces": {
+		"Custos\\": "includes/"
+	},
+	"AutoloadClasses": {
+		"Custos\\Maintenance\\Certify": "maintenance/Certify.php",
+		"Custos\\Maintenance\\Job": "maintenance/Job.php",
+		"Custos\\Maintenance\\Land": "maintenance/Land.php",
+		"Custos\\Maintenance\\SeedUwc": "maintenance/SeedUwc.php",
+		"Custos\\Maintenance\\Ticket": "maintenance/Ticket.php"
+	},
+	"APIModules": {
+		"pma": "Custos\\ApiPma"
+	},
+	"JobClasses": {
+		"custosLand": "Custos\\LandJob",
+		"custosReaudit": "Custos\\ReauditJob",
+		"custosCluster": "Custos\\ClusterJob",
+		"custosRecheck": "Custos\\RecheckJob",
+		"custosBudget": "Custos\\BudgetJob",
+		"custosStructureTest": "Custos\\StructureTestJob"
+	},
+	"AvailableRights": [ "custos-landing", "custos-role" ],
+	"GroupPermissions": {
+		"pma-agent": {
+			"custos-landing": true
+		},
+		"pma-declarer": {
+			"custos-role": true
+		},
+		"pma-operator": {
+			"custos-role": true
+		}
+	},
+	"GrantPermissions": {
+		"custos": {
+			"custos-landing": true
+		}
+	},
+	"GrantPermissionGroups": {
+		"custos": "other"
+	},
+	"HookHandlers": {
+		"schema": {
+			"class": "Custos\\SchemaHooks"
+		},
+		"permissions": {
+			"class": "Custos\\PermissionHook",
+			"services": [ "MainConfig", "UserGroupManager" ]
+		},
+		"meter": {
+			"class": "Custos\\Meter"
+		},
+		"restricted": {
+			"class": "Custos\\RestrictedRoutes",
+			"services": [ "MainConfig" ]
+		}
+	},
+	"Hooks": {
+		"LoadExtensionSchemaUpdates": "schema",
+		"getUserPermissionsErrors": "permissions",
+		"BeforeInitialize": [ "meter", "restricted" ],
+		"ApiBeforeMain": "meter",
+		"ApiAfterExecute": "meter",
+		"BeforeParserFetchTemplateRevisionRecord": "restricted",
+		"ParserOptionsRegister": "restricted",
+		"SearchableNamespaces": "restricted",
+		"ShowSearchHit": "restricted",
+		"ApiOpenSearchSuggest": "restricted",
+		"ApiCheckCanExecute": "restricted",
+		"APIAfterExecute": "restricted",
+		"ChangesListSpecialPageQuery": "restricted",
+		"SpecialNewpagesConditions": "restricted",
+		"ContribsPager::getQueryInfo": "restricted",
+		"SpecialPrefixIndexQuery": "restricted",
+		"SpecialPageBeforeExecute": "restricted",
+		"LogEventsListLineEnding": "restricted",
+		"ModifyExportQuery": "restricted",
+		"RevisionDataUpdates": "restricted",
+		"RestCheckCanExecute": "restricted",
+		"RandomPageQuery": "restricted",
+		"SpecialWhatLinksHereQuery": "restricted"
+	},
+	"namespaces": [
+		{
+			"id": 7240,
+			"constant": "NS_CUSTOS_RESTRICTED",
+			"name": "Restricted",
+			"subpages": true,
+			"content": false,
+			"defaultcontentmodel": "wikitext"
+		}
+	],
+	"callback": "Custos\\RestrictedRoutes::onRegistration",
+	"MessagesDirs": {
+		"Custos": [ "i18n" ]
+	},
+	"config": {
+		"CustosCalculator": {
+			"value": "",
+			"description": "The absolute path of the Calculator's binary, pcalc, on this wiki's server. Empty: no call runs (every call is refused). Set by the Operator in LocalSettings.php; no default path."
+		},
+		"CustosBuild": {
+			"value": {
+				"version": "",
+				"digest": ""
+			},
+			"merge_strategy": "provide_default",
+			"description": "The Calculator this wiki expects: its version (what `pcalc version` prints) and the SHA-256 digest of its binary, 64 lowercase hexadecimal digits. Checked before every call, after the binary's residence (under /opt or /usr, root's, writable by no other user; else UNSAFE RESIDENCE); a binary whose digest differs is refused (DIGEST MISMATCH). Empty: no call runs."
+		},
+		"CustosUwcRoot": {
+			"value": "Principia Machina/UWC",
+			"description": "The root under which each UWC's pages live, <root>/<prefix>/...."
+		},
+		"CustosDeclRoot": {
+			"value": "Principia Machina",
+			"description": "The root under which the pages the Declarer declares live."
+		},
+		"CustosPollAfter": {
+			"value": 30,
+			"description": "The seconds an agent waits before it polls a ticket again: the 202 of every op that writes a ticket and POLL of a ticket not yet DONE answer it as poll_after, a constant (no Calculator in a web request); the landing job's waits (LOCK HELD, PAGE FAULT, an ADMISSION refusal without the governor's retry_after) answer it plus the governor's jitter (pcalc governor jitter)."
+		},
+		"CustosSweepAfter": {
+			"value": 600,
+			"description": "The seconds after which a QUEUED ticket is taken for one whose job was lost: POLL of the account's own QUEUED ticket at least this old (by its created time) pushes the job custosLand for it again, deduplicated; the job's conditional claim lands each ticket once."
+		},
+		"CustosMaxRequestBytes": {
+			"value": 1048576,
+			"description": "The most bytes the parameter records may carry (the Calculator's reader bound, 1 MiB); a request past it is refused before a ticket is written (GA1)."
+		},
+		"CustosLockLease": {
+			"value": 3600,
+			"description": "The seconds a lock granted by PETITION lasts; a lock past its expiry is free to the next PETITION, and a PUSH needs the lock within it."
+		},
+		"CustosAgentStop": {
+			"value": false,
+			"description": "The Operator's AGENT STOP: true refuses every agent request at admission (the governor's switch, read into the metered state)."
+		},
+		"CustosGovernorOff": {
+			"value": false,
+			"description": "GOVERNOR OFF: true skips the rate at admission and keeps the switches and the slots (the governor's switch, read into the metered state)."
+		},
+		"CustosSeatLockSeconds": {
+			"value": 10,
+			"description": "The seconds the landing job waits for an account's seat lock (the database's named lock custos-seat:<account>), under which the admission reads the account's seats, asks the governor and writes its charge, so two jobs never both spend the account's last seat. A lock not obtained in this time answers the ticket ADMISSION with SLOT RETRY-AFTER plus the governor's jitter and charges nothing."
+		},
+		"CustosSuspended": {
+			"value": [],
+			"description": "The accounts SUSPENDED under CR6 or CR11; each one's requests are refused at admission."
+		},
+		"CustosTps": {
+			"value": "",
+			"description": "The TPS field the landing job writes into every landed record: the specification's version. Empty: no PUSH lands."
+		},
+		"CustosDIs": {
+			"value": "",
+			"description": "The D_IS field the landing job writes into every landed record, 64 lowercase hexadecimal digits. Empty: no PUSH lands."
+		},
+		"CustosJobContext": {
+			"value": {
+				"min_address_space": 2025138
+			},
+			"merge_strategy": "provide_default",
+			"description": "The landing job's context: min_address_space, the KiB of address space the job needs (the measured need); a job given less refuses with JOB CONTEXT and never starts the Calculator. 0 checks nothing."
+		},
+		"CustosBatch": {
+			"value": {
+				"pressure": "CLEAR",
+				"defer_wait": 300
+			},
+			"merge_strategy": "provide_default",
+			"description": "The batch jobs' frame: pressure, the pressure level the frame passes to `governor admit` (CLEAR, BUSY, STRAINED or OVERLOADED) until the level is metered; lane 5 is admitted at CLEAR and BUSY and refused at the others, the run ending DEFERRED; defer_wait, the seconds answered as the retry-after when the governor gives none."
+		},
+		"CustosRestrictedNamespace": {
+			"value": 7240,
+			"description": "The number of the restricted namespace Restricted:, as the namespaces of this file register it, with no talk namespace. The permission hook reads a title in it through this number; a title MediaWiki gives the next number (unregistered, with no name) is refused for every action. Changed only with the namespaces registered here."
+		},
+		"CustosRoles": {
+			"value": {
+				"declarer": "pma-declarer",
+				"operator": "pma-operator",
+				"agent": "pma-agent",
+				"contributor": "pma-contributor"
+			},
+			"merge_strategy": "provide_default",
+			"description": "The group of each role's accounts: the Declarer's (pma-declarer), the Operator's (pma-operator), the certified agent's (pma-agent), the Contributor's (pma-contributor, asked the Contributor's cells, which are the Public's). The permission hook admits a read of a restricted page by an account in the Declarer's or the Operator's group only; a role missing admits no one, and the agent role missing or empty refuses every request on a governed page (fail closed)."
+		},
+		"CustosMeterSample": {
+			"value": 10,
+			"description": "The governor's meter samples anonymous reads 1 in this many, each kept row weighted by it; an account's governed request is always metered (custos_meter)."
+		},
+		"CustosPreGateFile": {
+			"value": "",
+			"description": "The PRE-GATE's deny list, which the budget roll-up (the job custosBudget) writes whole by a temporary file and a rename, and custos/pregate.php reads before MediaWiki loads (the Operator wires it by auto_prepend_file and names the same path there). Empty: no list is written."
+		}
+	},
+	"manifest_version": 2
+}

@@ -1,0 +1,50 @@
+{
+ "corpus": "identity_corpus.json",
+ "note": "For each digest case v1 answers with a digest: the netstring v1 digests, computed by v1's tpc_identity module, its SHA-256 checked equal to the case's expected digest. Written by scripts/identity_preimages.py; the runner checks that the preimage the Calculator digests with SHA-256 (decision D2, option 1) is this one.",
+ "preimages": [
+  {
+   "name": "D01 a digest; recomputed independently below",
+   "preimage": "10:TPM-PROMPT1:127:6:CLOSED16:Anthropic/Claude32:0123456789abcdef0123456789abcdef70:You are a certified agent of The Principia Machina.\nWork the register.263:[{\"description\":\"Read a wiki page\",\"name\":\"read_page\",\"parameters\":{\"properties\":{\"title\":{\"type\":\"string\"}},\"required\":[\"title\"],\"type\":\"object\"}},{\"name\":\"push\",\"parameters\":{\"properties\":{\"records\":{\"items\":{\"type\":\"object\"},\"type\":\"array\"}},\"type\":\"object\"}}]"
+  },
+  {
+   "name": "D02 the template in NFD gives the same digest as in NFC",
+   "preimage": "10:TPM-PROMPT1:127:6:CLOSED16:Anthropic/Claude32:0123456789abcdef0123456789abcdef18:Résumé the work.2:[]"
+  },
+  {
+   "name": "D02b the same template in NFC",
+   "preimage": "10:TPM-PROMPT1:127:6:CLOSED16:Anthropic/Claude32:0123456789abcdef0123456789abcdef18:Résumé the work.2:[]"
+  },
+  {
+   "name": "D03 tool key order and whitespace do not change the digest",
+   "preimage": "10:TPM-PROMPT1:127:6:CLOSED16:Anthropic/Claude32:0123456789abcdef0123456789abcdef70:You are a certified agent of The Principia Machina.\nWork the register.263:[{\"description\":\"Read a wiki page\",\"name\":\"read_page\",\"parameters\":{\"properties\":{\"title\":{\"type\":\"string\"}},\"required\":[\"title\"],\"type\":\"object\"}},{\"name\":\"push\",\"parameters\":{\"properties\":{\"records\":{\"items\":{\"type\":\"object\"},\"type\":\"array\"}},\"type\":\"object\"}}]"
+  },
+  {
+   "name": "D04 one changed character in the template changes the digest",
+   "preimage": "10:TPM-PROMPT1:127:6:CLOSED16:Anthropic/Claude32:0123456789abcdef0123456789abcdef71:You are a certified agent of The Principia Machina.\nWork the register..263:[{\"description\":\"Read a wiki page\",\"name\":\"read_page\",\"parameters\":{\"properties\":{\"title\":{\"type\":\"string\"}},\"required\":[\"title\"],\"type\":\"object\"}},{\"name\":\"push\",\"parameters\":{\"properties\":{\"records\":{\"items\":{\"type\":\"object\"},\"type\":\"array\"}},\"type\":\"object\"}}]"
+  },
+  {
+   "name": "D05 one changed character in the tools changes the digest",
+   "preimage": "10:TPM-PROMPT1:127:6:CLOSED16:Anthropic/Claude32:0123456789abcdef0123456789abcdef70:You are a certified agent of The Principia Machina.\nWork the register.263:[{\"description\":\"Read a wiki page\",\"name\":\"read_page\",\"parameters\":{\"properties\":{\"title\":{\"type\":\"string\"}},\"required\":[\"title\"],\"type\":\"object\"}},{\"name\":\"Push\",\"parameters\":{\"properties\":{\"records\":{\"items\":{\"type\":\"object\"},\"type\":\"array\"}},\"type\":\"object\"}}]"
+  },
+  {
+   "name": "D13 an empty template is a digest",
+   "preimage": "10:TPM-PROMPT1:127:6:CLOSED16:Anthropic/Claude32:0123456789abcdef0123456789abcdef0:2:[]"
+  },
+  {
+   "name": "D14 a whitespace difference in the template changes the digest (no collapsing)",
+   "preimage": "10:TPM-PROMPT1:127:6:CLOSED16:Anthropic/Claude32:0123456789abcdef0123456789abcdef72:You are a certified agent of The Principia Machina.  \nWork the register.263:[{\"description\":\"Read a wiki page\",\"name\":\"read_page\",\"parameters\":{\"properties\":{\"title\":{\"type\":\"string\"}},\"required\":[\"title\"],\"type\":\"object\"}},{\"name\":\"push\",\"parameters\":{\"properties\":{\"records\":{\"items\":{\"type\":\"object\"},\"type\":\"array\"}},\"type\":\"object\"}}]"
+  },
+  {
+   "name": "D16 another salt gives another digest",
+   "preimage": "10:TPM-PROMPT1:127:6:CLOSED16:Anthropic/Claude32:ffffffffffffffffffffffffffffffff70:You are a certified agent of The Principia Machina.\nWork the register.263:[{\"description\":\"Read a wiki page\",\"name\":\"read_page\",\"parameters\":{\"properties\":{\"title\":{\"type\":\"string\"}},\"required\":[\"title\"],\"type\":\"object\"}},{\"name\":\"push\",\"parameters\":{\"properties\":{\"records\":{\"items\":{\"type\":\"object\"},\"type\":\"array\"}},\"type\":\"object\"}}]"
+  },
+  {
+   "name": "D17 a CJK family and template",
+   "preimage": "10:TPM-PROMPT1:121:6:CLOSED12:模型/乙32:0123456789abcdef0123456789abcdef6:你好2:{}"
+  },
+  {
+   "name": "D18 another family gives another digest",
+   "preimage": "10:TPM-PROMPT1:124:6:CLOSED13:Google/Gemini32:0123456789abcdef0123456789abcdef70:You are a certified agent of The Principia Machina.\nWork the register.263:[{\"description\":\"Read a wiki page\",\"name\":\"read_page\",\"parameters\":{\"properties\":{\"title\":{\"type\":\"string\"}},\"required\":[\"title\"],\"type\":\"object\"}},{\"name\":\"push\",\"parameters\":{\"properties\":{\"records\":{\"items\":{\"type\":\"object\"},\"type\":\"array\"}},\"type\":\"object\"}}]"
+  }
+ ]
+}

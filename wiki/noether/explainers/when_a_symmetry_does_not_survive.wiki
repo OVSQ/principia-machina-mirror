@@ -1,0 +1,107 @@
+{{DISPLAYTITLE:When a symmetry does not survive}}
+{{Noether's theorems map}}
+
+''Mathematical counterpart: [[Noether's theorems/Mathematics/Anomalies|Anomalies: when a classical symmetry does not survive quantisation]].''
+
+'''A note about this page.''' As with
+[[Noether's theorems/Explainers/The theorem after quantum mechanics|the previous
+one]], its counterpart derives nothing and marks its statements as unchecked. The
+'''statement''' below can be given plainly and is worth having. The '''mechanism'''
+cannot, and this page does not attempt it.
+
+== The statement ==
+
+'''Unchecked.''' A classical theory has a symmetry. You build the quantum version
+of that theory. The symmetry is gone.
+
+Not hidden, not approximate. Gone. And not because anyone was careless: for certain
+symmetries the failure is unavoidable, because the steps needed to make the quantum
+theory well defined are themselves incompatible with the symmetry. One or the other
+has to give, and it is the symmetry.
+
+An event of this kind is called an '''anomaly'''. The best-known case makes a
+quantity that is conserved in the classical theory stop being conserved in the
+quantum one — and the effect was measured in the laboratory before it was properly
+understood.
+
+== The mechanism, which this page does not give ==
+
+Why the steps are incompatible is a question about how infinities are handled in
+quantum field theory, and there is no honest short version.
+
+This page could produce a paragraph. It would leave a reader believing they had
+been told something. That is worse than the gap.
+
+== The misreading this page exists to prevent ==
+
+Here is the part that '''can''' be said plainly, and it is a point of logic rather
+than of physics.
+
+'''An anomaly is not a failure of Noether's theorem.'''
+
+Both of her theorems are conditional. Each says: '''if''' the scoring rule survives
+a certain symmetry, '''then''' certain things follow. Neither says that any
+particular scoring rule does survive any particular symmetry. That was never
+claimed and is not the theorem's business.
+
+When a symmetry does not survive quantisation, the quantum theory simply fails the
+"if". A conditional whose condition is not met has not been contradicted. It has
+not been invoked.
+
+The classical theorem remains exactly as true as it ever was, about the classical
+theory it was always about. What changed is that the quantum theory is a different
+theory, and it does not have the symmetry.
+
+'''The correct sentence is: the symmetry did not survive. Not: the theorem
+broke.'''
+
+== Why some anomalies end a theory ==
+
+One consequence is worth carrying, because it turns this from a curiosity into a
+working constraint.
+
+If a symmetry of the one-choice-for-everywhere kind is anomalous, a classically
+conserved quantity stops being conserved. That is a prediction. It can be checked,
+and in the famous case it was.
+
+If a symmetry of the choice-at-every-point kind is anomalous, the theory is
+'''broken'''. The slack in its description was never supposed to be physical, and
+the quantum theory needs it to stay that way. An anomaly means it does not, and the
+theory starts predicting nonsense.
+
+So candidate theories are checked for this before anything else, and the
+requirement that such anomalies cancel is a severe restriction on what a theory may
+contain. Several features of the known particles are there because nothing else
+would cancel.
+
+That is the second theorem's structure, a hundred years on, working as a design
+rule. It is as far downstream of 1918 as this volume follows.
+
+== Two ways a symmetry can stop being visible ==
+
+Worth separating, because they are constantly confused and only one is on this
+page.
+
+'''The symmetry is there and the situation is not.''' A pencil balanced on its
+point is symmetric about the vertical. Let it fall and it points one way. The laws
+did not change; the particular outcome simply had to choose. Physicists call this
+spontaneous breaking, and the symmetry is fully intact — it is now relating
+different possible outcomes to each other rather than being visible in any one of
+them.
+
+'''The symmetry is not there at all.''' That is the anomaly above. Nothing chose
+anything. The quantum theory simply does not have the symmetry, and no
+rearrangement of the situation recovers it.
+
+The two get run together because both are described as symmetry breaking, and both
+end with a conservation law you cannot use. They are entirely different events.
+
+The test is what happens to the conserved quantity. Under spontaneous breaking it
+is still conserved — the pencil's fall conserves angular momentum perfectly well.
+Under an anomaly it is not conserved, and the failure is measurable.
+
+'''One is a symmetric law with an unsymmetric outcome. The other is a law that
+lost its symmetry on the way from classical to quantum.'''
+
+''No mathematics is used on this page. The mathematical treatment is on the
+counterpart page named above.''

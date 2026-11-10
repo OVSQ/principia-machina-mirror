@@ -1,0 +1,137 @@
+[
+	{
+		"name": "custos_meter",
+		"comment": "The governor's meter (charter 8.3, TPS 5.3.31): one row per governed request, written at GA9 (anonymous reads sampled 1 in $wgCustosMeterSample); the budget job rolls the rows up into custos_budget.",
+		"columns": [
+			{
+				"name": "cm_id",
+				"comment": "The row's number",
+				"type": "integer",
+				"options": {
+					"unsigned": true,
+					"notnull": true,
+					"autoincrement": true
+				}
+			},
+			{
+				"name": "cm_time",
+				"comment": "The server time the request started, whole seconds",
+				"type": "bigint",
+				"options": {
+					"unsigned": true,
+					"notnull": true,
+					"default": 0
+				}
+			},
+			{
+				"name": "cm_account",
+				"comment": "The account's user name; empty for an anonymous request",
+				"type": "binary",
+				"options": {
+					"notnull": true,
+					"length": 255
+				}
+			},
+			{
+				"name": "cm_network",
+				"comment": "The anonymous request's network; empty for an account's",
+				"type": "binary",
+				"options": {
+					"notnull": true,
+					"length": 64
+				}
+			},
+			{
+				"name": "cm_op",
+				"comment": "The governed request's kind, the Calculator's word",
+				"type": "binary",
+				"options": {
+					"notnull": true,
+					"length": 32
+				}
+			},
+			{
+				"name": "cm_lane",
+				"comment": "The kind's lane number (custos/lanes.json, pcalc governor lane)",
+				"type": "smallint",
+				"options": {
+					"unsigned": true,
+					"notnull": true,
+					"default": 0
+				}
+			},
+			{
+				"name": "cm_cpu",
+				"comment": "CPU time, thousandths of a CPU second",
+				"type": "bigint",
+				"options": {
+					"unsigned": true,
+					"notnull": true,
+					"default": 0
+				}
+			},
+			{
+				"name": "cm_wall",
+				"comment": "Wall time, thousandths of a second",
+				"type": "bigint",
+				"options": {
+					"unsigned": true,
+					"notnull": true,
+					"default": 0
+				}
+			},
+			{
+				"name": "cm_memory",
+				"comment": "Peak memory, bytes",
+				"type": "bigint",
+				"options": {
+					"unsigned": true,
+					"notnull": true,
+					"default": 0
+				}
+			},
+			{
+				"name": "cm_bytes",
+				"comment": "Response bytes",
+				"type": "bigint",
+				"options": {
+					"unsigned": true,
+					"notnull": true,
+					"default": 0
+				}
+			},
+			{
+				"name": "cm_landed",
+				"comment": "Landed bytes",
+				"type": "bigint",
+				"options": {
+					"unsigned": true,
+					"notnull": true,
+					"default": 0
+				}
+			},
+			{
+				"name": "cm_weight",
+				"comment": "The rows this row stands for: the sample's 1 in N, else 1",
+				"type": "bigint",
+				"options": {
+					"unsigned": true,
+					"notnull": true,
+					"default": 0
+				}
+			}
+		],
+		"indexes": [
+			{
+				"name": "cm_time",
+				"columns": [
+					"cm_time"
+				],
+				"unique": false
+			}
+		],
+		"pk": [
+			"cm_id"
+		]
+	}
+]

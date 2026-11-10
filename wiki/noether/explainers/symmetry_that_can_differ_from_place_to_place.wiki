@@ -1,0 +1,97 @@
+{{DISPLAYTITLE:Symmetry that can differ from place to place}}
+{{Noether's theorems map}}
+
+''Mathematical counterpart: [[Noether's theorems/Second theorem/Groups depending on arbitrary functions|Groups depending on arbitrary functions]].''
+
+Noether's second theorem takes a different kind of symmetry from the first. This
+page says what kind, and separates it from two things it gets confused with.
+
+== One clock, or a clock each ==
+
+Give a class of thirty students one stopwatch between them and a shared signal.
+Everyone starts at the same moment. If the experiment they are timing does not
+care what that moment was, you have a symmetry — the kind on
+[[Noether's theorems/Explainers/What a continuous symmetry is|the earlier page]].
+One knob: when the signal went.
+
+Now give every student their own stopwatch and let each start whenever they like.
+Thirty different starting times. Then a hundred students. Then a student at every
+point of the room, so that "when did you start" is answered not by a list of
+numbers but by a picture — a value at every location, which you can draw however
+you please.
+
+If the physics still comes out the same, you have the second kind of symmetry.
+Physicists call it a '''local''' symmetry, because the choice is made afresh at
+each place, and a symmetry of the first kind '''global''', because one choice
+covers everything.
+
+== A hundred knobs is not the same as a free choice ==
+
+This is where the distinction usually gets blurred, so it is worth being blunt.
+
+Adding more knobs to a global symmetry never turns it into a local one. Thirty
+students with thirty stopwatches still gives you thirty numbers. A thousand
+students gives you a thousand. However many you add, you are still handing over a
+list.
+
+A local symmetry hands over a '''shape'''. You are not picking numbers off a
+list; you are drawing a curve, and any curve will do.
+
+Noether is explicit about this. She puts the case of infinitely many numbers in
+between the two, as its own category, and notes that her '''first''' theorem
+still applies to it. Her second theorem does not. Infinitely many numbers is not
+what the second theorem needs.
+
+Why does the difference matter so much? Because of one move the proof makes. With
+a free shape, you can choose it to be busy in the middle of a region and to fade
+to nothing near the edges. A number cannot do that. A number is the same
+everywhere by definition. That one move is what the second theorem's proof turns
+on, and it is unavailable no matter how many numbers you have.
+
+== How fussy is the rule ==
+
+There is one more thing to count.
+
+Some rules care only about your choice. Others care about how quickly your choice
+changes from one place to the next — and some care about how quickly that rate
+changes, and so on.
+
+Noether keeps track of how far this goes, and the answer feeds straight into the
+theorem's output. A rule that cares only about the choice gives a simpler result
+than one that cares about how the choice varies.
+
+So the theorem needs two counts: how many free shapes there are, and how deep the
+rule looks into how they vary. The first fixes how many results come back. The
+second fixes how complicated each one is.
+
+== Two examples, and one warning ==
+
+Noether gives two before she proves anything, which is a habit worth copying.
+
+'''Tracing a curve.''' Draw a curve on paper. You can describe it by saying where
+you are at each moment as you trace it — but you were free to trace it fast, slow,
+or with a pause halfway. The curve is the same. Your freedom to choose the pace is
+a free shape, and it is a local symmetry.
+
+'''Choosing coordinates.''' In general relativity you are free to label the points
+of spacetime however you like, and you can relabel differently here than there.
+Same freedom, one shape for each dimension.
+
+'''The warning.''' It is easy to come away thinking the second theorem is about
+general relativity. It is not. Noether names general relativity as an example of a
+theory with this kind of symmetry, and near the end of her paper she constructs
+another such symmetry with nothing physical attached to it at all, precisely to
+show that the physics was never the point.
+
+== Where this goes ==
+
+Every force in modern physics is described by a theory with a local symmetry.
+That was not known in 1918 — the idea arrived in the 1950s. The second theorem was
+waiting for it.
+
+What it says about such theories is on
+[[Noether's theorems/Explainers/The second theorem, and why it is not the first|the
+next page]], and the answer is not a conservation law.
+
+''No mathematics is used on this page. The mathematical treatment is on the
+counterpart page named above.''

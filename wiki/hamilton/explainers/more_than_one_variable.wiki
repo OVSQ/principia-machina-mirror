@@ -1,0 +1,138 @@
+{{DISPLAYTITLE:More than one variable}}
+{{Technical|Hamilton's principle/Mathematics/Several dependent variables|Hamilton's principle/Mathematics/Several independent variables}}
+{{Hamilton's principle map}}
+
+This page explains how the method handles systems with many moving parts. It uses
+no mathematics. The technical pages it goes with are named above.
+
+== One thing moving is not enough ==
+
+[[File:OPL-HP-F-31.png|thumb|right|400px|A bead chain approaching a continuous string.]]
+
+So far the volume has followed a single path: one thing, moving.
+
+Real systems are not like that. A double pendulum has two arms. A bridge has
+millions of parts. The air in a room has more moving pieces than anyone would
+want to count.
+
+The method extends to all of these. What follows is how, and where the extension
+needs care.
+
+== Many parts, one at a time ==
+
+[[File:OPL-HP-F-44.png|thumb|right|400px|Varying one degree of freedom at a time.]]
+
+Suppose a system has three moving parts. Write down the cost rule for the whole
+system, taking all three into account.
+
+Now nudge the '''first''' part only, leaving the other two exactly as they were.
+Run the same argument as before. You get a rule for the first part.
+
+Now do the same for the second part, and the third.
+
+You end up with one rule per part. Nothing new had to be invented. The trick of
+nudging one thing at a time did all the work.
+
+== The catch ==
+
+[[File:OPL-HP-F-56.png|thumb|right|400px|From one independent variable to several.]]
+
+That trick relies on something, and it is worth stating plainly.
+
+'''You have to be able to nudge one part without disturbing the others.'''
+
+Often you cannot.
+
+Think of a pendulum: a weight on a rigid rod. Describe it by the weight's sideways
+and vertical positions. Those two are not free of each other. The rod has a fixed
+length, so moving the weight sideways forces it to move vertically as well.
+
+Nudge one and the other has to follow. The trick fails.
+
+There are two ways out, and both are useful.
+
+'''Choose better descriptions.''' Instead of two positions, use the single angle
+the rod makes with the vertical. Now there is one quantity, it is free to take any
+value, and the difficulty vanishes.
+
+'''Keep the description and pay for it.''' Sometimes the tidy description does not
+exist, or you want information the tidy one throws away. In the pendulum case, the
+angle description never tells you the '''tension''' in the rod. If that is what
+you are after — and an engineer usually is — you need the other method.
+
+That other method is at
+[[Hamilton's principle/Explainers/Constraints|Constraints]] and
+[[Hamilton's principle/Explainers/Multipliers|Multipliers]].
+
+== Free choice of description ==
+
+One of the real advantages of this whole approach shows up here.
+
+The method does not care how you describe the system. Angles, distances, heights,
+anything convenient. Write down the cost rule in whatever terms suit the problem
+and turn the handle.
+
+Doing the same thing with forces is much harder. Forces are arrows in space, and
+converting arrows into angles is fiddly and error-prone. The cost rule is a single
+number, and numbers do not have directions to keep track of.
+
+For a spinning top, or a robot arm, or a chain of linked rods, this is the
+difference between a manageable problem and an unmanageable one.
+
+== From many parts to a continuous thing ==
+
+Now push the idea as far as it goes.
+
+A guitar string is not three parts or a hundred parts. Every point along it can
+move. There are infinitely many moving parts.
+
+The method still works, and the way to see it is to sneak up on the answer.
+
+Replace the string with a row of beads on a light thread. That is an ordinary
+system with a definite number of parts, and everything above applies. Now use more
+beads, and lighter ones. Then more still.
+
+As the beads get closer together, the answer settles down to something. That
+something is the behaviour of the real string.
+
+The result is the '''wave equation''', and it describes waves running along the
+string at a fixed speed. Sound, light and ripples on water are all governed by
+close relatives of it.
+
+Doing the calculation this way is worth the trouble. You could simply assert a
+cost rule for the string and turn the handle. Sneaking up on it from the beads
+shows that the rule you assert is the right one, rather than asking the reader to
+take it on trust.
+
+== Fields ==
+
+When every point of something can move, physics calls that thing a '''field'''.
+
+A string is a field along a line. The air in a room is a field in space. The
+electric and magnetic fields are fields in space, and so is the gravitational
+field.
+
+Everything on this page applies to all of them. Write down a cost rule for the
+field, nudge it, and out come the equations. That is how modern physics is
+written, and it is explained at
+[[Hamilton's principle/Explainers/Fields|Fields]].
+
+== One thing that changes ==
+
+Moving to fields changes conservation laws in a way worth knowing.
+
+For a few moving parts, "energy is conserved" means a number stays the same.
+
+For a field it means something stronger and more useful. Energy cannot vanish here
+and appear over there. It has to '''flow''' — leaving one region by crossing the
+boundary and entering the next.
+
+That is why you can talk about energy travelling along a wire, or sunlight
+carrying energy across space. The conservation law is local, and locality is what
+makes it possible for energy to have a route.
+
+== Where to go next ==
+
+The machinery is now complete. The next question is the one the volume has been
+deferring: when is a stationary path actually the best one? That is at
+[[Hamilton's principle/Explainers/Is it really a minimum|Is it really a minimum]].

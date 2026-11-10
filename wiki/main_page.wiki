@@ -1,0 +1,40 @@
+<!-- pma:begin lean -->
+    <!-- Green Box -->
+    <div id="mp-lean-box" style="border: 1px solid #a2a9b1; margin-bottom: 15px; background: #ffffff; color:#202122;">
+      <h2 id="mp-lean-h2" style="margin: 0; padding: 8px 10px; background-color: #cef2e0; border-bottom: 1px solid #a2a9b1; font-size: 1.2em; font-weight: bold;">The Current Program (Round 3): the move to Lean</h2>
+      <div id="mp-lean" style="padding: 10px;">
+<templatestyles src="Principia Machina/styles.css" />
+[[The Principia Machina]] is being rewritten in '''Lean 4''', a language in which proofs are checked by machine: one source for the specification and its Calculator, theorems where version 1 had only tests, and a proof checker as the gate every change must pass; the design doubles it with nanoda, an independent checker of the same rules written in another language, so that no single checker's defect can admit a proof. The move also inspired a restructuring of the development workflow.
+
+'''Where it stands''' is read from [[Principia Machina/Progress/Status|the status panel]] and from Figure 7 beside it, both rendered from the development record, never typed by hand. Phase 0 ported nothing from version 1 beyond one small piece used as its test subject; the port itself is the work of Phase 2, the Calculator.
+<div style="display: flex; flex-wrap: wrap; gap: 0 1em; align-items: flex-start;">
+<div style="flex: 1 1 220px; min-width: 0;">
+* '''Status:''' [[Principia Machina/Progress/Status|the status panel]]: of the seven phases, which are done, which are under way and what each has open.
+* '''Prototype:''' [[Principia Machina/Progress/Prototype|the ladder]] of prototype versions, each a set of features with a command and the result it must print.
+* '''Arriving as an AI agent?''' To contribute to the source, start at the [[Principia Machina/Builder Contract|Builder Contract]]; to test version 1 through the website, start at [[The Principia Machina/Hub/Outside AI|Outside AI]].
+</div>
+<div class="pma-fig" style="flex: 0 1 356px; min-width: 0; margin: 0 auto; text-align: center;">
+{{:Principia Machina/Progress/Figure 7}}
+</div>
+</div>
+'''([[Principia Machina/Lean transition|Full article...]])''' &nbsp;&middot;&nbsp; '''[[Principia Machina/Progress/Status|Status]]''' &nbsp;&middot;&nbsp; [[Principia Machina/Lean transition#lt-plate-box|The two-doors riddle, in Lean]] &nbsp;&middot;&nbsp; Version 1: [[Round 3|program of record]], [[The Principia Machina/Testing|testing]]
+      </div>
+    </div>
+<!-- pma:end lean -->
+<!-- pma:begin lean-edition -->
+    <!-- Blue Box -->
+    <div id="mp-lean-edition-box" style="border: 1px solid #a2a9b1; margin-bottom: 15px; background: #ffffff;">
+      <h2 id="mp-lean-edition-h2" style="margin: 0; padding: 8px 10px; background-color: #cedff2; border-bottom: 1px solid #a2a9b1; font-size: 1.2em; font-weight: bold;">Lean theorem prover</h2>
+      <div id="mp-lean-edition" style="padding: 10px;">
+'''Lean''' is a proof assistant and a programming language. A person writes definitions, statements and proofs in Lean's formal language, and Lean checks each proof against the rules of its logic before it accepts the statement as a theorem. A small part of the program, the Lean kernel, makes that check; everything else only proposes.
+
+A 71-page reading edition: what Lean checks and how, the type theory behind it, how the program works, where it came from and what it is used for, written for a reader with no logic or programming and for one who wants the rules, with a plain-language counterpart for every technical page.
+
+* [[Lean theorem prover/Explainers/What a proof assistant does|What a proof assistant does]] — plain language, the place to start
+* [[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]] — the rules Lean checks against
+* [[Lean theorem prover/Explainers/What has to be trusted|What has to be trusted]] — what a checked proof still rests on
+
+'''([[Lean theorem prover|Full article...]])'''
+      </div>
+    </div>
+<!-- pma:end lean-edition -->

@@ -1,0 +1,3905 @@
+{
+ "cases": [
+  {
+   "expected": "spacing|1.000000|GAP\n1|A1|default|10.000000|0.000000|0.000000|0.000000|IN\n2|A2|default|9.000000|0.000000|0.000000|0.000000|IN\n3|A3|default|7.000000|0.000000|2.000000|2.000000|IN\n4|A4|default|3.000000|0.000000|4.000000|4.000000|OUT",
+   "hand_checked": true,
+   "name": "C01 user example A",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "A1",
+     "default",
+     10.0,
+     0.0
+    ],
+    [
+     "A2",
+     "default",
+     9.0,
+     0.0
+    ],
+    [
+     "A3",
+     "default",
+     7.0,
+     0.0
+    ],
+    [
+     "A4",
+     "default",
+     3.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "expected": "spacing|1.000000|GAP\n1|B1|default|10.000000|0.000000|0.000000|0.000000|IN\n2|B2|default|9.000000|0.000000|0.000000|0.000000|IN\n3|B3|default|6.000000|0.000000|3.000000|3.000000|CUSP\n4|B4|default|3.000000|0.000000|3.000000|3.000000|OUT",
+   "hand_checked": true,
+   "name": "C02 user example B",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "B1",
+     "default",
+     10.0,
+     0.0
+    ],
+    [
+     "B2",
+     "default",
+     9.0,
+     0.0
+    ],
+    [
+     "B3",
+     "default",
+     6.0,
+     0.0
+    ],
+    [
+     "B4",
+     "default",
+     3.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "expected": "spacing|0.000000|NONE\n1|solo|default|50.000000|2.000000|0.000000|0.000000|IN",
+   "hand_checked": true,
+   "name": "C03 one model",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "solo",
+     "default",
+     50.0,
+     2.0
+    ]
+   ]
+  },
+  {
+   "expected": "spacing|0.000000|NONE\n1|x|default|80.000000|1.000000|0.000000|0.000000|IN\n2|y|default|20.000000|1.000000|0.000000|0.000000|IN",
+   "hand_checked": true,
+   "name": "C04 two models far apart",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "x",
+     "default",
+     80.0,
+     1.0
+    ],
+    [
+     "y",
+     "default",
+     20.0,
+     1.0
+    ]
+   ]
+  },
+  {
+   "expected": "spacing|0.000000|GAP\n1|t1|default|10.000000|0.000000|0.000000|0.000000|IN\n2|t2|default|10.000000|0.000000|0.000000|0.000000|IN\n3|t3|default|10.000000|0.000000|0.000000|-|IN\n4|t4|default|9.900000|0.000000|0.100000|-|OUT",
+   "hand_checked": true,
+   "name": "C05 three tied, zero se, then lower",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "t1",
+     "default",
+     10.0,
+     0.0
+    ],
+    [
+     "t2",
+     "default",
+     10.0,
+     0.0
+    ],
+    [
+     "t3",
+     "default",
+     10.0,
+     0.0
+    ],
+    [
+     "t4",
+     "default",
+     9.9,
+     0.0
+    ]
+   ]
+  },
+  {
+   "expected": "spacing|5.000000|GAP\n1|L|default|90.000000|0.000000|0.000000|0.000000|IN\n2|p2|default|60.000000|0.000000|0.000000|0.000000|IN\n3|p3|default|55.000000|0.000000|5.000000|1.000000|IN\n4|p4|default|50.000000|0.000000|5.000000|1.000000|IN\n5|p5|default|45.000000|0.000000|5.000000|1.000000|IN\n6|p6|default|40.000000|0.000000|5.000000|1.000000|IN\n7|p7|default|20.000000|0.000000|20.000000|4.000000|OUT",
+   "hand_checked": true,
+   "name": "C06 leader far ahead",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "L",
+     "default",
+     90.0,
+     0.0
+    ],
+    [
+     "p2",
+     "default",
+     60.0,
+     0.0
+    ],
+    [
+     "p3",
+     "default",
+     55.0,
+     0.0
+    ],
+    [
+     "p4",
+     "default",
+     50.0,
+     0.0
+    ],
+    [
+     "p5",
+     "default",
+     45.0,
+     0.0
+    ],
+    [
+     "p6",
+     "default",
+     40.0,
+     0.0
+    ],
+    [
+     "p7",
+     "default",
+     20.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "expected": "spacing|1.000000|GAP\n1|a|default|10.000000|0.000000|0.000000|0.000000|IN\n2|b|default|9.000000|0.000000|0.000000|0.000000|IN\n3|c|default|7.000000|0.000000|2.000000|2.000000|IN\n4|d|default|5.000000|0.000000|2.000000|2.000000|IN\n5|e|default|3.000000|0.000000|2.000000|2.000000|IN\n6|f|default|1.000000|0.000000|2.000000|2.000000|IN",
+   "hand_checked": true,
+   "name": "C07 constant steps after the first",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "a",
+     "default",
+     10.0,
+     0.0
+    ],
+    [
+     "b",
+     "default",
+     9.0,
+     0.0
+    ],
+    [
+     "c",
+     "default",
+     7.0,
+     0.0
+    ],
+    [
+     "d",
+     "default",
+     5.0,
+     0.0
+    ],
+    [
+     "e",
+     "default",
+     3.0,
+     0.0
+    ],
+    [
+     "f",
+     "default",
+     1.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "expected": "spacing|1.000000|GAP\n1|b1|default|10.000000|0.000000|0.000000|0.000000|IN\n2|b2|default|9.000000|0.000000|0.000000|0.000000|IN\n3|aa|default|6.000000|0.000000|3.000000|3.000000|CUSP\n4|zz|default|6.000000|0.000000|0.000000|0.000000|CUSP\n5|z3|default|2.000000|0.000000|4.000000|4.000000|OUT",
+   "hand_checked": true,
+   "name": "C08 a tie with the cusp row shares it",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "aa",
+     "default",
+     6.0,
+     0.0
+    ],
+    [
+     "b1",
+     "default",
+     10.0,
+     0.0
+    ],
+    [
+     "b2",
+     "default",
+     9.0,
+     0.0
+    ],
+    [
+     "zz",
+     "default",
+     6.0,
+     0.0
+    ],
+    [
+     "z3",
+     "default",
+     2.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "expected": "spacing|0.500000|GAP\n1|X|high|40.000000|0.000000|0.000000|0.000000|IN\n2|Y|default|30.000000|0.000000|0.000000|0.000000|IN\n3|Z|default|29.500000|0.000000|0.500000|1.000000|IN\n-|X|med|38.000000|0.000000|-|-|IN",
+   "hand_checked": true,
+   "name": "C09 one model's two configurations at the top",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "X",
+     "high",
+     40.0,
+     0.0
+    ],
+    [
+     "X",
+     "med",
+     38.0,
+     0.0
+    ],
+    [
+     "Y",
+     "default",
+     30.0,
+     0.0
+    ],
+    [
+     "Z",
+     "default",
+     29.5,
+     0.0
+    ]
+   ]
+  },
+  {
+   "expected": "spacing|0.000000|NONE\n1|X|high|40.000000|1.000000|0.000000|0.000000|IN\n2|Y|d|30.000000|1.000000|0.000000|0.000000|IN\n-|X|med|38.000000|1.000000|-|-|IN",
+   "hand_checked": true,
+   "name": "C10 verifier case: two configurations and one other model",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.5,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "X",
+     "high",
+     40.0,
+     1.0
+    ],
+    [
+     "X",
+     "med",
+     38.0,
+     1.0
+    ],
+    [
+     "Y",
+     "d",
+     30.0,
+     1.0
+    ]
+   ]
+  },
+  {
+   "expected": "spacing|2.326381|NOISE\n1|a|default|40.000000|1.000000|0.000000|0.000000|IN\n2|b|default|38.000000|1.000000|0.000000|0.000000|IN\n3|c|default|37.900000|1.000000|0.100000|0.042985|IN\n4|d|default|34.000000|1.000000|3.900000|1.676423|IN\n5|e|default|32.000000|1.000000|2.000000|0.859704|IN",
+   "hand_checked": true,
+   "name": "C11 noise sets the spacing (SE 1)",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.5,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "a",
+     "default",
+     40.0,
+     1.0
+    ],
+    [
+     "b",
+     "default",
+     38.0,
+     1.0
+    ],
+    [
+     "c",
+     "default",
+     37.9,
+     1.0
+    ],
+    [
+     "d",
+     "default",
+     34.0,
+     1.0
+    ],
+    [
+     "e",
+     "default",
+     32.0,
+     1.0
+    ]
+   ]
+  },
+  {
+   "expected": "spacing|1.000000|GAP\n1|b1|default|10.000000|0.000000|0.000000|0.000000|IN\n2|b2|default|9.000000|0.000000|0.000000|0.000000|IN\n3|b3|default|6.500000|0.000000|2.500000|2.500000|IN",
+   "hand_checked": true,
+   "name": "C12 step exactly 2.5 spacings is IN",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "b1",
+     "default",
+     10.0,
+     0.0
+    ],
+    [
+     "b2",
+     "default",
+     9.0,
+     0.0
+    ],
+    [
+     "b3",
+     "default",
+     6.5,
+     0.0
+    ]
+   ]
+  },
+  {
+   "expected": "spacing|1.000000|GAP\n1|b1|default|10.000000|0.000000|0.000000|0.000000|IN\n2|b2|default|9.000000|0.000000|0.000000|0.000000|IN\n3|b3|default|5.500000|0.000000|3.500000|3.500000|CUSP",
+   "hand_checked": true,
+   "name": "C13 step exactly 3.5 spacings is CUSP",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "b1",
+     "default",
+     10.0,
+     0.0
+    ],
+    [
+     "b2",
+     "default",
+     9.0,
+     0.0
+    ],
+    [
+     "b3",
+     "default",
+     5.5,
+     0.0
+    ]
+   ]
+  },
+  {
+   "expected": "spacing|1.000000|GAP\n1|b1|default|10.000000|0.000000|0.000000|0.000000|IN\n2|b2|default|9.000000|0.000000|0.000000|0.000000|IN\n3|b3|default|5.400000|0.000000|3.600000|3.600000|OUT",
+   "hand_checked": true,
+   "name": "C14 step 3.6 spacings is OUT",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "b1",
+     "default",
+     10.0,
+     0.0
+    ],
+    [
+     "b2",
+     "default",
+     9.0,
+     0.0
+    ],
+    [
+     "b3",
+     "default",
+     5.4,
+     0.0
+    ]
+   ]
+  },
+  {
+   "expected": "spacing|0.000000|GAP\n1|u1|default|5.000000|0.000000|0.000000|0.000000|IN\n2|u2|default|5.000000|0.000000|0.000000|0.000000|IN\n3|u3|default|5.000000|0.000000|0.000000|-|IN\n4|u4|default|4.900000|0.000000|0.100000|-|OUT",
+   "hand_checked": true,
+   "name": "C15 spacing zero, positive step",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "u1",
+     "default",
+     5.0,
+     0.0
+    ],
+    [
+     "u2",
+     "default",
+     5.0,
+     0.0
+    ],
+    [
+     "u3",
+     "default",
+     5.0,
+     0.0
+    ],
+    [
+     "u4",
+     "default",
+     4.9,
+     0.0
+    ]
+   ]
+  },
+  {
+   "expected": "spacing|1.600000|GAP\n1|Model A|high|38.000000|0.600000|0.000000|0.000000|IN\n2|Model B|high|35.500000|0.600000|0.000000|0.000000|IN\n3|Model C|default|33.900000|0.600000|1.600000|1.000000|IN\n4|Model D|high|32.000000|0.600000|1.900000|1.187500|IN\n5|Model E|default|25.800000|0.600000|6.200000|3.875000|CUSP\n6|Model F|default|17.500000|0.700000|8.300000|5.187500|OUT\n-|Model A|low|33.500000|0.600000|-|-|IN\n-|Model D|default|27.000000|0.600000|-|-|CUSP",
+   "hand_checked": true,
+   "name": "C16 worked month (specimen)",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.5,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "Model A",
+     "high",
+     38.0,
+     0.6
+    ],
+    [
+     "Model B",
+     "high",
+     35.5,
+     0.6
+    ],
+    [
+     "Model C",
+     "default",
+     33.9,
+     0.6
+    ],
+    [
+     "Model D",
+     "high",
+     32.0,
+     0.6
+    ],
+    [
+     "Model E",
+     "default",
+     25.8,
+     0.6
+    ],
+    [
+     "Model F",
+     "default",
+     17.5,
+     0.7
+    ],
+    [
+     "Model A",
+     "low",
+     33.5,
+     0.6
+    ],
+    [
+     "Model D",
+     "default",
+     27.0,
+     0.6
+    ]
+   ]
+  },
+  {
+   "expected": "spacing|2.677866|NOISE\n1|Model A|high|38.000000|1.200000|0.000000|0.000000|IN\n2|Model B|high|35.500000|1.100000|0.000000|0.000000|IN\n3|Model C|default|33.900000|1.200000|1.600000|0.597491|IN\n4|Model D|high|32.000000|1.200000|1.900000|0.709520|IN\n5|Model E|default|27.600000|1.200000|4.400000|1.643099|IN\n6|Model F|default|21.500000|1.300000|6.100000|2.277933|IN",
+   "hand_checked": false,
+   "name": "C17 a similar month with SE about 1.2: nothing resolves",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.5,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "Model A",
+     "high",
+     38.0,
+     1.2
+    ],
+    [
+     "Model B",
+     "high",
+     35.5,
+     1.1
+    ],
+    [
+     "Model C",
+     "default",
+     33.9,
+     1.2
+    ],
+    [
+     "Model D",
+     "high",
+     32.0,
+     1.2
+    ],
+    [
+     "Model E",
+     "default",
+     27.6,
+     1.2
+    ],
+    [
+     "Model F",
+     "default",
+     21.5,
+     1.3
+    ]
+   ]
+  },
+  {
+   "expected": "spacing|0.000000|NONE",
+   "hand_checked": true,
+   "name": "C18 empty",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": []
+  },
+  {
+   "expected": "spacing|1.000000|GAP\n1|A1|default|10.000000|0.000000|0.000000|0.000000|IN\n2|A2|default|9.000000|0.000000|0.000000|0.000000|IN\n3|A3|default|7.000000|0.000000|2.000000|2.000000|CUSP\n4|A4|default|3.000000|0.000000|4.000000|4.000000|OUT",
+   "hand_checked": false,
+   "name": "C19 stricter thresholds",
+   "params": {
+    "cusp_max": 2.0,
+    "in_max": 1.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "A1",
+     "default",
+     10.0,
+     0.0
+    ],
+    [
+     "A2",
+     "default",
+     9.0,
+     0.0
+    ],
+    [
+     "A3",
+     "default",
+     7.0,
+     0.0
+    ],
+    [
+     "A4",
+     "default",
+     3.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "expected": "ERROR:parameters",
+   "hand_checked": true,
+   "name": "C20 bad parameters",
+   "params": {
+    "cusp_max": 2.5,
+    "in_max": 3.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "A1",
+     "default",
+     10.0,
+     0.0
+    ],
+    [
+     "A2",
+     "default",
+     9.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "expected": "ERROR:score or se",
+   "hand_checked": true,
+   "name": "C21 negative se",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "A1",
+     "default",
+     10.0,
+     -1.0
+    ],
+    [
+     "A2",
+     "default",
+     9.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "expected": "ERROR:ids",
+   "hand_checked": true,
+   "name": "C22 duplicate model and configuration",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "A",
+     "d",
+     10.0,
+     0.0
+    ],
+    [
+     "A",
+     "d",
+     9.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "expected": "ERROR:ids",
+   "hand_checked": true,
+   "name": "C23 empty configuration id",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "A",
+     "",
+     10.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "expected": "spacing|2.000000|GAP\n1|a|d|40.000000|0.500000|0.000000|0.000000|IN\n2|b|d|38.000000|0.500000|0.000000|0.000000|IN\n3|c|d|36.000000|0.500000|2.000000|1.000000|IN\n4|e|d|29.000000|0.500000|7.000000|3.500000|CUSP\n5|f|d|10.000000|0.500000|19.000000|9.500000|OUT\n-|c|low|28.500000|0.500000|-|-|CUSP",
+   "hand_checked": true,
+   "name": "C24 lower configuration within noise of the cusp row",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.5,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "a",
+     "d",
+     40.0,
+     0.5
+    ],
+    [
+     "b",
+     "d",
+     38.0,
+     0.5
+    ],
+    [
+     "c",
+     "d",
+     36.0,
+     0.5
+    ],
+    [
+     "e",
+     "d",
+     29.0,
+     0.5
+    ],
+    [
+     "c",
+     "low",
+     28.5,
+     0.5
+    ],
+    [
+     "f",
+     "d",
+     10.0,
+     0.5
+    ]
+   ]
+  },
+  {
+   "expected": "spacing|0.500000|FLOOR\n1|gamma|default|9.000000|0.100000|0.000000|0.000000|IN\n2|alpha|default|9.000000|0.200000|0.000000|0.000000|IN\n3|beta|default|9.000000|0.200000|0.000000|0.000000|IN\n4|eta|default|8.000000|0.000000|1.000000|2.000000|IN\n5|zeta|default|7.000000|0.500000|1.000000|2.000000|IN",
+   "hand_checked": false,
+   "name": "C25 unsorted input; score ties by se then id",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.5,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "zeta",
+     "default",
+     7.0,
+     0.5
+    ],
+    [
+     "beta",
+     "default",
+     9.0,
+     0.2
+    ],
+    [
+     "alpha",
+     "default",
+     9.0,
+     0.2
+    ],
+    [
+     "gamma",
+     "default",
+     9.0,
+     0.1
+    ],
+    [
+     "eta",
+     "default",
+     8.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "expected": "spacing|2.000000|GAP\n1|a|default|40.000000|0.100000|0.000000|0.000000|IN\n2|b|default|38.000000|0.100000|0.000000|0.000000|IN\n3|c|default|36.000000|0.100000|2.000000|1.000000|IN\n4|d|default|29.000000|0.100000|7.000000|3.500000|CUSP\n5|e|default|28.000000|0.100000|1.000000|0.500000|OUT\n6|f|default|27.900000|5.000000|0.100000|0.050000|OUT",
+   "hand_checked": true,
+   "name": "C26 after an OUT below a cusp, a noisy row level with the cusp row is OUT",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.5,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "a",
+     "default",
+     40.0,
+     0.1
+    ],
+    [
+     "b",
+     "default",
+     38.0,
+     0.1
+    ],
+    [
+     "c",
+     "default",
+     36.0,
+     0.1
+    ],
+    [
+     "d",
+     "default",
+     29.0,
+     0.1
+    ],
+    [
+     "e",
+     "default",
+     28.0,
+     0.1
+    ],
+    [
+     "f",
+     "default",
+     27.9,
+     5.0
+    ]
+   ]
+  },
+  {
+   "expected": "spacing|1.000000|GAP\n1|A1|default|10.000000|0.000000|0.000000|0.000000|IN\n2|A2|default|9.000000|0.000000|0.000000|0.000000|IN\n3|A3|default|7.000000|0.000000|2.000000|2.000000|IN\n4|A4|default|3.000000|0.000000|4.000000|4.000000|OUT",
+   "fn": "cluster",
+   "hand_checked": true,
+   "name": "P01 example A under FIXED-SET, paired SEs zero: as ITEM-SAMPLING",
+   "paired": [
+    [
+     "A1",
+     "default",
+     "A2",
+     "default",
+     0.0
+    ],
+    [
+     "A1",
+     "default",
+     "A3",
+     "default",
+     0.0
+    ],
+    [
+     "A1",
+     "default",
+     "A4",
+     "default",
+     0.0
+    ],
+    [
+     "A2",
+     "default",
+     "A3",
+     "default",
+     0.0
+    ],
+    [
+     "A2",
+     "default",
+     "A4",
+     "default",
+     0.0
+    ],
+    [
+     "A3",
+     "default",
+     "A4",
+     "default",
+     0.0
+    ]
+   ],
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "A1",
+     "default",
+     10.0,
+     0.0
+    ],
+    [
+     "A2",
+     "default",
+     9.0,
+     0.0
+    ],
+    [
+     "A3",
+     "default",
+     7.0,
+     0.0
+    ],
+    [
+     "A4",
+     "default",
+     3.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "expected": "spacing|1.600000|GAP\n1|Model A|high|38.000000|0.600000|0.000000|0.000000|IN\n2|Model B|high|35.500000|0.600000|0.000000|0.000000|IN\n3|Model C|default|33.900000|0.600000|1.600000|1.000000|IN\n4|Model D|high|32.000000|0.600000|1.900000|1.187500|IN\n5|Model E|default|25.800000|0.600000|6.200000|3.875000|CUSP\n6|Model F|default|17.500000|0.700000|8.300000|5.187500|OUT\n-|Model A|low|33.500000|0.600000|-|-|IN\n-|Model D|default|27.000000|0.600000|-|-|CUSP",
+   "fn": "cluster",
+   "hand_checked": true,
+   "name": "P02 specimen under FIXED-SET, paired SE 0.4 everywhere: Model E's step 0.6 past CUSP MAX inside its paired noise 0.658, CUSP",
+   "paired": [
+    [
+     "Model A",
+     "high",
+     "Model B",
+     "high",
+     0.4
+    ],
+    [
+     "Model A",
+     "high",
+     "Model C",
+     "default",
+     0.4
+    ],
+    [
+     "Model A",
+     "high",
+     "Model D",
+     "high",
+     0.4
+    ],
+    [
+     "Model A",
+     "high",
+     "Model E",
+     "default",
+     0.4
+    ],
+    [
+     "Model A",
+     "high",
+     "Model F",
+     "default",
+     0.4
+    ],
+    [
+     "Model A",
+     "high",
+     "Model A",
+     "low",
+     0.4
+    ],
+    [
+     "Model A",
+     "high",
+     "Model D",
+     "default",
+     0.4
+    ],
+    [
+     "Model B",
+     "high",
+     "Model C",
+     "default",
+     0.4
+    ],
+    [
+     "Model B",
+     "high",
+     "Model D",
+     "high",
+     0.4
+    ],
+    [
+     "Model B",
+     "high",
+     "Model E",
+     "default",
+     0.4
+    ],
+    [
+     "Model B",
+     "high",
+     "Model F",
+     "default",
+     0.4
+    ],
+    [
+     "Model B",
+     "high",
+     "Model A",
+     "low",
+     0.4
+    ],
+    [
+     "Model B",
+     "high",
+     "Model D",
+     "default",
+     0.4
+    ],
+    [
+     "Model C",
+     "default",
+     "Model D",
+     "high",
+     0.4
+    ],
+    [
+     "Model C",
+     "default",
+     "Model E",
+     "default",
+     0.4
+    ],
+    [
+     "Model C",
+     "default",
+     "Model F",
+     "default",
+     0.4
+    ],
+    [
+     "Model C",
+     "default",
+     "Model A",
+     "low",
+     0.4
+    ],
+    [
+     "Model C",
+     "default",
+     "Model D",
+     "default",
+     0.4
+    ],
+    [
+     "Model D",
+     "high",
+     "Model E",
+     "default",
+     0.4
+    ],
+    [
+     "Model D",
+     "high",
+     "Model F",
+     "default",
+     0.4
+    ],
+    [
+     "Model D",
+     "high",
+     "Model A",
+     "low",
+     0.4
+    ],
+    [
+     "Model D",
+     "high",
+     "Model D",
+     "default",
+     0.4
+    ],
+    [
+     "Model E",
+     "default",
+     "Model F",
+     "default",
+     0.4
+    ],
+    [
+     "Model E",
+     "default",
+     "Model A",
+     "low",
+     0.4
+    ],
+    [
+     "Model E",
+     "default",
+     "Model D",
+     "default",
+     0.4
+    ],
+    [
+     "Model F",
+     "default",
+     "Model A",
+     "low",
+     0.4
+    ],
+    [
+     "Model F",
+     "default",
+     "Model D",
+     "default",
+     0.4
+    ],
+    [
+     "Model A",
+     "low",
+     "Model D",
+     "default",
+     0.4
+    ]
+   ],
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.5,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "Model A",
+     "high",
+     38.0,
+     0.6
+    ],
+    [
+     "Model B",
+     "high",
+     35.5,
+     0.6
+    ],
+    [
+     "Model C",
+     "default",
+     33.9,
+     0.6
+    ],
+    [
+     "Model D",
+     "high",
+     32.0,
+     0.6
+    ],
+    [
+     "Model E",
+     "default",
+     25.8,
+     0.6
+    ],
+    [
+     "Model F",
+     "default",
+     17.5,
+     0.7
+    ],
+    [
+     "Model A",
+     "low",
+     33.5,
+     0.6
+    ],
+    [
+     "Model D",
+     "default",
+     27.0,
+     0.6
+    ]
+   ]
+  },
+  {
+   "expected": "spacing|1.600000|GAP\n1|Model A|high|38.000000|0.600000|0.000000|0.000000|IN\n2|Model B|high|35.500000|0.600000|0.000000|0.000000|IN\n3|Model C|default|33.900000|0.600000|1.600000|1.000000|IN\n4|Model D|high|32.000000|0.600000|1.900000|1.187500|IN\n5|Model E|default|25.800000|0.600000|6.200000|3.875000|OUT\n6|Model F|default|17.500000|0.700000|8.300000|5.187500|OUT\n-|Model A|low|33.500000|0.600000|-|-|IN\n-|Model D|default|27.000000|0.600000|-|-|OUT",
+   "fn": "cluster",
+   "hand_checked": true,
+   "name": "P03 specimen under FIXED-SET, paired SE 0.3: Model E's step 0.6 past CUSP MAX outside its noise 0.494, OUT",
+   "paired": [
+    [
+     "Model A",
+     "high",
+     "Model B",
+     "high",
+     0.3
+    ],
+    [
+     "Model A",
+     "high",
+     "Model C",
+     "default",
+     0.3
+    ],
+    [
+     "Model A",
+     "high",
+     "Model D",
+     "high",
+     0.3
+    ],
+    [
+     "Model A",
+     "high",
+     "Model E",
+     "default",
+     0.3
+    ],
+    [
+     "Model A",
+     "high",
+     "Model F",
+     "default",
+     0.3
+    ],
+    [
+     "Model A",
+     "high",
+     "Model A",
+     "low",
+     0.3
+    ],
+    [
+     "Model A",
+     "high",
+     "Model D",
+     "default",
+     0.3
+    ],
+    [
+     "Model B",
+     "high",
+     "Model C",
+     "default",
+     0.3
+    ],
+    [
+     "Model B",
+     "high",
+     "Model D",
+     "high",
+     0.3
+    ],
+    [
+     "Model B",
+     "high",
+     "Model E",
+     "default",
+     0.3
+    ],
+    [
+     "Model B",
+     "high",
+     "Model F",
+     "default",
+     0.3
+    ],
+    [
+     "Model B",
+     "high",
+     "Model A",
+     "low",
+     0.3
+    ],
+    [
+     "Model B",
+     "high",
+     "Model D",
+     "default",
+     0.3
+    ],
+    [
+     "Model C",
+     "default",
+     "Model D",
+     "high",
+     0.3
+    ],
+    [
+     "Model C",
+     "default",
+     "Model E",
+     "default",
+     0.3
+    ],
+    [
+     "Model C",
+     "default",
+     "Model F",
+     "default",
+     0.3
+    ],
+    [
+     "Model C",
+     "default",
+     "Model A",
+     "low",
+     0.3
+    ],
+    [
+     "Model C",
+     "default",
+     "Model D",
+     "default",
+     0.3
+    ],
+    [
+     "Model D",
+     "high",
+     "Model E",
+     "default",
+     0.3
+    ],
+    [
+     "Model D",
+     "high",
+     "Model F",
+     "default",
+     0.3
+    ],
+    [
+     "Model D",
+     "high",
+     "Model A",
+     "low",
+     0.3
+    ],
+    [
+     "Model D",
+     "high",
+     "Model D",
+     "default",
+     0.3
+    ],
+    [
+     "Model E",
+     "default",
+     "Model F",
+     "default",
+     0.3
+    ],
+    [
+     "Model E",
+     "default",
+     "Model A",
+     "low",
+     0.3
+    ],
+    [
+     "Model E",
+     "default",
+     "Model D",
+     "default",
+     0.3
+    ],
+    [
+     "Model F",
+     "default",
+     "Model A",
+     "low",
+     0.3
+    ],
+    [
+     "Model F",
+     "default",
+     "Model D",
+     "default",
+     0.3
+    ],
+    [
+     "Model A",
+     "low",
+     "Model D",
+     "default",
+     0.3
+    ]
+   ],
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.5,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "Model A",
+     "high",
+     38.0,
+     0.6
+    ],
+    [
+     "Model B",
+     "high",
+     35.5,
+     0.6
+    ],
+    [
+     "Model C",
+     "default",
+     33.9,
+     0.6
+    ],
+    [
+     "Model D",
+     "high",
+     32.0,
+     0.6
+    ],
+    [
+     "Model E",
+     "default",
+     25.8,
+     0.6
+    ],
+    [
+     "Model F",
+     "default",
+     17.5,
+     0.7
+    ],
+    [
+     "Model A",
+     "low",
+     33.5,
+     0.6
+    ],
+    [
+     "Model D",
+     "default",
+     27.0,
+     0.6
+    ]
+   ]
+  },
+  {
+   "expected": "spacing|1.974000|NOISE\n1|Model A|high|38.000000|0.600000|0.000000|0.000000|IN\n2|Model B|high|35.500000|0.600000|0.000000|0.000000|IN\n3|Model C|default|33.900000|0.600000|1.600000|0.810537|IN\n4|Model D|high|32.000000|0.600000|1.900000|0.962513|IN\n5|Model E|default|25.800000|0.600000|6.200000|3.140831|IN\n6|Model F|default|17.500000|0.700000|8.300000|4.204661|CUSP\n-|Model A|low|33.500000|0.600000|-|-|IN\n-|Model D|default|27.000000|0.600000|-|-|IN",
+   "fn": "cluster",
+   "hand_checked": false,
+   "name": "P04 specimen under FIXED-SET, paired SE 1.2 (wider than unpaired 0.85): noise sets the spacing",
+   "paired": [
+    [
+     "Model A",
+     "high",
+     "Model B",
+     "high",
+     1.2
+    ],
+    [
+     "Model A",
+     "high",
+     "Model C",
+     "default",
+     1.2
+    ],
+    [
+     "Model A",
+     "high",
+     "Model D",
+     "high",
+     1.2
+    ],
+    [
+     "Model A",
+     "high",
+     "Model E",
+     "default",
+     1.2
+    ],
+    [
+     "Model A",
+     "high",
+     "Model F",
+     "default",
+     1.2
+    ],
+    [
+     "Model A",
+     "high",
+     "Model A",
+     "low",
+     1.2
+    ],
+    [
+     "Model A",
+     "high",
+     "Model D",
+     "default",
+     1.2
+    ],
+    [
+     "Model B",
+     "high",
+     "Model C",
+     "default",
+     1.2
+    ],
+    [
+     "Model B",
+     "high",
+     "Model D",
+     "high",
+     1.2
+    ],
+    [
+     "Model B",
+     "high",
+     "Model E",
+     "default",
+     1.2
+    ],
+    [
+     "Model B",
+     "high",
+     "Model F",
+     "default",
+     1.2
+    ],
+    [
+     "Model B",
+     "high",
+     "Model A",
+     "low",
+     1.2
+    ],
+    [
+     "Model B",
+     "high",
+     "Model D",
+     "default",
+     1.2
+    ],
+    [
+     "Model C",
+     "default",
+     "Model D",
+     "high",
+     1.2
+    ],
+    [
+     "Model C",
+     "default",
+     "Model E",
+     "default",
+     1.2
+    ],
+    [
+     "Model C",
+     "default",
+     "Model F",
+     "default",
+     1.2
+    ],
+    [
+     "Model C",
+     "default",
+     "Model A",
+     "low",
+     1.2
+    ],
+    [
+     "Model C",
+     "default",
+     "Model D",
+     "default",
+     1.2
+    ],
+    [
+     "Model D",
+     "high",
+     "Model E",
+     "default",
+     1.2
+    ],
+    [
+     "Model D",
+     "high",
+     "Model F",
+     "default",
+     1.2
+    ],
+    [
+     "Model D",
+     "high",
+     "Model A",
+     "low",
+     1.2
+    ],
+    [
+     "Model D",
+     "high",
+     "Model D",
+     "default",
+     1.2
+    ],
+    [
+     "Model E",
+     "default",
+     "Model F",
+     "default",
+     1.2
+    ],
+    [
+     "Model E",
+     "default",
+     "Model A",
+     "low",
+     1.2
+    ],
+    [
+     "Model E",
+     "default",
+     "Model D",
+     "default",
+     1.2
+    ],
+    [
+     "Model F",
+     "default",
+     "Model A",
+     "low",
+     1.2
+    ],
+    [
+     "Model F",
+     "default",
+     "Model D",
+     "default",
+     1.2
+    ],
+    [
+     "Model A",
+     "low",
+     "Model D",
+     "default",
+     1.2
+    ]
+   ],
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.5,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "Model A",
+     "high",
+     38.0,
+     0.6
+    ],
+    [
+     "Model B",
+     "high",
+     35.5,
+     0.6
+    ],
+    [
+     "Model C",
+     "default",
+     33.9,
+     0.6
+    ],
+    [
+     "Model D",
+     "high",
+     32.0,
+     0.6
+    ],
+    [
+     "Model E",
+     "default",
+     25.8,
+     0.6
+    ],
+    [
+     "Model F",
+     "default",
+     17.5,
+     0.7
+    ],
+    [
+     "Model A",
+     "low",
+     33.5,
+     0.6
+    ],
+    [
+     "Model D",
+     "default",
+     27.0,
+     0.6
+    ]
+   ]
+  },
+  {
+   "expected": "spacing|0.500000|FLOOR\n1|a|default|40.000000|1.000000|0.000000|0.000000|IN\n2|b|default|38.000000|1.000000|0.000000|0.000000|IN\n3|c|default|37.900000|1.000000|0.100000|0.200000|IN\n4|d|default|34.000000|1.000000|3.900000|7.800000|OUT\n5|e|default|32.000000|1.000000|2.000000|4.000000|OUT",
+   "fn": "cluster",
+   "hand_checked": false,
+   "name": "P05 band month (C11) under FIXED-SET, paired SE 0.2: the spacing is the gap 0.1 raised to the floor 0.5; d and e resolve",
+   "paired": [
+    [
+     "a",
+     "default",
+     "b",
+     "default",
+     0.2
+    ],
+    [
+     "a",
+     "default",
+     "c",
+     "default",
+     0.2
+    ],
+    [
+     "a",
+     "default",
+     "d",
+     "default",
+     0.2
+    ],
+    [
+     "a",
+     "default",
+     "e",
+     "default",
+     0.2
+    ],
+    [
+     "b",
+     "default",
+     "c",
+     "default",
+     0.2
+    ],
+    [
+     "b",
+     "default",
+     "d",
+     "default",
+     0.2
+    ],
+    [
+     "b",
+     "default",
+     "e",
+     "default",
+     0.2
+    ],
+    [
+     "c",
+     "default",
+     "d",
+     "default",
+     0.2
+    ],
+    [
+     "c",
+     "default",
+     "e",
+     "default",
+     0.2
+    ],
+    [
+     "d",
+     "default",
+     "e",
+     "default",
+     0.2
+    ]
+   ],
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.5,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "a",
+     "default",
+     40.0,
+     1.0
+    ],
+    [
+     "b",
+     "default",
+     38.0,
+     1.0
+    ],
+    [
+     "c",
+     "default",
+     37.9,
+     1.0
+    ],
+    [
+     "d",
+     "default",
+     34.0,
+     1.0
+    ],
+    [
+     "e",
+     "default",
+     32.0,
+     1.0
+    ]
+   ]
+  },
+  {
+   "expected": "ERROR:paired",
+   "fn": "cluster",
+   "hand_checked": true,
+   "name": "P06 a missing pair the rule tests (ranks 4 and 5) is refused",
+   "paired": [
+    [
+     "Model A",
+     "high",
+     "Model B",
+     "high",
+     0.4
+    ],
+    [
+     "Model A",
+     "high",
+     "Model C",
+     "default",
+     0.4
+    ],
+    [
+     "Model A",
+     "high",
+     "Model D",
+     "high",
+     0.4
+    ],
+    [
+     "Model A",
+     "high",
+     "Model E",
+     "default",
+     0.4
+    ],
+    [
+     "Model A",
+     "high",
+     "Model F",
+     "default",
+     0.4
+    ],
+    [
+     "Model A",
+     "high",
+     "Model A",
+     "low",
+     0.4
+    ],
+    [
+     "Model A",
+     "high",
+     "Model D",
+     "default",
+     0.4
+    ],
+    [
+     "Model B",
+     "high",
+     "Model C",
+     "default",
+     0.4
+    ],
+    [
+     "Model B",
+     "high",
+     "Model D",
+     "high",
+     0.4
+    ],
+    [
+     "Model B",
+     "high",
+     "Model E",
+     "default",
+     0.4
+    ],
+    [
+     "Model B",
+     "high",
+     "Model F",
+     "default",
+     0.4
+    ],
+    [
+     "Model B",
+     "high",
+     "Model A",
+     "low",
+     0.4
+    ],
+    [
+     "Model B",
+     "high",
+     "Model D",
+     "default",
+     0.4
+    ],
+    [
+     "Model C",
+     "default",
+     "Model D",
+     "high",
+     0.4
+    ],
+    [
+     "Model C",
+     "default",
+     "Model E",
+     "default",
+     0.4
+    ],
+    [
+     "Model C",
+     "default",
+     "Model F",
+     "default",
+     0.4
+    ],
+    [
+     "Model C",
+     "default",
+     "Model A",
+     "low",
+     0.4
+    ],
+    [
+     "Model C",
+     "default",
+     "Model D",
+     "default",
+     0.4
+    ],
+    [
+     "Model D",
+     "high",
+     "Model F",
+     "default",
+     0.4
+    ],
+    [
+     "Model D",
+     "high",
+     "Model A",
+     "low",
+     0.4
+    ],
+    [
+     "Model D",
+     "high",
+     "Model D",
+     "default",
+     0.4
+    ],
+    [
+     "Model E",
+     "default",
+     "Model F",
+     "default",
+     0.4
+    ],
+    [
+     "Model E",
+     "default",
+     "Model A",
+     "low",
+     0.4
+    ],
+    [
+     "Model E",
+     "default",
+     "Model D",
+     "default",
+     0.4
+    ],
+    [
+     "Model F",
+     "default",
+     "Model A",
+     "low",
+     0.4
+    ],
+    [
+     "Model F",
+     "default",
+     "Model D",
+     "default",
+     0.4
+    ],
+    [
+     "Model A",
+     "low",
+     "Model D",
+     "default",
+     0.4
+    ]
+   ],
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.5,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "Model A",
+     "high",
+     38.0,
+     0.6
+    ],
+    [
+     "Model B",
+     "high",
+     35.5,
+     0.6
+    ],
+    [
+     "Model C",
+     "default",
+     33.9,
+     0.6
+    ],
+    [
+     "Model D",
+     "high",
+     32.0,
+     0.6
+    ],
+    [
+     "Model E",
+     "default",
+     25.8,
+     0.6
+    ],
+    [
+     "Model F",
+     "default",
+     17.5,
+     0.7
+    ],
+    [
+     "Model A",
+     "low",
+     33.5,
+     0.6
+    ],
+    [
+     "Model D",
+     "default",
+     27.0,
+     0.6
+    ]
+   ]
+  },
+  {
+   "expected": "spacing|1.600000|GAP\n1|Model A|high|38.000000|0.600000|0.000000|0.000000|IN\n2|Model B|high|35.500000|0.600000|0.000000|0.000000|IN\n3|Model C|default|33.900000|0.600000|1.600000|1.000000|IN\n4|Model D|high|32.000000|0.600000|1.900000|1.187500|IN\n5|Model E|default|25.800000|0.600000|6.200000|3.875000|CUSP\n6|Model F|default|17.500000|0.700000|8.300000|5.187500|OUT\n-|Model A|low|33.500000|0.600000|-|-|IN\n-|Model D|default|27.000000|0.600000|-|-|CUSP",
+   "fn": "cluster",
+   "hand_checked": true,
+   "name": "P06b a missing pair the rule never tests (two non-representatives) is not needed",
+   "paired": [
+    [
+     "Model A",
+     "high",
+     "Model B",
+     "high",
+     0.4
+    ],
+    [
+     "Model A",
+     "high",
+     "Model C",
+     "default",
+     0.4
+    ],
+    [
+     "Model A",
+     "high",
+     "Model D",
+     "high",
+     0.4
+    ],
+    [
+     "Model A",
+     "high",
+     "Model E",
+     "default",
+     0.4
+    ],
+    [
+     "Model A",
+     "high",
+     "Model F",
+     "default",
+     0.4
+    ],
+    [
+     "Model A",
+     "high",
+     "Model A",
+     "low",
+     0.4
+    ],
+    [
+     "Model A",
+     "high",
+     "Model D",
+     "default",
+     0.4
+    ],
+    [
+     "Model B",
+     "high",
+     "Model C",
+     "default",
+     0.4
+    ],
+    [
+     "Model B",
+     "high",
+     "Model D",
+     "high",
+     0.4
+    ],
+    [
+     "Model B",
+     "high",
+     "Model E",
+     "default",
+     0.4
+    ],
+    [
+     "Model B",
+     "high",
+     "Model F",
+     "default",
+     0.4
+    ],
+    [
+     "Model B",
+     "high",
+     "Model A",
+     "low",
+     0.4
+    ],
+    [
+     "Model B",
+     "high",
+     "Model D",
+     "default",
+     0.4
+    ],
+    [
+     "Model C",
+     "default",
+     "Model D",
+     "high",
+     0.4
+    ],
+    [
+     "Model C",
+     "default",
+     "Model E",
+     "default",
+     0.4
+    ],
+    [
+     "Model C",
+     "default",
+     "Model F",
+     "default",
+     0.4
+    ],
+    [
+     "Model C",
+     "default",
+     "Model A",
+     "low",
+     0.4
+    ],
+    [
+     "Model C",
+     "default",
+     "Model D",
+     "default",
+     0.4
+    ],
+    [
+     "Model D",
+     "high",
+     "Model E",
+     "default",
+     0.4
+    ],
+    [
+     "Model D",
+     "high",
+     "Model F",
+     "default",
+     0.4
+    ],
+    [
+     "Model D",
+     "high",
+     "Model A",
+     "low",
+     0.4
+    ],
+    [
+     "Model D",
+     "high",
+     "Model D",
+     "default",
+     0.4
+    ],
+    [
+     "Model E",
+     "default",
+     "Model F",
+     "default",
+     0.4
+    ],
+    [
+     "Model E",
+     "default",
+     "Model A",
+     "low",
+     0.4
+    ],
+    [
+     "Model E",
+     "default",
+     "Model D",
+     "default",
+     0.4
+    ],
+    [
+     "Model F",
+     "default",
+     "Model A",
+     "low",
+     0.4
+    ],
+    [
+     "Model F",
+     "default",
+     "Model D",
+     "default",
+     0.4
+    ]
+   ],
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.5,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "Model A",
+     "high",
+     38.0,
+     0.6
+    ],
+    [
+     "Model B",
+     "high",
+     35.5,
+     0.6
+    ],
+    [
+     "Model C",
+     "default",
+     33.9,
+     0.6
+    ],
+    [
+     "Model D",
+     "high",
+     32.0,
+     0.6
+    ],
+    [
+     "Model E",
+     "default",
+     25.8,
+     0.6
+    ],
+    [
+     "Model F",
+     "default",
+     17.5,
+     0.7
+    ],
+    [
+     "Model A",
+     "low",
+     33.5,
+     0.6
+    ],
+    [
+     "Model D",
+     "default",
+     27.0,
+     0.6
+    ]
+   ]
+  },
+  {
+   "expected": "ERROR:paired",
+   "fn": "cluster",
+   "hand_checked": true,
+   "name": "P07 a pair given twice, the second in reverse order, is refused",
+   "paired": [
+    [
+     "A1",
+     "default",
+     "A2",
+     "default",
+     0.0
+    ],
+    [
+     "A1",
+     "default",
+     "A3",
+     "default",
+     0.0
+    ],
+    [
+     "A1",
+     "default",
+     "A4",
+     "default",
+     0.0
+    ],
+    [
+     "A2",
+     "default",
+     "A3",
+     "default",
+     0.0
+    ],
+    [
+     "A2",
+     "default",
+     "A4",
+     "default",
+     0.0
+    ],
+    [
+     "A3",
+     "default",
+     "A4",
+     "default",
+     0.0
+    ],
+    [
+     "A2",
+     "default",
+     "A1",
+     "default",
+     0.1
+    ]
+   ],
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "A1",
+     "default",
+     10.0,
+     0.0
+    ],
+    [
+     "A2",
+     "default",
+     9.0,
+     0.0
+    ],
+    [
+     "A3",
+     "default",
+     7.0,
+     0.0
+    ],
+    [
+     "A4",
+     "default",
+     3.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "expected": "ERROR:paired",
+   "fn": "cluster",
+   "hand_checked": true,
+   "name": "P08 a self pair is refused",
+   "paired": [
+    [
+     "A1",
+     "default",
+     "A2",
+     "default",
+     0.0
+    ],
+    [
+     "A1",
+     "default",
+     "A3",
+     "default",
+     0.0
+    ],
+    [
+     "A1",
+     "default",
+     "A4",
+     "default",
+     0.0
+    ],
+    [
+     "A2",
+     "default",
+     "A3",
+     "default",
+     0.0
+    ],
+    [
+     "A2",
+     "default",
+     "A4",
+     "default",
+     0.0
+    ],
+    [
+     "A3",
+     "default",
+     "A4",
+     "default",
+     0.0
+    ],
+    [
+     "A1",
+     "default",
+     "A1",
+     "default",
+     0.0
+    ]
+   ],
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "A1",
+     "default",
+     10.0,
+     0.0
+    ],
+    [
+     "A2",
+     "default",
+     9.0,
+     0.0
+    ],
+    [
+     "A3",
+     "default",
+     7.0,
+     0.0
+    ],
+    [
+     "A4",
+     "default",
+     3.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "expected": "ERROR:paired",
+   "fn": "cluster",
+   "hand_checked": true,
+   "name": "P09 a pair naming an unknown row is refused",
+   "paired": [
+    [
+     "A1",
+     "default",
+     "A2",
+     "default",
+     0.0
+    ],
+    [
+     "A1",
+     "default",
+     "A3",
+     "default",
+     0.0
+    ],
+    [
+     "A1",
+     "default",
+     "A4",
+     "default",
+     0.0
+    ],
+    [
+     "A2",
+     "default",
+     "A3",
+     "default",
+     0.0
+    ],
+    [
+     "A2",
+     "default",
+     "A4",
+     "default",
+     0.0
+    ],
+    [
+     "A3",
+     "default",
+     "A4",
+     "default",
+     0.0
+    ],
+    [
+     "A9",
+     "default",
+     "A1",
+     "default",
+     0.0
+    ]
+   ],
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "A1",
+     "default",
+     10.0,
+     0.0
+    ],
+    [
+     "A2",
+     "default",
+     9.0,
+     0.0
+    ],
+    [
+     "A3",
+     "default",
+     7.0,
+     0.0
+    ],
+    [
+     "A4",
+     "default",
+     3.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "expected": "ERROR:paired",
+   "fn": "cluster",
+   "hand_checked": true,
+   "name": "P10 a negative paired SE is refused",
+   "paired": [
+    [
+     "A1",
+     "default",
+     "A2",
+     "default",
+     -0.1
+    ],
+    [
+     "A1",
+     "default",
+     "A3",
+     "default",
+     0.0
+    ],
+    [
+     "A1",
+     "default",
+     "A4",
+     "default",
+     0.0
+    ],
+    [
+     "A2",
+     "default",
+     "A3",
+     "default",
+     0.0
+    ],
+    [
+     "A2",
+     "default",
+     "A4",
+     "default",
+     0.0
+    ],
+    [
+     "A3",
+     "default",
+     "A4",
+     "default",
+     0.0
+    ]
+   ],
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "A1",
+     "default",
+     10.0,
+     0.0
+    ],
+    [
+     "A2",
+     "default",
+     9.0,
+     0.0
+    ],
+    [
+     "A3",
+     "default",
+     7.0,
+     0.0
+    ],
+    [
+     "A4",
+     "default",
+     3.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "expected": "ERROR:paired",
+   "fn": "cluster",
+   "hand_checked": true,
+   "name": "P11 a paired entry of the wrong length is refused",
+   "paired": [
+    [
+     "A1",
+     "default",
+     "A2",
+     "default"
+    ],
+    [
+     "A1",
+     "default",
+     "A3",
+     "default",
+     0.0
+    ],
+    [
+     "A1",
+     "default",
+     "A4",
+     "default",
+     0.0
+    ],
+    [
+     "A2",
+     "default",
+     "A3",
+     "default",
+     0.0
+    ],
+    [
+     "A2",
+     "default",
+     "A4",
+     "default",
+     0.0
+    ],
+    [
+     "A3",
+     "default",
+     "A4",
+     "default",
+     0.0
+    ]
+   ],
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "A1",
+     "default",
+     10.0,
+     0.0
+    ],
+    [
+     "A2",
+     "default",
+     9.0,
+     0.0
+    ],
+    [
+     "A3",
+     "default",
+     7.0,
+     0.0
+    ],
+    [
+     "A4",
+     "default",
+     3.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "expected": "spacing|0.000000|NONE\n1|x|default|80.000000|1.000000|0.000000|0.000000|IN\n2|y|default|20.000000|1.000000|0.000000|0.000000|IN",
+   "fn": "cluster",
+   "hand_checked": true,
+   "name": "P12 two models under FIXED-SET need no pair",
+   "paired": [],
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "x",
+     "default",
+     80.0,
+     1.0
+    ],
+    [
+     "y",
+     "default",
+     20.0,
+     1.0
+    ]
+   ]
+  },
+  {
+   "expected": "spacing|0.000000|NONE\n1|solo|default|50.000000|2.000000|0.000000|0.000000|IN",
+   "fn": "cluster",
+   "hand_checked": true,
+   "name": "P13 one model under FIXED-SET: NONE",
+   "paired": [],
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "solo",
+     "default",
+     50.0,
+     2.0
+    ]
+   ]
+  },
+  {
+   "expected": "spacing|1.000000|GAP\n1|b1|default|10.000000|0.000000|0.000000|0.000000|IN\n2|b2|default|9.000000|0.000000|0.000000|0.000000|IN\n3|b3|default|5.000000|0.000000|4.000000|4.000000|CUSP",
+   "fn": "cluster",
+   "hand_checked": true,
+   "name": "P14 FIXED-SET boundary: step - CUSP MAX x u equal to the paired noise is not OUT (CUSP)",
+   "paired": [
+    [
+     "b1",
+     "default",
+     "b2",
+     "default",
+     0.5
+    ],
+    [
+     "b1",
+     "default",
+     "b3",
+     "default",
+     0.5
+    ],
+    [
+     "b2",
+     "default",
+     "b3",
+     "default",
+     0.5
+    ]
+   ],
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.0
+   },
+   "rows": [
+    [
+     "b1",
+     "default",
+     10.0,
+     0.0
+    ],
+    [
+     "b2",
+     "default",
+     9.0,
+     0.0
+    ],
+    [
+     "b3",
+     "default",
+     5.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "expected": "spacing|1.000000|GAP\n1|b1|default|10.000000|0.000000|0.000000|0.000000|IN\n2|b2|default|9.000000|0.000000|0.000000|0.000000|IN\n3|b3|default|4.990000|0.000000|4.010000|4.010000|OUT",
+   "fn": "cluster",
+   "hand_checked": true,
+   "name": "P15 FIXED-SET boundary: step - CUSP MAX x u past the paired noise by 0.01 is OUT",
+   "paired": [
+    [
+     "b1",
+     "default",
+     "b2",
+     "default",
+     0.5
+    ],
+    [
+     "b1",
+     "default",
+     "b3",
+     "default",
+     0.5
+    ],
+    [
+     "b2",
+     "default",
+     "b3",
+     "default",
+     0.5
+    ]
+   ],
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.0
+   },
+   "rows": [
+    [
+     "b1",
+     "default",
+     10.0,
+     0.0
+    ],
+    [
+     "b2",
+     "default",
+     9.0,
+     0.0
+    ],
+    [
+     "b3",
+     "default",
+     4.99,
+     0.0
+    ]
+   ]
+  },
+  {
+   "expected": "spacing|1.000000|GAP\n1|b1|default|10.000000|0.000000|0.000000|0.000000|IN\n2|b2|default|9.000000|0.000000|0.000000|0.000000|IN\n3|b3|default|6.000000|0.000000|3.000000|3.000000|IN",
+   "fn": "cluster",
+   "hand_checked": true,
+   "name": "P16 FIXED-SET boundary: step - IN MAX x u equal to the paired noise is IN",
+   "paired": [
+    [
+     "b1",
+     "default",
+     "b2",
+     "default",
+     0.5
+    ],
+    [
+     "b1",
+     "default",
+     "b3",
+     "default",
+     0.5
+    ],
+    [
+     "b2",
+     "default",
+     "b3",
+     "default",
+     0.5
+    ]
+   ],
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.0
+   },
+   "rows": [
+    [
+     "b1",
+     "default",
+     10.0,
+     0.0
+    ],
+    [
+     "b2",
+     "default",
+     9.0,
+     0.0
+    ],
+    [
+     "b3",
+     "default",
+     6.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "expected": "spacing|2.000000|GAP\n1|a|d|40.000000|0.500000|0.000000|0.000000|IN\n2|b|d|38.000000|0.500000|0.000000|0.000000|IN\n3|c|d|36.000000|0.500000|2.000000|1.000000|IN\n4|e|d|29.000000|0.500000|7.000000|3.500000|CUSP\n5|f|d|10.000000|0.500000|19.000000|9.500000|OUT\n-|c|low|28.500000|0.500000|-|-|OUT",
+   "fn": "cluster",
+   "hand_checked": true,
+   "name": "P17 non-representative rows judged by their paired SE against the lowest IN and CUSP representatives",
+   "paired": [
+    [
+     "a",
+     "d",
+     "b",
+     "d",
+     0.2
+    ],
+    [
+     "a",
+     "d",
+     "c",
+     "d",
+     0.2
+    ],
+    [
+     "a",
+     "d",
+     "e",
+     "d",
+     0.2
+    ],
+    [
+     "a",
+     "d",
+     "c",
+     "low",
+     0.2
+    ],
+    [
+     "a",
+     "d",
+     "f",
+     "d",
+     0.2
+    ],
+    [
+     "b",
+     "d",
+     "c",
+     "d",
+     0.2
+    ],
+    [
+     "b",
+     "d",
+     "e",
+     "d",
+     0.2
+    ],
+    [
+     "b",
+     "d",
+     "c",
+     "low",
+     0.2
+    ],
+    [
+     "b",
+     "d",
+     "f",
+     "d",
+     0.2
+    ],
+    [
+     "c",
+     "d",
+     "e",
+     "d",
+     0.2
+    ],
+    [
+     "c",
+     "d",
+     "c",
+     "low",
+     0.2
+    ],
+    [
+     "c",
+     "d",
+     "f",
+     "d",
+     0.2
+    ],
+    [
+     "e",
+     "d",
+     "c",
+     "low",
+     0.2
+    ],
+    [
+     "e",
+     "d",
+     "f",
+     "d",
+     0.2
+    ],
+    [
+     "c",
+     "low",
+     "f",
+     "d",
+     0.2
+    ]
+   ],
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.5,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "a",
+     "d",
+     40.0,
+     0.5
+    ],
+    [
+     "b",
+     "d",
+     38.0,
+     0.5
+    ],
+    [
+     "c",
+     "d",
+     36.0,
+     0.5
+    ],
+    [
+     "e",
+     "d",
+     29.0,
+     0.5
+    ],
+    [
+     "c",
+     "low",
+     28.5,
+     0.5
+    ],
+    [
+     "f",
+     "d",
+     10.0,
+     0.5
+    ]
+   ]
+  },
+  {
+   "expected": "spacing|2.000000|GAP\n1|a|default|40.000000|0.100000|0.000000|0.000000|IN\n2|b|default|38.000000|0.100000|0.000000|0.000000|IN\n3|c|default|36.000000|0.100000|2.000000|1.000000|IN\n4|d|default|29.000000|0.100000|7.000000|3.500000|CUSP\n5|e|default|28.000000|0.100000|1.000000|0.500000|CUSP\n6|f|default|27.900000|5.000000|0.100000|0.050000|OUT",
+   "fn": "cluster",
+   "hand_checked": true,
+   "name": "P18 below a CUSP, a row level with it by its paired SE shares it; the next is OUT by its paired SE",
+   "paired": [
+    [
+     "a",
+     "default",
+     "b",
+     "default",
+     0.1
+    ],
+    [
+     "a",
+     "default",
+     "c",
+     "default",
+     0.1
+    ],
+    [
+     "a",
+     "default",
+     "d",
+     "default",
+     0.1
+    ],
+    [
+     "a",
+     "default",
+     "e",
+     "default",
+     0.1
+    ],
+    [
+     "a",
+     "default",
+     "f",
+     "default",
+     0.1
+    ],
+    [
+     "b",
+     "default",
+     "c",
+     "default",
+     0.1
+    ],
+    [
+     "b",
+     "default",
+     "d",
+     "default",
+     0.1
+    ],
+    [
+     "b",
+     "default",
+     "e",
+     "default",
+     0.1
+    ],
+    [
+     "b",
+     "default",
+     "f",
+     "default",
+     0.1
+    ],
+    [
+     "c",
+     "default",
+     "d",
+     "default",
+     0.1
+    ],
+    [
+     "c",
+     "default",
+     "e",
+     "default",
+     0.1
+    ],
+    [
+     "c",
+     "default",
+     "f",
+     "default",
+     0.1
+    ],
+    [
+     "d",
+     "default",
+     "e",
+     "default",
+     0.8
+    ],
+    [
+     "d",
+     "default",
+     "f",
+     "default",
+     0.5
+    ],
+    [
+     "e",
+     "default",
+     "f",
+     "default",
+     0.1
+    ]
+   ],
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.5,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "a",
+     "default",
+     40.0,
+     0.1
+    ],
+    [
+     "b",
+     "default",
+     38.0,
+     0.1
+    ],
+    [
+     "c",
+     "default",
+     36.0,
+     0.1
+    ],
+    [
+     "d",
+     "default",
+     29.0,
+     0.1
+    ],
+    [
+     "e",
+     "default",
+     28.0,
+     0.1
+    ],
+    [
+     "f",
+     "default",
+     27.9,
+     5.0
+    ]
+   ]
+  },
+  {
+   "expected": "spacing|1.000000|GAP\n1|Mod\u00e8le \u00c9|d\u00e9faut|10.000000|0.000000|0.000000|0.000000|IN\n2|\u6a21\u578b\u4e59|\u9ed8\u8ba4|9.000000|0.000000|0.000000|0.000000|IN\n3|\u03bc-3|\u03b1|7.000000|0.000000|2.000000|2.000000|IN\n4|\u03bc-4|\u03b1|3.000000|0.000000|4.000000|4.000000|OUT",
+   "fn": "cluster",
+   "hand_checked": true,
+   "name": "P19 unicode identifiers under FIXED-SET",
+   "paired": [
+    [
+     "Mod\u00e8le \u00c9",
+     "d\u00e9faut",
+     "\u6a21\u578b\u4e59",
+     "\u9ed8\u8ba4",
+     0.0
+    ],
+    [
+     "Mod\u00e8le \u00c9",
+     "d\u00e9faut",
+     "\u03bc-3",
+     "\u03b1",
+     0.0
+    ],
+    [
+     "Mod\u00e8le \u00c9",
+     "d\u00e9faut",
+     "\u03bc-4",
+     "\u03b1",
+     0.0
+    ],
+    [
+     "\u6a21\u578b\u4e59",
+     "\u9ed8\u8ba4",
+     "\u03bc-3",
+     "\u03b1",
+     0.0
+    ],
+    [
+     "\u6a21\u578b\u4e59",
+     "\u9ed8\u8ba4",
+     "\u03bc-4",
+     "\u03b1",
+     0.0
+    ],
+    [
+     "\u03bc-3",
+     "\u03b1",
+     "\u03bc-4",
+     "\u03b1",
+     0.0
+    ]
+   ],
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "Mod\u00e8le \u00c9",
+     "d\u00e9faut",
+     10.0,
+     0.0
+    ],
+    [
+     "\u6a21\u578b\u4e59",
+     "\u9ed8\u8ba4",
+     9.0,
+     0.0
+    ],
+    [
+     "\u03bc-3",
+     "\u03b1",
+     7.0,
+     0.0
+    ],
+    [
+     "\u03bc-4",
+     "\u03b1",
+     3.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "expected": "spacing|1.000000|GAP\n1|x|default|10.000000|0.000000|0.000000|0.000000|IN\n2|y|default|9.000000|0.000000|0.000000|0.000000|IN\n3|z|default|7.000000|0.000000|2.000000|2.000000|IN",
+   "fn": "cluster",
+   "hand_checked": true,
+   "name": "P20 an extra pair beyond those the rule tests is accepted",
+   "paired": [
+    [
+     "x",
+     "default",
+     "y",
+     "default",
+     0.0
+    ],
+    [
+     "x",
+     "default",
+     "z",
+     "default",
+     0.0
+    ],
+    [
+     "y",
+     "default",
+     "z",
+     "default",
+     0.0
+    ]
+   ],
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "x",
+     "default",
+     10.0,
+     0.0
+    ],
+    [
+     "y",
+     "default",
+     9.0,
+     0.0
+    ],
+    [
+     "z",
+     "default",
+     7.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "expected": "resolving|6.995829|4.372393|5.395829|3.372393\ngreatest|7.116615|5.516615\nrank|3|6.995829|5.395829\nrank|4|6.995829|5.395829\nrank|5|6.995829|5.395829\nrank|6|7.116615|5.516615",
+   "fn": "resolving",
+   "hand_checked": true,
+   "name": "R01 the docs' specimen: u 1.6, SEs 0.6 with rank 6 at 0.7: 6.996 points, 4.37 spacings; the greatest 7.116",
+   "paired": null,
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "ses": [
+    0.6,
+    0.6,
+    0.6,
+    0.6,
+    0.6,
+    0.7
+   ],
+   "spacing": 1.6
+  },
+  {
+   "expected": "resolving|20.927763|4.500594|16.277763|3.500594\ngreatest|20.927763|16.277763\nrank|3|20.927763|16.277763",
+   "fn": "resolving",
+   "hand_checked": true,
+   "name": "R02 F30 row: ECI, SE 2.00, spacing 4.65: CUSP at 16.3, OUT at 20.9",
+   "paired": null,
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "ses": [
+    2.0,
+    2.0,
+    2.0
+   ],
+   "spacing": 4.65
+  },
+  {
+   "expected": "resolving|17.371793|4.500465|13.511793|3.500465\ngreatest|17.371793|13.511793\nrank|3|17.371793|13.511793",
+   "fn": "resolving",
+   "hand_checked": true,
+   "name": "R03 F30 row: composite with CritPt, SE 1.66, spacing 3.86: 13.5 / 17.4",
+   "paired": null,
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "ses": [
+    1.66,
+    1.66,
+    1.66
+   ],
+   "spacing": 3.86
+  },
+  {
+   "expected": "resolving|10.038326|4.501492|7.808326|3.501492\ngreatest|10.038326|7.808326\nrank|3|10.038326|7.808326",
+   "fn": "resolving",
+   "hand_checked": true,
+   "name": "R04 F30 row: composite, item sampling, SE 0.96, spacing 2.23: 7.8 / 10.0",
+   "paired": null,
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "ses": [
+    0.96,
+    0.96,
+    0.96
+   ],
+   "spacing": 2.23
+  },
+  {
+   "expected": "resolving|7.111939|4.501227|5.531939|3.501227\ngreatest|7.111939|5.531939\nrank|3|7.111939|5.531939",
+   "fn": "resolving",
+   "hand_checked": true,
+   "name": "R05 F30 row: composite paired, SE 0.68, spacing 1.58: 5.5 / 7.1",
+   "paired": null,
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "ses": [
+    0.68,
+    0.68,
+    0.68
+   ],
+   "spacing": 1.58
+  },
+  {
+   "expected": "resolving|4.151387|4.151387|3.151387|3.151387\ngreatest|4.151387|3.151387\nrank|3|4.151387|3.151387",
+   "fn": "resolving",
+   "hand_checked": true,
+   "name": "R06 F30 row: fixed item set, SE 0.28, spacing 1.00: 3.2 / 4.2",
+   "paired": null,
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "ses": [
+    0.28,
+    0.28,
+    0.28
+   ],
+   "spacing": 1.0
+  },
+  {
+   "expected": "resolving|3.500000|3.500000|2.500000|2.500000\ngreatest|3.500000|2.500000\nrank|3|3.500000|2.500000\nrank|4|3.500000|2.500000",
+   "fn": "resolving",
+   "hand_checked": true,
+   "name": "R07 example A: u 1, SEs zero: 3.5 points, 3.5 spacings; CUSP at 2.5",
+   "paired": null,
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "ses": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "spacing": 1.0
+  },
+  {
+   "expected": "resolving|NONE",
+   "fn": "resolving",
+   "hand_checked": true,
+   "name": "R08 fewer than three ranks: NONE (two)",
+   "paired": null,
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "ses": [
+    0.5,
+    0.5
+   ],
+   "spacing": 1.0
+  },
+  {
+   "expected": "resolving|NONE",
+   "fn": "resolving",
+   "hand_checked": true,
+   "name": "R09 fewer than three ranks: NONE (none)",
+   "paired": null,
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "ses": [],
+   "spacing": 0.0
+  },
+  {
+   "expected": "resolving|1.163191|-|1.163191|-\ngreatest|1.163191|1.163191\nrank|3|1.163191|1.163191",
+   "fn": "resolving",
+   "hand_checked": true,
+   "name": "R10 spacing zero: points only, spacings undefined",
+   "paired": null,
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "ses": [
+    0.5,
+    0.5,
+    0.5
+   ],
+   "spacing": 0.0
+  },
+  {
+   "expected": "resolving|7.000000|3.500000|5.000000|2.500000\ngreatest|7.000000|5.000000\nrank|3|7.000000|5.000000",
+   "fn": "resolving",
+   "hand_checked": true,
+   "name": "R11 z zero: the thresholds are the spacing multiples alone",
+   "paired": null,
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 0.0
+   },
+   "ses": [
+    1.0,
+    3.0,
+    2.0
+   ],
+   "spacing": 2.0
+  },
+  {
+   "expected": "resolving|4.000307|4.000307|3.000307|3.000307\ngreatest|5.016615|4.016615\nrank|3|5.016615|4.016615\nrank|4|4.982783|3.982783\nrank|5|4.000307|3.000307",
+   "fn": "resolving",
+   "hand_checked": true,
+   "name": "R12 varying SEs: the least pair sets the step, the greatest pair the greatest",
+   "paired": null,
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "ses": [
+    0.1,
+    0.2,
+    0.9,
+    0.05,
+    0.3
+   ],
+   "spacing": 1.0
+  },
+  {
+   "expected": "resolving|6.258000|3.911250|4.658000|2.911250\ngreatest|6.587000|4.987000\nrank|3|6.258000|4.658000\nrank|4|6.258000|4.658000\nrank|5|6.258000|4.658000\nrank|6|6.587000|4.987000",
+   "fn": "resolving",
+   "hand_checked": true,
+   "name": "R13 FIXED-SET: paired SEs of the adjacent differences replace the unpaired terms",
+   "paired": [
+    0.5,
+    0.4,
+    0.4,
+    0.4,
+    0.6
+   ],
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "ses": [
+    0.6,
+    0.6,
+    0.6,
+    0.6,
+    0.6,
+    0.7
+   ],
+   "spacing": 1.6
+  },
+  {
+   "expected": "ERROR:paired",
+   "fn": "resolving",
+   "hand_checked": true,
+   "name": "R14 FIXED-SET: paired list of the wrong length is refused",
+   "paired": [
+    0.4
+   ],
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "ses": [
+    0.6,
+    0.6,
+    0.6
+   ],
+   "spacing": 1.6
+  },
+  {
+   "expected": "ERROR:paired",
+   "fn": "resolving",
+   "hand_checked": true,
+   "name": "R15 FIXED-SET: a negative paired SE is refused",
+   "paired": [
+    0.4,
+    -0.1
+   ],
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "ses": [
+    0.6,
+    0.6,
+    0.6
+   ],
+   "spacing": 1.6
+  },
+  {
+   "expected": "ERROR:ses",
+   "fn": "resolving",
+   "hand_checked": true,
+   "name": "R16 a negative SE is refused",
+   "paired": null,
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "ses": [
+    0.5,
+    -0.5,
+    0.5
+   ],
+   "spacing": 1.0
+  },
+  {
+   "expected": "ERROR:spacing",
+   "fn": "resolving",
+   "hand_checked": true,
+   "name": "R17 a negative spacing is refused",
+   "paired": null,
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "ses": [
+    0.5,
+    0.5,
+    0.5
+   ],
+   "spacing": -1.0
+  },
+  {
+   "expected": "ERROR:parameters",
+   "fn": "resolving",
+   "hand_checked": true,
+   "name": "R18 bad parameters (IN MAX above CUSP MAX) are refused",
+   "paired": null,
+   "params": {
+    "cusp_max": 2.5,
+    "in_max": 3.5,
+    "z": 1.645
+   },
+   "ses": [
+    0.5,
+    0.5,
+    0.5
+   ],
+   "spacing": 1.0
+  },
+  {
+   "expected": "ERROR:ses",
+   "fn": "resolving",
+   "hand_checked": true,
+   "name": "R19 a boolean SE is refused",
+   "paired": null,
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "ses": [
+    0.5,
+    true,
+    0.5
+   ],
+   "spacing": 1.0
+  },
+  {
+   "expected": "resolving|25.089049|4.174551|19.079049|3.174551\ngreatest|26.513122|20.503122\nrank|3|25.089049|19.079049\nrank|4|25.223649|19.213649\nrank|5|25.805500|19.795500\nrank|6|25.572935|19.562935\nrank|7|25.942507|19.932507\nrank|8|26.048878|20.038878\nrank|9|25.461242|19.451242\nrank|10|25.107829|19.097829\nrank|11|25.608573|19.598573\nrank|12|26.513122|20.503122",
+   "fn": "resolving",
+   "hand_checked": false,
+   "name": "R20 ECI top twelve as F30 read them: u 6.01 by NOISE, SE 2.0 to 2.74",
+   "paired": null,
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "ses": [
+    2.74,
+    2.0,
+    1.44,
+    2.1,
+    2.0,
+    1.9,
+    2.3,
+    2.0,
+    1.8,
+    1.7,
+    2.2,
+    2.5
+   ],
+   "spacing": 6.01
+  }
+ ],
+ "corpus": "cluster",
+ "version": "0.3.0"
+}

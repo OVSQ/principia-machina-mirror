@@ -1,0 +1,103 @@
+{{DISPLAYTITLE:Why speed has to come along for the ride}}
+{{Noether's theorems map}}
+
+''Mathematical counterpart: [[Noether's theorems/First theorem/Prolongation to derivatives|Prolongation to derivatives]].''
+
+[[File:NT-F-03.png|thumb|right|360px|alt=Two axes side by side. The left shows a curve with tangent arrows marking its slope at three points. The right shows those slopes plotted as a curve of their own against the same horizontal axis, joined by an arrow labelled lift. A note says choosing how the points move fixes how the slopes move.|Prolongation: a curve and its lifted derivative data]]
+
+The recipe for the action does not only use where things are. It uses how fast
+they are moving. So when a transformation moves things around, it moves the
+speeds too — and it does not get to choose how.
+
+== You do not get a free choice ==
+
+Film a cyclist from a parked car. You measure a certain speed.
+
+Now film the same cyclist from a car that is itself moving. You measure a
+different speed, and you can work out exactly what it will be before you look:
+the cyclist's speed minus your own.
+
+You had a free choice about how to move your camera. You had no choice at all
+about what that does to the measured speed. Once the first is settled, the second
+is forced.
+
+Extending a transformation to the speeds in the way it is forced to is called
+'''prolongation'''. It is bookkeeping, and it is unavoidable bookkeeping.
+
+== Two corrections, not one ==
+
+When a transformation shifts where you measure from, the change in a speed has
+two parts.
+
+The first is obvious: the thing you are measuring moved, so its rate of change
+moved with it.
+
+The second is easy to forget: you are now measuring against a different ruler.
+Rate of change means change per unit of something, and if that something has
+shifted, the ratio shifts as well.
+
+If the transformation leaves the ruler alone and only moves the object, the second
+part vanishes and prolongation is barely visible. Most textbook accounts stay in
+that case, which is why the word rarely appears in them.
+
+Noether does not stay in that case. Her transformations are allowed to move the
+ruler, and both corrections are live throughout.
+
+== The runaway ==
+
+Noether allows something further, and it has a strange consequence she points out
+rather than hides.
+
+She lets the transformation itself depend on speeds. Not just on where things
+are — on how fast they are going.
+
+Now watch what happens when you build up a large change out of many tiny ones.
+Each tiny step needs to know the speeds. Working out the speeds after that step
+brings in the acceleration. The next step needs that, and working it out brings
+in the next rate of change after acceleration. And so on.
+
+The list grows at every step and never stops growing. A large transformation
+built this way can depend on infinitely many rates of change.
+
+'''This is not a flaw to be excluded. It is the price of the generality.''' The
+alternative is to forbid transformations that depend on speeds, which throws away
+cases the theorems otherwise cover. Noether pays the price and says so.
+
+== A word about jets ==
+
+Modern mathematics has a tidy device for this. Bundle a position together with
+its speed, its acceleration and however many further rates of change you need,
+and treat the whole bundle as a single point in a bigger space. Then a prolonged
+transformation is just an ordinary transformation of that bigger space, and the
+bookkeeping takes care of itself.
+
+The device is called a '''jet'''. It is genuinely useful and it is not needed
+here. Noether did the bookkeeping by hand and the theorems do not depend on the
+device. This volume treats it as its own subject rather than as something you
+must learn first.
+
+== What goes wrong if you skip the second correction ==
+
+It is worth seeing the failure rather than being told about it.
+
+Take the symmetry that gives you energy: shift the clock. Here the ruler
+absolutely does move, because the ruler is the clock.
+
+Now suppose you keep only the first correction — the things moved — and forget
+that you are measuring rates against a shifted clock.
+
+You do not get nonsense. You get a clean, plausible-looking quantity. It is simply
+not the energy. The piece you dropped is exactly the term that distinguishes
+energy from a partial sum of it, and nothing in the calculation warns you, because
+the calculation never noticed it was incomplete.
+
+'''That is what makes this worth a page.''' A missing term that produces obvious
+rubbish gets caught immediately. A missing term that produces something tidy and
+wrong can survive for a long time.
+
+The general rule is short. If the transformation touches only the things, one
+correction. If it touches the ruler as well — the clock, the coordinates, anything
+you measure against — two.
+
+''No mathematics is used on this page. The mathematical treatment is on the
+counterpart page named above.''

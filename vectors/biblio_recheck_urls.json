@@ -1,0 +1,2235 @@
+{
+ "cases": [
+  {
+   "name": "nothing due: checked five days ago",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "B1",
+      "identifiers": {
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      },
+      "check_line": "CHECK 2026-11-01 CONFIRMED ; DOI 10.1016/S0140-6736(97)11096-0 CONFIRMED"
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 0
+   },
+   "expected": {
+    "lookups": [],
+    "failed": [],
+    "taken": [],
+    "due": 0,
+    "backlog": 0
+   }
+  },
+  {
+   "name": "no entries",
+   "request": {
+    "entries": [],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 0
+   },
+   "expected": {
+    "lookups": [],
+    "failed": [],
+    "taken": [],
+    "due": 0,
+    "backlog": 0
+   }
+  },
+  {
+   "name": "an entry with no CHECK line is due",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "B1",
+      "identifiers": {
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      }
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 0
+   },
+   "expected": {
+    "lookups": [
+     {
+      "bib_id": "B1",
+      "kind": "DOI",
+      "identifier": "10.1016/S0140-6736(97)11096-0",
+      "registry": "DOI-RA",
+      "url": "https://doi.org/ra/10.1016/S0140-6736(97)11096-0"
+     }
+    ],
+    "failed": [],
+    "taken": [
+     "B1"
+    ],
+    "due": 1,
+    "backlog": 0
+   }
+  },
+  {
+   "name": "a null CHECK line is no CHECK line",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "B1",
+      "identifiers": {
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      },
+      "check_line": null
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 0
+   },
+   "expected": {
+    "lookups": [
+     {
+      "bib_id": "B1",
+      "kind": "DOI",
+      "identifier": "10.1016/S0140-6736(97)11096-0",
+      "registry": "DOI-RA",
+      "url": "https://doi.org/ra/10.1016/S0140-6736(97)11096-0"
+     }
+    ],
+    "failed": [],
+    "taken": [
+     "B1"
+    ],
+    "due": 1,
+    "backlog": 0
+   }
+  },
+  {
+   "name": "the period's boundary: thirty days old is due, twenty-nine is not",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "B1",
+      "identifiers": {
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      },
+      "check_line": "CHECK 2026-10-08 CONFIRMED ; DOI 10.1016/S0140-6736(97)11096-0 CONFIRMED"
+     },
+     {
+      "bib_id": "B2",
+      "identifiers": {
+       "DOI": "10.5281/zenodo.1234567"
+      },
+      "check_line": "CHECK 2026-10-07 CONFIRMED ; DOI 10.1016/S0140-6736(97)11096-0 CONFIRMED"
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 0
+   },
+   "expected": {
+    "lookups": [
+     {
+      "bib_id": "B2",
+      "kind": "DOI",
+      "identifier": "10.5281/zenodo.1234567",
+      "registry": "DOI-RA",
+      "url": "https://doi.org/ra/10.5281/zenodo.1234567"
+     }
+    ],
+    "failed": [],
+    "taken": [
+     "B2"
+    ],
+    "due": 1,
+    "backlog": 0
+   }
+  },
+  {
+   "name": "a declared period of seven days",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "B1",
+      "identifiers": {
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      },
+      "check_line": "CHECK 2026-10-30 CONFIRMED ; DOI 10.1016/S0140-6736(97)11096-0 CONFIRMED"
+     },
+     {
+      "bib_id": "B2",
+      "identifiers": {
+       "DOI": "10.5281/zenodo.1234567"
+      },
+      "check_line": "CHECK 2026-10-31 CONFIRMED ; DOI 10.1016/S0140-6736(97)11096-0 CONFIRMED"
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 0,
+    "recheck": 7
+   },
+   "expected": {
+    "lookups": [
+     {
+      "bib_id": "B1",
+      "kind": "DOI",
+      "identifier": "10.1016/S0140-6736(97)11096-0",
+      "registry": "DOI-RA",
+      "url": "https://doi.org/ra/10.1016/S0140-6736(97)11096-0"
+     }
+    ],
+    "failed": [],
+    "taken": [
+     "B1"
+    ],
+    "due": 1,
+    "backlog": 0
+   }
+  },
+  {
+   "name": "ties by bib_id",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "B2",
+      "identifiers": {
+       "DOI": "10.5281/zenodo.1234567"
+      },
+      "check_line": "CHECK 2026-09-01 CONFIRMED ; DOI 10.1016/S0140-6736(97)11096-0 CONFIRMED"
+     },
+     {
+      "bib_id": "B1",
+      "identifiers": {
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      },
+      "check_line": "CHECK 2026-09-01 CONFIRMED ; DOI 10.1016/S0140-6736(97)11096-0 CONFIRMED"
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 0
+   },
+   "expected": {
+    "lookups": [
+     {
+      "bib_id": "B1",
+      "kind": "DOI",
+      "identifier": "10.1016/S0140-6736(97)11096-0",
+      "registry": "DOI-RA",
+      "url": "https://doi.org/ra/10.1016/S0140-6736(97)11096-0"
+     },
+     {
+      "bib_id": "B2",
+      "kind": "DOI",
+      "identifier": "10.5281/zenodo.1234567",
+      "registry": "DOI-RA",
+      "url": "https://doi.org/ra/10.5281/zenodo.1234567"
+     }
+    ],
+    "failed": [],
+    "taken": [
+     "B1",
+     "B2"
+    ],
+    "due": 2,
+    "backlog": 0
+   }
+  },
+  {
+   "name": "no CHECK line first, then the oldest CHECK date",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "E",
+      "identifiers": {
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      },
+      "check_line": "CHECK 2026-09-01 CONFIRMED ; DOI 10.1016/S0140-6736(97)11096-0 CONFIRMED"
+     },
+     {
+      "bib_id": "D",
+      "identifiers": {
+       "DOI": "10.5281/zenodo.1234567"
+      },
+      "check_line": "CHECK 2026-08-01 CONFIRMED ; DOI 10.1016/S0140-6736(97)11096-0 CONFIRMED"
+     },
+     {
+      "bib_id": "N",
+      "identifiers": {
+       "DOI": "10.1000/xyz"
+      }
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 0
+   },
+   "expected": {
+    "lookups": [
+     {
+      "bib_id": "N",
+      "kind": "DOI",
+      "identifier": "10.1000/xyz",
+      "registry": "DOI-RA",
+      "url": "https://doi.org/ra/10.1000/xyz"
+     },
+     {
+      "bib_id": "D",
+      "kind": "DOI",
+      "identifier": "10.5281/zenodo.1234567",
+      "registry": "DOI-RA",
+      "url": "https://doi.org/ra/10.5281/zenodo.1234567"
+     },
+     {
+      "bib_id": "E",
+      "kind": "DOI",
+      "identifier": "10.1016/S0140-6736(97)11096-0",
+      "registry": "DOI-RA",
+      "url": "https://doi.org/ra/10.1016/S0140-6736(97)11096-0"
+     }
+    ],
+    "failed": [],
+    "taken": [
+     "N",
+     "D",
+     "E"
+    ],
+    "due": 3,
+    "backlog": 0
+   }
+  },
+  {
+   "name": "a leap February in the age: thirty days is due",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "B1",
+      "identifiers": {
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      },
+      "check_line": "CHECK 2028-02-01 CONFIRMED ; DOI 10.1016/S0140-6736(97)11096-0 CONFIRMED"
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2028-03-02",
+    "lookups_today": 0
+   },
+   "expected": {
+    "lookups": [
+     {
+      "bib_id": "B1",
+      "kind": "DOI",
+      "identifier": "10.1016/S0140-6736(97)11096-0",
+      "registry": "DOI-RA",
+      "url": "https://doi.org/ra/10.1016/S0140-6736(97)11096-0"
+     }
+    ],
+    "failed": [],
+    "taken": [
+     "B1"
+    ],
+    "due": 1,
+    "backlog": 0
+   }
+  },
+  {
+   "name": "a leap February in the age: twenty-nine days is not due",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "B1",
+      "identifiers": {
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      },
+      "check_line": "CHECK 2028-02-01 CONFIRMED ; DOI 10.1016/S0140-6736(97)11096-0 CONFIRMED"
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2028-03-01",
+    "lookups_today": 0
+   },
+   "expected": {
+    "lookups": [],
+    "failed": [],
+    "taken": [],
+    "due": 0,
+    "backlog": 0
+   }
+  },
+  {
+   "name": "the batch binds",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "A",
+      "identifiers": {
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      }
+     },
+     {
+      "bib_id": "B",
+      "identifiers": {
+       "DOI": "10.5281/zenodo.1234567"
+      }
+     },
+     {
+      "bib_id": "C",
+      "identifiers": {
+       "DOI": "10.1000/xyz"
+      }
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 0,
+    "batch": 2
+   },
+   "expected": {
+    "lookups": [
+     {
+      "bib_id": "A",
+      "kind": "DOI",
+      "identifier": "10.1016/S0140-6736(97)11096-0",
+      "registry": "DOI-RA",
+      "url": "https://doi.org/ra/10.1016/S0140-6736(97)11096-0"
+     },
+     {
+      "bib_id": "B",
+      "kind": "DOI",
+      "identifier": "10.5281/zenodo.1234567",
+      "registry": "DOI-RA",
+      "url": "https://doi.org/ra/10.5281/zenodo.1234567"
+     }
+    ],
+    "failed": [],
+    "taken": [
+     "A",
+     "B"
+    ],
+    "due": 3,
+    "backlog": 1
+   }
+  },
+  {
+   "name": "the cap binds: one lookup left today",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "A",
+      "identifiers": {
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      }
+     },
+     {
+      "bib_id": "B",
+      "identifiers": {
+       "DOI": "10.5281/zenodo.1234567"
+      }
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 1999
+   },
+   "expected": {
+    "lookups": [
+     {
+      "bib_id": "A",
+      "kind": "DOI",
+      "identifier": "10.1016/S0140-6736(97)11096-0",
+      "registry": "DOI-RA",
+      "url": "https://doi.org/ra/10.1016/S0140-6736(97)11096-0"
+     }
+    ],
+    "failed": [],
+    "taken": [
+     "A"
+    ],
+    "due": 2,
+    "backlog": 1
+   }
+  },
+  {
+   "name": "the cap reached: nothing taken",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "A",
+      "identifiers": {
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      }
+     },
+     {
+      "bib_id": "B",
+      "identifiers": {
+       "DOI": "10.5281/zenodo.1234567"
+      }
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 2000
+   },
+   "expected": {
+    "lookups": [],
+    "failed": [],
+    "taken": [],
+    "due": 2,
+    "backlog": 2
+   }
+  },
+  {
+   "name": "the day's count past the cap: nothing taken",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "A",
+      "identifiers": {
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      }
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 2500
+   },
+   "expected": {
+    "lookups": [],
+    "failed": [],
+    "taken": [],
+    "due": 1,
+    "backlog": 1
+   }
+  },
+  {
+   "name": "a declared cap",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "A",
+      "identifiers": {
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      }
+     },
+     {
+      "bib_id": "B",
+      "identifiers": {
+       "DOI": "10.5281/zenodo.1234567"
+      }
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 4,
+    "cap": 5
+   },
+   "expected": {
+    "lookups": [
+     {
+      "bib_id": "A",
+      "kind": "DOI",
+      "identifier": "10.1016/S0140-6736(97)11096-0",
+      "registry": "DOI-RA",
+      "url": "https://doi.org/ra/10.1016/S0140-6736(97)11096-0"
+     }
+    ],
+    "failed": [],
+    "taken": [
+     "A"
+    ],
+    "due": 2,
+    "backlog": 1
+   }
+  },
+  {
+   "name": "an entry larger than what is left ends the run's choice",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "A",
+      "identifiers": {
+       "DOI": "10.1016/S0140-6736(97)11096-0",
+       "PMID": "9500320"
+      }
+     },
+     {
+      "bib_id": "B",
+      "identifiers": {
+       "DOI": "10.5281/zenodo.1234567",
+       "ARXIV": "2601.12345v2"
+      },
+      "check_line": "CHECK 2026-01-01 CONFIRMED ; DOI 10.1016/S0140-6736(97)11096-0 CONFIRMED"
+     },
+     {
+      "bib_id": "C",
+      "identifiers": {
+       "DOI": "10.1000/xyz"
+      },
+      "check_line": "CHECK 2026-02-01 CONFIRMED ; DOI 10.1016/S0140-6736(97)11096-0 CONFIRMED"
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 0,
+    "batch": 3
+   },
+   "expected": {
+    "lookups": [
+     {
+      "bib_id": "A",
+      "kind": "DOI",
+      "identifier": "10.1016/S0140-6736(97)11096-0",
+      "registry": "DOI-RA",
+      "url": "https://doi.org/ra/10.1016/S0140-6736(97)11096-0"
+     },
+     {
+      "bib_id": "A",
+      "kind": "PMID",
+      "identifier": "9500320",
+      "registry": "PMID",
+      "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id=9500320"
+     }
+    ],
+    "failed": [],
+    "taken": [
+     "A"
+    ],
+    "due": 3,
+    "backlog": 2
+   }
+  },
+  {
+   "name": "each kind's first round, in the order of kinds",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "A",
+      "identifiers": {
+       "PMCID": "pmc8243230",
+       "ISSN": "0028-0836",
+       "PMID": "9500320",
+       "ISBN": "9780306406157",
+       "ARXIV": "2601.12345v2",
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      }
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 0
+   },
+   "expected": {
+    "lookups": [
+     {
+      "bib_id": "A",
+      "kind": "DOI",
+      "identifier": "10.1016/S0140-6736(97)11096-0",
+      "registry": "DOI-RA",
+      "url": "https://doi.org/ra/10.1016/S0140-6736(97)11096-0"
+     },
+     {
+      "bib_id": "A",
+      "kind": "ARXIV",
+      "identifier": "2601.12345v2",
+      "registry": "ARXIV",
+      "url": "https://export.arxiv.org/api/query?id_list=2601.12345v2"
+     },
+     {
+      "bib_id": "A",
+      "kind": "PMID",
+      "identifier": "9500320",
+      "registry": "PMID",
+      "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id=9500320"
+     },
+     {
+      "bib_id": "A",
+      "kind": "PMCID",
+      "identifier": "pmc8243230",
+      "registry": "PMCID",
+      "url": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids=PMC8243230"
+     }
+    ],
+    "failed": [],
+    "taken": [
+     "A"
+    ],
+    "due": 1,
+    "backlog": 0
+   }
+  },
+  {
+   "name": "a kind no registry takes: an ISBN alone is never due",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "A",
+      "identifiers": {
+       "ISBN": "9780306406157"
+      }
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 0
+   },
+   "expected": {
+    "lookups": [],
+    "failed": [],
+    "taken": [],
+    "due": 0,
+    "backlog": 0
+   }
+  },
+  {
+   "name": "a DOI with no agency lookup declared is not looked up",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "A",
+      "identifiers": {
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      }
+     },
+     {
+      "bib_id": "B",
+      "identifiers": {
+       "PMID": "9500320"
+      }
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 0
+   },
+   "expected": {
+    "lookups": [
+     {
+      "bib_id": "B",
+      "kind": "PMID",
+      "identifier": "9500320",
+      "registry": "PMID",
+      "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id=9500320"
+     }
+    ],
+    "failed": [],
+    "taken": [
+     "B"
+    ],
+    "due": 1,
+    "backlog": 0
+   }
+  },
+  {
+   "name": "no declaration: nothing due",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "A",
+      "identifiers": {
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      }
+     }
+    ],
+    "declarations": [],
+    "date": "2026-11-06",
+    "lookups_today": 0
+   },
+   "expected": {
+    "lookups": [],
+    "failed": [],
+    "taken": [],
+    "due": 0,
+    "backlog": 0
+   }
+  },
+  {
+   "name": "the first declaration of a kind is used",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "A",
+      "identifiers": {
+       "PMID": "9500320"
+      }
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "PMID",
+      "name": "second",
+      "template": "https://example.org/pm/{ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 0
+   },
+   "expected": {
+    "lookups": [
+     {
+      "bib_id": "A",
+      "kind": "PMID",
+      "identifier": "9500320",
+      "registry": "PMID",
+      "url": "https://example.org/pm/9500320"
+     }
+    ],
+    "failed": [],
+    "taken": [
+     "A"
+    ],
+    "due": 1,
+    "backlog": 0
+   }
+  },
+  {
+   "name": "a . segment is LOOKUP FAILED, counted against the batch",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "A",
+      "identifiers": {
+       "DOI": "10.1000/a/./b"
+      }
+     },
+     {
+      "bib_id": "B",
+      "identifiers": {
+       "DOI": "10.5281/zenodo.1234567"
+      }
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 0,
+    "batch": 1
+   },
+   "expected": {
+    "lookups": [],
+    "failed": [
+     {
+      "bib_id": "A",
+      "kind": "DOI",
+      "identifier": "10.1000/a/./b"
+     }
+    ],
+    "taken": [
+     "A"
+    ],
+    "due": 2,
+    "backlog": 1
+   }
+  },
+  {
+   "name": "a .. segment is LOOKUP FAILED beside a lookup",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "A",
+      "identifiers": {
+       "DOI": "10.1000/a/..",
+       "PMID": "9500320"
+      }
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 0
+   },
+   "expected": {
+    "lookups": [
+     {
+      "bib_id": "A",
+      "kind": "PMID",
+      "identifier": "9500320",
+      "registry": "PMID",
+      "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id=9500320"
+     }
+    ],
+    "failed": [
+     {
+      "bib_id": "A",
+      "kind": "DOI",
+      "identifier": "10.1000/a/.."
+     }
+    ],
+    "taken": [
+     "A"
+    ],
+    "due": 1,
+    "backlog": 0
+   }
+  },
+  {
+   "name": "a LOOKUP FAILED does not count against the cap",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "A",
+      "identifiers": {
+       "DOI": "10.1000/../x"
+      }
+     },
+     {
+      "bib_id": "B",
+      "identifiers": {
+       "DOI": "10.5281/zenodo.1234567"
+      }
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 2000
+   },
+   "expected": {
+    "lookups": [],
+    "failed": [
+     {
+      "bib_id": "A",
+      "kind": "DOI",
+      "identifier": "10.1000/../x"
+     }
+    ],
+    "taken": [
+     "A"
+    ],
+    "due": 2,
+    "backlog": 1
+   }
+  },
+  {
+   "name": "a PMID url refuses is LOOKUP FAILED",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "A",
+      "identifiers": {
+       "PMID": "0"
+      }
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 0
+   },
+   "expected": {
+    "lookups": [],
+    "failed": [
+     {
+      "bib_id": "A",
+      "kind": "PMID",
+      "identifier": "0"
+     }
+    ],
+    "taken": [
+     "A"
+    ],
+    "due": 1,
+    "backlog": 0
+   }
+  },
+  {
+   "name": "refused: a CHECK LINE without CHECK",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "A",
+      "identifiers": {
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      },
+      "check_line": "CHECKED 2026-10-01 CONFIRMED"
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 0
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "check_line"
+  },
+  {
+   "name": "refused: a CHECK LINE without its value",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "A",
+      "identifiers": {
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      },
+      "check_line": "CHECK 2026-10-01"
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 0
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "check_line"
+  },
+  {
+   "name": "refused: a CHECK LINE with month 13",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "A",
+      "identifiers": {
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      },
+      "check_line": "CHECK 2026-13-01 CONFIRMED"
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 0
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "check_line"
+  },
+  {
+   "name": "refused: a CHECK LINE dated after the run",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "A",
+      "identifiers": {
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      },
+      "check_line": "CHECK 2026-11-07 CONFIRMED ; DOI 10.1016/S0140-6736(97)11096-0 CONFIRMED"
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 0
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "check_line"
+  },
+  {
+   "name": "refused: a CHECK LINE that is not a text",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "A",
+      "identifiers": {
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      },
+      "check_line": 5
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 0
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "check_line"
+  },
+  {
+   "name": "refused: a date that is not a day",
+   "request": {
+    "entries": [],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-02-30",
+    "lookups_today": 0
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "date"
+  },
+  {
+   "name": "refused: a date that is not a text",
+   "request": {
+    "entries": [],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": 20261106,
+    "lookups_today": 0
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "date"
+  },
+  {
+   "name": "refused: a negative day's count",
+   "request": {
+    "entries": [],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": -1
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "lookups_today"
+  },
+  {
+   "name": "refused: a batch that is not a count",
+   "request": {
+    "entries": [],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 0,
+    "batch": "50"
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "batch"
+  },
+  {
+   "name": "refused: a negative period",
+   "request": {
+    "entries": [],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 0,
+    "recheck": -1
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "recheck"
+  },
+  {
+   "name": "refused: a cap with a fraction",
+   "request": {
+    "entries": [],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 0,
+    "cap": 1.5
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "cap"
+  },
+  {
+   "name": "refused: entries not a list",
+   "request": {
+    "entries": {},
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 0
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "entries"
+  },
+  {
+   "name": "refused: an entry without its bib_id",
+   "request": {
+    "entries": [
+     {
+      "identifiers": {
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      }
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 0
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "entries"
+  },
+  {
+   "name": "refused: an entry with an empty bib_id",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "",
+      "identifiers": {
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      }
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 0
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "entries"
+  },
+  {
+   "name": "refused: a bib_id twice",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "A",
+      "identifiers": {
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      }
+     },
+     {
+      "bib_id": "A",
+      "identifiers": {
+       "DOI": "10.5281/zenodo.1234567"
+      }
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 0
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "entries"
+  },
+  {
+   "name": "refused: an identifier of no kind",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "A",
+      "identifiers": {
+       "HANDLE": "1/2"
+      }
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 0
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "entries"
+  },
+  {
+   "name": "refused: an identifier that is not a text",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "A",
+      "identifiers": {
+       "DOI": 10
+      }
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 0
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "entries"
+  },
+  {
+   "name": "refused: an entry with a member more",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "A",
+      "identifiers": {},
+      "item": "x"
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 0
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "entries"
+  },
+  {
+   "name": "refused: declarations not a list",
+   "request": {
+    "entries": [],
+    "declarations": {
+     "kind": "DOI-RA",
+     "name": "doi.org agency lookup",
+     "template": "https://doi.org/ra/{ID}"
+    },
+    "date": "2026-11-06",
+    "lookups_today": 0
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "declarations"
+  },
+  {
+   "name": "refused: a declaration of no declared kind",
+   "request": {
+    "entries": [],
+    "declarations": [
+     {
+      "kind": "OPENALEX",
+      "template": "https://api.openalex.org/works/{ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 0
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "declarations"
+  },
+  {
+   "name": "refused: a template url refuses, when used",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "A",
+      "identifiers": {
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      }
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "template": "http://doi.org/ra/{ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 0
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "declarations"
+  },
+  {
+   "name": "refused: an argument not taken",
+   "request": {
+    "entries": [],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 0,
+    "clock": 0
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "the function takes no argument \"clock\""
+  },
+  {
+   "name": "refused: the entries missing",
+   "request": {
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "doi.org agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-06",
+    "lookups_today": 0
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "the argument \"entries\" is missing"
+  }
+ ]
+}

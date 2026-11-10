@@ -1,0 +1,89 @@
+{{On Physical Lines of Force map}}
+''A wiki edition of James Clerk Maxwell's paper of 1861–62, with modern derivations and plain-language explainers.''
+
+[[File:OPL-fig-lines-of-force.svg|thumb|center|640px|Lines of force about a bar magnet]]
+
+Between March 1861 and February 1862 Maxwell published four instalments in the ''Philosophical Magazine'' under one title. He set out to answer a question nobody had answered: not ''what'' the magnetic force does, which was already known with precision, but ''what is going on in the space where it acts''. His answer was a machine — a space packed with spinning cells, separated by little rolling particles. The machine was wrong. On the way to building it he wrote down the displacement current, derived the speed of light from two electrical measurements, and founded field theory.
+
+This wiki reproduces the argument in Maxwell's own order and, so far as possible, in his own voice; derives the modern equations from his results; and explains each major idea for a general reader.
+
+== Start here ==
+
+{| class="wikitable"
+! If you want … !! Go to
+|-
+| the story, and why the paper matters || [[On Physical Lines of Force/Introduction|Introduction]]
+|-
+| a plain-language tour, no mathematics || [[On Physical Lines of Force/Explainers|The explainers]]
+|-
+| Maxwell's argument, part by part || [[On Physical Lines of Force/Part I|Part I]] → [[On Physical Lines of Force/Part II|II]] → [[On Physical Lines of Force/Part III|III]] → [[On Physical Lines of Force/Part IV|IV]]
+|-
+| the modern equations, derived || [[On Physical Lines of Force/Modern derivations|From 1861 to today]]
+|-
+| help with the symbols || [[On Physical Lines of Force/Notation and concordance|Notation and concordance]]
+|-
+| what is verbatim and what is not || [[On Physical Lines of Force/Sources and editorial method|Sources and editorial method]]
+|}
+
+== The four parts ==
+
+=== [[On Physical Lines of Force/Part I|Part I — The Theory of Molecular Vortices applied to Magnetic Phenomena]] ===
+''Phil. Mag., Series 4, Vol. XXI, No. 139 (March 1861), pp. 161–175.''
+
+Magnetic force is a state of stress in a medium: a tension along the lines of force and a pressure across them. Maxwell shows that spinning vortices, their axes lying along the lines, produce exactly that stress — and that its variation from point to point reproduces every known magnetic and electromagnetic force at once.
+
+* [[On Physical Lines of Force/Part I/The introductory discussion|The introductory discussion]] — what a line of force is, and why a mechanism is wanted
+* [[On Physical Lines of Force/Part I/Prop. I|Prop. I]] — the pressure of a vortex does not depend on its size
+* [[On Physical Lines of Force/Part I/Prop. II|Prop. II]] — the stress resolved on the coordinate planes
+* [[On Physical Lines of Force/Part I/Prop. III|Prop. III]] — the force on an element of the medium
+* [[On Physical Lines of Force/Part I/Applications|Applications]] — magnetic poles, a straight current, two currents
+
+=== [[On Physical Lines of Force/Part II|Part II — The Theory of Molecular Vortices applied to Electric Currents]] ===
+''Phil. Mag., Series 4, Vol. XXI, Nos. 140–141 (April and May 1861), pp. 281–291, 338–348.''
+
+Neighbouring vortices turning the same way would grind against each other. Maxwell interposes a layer of particles that roll between them like the idle wheels of a gear train — and identifies those particles with electricity. The current equation is then ''derived'' rather than assumed, and induction follows from the inertia of the vortices.
+
+* [[On Physical Lines of Force/Part II/The mechanism of idle wheels|The mechanism]] — the difficulty, and the idle wheel
+* [[On Physical Lines of Force/Part II/Prop. IV|Prop. IV]] — the motion of the layer between two vortices
+* [[On Physical Lines of Force/Part II/Prop. V|Prop. V]] — the transference of particles is the current
+* [[On Physical Lines of Force/Part II/Prop. VI|Prop. VI]] — the energy of the vortices
+* [[On Physical Lines of Force/Part II/Prop. VII|Prop. VII]] — the work done on a vortex by the particles
+* [[On Physical Lines of Force/Part II/Prop. VIII|Prop. VIII]] — electromotive force from changing motion
+* [[On Physical Lines of Force/Part II/Props. IX and X|Props. IX and X]] — a deformed and rotated element
+* [[On Physical Lines of Force/Part II/Prop. XI|Prop. XI]] — electromotive force in a moving body
+* [[On Physical Lines of Force/Part II/Induced currents|Induced currents]] — and the anchor-ring experiment
+
+=== [[On Physical Lines of Force/Part III|Part III — The Theory of Molecular Vortices applied to Statical Electricity]] ===
+''Phil. Mag., Series 4, Vol. XXIII, No. 151 (January 1862), pp. 12–24.''
+
+The substance of the cells is elastic. Force applied to the particles distorts each cell and is resisted; the particles shift a little and stop. That shift is the electric displacement — and ''its variation is a current''. Adding it to the equations of currents gives the displacement current. Then Maxwell computes the speed of transverse waves in his medium, and finds the velocity of light.
+
+* [[On Physical Lines of Force/Part III/Conduction and induction|Conduction and induction]] — two independent qualities
+* [[On Physical Lines of Force/Part III/Prop. XII|Prop. XII]] — the equilibrium of an elastic sphere
+* [[On Physical Lines of Force/Part III/Prop. XIII|Prop. XIII]] — electromotive force and displacement
+* [[On Physical Lines of Force/Part III/Prop. XIV|Prop. XIV]] — '''the displacement current'''
+* [[On Physical Lines of Force/Part III/Prop. XV|Prop. XV]] — the force between two electrified bodies
+* [[On Physical Lines of Force/Part III/Prop. XVI|Prop. XVI]] — '''the velocity of transverse undulations'''
+* [[On Physical Lines of Force/Part III/Prop. XVII|Prop. XVII]] — the capacity of a Leyden jar
+
+=== [[On Physical Lines of Force/Part IV|Part IV — The Theory of Molecular Vortices applied to the Action of Magnetism on Polarized Light]] ===
+''Phil. Mag., Series 4, Vol. XXIII, No. 152 (February 1862), pp. 85–95.''
+
+Faraday had shown that magnetism turns the plane of polarized light. Maxwell argues that this is the decisive evidence that magnetism is a phenomenon of ''rotation'', and works out what his spinning cells predict.
+
+* [[On Physical Lines of Force/Part IV/Why magnetism must be rotatory|Why magnetism must be rotatory]]
+* [[On Physical Lines of Force/Part IV/The six results|The six results, (A) to (F)]]
+* [[On Physical Lines of Force/Part IV/What became of the vortices|What became of the vortices]]
+
+== Reference ==
+
+* [[On Physical Lines of Force/Index of numbered equations|Index of numbered equations]]
+* [[On Physical Lines of Force/Notation and concordance|Notation and concordance]]
+* [[On Physical Lines of Force/Figures|Figures]]
+* [[On Physical Lines of Force/Glossary|Glossary]]
+* [[On Physical Lines of Force/Chronology|Chronology, 1820–1873]]
+* [[On Physical Lines of Force/Sources and editorial method|Sources and editorial method]]
+
+----
+
+''This wiki was built as a reading edition. It is not a critical edition: see [[On Physical Lines of Force/Sources and editorial method|Sources and editorial method]] for exactly which text is verbatim and which is not.''

@@ -1,0 +1,123 @@
+{{DISPLAYTITLE:On Physical Lines of Force — Index of numbered equations}}
+{{On Physical Lines of Force map}}
+''[[On Physical Lines of Force]] → Equations''
+
+Maxwell numbers his equations continuously across all four Parts. This index lists every number that could be '''established''' for this edition, with what it expresses and where it is discussed.
+
+<blockquote>
+'''Read this first.''' No equation in the paper could be transcribed from a page scan for this edition. The equation ''numbers'' below are attested — Maxwell cites them by number in running prose, and those references survived transcription. The equation ''bodies'' printed on this wiki are reconstructions in his notation. See [[On Physical Lines of Force/Sources and editorial method|Sources and editorial method]] for the full account and for what would be needed to fix it.
+</blockquote>
+
+== Attested equation numbers ==
+
+{| class="wikitable"
+! no. !! Part !! what it expresses !! modern form !! page
+|-
+| '''(9)''' || I || the equations of electric currents; the current is the curl of the magnetic force || <math>\nabla\times\mathbf{H}=4\pi\mathbf{J}</math> || [[On Physical Lines of Force/Part I/Prop. III|Prop. III]]
+|-
+| (12) || I || force per unit volume on an element of the medium, ''x'' component || five terms — see the page || [[On Physical Lines of Force/Part I/Prop. III|Prop. III]]
+|-
+| (13) || I || the same, ''y'' component || &nbsp; || [[On Physical Lines of Force/Part I/Prop. III|Prop. III]]
+|-
+| (14) || I || the same, ''z'' component || &nbsp; || [[On Physical Lines of Force/Part I/Prop. III|Prop. III]]
+|-
+| (15) || I || condition for a complete differential || cited from Part II || [[On Physical Lines of Force/Part II/Prop. V|Prop. V]]
+|-
+| (16) || I || the same || cited from Part II || [[On Physical Lines of Force/Part II/Prop. V|Prop. V]]
+|-
+| (18) || I || the condition holding at a magnetic pole || &nbsp; || [[On Physical Lines of Force/Part I/Applications|Applications]]
+|-
+| (19) || I || the condition holding everywhere else || &nbsp; || [[On Physical Lines of Force/Part I/Applications|Applications]]
+|-
+| (33) || II || the transference of particles across unit area — ''identical with (9)'' || <math>\nabla\times\mathbf{H}=4\pi\mathbf{J}</math> || [[On Physical Lines of Force/Part II/Prop. V|Prop. V]]
+|-
+| (34) || II || the superficial density of the particles, chosen to make (33) reproduce (9) || &nbsp; || [[On Physical Lines of Force/Part II/Prop. V|Prop. V]]
+|-
+| '''(46)''' || II || the energy of a vortex of volume V || <math>u=\mathbf{B}\cdot\mathbf{H}/8\pi</math> || [[On Physical Lines of Force/Part II/Prop. VI|Prop. VI]]
+|-
+| (47) || II || work expended on an element of vortex surface || &nbsp; || [[On Physical Lines of Force/Part II/Prop. VII|Prop. VII]]
+|-
+| (50) || II || whole work done on a vortex in unit time || &nbsp; || [[On Physical Lines of Force/Part II/Prop. VII|Prop. VII]]
+|-
+| '''(54)''' || II || changing magnetic field and the electromotive forces brought into play || <math>\nabla\times\mathbf{E}=-\partial\mathbf{B}/\partial t</math> || [[On Physical Lines of Force/Part II/Prop. VIII|Prop. VIII]]
+|-
+| '''(55)''' || II || the electrotonic state F, G, H || <math>\mathbf{B}=\nabla\times\mathbf{A}</math> || [[On Physical Lines of Force/Part II/Prop. VIII|Prop. VIII]]
+|-
+| '''(56)''' || II || the magnetic induction is solenoidal || <math>\nabla\cdot\mathbf{B}=0</math> || [[On Physical Lines of Force/Part II/Prop. VIII|Prop. VIII]]
+|-
+| (57) || II || from differentiating (55) and comparing with (54) || &nbsp; || [[On Physical Lines of Force/Part II/Prop. VIII|Prop. VIII]]
+|-
+| '''(58)''' || II || electromotive force in terms of the potentials || <math>\mathbf{E}=-\partial\mathbf{A}/\partial t-\nabla\varphi</math> || [[On Physical Lines of Force/Part II/Prop. VIII|Prop. VIII]]
+|-
+| '''(77)''' || II || electromotive force in a moving body || <math>\mathbf{E}=\mathbf{v}\times\mathbf{B}-\partial\mathbf{A}/\partial t-\nabla\varphi</math> || [[On Physical Lines of Force/Part II/Prop. XI|Prop. XI]]
+|-
+| (101) || III || the displacement, taken over the whole surface of a cell || &nbsp; || [[On Physical Lines of Force/Part III/Prop. XIII|Prop. XIII]]
+|-
+| '''(105)''' || III || electromotive force and electric displacement || <math>\mathbf{D}=\varepsilon\mathbf{E}</math> || [[On Physical Lines of Force/Part III/Prop. XIII|Prop. XIII]]
+|-
+| (108) || III || the value of the elastic coefficient adopted — the "perfect solid" case || &nbsp; || [[On Physical Lines of Force/Part III/Prop. XIII|Prop. XIII]]
+|-
+| '''(112)''' || III || '''the displacement current''' — the corrected equations of currents || <math>\nabla\times\mathbf{H}=\mathbf{J}+\partial\mathbf{D}/\partial t</math> || [[On Physical Lines of Force/Part III/Prop. XIV|Prop. XIV]]
+|-
+| '''(113)''' || III || the equation of continuity for free electricity || <math>\nabla\cdot\mathbf{D}=\rho</math> || [[On Physical Lines of Force/Part III/Prop. XIV|Prop. XIV]]
+|-
+| (115) || III || cited on p. 20; content not established || &nbsp; || [[On Physical Lines of Force/Part III/Prop. XV|Prop. XV]]
+|-
+| (116)–(125) || III || energy in the medium; integration by parts; Green's theorem; the inverse-square force || Coulomb's law || [[On Physical Lines of Force/Part III/Prop. XV|Prop. XV]]
+|}
+
+The eight numbers in bold are the ones a reader is most likely to want.
+
+== Established gaps ==
+
+* '''Part I before (9) and after (19).''' The numbering is not established. Part I appears to run from (1) to about (26), but that is inference from where formulae sit in the prose.
+* '''Part II between (58) and (77).''' Unresolved; contradictory readings were obtained.
+* '''Part III before (101).''' Where Part III's own numbering begins is unknown.
+* '''[[On Physical Lines of Force/Part III/Prop. XVI|Prop. XVI]] carries no printed equation numbers at all.''' This is firmly established, and it is a striking fact: the velocity-of-light calculation, the most famous passage in the paper, is set in unnumbered display.
+* '''Part IV.''' No numbered equation could be recovered, and the final equation number of the paper is unknown. Whether Part IV contains numbered Propositions is also unestablished; proposition numbering certainly reaches XVII at the end of [[On Physical Lines of Force/Part III/Prop. XVII|Part III]].
+
+== Propositions ==
+
+{| class="wikitable"
+! Prop. !! Part !! subject
+|-
+| I || I || the pressure of a vortex is independent of its size — [[On Physical Lines of Force/Part I/Prop. I|page]]
+|-
+| II || I || the stress resolved on the coordinate planes — [[On Physical Lines of Force/Part I/Prop. II|page]]
+|-
+| III || I || the force on an element of the medium — [[On Physical Lines of Force/Part I/Prop. III|page]]
+|-
+| IV || II || the motion of a layer of particles between two vortices — [[On Physical Lines of Force/Part II/Prop. IV|page]]
+|-
+| V || II || the transference of particles across unit area — [[On Physical Lines of Force/Part II/Prop. V|page]]
+|-
+| VI || II || the energy of the vortices — [[On Physical Lines of Force/Part II/Prop. VI|page]]
+|-
+| VII || II || the work done on a vortex by the particles — [[On Physical Lines of Force/Part II/Prop. VII|page]]
+|-
+| VIII || II || induction, and the electrotonic state — [[On Physical Lines of Force/Part II/Prop. VIII|page]]
+|-
+| IX || II || an element strained — [[On Physical Lines of Force/Part II/Props. IX and X|page]]
+|-
+| X || II || an element rotated — [[On Physical Lines of Force/Part II/Props. IX and X|page]]
+|-
+| XI || II || electromotive force in a moving body — [[On Physical Lines of Force/Part II/Prop. XI|page]]
+|-
+| XII || III || the equilibrium of an elastic sphere — [[On Physical Lines of Force/Part III/Prop. XII|page]]
+|-
+| XIII || III || electromotive force and displacement — [[On Physical Lines of Force/Part III/Prop. XIII|page]]
+|-
+| XIV || III || the displacement current — [[On Physical Lines of Force/Part III/Prop. XIV|page]]
+|-
+| XV || III || the force between two electrified bodies — [[On Physical Lines of Force/Part III/Prop. XV|page]]
+|-
+| XVI || III || the velocity of transverse undulations — [[On Physical Lines of Force/Part III/Prop. XVI|page]]
+|-
+| XVII || III || the capacity of a Leyden jar — [[On Physical Lines of Force/Part III/Prop. XVII|page]]
+|}
+
+Part I contains Props. I–III only. Part II contains IV–XI. Part III contains XII–XVII. Part IV's propositions, if any, are not established.
+
+----
+
+''See also: [[On Physical Lines of Force/Notation and concordance|Notation and concordance]] · [[On Physical Lines of Force/Modern derivations|Modern derivations]] · [[On Physical Lines of Force/Sources and editorial method|Sources]]''

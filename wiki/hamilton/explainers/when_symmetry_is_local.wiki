@@ -1,0 +1,134 @@
+{{DISPLAYTITLE:When symmetry is local}}
+{{Technical|Hamilton's principle/Mathematics/Noether's second theorem}}
+{{Hamilton's principle map}}
+
+This page explains Noether's second theorem, and why it is the one she wrote the
+paper for. It uses no mathematics. The technical page it goes with is named above.
+
+== The same everywhere, or different at each point ==
+
+[[File:OPL-HP-F-37.png|thumb|right|400px|Identities among field equations from a local symmetry.]]
+
+[[Hamilton's principle/Explainers/Symmetry and conservation|Symmetry and conservation]] dealt with
+symmetries you apply the same way everywhere. Shift the whole experiment a metre
+left. Turn the whole apparatus. One change, applied uniformly.
+
+Now consider a different kind. What if you could make the change '''independently
+at every point''' — a little here, a lot there, a different amount everywhere else?
+
+That is a much stronger demand. It is not one symmetry. It is a separate symmetry
+at every point in space, all at once.
+
+Physicists call this a '''local''' symmetry. Noether's second theorem is about
+what happens when a theory has one.
+
+== A different kind of answer ==
+
+You might expect a stronger symmetry to give more conserved quantities.
+
+It does not. It gives something else entirely: '''the equations of the theory stop
+being independent'''.
+
+Some of them follow automatically from the others. Not as a consequence of the
+physics, but as a matter of arithmetic — they are true before you know anything
+about the system, for any conceivable behaviour.
+
+That is a strange kind of result, and it takes some getting used to. A local
+symmetry does not tell you a quantity is preserved. It tells you that part of what
+looked like content is actually bookkeeping.
+
+== What redundancy means ==
+
+The reason is that a locally symmetric description carries '''more information than
+the physics needs'''.
+
+Several different descriptions correspond to exactly the same physical situation.
+If you can change the description at each point without changing anything real,
+then the description has spare parts.
+
+Physicists call the spare parts '''gauge freedom'''.
+
+The consequence: the equations cannot possibly determine everything, because some
+of what they would determine is not real. The evolution of the system is fixed
+only up to the freedom you built in.
+
+That sounds like a defect and is not. It is the price of a description that keeps
+the symmetry visible, and the price is usually worth paying.
+
+== Where this actually happens ==
+
+Two of the most successful theories in physics work this way.
+
+'''Electromagnetism.''' The electric and magnetic fields can be built out of a
+quantity that is not unique — you can change it in a particular way, differently
+at each point, and nothing measurable changes. Demanding that this be so is
+enough, on its own, to force electromagnetism into existence. That is the subject
+of
+[[Hamilton's principle/Explainers/Electromagnetism from an action|Electromagnetism from an action]].
+
+'''General relativity.''' You may choose whatever coordinates you like, and you may
+choose them differently in different regions. Nothing physical depends on the
+choice. That is a local symmetry with several independent parts, and it forces
+relations among Einstein's equations. That is at
+[[Hamilton's principle/Explainers/Gravity from an action|Gravity from an action]].
+
+In both cases the redundancy is not incidental. It is the organising principle from
+which the theory is built.
+
+== The question the paper answers ==
+
+Now the reason Noether wrote it.
+
+General relativity had made trouble for energy conservation. In older physics,
+energy conservation is a clear statement with a definite local meaning. In the new
+theory, the quantity that ought to be gravitational energy came out depending on
+which coordinates you chose — and coordinates are not physical.
+
+Hilbert claimed this failure was characteristic of general relativity rather than
+a defect in anyone's attempt. It was a claim without a proof, and it was argued
+over in Göttingen for two years.
+
+Noether's second theorem settles it.
+
+Her result: '''a theory's energy conservation becomes an identity rather than a
+dynamical law exactly when the theory has this kind of local symmetry.'''
+
+General relativity has one. So its energy conservation is an identity — true by
+construction, carrying no dynamical information. The various attempts to build a
+local gravitational energy fail because there is nothing there to build.
+
+Hilbert was right. And Noether's answer is more general than his claim: the
+property has nothing to do with gravity in particular. Any theory with a local
+symmetry behaves this way. Gravity is one instance.
+
+== Why the second theorem is neglected ==
+
+Almost everyone who has heard of Noether's theorem means the first one.
+
+The reason is not hard to see. The first gives physicists a tool: find a symmetry,
+get a conserved quantity. Useful, quotable, immediately applicable.
+
+The second tells them that something they might have wanted does not exist in the
+form expected. That is a harder result to use and an easier one to forget.
+
+But the two are in the same paper, stated together and proved by the same method,
+and the second is the one that answers the question she was asked. Knowing only
+"symmetry implies conservation" is knowing the corollary and not the argument.
+
+== A note on the author ==
+
+Noether was not allowed a paid position at Göttingen when she wrote this. She
+lectured under Hilbert's name, because the faculty would not appoint a woman.
+
+She was dismissed from the university in 1933 and moved to the United States,
+where she taught until her death in 1935.
+
+These facts bear on how the work travelled. A paper published from an unsalaried
+post, in a mathematics journal, by an author outside the ordinary channels, took
+decades to reach the physicists it concerned. The first English translation
+appeared in 1971, fifty-three years after publication.
+
+== Where to go next ==
+
+The volume now returns to a confusion it has flagged several times, at
+[[Hamilton's principle/Explainers/Two different actions|Two different actions]].

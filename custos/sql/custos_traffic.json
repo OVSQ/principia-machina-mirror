@@ -1,0 +1,57 @@
+[
+	{
+		"name": "custos_traffic",
+		"comment": "Each account's traffic record (TPS 5.3.35-5.3.37), the Calculator's canonical text of it as pcalc governor traffic_step answers it, with its stage for STATUS, INQUIRE and the PRE-GATE.",
+		"columns": [
+			{
+				"name": "ctr_account",
+				"comment": "The account's user name",
+				"type": "binary",
+				"options": {
+					"notnull": true,
+					"length": 255
+				}
+			},
+			{
+				"name": "ctr_record",
+				"comment": "The traffic record, the Calculator's JSON",
+				"type": "blob",
+				"options": {
+					"notnull": true,
+					"length": 65530
+				}
+			},
+			{
+				"name": "ctr_stage",
+				"comment": "The TRAFFIC STAGE, the Calculator's word",
+				"type": "binary",
+				"options": {
+					"notnull": true,
+					"length": 16
+				}
+			},
+			{
+				"name": "ctr_time",
+				"comment": "The server time the record was last stepped, whole seconds",
+				"type": "bigint",
+				"options": {
+					"unsigned": true,
+					"notnull": true,
+					"default": 0
+				}
+			}
+		],
+		"indexes": [
+			{
+				"name": "ctr_stage",
+				"columns": [
+					"ctr_stage"
+				],
+				"unique": false
+			}
+		],
+		"pk": [
+			"ctr_account"
+		]
+	}
+]

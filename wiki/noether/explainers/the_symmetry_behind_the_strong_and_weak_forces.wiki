@@ -1,0 +1,114 @@
+{{DISPLAYTITLE:The symmetry behind the strong and weak forces}}
+{{Noether's theorems map}}
+
+''Mathematical counterpart: [[Noether's theorems/Applications/Yang-Mills theory|Yang-Mills theory]].''
+
+[[File:NT-F-08.png|thumb|right|360px|alt=A shaded surface labelled the constraint surface, with three horizontal rings drawn on it labelled gauge orbits. Three marked points on one ring are annotated as the same physical state described differently. A caption says solving the theory means choosing one point per ring, which is gauge fixing.|A gauge orbit and the constraint surface]]
+
+'''A note about this page.''' Its counterpart describes rather than works its
+case, so this page does the same. What follows is the shape of the idea and what
+Noether's second theorem says about it regardless of the details.
+
+== One dial, then several ==
+
+[[Noether's theorems/Explainers/Drifting centres and electric charge|Electric
+charge]] came from a symmetry that rotates a pair of numbers into each other. One
+dial, one conserved quantity.
+
+Electromagnetism is what you get when that dial may be set differently at every
+point — the local version, from
+[[Noether's theorems/Explainers/Symmetry that can differ from place to place|the
+local symmetry page]]. One free shape, one identity among the field equations.
+
+In 1954 Yang and Mills asked the obvious next question. What if the thing being
+rotated has three components rather than two, so that there are several
+independent ways to rotate it — and, crucially, what if those rotations do not
+commute?
+
+== Why not commuting matters ==
+
+Recall the globe from
+[[Noether's theorems/Explainers/Groups of continuous motions|the Lie page]]. Turn
+it about the vertical axis, then towards you; start again and do it the other way
+round. Different results.
+
+Rotating a pair of numbers has no such feature — two rotations of a dial in either
+order give the same answer. Rotating three or more does.
+
+'''Unchecked, the following.''' When the rotations do not commute, the resulting
+theory changes character. The force-carrying field becomes charged under the very
+symmetry it belongs to — it interacts with itself, in a way the electromagnetic
+field does not. That self-interaction is why the strong force behaves so
+differently from electromagnetism at short and long range.
+
+The strong and weak nuclear forces are theories of this kind.
+
+== What the second theorem says without any of that ==
+
+Two things, and neither needs the details above.
+
+'''The count carries over unchanged.''' As many free shapes as the symmetry has,
+that many identities among the field equations, that many equations that follow
+from the others, and that much of the description carrying no physical content.
+That follows from
+[[Noether's theorems/Explainers/Counting the equations a gauge theory really has|the
+counting result]] and from nothing else. It does not depend on how many
+components are being rotated, whether they commute, or what the fields mean.
+
+'''A current coupled to such a symmetry has to be conserved.''' Not may be —
+has to. If it were not, the field equations would have no solutions at all. That
+argument was worked for electromagnetism and used only antisymmetry, so it carries
+across untouched.
+
+== The thing worth taking away ==
+
+The second theorem was proved in 1918, for a subject that then had exactly one
+example: general relativity.
+
+Thirty-six years later, people invented a family of theories nobody in 1918 had
+imagined, describing forces nobody in 1918 knew existed, and the theorem already
+described their structure. Not approximately. The counting is exact, and no part
+of it had to be adjusted.
+
+'''That is not how mathematics usually relates to physics.''' Most of the
+mathematics physicists use was developed for the problem in hand, or adapted
+afterwards. This was proved for one case, generalised because Noether generalised
+by habit, and turned out to have been about the future.
+
+== What this page will not tell you ==
+
+Which currents any particular force has, or how many free shapes each one carries.
+None of that has been derived in this volume, and the counterpart page declines to
+state it as fact for the same reason.
+
+== The theorem as a design tool ==
+
+There is a habit of thought in modern physics that the second theorem makes
+possible, and it is worth naming because it inverts the usual order.
+
+The old way: write down equations describing what you think happens, then examine
+them and see what symmetries they turn out to have.
+
+The way that replaced it: choose the symmetry first. Decide what may be dialled
+freely at every point. Then ask what theories are consistent with that choice, and
+the answer is usually a very short list — sometimes a single theory, up to a few
+numbers that experiment must supply.
+
+'''The symmetry is the input and the theory is the output.'''
+
+This works because the second theorem makes the consequences of a symmetry choice
+exact rather than approximate. Pick the symmetry and you have already fixed how
+many redundancies the theory has, how many of its equations are independent, and
+what must be conserved by anything it couples to. There is very little freedom
+left over.
+
+The strong and weak forces were both found this way. So, arguably, was general
+relativity, which is what you get from demanding that the laws not care how you
+label the points of spacetime.
+
+None of that was Noether's purpose. She was answering a question about energy in
+one theory. But the reason the method works is her theorem, and the method is now
+close to being how fundamental physics is done.
+
+''No mathematics is used on this page. The mathematical treatment is on the
+counterpart page named above.''

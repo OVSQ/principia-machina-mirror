@@ -1,0 +1,72 @@
+{{DISPLAYTITLE:What came after}}
+{{On Physical Lines of Force map}}
+''[[On Physical Lines of Force]] → [[On Physical Lines of Force/Explainers|Explainers]] → What came after''
+
+<blockquote>
+'''In one sentence.''' The machine was dismantled within three years, the notation was replaced within thirty, and the two central results are still in use.
+</blockquote>
+
+A paper can matter in more than one way. It can be right. It can be influential. It can change what the people who read it think a physical explanation ought to look like. "On Physical Lines of Force" did the third of these more thoroughly than the first, and the results it happened to be right about were not the ones its author set out to establish.
+
+[[File:OPL-fig-timeline.svg|thumb|center|620px|From 1861 to the Treatise]]
+
+== Three publications, twelve years ==
+
+=== 1861 to 1862 — On Physical Lines of Force ===
+
+Four instalments in the ''Philosophical Magazine''. Space is filled with spinning cells; electricity is the layer of particles rolling between them. Out of that picture come the displacement current, in Part III, and the calculation that identifies light as a wave in the same medium that carries magnetism, a few pages later. Part IV then argues from Faraday's magnetic twisting of light that magnetism is genuinely a matter of rotation.
+
+=== 1864 to 1865 — A Dynamical Theory of the Electromagnetic Field ===
+
+Read to the Royal Society on 8 December 1864, published in the ''Philosophical Transactions'' in 1865. The cells are gone. The rolling particles are gone. What is left is a set of equations for a field, justified by general reasoning about how mechanical systems behave rather than by any picture of what the field is made of.
+
+This is the paper in which the modern shape of the theory appears. The field stops being a way of talking about a hidden machine and becomes the thing itself: a condition of space, with its own energy, obeying its own laws.
+
+=== 1873 — A Treatise on Electricity and Magnetism ===
+
+The two-volume book that carried the subject to the next generation. The vortices have not disappeared from it: Maxwell is still discussing a vortex theory in Part IV, Chapter XXI. But Article 831 puts a plain label on it.
+
+<blockquote>
+The theory proposed in the preceding pages is evidently of a provisional kind, resting as it does on unproved hypotheses relating to the nature of molecular vortices, and the mode in which they are affected by the displacement of the medium.
+</blockquote>
+
+== The equations changed shape ==
+
+Maxwell wrote before vector notation existed. Every relation in the 1861 paper is written out three times, once for each direction in space, because there was no way to write it once. A modern reader meeting a page of the paper for the first time usually finds the sheer number of symbols more discouraging than the physics.
+
+Heaviside and Gibbs produced vector notation in the 1880s. Written in it, the relations Maxwell set out one coordinate at a time compress into the handful of lines that appear in textbooks today, and the pattern in them becomes visible in a way it simply was not before. The [[On Physical Lines of Force/Notation and concordance|notation concordance]] gives the correspondence symbol by symbol, and [[On Physical Lines of Force/Modern derivations/From components to vectors|from components to vectors]] shows the translation being made.
+
+[[File:OPL-fig-notation-map.svg|thumb|center|620px|Maxwell's symbols and their modern counterparts]]
+
+This matters for reading the paper honestly. The compact modern equations were not what Maxwell wrote, and the tidiness of the modern form can make his argument look either more obvious or more mysterious than it was. He was doing something harder than the textbook version suggests, with worse tools.
+
+== What is still standing ==
+
+Two results from the 1861–62 paper survived every subsequent change of framework.
+
+* '''The displacement current.''' A changing electric displacement in an insulating material acts like a current and belongs in the equations of currents. Maxwell reached this by asking what his elastic cells would do. The conclusion turned out not to need the cells.
+* '''Light as an electromagnetic phenomenon.''' Two invisible media had been assumed, one for light and one for electric and magnetic action. Maxwell's calculation gave them the same stiffness and he proposed they were one medium. The medium was later given up; the identification of light with electromagnetic waves was not.
+
+Alongside these sits something harder to point at but larger than either: the idea of a '''field'''. Before Maxwell, forces acted between bodies, and the space between them was empty and inert. After him, the space between them holds the action, carries the energy, and takes time to pass it along. Every part of physics that came afterwards inherited that.
+
+== How to read the paper now ==
+
+Not as a textbook. The mechanism is false and cannot be repaired, and no part of it should be learned as physics.
+
+Read it instead as a record of how a hard problem was actually broken open. It shows a physicist reasoning by analogy on purpose, keeping careful track of which parts of his analogy are argued and which are borrowed, and getting further with a wrong picture than his contemporaries were getting with none. That is a method, and it is teachable. The [[On Physical Lines of Force/Explainers/A wrong model that produced right answers|model and equations]] explainer takes up what it does and does not license.
+
+It is also worth reading as history that is still being reconsidered. The standard account — build a mechanism, take the results, disown the mechanism — was challenged by the historian Bruce J. Hunt in 2015, who argued that Maxwell's misgivings were aimed at the rolling particles rather than the vortices, and that his change of approach after 1863 owed as much to his work on electrical standards for the British Association as to any loss of confidence in mechanical explanation.
+
+This edition follows the paper to 1873 and no further. Its [[On Physical Lines of Force/Chronology|chronology]] runs from 1820 to the Treatise, and what happened to Maxwell's theory after his death is outside its scope.
+
+== Where this is in the paper ==
+
+* [[On Physical Lines of Force/Part IV/What became of the vortices|Part IV — What became of the vortices]]
+* [[On Physical Lines of Force/Introduction|Introduction]] — the story and why the paper matters
+* [[On Physical Lines of Force/Chronology|Chronology, 1820–1873]]
+* [[On Physical Lines of Force/Modern derivations|From 1861 to today]] — the modern derivations
+* [[On Physical Lines of Force/Sources and editorial method|Sources and editorial method]]
+
+----
+
+''Next: [[On Physical Lines of Force]] · Previous: [[On Physical Lines of Force/Explainers/A wrong model that produced right answers|A wrong model that produced right answers]]''

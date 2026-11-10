@@ -1,0 +1,116 @@
+{{DISPLAYTITLE:The Lean kernel}}
+{{Plebeian|Lean theorem prover/Explainers/The small trusted core|Lean theorem prover/Explainers/What a proof assistant does}}
+{{Lean theorem prover map}}
+
+The '''Lean kernel''' is the type checker that decides whether a definition, theorem, axiom or inductive type may enter Lean's environment, its table of definitions and theorems. Everything else in Lean, from the parser to the most elaborate tactic, produces candidates; the Lean kernel accepts or refuses them. This page describes what it checks, what it never sees, how it is written, and where its trust ends, for Lean 4.34.1.
+
+== What reaches it ==
+
+The Lean kernel receives fully explicit terms of one data type, <code>Expr</code>. With <code>import Lean</code>, <code>#print Lean.Expr</code> lists its twelve constructors:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+import Lean
+#print Lean.Expr
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+inductive Lean.Expr : Type
+number of parameters: 0
+constructors:
+Lean.Expr.bvar : Nat → Lean.Expr
+Lean.Expr.fvar : Lean.FVarId → Lean.Expr
+Lean.Expr.mvar : Lean.MVarId → Lean.Expr
+Lean.Expr.sort : Lean.Level → Lean.Expr
+Lean.Expr.const : Lean.Name → List Lean.Level → Lean.Expr
+Lean.Expr.app : Lean.Expr → Lean.Expr → Lean.Expr
+Lean.Expr.lam : Lean.Name → Lean.Expr → Lean.Expr → Lean.BinderInfo → Lean.Expr
+Lean.Expr.forallE : Lean.Name → Lean.Expr → Lean.Expr → Lean.BinderInfo → Lean.Expr
+Lean.Expr.letE : Lean.Name → Lean.Expr → Lean.Expr → Lean.Expr → Bool → Lean.Expr
+Lean.Expr.lit : Lean.Literal → Lean.Expr
+Lean.Expr.mdata : Lean.MData → Lean.Expr → Lean.Expr
+Lean.Expr.proj : Lean.Name → Nat → Lean.Expr → Lean.Expr
+</pre>
+
+These are bound variables, free variables, metavariables, sorts, constants with universe levels, applications, functions, dependent function types, local definitions, numeric and string literals, annotations, and structure projections. The type theory they encode is described in [[Lean theorem prover/Foundations/Terms, types and judgments|terms, types and judgments]]. A term handed to the Lean kernel for addition may contain neither metavariables nor free variables: the elaborator must have solved every hole and closed every term.<ref name="src-env-cpp">Lean 4 source code, version 4.34.1 (2026), file <code>src/kernel/environment.cpp</code>: the functions <code>add_axiom</code>, <code>add_definition</code>, <code>add_theorem</code>, <code>add_opaque</code>, <code>add_mutual</code> and <code>check_constant_val</code>. Apache License 2.0. https://github.com/leanprover/lean4/blob/v4.34.1/src/kernel/environment.cpp</ref>
+
+The requests themselves form a second data type, <code>Lean.Declaration</code>, with seven constructors: an axiom, a definition, a theorem, an opaque constant, a block of mutually recursive definitions, the quotient primitives, and a block of inductive types. What the table stores, <code>Lean.ConstantInfo</code>, has eight: the same kinds, minus the mutual block, plus the constructors and recursors that the Lean kernel itself generates for each inductive type. Both are printed by <code>#print</code> in the same way as <code>Expr</code> above.
+
+== What it checks ==
+
+For every constant, whatever its kind, the Lean kernel checks that the name is not already taken, that no universe parameter is listed twice, that the stated type contains no metavariables or free variables, and that the type is itself well typed with a sort as its type.<ref name="src-env-cpp" /> Then it checks by kind.
+
+'''An axiom''' is accepted once its type passes. Nothing else is checked, which is why axioms are listed by <code>#print axioms</code> and why the edition treats them on their own page, [[Lean theorem prover/Foundations/The three axioms|the three axioms]].
+
+'''A definition, a theorem or an opaque constant''' has a value. The Lean kernel infers the value's type and asks whether it is definitionally equal to the stated type. For a theorem it also checks that the stated type is a proposition.<ref name="src-env-cpp" /> In the notation of the foundations pages, a definition <math>c : T := v</math> is accepted when
+
+<math>\frac{\vdash T : \mathrm{Sort}\ u \qquad \vdash v : T' \qquad T' \equiv T}{c : T := v\ \ \mathrm{accepted}}</math>
+
+where <math>\equiv</math> is definitional equality, the subject of [[Lean theorem prover/Foundations/Definitional equality|definitional equality]]. Much of the Lean kernel's work is in that last premise. Its implementation in 4.34.1 tries, in order: quick structural checks; full evaluation when the second term is the Boolean <code>true</code> and the first has no free variables, a path its source comment ties to the <code>decide</code> tactic; reduction to weak head normal form; proof irrelevance; lazy unfolding of definitions, the side with the greater definitional height first; then comparison of arguments, eta for functions, eta for structures, string literals and unit-like types.<ref name="src-tc">Lean 4 source code, version 4.34.1 (2026), file <code>src/kernel/type_checker.cpp</code>: the functions <code>is_def_eq_core</code>, <code>lazy_delta_reduction_step</code> and <code>reduce_nat</code>; with the function <code>compare</code> in <code>src/kernel/declaration.cpp</code>, which orders unfolding by definitional height. Apache License 2.0. https://github.com/leanprover/lean4/blob/v4.34.1/src/kernel/type_checker.cpp</ref>
+
+A block of mutually recursive definitions is accepted only when it is marked <code>partial</code> or <code>unsafe</code>.<ref name="src-env-cpp" /> Ordinary recursive functions reach the Lean kernel already compiled into recursors, as [[Lean theorem prover/Foundations/Structural and well-founded recursion|structural and well-founded recursion]] explains, so the Lean kernel has no termination checker to trust.<ref name="manual-elab">Lean Developers, ''The Lean Language Reference'', version 4.34.0, chapter "Elaboration and Compilation". https://lean-lang.org/doc/reference/4.34.0/Elaboration-and-Compilation/</ref>
+
+'''An inductive type''' is checked hardest, because its constructors and its recursor become axiom-like rules. For each constructor the Lean kernel checks that its type is well typed, that its parameters match the type's parameters, that each field lives in a universe no larger than the type's own (unless the type is a proposition), that the type being defined occurs only strictly positively, and that the constructor returns the type being defined. It then generates the recursor and its computation rules.<ref name="src-ind">Lean 4 source code, version 4.34.1 (2026), file <code>src/kernel/inductive.cpp</code>: the functions <code>check_constructors</code> and <code>check_positivity</code>. Apache License 2.0. https://github.com/leanprover/lean4/blob/v4.34.1/src/kernel/inductive.cpp</ref> [[Lean theorem prover/Foundations/Inductive types and recursors|Inductive types and recursors]] gives the rules; here is the positivity check refusing a type that would make the logic inconsistent:
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+inductive Bad where
+  | mk : (Bad → Nat) → Bad
+</pre>
+
+Lean's error, marked <code>(kernel)</code>, says that the first argument of <code>'Bad.mk'</code> has a non positive occurrence of the datatypes being declared.
+
+The prefix <code>(kernel)</code> marks a message that comes from the Lean kernel and not from the elaborator.<ref name="src-message">Lean 4 source code, version 4.34.1 (2026), file <code>src/Lean/Message.lean</code>: the messages for <code>Kernel.Exception</code>. Apache License 2.0. https://github.com/leanprover/lean4/blob/v4.34.1/src/Lean/Message.lean</ref> Some checks are made twice. A constructor field in too large a universe, such as <code>mk : Type → Big</code> for <code>Big : Type</code>, is caught first by the elaborator, which gives a fuller message; the Lean kernel would refuse it too.<ref name="src-ind" />
+
+== What it does not see ==
+
+The Lean kernel sees no syntax, no notation, no macro, no tactic, no instance search and no coercion. It performs no unification and no termination checking.<ref name="manual-elab" /> A proof written with fifty tactic steps and the same proof written as a term reach it as the same kind of object, an <code>Expr</code>, and it cannot tell how either was found. This is the point of the design: the elaborator ([[Lean theorem prover/System/Elaboration|elaboration]]) and the tactic framework may be as clever, as large and as buggy as they like, because what they produce is checked again.
+
+The arrangement can be tested by going around the elaborator. The following metaprogram hands the Lean kernel a theorem whose stated type is <code>False</code> and whose proof is <code>True.intro</code>:
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+import Lean
+open Lean Elab Command
+
+#eval show CommandElabM Unit from do
+  let decl := Declaration.thmDecl {
+    name := `bogus, levelParams := [], type := mkConst ``False,
+    value := mkConst ``True.intro }
+  liftCoreM (addDecl decl)
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+error: (kernel) declaration type mismatch, 'bogus' has type
+  True
+but it is expected to have type
+  False
+</pre>
+
+== Computation inside the check ==
+
+Deciding definitional equality means running programs, so the Lean kernel contains an evaluator. Pure unfolding would make arithmetic on numerals hopeless, since <code>Nat</code> is unary in its definition. The Lean kernel therefore computes <code>Nat.add</code>, <code>Nat.sub</code>, <code>Nat.mul</code>, <code>Nat.div</code>, <code>Nat.mod</code>, <code>Nat.gcd</code>, <code>Nat.pow</code>, <code>Nat.beq</code>, <code>Nat.ble</code>, the bitwise operations and the shifts directly on literals, with the arbitrary-precision numbers of Lean's runtime.<ref name="src-tc" /> Their size is capped all the same: the Lean kernel refuses a natural-number literal, whether written in the source or produced by this arithmetic, that takes more than 128 MB, a default that the operating-system variable <code>LEAN_NAT_MAX_SIZE</code> can change.<ref name="src-natmax">Lean 4 source code, version 4.34.1 (2026), file <code>src/kernel/type_checker.cpp</code>: the constant <code>LEAN_NAT_MAX_SIZE_DEFAULT</code> (128 × 1024 × 1024 bytes), the functions <code>check_nat_size</code>, <code>infer_lit</code>, <code>reduce_nat</code> and <code>initialize_type_checker</code>. Apache License 2.0. https://github.com/leanprover/lean4/blob/v4.34.1/src/kernel/type_checker.cpp</ref>
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem big : 2 ^ 64 * 2 ^ 64 = 2 ^ 128 := rfl
+#print axioms big
+</pre>
+
+This prints <code>'big' does not depend on any axioms</code>. The cost is that this arithmetic, and the runtime code behind it, is part of what must be trusted.
+
+== Its implementation ==
+
+The reference manual states that the Lean kernel is written in C++, and that independent reimplementations exist in Rust and in Lean, the aim being to have as many implementations as possible so that they can be cross-checked against each other.<ref name="manual-elab" /> In version 4.34.1 the directory <code>src/kernel</code> of the Lean source holds 36 C++ source and header files totalling 8,071 lines, blank lines and comments included; this count was made for this page by running <code>wc -l</code> over those files as they stand at that version.<ref name="src-kernel-dir">Lean 4 source code, version 4.34.1 (2026), directory <code>src/kernel</code> (36 files <code>*.cpp</code> and <code>*.h</code>, plus <code>CMakeLists.txt</code>). Apache License 2.0. https://github.com/leanprover/lean4/tree/v4.34.1/src/kernel</ref> The count is a lower bound on what is trusted, not a measure of it: those files include headers from Lean's runtime and utility libraries, for numbers, names and memory management, which the count leaves out. The largest files are the type checker (1,373 lines) and the checker for inductive types (1,417 lines). The paper that introduced Lean 4 describes the Lean kernel as relatively small.<ref name="lean4-paper">Leonardo de Moura and Sebastian Ullrich, "The Lean 4 Theorem Prover and Programming Language (System Description)", in ''Automated Deduction – CADE 28'', Lecture Notes in Computer Science 12699, Springer, 2021, pp. 625–635. doi:10.1007/978-3-030-79876-5_37</ref>
+
+== Lean's environment ==
+
+Lean's environment, its table of definitions and theorems, is the Lean kernel's state. In 4.34.1 the Lean structure <code>Lean.Kernel.Environment</code> maps each constant's name to its <code>ConstantInfo</code>, and its documentation says that this table contains every constant that has already been type checked by the Lean kernel, that it is never destructively updated, and that its constructor is private to protect against changes that bypass the Lean kernel.<ref name="src-env-lean">Lean 4 source code, version 4.34.1 (2026), file <code>src/Lean/Environment.lean</code>: the structure <code>Lean.Kernel.Environment</code>, the option <code>debug.skipKernelTC</code> and the function <code>addDeclWithoutChecking</code>. Apache License 2.0. https://github.com/leanprover/lean4/blob/v4.34.1/src/Lean/Environment.lean</ref> The same structure carries '''extensions''', further tables for data the Lean kernel ignores, such as simp lemmas, custom pretty printers and the compiler's intermediate code.<ref name="src-env-lean" /><ref name="manual-elab" /> Adding a constant returns a new table; nothing already accepted is changed.
+
+== Where the trust ends ==
+
+The checked table is only as good as the path into it. Lean 4.34.1 has an option, <code>debug.skipKernelTC</code>, whose own description warns that setting it "may compromise soundness" because proofs are then not checked by the Lean kernel, and a matching function, <code>addDeclWithoutChecking</code>.<ref name="src-env-lean" /> A Lean source file can also run arbitrary code while it is processed. The reference manual's guidance on validating proofs therefore recommends replaying the compiled files through the Lean kernel with a separate checker, and, for adversarial settings, building the proofs in a sandbox, exporting them and replaying them with the Lean kernel or an independent checker.<ref name="manual-validating">Lean Developers, ''The Lean Language Reference'', version 4.34.0, "Validating a Lean Proof". https://lean-lang.org/doc/reference/4.34.0/ValidatingProofs/</ref> [[Lean theorem prover/System/Proof export and independent checkers|Proof export and independent checkers]] takes this up. The soundness of the type theory itself, which no checker can establish from inside, is the subject of [[Lean theorem prover/Foundations/Consistency and the metatheory|consistency and the metatheory]].
+
+== Next ==
+
+[[Lean theorem prover/System/Metavariables and unification|Metavariables and unification]] describes the holes the elaborator must fill before a term may reach the Lean kernel.
+
+== References ==
+
+<references />

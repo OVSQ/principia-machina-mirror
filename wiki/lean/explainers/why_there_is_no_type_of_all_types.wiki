@@ -1,0 +1,145 @@
+{{DISPLAYTITLE:Why there is no type of all types}}
+{{Technical|Lean theorem prover/Foundations/Universes and Prop}}
+{{Lean theorem prover map}}
+
+In Lean every value has a type, and types are values too, so every type has a
+type. It would seem simplest to have one type, called "Type", that contains every
+type, itself included. Lean does not have one, and cannot safely have one. This
+page explains why. The reason is an old one: a collection that is allowed to
+contain itself can produce a contradiction, and a system with a contradiction in
+it can prove anything.
+
+== Russell's paradox ==
+
+Early set theory worked with a principle that sounds harmless: any clearly stated
+property picks out a set, the set of all things having that
+property.<ref name="sep-russell">Harry Deutsch, Oliver Marshall and Andrew David Irvine, "Russell's paradox", ''The Stanford Encyclopedia of Philosophy'', substantive revision of 13 March 2026. [https://plato.stanford.edu/entries/russell-paradox/ plato.stanford.edu/entries/russell-paradox/] (accessed 13 October 2026).</ref>
+
+Take the property "is a set that is not a member of itself". Most sets have it:
+the set of all teacups is not a teacup. Call the set of all such sets ''R'', and
+ask whether ''R'' is a member of itself. If it is, then it fails the property that
+defines ''R'', so it is not. If it is not, then it has the property, so it is.
+Either answer contradicts itself.<ref name="sep-russell" />
+
+Bertrand Russell found this around 1901. On 16 June 1902 he wrote to Gottlob
+Frege, whose ''Basic Laws of Arithmetic'' rested on a principle of this kind; its
+second volume was then in press.<ref name="sep-russell" />
+
+The trouble with a contradiction is not that one statement is wrong. In ordinary
+logic, a contradiction lets one prove every statement whatever. A proof checker
+built on a contradictory system would accept a proof of anything, and its "checked"
+would mean nothing.<ref name="ref-axioms">The Lean Developers, "Axioms", ''The Lean Language Reference'', for Lean 4.35.0, section 8.2, "Consistency". [https://lean-lang.org/doc/reference/4.35.0/Axioms/ lean-lang.org/doc/reference/4.35.0/Axioms/] (accessed 13 October 2026).</ref>
+
+== Russell's answer: levels ==
+
+Russell's remedy was to sort things into levels, or '''types'''. Individual
+things are at the bottom; collections of individuals one level up; collections of
+those collections above that; and so on. A condition may speak only about things
+at one level, so "the set of all sets that are not members of themselves" can no
+longer be formed at all.<ref name="sep-russell" />
+
+He set out a simple version of the idea in 1903 and a more elaborate one, the
+'''ramified''' theory, in a paper of 1908, "Mathematical logic as based on the
+theory of types".<ref name="sep-russell" /><ref name="russell1908">Bertrand Russell, "Mathematical logic as based on the theory of types", ''American Journal of Mathematics'' 30 (3), 1908, pp. 222–262. [https://doi.org/10.2307/2369948 doi:10.2307/2369948]</ref> Behind it was a
+diagnosis that Henri Poincaré and Russell shared: the paradoxes came from
+"vicious circles", definitions that quantify over a collection containing the very
+thing being defined.<ref name="tpil-qe">Jeremy Avigad, Leonardo de Moura, Soonho Kong and Sebastian Ullrich, with contributions from the Lean Community, ''Theorem Proving in Lean 4'', chapter 4, "Quantifiers and Equality", section 4.1, online book for Lean 4.33.0. [https://lean-lang.org/theorem_proving_in_lean4/Quantifiers-and-Equality/ lean-lang.org/theorem_proving_in_lean4/Quantifiers-and-Equality/] (accessed 13 October 2026).</ref>
+
+== Principia Mathematica ==
+
+Russell then built the theory of types into a large work written with Alfred North
+Whitehead, '''''Principia Mathematica''''', published in three volumes in 1910,
+1912 and 1913. Its aim was to show that mathematics is, in a substantial sense,
+reducible to logic. It did much to create modern mathematical logic, and it is famous among
+other things for the length of the road it takes to prove that 1 + 1 = 2, a result
+it reaches only in its second volume.<ref name="sep-pm">Bernard Linsky and Andrew David Irvine, "Principia Mathematica", ''The Stanford Encyclopedia of Philosophy'', substantive revision of 10 March 2026. [https://plato.stanford.edu/entries/principia-mathematica/ plato.stanford.edu/entries/principia-mathematica/] (accessed 13 October 2026).</ref>
+
+The name of this wiki's project, Principia Machina, echoes that title. The echo
+is in the name. The logic Lean checks is a much later system, a Calculus of
+Inductive Constructions,<ref name="lean4-cade">Leonardo de Moura and Sebastian Ullrich, "The Lean 4 theorem prover and programming language", in ''Automated Deduction – CADE 28'', Lecture Notes in Computer Science 12699, Springer, 2021, pp. 625–635. [https://doi.org/10.1007/978-3-030-79876-5_37 doi:10.1007/978-3-030-79876-5_37]</ref> and not the system of
+''Principia''. But the problem that Russell's types were built to solve comes back
+in it, in a new form.
+
+== Girard's paradox ==
+
+In a type theory such as Lean's, types are values, and every value has a type. So
+types need a type. The tidy answer is a single type of all types, which would then
+have to be a member of itself.
+
+Per Martin-Löf's first version of his type theory, from the early 1970s, took
+exactly this step. Jean-Yves Girard showed in 1972 that the result is
+inconsistent: in it, every statement can be proved.<ref name="sep-itt">Peter Dybjer and Erik Palmgren, "Intuitionistic type theory", ''The Stanford Encyclopedia of Philosophy'', substantive revision of 23 September 2024, sections 3.6 and 7.4. [https://plato.stanford.edu/entries/type-theory-intuitionistic/ plato.stanford.edu/entries/type-theory-intuitionistic/] (accessed 13 October 2026).</ref><ref name="sep-tt">Thierry Coquand, "Type theory", ''The Stanford Encyclopedia of Philosophy'', substantive revision of 6 September 2022, section 6. [https://plato.stanford.edu/entries/type-theory/ plato.stanford.edu/entries/type-theory/] (accessed 13 October 2026).</ref>
+He did so by encoding an old paradox about the collection of all ordinal numbers,
+the Burali-Forti paradox. The argument is subtle and indirect, and others later
+refined it.<ref name="sep-tt" />
+
+Martin-Löf answered in 1972 with a '''universe''': a type that contains many other
+types but not itself.<ref name="sep-itt" />
+
+== Lean's ladder of universes ==
+
+Lean follows the same plan, with no top step. Every type lives in a universe, and
+the universes form a ladder without end. The universe of ordinary types, written
+<code>Type</code>, is itself a value of the next universe up, <code>Type 1</code>;
+that one belongs to <code>Type 2</code>; and so on.<ref name="tpil-dtt">Jeremy Avigad, Leonardo de Moura, Soonho Kong and Sebastian Ullrich, ''Theorem Proving in Lean 4'', chapter 2, "Dependent Type Theory", section 2.2, "Types as objects". [https://lean-lang.org/theorem_proving_in_lean4/Dependent-Type-Theory/ lean-lang.org/theorem_proving_in_lean4/Dependent-Type-Theory/] (accessed 13 October 2026).</ref><ref name="ref-universes">The Lean Developers, "Universes", ''The Lean Language Reference'', for Lean 4.35.0, section 4.3. [https://lean-lang.org/doc/reference/4.35.0/The-Type-System/Universes/ lean-lang.org/doc/reference/4.35.0/The-Type-System/Universes/] (accessed 13 October 2026).</ref>
+Lean will show the ladder when asked:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+#check Prop
+#check Type
+#check Type 1
+</pre>
+
+Lean 4.34.1 answers <code>Prop : Type</code>, <code>Type : Type 1</code> and
+<code>Type 1 : Type 2</code>. Asking it to accept <code>Type</code> as a member of
+itself fails:
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+example : Type := Type
+</pre>
+
+The error begins "Type mismatch" and explains that <code>Type</code> has type
+<code>Type 1</code>, not <code>Type</code>.
+
+A type of functions between two types sits at the level of the higher of
+the two.<ref name="ref-universes" /> So a type can speak about all the types on lower
+steps of the ladder, but never about all the types on its own step. This is
+Russell's idea of levels, returned in a modern form.
+
+In practice this is seldom a burden. A definition such as "list of things" can be
+written once and used at every level, because Lean lets a definition take the level
+as a parameter.<ref name="tpil-dtt" />
+
+== The special place of Prop ==
+
+Below <code>Type</code>, at the foot of the ladder, is <code>Prop</code>, the
+universe of propositions. It has a privilege the other universes lack. A
+proposition may speak about all propositions, and about types on any step of the
+ladder, and still be a proposition.<ref name="ref-universes" /><ref name="ref-props">The Lean Developers, "Propositions", ''The Lean Language Reference'', for Lean 4.35.0, section 4.2. [https://lean-lang.org/doc/reference/4.35.0/The-Type-System/Propositions/ lean-lang.org/doc/reference/4.35.0/The-Type-System/Propositions/] (accessed 13 October 2026).</ref>
+For example, "for every proposition, any two proofs of it are equal" is itself a
+proposition, although it speaks about every proposition including
+itself.<ref name="ref-universes" />
+
+This is the kind of circularity that Russell's ramified theory was built to
+rule out.<ref name="tpil-qe" /><ref name="sep-tt" /> Logicians call it
+'''impredicative'''. Lean allows it in <code>Prop</code>, which holds statements
+rather than data. Lean treats any two proofs of the same proposition as
+interchangeable, and it strictly limits what can be taken out of a proof and used
+as data.<ref name="ref-props" /> Thierry
+Coquand and Gérard Huet showed with their Calculus of Constructions that a type
+theory with an impredicative universe of propositions of this kind can be free of
+contradiction.<ref name="sep-itt" /> Lean's logic belongs to that
+family.<ref name="lean4-cade" />
+
+The result is a division of labour. Statements live in <code>Prop</code> and may
+quantify freely, as mathematicians are used to doing. Data lives on the ladder
+above, where each level can quantify only over the levels below it.
+
+== Next ==
+
+* [[Lean theorem prover/Explainers/What the axioms are|What the axioms are]]: the three statements Lean assumes without proof.
+* [[Lean theorem prover/Explainers/What has to be trusted|What has to be trusted]]: what one relies on when Lean says yes.
+
+== References ==
+
+<references />

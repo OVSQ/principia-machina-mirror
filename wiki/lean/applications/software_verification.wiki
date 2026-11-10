@@ -1,0 +1,81 @@
+{{DISPLAYTITLE:Software verification}}
+{{Lean theorem prover map}}
+Because Lean is a programming language as well as a proof checker, the same file can hold a program, a precise statement of what the program should do, and a proof that it does it. This page describes three industrial uses of Lean for software: Amazon's Cedar policy language, Amazon's SampCert library for differential privacy, and Microsoft's verified cryptography in SymCrypt. For each it says what "verified" covers and what it does not, since the word means something different in each case.
+
+== Specify, then prove ==
+
+To verify a program is to prove that it meets a '''specification''', a precise statement of its intended behaviour. In Lean both the program and the specification are written as Lean definitions, and the claim that one meets the other is a theorem. The proof says nothing about any other program, and nothing about properties the specification leaves out. Two questions therefore come with every claim of verified software: which code was the proof about, and what does the specification say?
+
+== Cedar ==
+
+Cedar is a language for writing authorisation policies, developed at Amazon Web Services: rules that say which users may take which actions on which resources.<ref name="oopsla">Joseph W. Cutler, Craig Disselkoen, Aaron Eline, et al., "Cedar: A New Language for Expressive, Fast, Safe, and Analyzable Authorization", ''Proceedings of the ACM on Programming Languages'' 8 (OOPSLA1), 2024, pp. 670–697. doi:10.1145/3649835</ref> Its developers wrote executable models of Cedar's evaluator, authoriser and validator in Lean, and these models serve as Cedar's specification. They proved properties of the models, among them that a satisfied <code>forbid</code> policy always leads to a denial, that a request is denied when no <code>permit</code> policy is satisfied, that the order of the policies does not matter, that a policy accepted by the validator never produces a type error, and that every function terminates.<ref name="vgd">Craig Disselkoen, Aaron Eline, Shaobo He, et al., "How We Built Cedar: A Verification-Guided Approach", in ''Companion Proceedings of the 32nd ACM International Conference on the Foundations of Software Engineering (FSE Companion '24)'', 2024. doi:10.1145/3663529.3663854. arXiv:2407.01688</ref>
+
+The shape of such a proof can be shown in a few lines. The block below is a toy authoriser in the same style, not Cedar's model: a request is allowed when some permit policy applies and no forbid policy does, and the theorem proves the first of the properties above for every list of policies and every request.
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+inductive Effect where
+  | permit
+  | forbid
+  deriving DecidableEq
+
+/-- A policy: its effect, and the requests it applies to. -/
+structure Policy (Req : Type) where
+  effect  : Effect
+  applies : Req → Bool
+
+inductive Decision where
+  | allow
+  | deny
+  deriving DecidableEq, Repr
+
+def satisfied {Req : Type} (e : Effect) (ps : List (Policy Req)) (r : Req) :
+    List (Policy Req) :=
+  ps.filter (fun p => p.effect == e &amp;&amp; p.applies r)
+
+/-- Allow when some permit policy applies and no forbid policy does. -/
+def isAuthorized {Req : Type} (ps : List (Policy Req)) (r : Req) : Decision :=
+  if (satisfied .forbid ps r).isEmpty &amp;&amp; !(satisfied .permit ps r).isEmpty
+  then .allow else .deny
+
+/-- If any forbid policy applies, the request is denied. -/
+theorem forbid_trumps_permit {Req : Type} (ps : List (Policy Req)) (r : Req)
+    (p : Policy Req) (hp : p ∈ ps) (hf : p.effect = .forbid) (ha : p.applies r = true) :
+    isAuthorized ps r = .deny := by
+  have hmem : p ∈ satisfied .forbid ps r := by
+    simp [satisfied, hp, hf, ha]
+  have hne : (satisfied .forbid ps r).isEmpty = false := by
+    cases h : satisfied .forbid ps r with
+    | nil => simp [h] at hmem
+    | cons _ _ => rfl
+  simp [isAuthorized, hne]
+
+#print axioms forbid_trumps_permit
+</pre>
+
+Lean 4.34.1 accepts the proof and prints <code>'forbid_trumps_permit' depends on axioms: [propext]</code>, one of Lean's three standard axioms, which the simplifier used.
+
+'''What is verified, and what is not.''' The proofs are about the Lean models. The code that runs in production is written separately, in Rust, for speed and for useful error messages among other reasons, and it is not proved correct. It is checked against the Lean model by '''differential random testing''': large numbers of generated inputs are given to both, and any difference in output is a bug in one of them. Parts of the Rust code that the model does not cover, such as the parser, are tested for properties instead.<ref name="vgd" /> The team reported running millions of such tests every night, and releasing a new version of Cedar only when the models, the proofs and the tests are all up to date.<ref name="awsblog">Kesha Hietala and Emina Torlak, "Lean Into Verified Software Development", AWS Open Source Blog, 8 April 2024. https://aws.amazon.com/blogs/opensource/lean-into-verified-software-development/</ref> The proofs found four bugs in the validator; the testing found 21 more in various parts of Cedar.<ref name="vgd" /> The Lean models, 1,673 lines in all, are about an order of magnitude smaller than their Rust counterparts; the proofs about them run to 5,714 lines.<ref name="vgd" />
+
+== SampCert ==
+
+'''Differential privacy''' is a mathematical guarantee that the published result of a computation reveals little about any one person in the data. It is usually achieved by adding carefully calibrated random noise. SampCert is a Lean library, with over 12,000 lines of proof that make heavy use of Mathlib, that formalises the theory of differential privacy in several of its variants, gives a framework for building and composing private mechanisms, and contains verified algorithms for sampling from the discrete Laplace and Gaussian distributions. Its authors write that it is used in the differential privacy offerings of Amazon Web Services.<ref name="sampcert">Markus de Medeiros, Muhammad Naveed, Tancrède Lepoint, Temesghen Kahsai, Tristan Ravitch, Stefan Zetzsche, Anjali Joshi, Joseph Tassarotti, Aws Albarghouthi and Jean-Baptiste Tristan, "Verified Foundations for Differential Privacy", ''Proceedings of the ACM on Programming Languages'' 9 (PLDI), 2025, pp. 1094–1118. doi:10.1145/3729294. arXiv:2412.01671</ref>
+
+'''What is verified, and what is not.''' The samplers are written in a small probabilistic language inside Lean, and the proofs show that they produce the intended distributions. Running them needs code outside the proofs. One route compiles them through Lean's interface to C++, which adds five functions, 57 lines of C++, to what must be trusted; randomness comes from reading bytes from the operating system's random source, and the conversion of those bytes into uniform samples is itself written and verified in Lean. The authors point out that such external functions cannot make Lean's logic unsound, but that Lean gives no formal guarantee about the behaviour of the compiled program. The route used for deployment translates the samplers through the Dafny language into Python.<ref name="sampcert" /> The proofs therefore cover the algorithms; the translation, the C++ functions and the random source are trusted.
+
+== SymCrypt ==
+
+SymCrypt is Microsoft's cryptographic library. Its team now writes new implementations in Rust and verifies them in Lean with '''Aeneas''', a tool that translates Rust code into a pure functional model in Lean.<ref name="symcrypt">Son Ho, Cédric Fournet, Antoine Delignat-Lavaud, Samuel Lee, Jason Fisher and Jessica Krynitsky, "Verifying Rust cryptography in SymCrypt, from standards to code", Microsoft Research Blog, 13 July 2026. https://www.microsoft.com/en-us/research/blog/verifying-rust-cryptography-in-symcrypt-from-standards-to-code/</ref><ref name="aeneas">Son Ho and Jonathan Protzenko, "Aeneas: Rust verification by functional translation", ''Proceedings of the ACM on Programming Languages'' 6 (ICFP), 2022, pp. 711–741. doi:10.1145/3547647</ref> The first verified components are the key-encapsulation scheme ML-KEM and SHA-3, the standard family of functions that compute digests. A verified function is proved to refine a Lean specification written to follow the public standard: on inputs that meet stated preconditions, it returns what the specification returns. AI agents help draft specifications and proofs; a proof counts only when Lean accepts it, and a specification an agent helped to draft is audited by people. As of July 2026 the verified code was in preview versions of Windows.<ref name="symcrypt" />
+
+'''What is verified, and what is not.''' The proofs are about the Lean model that Aeneas produces from the Rust code, so the faithfulness of that translation is trusted. Some low-level wrappers, such as those that expose platform instructions, are described by small, carefully reviewed Lean specifications rather than proved, and the project's dashboards list such trusted models and the remaining assumptions for developers.<ref name="symcrypt" /> The blog post does not claim proofs about timing or other side channels.
+
+== What the three have in common ==
+
+In each case Lean checks a proof about a model, and the link between the model and the code that runs is made by other means: testing in Cedar, a small trusted compilation layer in SampCert, an automatic translation in SymCrypt. That link and the specification itself are where the remaining risk lies. The general point is made in [[Lean theorem prover/Explainers/Types as specifications|Types as specifications]] and [[Lean theorem prover/Explainers/What has to be trusted|What has to be trusted]].
+
+== Next ==
+
+* [[Lean theorem prover/Applications/Teaching with Lean|Teaching with Lean]].
+* [[Lean theorem prover/Explainers/Programs and proofs in one language|Programs and proofs in one language]], on why one language can do both.
+
+== References ==
+<references />

@@ -1,0 +1,489 @@
+{
+ "meta": {
+  "name": "units_range",
+  "note": "Hand-chosen: the double range, which v1 refused a unit scale or a normalized value outside of and the Calculator keeps, decided on the exact value. 2^1024 - 2^970 and above is infinite as a double, 2^-1075 and below is zero (round to nearest, ties to even). Cases at each bound, just inside and just outside, with and without a power of pi; the expectations are exact (Python integers and fractions, pi from Machin's formula with an error bound). fn range takes an unevaluated product: bases (decimal strings) and exponents over num and den, and the power of pi."
+ },
+ "cases": [
+  {
+   "id": "range/overflow-tie",
+   "fn": "range",
+   "input": {
+    "num": [
+     [
+      "2",
+      970
+     ],
+     [
+      "18014398509481983",
+      1
+     ]
+    ],
+    "den": [],
+    "pi": 0
+   },
+   "note": "exactly 2^1024 - 2^970, halfway: rounds to infinity (ties to even)",
+   "expect": "infinite"
+  },
+  {
+   "id": "range/greatest-double",
+   "fn": "range",
+   "input": {
+    "num": [
+     [
+      "2",
+      971
+     ],
+     [
+      "9007199254740991",
+      1
+     ]
+    ],
+    "den": [],
+    "pi": 0
+   },
+   "note": "the greatest double, 2^1024 - 2^971",
+   "expect": "inside"
+  },
+  {
+   "id": "range/just-below-overflow-tie",
+   "fn": "range",
+   "input": {
+    "num": [
+     [
+      "179769313486231580793728971405303415079934132710037826936173778980444968292764750946649017977587207096330286416692887910946555547851940402630657488671505820681908902000708383676273854845817711531764475730270069855571366959622842914819860834936475292719074168444365510704342711559699508093042880177904174497791",
+      1
+     ]
+    ],
+    "den": [],
+    "pi": 0
+   },
+   "note": "one below the halfway point: decided exactly",
+   "expect": "inside"
+  },
+  {
+   "id": "range/just-above-overflow-tie",
+   "fn": "range",
+   "input": {
+    "num": [
+     [
+      "179769313486231580793728971405303415079934132710037826936173778980444968292764750946649017977587207096330286416692887910946555547851940402630657488671505820681908902000708383676273854845817711531764475730270069855571366959622842914819860834936475292719074168444365510704342711559699508093042880177904174497793",
+      1
+     ]
+    ],
+    "den": [],
+    "pi": 0
+   },
+   "note": "one above the halfway point",
+   "expect": "infinite"
+  },
+  {
+   "id": "range/underflow-tie",
+   "fn": "range",
+   "input": {
+    "num": [],
+    "den": [
+     [
+      "2",
+      1075
+     ]
+    ],
+    "pi": 0
+   },
+   "note": "exactly 2^-1075, half the least subnormal: rounds to zero (ties to even)",
+   "expect": "zero"
+  },
+  {
+   "id": "range/just-above-underflow-tie",
+   "fn": "range",
+   "input": {
+    "num": [
+     [
+      "3",
+      1
+     ]
+    ],
+    "den": [
+     [
+      "2",
+      1076
+     ]
+    ],
+    "pi": 0
+   },
+   "note": "1.5 x 2^-1075",
+   "expect": "inside"
+  },
+  {
+   "id": "range/least-subnormal",
+   "fn": "range",
+   "input": {
+    "num": [],
+    "den": [
+     [
+      "2",
+      1074
+     ]
+    ],
+    "pi": 0
+   },
+   "note": "2^-1074, the least subnormal",
+   "expect": "inside"
+  },
+  {
+   "id": "range/just-below-underflow-tie",
+   "fn": "range",
+   "input": {
+    "num": [
+     [
+      "1606938044258990275541962092341162602522202993782792835301375",
+      1
+     ]
+    ],
+    "den": [
+     [
+      "2",
+      1275
+     ]
+    ],
+    "pi": 0
+   },
+   "note": "just below 2^-1075: decided exactly",
+   "expect": "zero"
+  },
+  {
+   "id": "range/zero",
+   "fn": "range",
+   "input": {
+    "num": [
+     [
+      "0",
+      1
+     ]
+    ],
+    "den": [],
+    "pi": 0
+   },
+   "note": "zero",
+   "expect": "zero"
+  },
+  {
+   "id": "range/one",
+   "fn": "range",
+   "input": {
+    "num": [],
+    "den": [],
+    "pi": 0
+   },
+   "note": "one",
+   "expect": "inside"
+  },
+  {
+   "id": "range/pi620",
+   "fn": "range",
+   "input": {
+    "num": [],
+    "den": [],
+    "pi": 620
+   },
+   "note": "pi^620, about 2^1023.9",
+   "expect": "inside"
+  },
+  {
+   "id": "range/pi621",
+   "fn": "range",
+   "input": {
+    "num": [],
+    "den": [],
+    "pi": 621
+   },
+   "note": "pi^621, about 2^1025.6",
+   "expect": "infinite"
+  },
+  {
+   "id": "range/pi-650",
+   "fn": "range",
+   "input": {
+    "num": [],
+    "den": [],
+    "pi": -650
+   },
+   "note": "pi^-650, about 2^-1073.5",
+   "expect": "inside"
+  },
+  {
+   "id": "range/pi-651",
+   "fn": "range",
+   "input": {
+    "num": [],
+    "den": [],
+    "pi": -651
+   },
+   "note": "pi^-651, about 2^-1075.1",
+   "expect": "zero"
+  },
+  {
+   "id": "range/pi620-just-inside",
+   "fn": "range",
+   "input": {
+    "num": [
+     [
+      "1212255684806923515",
+      1
+     ]
+    ],
+    "den": [
+     [
+      "2",
+      60
+     ]
+    ],
+    "pi": 620
+   },
+   "note": "m / 2^60 x pi^620 just below 2^1024 - 2^970",
+   "expect": "inside"
+  },
+  {
+   "id": "range/pi620-just-outside",
+   "fn": "range",
+   "input": {
+    "num": [
+     [
+      "1212255684806923516",
+      1
+     ]
+    ],
+    "den": [
+     [
+      "2",
+      60
+     ]
+    ],
+    "pi": 620
+   },
+   "note": "(m + 1) / 2^60 x pi^620 just above",
+   "expect": "infinite"
+  },
+  {
+   "id": "range/pi-651-just-zero",
+   "fn": "range",
+   "input": {
+    "num": [
+     [
+      "1256381477081406145",
+      1
+     ]
+    ],
+    "den": [
+     [
+      "2",
+      60
+     ]
+    ],
+    "pi": -651
+   },
+   "note": "z / 2^60 x pi^-651 just below 2^-1075",
+   "expect": "zero"
+  },
+  {
+   "id": "range/pi-651-just-inside",
+   "fn": "range",
+   "input": {
+    "num": [
+     [
+      "1256381477081406146",
+      1
+     ]
+    ],
+    "den": [
+     [
+      "2",
+      60
+     ]
+    ],
+    "pi": -651
+   },
+   "note": "(z + 1) / 2^60 x pi^-651 just above",
+   "expect": "inside"
+  },
+  {
+   "id": "scale/1e308",
+   "fn": "unit_scale",
+   "input": {
+    "u": "Qrad10 Mrad hrad"
+   },
+   "note": "10^308: inside",
+   "expect": "[OK,1e308]"
+  },
+  {
+   "id": "scale/1e309",
+   "fn": "unit_scale",
+   "input": {
+    "u": "Qrad10 Grad"
+   },
+   "note": "10^309: infinite as a double",
+   "expect": "[REFUSED,UNIT Qrad10 Grad has no finite scale]"
+  },
+  {
+   "id": "scale/1e-323",
+   "fn": "unit_scale",
+   "input": {
+    "u": "qrad10 zrad crad"
+   },
+   "note": "10^-323: a subnormal, inside",
+   "expect": "[OK,1e-323]"
+  },
+  {
+   "id": "scale/1e-324",
+   "fn": "unit_scale",
+   "input": {
+    "u": "qrad10 yrad"
+   },
+   "note": "10^-324: zero as a double",
+   "expect": "[REFUSED,UNIT qrad10 yrad has no finite scale]"
+  },
+  {
+   "id": "scale/pi-inside",
+   "fn": "unit_scale",
+   "input": {
+    "u": "Qarcsec12"
+   },
+   "note": "(10^30 pi / 648000)^12, about 1.7e294",
+   "expect": "[OK,14551915228366851806640625000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000/79766443076872509863361 pi12]"
+  },
+  {
+   "id": "scale/pi-outside",
+   "fn": "unit_scale",
+   "input": {
+    "u": "Qarcsec13"
+   },
+   "note": "(10^30 pi / 648000)^13, about 7.9e318",
+   "expect": "[REFUSED,UNIT Qarcsec13 has no finite scale]"
+  },
+  {
+   "id": "scale/adversarial-short",
+   "fn": "unit_scale",
+   "input": {
+    "u": "arcsec9999 deg9999"
+   },
+   "note": "about 10^-75000: refused without the exact value being formed",
+   "expect": "[REFUSED,UNIT arcsec9999 deg9999 has no finite scale]"
+  },
+  {
+   "id": "scale/adversarial-long",
+   "fn": "unit_scale",
+   "input": {
+    "u": "arcsec9999 deg9999 arcmin9999 qarcsec9999 rarcsec9999 yarcsec9999 zarcsec9999 aarcsec9999 farcsec9999 parcsec9999 narcsec9999 uarcsec9999 marcsec9999 carcsec9999 darcsec9999 daarcsec9999 harcsec9999 karcsec9999 Marcsec9999 Garcsec9999 Tarcsec9999 Parcsec9999 Earcsec9999 Zarcsec9999 Yarcsec9999 Rarcsec9999 Qarcsec9999"
+   },
+   "note": "28 angle tokens: refused fast",
+   "expect": "[REFUSED,UNIT arcsec9999 deg9999 arcmin9999 qarcsec9999 rarcsec9999 yarcsec9999 zarcsec9999 aarcsec9999 farcsec9999 parcsec9999 narcsec9999 uarcsec9999 marcsec9999 carcsec9999 darcsec9999 daarcsec9999 harcsec9999 karcsec9999 Marcsec9999 Garcsec9999 Tarcsec9999 Parcsec9999 Earcsec9999 Zarcsec9999 Yarcsec9999 Rarcsec9999 Qarcsec9999 has no finite scale]"
+  },
+  {
+   "id": "scale/partial-products-cancel",
+   "fn": "unit_scale",
+   "input": {
+    "u": "Qrad9999 qrad9999"
+   },
+   "note": "10^299970 x 10^-299970: the exact scale is 1",
+   "expect": "[OK,1]"
+  },
+  {
+   "id": "norm/greatest",
+   "fn": "normalize_measurement",
+   "input": {
+    "value": "1.7976931348623157e308",
+    "uncertainty": "0",
+    "u": "m"
+   },
+   "note": "below the halfway point",
+   "expect": "[OK,17976931348623157e292,0,L1,none]"
+  },
+  {
+   "id": "norm/rounds-to-infinity",
+   "fn": "normalize_measurement",
+   "input": {
+    "value": "1.7976931348623159e308",
+    "uncertainty": "0",
+    "u": "m"
+   },
+   "note": "above it",
+   "expect": "[REFUSED,VALUE 1.7976931348623159e308 in UNIT m is not a finite double]"
+  },
+  {
+   "id": "norm/tie",
+   "fn": "normalize_measurement",
+   "input": {
+    "value": "179769313486231580793728971405303415079934132710037826936173778980444968292764750946649017977587207096330286416692887910946555547851940402630657488671505820681908902000708383676273854845817711531764475730270069855571366959622842914819860834936475292719074168444365510704342711559699508093042880177904174497792",
+    "uncertainty": "0",
+    "u": "m"
+   },
+   "note": "exactly 2^1024 - 2^970",
+   "expect": "[REFUSED,VALUE 179769313486231580793728971405303415079934132710037826936173778980444968292764750946649017977587207096330286416692887910946555547851940402630657488671505820681908902000708383676273854845817711531764475730270069855571366959622842914819860834936475292719074168444365510704342711559699508093042880177904174497792 in UNIT m is not a finite double]"
+  },
+  {
+   "id": "norm/below-tie",
+   "fn": "normalize_measurement",
+   "input": {
+    "value": "179769313486231580793728971405303415079934132710037826936173778980444968292764750946649017977587207096330286416692887910946555547851940402630657488671505820681908902000708383676273854845817711531764475730270069855571366959622842914819860834936475292719074168444365510704342711559699508093042880177904174497791",
+    "uncertainty": "0",
+    "u": "m"
+   },
+   "note": "one below",
+   "expect": "[OK,179769313486231580793728971405303415079934132710037826936173778980444968292764750946649017977587207096330286416692887910946555547851940402630657488671505820681908902000708383676273854845817711531764475730270069855571366959622842914819860834936475292719074168444365510704342711559699508093042880177904174497791,0,L1,none]"
+  },
+  {
+   "id": "norm/scaled-inside",
+   "fn": "normalize_measurement",
+   "input": {
+    "value": "1.7976931348623157e305",
+    "uncertainty": "0",
+    "u": "km"
+   },
+   "note": "the prefix brings it to the greatest double",
+   "expect": "[OK,17976931348623157e292,0,L1,none]"
+  },
+  {
+   "id": "norm/scaled-outside",
+   "fn": "normalize_measurement",
+   "input": {
+    "value": "1.7976931348623159e305",
+    "uncertainty": "0",
+    "u": "km"
+   },
+   "note": "past the bound",
+   "expect": "[REFUSED,VALUE 1.7976931348623159e305 in UNIT km is not a finite double]"
+  },
+  {
+   "id": "norm/uncertainty-outside",
+   "fn": "normalize_measurement",
+   "input": {
+    "value": "1",
+    "uncertainty": "1.7976931348623159e308",
+    "u": "m"
+   },
+   "note": "v1 words it so for either value",
+   "expect": "[REFUSED,VALUE 1 in UNIT m is not a finite double]"
+  },
+  {
+   "id": "norm/tiny-kept",
+   "fn": "normalize_measurement",
+   "input": {
+    "value": "1e-400",
+    "uncertainty": "0",
+    "u": "m"
+   },
+   "note": "kept exact; v1 made it 0 as a double, and so refused nothing",
+   "expect": "[OK,1e-400,0,L1,none]"
+  },
+  {
+   "id": "norm/scale-refused-first",
+   "fn": "normalize_measurement",
+   "input": {
+    "value": "1",
+    "uncertainty": "0",
+    "u": "Qrad11"
+   },
+   "note": "10^330: the scale is refused first",
+   "expect": "[REFUSED,UNIT Qrad11 has no finite scale]"
+  }
+ ]
+}

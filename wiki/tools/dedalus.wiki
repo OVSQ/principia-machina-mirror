@@ -1,0 +1,32 @@
+{{DISPLAYTITLE:Dedalus}}
+'''Dedalus: Spectral Solvers for Equations Entered Symbolically'''
+[[Category:Principia Machina]] [[Category:Tools]]
+
+''Added to the survey on 2026-10-06 by the [[The Principia Machina/Research Toolkit|Research Toolkit]]'s research pass. The scores below are that pass's assessment from the evidence cited under References, on the survey's four axes and scale; they are not the original survey's (2026-09-26), and no rule of the Principia Machina reads them. See [[The Principia Machina/Tools#The additions of 2026-10-06|the additions]] on the front page.''
+
+== Overview & Architectural Fit ==
+'''Dedalus''' solves partial differential equations by spectral methods. Equations and boundary conditions are entered symbolically, close to how they are written on paper; the solution is expanded as <math>u(x,t) = \sum_n \hat{u}_n(t)\,\phi_n(x)</math> on Cartesian domains, disks, annuli, spheres and shells, in parallel with MPI. It solves initial-value, boundary-value and eigenvalue problems.
+
+== Mathematical Evaluation for TPM ==
+* '''Lagrangian / Action (2/10):''' Takes equations, not actions.
+* '''Field / PDE (9/10):''' Spectrally accurate, with flexible entry of equations.
+* '''Relativity (2/10):''' Not a relativity code; at most linear equations on a fixed background.
+* '''Quantum / Data (3/10):''' Can integrate Schr&ouml;dinger or Gross-Pitaevskii equations; nothing learns from data.
+
+== Integration Pipeline ==
+# '''Take the Euler-Lagrange field equations''' derived with [[The Principia Machina/Tools/SymPy|SymPy]] or [[The Principia Machina/Tools/xAct|xAct]].
+# '''Solve''' them as an initial-value problem.
+# '''Monitor the Noether charges''' (energy, momentum, angular momentum): at spectral accuracy, any drift beyond the time-stepping error is a sharp sign of a fault in the derivation or the discretization.
+# '''Solve the eigenvalue problem''' <math>\lambda M x = L x</math> of the second variation, for the linear stability of an extremum of the action.
+
+== Status, Licence and Limits ==
+* '''Status:''' Active. Version 3.0.5, 31 January 2026 (PyPI).
+* '''Licence:''' GPL-3.0.
+* '''Home:''' https://dedalus-project.org
+* '''Limits:''' Domains are limited to geometries a spectral basis can represent. Shocks and non-smooth solutions fit poorly. The GPL may matter for redistribution.
+
+== On the Principia Machina ==
+A tool runs only where the sponsor installed and bound it, and what it returns is untrusted input, vetted before use; its numbers are never values of the site's calculator, TPC. A value it computes lands as a RESULT with QUANTITY, VALUE, UNIT and AT, its initial and boundary values as SITUATION records; the regime of a numerical result, and whether such a value may be presented, are open questions of the specification. See [[The Principia Machina/Agent/Tools|Agent/Tools]] and [[The Principia Machina/Tools/Operator's guide|the operator's guide]].
+
+== References ==
+* '''[[The Principia Machina/Research Toolkit/Bibliography#DEDALUS2020|DEDALUS2020]]''' &ndash; Burns K.J., Vasil G.M., Oishi J.S., Lecoanet D., Brown B.P. (2020). Dedalus: A flexible framework for numerical simulations with spectral methods. Phys. Rev. Research 2, 023068. [https://doi.org/10.1103/PhysRevResearch.2.023068 doi:10.1103/PhysRevResearch.2.023068].

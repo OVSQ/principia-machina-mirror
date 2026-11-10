@@ -1,0 +1,322 @@
+{{DISPLAYTITLE:Structural and well-founded recursion}}
+{{Plebeian|Lean theorem prover/Explainers/Functions that always finish|Lean theorem prover/Explainers/Induction, as the machine sees it}}
+{{Lean theorem prover map}}
+
+Lean lets a function be defined by calling itself, but Lean's kernel knows nothing of
+recursive definitions. Before a recursive definition reaches the Lean kernel, the elaborator
+replaces the recursion by a non-recursive term built from recursors or from a well-founded
+fixed-point combinator, and the fact that this translation succeeds is the proof that the
+function terminates. This page explains why unrestricted recursion is not allowed, how
+'''structural recursion''' is compiled through the recursor, how '''well-founded recursion'''
+is compiled through <code>WellFounded.fix</code>, what <code>termination_by</code> and
+<code>decreasing_by</code> control, how <code>partial</code> and <code>unsafe</code>
+definitions are kept from compromising the logic, and the induction principles Lean derives from a
+recursive definition.
+
+== Why recursion must be checked ==
+
+If any recursive equation were accepted as a definition, the logic would be inconsistent. The
+equation <code>f n = f n + 1</code> would define a natural-number function with the absurd
+property that a number equals its successor; and a function into the empty type
+<code>Empty</code> that simply calls itself would produce an element of a type with no
+elements, from which anything follows. A proof that "P holds because P holds" would be
+accepted.<ref name="refman-rec">''The Lean Language Reference'', for Lean 4.34.0,
+lean-lang.org, 2026, section 7.6, "Recursive Definitions".
+https://lean-lang.org/doc/reference/4.34.0/Definitions/Recursive-Definitions/</ref> Lean's
+logic therefore treats every function as '''total''': defined on every argument and
+returning in finitely many steps.<ref name="refman-fn">''The Lean Language Reference'', for
+Lean 4.34.0, lean-lang.org, 2026, section 4.1, "Functions".
+https://lean-lang.org/doc/reference/4.34.0/The-Type-System/Functions/</ref>
+
+Termination is not checked by Lean's kernel, which has no termination checker; it is
+guaranteed because every recursive function is elaborated into uses of primitive
+recursors, which cannot loop.<ref name="refman-elab">''The Lean Language Reference'', for
+Lean 4.34.0, lean-lang.org, 2026, sections 2.3, "The Kernel", and 2.4, "Elaboration
+Results". https://lean-lang.org/doc/reference/4.34.0/Elaboration-and-Compilation/</ref>
+Elaboration proceeds in two phases. First the definition is elaborated as if the core
+language had recursion, giving a '''pre-definition'''; the compiler generates code from
+it unchanged. Then a termination analysis translates the pre-definition into a non-recursive
+term for the Lean kernel. Without an explicit instruction the elaborator tries structural recursion
+on each argument in turn, and then searches for a decreasing measure for well-founded
+recursion.<ref name="refman-rec" /> The reference manual also describes partial fixpoints and
+predicates defined as least or greatest fixed points; this page does not treat them.
+
+== Structural recursion ==
+
+A definition is '''structurally recursive''' when every recursive call is on a strict
+sub-term of one fixed argument, the '''decreasing parameter''', as exposed by pattern
+matching.<ref name="refman-rec" /> The Fibonacci function is a standard example:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+def fib : Nat → Nat
+  | 0 => 0
+  | 1 => 1
+  | n + 2 => fib n + fib (n + 1)
+
+#print fib
+example : fib 10 = 55 := rfl
+</pre>
+
+Lean 4.34.1 prints the term the Lean kernel received:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+def fib : Nat → Nat :=
+fun x => Nat.brecOn x fib._f
+</pre>
+
+There is no self-reference. The recursion has become an application of
+<code>Nat.brecOn</code>, and the cases of the definition are in an auxiliary function
+<code>fib._f</code>.
+
+<code>fib</code> calls itself on <code>n</code>, two steps below its argument, so the plain
+recursor, whose step function sees only the result for the immediate predecessor, does not fit
+directly. The elaborator uses two constructions derived from the recursor instead. For a
+motive <code>C</code>, <code>Nat.below t</code> is a table holding a value of
+<code>C k</code> for every <code>k</code> smaller than <code>t</code>, built as an iterated
+pair; <code>Nat.brecOn</code> is a recursor whose step function receives that whole table, so
+it can use the result for any smaller argument. This is '''course-of-values recursion'''.
+Lean generates <code>below</code> and <code>brecOn</code> for every inductive type, following
+McBride, Goguen and McKinna.<ref name="refman-ind">''The Lean Language Reference'', for Lean
+4.34.0, lean-lang.org, 2026, section 4.4.3.3, "Constructions for Termination Checking".
+https://lean-lang.org/doc/reference/4.34.0/The-Type-System/Inductive-Types/</ref><ref name="mgm">Conor
+McBride, Healfdene Goguen and James McKinna, "A Few Constructions on Constructors", in
+''Types for Proofs and Programs'' (TYPES 2004), Lecture Notes in Computer Science 3839,
+Springer, 2006, pp. 186–200. https://doi.org/10.1007/11617990_12</ref>
+
+<pre class="lean lean-cont" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+#check @Nat.brecOn
+#print fib._f
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+@Nat.brecOn : {motive : Nat → Sort u_1} → (t : Nat) → ((t : Nat) → Nat.below t → motive t) → motive t
+@[reducible] def fib._f : (x : Nat) → Nat.below x → Nat :=
+fun x f =>
+  (match (motive := (x : Nat) → Nat.below x → Nat) x with
+    | 0 => fun x => 0
+    | 1 => fun x => 1
+    | n.succ.succ => fun x => x.2.1 + x.1)
+    f
+</pre>
+
+In the last case the two recursive calls have become two lookups in the table:
+<code>x.1</code> is the entry for <code>n + 1</code> and <code>x.2.1</code> the entry for
+<code>n</code>. Because <code>brecOn</code> and <code>below</code> are themselves defined from
+<code>Nat.rec</code>, the whole definition reduces by the ordinary rules of definitional
+equality, which is why <code>fib 10 = 55</code> holds by <code>rfl</code>. Structurally
+recursive functions compute inside Lean's kernel, and their defining equations hold
+definitionally.<ref name="refman-elab" />
+
+The analysis is syntactic, so some terminating functions fail it. A function that tests
+<code>n == 0</code> and recurses on <code>n - 1</code> terminates, but <code>n - 1</code> is
+not exposed as a sub-term by any pattern match, so it is not structural; such functions need
+well-founded recursion.<ref name="refman-rec" /> The clause
+<code>termination_by structural x</code> names the decreasing parameter explicitly and
+forbids the fallback.
+
+The term built from <code>brecOn</code> is not what runs. Compiled code is generated from the
+pre-definition with ordinary recursion; the recursor-based term exists to justify
+termination, not to be executed.<ref name="refman-elab" /><ref name="refman-ind" />
+
+== Well-founded recursion ==
+
+A relation <math>\prec</math> is '''well-founded''' when there is no infinite descending chain
+<math>x_0 \succ x_1 \succ x_2 \succ \cdots</math>. Lean states this through the accessibility
+predicate <code>Acc</code>, an inductive proposition: <code>x</code> is accessible when every
+<code>y ≺ x</code> is accessible, and a relation is well-founded when every element is
+accessible.<ref name="refman-rec" /> A function whose arguments decrease along a well-founded
+relation at every recursive call can be defined with the fixed-point combinator
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+#check @WellFounded.fix
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+@WellFounded.fix : {α : Sort u_1} →
+  {C : α → Sort u_2} → {r : α → α → Prop} → WellFounded r → ((x : α) → ((y : α) → r y x → C y) → C x) → (x : α) → C x
+</pre>
+
+Its step function receives the current argument <code>x</code> and a function that may be
+called only on arguments <code>y</code> accompanied by a proof of <code>r y x</code>.
+<code>WellFounded.fix</code> is defined through an auxiliary function,
+<code>WellFounded.fixF</code>, that takes the accessibility proof as an explicit argument:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+#print WellFounded.fixF
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+def WellFounded.fixF.{u, v} : {α : Sort u} →
+  {r : α → α → Prop} → {C : α → Sort v} → ((x : α) → ((y : α) → r y x → C y) → C x) → (x : α) → Acc r x → C x :=
+fun {α} {r} {C} F x a => Acc.rec (fun x₁ h ih => F x₁ ih) a
+</pre>
+
+Its body is one application of <code>Acc.rec</code>, the recursor of the accessibility
+predicate. Well-founded recursion is therefore structural recursion again, on a proof that
+the arguments decrease rather than on the data.<ref name="refman-elab" /> A
+function's several arguments are packed into a single dependent pair, the relation is pulled
+back from the measure with <code>invImage</code>, and each recursive call is given its proof
+of decrease.<ref name="refman-rec" />
+
+The measure is given with '''<code>termination_by</code>''' and the proofs of decrease with
+'''<code>decreasing_by</code>''':
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+def log2 (n : Nat) : Nat :=
+  if h : n &lt; 2 then 0 else 1 + log2 (n / 2)
+termination_by n
+decreasing_by omega
+
+#eval log2 1024
+#print log2
+</pre>
+
+The evaluation prints <code>10</code>, and <code>#print</code> shows
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+@[irreducible] def log2 : Nat → Nat :=
+WellFounded.Nat.fix (fun x => x) fun n a => if h : n &lt; 2 then 0 else 1 + a (n / 2) ⋯
+</pre>
+
+The recursive call <code>log2 (n / 2)</code> has become <code>a (n / 2) ⋯</code>, where
+<code>⋯</code> stands for the proof, produced by <code>omega</code>, that
+<code>n / 2 &lt; n</code> in the branch where <code>n</code> is at least 2. Here the measure
+is a natural number, and since Lean 4.27.0 such definitions use
+<code>WellFounded.Nat.fix</code>, a variant whose recursion runs on a natural-number "fuel"
+argument initialised from the measure, which makes the definitions easier to
+evaluate.<ref name="rel427">''The Lean Language Reference'', for Lean 4.34.0, lean-lang.org,
+2026, release notes, "Lean 4.27.0", section "Language".
+https://lean-lang.org/doc/reference/4.34.0/releases/v4.27.0/</ref> For other measures, such
+as a pair of numbers compared lexicographically, the elaborator produces a term built on
+<code>WellFounded.fix</code> directly. When <code>decreasing_by</code> is omitted a default
+tactic tries to prove each obligation.<ref name="refman-rec" />
+
+The <code>@[irreducible]</code> attribute is the visible difference from structural
+recursion. Definitions by well-founded recursion are irreducible by default, so the
+elaborator will not unfold them while checking definitional equality, and an equation that
+would follow by computation is not accepted by <code>rfl</code>:<ref name="refman-rec" />
+
+<pre class="lean lean-cont lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+example : log2 8 = 3 := rfl
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+Type mismatch
+  rfl
+has type
+  ?m.7 = ?m.7
+but is expected to have type
+  log2 8 = 3
+</pre>
+
+The equation is still true, and Lean proves the defining equation as a theorem,
+<code>log2.eq_1</code>, so that <code>simp [log2]</code> can rewrite with it and prove the
+example. Even when the reductions do hold definitionally, they may be slow in the
+Lean kernel, which must unfold the proof of termination along with the definition. The reference
+manual's advice is to use structural recursion, where possible, for functions meant for use
+in types or wherever definitional equality matters.<ref name="refman-rec" />
+
+== Functional induction ==
+
+A recursive definition determines an induction principle that follows its own case split and
+recursive calls. Since Lean 4.8.0 the elaborator derives it automatically, as a theorem named
+<code>f.induct</code> for a recursive function <code>f</code>.<ref name="rel48">''The Lean
+Language Reference'', for Lean 4.34.0, lean-lang.org, 2026, release notes, "Lean 4.8.0"
+(functional induction principles) and "Lean 4.18.0" (the <code>fun_induction</code> tactic).
+https://lean-lang.org/doc/reference/4.34.0/releases/v4.8.0/ and
+https://lean-lang.org/doc/reference/4.34.0/releases/v4.18.0/</ref> It exists for the
+structurally recursive <code>fib</code> as well as for the well-founded
+<code>log2</code>:
+
+<pre class="lean lean-cont" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+#check @fib.induct
+#check @log2.induct
+
+theorem log2_le (n : Nat) : log2 n ≤ n := by
+  fun_induction log2 n with
+  | case1 n h => simp
+  | case2 n h ih => omega
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+fib.induct : ∀ (motive : Nat → Prop),
+  motive 0 → motive 1 → (∀ (n : Nat), motive n → motive (n + 1) → motive n.succ.succ) → ∀ (a : Nat), motive a
+log2.induct : ∀ (motive : Nat → Prop),
+  (∀ (x : Nat), x &lt; 2 → motive x) → (∀ (x : Nat), ¬x &lt; 2 → motive (x / 2) → motive x) → ∀ (n : Nat), motive n
+</pre>
+
+Each principle has one case for each branch of its function. For <code>fib</code> the
+recursive case has two induction hypotheses, one per recursive call: the two-step
+induction that the definition needs, which ordinary induction on <code>Nat</code> does not
+supply directly. For <code>log2</code> the recursive branch
+carries an induction hypothesis for exactly the argument of the recursive call,
+<code>x / 2</code>. The <code>fun_induction</code> tactic, added in Lean 4.18.0, applies it to
+a goal about <code>log2 n</code>.<ref name="rel48" />
+
+== Partial and unsafe definitions ==
+
+Two modifiers admit definitions that are not shown to terminate, and both prevent them from
+compromising proofs.<ref name="refman-rec" />
+
+A '''<code>partial</code>''' definition is checked by the Lean kernel for type-correctness as if
+recursion were allowed, and then enters the logic as an '''opaque constant''': a constant
+with a type and no definition the Lean kernel may unfold. The compiler still produces ordinary
+code for it.
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+partial def collatz (n : Nat) : Nat :=
+  if n ≤ 1 then 0 else 1 + collatz (if n % 2 = 0 then n / 2 else 3 * n + 1)
+
+#eval collatz 27
+#print collatz
+</pre>
+
+Lean prints <code>111</code> and then <code>opaque collatz : Nat → Nat</code>. Whether this
+function terminates on every input is the open Collatz problem. A partial function may
+appear in propositions and proofs, but its equational theory is very weak: no property of its
+values that depends on its definition can be proved, because the logic sees no
+definition.<ref name="refman-rec" /> Even unfolding it fails:
+
+<pre class="lean lean-cont lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+example : collatz 1 = 0 := by unfold collatz; rfl
+</pre>
+
+Lean reports <code>Tactic `unfold` failed to unfold `collatz` in</code> followed by the goal,
+<code>collatz 1 = 0</code>. For the same reason a partial function's result type must be shown to be inhabited.
+Otherwise a partial function into <code>Empty</code> would be an opaque constant producing an
+element of an empty type, and so a proof of anything:<ref name="refman-rec" />
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+partial def loop (n : Nat) : Empty := loop (n + 1)
+</pre>
+
+is rejected: <code>failed to compile 'partial' definition `loop`, could not prove that the
+type Nat → Empty is nonempty</code>.
+
+An '''<code>unsafe</code>''' definition has none of these restrictions. It may recurse freely,
+its type need not be inhabited, and it may use operations, such as unchecked casts between
+types, that break the equational theory. In exchange it may be used only by other
+<code>unsafe</code> definitions, and never in a theorem:<ref name="refman-rec" />
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+unsafe def spin (n : Nat) : Empty := spin (n + 1)
+
+theorem oops : False := (spin 0).elim
+</pre>
+
+Lean reports <code>(kernel) invalid declaration, it uses unsafe declaration 'spin'</code>.
+The prefix shows that the refusal is made by Lean's kernel itself, so it does not depend on
+the elaborator being correct.
+<code>partial</code> and <code>unsafe</code> thus mark the boundary between Lean as a
+programming language, where non-termination is a fact of life, and Lean as a logic, where it
+would be a contradiction.
+
+== Next ==
+
+[[Lean theorem prover/Foundations/Definitional equality|Definitional equality]] describes the
+computation rules that structural recursion relies on and that irreducible definitions
+withhold, and how Lean's kernel decides them.
+
+== References ==
+
+<references />

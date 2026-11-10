@@ -1,0 +1,64 @@
+{{DISPLAYTITLE:Why Maxwell wanted a mechanism}}
+{{On Physical Lines of Force map}}
+''[[On Physical Lines of Force]] → [[On Physical Lines of Force/Explainers|Explainers]] → Why a mechanism''
+
+<blockquote>
+'''In one sentence.''' The sums for magnetism already worked perfectly, but they described the space between two magnets as containing nothing at all, and Maxwell could not bring himself to believe that.
+</blockquote>
+
+Part I of the paper appeared in the ''Philosophical Magazine'' in March 1861. Maxwell was 29, and professor of natural philosophy at King's College London. The theory of magnetism he had been taught was in good order. It predicted the right numbers. What it did not do was say what was happening in the space where the magnetic force was found, and that gap is the reason the paper exists.
+
+[[File:OPL-fig-timeline.svg|thumb|center|620px|Where the paper sits in the history of the subject]]
+
+== The theory that already worked ==
+
+The established account is called '''action at a distance'''. The idea is that one magnet acts on another straight across the gap between them, with no go-between of any kind. The force depends on how far apart the two are and on how they are oriented, and it is delivered instantly. Nothing whatever happens in the space along the way. There is nothing there to happen to.
+
+This is not a foolish theory. It had been built up carefully over decades, and it fitted the observations exactly. Maxwell says so himself, plainly and more than once. He does not argue that the calculations are wrong, and he never claims to have found an experiment they fail.
+
+His objection is of a different kind. Look again at the iron filings, he says, and you find you cannot help thinking that some physical state must exist in every place where these lines of force are found. That is a statement about what a satisfying explanation looks like, not about a disagreement over numbers. Maxwell knew the difference, and he was unusually honest about which one he was making.
+
+== He had already tried the polite version ==
+
+This was not Maxwell's first attempt on the problem. In 1855 and 1856 he had published a paper called "On Faraday's Lines of Force". There he treated the lines by analogy with a fluid in motion, imagining something flowing along the tubes the lines mark out. The analogy is a good one. It gives correct answers, and parts of it survive in physics teaching to this day.
+
+But he had attached a warning to it. The fluid, he wrote, was there
+
+<blockquote>
+to assist the imagination, but not to account for the phenomena.
+</blockquote>
+
+In other words: this is a way of thinking, not a claim about the world. Nobody was being told that space is full of liquid.
+
+The 1861 paper drops that qualification, and the title announces it. The word '''physical''' is the point. This time Maxwell is not offering a way of picturing the lines of force. He is asking what could actually be there.
+
+== Four candidates, and why he picked one ==
+
+Maxwell does not simply reach for the answer he wants. He lists the possibilities that had been proposed for what the medium might be doing, and takes each in turn. The list runs: currents, undulations, states of strain, and states of stress. Two of those need translating.
+
+* '''Undulations''' are waves — a disturbance travelling through a medium, like sound through air or ripples across a pond.
+* '''Strain''' and '''stress''' are the language of stretched and squeezed materials. Stress is the push and pull that neighbouring parts of a body exert on each other. It is what is going on inside a taut rope or a compressed spring.
+
+The candidate he rules out most sharply is waves, and the reason is worth following, because it shows how he actually decided.
+
+Attractions add up in the simplest possible way. Put two magnets near a compass needle and the pull on the needle is just the first pull and the second pull combined, each acting as though the other were not there. Waves do not behave like that at all. Two sets of ripples crossing the same patch of water produce a result that depends on how their crests and troughs happen to line up — they can reinforce each other, or cancel out entirely, and then they pass on through and carry on as before, unchanged by the meeting.
+
+So the arithmetic of attraction and the arithmetic of waves are simply different. Maxwell notes that the mathematics of attraction instead resembles that of currents, of the conduction of heat, and of elastic bodies. The formal structure of the problem points away from waves and towards materials under load. The mathematics chooses the mechanism, before any picture is drawn.
+
+== What he settled on ==
+
+That left stress, and stress is what he takes forward. A magnetic field, on this view, is a region of space under mechanical load, in the way that a rope holding a weight is under load.
+
+The particular pattern of load required is easy to state and slightly odd. Along each line of force there must be a '''tension''', a pull, like the pull in a stretched rope. Across the lines, at right angles to them, there must be a '''pressure''', a push. Maxwell has a compact way of putting it: the lines of force mark the direction of least pressure at every point in the medium.
+
+That is the destination of Part I. It leaves one question open, and it is the obvious one. What could possibly be in empty space that would pull along one direction and push in every direction crossways to it? Maxwell's answer to that is the subject of the next two pages.
+
+== Where this is in the paper ==
+
+* [[On Physical Lines of Force/Part I/The introductory discussion|Part I: the introductory discussion]] — the dissatisfaction with action at a distance, the survey of rival hypotheses, and the turn to stress, mostly in Maxwell's own words.
+* [[On Physical Lines of Force/Introduction|Introduction]] — the longer account of where the paper came from and what happened to it.
+* [[On Physical Lines of Force/Chronology|Chronology, 1820–1873]] — the sequence of discoveries the paper sits inside.
+
+----
+
+''Next: [[On Physical Lines of Force/Explainers/The sea of spinning cells|The sea of spinning cells]] · Previous: [[On Physical Lines of Force/Explainers/What is a line of force|What is a line of force?]]''

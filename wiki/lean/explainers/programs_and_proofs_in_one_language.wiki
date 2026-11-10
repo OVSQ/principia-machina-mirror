@@ -1,0 +1,149 @@
+{{DISPLAYTITLE:Programs and proofs in one language}}
+{{Technical|Lean theorem prover/System/The compiler and runtime|Lean theorem prover/System/Monads and do-notation|Lean theorem prover/System/Syntax extension and hygienic macros}}
+{{Lean theorem prover map}}
+
+Lean is a programming language as well as a proof checker. A definition written in Lean can be run
+as a program and reasoned about in a theorem, and it is written once for both. This page shows
+that, says how Lean turns definitions into programs, marks the places where running and proving
+part company, and says how the project this wiki records relies on the property.
+
+== One definition, two uses ==
+
+Here is a definition of the sum of the numbers from 1 to <code>n</code>, a command that runs it,
+and a theorem about it:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+def sumTo : Nat → Nat
+  | 0 => 0
+  | n + 1 => sumTo n + (n + 1)
+
+#eval sumTo 100
+
+theorem sumTo_formula (n : Nat) : 2 * sumTo n = n * (n + 1) := by
+  induction n with
+  | zero => rfl
+  | succ k ih => grind [sumTo]
+</pre>
+
+Lean 4.34.1 prints <code>5050</code> and accepts the theorem. The two uses answer different
+questions. Running the definition gives the answer for one number at a time; however many numbers
+are tried, some remain untried. The theorem covers every natural number at once, by induction
+(see [[Lean theorem prover/Explainers/Induction, as the machine sees it|induction, as the machine sees it]]).
+Because both rest on the same definition, there is no second copy that could drift from the first:
+the program that is run is the object the theorem is about.
+
+== From definition to program ==
+
+Lean runs definitions in one of two ways. An interpreter can run them directly. Or Lean can
+compile them: Lean's compiler translates them into C,
+one C file for each Lean source file, and a C compiler that ships with Lean turns that into native
+code for the machine.<ref name="refelab">''The Lean Language Reference'', version for Lean 4.34.0, section "Elaboration and Compilation". [https://lean-lang.org/doc/reference/4.34.0/Elaboration-and-Compilation/ lean-lang.org/doc/reference/4.34.0/Elaboration-and-Compilation], consulted 14 October 2026.</ref>
+The paper that introduced Lean 4 describes it as an efficient functional programming language, and
+names one reason efficiency matters: people write their own proof automation in Lean, and that
+automation has to be fast.<ref name="lean4">Leonardo de Moura and Sebastian Ullrich, "The Lean 4 Theorem Prover and Programming Language (System Description)", in ''Automated Deduction – CADE 28'', Lecture Notes in Computer Science, Springer, 2021, pp. 625–635. [https://doi.org/10.1007/978-3-030-79876-5_37 doi:10.1007/978-3-030-79876-5_37]</ref>
+
+Lean 4 is itself largely a Lean program. The same paper describes it as a reimplementation of the
+Lean theorem prover in Lean, in which users can extend the parser, the elaborator, the tactics and
+the code generator from Lean.<ref name="lean4" /> The Lean kernel is the exception: it is written
+in C++.<ref name="refelab" /> So the tools that help a person write proofs are Lean programs,
+while the part that judges them is kept separate (see
+[[Lean theorem prover/Explainers/The small trusted core|the small trusted core]]).
+
+There is a free book on using Lean as a programming language, ''Functional Programming in Lean'';
+the code in its current edition was tested with Lean 4.33.0.<ref name="fpil">David Thrane Christiansen, ''Functional Programming in Lean''. [https://lean-lang.org/functional_programming_in_lean/ lean-lang.org/functional_programming_in_lean], consulted 14 October 2026.</ref>
+
+== Programs that act on the world ==
+
+A program has to read input and print output. A proof does neither. Lean keeps the two apart by
+type: an action such as printing a line has a type of its own, <code>IO</code>, and a sequence of
+actions is written in a block that begins with <code>do</code> (see
+[[Lean theorem prover/System/Monads and do-notation|monads and do-notation]]). Continuing the
+same file:
+
+<pre class="lean lean-cont" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+def main : IO Unit := do
+  for n in [10, 100, 1000] do
+    IO.println s!"the sum up to {n} is {sumTo n}"
+
+#eval main
+</pre>
+
+Lean prints:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+the sum up to 10 is 55
+the sum up to 100 is 5050
+the sum up to 1000 is 500500
+</pre>
+
+The action <code>main</code> uses <code>sumTo</code>, and the theorem above is about that same
+function; to believe it of the values printed is also to trust the compiler that turned
+<code>sumTo</code> into a program.<ref name="tcl4">''Type Checking in Lean 4'', online book, chapter "Trust". [https://ammkrn.github.io/type_checking_in_lean4/trust/trust.html ammkrn.github.io/type_checking_in_lean4], consulted 14 October 2026.</ref>
+The part that talks to the world is thin; the part that computes is the part that is proved.
+
+== Where running and proving part ==
+
+'''Programs that may never stop.''' Lean's logic needs every function to give an answer, so a
+definition that calls itself has to be shown to finish (see
+[[Lean theorem prover/Explainers/Functions that always finish|functions that always finish]]).
+A program does not always come with such a proof. Here is one for which nobody has one: starting
+from a number, halve it if it is even, otherwise triple it and add one, and count the steps until
+it reaches 1. Whether this ends for every starting number is a famous open question, the Collatz
+problem. Lean accepts the program if it is marked <code>partial</code>:
+
+<pre class="lean lean-cont" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+partial def collatz (n : Nat) (steps : Nat := 0) : Nat :=
+  if n ≤ 1 then steps
+  else if n % 2 == 0 then collatz (n / 2) (steps + 1)
+  else collatz (3 * n + 1) (steps + 1)
+
+#eval collatz 27
+</pre>
+
+It runs, and prints <code>111</code>. But the program says nothing to the logic. Lean's reference
+states that the Lean kernel treats a function marked <code>partial</code> as an opaque constant,
+which it neither unfolds nor computes with; all that soundness requires is that its result type
+has at least one value.<ref name="recdefs">''The Lean Language Reference'', version for Lean 4.34.0, section "Recursive Definitions". [https://lean-lang.org/doc/reference/4.34.0/Definitions/Recursive-Definitions/ lean-lang.org/doc/reference/4.34.0/Definitions/Recursive-Definitions], consulted 14 October 2026.</ref>
+Even the plainest fact about it cannot be proved by looking inside:
+
+<pre class="lean lean-cont lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+example : collatz 1 = 0 := by
+  unfold collatz
+  rfl
+</pre>
+
+Lean refuses, with the message "Tactic `unfold` failed to unfold `collatz` in", followed by the
+goal <code>collatz 1 = 0</code>.
+
+'''Programs run in place of definitions.''' Lean lets a library say that, when a definition is
+run, another function should be run instead, usually a faster one. The theorems are about the
+definition; the program runs the replacement. If the two disagree, the program and the proofs no
+longer describe the same thing.<ref name="recdefs" /> [[Lean theorem prover/Explainers/What has to be trusted|What has to be trusted]]
+shows this happening, and what it costs when a proof relies on the compiled program.
+
+'''New notation.''' Lean's syntax can be extended from Lean, through a system of macros designed so
+that names introduced by a macro cannot collide with names in the surrounding text.<ref name="lean4" />
+This serves programmers and mathematicians alike, and it is one more thing a reader has to know
+when reading a statement (see [[Lean theorem prover/Explainers/Stating the right thing|stating the right thing]]).
+
+== The project this wiki records ==
+
+Principia Machina depends on this property. Its earlier version kept its rules in prose and
+computed them in two hand-written copies, one for the wiki's server and one for the agents that
+do research, held in agreement by a large set of test cases. The new version writes the rules once,
+as Lean definitions and theorems, and compiles the same sources into one program, the Calculator,
+which is to compute every value the specification defines, on the server and beside each agent.
+As of 14 October 2026 a first Calculator exists. A test has shown that a compiled Lean program runs
+on the wiki's server when started as a command, though not inside a web request, so the server's gatekeeper, Custos, is to call the Calculator outside the web request.
+These are the project's own statements, on [[Principia Machina/Lean transition|the move to Lean]];
+[[Lean theorem prover/Applications/Principia Machina|Principia Machina]] describes the project in
+this edition.
+
+== Next ==
+
+[[Lean theorem prover/Explainers/A library of mathematics|A library of mathematics]] describes
+Mathlib and the libraries that come with Lean.
+
+== References ==
+
+<references />

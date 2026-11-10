@@ -1,0 +1,154 @@
+{{DISPLAYTITLE:Computation inside proofs}}
+{{Technical|Lean theorem prover/Foundations/Definitional equality|Lean theorem prover/System/Decision procedures}}
+{{Lean theorem prover map}}
+
+Some statements are proved by calculating. That 2 + 2 is 4, or that 97 is prime, can be
+settled by working the sum or by trying every divisor. Lean accepts such calculations as
+proofs. This page shows how, what has to be trusted when it does, and what the calculation
+costs.
+
+== A sum as a proof ==
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+example : 2 + 2 = 4 := rfl
+
+example : 2 ^ 100 = 1267650600228229401496703205376 := rfl
+</pre>
+
+The proof <code>rfl</code> says that the two sides are the same thing. To accept it, Lean
+works out both sides and compares the results. Two expressions that compute to the same value
+are, in Lean's terms, '''definitionally equal''', and for them <code>rfl</code> is a complete
+proof (see [[Lean theorem prover/Explainers/Two kinds of equality|two kinds of
+equality]]).
+
+The second line raises 2 to the power 100 and is accepted at once. In the logic a natural
+number is zero followed by a chain of successors, and a chain of that length could never be
+written out. The Lean kernel does not try. It stores number literals in a fast library for
+arithmetic on large numbers, usually GMP, and replaces addition, multiplication and the other
+basic operations with routines from that library. The Lean Language Reference adds the
+condition that comes with the speed: these routines are part of the Lean kernel, so if they
+did not agree with the definitions they stand in for, soundness could suffer.<ref name="ref-nat">''The
+Lean Language Reference'', version for Lean 4.34.0 (lean-lang.org, 2026), section 20.1,
+"Natural Numbers", with section 20.1.2, "Run-Time Representation".
+https://lean-lang.org/doc/reference/4.34.0/Basic-Types/Natural-Numbers/</ref>
+
+== Deciding a finite question ==
+
+A finite question can be answered by a program, and the run of the program can be a proof.
+Here is a test for primality by trial division, applied to 97:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+def isPrime (n : Nat) : Bool :=
+  n ≥ 2 &amp;&amp; (List.range (n - 2)).all (fun k => n % (k + 2) != 0)
+
+#eval isPrime 97
+
+theorem prime97 : isPrime 97 = true := by decide
+
+#print axioms prime97
+</pre>
+
+The function checks that n is at least 2 and that no number from 2 to n − 1 divides it.
+<code>#eval</code> runs it and prints <code>true</code>. That is a program's answer, not yet
+a proof. The theorem turns it into one. The tactic <code>decide</code> finds a procedure that
+decides the statement and evaluates it inside the logic; when the result is "true", that
+evaluation is the proof, and the Lean kernel repeats it when it checks the
+theorem.<ref name="ref-tacref">''The Lean Language Reference'', version for Lean 4.34.0
+(lean-lang.org, 2026), section 14.5, "Tactic Reference": entries for <code>decide</code> and
+<code>native_decide</code>.
+https://lean-lang.org/doc/reference/4.34.0/Tactic-Proofs/Tactic-Reference/</ref> The last
+line confirms that nothing extra was assumed: <code>'prime97' does not depend on any
+axioms</code>.
+
+== Running the program instead: native_decide ==
+
+The same question can be answered faster by running the program as a program and accepting
+its answer:
+
+<pre class="lean lean-cont" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem prime97_native : isPrime 97 = true := by native_decide
+
+#print axioms prime97_native
+#print prime97_native._native.native_decide.ax_1_1
+</pre>
+
+Lean 4.34.1 answers:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+'prime97_native' depends on axioms: [prime97_native._native.native_decide.ax_1_1]
+axiom prime97_native._native.native_decide.ax_1_1 : decide (isPrime 97 = true) = true
+</pre>
+
+The theorem now rests on an axiom made for the occasion. <code>native_decide</code> evaluated
+the question the way <code>#eval</code> does, and then added an axiom stating the answer. The
+Lean kernel asks for no proof of an axiom; it accepts it. So the theorem is only as sound as the
+evaluation behind the axiom, which means the Lean compiler and every function that has been
+given a faster implementation for running. The reference manual says that this adds the
+entire Lean compiler to the trusted part of the system, and that a new axiom will show up in
+<code>#print axioms</code> for the theorem and for anything that depends on
+it.<ref name="ref-tacref" /> In versions of Lean up to 4.28, such theorems were marked
+instead by one shared axiom, <code>Lean.trustCompiler</code>.<ref name="ref-validating">''The
+Lean Language Reference'', version for Lean 4.34.0 (lean-lang.org, 2026), "Validating a Lean
+Proof", with the note "On Lean.trustCompiler (up to Lean 4.28.0)".
+https://lean-lang.org/doc/reference/4.34.0/ValidatingProofs/</ref>
+
+That is a widening of what must be trusted, not a mistake in the answer. The prime is still
+prime. But a reader who wants to rely on the theorem must now trust a much larger body of
+code than the Lean kernel. The project this wiki records forbids
+<code>native_decide</code> in its own sources, as its proof gate states (see
+[[Principia Machina/Lean transition|the transition page]]). Nothing is hidden either way: the
+axiom's name appears in the list, as on
+[[Lean theorem prover/Explainers/What has to be trusted|what has to be trusted]].
+
+== What the calculation costs ==
+
+Evaluation inside the logic is slow. It proceeds step by step through the definitions, with
+few of the shortcuts of a compiled program, and it has limits on how deep it may go. Asking
+the same question about 1009 shows the difference:
+
+<pre class="lean lean-cont lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+#eval isPrime 1009
+
+example : isPrime 1009 = true := by decide
+</pre>
+
+<code>#eval</code> prints <code>true</code> at once, but <code>decide</code> stops with
+<code>maximum recursion depth has been reached</code>. The option <code>decide +kernel</code>
+hands the evaluation directly to the Lean kernel, which evaluates the procedure once instead
+of twice:<ref name="ref-tacref" />
+
+<pre class="lean lean-cont" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem prime1009 : isPrime 1009 = true := by decide +kernel
+
+#print axioms prime1009
+</pre>
+
+This succeeds, and <code>'prime1009' does not depend on any axioms</code>. The cost grows with
+the size of the question. In one measurement made for this page, on one computer, checking
+the same theorem for the six-digit prime 100003 with <code>decide +kernel</code> took about
+fifteen seconds, while running the program with <code>#eval</code> took well under a second.
+Other computers will give other times.
+
+Some procedures cannot be evaluated inside the logic at all. A decision procedure defined by
+well-founded recursion may get stuck, because evaluating it would require working through
+proofs as well as data.<ref name="ref-tacref" /> The page on
+[[Lean theorem prover/Explainers/Functions that always finish|functions that always finish]]
+explains where such definitions come from.
+
+== The choice ==
+
+Computing inside a proof is a trade between speed and trust. Evaluation by the Lean kernel is
+slow and bounded, but it adds nothing to what must be trusted. Evaluation by the compiler is
+fast, but it adds the compiler, and an axiom, to the foundation of the theorem. When a
+calculation is too large for the first, the alternatives include proving a general
+theorem that makes the calculation unnecessary, and accepting the larger trust and recording it.
+Lean makes the choice visible, so that a reader can see which was taken.
+
+== Next ==
+
+* [[Lean theorem prover/Explainers/The small trusted core|The small trusted core]]: what the Lean kernel is, and why it is kept small.
+* [[Lean theorem prover/Foundations/Definitional equality|Definitional equality]]: the technical treatment of computation in the logic.
+
+== References ==
+
+<references />

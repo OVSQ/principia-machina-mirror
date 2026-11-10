@@ -1,0 +1,13 @@
+[
+  {"class": "RESULT", "layout": "KEYED", "pushed": true, "landing_grade": "PROVISIONAL", "grades": ["PROVISIONAL", "ESTABLISHED", "REFUTED", "WITHDRAWN"], "statuses": ["UNMARKED", "HELD", "REFUTED"]},
+  {"class": "ASSUMPTION", "layout": "KEYED", "pushed": true, "landing_grade": "PROVISIONAL", "grades": ["PROVISIONAL", "WITHDRAWN"], "statuses": ["UNMARKED", "HELD"]},
+  {"class": "CORROBORATION", "layout": "KEYED", "pushed": true, "landing_grade": "PROVISIONAL", "grades": ["PROVISIONAL", "REFUTED", "WITHDRAWN"], "statuses": ["UNMARKED", "HELD", "REFUTED"]},
+  {"class": "VERIFICATION", "layout": "KEYED", "pushed": true, "landing_grade": "PROVISIONAL", "grades": ["PROVISIONAL", "WITHDRAWN"], "statuses": ["UNMARKED", "HELD"]},
+  {"class": "WITHDRAWAL", "layout": "LIST", "pushed": false, "landing_grade": "NOT GRADED", "grades": ["NOT GRADED"], "statuses": []},
+  {"class": "NAMED_GAP", "layout": "KEYED", "pushed": false, "landing_grade": "NOT GRADED", "grades": ["NOT GRADED"], "statuses": []},
+  {"class": "ENTRY_STATUS", "layout": "KEYED", "pushed": true, "landing_grade": "NOT GRADED", "grades": ["NOT GRADED"], "statuses": ["UNMARKED", "HELD"]},
+  {"class": "PROMOTION", "layout": "LIST", "pushed": false, "landing_grade": "NOT GRADED", "grades": ["NOT GRADED"], "statuses": []},
+  {"class": "MASTER", "layout": "KEYED", "pushed": false, "landing_grade": "NOT GRADED", "grades": ["NOT GRADED"], "statuses": []},
+  {"class": "HOLD", "layout": "LIST", "pushed": false, "landing_grade": "NOT GRADED", "grades": ["NOT GRADED"], "statuses": []},
+  {"class": "RELEASE", "layout": "LIST", "pushed": false, "landing_grade": "NOT GRADED", "grades": ["NOT GRADED"], "statuses": []}
+]

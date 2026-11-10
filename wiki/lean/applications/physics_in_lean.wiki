@@ -1,0 +1,66 @@
+{{DISPLAYTITLE:Physics in Lean}}
+{{Lean theorem prover map}}
+Physics is formalised in Lean less than mathematics, but the work has a library of its own, '''Physlib''', and a growing list of results. This page describes that library and its origins, a few results formalised so far, and what a Lean proof can and cannot say about physics. The plain-language companion is [[Lean theorem prover/Explainers/Lean and physics|Lean and physics]].
+
+== Physlib ==
+
+Physlib is an open-source, community project to digitalise results from physics into Lean 4: definitions, theorems, lemmas and calculations, organised by area of physics and documented in physical terms. It is maintained under the Lean community and builds on Mathlib.<ref name="readme">The Physlib community, "Physlib: The Lean Physics Library", project description, read 14 October 2026. https://github.com/leanprover-community/physlib</ref>
+
+It began in 2024 as '''HepLean''', a project to digitalise high energy physics, described by Joseph Tooby-Smith. His paper on it proposed four uses: making existing results easier to find, creating new results with automated and AI methods, reviewing papers for mathematical correctness, and new ways of teaching. It demonstrated the approach on CKM matrices in flavour physics, on local anomaly cancellation, and on Higgs physics.<ref name="heplean">Joseph Tooby-Smith, "HepLean: Digitalising high energy physics", ''Computer Physics Communications'' 308 (2025), 109457. doi:10.1016/j.cpc.2024.109457. arXiv:2405.08863</ref> The project was later renamed '''PhysLean''', and Physlib was formed by merging PhysLean with the quantum-information library Lean-QuantumInfo.<ref name="readme" /><ref name="site">Physlib, "About Physlib", project website, read 14 October 2026. https://physlib.io/about</ref>
+
+As of October 2026 its main part is divided into areas that include classical mechanics, classical field theory, electromagnetism, relativity, quantum mechanics, quantum field theory, statistical mechanics, thermodynamics, condensed matter, cosmology, fluid dynamics, optics, particle physics and string theory, with a separate part for quantum information.<ref name="readme" />
+
+The project states its own rules. It is for mainstream physics only; it is not tied to any one axiomatisation of physics, such as axiomatic quantum field theory, so that it can accommodate different starting points; and its content is reviewed for reuse and readability. Another part, PhyslibAlpha, has a lighter review so that larger contributions, including AI-generated ones, can come in more easily; even that review checks, among other things, that no axioms are added.<ref name="readme" />
+
+== Some results ==
+
+'''Index notation.''' Physicists write tensors with indices, as in <math>T^{\mu}{}_{\nu}</math>, and contract them by repeating an index. Tooby-Smith gave what he describes as the first formally verified implementation of this notation in Lean 4, built on ideas from category theory, so that calculations can be written in the form physicists use and still be checked.<ref name="index">Joseph Tooby-Smith, "Formalization of physics index notation in Lean 4", arXiv:2411.07667, November 2024. https://arxiv.org/abs/2411.07667</ref>
+
+'''The generalised quantum Stein's lemma.''' This result in quantum hypothesis testing gives relative entropy an operational meaning in quantum resource theories. An earlier proof was found to have a gap, and Hayashi and Yamasaki gave a corrected one in 2024. Alex Meiburg, Leonardo A. Lessa and Rodolfo R. Soldati formalised that proof in Lean, drawing on topology, analysis and operator algebra; the formalisation exposed minor imprecisions, which they corrected, and led them to a more precise definition of a quantum resource theory.<ref name="stein">Alex Meiburg, Leonardo A. Lessa and Rodolfo R. Soldati, "A Formalization of the Generalized Quantum Stein's Lemma in Lean", arXiv:2510.08672, October 2025. https://arxiv.org/abs/2510.08672</ref>
+
+== What a proof about physics says ==
+
+A Lean theorem about physics is a theorem about a mathematical model. The small example below models an elastic collision of two bodies of equal mass on a line, in which the velocities are exchanged, and proves that momentum and kinetic energy are the same after the collision as before. It uses whole numbers because core Lean has no real numbers; those come from Mathlib.
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+/-- Two bodies of equal mass on a line, by their velocities (whole numbers here). -/
+structure Pair where
+  v₁ : Int
+  v₂ : Int
+
+/-- The model of an elastic collision of equal masses: the velocities are exchanged. -/
+def collide (p : Pair) : Pair := ⟨p.v₂, p.v₁⟩
+
+def momentum (m : Int) (p : Pair) : Int := m * p.v₁ + m * p.v₂
+
+/-- Twice the kinetic energy, to stay within whole numbers. -/
+def twiceEnergy (m : Int) (p : Pair) : Int := m * (p.v₁ * p.v₁) + m * (p.v₂ * p.v₂)
+
+theorem momentum_conserved (m : Int) (p : Pair) :
+    momentum m (collide p) = momentum m p := by
+  simp only [momentum, collide]
+  exact Int.add_comm _ _
+
+theorem energy_conserved (m : Int) (p : Pair) :
+    twiceEnergy m (collide p) = twiceEnergy m p := by
+  simp only [twiceEnergy, collide]
+  exact Int.add_comm _ _
+
+#print axioms momentum_conserved
+</pre>
+
+Lean 4.34.1 accepts both theorems and prints <code>'momentum_conserved' depends on axioms: [propext]</code>. What has been proved is that the model conserves both quantities. Whether real bodies exchange their velocities when they collide is a question for experiment, and Lean does not touch it. This wiki's [[Principia Machina/Lean transition|account of the move to Lean]] states the same rule for its own framework: Lean proves the model, not the world, and internal consistency is not veracity.<ref name="lt">"Principia Machina: the move to Lean", the page [[Principia Machina/Lean transition]] on this wiki, status as of 14 October 2026.</ref>
+
+== What is within reach ==
+
+Within reach are the parts of physics that are already mathematics: definitions, symmetries, conservation laws, exact calculations, and theorems about models whose mathematics Mathlib supports. Equations and uncertainties over the real numbers need Mathlib, which brings real analysis with it.<ref name="lt" /> Parts of physics whose mathematics is not settled are harder. A result that physicists derive by methods with no rigorous foundation cannot be proved in Lean until a foundation is chosen. Physlib, for its part, does not tie itself to any one axiomatisation.<ref name="readme" /> In every case the hardest step is the one Lean cannot check: whether the Lean definitions say what the physicist means. [[Lean theorem prover/Explainers/Stating the right thing|Stating the right thing]] treats that problem in general.
+
+This wiki's own framework for testing physical hypotheses is moving to Lean, with the choice of Mathlib still open;<ref name="lt" /> see [[Lean theorem prover/Applications/Principia Machina|Principia Machina]]. Its version 1 surveyed Lean, Mathlib and Physlib among physics tools on [[The Principia Machina/Tools/Physlib|a page of its own]].
+
+== Next ==
+
+* [[Lean theorem prover/Applications/Principia Machina|Principia Machina]], this wiki's framework and its move to Lean.
+* [[Lean theorem prover/Explainers/Lean and physics|Lean and physics]], the plain-language companion.
+
+== References ==
+<references />

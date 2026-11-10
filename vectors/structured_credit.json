@@ -1,0 +1,1354 @@
+{
+ "corpus": "structured_credit",
+ "records": [
+  {
+   "id": "accepted-assumption",
+   "note": "a law brought in, an ASSUMPTION record cited, zero dropped",
+   "equation": "F = k * v",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "drag",
+     "equation": "F = k * v + q"
+    },
+    {
+     "cite": "assumption",
+     "name": "A-0007",
+     "equation": "q = 0"
+    }
+   ],
+   "derivation": {
+    "structured": [
+     {
+      "equation": "F = k * v + q",
+      "law": "drag",
+      "site": "rhs"
+     },
+     {
+      "equation": "F = k * v + 0",
+      "assumption": "A-0007",
+      "site": "rhs.r"
+     },
+     {
+      "equation": "F = k * v",
+      "identity": "addZero",
+      "site": "rhs"
+     }
+    ]
+   },
+   "expect": {
+    "verdict": "accepted"
+   },
+   "class": "MECHANICAL"
+  },
+  {
+   "id": "accepted-identities",
+   "note": "identities only: no law cited",
+   "equation": "a * (b + c) = a * c + a * b",
+   "laws": [],
+   "derivation": {
+    "structured": [
+     {
+      "equation": "a * (b + c) = a * b + a * c",
+      "identity": "distrib",
+      "site": "rhs"
+     },
+     {
+      "equation": "a * (b + c) = a * c + a * b",
+      "identity": "addComm",
+      "site": "rhs"
+     }
+    ]
+   },
+   "expect": {
+    "verdict": "accepted"
+   },
+   "class": "MECHANICAL"
+  },
+  {
+   "id": "accepted-backward",
+   "note": "a law applied right to left",
+   "equation": "m * a = F",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "newton2",
+     "equation": "F = m * a"
+    }
+   ],
+   "derivation": {
+    "structured": [
+     {
+      "equation": "m * a = F",
+      "law": "newton2",
+      "site": "rhs",
+      "dir": "bwd"
+     }
+    ]
+   },
+   "expect": {
+    "verdict": "accepted"
+   },
+   "class": "MECHANICAL"
+  },
+  {
+   "id": "refused-not-as-stated",
+   "note": "the law's rewrite is not the equation stated",
+   "equation": "F = a * m",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "newton2",
+     "equation": "F = m * a"
+    }
+   ],
+   "derivation": {
+    "structured": [
+     {
+      "equation": "F = a * m",
+      "law": "newton2",
+      "site": "rhs"
+     }
+    ]
+   },
+   "expect": {
+    "verdict": "refused",
+    "step": 1,
+    "why": "not-as-stated"
+   },
+   "class": "INSPECTION"
+  },
+  {
+   "id": "refused-missing-law",
+   "note": "the step cites a law the record's laws lack",
+   "equation": "F = m * a",
+   "laws": [],
+   "derivation": {
+    "structured": [
+     {
+      "equation": "F = m * a",
+      "law": "newton2",
+      "site": "rhs"
+     }
+    ]
+   },
+   "expect": {
+    "verdict": "refused",
+    "step": 1,
+    "why": "missing-citation"
+   },
+   "class": "INSPECTION"
+  },
+  {
+   "id": "refused-missing-assumption",
+   "note": "the ASSUMPTION record is not among the record's laws",
+   "equation": "F = k * v",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "drag",
+     "equation": "F = k * v + q"
+    }
+   ],
+   "derivation": {
+    "structured": [
+     {
+      "equation": "F = k * v + q",
+      "law": "drag",
+      "site": "rhs"
+     },
+     {
+      "equation": "F = k * v + 0",
+      "assumption": "A-0007",
+      "site": "rhs.r"
+     },
+     {
+      "equation": "F = k * v",
+      "identity": "addZero",
+      "site": "rhs"
+     }
+    ]
+   },
+   "expect": {
+    "verdict": "refused",
+    "step": 2,
+    "why": "missing-citation"
+   },
+   "class": "INSPECTION"
+  },
+  {
+   "id": "refused-final-mismatch",
+   "note": "every step holds but the last is not the RESULT's EQUATION",
+   "equation": "F = k * v",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "drag",
+     "equation": "F = k * v + q"
+    },
+    {
+     "cite": "assumption",
+     "name": "A-0007",
+     "equation": "q = 0"
+    }
+   ],
+   "derivation": {
+    "structured": [
+     {
+      "equation": "F = k * v + q",
+      "law": "drag",
+      "site": "rhs"
+     },
+     {
+      "equation": "F = k * v + 0",
+      "assumption": "A-0007",
+      "site": "rhs.r"
+     }
+    ]
+   },
+   "expect": {
+    "verdict": "refused",
+    "step": 3,
+    "why": "final-mismatch"
+   },
+   "class": "INSPECTION"
+  },
+  {
+   "id": "refused-identity-misapplied",
+   "note": "addZero on a literal not worth zero",
+   "equation": "x + 2 = x",
+   "laws": [],
+   "derivation": {
+    "structured": [
+     {
+      "equation": "x + 2 = x",
+      "identity": "addZero",
+      "site": "rhs"
+     }
+    ]
+   },
+   "expect": {
+    "verdict": "refused",
+    "step": 1,
+    "why": "no-rewrite"
+   },
+   "class": "INSPECTION"
+  },
+  {
+   "id": "unreadable-no-site",
+   "note": "today's wire form: an equation and a citation, no side or path",
+   "equation": "F = m * a",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "N2",
+     "equation": "F = m * a"
+    }
+   ],
+   "derivation": {
+    "structured": [
+     {
+      "equation": "F = m * a",
+      "law": "N2"
+     }
+    ]
+   },
+   "expect": {
+    "verdict": "unreadable",
+    "step": 1,
+    "why": "no-site"
+   },
+   "class": "INSPECTION"
+  },
+  {
+   "id": "unreadable-site",
+   "note": "a site that is not a side and a path",
+   "equation": "F = m * a",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "N2",
+     "equation": "F = m * a"
+    }
+   ],
+   "derivation": {
+    "structured": [
+     {
+      "equation": "F = m * a",
+      "law": "N2",
+      "site": "rhs.x"
+     }
+    ]
+   },
+   "expect": {
+    "verdict": "unreadable",
+    "step": 1,
+    "why": "site-unreadable"
+   },
+   "class": "INSPECTION"
+  },
+  {
+   "id": "unreadable-identity",
+   "note": "paren removal is not a step: no such identity",
+   "equation": "x = x",
+   "laws": [],
+   "derivation": {
+    "structured": [
+     {
+      "equation": "x = (x)",
+      "identity": "parenDrop",
+      "site": "rhs",
+      "dir": "bwd"
+     }
+    ]
+   },
+   "expect": {
+    "verdict": "unreadable",
+    "step": 1,
+    "why": "unknown-identity"
+   },
+   "class": "INSPECTION"
+  },
+  {
+   "id": "unreadable-step-equation",
+   "note": "a step's EQUATION does not read",
+   "equation": "F = m * a",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "N2",
+     "equation": "F = m * a"
+    }
+   ],
+   "derivation": {
+    "structured": [
+     {
+      "equation": "F = = m * a",
+      "law": "N2",
+      "site": "rhs"
+     }
+    ]
+   },
+   "expect": {
+    "verdict": "unreadable",
+    "step": 1,
+    "why": "equation-unreadable"
+   },
+   "class": "INSPECTION"
+  },
+  {
+   "id": "unreadable-result-equation",
+   "note": "the RESULT's EQUATION does not read",
+   "equation": "F m a",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "N2",
+     "equation": "F = m * a"
+    }
+   ],
+   "derivation": {
+    "structured": [
+     {
+      "equation": "F = m * a",
+      "law": "N2",
+      "site": "rhs"
+     }
+    ]
+   },
+   "expect": {
+    "verdict": "unreadable",
+    "step": 0,
+    "why": "equation-unreadable"
+   },
+   "class": "INSPECTION"
+  },
+  {
+   "id": "unreadable-before-refused",
+   "note": "every step is read before any is checked",
+   "equation": "F = m * a",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "N2",
+     "equation": "F = m * a"
+    }
+   ],
+   "derivation": {
+    "structured": [
+     {
+      "equation": "F = a * m",
+      "law": "N2",
+      "site": "rhs"
+     },
+     {
+      "equation": "F = m * a",
+      "law": "N2"
+     }
+    ]
+   },
+   "expect": {
+    "verdict": "unreadable",
+    "step": 2,
+    "why": "no-site"
+   },
+   "class": "INSPECTION"
+  },
+  {
+   "id": "prose-attachment",
+   "note": "PROSE with a STRUCTURED attachment that would pass earns nothing",
+   "equation": "F = k * v",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "drag",
+     "equation": "F = k * v + q"
+    },
+    {
+     "cite": "assumption",
+     "name": "A-0007",
+     "equation": "q = 0"
+    }
+   ],
+   "derivation": {
+    "prose": {
+     "steps": 3,
+     "text": "Drag's law; the q term neglected.",
+     "attachment": [
+      {
+       "equation": "F = k * v + q",
+       "law": "drag",
+       "site": "rhs"
+      },
+      {
+       "equation": "F = k * v + 0",
+       "assumption": "A-0007",
+       "site": "rhs.r"
+      },
+      {
+       "equation": "F = k * v",
+       "identity": "addZero",
+       "site": "rhs"
+      }
+     ]
+    }
+   },
+   "expect": {
+    "verdict": "notStructured"
+   },
+   "class": "INSPECTION"
+  },
+  {
+   "id": "kernel",
+   "note": "KERNEL is not this checker's",
+   "equation": "F = m * a",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "N2",
+     "equation": "F = m * a"
+    }
+   ],
+   "derivation": {
+    "kernelProof": "opaque"
+   },
+   "expect": {
+    "verdict": "notStructured"
+   },
+   "class": "INSPECTION"
+  },
+  {
+   "id": "sources-accepted",
+   "note": "the table assembled from the Starting Set and the ASSUMPTION record the record names",
+   "equation": "F = k * v",
+   "sources": {
+    "startingSet": {
+     "DOF": [
+      {
+       "NAME": "v",
+       "DIMENSION": "L T^-1"
+      }
+     ],
+     "CONSTANT": [
+      {
+       "NAME": "k",
+       "DIMENSION": "M T^-1"
+      }
+     ],
+     "LAW": [
+      {
+       "NAME": "drag",
+       "STATEMENT": "The law drag.",
+       "REFS": [],
+       "ROLE": "DEFINITION",
+       "EQUATION": "F = k * v + q"
+      },
+      {
+       "NAME": "hooke",
+       "STATEMENT": "The spring's law, stated in words only.",
+       "REFS": [],
+       "ROLE": "CONSTITUTIVE"
+      }
+     ],
+     "ASSUMPTION": [
+      {
+       "NAME": "small",
+       "PROPOSITION": "The q term is small.",
+       "REFS": []
+      }
+     ]
+    },
+    "register": [
+     {
+      "ID": "A-0007",
+      "CLASS": "ASSUMPTION",
+      "PROPOSITION": "The q term is neglected.",
+      "REFS": [],
+      "EQUATION": "q = 0"
+     },
+     {
+      "ID": "R-0009",
+      "CLASS": "RESULT",
+      "EQUATION": "q = 0"
+     }
+    ],
+    "assumptions": [
+     "A-0007"
+    ]
+   },
+   "derivation": {
+    "structured": [
+     {
+      "equation": "F = k * v + q",
+      "law": "drag",
+      "site": "rhs"
+     },
+     {
+      "equation": "F = k * v + 0",
+      "assumption": "A-0007",
+      "site": "rhs.r"
+     },
+     {
+      "equation": "F = k * v",
+      "identity": "addZero",
+      "site": "rhs"
+     }
+    ]
+   },
+   "expect": {
+    "verdict": "accepted"
+   },
+   "class": "MECHANICAL"
+  },
+  {
+   "id": "sources-assumption-not-named",
+   "note": "the ASSUMPTION record is in the register but not in the record's ASSUMPTIONS",
+   "equation": "F = k * v",
+   "sources": {
+    "startingSet": {
+     "DOF": [
+      {
+       "NAME": "v",
+       "DIMENSION": "L T^-1"
+      }
+     ],
+     "CONSTANT": [
+      {
+       "NAME": "k",
+       "DIMENSION": "M T^-1"
+      }
+     ],
+     "LAW": [
+      {
+       "NAME": "drag",
+       "STATEMENT": "The law drag.",
+       "REFS": [],
+       "ROLE": "DEFINITION",
+       "EQUATION": "F = k * v + q"
+      },
+      {
+       "NAME": "hooke",
+       "STATEMENT": "The spring's law, stated in words only.",
+       "REFS": [],
+       "ROLE": "CONSTITUTIVE"
+      }
+     ],
+     "ASSUMPTION": [
+      {
+       "NAME": "small",
+       "PROPOSITION": "The q term is small.",
+       "REFS": []
+      }
+     ]
+    },
+    "register": [
+     {
+      "ID": "A-0007",
+      "CLASS": "ASSUMPTION",
+      "PROPOSITION": "The q term is neglected.",
+      "REFS": [],
+      "EQUATION": "q = 0"
+     },
+     {
+      "ID": "R-0009",
+      "CLASS": "RESULT",
+      "EQUATION": "q = 0"
+     }
+    ],
+    "assumptions": []
+   },
+   "derivation": {
+    "structured": [
+     {
+      "equation": "F = k * v + q",
+      "law": "drag",
+      "site": "rhs"
+     },
+     {
+      "equation": "F = k * v + 0",
+      "assumption": "A-0007",
+      "site": "rhs.r"
+     },
+     {
+      "equation": "F = k * v",
+      "identity": "addZero",
+      "site": "rhs"
+     }
+    ]
+   },
+   "expect": {
+    "verdict": "refused",
+    "step": 2,
+    "why": "missing-citation"
+   },
+   "class": "INSPECTION"
+  },
+  {
+   "id": "sources-law-without-equation",
+   "note": "a LAW of the Starting Set stated in words only is not in the table",
+   "equation": "F = k * x",
+   "sources": {
+    "startingSet": {
+     "DOF": [
+      {
+       "NAME": "v",
+       "DIMENSION": "L T^-1"
+      }
+     ],
+     "CONSTANT": [
+      {
+       "NAME": "k",
+       "DIMENSION": "M T^-1"
+      }
+     ],
+     "LAW": [
+      {
+       "NAME": "drag",
+       "STATEMENT": "The law drag.",
+       "REFS": [],
+       "ROLE": "DEFINITION",
+       "EQUATION": "F = k * v + q"
+      },
+      {
+       "NAME": "hooke",
+       "STATEMENT": "The spring's law, stated in words only.",
+       "REFS": [],
+       "ROLE": "CONSTITUTIVE"
+      }
+     ],
+     "ASSUMPTION": [
+      {
+       "NAME": "small",
+       "PROPOSITION": "The q term is small.",
+       "REFS": []
+      }
+     ]
+    },
+    "register": [
+     {
+      "ID": "A-0007",
+      "CLASS": "ASSUMPTION",
+      "PROPOSITION": "The q term is neglected.",
+      "REFS": [],
+      "EQUATION": "q = 0"
+     }
+    ],
+    "assumptions": [
+     "A-0007"
+    ]
+   },
+   "derivation": {
+    "structured": [
+     {
+      "equation": "F = k * x",
+      "law": "hooke",
+      "site": "rhs"
+     }
+    ]
+   },
+   "expect": {
+    "verdict": "refused",
+    "step": 1,
+    "why": "missing-citation"
+   },
+   "class": "INSPECTION"
+  },
+  {
+   "id": "sources-result-named",
+   "note": "a RESULT record named among the ASSUMPTIONS supplies no law",
+   "equation": "F = k * v",
+   "sources": {
+    "startingSet": {
+     "DOF": [
+      {
+       "NAME": "v",
+       "DIMENSION": "L T^-1"
+      }
+     ],
+     "CONSTANT": [
+      {
+       "NAME": "k",
+       "DIMENSION": "M T^-1"
+      }
+     ],
+     "LAW": [
+      {
+       "NAME": "drag",
+       "STATEMENT": "The law drag.",
+       "REFS": [],
+       "ROLE": "DEFINITION",
+       "EQUATION": "F = k * v + q"
+      },
+      {
+       "NAME": "hooke",
+       "STATEMENT": "The spring's law, stated in words only.",
+       "REFS": [],
+       "ROLE": "CONSTITUTIVE"
+      }
+     ],
+     "ASSUMPTION": [
+      {
+       "NAME": "small",
+       "PROPOSITION": "The q term is small.",
+       "REFS": []
+      }
+     ]
+    },
+    "register": [
+     {
+      "ID": "A-0007",
+      "CLASS": "ASSUMPTION",
+      "PROPOSITION": "The q term is neglected.",
+      "REFS": [],
+      "EQUATION": "q = 0"
+     },
+     {
+      "ID": "R-0009",
+      "CLASS": "RESULT",
+      "EQUATION": "q = 0"
+     }
+    ],
+    "assumptions": [
+     "R-0009"
+    ]
+   },
+   "derivation": {
+    "structured": [
+     {
+      "equation": "F = k * v + q",
+      "law": "drag",
+      "site": "rhs"
+     },
+     {
+      "equation": "F = k * v + 0",
+      "assumption": "R-0009",
+      "site": "rhs.r"
+     },
+     {
+      "equation": "F = k * v",
+      "identity": "addZero",
+      "site": "rhs"
+     }
+    ]
+   },
+   "expect": {
+    "verdict": "refused",
+    "step": 2,
+    "why": "missing-citation"
+   },
+   "class": "INSPECTION"
+  },
+  {
+   "id": "sources-starting-set-assumption",
+   "note": "an ASSUMPTION entry of the Starting Set states a proposition, not a law",
+   "equation": "F = k * v",
+   "sources": {
+    "startingSet": {
+     "DOF": [
+      {
+       "NAME": "v",
+       "DIMENSION": "L T^-1"
+      }
+     ],
+     "CONSTANT": [
+      {
+       "NAME": "k",
+       "DIMENSION": "M T^-1"
+      }
+     ],
+     "LAW": [
+      {
+       "NAME": "drag",
+       "STATEMENT": "The law drag.",
+       "REFS": [],
+       "ROLE": "DEFINITION",
+       "EQUATION": "F = k * v + q"
+      },
+      {
+       "NAME": "hooke",
+       "STATEMENT": "The spring's law, stated in words only.",
+       "REFS": [],
+       "ROLE": "CONSTITUTIVE"
+      }
+     ],
+     "ASSUMPTION": [
+      {
+       "NAME": "small",
+       "PROPOSITION": "The q term is small.",
+       "REFS": []
+      }
+     ]
+    },
+    "register": [
+     {
+      "ID": "A-0007",
+      "CLASS": "ASSUMPTION",
+      "PROPOSITION": "The q term is neglected.",
+      "REFS": [],
+      "EQUATION": "q = 0"
+     }
+    ],
+    "assumptions": [
+     "A-0007"
+    ]
+   },
+   "derivation": {
+    "structured": [
+     {
+      "equation": "F = k * v + q",
+      "law": "drag",
+      "site": "rhs"
+     },
+     {
+      "equation": "F = k * v + 0",
+      "law": "small",
+      "site": "rhs.r"
+     },
+     {
+      "equation": "F = k * v",
+      "identity": "addZero",
+      "site": "rhs"
+     }
+    ]
+   },
+   "expect": {
+    "verdict": "refused",
+    "step": 2,
+    "why": "missing-citation"
+   },
+   "class": "INSPECTION"
+  },
+  {
+   "id": "start-law",
+   "note": "the derivation starts from a cited law, not from the EQUATION's left side",
+   "equation": "F = a * m",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "newton2",
+     "equation": "F = m * a"
+    }
+   ],
+   "derivation": {
+    "start": {
+     "law": "newton2"
+    },
+    "structured": [
+     {
+      "equation": "F = a * m",
+      "identity": "mulComm",
+      "site": "rhs"
+     }
+    ]
+   },
+   "expect": {
+    "verdict": "accepted"
+   },
+   "class": "MECHANICAL"
+  },
+  {
+   "id": "start-assumption",
+   "note": "the derivation starts from a cited ASSUMPTION record",
+   "equation": "q + 0 = 0",
+   "laws": [
+    {
+     "cite": "assumption",
+     "name": "A-0007",
+     "equation": "q = 0"
+    }
+   ],
+   "derivation": {
+    "start": {
+     "assumption": "A-0007"
+    },
+    "structured": [
+     {
+      "equation": "q + 0 = 0",
+      "identity": "addZero",
+      "site": "lhs",
+      "dir": "bwd"
+     }
+    ]
+   },
+   "expect": {
+    "verdict": "accepted"
+   },
+   "class": "MECHANICAL"
+  },
+  {
+   "id": "start-expression",
+   "note": "e = e for an expression that is neither side; both sides rewritten",
+   "equation": "x * 1 = x + 0",
+   "laws": [],
+   "derivation": {
+    "start": {
+     "refl": "x"
+    },
+    "structured": [
+     {
+      "equation": "x * 1 = x",
+      "identity": "mulOne",
+      "site": "lhs",
+      "dir": "bwd"
+     },
+     {
+      "equation": "x * 1 = x + 0",
+      "identity": "addZero",
+      "site": "rhs",
+      "dir": "bwd"
+     }
+    ]
+   },
+   "expect": {
+    "verdict": "accepted"
+   },
+   "class": "MECHANICAL"
+  },
+  {
+   "id": "start-right-side",
+   "note": "e = e for the EQUATION's right side; the left side rewritten by a law backward",
+   "equation": "F = m * a",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "newton2",
+     "equation": "F = m * a"
+    }
+   ],
+   "derivation": {
+    "start": {
+     "refl": "m * a"
+    },
+    "structured": [
+     {
+      "equation": "F = m * a",
+      "law": "newton2",
+      "site": "lhs",
+      "dir": "bwd"
+     }
+    ]
+   },
+   "expect": {
+    "verdict": "accepted"
+   },
+   "class": "MECHANICAL"
+  },
+  {
+   "id": "start-law-no-steps",
+   "note": "a RESULT that is the cited law itself, in no step",
+   "equation": "F = m * a",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "newton2",
+     "equation": "F = m * a"
+    }
+   ],
+   "derivation": {
+    "start": {
+     "law": "newton2"
+    },
+    "structured": []
+   },
+   "expect": {
+    "verdict": "accepted"
+   },
+   "class": "MECHANICAL"
+  },
+  {
+   "id": "start-not-goal",
+   "note": "a start that the steps do not carry to the EQUATION",
+   "equation": "F = a * m",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "newton2",
+     "equation": "F = m * a"
+    }
+   ],
+   "derivation": {
+    "start": {
+     "law": "newton2"
+    },
+    "structured": []
+   },
+   "expect": {
+    "verdict": "refused",
+    "step": 1,
+    "why": "final-mismatch"
+   },
+   "class": "INSPECTION"
+  },
+  {
+   "id": "start-missing-law",
+   "note": "the start cites a law the record's laws lack",
+   "equation": "F = a * m",
+   "laws": [],
+   "derivation": {
+    "start": {
+     "law": "newton2"
+    },
+    "structured": [
+     {
+      "equation": "F = a * m",
+      "identity": "mulComm",
+      "site": "rhs"
+     }
+    ]
+   },
+   "expect": {
+    "verdict": "refused",
+    "step": 0,
+    "why": "missing-citation"
+   },
+   "class": "INSPECTION"
+  },
+  {
+   "id": "start-unreadable",
+   "note": "the start's expression does not read; it is reported before a step that does not read either",
+   "equation": "x = x",
+   "laws": [],
+   "derivation": {
+    "start": {
+     "refl": "x +"
+    },
+    "structured": [
+     {
+      "equation": "x = x",
+      "identity": "addComm"
+     }
+    ]
+   },
+   "expect": {
+    "verdict": "unreadable",
+    "step": 0,
+    "why": "start-unreadable"
+   },
+   "class": "INSPECTION"
+  },
+  {
+   "id": "start-sources-not-named",
+   "note": "a start citing an ASSUMPTION record the record's ASSUMPTIONS do not name",
+   "equation": "q + 0 = 0",
+   "sources": {
+    "startingSet": {},
+    "register": [
+     {
+      "ID": "A-0007",
+      "CLASS": "ASSUMPTION",
+      "PROPOSITION": "The q term is neglected.",
+      "REFS": [],
+      "EQUATION": "q = 0"
+     }
+    ],
+    "assumptions": []
+   },
+   "derivation": {
+    "start": {
+     "assumption": "A-0007"
+    },
+    "structured": [
+     {
+      "equation": "q + 0 = 0",
+      "identity": "addZero",
+      "site": "lhs",
+      "dir": "bwd"
+     }
+    ]
+   },
+   "expect": {
+    "verdict": "refused",
+    "step": 0,
+    "why": "missing-citation"
+   },
+   "class": "INSPECTION"
+  }
+ ],
+ "lawTables": [
+  {
+   "id": "table-filtered",
+   "note": "only a LAW with a NAME and an EQUATION that reads, and only an ASSUMPTION record the record names, found with CLASS ASSUMPTION and an EQUATION",
+   "startingSet": {
+    "DOF": [
+     {
+      "NAME": "a",
+      "DIMENSION": "L T^-2"
+     }
+    ],
+    "LAW": [
+     {
+      "NAME": "newton2",
+      "STATEMENT": "The law newton2.",
+      "REFS": [],
+      "ROLE": "DEFINITION",
+      "EQUATION": "F = m * a"
+     },
+     {
+      "NAME": "hooke",
+      "STATEMENT": "The spring's law, stated in words only.",
+      "REFS": [],
+      "ROLE": "CONSTITUTIVE"
+     },
+     {
+      "NAME": "garbled",
+      "STATEMENT": "The law garbled.",
+      "REFS": [],
+      "ROLE": "DEFINITION",
+      "EQUATION": "F = = m"
+     },
+     {
+      "STATEMENT": "A law without a NAME.",
+      "REFS": [],
+      "ROLE": "DEFINITION",
+      "EQUATION": "G = 1"
+     }
+    ],
+    "ASSUMPTION": [
+     {
+      "NAME": "small",
+      "PROPOSITION": "The q term is small.",
+      "REFS": []
+     }
+    ]
+   },
+   "register": [
+    {
+     "ID": "A-0001",
+     "CLASS": "ASSUMPTION",
+     "PROPOSITION": "q is zero.",
+     "REFS": [],
+     "EQUATION": "q = 0"
+    },
+    {
+     "ID": "A-0002",
+     "CLASS": "ASSUMPTION",
+     "PROPOSITION": "x starts at one centimetre.",
+     "REFS": [],
+     "SITUATION": "INITIAL",
+     "DOF": "x",
+     "VALUE": "1",
+     "UNIT": "cm",
+     "AT": "t = 0"
+    },
+    {
+     "ID": "A-0003",
+     "CLASS": "ASSUMPTION",
+     "PROPOSITION": "k is two.",
+     "REFS": [],
+     "EQUATION": "k = 2"
+    },
+    {
+     "ID": "R-0004",
+     "CLASS": "RESULT",
+     "EQUATION": "v = 3"
+    },
+    {
+     "ID": "A-0006",
+     "CLASS": "ASSUMPTION",
+     "PROPOSITION": "Garbled.",
+     "REFS": [],
+     "EQUATION": "q q"
+    }
+   ],
+   "assumptions": [
+    "A-0001",
+    "A-0002",
+    "R-0004",
+    "A-0005",
+    "A-0006"
+   ],
+   "expect": [
+    {
+     "cite": "law",
+     "name": "newton2",
+     "equation": "F = m * a"
+    },
+    {
+     "cite": "assumption",
+     "name": "A-0001",
+     "equation": "q = 0"
+    }
+   ]
+  },
+  {
+   "id": "table-order",
+   "note": "the Starting Set's laws in their order, then the ASSUMPTION records in the order the record names them",
+   "startingSet": {
+    "LAW": [
+     {
+      "NAME": "second",
+      "STATEMENT": "The law second.",
+      "REFS": [],
+      "ROLE": "DEFINITION",
+      "EQUATION": "y = 2 * x"
+     },
+     {
+      "NAME": "first",
+      "STATEMENT": "The law first.",
+      "REFS": [],
+      "ROLE": "DEFINITION",
+      "EQUATION": "x = 1"
+     }
+    ]
+   },
+   "register": [
+    {
+     "ID": "A-0001",
+     "CLASS": "ASSUMPTION",
+     "PROPOSITION": "q is zero.",
+     "REFS": [],
+     "EQUATION": "q = 0"
+    },
+    {
+     "ID": "A-0002",
+     "CLASS": "ASSUMPTION",
+     "PROPOSITION": "p is one.",
+     "REFS": [],
+     "EQUATION": "p = 1"
+    }
+   ],
+   "assumptions": [
+    "A-0002",
+    "A-0001"
+   ],
+   "expect": [
+    {
+     "cite": "law",
+     "name": "second",
+     "equation": "y = 2 * x"
+    },
+    {
+     "cite": "law",
+     "name": "first",
+     "equation": "x = 1"
+    },
+    {
+     "cite": "assumption",
+     "name": "A-0002",
+     "equation": "p = 1"
+    },
+    {
+     "cite": "assumption",
+     "name": "A-0001",
+     "equation": "q = 0"
+    }
+   ]
+  },
+  {
+   "id": "table-no-laws",
+   "note": "a Starting Set without LAWs: the table holds the named ASSUMPTION records only",
+   "startingSet": {
+    "DOF": [
+     {
+      "NAME": "x",
+      "DIMENSION": "L"
+     }
+    ]
+   },
+   "register": [
+    {
+     "ID": "A-0001",
+     "CLASS": "ASSUMPTION",
+     "PROPOSITION": "q is zero.",
+     "REFS": [],
+     "EQUATION": "q = 0"
+    }
+   ],
+   "assumptions": [
+    "A-0001"
+   ],
+   "expect": [
+    {
+     "cite": "assumption",
+     "name": "A-0001",
+     "equation": "q = 0"
+    }
+   ]
+  },
+  {
+   "id": "table-class-filtered",
+   "note": "a record of another class with the identifier named is passed over for the ASSUMPTION record",
+   "startingSet": {},
+   "register": [
+    {
+     "ID": "A-0001",
+     "CLASS": "RESULT",
+     "EQUATION": "q = 5"
+    },
+    {
+     "ID": "A-0001",
+     "CLASS": "ASSUMPTION",
+     "PROPOSITION": "q is zero.",
+     "REFS": [],
+     "EQUATION": "q = 0"
+    }
+   ],
+   "assumptions": [
+    "A-0001"
+   ],
+   "expect": [
+    {
+     "cite": "assumption",
+     "name": "A-0001",
+     "equation": "q = 0"
+    }
+   ]
+  },
+  {
+   "id": "table-empty",
+   "note": "a Starting Set that is not an object and no ASSUMPTIONS: an empty table",
+   "startingSet": [],
+   "register": [
+    {
+     "ID": "A-0001",
+     "CLASS": "ASSUMPTION",
+     "PROPOSITION": "q is zero.",
+     "REFS": [],
+     "EQUATION": "q = 0"
+    }
+   ],
+   "assumptions": [],
+   "expect": []
+  }
+ ]
+}

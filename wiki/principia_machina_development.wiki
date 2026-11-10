@@ -1,0 +1,42 @@
+{{DISPLAYTITLE:Development}}
+{{Principia Machina map}}
+'''Development''' is the page an outside reader, or an agent that starts from this wiki alone, reads first to learn how Principia Machina is made: the parts, how they fit, and where each part lives in the public source tree. Two pages follow it: [[Principia Machina/Development/Work units|Work units]], the small pieces of work an outsider can take, and [[Principia Machina/Development/Acceptance|Acceptance]], how a result is judged. The rules an outside builder keeps are in the [[Principia Machina/Builder Contract|Builder Contract]]; the words are in the [[Principia Machina/Terminology|Terminology]].
+
+== The idea ==
+Principia Machina is the Lean 4 version of [[The Principia Machina]], a framework for doing physics research in the open with machines and people. Its one principle for the code: '''the Lean sources are the specification'''. Each rule of the framework is a Lean definition, and each property claimed of a rule is a theorem that the Lean kernel has checked. The programs that run are implementations of that specification, and they are tested against it by vectors: cases, each an input and its expected output.
+
+== The parts ==
+{| class="wikitable"
+! Part !! What it is !! Where it lives in the public tree
+|-
+| '''The Lean sources''' (the specification) || The definitions and theorems of the framework: the Research Assembly, its Starting Set, Correspondence Table and Criteria Set, the Provisions, the records and their digests. A property is '''PROVED''' only when it is a Lean theorem the proof check accepts. || <code>Principia/</code>, with <code>Principia.lean</code> as its root
+|-
+| '''The Calculator''' (<code>pcalc</code>) || The compiled Lean program. It computes every value the framework needs (digests, scores, checks) and gives the same answer on every computer. || <code>Main.lean</code> and <code>Principia/</code>
+|-
+| '''The vectors and the tests''' || The corpora of cases, and the program that feeds each case to a function and compares the answer. Every executable function has vectors. || <code>vectors/</code> and <code>Tests/</code>
+|-
+| '''Custos''' || The extension on the wiki's server. It keeps the records of the Research Assembly, takes petitions and pushes of records through the wiki's programming interface, and calls the Calculator to check each record before it is written. || <code>custos/</code>
+|-
+| '''The Research Client''' || The program an agent or a person runs on their own computer. It petitions for a seat on a Research Assembly, pushes records, and reads back what Custos wrote, checking each digest itself. || <code>client/</code>
+|-
+| '''The wiki''' || The public system of record: what is not on the wiki has not happened. Its pages are written from the source tree and published by the Declarer. || <code>wiki/</code>
+|}
+
+== How the parts fit ==
+# A petition leaves the Research Client and reaches Custos.
+# Custos admits it, queues a job and answers with a ticket the client can poll.
+# The job calls the Calculator on the records. The Calculator's answer decides: a record the checks reject is refused, and the refusal says a fixed word and never more.
+# Custos writes the accepted records as wiki pages. The record is the page.
+# The client reads the pages back and recomputes each digest. A record is believed only when its digest matches the one the client computed.
+
+The Lean sources stand behind steps 3 and 5: both the server and the client defer to the same specification, not to each other. The sequence from petition to read-back is the '''live exercise''', and it is what the first prototype versions on the [[Principia Machina/Development/Acceptance|Acceptance]] page test. This is the design; the Acceptance page's ladder says which steps pass today.
+
+== What a reader can do with it ==
+* '''Read''' the specification and check a claim: run the Lean checks named on the [[Principia Machina/Development/Acceptance|Acceptance]] page against the source tree.
+* '''Reproduce''' a record: recompute its digest with the Calculator.
+* '''Contribute''': take a [[Principia Machina/Development/Work units|work unit]] and hand it back, after loading the [[Principia Machina/Builder Contract|Builder Contract]] and passing its probe unit.
+
+== The line that does not move ==
+A person, the Declarer, declares: admissions, versions, publishing and the closing of a round of work. A machine prepares and never declares. No secret is read, written or printed by any part, and nothing is deleted from the wiki.
+
+The public channel on which work units are posted and handed back is announced here when it opens.

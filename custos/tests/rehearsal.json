@@ -1,0 +1,49 @@
+{
+  "mediawiki": {
+    "what": "MediaWiki core, the version the host runs; GPL-2.0-or-later",
+    "repository": "https://github.com/wikimedia/mediawiki",
+    "tag": "1.46.2",
+    "commit": "d0d9a283f219a1c9487754dc96598080a4a4e30a"
+  },
+  "vendor": {
+    "what": "MediaWiki's third-party libraries for the 1.46 line, cloned into the core's vendor/",
+    "repository": "https://github.com/wikimedia/mediawiki-vendor",
+    "branch": "REL1_46",
+    "commit": "7b87600c2a0dbb7584ac9e0306c9c3185812010a"
+  },
+  "tarball": {
+    "what": "the test gate's cached MediaWiki 1.46.2 tarball ($MW_TARBALL); the digest the gate checks is gates.py's MW_SHA256",
+    "version": "1.46.2",
+    "sha256": "8f7f937f8bbc1acd4cef1c5362a95f248dcd242020f2588798eb2f73ac2e69ba"
+  },
+  "dbal": {
+    "what": "MediaWiki 1.46.2's require-dev pin, for generateSchemaSql; MIT",
+    "repository": "https://github.com/doctrine/dbal",
+    "tag": "3.10.5",
+    "commit": "95d84866bf3c04b2ddca1df7c049714660959aef"
+  },
+  "sql-formatter": {
+    "what": "MediaWiki 1.46.2's require-dev pin, for generateSchemaSql; MIT",
+    "repository": "https://github.com/doctrine/sql-formatter",
+    "tag": "1.5.4",
+    "commit": "9563949f5cd3bd12a17d12fb980528bc141c5806"
+  },
+  "jsonlint": {
+    "what": "seld/jsonlint, MediaWiki 1.46.2's require-dev pin, for the abstract schema's validation; MIT",
+    "repository": "https://github.com/Seldaek/jsonlint",
+    "tag": "1.11.0",
+    "commit": "1748aaf847fc731cfad7725aec413ee46f0cc3a2"
+  },
+  "deprecations": {
+    "what": "doctrine/dbal's dependency (^0.5.3|^1); MIT",
+    "repository": "https://github.com/doctrine/deprecations",
+    "tag": "1.1.5",
+    "commit": "459c2f5dd3d6a4633d3b5f46ee2b1c40f57d3f38"
+  },
+  "event-manager": {
+    "what": "doctrine/dbal's dependency (^1|^2); MIT",
+    "repository": "https://github.com/doctrine/event-manager",
+    "tag": "2.0.1",
+    "commit": "b680156fa328f1dfd874fd48c7026c41570b9c6e"
+  }
+}

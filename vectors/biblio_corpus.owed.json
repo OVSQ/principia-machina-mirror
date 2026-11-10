@@ -1,0 +1,6 @@
+{
+ "corpus": "biblio_corpus.json",
+ "note": "Cases of biblio_corpus.json the Calculator does not judge yet, each with the reason; neither a pass nor a failure. Tests/Biblio.lean requires every owed case to be listed here for its reason, and every case listed here to come out owed for it; none is. The corpus itself is never edited.",
+ "reasons": {},
+ "owed": []
+}

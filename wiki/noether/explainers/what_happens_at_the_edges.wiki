@@ -1,0 +1,109 @@
+{{DISPLAYTITLE:What happens at the edges}}
+{{Noether's theorems map}}
+
+''Mathematical counterpart: [[Noether's theorems/First theorem/The boundary term|The boundary term]].''
+
+[[File:NT-F-14.png|thumb|right|360px|alt=A solid rectangle and a shifted dashed copy of it, with the strip that enters shaded on one side and the strip that leaves shaded on the other. The overlapping interior is marked unchanged. A caption says the whole cost of moving the region is a border term, and that this term becomes the conserved current.|The origin of the boundary term]]
+
+This is the hinge of the whole argument, and it turns on being careful about a
+question that sounds trivial: changed compared with what?
+
+== Two thermometers ==
+
+A river is warming through the afternoon, and it is warmer downstream than up.
+
+Drop a floating thermometer in the water. It drifts with the current and records
+a rising temperature. Some of that rise is the afternoon warming everything. Some
+of it is the thermometer arriving somewhere that was already warmer.
+
+Now fix a second thermometer to the bridge. It also records a rise, but only the
+afternoon's. It never goes anywhere, so nothing it records is due to arriving
+somewhere new.
+
+'''Two thermometers, two different numbers, both correct.''' Which one you want
+depends on the question, and confusing them is a mistake that shows up as a wrong
+sign rather than as obvious nonsense.
+
+== Noether keeps three, not two ==
+
+Most treatments of her theorems use two symbols where she used three. The middle
+one is the one that disappears.
+
+'''The drifting thermometer.''' The total change: the new situation at the new
+place, against the old situation at the old place. Everything that changed, from
+every cause.
+
+'''The bridge thermometer.''' The change at a fixed place: the new situation
+compared with the old at the same spot. This is the total change with the effect
+of moving subtracted out.
+
+'''The nudge.''' The ordinary change you make when you test a shape by pushing
+it, as on
+[[Noether's theorems/Explainers/Nudging a path and seeing what changes|the nudging
+page]]. Here nothing is being transformed at all — you are just poking the system
+to see if it pushes back.
+
+The first two differ by exactly the amount the drift accounts for. Noether writes
+that difference down as its own equation, and it is one of the most quoted lines
+in the paper. Compress the three into two and you lose the equation that
+subtracts the drift, which is precisely where sign errors come from.
+
+== Moving the frame ==
+
+There is a second piece of bookkeeping on this page, and it produces the thing
+everything else is built on.
+
+Photograph a scene. Now slide the frame slightly and photograph again. The two
+pictures differ, and the difference is entirely at the border: a strip has come in
+on one side, a strip has gone out on the other. The middle is untouched.
+
+Transforming the variables moves the frame in just this way, and the cost of
+moving it is exactly a border term.
+
+'''That border term is where conserved quantities come from.''' It is not an
+error term to be assumed away. It is the answer.
+
+== Losing the integral sign ==
+
+The last step on this page is short and it changes everything after it.
+
+You end up with a statement that some total, added up over a region, is zero.
+That would be a mild statement if it were about one region. But it holds for
+'''every''' region you choose — big, small, anywhere.
+
+A quantity whose total is zero over every possible region has to be zero
+everywhere. There is nowhere for it to hide.
+
+So the statement stops being about totals and becomes a statement about each
+point separately. From here to the end of both theorems there is no adding up at
+all, only algebra.
+
+That is why the results hold point by point, and why they hold whether or not
+anything is obeying the laws of physics.
+
+== Reading the wrong thermometer ==
+
+Here is the failure this page exists to prevent.
+
+Suppose you are working out the conserved quantity for a shift in time, and you
+reach for the drifting thermometer when the argument wanted the bridge one.
+
+The two differ by the drift term. So your answer differs from the right answer by
+that same term. And the drift term is not small, and it is not obviously out of
+place — it has the right units, it has a sensible size, it varies the way you would
+expect a piece of the energy to vary.
+
+What you get is not an error message. It is a wrong conserved quantity that looks
+entirely reasonable, and which happens to be conserved in the special case where
+nothing is moving.
+
+'''The most common symptom is a sign.''' The two comparisons differ by the drift,
+and the drift enters with a minus, so a treatment that muddles them tends to
+produce an answer that is right except for being backwards. A minus sign is easy
+to blame on a convention and hard to trace to its cause.
+
+That is why Noether kept three symbols where two would have looked tidier, and why
+this volume does the same.
+
+''No mathematics is used on this page. The mathematical treatment is on the
+counterpart page named above.''

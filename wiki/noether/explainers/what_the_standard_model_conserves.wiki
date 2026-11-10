@@ -1,0 +1,101 @@
+{{DISPLAYTITLE:What the Standard Model conserves}}
+{{Noether's theorems map}}
+
+''Mathematical counterpart: [[Noether's theorems/Applications/The conserved currents of the Standard Model|The conserved currents of the Standard Model]].''
+
+'''A note about this page.''' Its counterpart describes and derives nothing, so
+this one does the same. The two structural statements below are secure. Everything
+specific about the Standard Model is reported as it is usually stated, not as
+anything checked here.
+
+== What holds no matter what the theory contains ==
+
+Two results carry over from earlier in this volume and need nothing about
+particles at all.
+
+'''The counting.''' A theory with symmetries you can dial differently at every
+point has exactly as many redundancies as it has such dials. That many identities
+among its equations, that many equations following from the rest, that much
+description that means nothing. From
+[[Noether's theorems/Explainers/Counting the equations a gauge theory really has|the
+counting page]], and independent of what is being described.
+
+'''The forcing.''' Anything coupled to such a symmetry must be conserved, or the
+equations have no solutions. Not permitted — required. This came out of a
+one-line argument about antisymmetry and carries across untouched.
+
+Both apply to the Standard Model exactly as they apply to electromagnetism, and
+neither needed to be re-derived when the Standard Model was written down.
+
+== What is usually said, and is not checked here ==
+
+'''Unchecked, all of the following.''' The Standard Model is built on three local
+symmetries of different sizes, whose conserved quantities are the electric charge,
+the weak charges and the colour charges. Alongside those it has global symmetries
+whose conserved quantities are the various particle-counting numbers — how many
+protons and neutrons, how many electrons, and so on.
+
+None of that is derived in this volume, and the counterpart page declines to state
+it as established for the same reason.
+
+== The point this volume can actually make ==
+
+It is not which currents the theory has. It is that '''nothing new was needed to
+know what shape they would take'''.
+
+When physicists build a candidate theory of some force, they choose a symmetry
+first. The moment that choice is made, the count of conserved currents is fixed,
+the count of redundant equations is fixed, and the requirement that the coupled
+matter conserve those currents is fixed. All of it follows from a theorem proved
+before any of the relevant physics existed.
+
+'''The theorem is not used to check the answer afterwards. It is used to constrain
+the question beforehand.'''
+
+== One qualification that is not optional ==
+
+Everything above is classical.
+
+A symmetry of the classical theory need not survive the move to quantum mechanics,
+and where it does not, a classically conserved quantity is simply not conserved.
+The particle-counting numbers are the standard example of quantities affected by
+this.
+
+Worse, if a '''local''' symmetry fails to survive, the theory does not merely lose
+a conservation law — it stops making sense, because the redundancy in its
+description was never supposed to be physical and now leaks into the predictions.
+
+Checking that this does not happen is one of the first things done to any
+candidate theory, and several features of the known particles are the way they are
+because nothing else would pass the check. See
+[[Noether's theorems/Explainers/When a symmetry does not survive|When a symmetry
+does not survive]].
+
+== Exact, approximate, and merely apparent ==
+
+The conserved quantities of the Standard Model are not all conserved in the same
+sense, and the differences matter.
+
+'''Tied to a local symmetry.''' Electric charge and the colour charges. These are
+the most secure things in the theory. As
+[[Noether's theorems/Explainers/Counting the equations a gauge theory really has|the
+counting page]] showed, a local symmetry does not merely permit the conservation
+of what couples to it — it requires it, on pain of the equations having no
+solutions at all. A violation would not be a surprising measurement; it would be
+an inconsistent theory.
+
+'''Tied to a global symmetry.''' The particle-counting numbers. These come from
+the first theorem in its ordinary form. They are conserved because the scoring
+rule happens to have a symmetry, and nothing forces the scoring rule to have it.
+A more complete theory could easily not.
+
+'''Apparent.''' Some quantities look conserved because every process that would
+violate them is too slow or too weak to have been seen. That is a statement about
+experiments, not about symmetry, and it is the category most likely to be revised.
+
+'''The three look identical in a table of conserved quantities and are entirely
+different claims.''' Knowing which is which is one of the more useful things the
+two theorems provide, and it is invisible unless you ask where each came from.
+
+''No mathematics is used on this page. The mathematical treatment is on the
+counterpart page named above.''

@@ -1,0 +1,1434 @@
+{
+ "corpus": "structured_check",
+ "check": [
+  {
+   "id": "acc-refl-addcomm",
+   "note": "from a + b = a + b, commute the right side",
+   "laws": [],
+   "start": {
+    "refl": "a + b"
+   },
+   "steps": [
+    {
+     "side": "rhs",
+     "path": "",
+     "rule": "identity",
+     "name": "addComm",
+     "dir": "fwd",
+     "result": "a + b = b + a"
+    }
+   ],
+   "goal": "a + b = b + a",
+   "expect": {
+    "verdict": "accepted"
+   }
+  },
+  {
+   "id": "acc-law-mulcomm",
+   "note": "a cited law, then an identity",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "newton2",
+     "equation": "F = m * a"
+    }
+   ],
+   "start": {
+    "cite": "law",
+    "name": "newton2"
+   },
+   "steps": [
+    {
+     "side": "rhs",
+     "path": "",
+     "rule": "identity",
+     "name": "mulComm",
+     "dir": "fwd",
+     "result": "F = a * m"
+    }
+   ],
+   "goal": "F = a * m",
+   "expect": {
+    "verdict": "accepted"
+   }
+  },
+  {
+   "id": "acc-assumption",
+   "note": "an ASSUMPTION record cited: a neglected term is zero",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "drag",
+     "equation": "F = k * v + q"
+    },
+    {
+     "cite": "assumption",
+     "name": "A-0007",
+     "equation": "q = 0"
+    }
+   ],
+   "start": {
+    "cite": "law",
+    "name": "drag"
+   },
+   "steps": [
+    {
+     "side": "rhs",
+     "path": "r",
+     "rule": "assumption",
+     "name": "A-0007",
+     "dir": "fwd",
+     "result": "F = k * v + 0"
+    },
+    {
+     "side": "rhs",
+     "path": "",
+     "rule": "identity",
+     "name": "addZero",
+     "dir": "fwd",
+     "result": "F = k * v"
+    }
+   ],
+   "goal": "F = k * v",
+   "expect": {
+    "verdict": "accepted"
+   }
+  },
+  {
+   "id": "acc-distrib-assoc",
+   "note": "distribute under a sum, then reassociate; the stated parentheses only group",
+   "laws": [],
+   "start": {
+    "refl": "x * (y + z) + w"
+   },
+   "steps": [
+    {
+     "side": "rhs",
+     "path": "l",
+     "rule": "identity",
+     "name": "distrib",
+     "dir": "fwd",
+     "result": "x * (y + z) + w = x * y + x * z + w"
+    },
+    {
+     "side": "rhs",
+     "path": "",
+     "rule": "identity",
+     "name": "addAssoc",
+     "dir": "fwd",
+     "result": "x * (y + z) + w = x * y + (x * z + w)"
+    }
+   ],
+   "goal": "x * (y + z) + w = x * y + (x * z + w)",
+   "expect": {
+    "verdict": "accepted"
+   }
+  },
+  {
+   "id": "acc-law-inside-power",
+   "note": "a law rewrites a power's base under a quotient",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "momentum",
+     "equation": "p = m * v"
+    },
+    {
+     "cite": "law",
+     "name": "kinetic",
+     "equation": "K = p^2 / (2 * m)"
+    }
+   ],
+   "start": {
+    "cite": "law",
+    "name": "kinetic"
+   },
+   "steps": [
+    {
+     "side": "rhs",
+     "path": "l.a",
+     "rule": "law",
+     "name": "momentum",
+     "dir": "fwd",
+     "result": "K = (m * v)^2 / (2 * m)"
+    },
+    {
+     "side": "rhs",
+     "path": "r",
+     "rule": "identity",
+     "name": "mulComm",
+     "dir": "fwd",
+     "result": "K = (m * v)^2 / (m * 2)"
+    }
+   ],
+   "goal": "K = (m * v)^2 / (m * 2)",
+   "expect": {
+    "verdict": "accepted"
+   }
+  },
+  {
+   "id": "acc-law-backward",
+   "note": "a law used right to left, on the left side",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "ohm",
+     "equation": "V = i_c * R"
+    }
+   ],
+   "start": {
+    "refl": "i_c * R"
+   },
+   "steps": [
+    {
+     "side": "lhs",
+     "path": "",
+     "rule": "law",
+     "name": "ohm",
+     "dir": "bwd",
+     "result": "V = i_c * R"
+    }
+   ],
+   "goal": "V = i_c * R",
+   "expect": {
+    "verdict": "accepted"
+   }
+  },
+  {
+   "id": "acc-mulone-negneg",
+   "note": "multiplicative identity, then double negation",
+   "laws": [],
+   "start": {
+    "refl": "-(-x) * 1"
+   },
+   "steps": [
+    {
+     "side": "rhs",
+     "path": "",
+     "rule": "identity",
+     "name": "mulOne",
+     "dir": "fwd",
+     "result": "-(-x) * 1 = -(-x)"
+    },
+    {
+     "side": "rhs",
+     "path": "",
+     "rule": "identity",
+     "name": "negNeg",
+     "dir": "fwd",
+     "result": "-(-x) * 1 = x"
+    }
+   ],
+   "goal": "-(-x) * 1 = x",
+   "expect": {
+    "verdict": "accepted"
+   }
+  },
+  {
+   "id": "acc-division",
+   "note": "a quotient's numerator rewritten; no exception for a zero divisor",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "density",
+     "equation": "rho = m / V"
+    }
+   ],
+   "start": {
+    "cite": "law",
+    "name": "density"
+   },
+   "steps": [
+    {
+     "side": "rhs",
+     "path": "l",
+     "rule": "identity",
+     "name": "mulOne",
+     "dir": "bwd",
+     "result": "rho = m * 1 / V"
+    }
+   ],
+   "goal": "rho = m * 1 / V",
+   "expect": {
+    "verdict": "accepted"
+   }
+  },
+  {
+   "id": "acc-backward-identities",
+   "note": "identities right to left: distributivity, addition of zero, associativity, double negation",
+   "laws": [],
+   "start": {
+    "refl": "a * b + a * c"
+   },
+   "steps": [
+    {
+     "side": "rhs",
+     "path": "",
+     "rule": "identity",
+     "name": "distrib",
+     "dir": "bwd",
+     "result": "a * b + a * c = a * (b + c)"
+    },
+    {
+     "side": "rhs",
+     "path": "r.r",
+     "rule": "identity",
+     "name": "addZero",
+     "dir": "bwd",
+     "result": "a * b + a * c = a * (b + (c + 0))"
+    },
+    {
+     "side": "rhs",
+     "path": "r",
+     "rule": "identity",
+     "name": "addAssoc",
+     "dir": "bwd",
+     "result": "a * b + a * c = a * (b + c + 0)"
+    },
+    {
+     "side": "rhs",
+     "path": "",
+     "rule": "identity",
+     "name": "negNeg",
+     "dir": "bwd",
+     "result": "a * b + a * c = -(-(a * (b + c + 0)))"
+    }
+   ],
+   "goal": "a * b + a * c = -(-(a * (b + c + 0)))",
+   "expect": {
+    "verdict": "accepted"
+   }
+  },
+  {
+   "id": "acc-mulassoc",
+   "note": "associativity of * both ways",
+   "laws": [],
+   "start": {
+    "refl": "a * b * c"
+   },
+   "steps": [
+    {
+     "side": "rhs",
+     "path": "",
+     "rule": "identity",
+     "name": "mulAssoc",
+     "dir": "fwd",
+     "result": "a * b * c = a * (b * c)"
+    },
+    {
+     "side": "rhs",
+     "path": "",
+     "rule": "identity",
+     "name": "mulAssoc",
+     "dir": "bwd",
+     "result": "a * b * c = a * b * c"
+    }
+   ],
+   "goal": "a * b * c = a * b * c",
+   "expect": {
+    "verdict": "accepted"
+   }
+  },
+  {
+   "id": "acc-no-steps",
+   "note": "a cited law that is the goal already, parentheses aside",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "newton2",
+     "equation": "F = m * a"
+    }
+   ],
+   "start": {
+    "cite": "law",
+    "name": "newton2"
+   },
+   "steps": [],
+   "goal": "F = (m * a)",
+   "expect": {
+    "verdict": "accepted"
+   }
+  },
+  {
+   "id": "ref-wrong-rewrite",
+   "note": "the law's rewrite is not the equation the step states",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "newton2",
+     "equation": "F = m * a"
+    },
+    {
+     "cite": "law",
+     "name": "accel",
+     "equation": "a = dv / dt"
+    }
+   ],
+   "start": {
+    "cite": "law",
+    "name": "newton2"
+   },
+   "steps": [
+    {
+     "side": "rhs",
+     "path": "r",
+     "rule": "law",
+     "name": "accel",
+     "dir": "fwd",
+     "result": "F = m * dv"
+    }
+   ],
+   "goal": "F = m * dv",
+   "expect": {
+    "verdict": "refused",
+    "step": 1,
+    "why": "not-as-stated"
+   }
+  },
+  {
+   "id": "ref-missing-citation",
+   "note": "a step cites a law the table lacks",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "newton2",
+     "equation": "F = m * a"
+    }
+   ],
+   "start": {
+    "cite": "law",
+    "name": "newton2"
+   },
+   "steps": [
+    {
+     "side": "rhs",
+     "path": "r",
+     "rule": "law",
+     "name": "accel",
+     "dir": "fwd",
+     "result": "F = m * (dv / dt)"
+    }
+   ],
+   "goal": "F = m * (dv / dt)",
+   "expect": {
+    "verdict": "refused",
+    "step": 1,
+    "why": "missing-citation"
+   }
+  },
+  {
+   "id": "ref-missing-start",
+   "note": "the start cites a law the table lacks",
+   "laws": [],
+   "start": {
+    "cite": "law",
+    "name": "newton2"
+   },
+   "steps": [],
+   "goal": "F = m * a",
+   "expect": {
+    "verdict": "refused",
+    "step": 0,
+    "why": "missing-citation"
+   }
+  },
+  {
+   "id": "ref-missing-assumption",
+   "note": "a step cites an ASSUMPTION record the table lacks",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "drag",
+     "equation": "F = k * v + q"
+    }
+   ],
+   "start": {
+    "cite": "law",
+    "name": "drag"
+   },
+   "steps": [
+    {
+     "side": "rhs",
+     "path": "r",
+     "rule": "assumption",
+     "name": "A-0007",
+     "dir": "fwd",
+     "result": "F = k * v + 0"
+    }
+   ],
+   "goal": "F = k * v + 0",
+   "expect": {
+    "verdict": "refused",
+    "step": 1,
+    "why": "missing-citation"
+   }
+  },
+  {
+   "id": "ref-citation-kind",
+   "note": "an ASSUMPTION record is not cited as a law of the same name",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "drag",
+     "equation": "F = k * v + q"
+    },
+    {
+     "cite": "assumption",
+     "name": "q0",
+     "equation": "q = 0"
+    }
+   ],
+   "start": {
+    "cite": "law",
+    "name": "drag"
+   },
+   "steps": [
+    {
+     "side": "rhs",
+     "path": "r",
+     "rule": "law",
+     "name": "q0",
+     "dir": "fwd",
+     "result": "F = k * v + 0"
+    }
+   ],
+   "goal": "F = k * v + 0",
+   "expect": {
+    "verdict": "refused",
+    "step": 1,
+    "why": "missing-citation"
+   }
+  },
+  {
+   "id": "ref-final-mismatch",
+   "note": "every step holds but the last equation is not the goal",
+   "laws": [],
+   "start": {
+    "refl": "a + b"
+   },
+   "steps": [
+    {
+     "side": "rhs",
+     "path": "",
+     "rule": "identity",
+     "name": "addComm",
+     "dir": "fwd",
+     "result": "a + b = b + a"
+    }
+   ],
+   "goal": "a + b = a + b + 0",
+   "expect": {
+    "verdict": "refused",
+    "step": 2,
+    "why": "final-mismatch"
+   }
+  },
+  {
+   "id": "ref-identity-misapplied",
+   "note": "commutativity of + applied to a product",
+   "laws": [],
+   "start": {
+    "refl": "a * b"
+   },
+   "steps": [
+    {
+     "side": "rhs",
+     "path": "",
+     "rule": "identity",
+     "name": "addComm",
+     "dir": "fwd",
+     "result": "a * b = b * a"
+    }
+   ],
+   "goal": "a * b = b * a",
+   "expect": {
+    "verdict": "refused",
+    "step": 1,
+    "why": "no-rewrite"
+   }
+  },
+  {
+   "id": "ref-distrib-unequal",
+   "note": "factoring needs the same left factor",
+   "laws": [],
+   "start": {
+    "refl": "x * y + z * w"
+   },
+   "steps": [
+    {
+     "side": "rhs",
+     "path": "",
+     "rule": "identity",
+     "name": "distrib",
+     "dir": "bwd",
+     "result": "x * y + z * w = x * (y + w)"
+    }
+   ],
+   "goal": "x * y + z * w = x * (y + w)",
+   "expect": {
+    "verdict": "refused",
+    "step": 1,
+    "why": "no-rewrite"
+   }
+  },
+  {
+   "id": "ref-addzero-nonzero",
+   "note": "a literal not worth zero is not dropped",
+   "laws": [],
+   "start": {
+    "refl": "x + 2"
+   },
+   "steps": [
+    {
+     "side": "rhs",
+     "path": "",
+     "rule": "identity",
+     "name": "addZero",
+     "dir": "fwd",
+     "result": "x + 2 = x"
+    }
+   ],
+   "goal": "x + 2 = x",
+   "expect": {
+    "verdict": "refused",
+    "step": 1,
+    "why": "no-rewrite"
+   }
+  },
+  {
+   "id": "ref-path-off-tree",
+   "note": "the path leads into an identifier",
+   "laws": [],
+   "start": {
+    "refl": "x"
+   },
+   "steps": [
+    {
+     "side": "rhs",
+     "path": "l",
+     "rule": "identity",
+     "name": "addComm",
+     "dir": "fwd",
+     "result": "x = x"
+    }
+   ],
+   "goal": "x = x",
+   "expect": {
+    "verdict": "refused",
+    "step": 1,
+    "why": "no-rewrite"
+   }
+  },
+  {
+   "id": "ref-second-step",
+   "note": "the first failing step is the one reported",
+   "laws": [],
+   "start": {
+    "refl": "a + b"
+   },
+   "steps": [
+    {
+     "side": "rhs",
+     "path": "",
+     "rule": "identity",
+     "name": "addComm",
+     "dir": "fwd",
+     "result": "a + b = b + a"
+    },
+    {
+     "side": "rhs",
+     "path": "",
+     "rule": "identity",
+     "name": "mulComm",
+     "dir": "fwd",
+     "result": "a + b = a + b"
+    },
+    {
+     "side": "rhs",
+     "path": "",
+     "rule": "identity",
+     "name": "addComm",
+     "dir": "fwd",
+     "result": "a + b = a + b"
+    }
+   ],
+   "goal": "a + b = a + b",
+   "expect": {
+    "verdict": "refused",
+    "step": 2,
+    "why": "no-rewrite"
+   }
+  },
+  {
+   "id": "ref-no-unification",
+   "note": "a law applies to the very subterm it states, not to an instance",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "square",
+     "equation": "y = x^2"
+    }
+   ],
+   "start": {
+    "refl": "z^2"
+   },
+   "steps": [
+    {
+     "side": "rhs",
+     "path": "",
+     "rule": "law",
+     "name": "square",
+     "dir": "bwd",
+     "result": "z^2 = y"
+    }
+   ],
+   "goal": "z^2 = y",
+   "expect": {
+    "verdict": "refused",
+    "step": 1,
+    "why": "no-rewrite"
+   }
+  },
+  {
+   "id": "ref-identity-side",
+   "note": "the stated equation rewrote the other side",
+   "laws": [],
+   "start": {
+    "refl": "a + b"
+   },
+   "steps": [
+    {
+     "side": "lhs",
+     "path": "",
+     "rule": "identity",
+     "name": "addComm",
+     "dir": "fwd",
+     "result": "a + b = b + a"
+    }
+   ],
+   "goal": "a + b = b + a",
+   "expect": {
+    "verdict": "refused",
+    "step": 1,
+    "why": "not-as-stated"
+   }
+  },
+  {
+   "id": "acc-instance-square",
+   "note": "a law cited by instance: its left side matched to a square, the other side instantiated",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "square",
+     "equation": "(u + w)^2 = u^2 + 2 * u * w + w^2"
+    }
+   ],
+   "start": {
+    "refl": "(a + b * c)^2"
+   },
+   "steps": [
+    {
+     "side": "rhs",
+     "path": "",
+     "rule": "law",
+     "name": "square",
+     "dir": "fwd",
+     "instance": true,
+     "result": "(a + b * c)^2 = a^2 + 2 * a * (b * c) + (b * c)^2"
+    }
+   ],
+   "goal": "(a + b * c)^2 = a^2 + 2 * a * (b * c) + (b * c)^2",
+   "expect": {
+    "verdict": "accepted"
+   }
+  },
+  {
+   "id": "acc-instance-backward",
+   "note": "the same law by instance right to left; a symbol met twice stands for one expression, a literal among them",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "square",
+     "equation": "(u + w)^2 = u^2 + 2 * u * w + w^2"
+    }
+   ],
+   "start": {
+    "refl": "x^2 + 2 * x * 3 + 3^2"
+   },
+   "steps": [
+    {
+     "side": "rhs",
+     "path": "",
+     "rule": "law",
+     "name": "square",
+     "dir": "bwd",
+     "instance": true,
+     "result": "x^2 + 2 * x * 3 + 3^2 = (x + 3)^2"
+    }
+   ],
+   "goal": "x^2 + 2 * x * 3 + 3^2 = (x + 3)^2",
+   "expect": {
+    "verdict": "accepted"
+   }
+  },
+  {
+   "id": "acc-instance-nonlinear",
+   "note": "a pattern with one symbol twice matches two equal subterms, then an identity",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "cancel",
+     "equation": "v - v = 0"
+    }
+   ],
+   "start": {
+    "refl": "y + (m * a - m * a)"
+   },
+   "steps": [
+    {
+     "side": "rhs",
+     "path": "r",
+     "rule": "law",
+     "name": "cancel",
+     "dir": "fwd",
+     "instance": true,
+     "result": "y + (m * a - m * a) = y + 0"
+    },
+    {
+     "side": "rhs",
+     "path": "",
+     "rule": "identity",
+     "name": "addZero",
+     "dir": "fwd",
+     "result": "y + (m * a - m * a) = y"
+    }
+   ],
+   "goal": "y + (m * a - m * a) = y",
+   "expect": {
+    "verdict": "accepted"
+   }
+  },
+  {
+   "id": "acc-instance-in-function",
+   "note": "an instance rewritten inside a function's argument",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "halves",
+     "equation": "h / 2 + h / 2 = h"
+    }
+   ],
+   "start": {
+    "refl": "exp(k * t / 2 + k * t / 2)"
+   },
+   "steps": [
+    {
+     "side": "rhs",
+     "path": "a",
+     "rule": "law",
+     "name": "halves",
+     "dir": "fwd",
+     "instance": true,
+     "result": "exp(k * t / 2 + k * t / 2) = exp(k * t)"
+    }
+   ],
+   "goal": "exp(k * t / 2 + k * t / 2) = exp(k * t)",
+   "expect": {
+    "verdict": "accepted"
+   }
+  },
+  {
+   "id": "acc-instance-unbound",
+   "note": "a symbol of the other side that the matched side lacks stays itself",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "zero",
+     "equation": "0 = z - z"
+    }
+   ],
+   "start": {
+    "refl": "q + 0"
+   },
+   "steps": [
+    {
+     "side": "rhs",
+     "path": "r",
+     "rule": "law",
+     "name": "zero",
+     "dir": "fwd",
+     "instance": true,
+     "result": "q + 0 = q + (z - z)"
+    }
+   ],
+   "goal": "q + 0 = q + (z - z)",
+   "expect": {
+    "verdict": "accepted"
+   }
+  },
+  {
+   "id": "acc-instance-and-exact",
+   "note": "an exact citation and a citation by instance in one derivation",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "momentum",
+     "equation": "p = m * v"
+    },
+    {
+     "cite": "law",
+     "name": "square",
+     "equation": "(u + w)^2 = u^2 + 2 * u * w + w^2"
+    }
+   ],
+   "start": {
+    "refl": "(p + q)^2"
+   },
+   "steps": [
+    {
+     "side": "rhs",
+     "path": "",
+     "rule": "law",
+     "name": "square",
+     "dir": "fwd",
+     "instance": true,
+     "result": "(p + q)^2 = p^2 + 2 * p * q + q^2"
+    },
+    {
+     "side": "rhs",
+     "path": "l.l.a",
+     "rule": "law",
+     "name": "momentum",
+     "dir": "fwd",
+     "result": "(p + q)^2 = (m * v)^2 + 2 * p * q + q^2"
+    }
+   ],
+   "goal": "(p + q)^2 = (m * v)^2 + 2 * p * q + q^2",
+   "expect": {
+    "verdict": "accepted"
+   }
+  },
+  {
+   "id": "ref-instance-nonlinear",
+   "note": "a symbol met twice cannot stand for two different expressions",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "cancel",
+     "equation": "v - v = 0"
+    }
+   ],
+   "start": {
+    "refl": "a - b"
+   },
+   "steps": [
+    {
+     "side": "rhs",
+     "path": "",
+     "rule": "law",
+     "name": "cancel",
+     "dir": "fwd",
+     "instance": true,
+     "result": "a - b = 0"
+    }
+   ],
+   "goal": "a - b = 0",
+   "expect": {
+    "verdict": "refused",
+    "step": 1,
+    "why": "no-rewrite"
+   }
+  },
+  {
+   "id": "ref-instance-operator",
+   "note": "an operator matches only itself: a difference is no instance of a sum",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "square",
+     "equation": "(u + w)^2 = u^2 + 2 * u * w + w^2"
+    }
+   ],
+   "start": {
+    "refl": "(a - b)^2"
+   },
+   "steps": [
+    {
+     "side": "rhs",
+     "path": "",
+     "rule": "law",
+     "name": "square",
+     "dir": "fwd",
+     "instance": true,
+     "result": "(a - b)^2 = a^2 + 2 * a * b + b^2"
+    }
+   ],
+   "goal": "(a - b)^2 = a^2 + 2 * a * b + b^2",
+   "expect": {
+    "verdict": "refused",
+    "step": 1,
+    "why": "no-rewrite"
+   }
+  },
+  {
+   "id": "ref-instance-exponent",
+   "note": "an exponent matches only itself: a cube is no instance of a square",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "square",
+     "equation": "(u + w)^2 = u^2 + 2 * u * w + w^2"
+    }
+   ],
+   "start": {
+    "refl": "(a + b)^3"
+   },
+   "steps": [
+    {
+     "side": "rhs",
+     "path": "",
+     "rule": "law",
+     "name": "square",
+     "dir": "fwd",
+     "instance": true,
+     "result": "(a + b)^3 = a^2 + 2 * a * b + b^2"
+    }
+   ],
+   "goal": "(a + b)^3 = a^2 + 2 * a * b + b^2",
+   "expect": {
+    "verdict": "refused",
+    "step": 1,
+    "why": "no-rewrite"
+   }
+  },
+  {
+   "id": "ref-instance-literal",
+   "note": "a literal matches only a literal of the same value as written",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "twice",
+     "equation": "2 * h = h + h"
+    }
+   ],
+   "start": {
+    "refl": "3 * k"
+   },
+   "steps": [
+    {
+     "side": "rhs",
+     "path": "",
+     "rule": "law",
+     "name": "twice",
+     "dir": "fwd",
+     "instance": true,
+     "result": "3 * k = k + k"
+    }
+   ],
+   "goal": "3 * k = k + k",
+   "expect": {
+    "verdict": "refused",
+    "step": 1,
+    "why": "no-rewrite"
+   }
+  },
+  {
+   "id": "ref-instance-derivative",
+   "note": "a derivative's names are not symbols to replace: D(p, t) matches only itself",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "rate",
+     "equation": "D(p, t) * 1 = D(p, t)"
+    }
+   ],
+   "start": {
+    "refl": "D(r, t) * 1"
+   },
+   "steps": [
+    {
+     "side": "rhs",
+     "path": "",
+     "rule": "law",
+     "name": "rate",
+     "dir": "fwd",
+     "instance": true,
+     "result": "D(r, t) * 1 = D(r, t)"
+    }
+   ],
+   "goal": "D(r, t) * 1 = D(r, t)",
+   "expect": {
+    "verdict": "refused",
+    "step": 1,
+    "why": "no-rewrite"
+   }
+  },
+  {
+   "id": "ref-instance-not-as-stated",
+   "note": "the instance found is not the equation the step states",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "halves",
+     "equation": "h / 2 + h / 2 = h"
+    }
+   ],
+   "start": {
+    "refl": "exp(k * t / 2 + k * t / 2)"
+   },
+   "steps": [
+    {
+     "side": "rhs",
+     "path": "a",
+     "rule": "law",
+     "name": "halves",
+     "dir": "fwd",
+     "instance": true,
+     "result": "exp(k * t / 2 + k * t / 2) = exp(k)"
+    }
+   ],
+   "goal": "exp(k * t / 2 + k * t / 2) = exp(k)",
+   "expect": {
+    "verdict": "refused",
+    "step": 1,
+    "why": "not-as-stated"
+   }
+  },
+  {
+   "id": "ref-instance-missing",
+   "note": "a citation by instance of a law the table lacks",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "square",
+     "equation": "(u + w)^2 = u^2 + 2 * u * w + w^2"
+    }
+   ],
+   "start": {
+    "refl": "(a + b)^2"
+   },
+   "steps": [
+    {
+     "side": "rhs",
+     "path": "",
+     "rule": "law",
+     "name": "binomial",
+     "dir": "fwd",
+     "instance": true,
+     "result": "(a + b)^2 = a^2 + 2 * a * b + b^2"
+    }
+   ],
+   "goal": "(a + b)^2 = a^2 + 2 * a * b + b^2",
+   "expect": {
+    "verdict": "refused",
+    "step": 1,
+    "why": "missing-citation"
+   }
+  },
+  {
+   "id": "ref-instance-missing-assumption",
+   "note": "a citation by instance of an ASSUMPTION record the table lacks, though a law of that name is there",
+   "laws": [
+    {
+     "cite": "law",
+     "name": "square",
+     "equation": "(u + w)^2 = u^2 + 2 * u * w + w^2"
+    }
+   ],
+   "start": {
+    "refl": "(a + b)^2"
+   },
+   "steps": [
+    {
+     "side": "rhs",
+     "path": "",
+     "rule": "assumption",
+     "name": "square",
+     "dir": "fwd",
+     "instance": true,
+     "result": "(a + b)^2 = a^2 + 2 * a * b + b^2"
+    }
+   ],
+   "goal": "(a + b)^2 = a^2 + 2 * a * b + b^2",
+   "expect": {
+    "verdict": "refused",
+    "step": 1,
+    "why": "missing-citation"
+   }
+  }
+ ],
+ "match": [
+  {
+   "id": "m-variable",
+   "note": "an identifier matches any expression",
+   "pattern": "x",
+   "target": "a * b + c",
+   "bindings": {
+    "x": "a * b + c"
+   }
+  },
+  {
+   "id": "m-two-symbols",
+   "note": "each symbol bound to its subterm",
+   "pattern": "u + w",
+   "target": "a + b * c",
+   "bindings": {
+    "u": "a",
+    "w": "b * c"
+   }
+  },
+  {
+   "id": "m-same-symbol",
+   "note": "a symbol met twice, two equal subterms; parentheses do not count",
+   "pattern": "v - v",
+   "target": "(m * a) - m * a",
+   "bindings": {
+    "v": "m * a"
+   }
+  },
+  {
+   "id": "m-same-symbol-differs",
+   "note": "a symbol met twice, two different subterms",
+   "pattern": "v - v",
+   "target": "a - b",
+   "bindings": null
+  },
+  {
+   "id": "m-consistent",
+   "note": "a symbol bound early is held to its expression later",
+   "pattern": "u * w + u",
+   "target": "a * b + a",
+   "bindings": {
+    "u": "a",
+    "w": "b"
+   }
+  },
+  {
+   "id": "m-consistent-differs",
+   "note": "the later occurrence differs",
+   "pattern": "u * w + u",
+   "target": "a * b + b",
+   "bindings": null
+  },
+  {
+   "id": "m-operator",
+   "note": "an operator matches only itself",
+   "pattern": "u + w",
+   "target": "u * w",
+   "bindings": null
+  },
+  {
+   "id": "m-literal",
+   "note": "a literal matches itself, the symbol beside it anything",
+   "pattern": "2 * h",
+   "target": "2 * (x + y)",
+   "bindings": {
+    "h": "x + y"
+   }
+  },
+  {
+   "id": "m-literal-canonical",
+   "note": "literals compare in their canonical spelling: 0.50 is 0.5",
+   "pattern": "0.50 * h",
+   "target": "0.5 * x",
+   "bindings": {
+    "h": "x"
+   }
+  },
+  {
+   "id": "m-literal-differs",
+   "note": "a literal matches no other literal",
+   "pattern": "2 * h",
+   "target": "2.5 * x",
+   "bindings": null
+  },
+  {
+   "id": "m-literal-not-variable",
+   "note": "a literal is no pattern variable",
+   "pattern": "3",
+   "target": "x",
+   "bindings": null
+  },
+  {
+   "id": "m-variable-literal",
+   "note": "an identifier matches a literal",
+   "pattern": "x",
+   "target": "3",
+   "bindings": {
+    "x": "3"
+   }
+  },
+  {
+   "id": "m-function",
+   "note": "a function matches the same function",
+   "pattern": "sin(z)",
+   "target": "sin(2 * t)",
+   "bindings": {
+    "z": "2 * t"
+   }
+  },
+  {
+   "id": "m-function-differs",
+   "note": "a function matches no other function",
+   "pattern": "sin(z)",
+   "target": "cos(t)",
+   "bindings": null
+  },
+  {
+   "id": "m-power",
+   "note": "a power's base is matched, its exponent compared",
+   "pattern": "b^2",
+   "target": "(x + 1)^2",
+   "bindings": {
+    "b": "x + 1"
+   }
+  },
+  {
+   "id": "m-power-differs",
+   "note": "a different integer exponent",
+   "pattern": "b^2",
+   "target": "x^3",
+   "bindings": null
+  },
+  {
+   "id": "m-power-as-written",
+   "note": "a fractional exponent is compared as written, unreduced",
+   "pattern": "b^(1/2)",
+   "target": "x^(2/4)",
+   "bindings": null
+  },
+  {
+   "id": "m-negation",
+   "note": "a negation's operand is matched",
+   "pattern": "-u",
+   "target": "-(a + b)",
+   "bindings": {
+    "u": "a + b"
+   }
+  },
+  {
+   "id": "m-negation-differs",
+   "note": "a negation matches only a negation",
+   "pattern": "-u",
+   "target": "a",
+   "bindings": null
+  },
+  {
+   "id": "m-quotient",
+   "note": "both operands of a quotient",
+   "pattern": "p / q",
+   "target": "1 / (2 * m)",
+   "bindings": {
+    "p": "1",
+    "q": "2 * m"
+   }
+  },
+  {
+   "id": "m-derivative",
+   "note": "a derivative matches itself and binds nothing",
+   "pattern": "D(x, t)",
+   "target": "D(x, t)",
+   "bindings": {}
+  },
+  {
+   "id": "m-derivative-differs",
+   "note": "a derivative matches no other derivative",
+   "pattern": "D(x, t)",
+   "target": "D(y, t)",
+   "bindings": null
+  },
+  {
+   "id": "m-derivative-order",
+   "note": "nor one of another order",
+   "pattern": "D(x, t, 2)",
+   "target": "D(x, t)",
+   "bindings": null
+  },
+  {
+   "id": "m-derivative-names",
+   "note": "a symbol bound beside a derivative does not enter it",
+   "pattern": "x + D(x, t)",
+   "target": "y + D(x, t)",
+   "bindings": {
+    "x": "y"
+   }
+  },
+  {
+   "id": "m-itself",
+   "note": "a pattern matches itself, each symbol bound to itself",
+   "pattern": "u + w",
+   "target": "u + w",
+   "bindings": {
+    "u": "u",
+    "w": "w"
+   }
+  }
+ ],
+ "eval": [
+  {
+   "id": "eval-div-zero",
+   "expr": "x / 0",
+   "assign": {
+    "x": "3"
+   },
+   "value": "0"
+  },
+  {
+   "id": "eval-div-zero-ident",
+   "expr": "x / (y - y)",
+   "assign": {
+    "x": "3",
+    "y": "5/7"
+   },
+   "value": "0"
+  },
+  {
+   "id": "eval-power",
+   "expr": "x^2 - y",
+   "assign": {
+    "x": "-3",
+    "y": "1/2"
+   },
+   "value": "17/2"
+  },
+  {
+   "id": "eval-negative-power",
+   "expr": "x^(-1)",
+   "assign": {
+    "x": "4"
+   },
+   "value": "1/4"
+  },
+  {
+   "id": "eval-neg-paren",
+   "expr": "-(x + y) * 2",
+   "assign": {
+    "x": "1",
+    "y": "2"
+   },
+   "value": "-6"
+  },
+  {
+   "id": "eval-decimal",
+   "expr": "x * 0.25 + 1.5",
+   "assign": {
+    "x": "2"
+   },
+   "value": "2"
+  },
+  {
+   "id": "eval-interpreted",
+   "expr": "sin(x) + x^(1/2) + D(x, t, 2)",
+   "assign": {
+    "x": "9"
+   },
+   "value": "20"
+  },
+  {
+   "id": "eval-unassigned",
+   "expr": "w + 1",
+   "assign": {},
+   "value": "1"
+  }
+ ]
+}

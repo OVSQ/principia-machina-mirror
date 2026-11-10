@@ -1,0 +1,116 @@
+{{DISPLAYTITLE:True everywhere against true for real motions}}
+{{Noether's theorems map}}
+
+''Mathematical counterpart: [[Noether's theorems/First theorem/On-shell and off-shell|On-shell and off-shell]].''
+
+[[File:NT-F-05.png|thumb|right|360px|alt=A large outlined region labelled all configurations, containing a smaller shaded region labelled solutions. The Noether identity is annotated as holding over the whole large region; the conservation law only over the inner one.|On-shell and off-shell as nested regions]]
+
+Two statements have been in play in this volume and they are not the same
+statement. This page separates them. It is the least glamorous page here and
+probably the most useful.
+
+== Two kinds of true ==
+
+A company's books satisfy a rule: what the company owns equals what it owes plus
+what the owners hold. That is true of every set of books ever written, including
+fraudulent ones, badly kept ones, and ones for a company that does not exist. It
+is true because of what the words mean.
+
+The same company made a profit last year. That is also true. But it is true only
+of this company, in this year. Change the facts and it stops being true.
+
+The first is an '''identity'''. The second is a '''claim about the actual
+case'''.
+
+Noether's theorems produce the first kind. Conservation laws are the second kind.
+
+== What the theorem actually delivers ==
+
+The first theorem's output is an identity. It says a certain combination of
+sensitivities — the leftovers from
+[[Noether's theorems/Explainers/Nudging a path and seeing what changes|the nudging
+page]] — flows without accumulating.
+
+This is true of any configuration you care to name. A chain hanging in a shape no
+chain would ever hang in. A planet on an orbit that violates gravity. The
+statement holds because of how the scoring rule is built, not because of what the
+system is doing.
+
+Then you add one condition: the system is obeying its equations of motion. The
+sensitivities go to zero, the left-hand side of the identity vanishes, and what is
+left says the flow balances.
+
+'''That is the conservation law, and it arrived at the second step, not the
+first.'''
+
+== The trade ==
+
+The identity is true of everything and says less. The conservation law is true of
+real motions only and says something you can measure.
+
+Neither contains the other. You get the second from the first by adding physics.
+You cannot get the first back from the second, because the second says nothing
+about the configurations you threw away.
+
+Physicists have names for the two situations. On the actual solutions is
+'''on-shell'''. True regardless is '''off-shell'''. Noether has no such words;
+she just says what she is doing, which is passing to the variational problem.
+
+== Three reasons to keep them apart ==
+
+'''The reverse direction needs the identity.''' Running the theorem backwards
+starts from the identity and reconstructs the symmetry. Start from the
+conservation law alone and there is no route back.
+
+'''The non-isolated case needs the identity.''' When something outside is feeding
+the system, the sensitivities are not zero — they equal whatever is being fed in.
+That case is available only because the underlying statement never assumed
+otherwise.
+
+'''The second theorem never makes the crossing at all.''' Its output is an
+identity too, and adding physics does not turn it into a conservation law. It
+turns it into a statement about the equations themselves.
+
+That third reason is the important one. A reader who has only ever met the first
+theorem in its on-shell form has nowhere to put the second theorem, and will
+reach for the nearest available shape — a conservation law — which is the wrong
+one. Almost every mis-statement of the second theorem starts here.
+
+== The habit worth forming ==
+
+When you meet a claim in this subject, ask which kind it is. True of every
+configuration, or true of the real one?
+
+Noether was careful about this on every page. Most accounts of her are not, and
+the carelessness is not visible in the formulas. It is visible only in what people
+then believe the theorems say.
+
+== How to tell which one you are being told ==
+
+A practical test, for reading anyone's account of this subject.
+
+Find the statement. Then ask: is this true of a configuration that breaks the laws
+of physics?
+
+If yes, it is an identity. If no, it is a claim about actual solutions.
+
+Now check whether the author told you which. Most do not, because in the first
+theorem's case the two look almost identical on the page — one has some terms on
+the left, the other has zero there, and everything else is the same.
+
+'''If an account never distinguishes them, it has silently chosen the second, and
+its reader has no way to reach the second theorem from there.'''
+
+== A note on the words ==
+
+Physicists say "on-shell" for true of actual solutions and "off-shell" for true
+regardless. The words come from an unrelated corner of particle physics and are
+not intuitive.
+
+Noether has no such words. She simply says what she is doing: she passes to the
+variational problem, meaning she now assumes the system is doing what the scoring
+rule says it should. Her way of putting it is clearer, and it is a small loss that
+the modern terms replaced it.
+
+''No mathematics is used on this page. The mathematical treatment is on the
+counterpart page named above.''

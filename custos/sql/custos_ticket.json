@@ -1,0 +1,67 @@
+[
+	{
+		"name": "custos_ticket",
+		"comment": "One row per op of action=pma that changes state (PETITION, PUSH, RELEASE): the request as received, written in the web request; its landing is the job custosLand's, which writes the answer. A later column is a schema update, never a reinterpretation of one of these.",
+		"columns": [
+			{
+				"name": "ct_id",
+				"comment": "The ticket: the number POLL takes",
+				"type": "integer",
+				"options": { "unsigned": true, "notnull": true, "autoincrement": true }
+			},
+			{
+				"name": "ct_op",
+				"comment": "The op's wire word: PETITION, PUSH or RELEASE",
+				"type": "binary",
+				"options": { "notnull": true, "length": 32 }
+			},
+			{
+				"name": "ct_account",
+				"comment": "The authenticated account that made the request, its user name",
+				"type": "binary",
+				"options": { "notnull": true, "length": 255 }
+			},
+			{
+				"name": "ct_prefix",
+				"comment": "The UWC's record prefix",
+				"type": "binary",
+				"options": { "notnull": true, "length": 255 }
+			},
+			{
+				"name": "ct_request",
+				"comment": "The request's parameters as received; never parsed by Custos's PHP, read by the Calculator in the job",
+				"type": "blob",
+				"options": { "notnull": true, "length": 16777215 }
+			},
+			{
+				"name": "ct_state",
+				"comment": "QUEUED, IN WORK or DONE",
+				"type": "binary",
+				"options": { "notnull": true, "length": 16 }
+			},
+			{
+				"name": "ct_answer",
+				"comment": "The answer text the job wrote; NULL until DONE",
+				"type": "blob",
+				"options": { "notnull": false, "length": 16777215 }
+			},
+			{
+				"name": "ct_created",
+				"comment": "When the ticket was written",
+				"type": "mwtimestamp",
+				"options": { "notnull": true }
+			},
+			{
+				"name": "ct_done",
+				"comment": "When the job wrote the answer; NULL until DONE",
+				"type": "mwtimestamp",
+				"options": { "notnull": false }
+			}
+		],
+		"indexes": [
+			{ "name": "ct_state_id", "columns": [ "ct_state", "ct_id" ], "unique": false },
+			{ "name": "ct_account_id", "columns": [ "ct_account", "ct_id" ], "unique": false }
+		],
+		"pk": [ "ct_id" ]
+	}
+]

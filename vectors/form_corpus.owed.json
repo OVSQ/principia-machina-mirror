@@ -1,0 +1,8 @@
+{
+ "corpus": "form_corpus.json",
+ "note": "Cases of form_corpus.json the Calculator does not answer yet, each with the reason; neither a pass nor a failure. Tests/Form.lean requires every owed case to be listed here for its reason, and every case listed here to come out owed for it. The corpus itself is never edited.",
+ "reasons": {
+  "exact": "the value's sign, range or twelve digits cannot be settled by bounds up to 4096 bits, or it has no bounds here (tan at an odd multiple of pi/2): the choice between exact values and binary64. No case of this corpus is owed so."
+ },
+ "owed": []
+}

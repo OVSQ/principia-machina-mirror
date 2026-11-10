@@ -1,0 +1,160 @@
+{{DISPLAYTITLE:Holes and goals}}
+{{Technical|Lean theorem prover/System/Metavariables and unification|Lean theorem prover/System/The tactic framework}}
+{{Lean theorem prover map}}
+
+While a proof is being written, parts of it are still missing. Lean keeps track of each
+missing part as a '''goal''': a statement still to be proved, together with what may be used
+to prove it. This page describes how goals are shown, how a hole can be left on purpose, why
+finished work refuses such holes, and how the same idea lets Lean fill in details by itself.
+
+== The proof state ==
+
+A tactic proof begins with one goal, the statement of the theorem. Each tactic changes the
+list of goals: it closes some, splits others, or fails. The list at any moment is the
+'''proof state''', and the proof is complete when the list is empty.<ref name="ref-tactics">''The
+Lean Language Reference'', version for Lean 4.34.0 (lean-lang.org, 2026), chapter 14,
+"Tactic Proofs", with section 14.2, "Reading Proof States".
+https://lean-lang.org/doc/reference/4.34.0/Tactic-Proofs/</ref> The command
+<code>trace_state</code> prints the state at the point where it stands:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem two_parts (p q : Prop) (hp : p) (hq : q) : p ∧ q := by
+  constructor
+  trace_state
+  · exact hp
+  · exact hq
+</pre>
+
+Lean 4.34.1 prints:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+case left
+p q : Prop
+hp : p
+hq : q
+⊢ p
+
+case right
+p q : Prop
+hp : p
+hq : q
+⊢ q
+</pre>
+
+The goal "p and q" has become two goals, one for each half. Each dot that follows takes one
+goal in hand, and <code>exact</code> closes it. Lean records the proof state at every step
+for its interactive features,<ref name="ref-elab">''The Lean Language Reference'', version
+for Lean 4.34.0 (lean-lang.org, 2026), chapter 2, "Elaboration and Compilation", with section
+2.3, "The Kernel". https://lean-lang.org/doc/reference/4.34.0/Elaboration-and-Compilation/</ref>
+so an editor connected to Lean shows the same display for the place where the cursor rests,
+and the display changes as the cursor moves from one tactic to the next.
+
+== Reading a goal ==
+
+Each goal has the same layout. The lines above the symbol ⊢ are the '''hypotheses''': what
+may be used. Each has a name and a type. Some name things: <code>p q : Prop</code> says that p
+and q are propositions. Others name facts: <code>hp : p</code> says that hp is a proof of p.
+The line after ⊢ is what must be proved. The label at the top, such as <code>case
+left</code>, names the goal; here the names come from the two parts of "and".<ref name="ref-tactics" />
+
+Some names carry a dagger. For the proof obligation of the halving function on the page
+about [[Lean theorem prover/Explainers/Functions that always finish|functions that always
+finish]], Lean's display includes <code>h✝ : ¬n &lt; 2</code>, the fact that n is
+not less than 2. Such a hypothesis is still there, and on that page the arithmetic tactic
+<code>omega</code> makes use of it, but it cannot be referred to by name: Lean created it
+without a name the author chose, or a later name hides it.<ref name="ref-tactics" />
+
+If the tactics run out while goals remain, Lean refuses the proof and shows what is left:
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem two_parts (p q : Prop) (hp : p) (hq : q) : p ∧ q := by
+  constructor
+  exact hp
+</pre>
+
+The answer begins <code>unsolved goals</code> and then shows the goal <code>case right</code>,
+with its hypotheses and <code>⊢ q</code>, exactly as in the display above.
+
+== Leaving a hole on purpose ==
+
+Sometimes an author wants to set out the shape of a proof before filling in every part. The
+word <code>sorry</code> closes any goal at once:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem unfinished (n : Nat) : 0 + n = n := by
+  sorry
+
+#print axioms unfinished
+</pre>
+
+Lean accepts the file, with the warning <code>declaration uses `sorry`</code>. The last line
+asks what the theorem rests on, and the answer is <code>'unfinished' depends on axioms:
+[sorryAx]</code>. <code>sorry</code> works by appeal to <code>sorryAx</code>, an axiom that
+would supply a proof of anything at all.<ref name="ref-tacref">''The Lean Language
+Reference'', version for Lean 4.34.0 (lean-lang.org, 2026), section 14.5, "Tactic
+Reference": entry for <code>sorry</code>.
+https://lean-lang.org/doc/reference/4.34.0/Tactic-Proofs/Tactic-Reference/</ref>
+
+That is why finished work refuses it. A theorem that depends on <code>sorryAx</code> has not
+been proved; it has been assumed. The marks an editor shows beside a theorem accepted by Lean
+appear even when <code>sorry</code> is used somewhere among the results it depends on, so the
+reliable test is <code>#print axioms</code>.<ref name="ref-validating">''The Lean Language
+Reference'', version for Lean 4.34.0 (lean-lang.org, 2026), "Validating a Lean Proof".
+https://lean-lang.org/doc/reference/4.34.0/ValidatingProofs/</ref> The project this wiki
+records goes further: its proof gate accepts nothing that contains <code>sorry</code> (see
+[[Principia Machina/Lean transition|the transition page]]).
+
+== Holes that Lean fills itself ==
+
+Inside Lean, every goal is a hole in the proof term under construction. Such a hole is called
+a '''metavariable''', and closing a goal means filling the hole with a
+term.<ref name="metabook">Arthur Paulino, Damiano Testa, Edward Ayers, Evgenia Karunus,
+Henrik Böving, Jannis Limperg, Siddhartha Gadgil and Siddharth Bhat, ''Metaprogramming in
+Lean 4'' (online book, Lean community, consulted October 2026), chapter "MetaM".
+https://leanprover-community.github.io/lean4-metaprogramming-book/main/04_metam.html</ref>
+An author can make such a hole directly with <code>?_</code>:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem with_hole (p q : Prop) (hp : p) (hq : q) : p ∧ q := by
+  refine ⟨?_, hq⟩
+  trace_state
+  exact hp
+</pre>
+
+Here the second half of the pair is given and the first is left as a hole. The printed state
+is a single goal, <code>⊢ p</code>, with the same hypotheses as before, and
+<code>exact hp</code> fills it.
+
+Lean also makes holes of its own, for details the author leaves out, and fills them by
+matching types. This matching is called '''unification'''. When it fails, the unfilled holes
+appear in the error message under names such as <code>?m.9</code>:
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+example (n : Nat) : 0 + n = n := rfl
+</pre>
+
+Lean answers <code>Type mismatch</code>: <code>rfl</code> "has type"
+<code>?m.9 = ?m.9</code> "but is expected to have type" <code>0 + n = n</code>.
+<code>rfl</code> proves that some value equals itself, and Lean could find no value to put in
+the hole <code>?m.9</code> that makes both sides of 0 + n = n that same value. Why not is
+explained in
+[[Lean theorem prover/Explainers/Induction, as the machine sees it|induction, as the machine
+sees it]].
+
+== Why the Lean kernel never sees a hole ==
+
+Holes belong to the stage before checking. Unification is the work of the elaborator, the
+part of Lean that turns what the author writes into a term. The Lean kernel does no
+unification and checks only finished terms.<ref name="ref-elab" /> A proof therefore reaches
+it only when every goal is closed and every hole filled. A hole filled with
+<code>sorry</code> leaves a finished term, but one that rests on <code>sorryAx</code>, and
+<code>#print axioms</code> says so.
+
+== Next ==
+
+* [[Lean theorem prover/Explainers/Automation and its limits|Automation and its limits]]: tactics that close goals by search.
+* [[Lean theorem prover/System/Metavariables and unification|Metavariables and unification]]: the technical treatment.
+
+== References ==
+
+<references />

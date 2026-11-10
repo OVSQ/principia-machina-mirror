@@ -1,0 +1,1013 @@
+{
+ "cases": [
+  {
+   "args": {
+    "a": 1,
+    "b": 1
+   },
+   "expected": "0.5",
+   "fn": "mean",
+   "hand_checked": true,
+   "name": "M01 the prior (1, 1)"
+  },
+  {
+   "args": {
+    "a": 2,
+    "b": 1
+   },
+   "expected": "0.666666666667",
+   "fn": "mean",
+   "hand_checked": true,
+   "name": "M02 (2, 1)"
+  },
+  {
+   "args": {
+    "a": 11,
+    "b": 3
+   },
+   "expected": "0.785714285714",
+   "fn": "mean",
+   "hand_checked": true,
+   "name": "M03 (11, 3): F 10, A 2 on the prior"
+  },
+  {
+   "args": {
+    "a": 1,
+    "b": 11
+   },
+   "expected": "0.0833333333333",
+   "fn": "mean",
+   "hand_checked": true,
+   "name": "M04 (1, 11)"
+  },
+  {
+   "args": {
+    "a": 0.5,
+    "b": 0.5
+   },
+   "expected": "0.5",
+   "fn": "mean",
+   "hand_checked": true,
+   "name": "M05 (0.5, 0.5)"
+  },
+  {
+   "args": {
+    "a": 100,
+    "b": 1
+   },
+   "expected": "0.990099009901",
+   "fn": "mean",
+   "hand_checked": true,
+   "name": "M06 (100, 1)"
+  },
+  {
+   "args": {
+    "a": 1000000,
+    "b": 1
+   },
+   "expected": "0.999999000001",
+   "fn": "mean",
+   "hand_checked": true,
+   "name": "M07 (1000000, 1)"
+  },
+  {
+   "args": {
+    "a": 3.5,
+    "b": 2.25
+   },
+   "expected": "0.608695652174",
+   "fn": "mean",
+   "hand_checked": true,
+   "name": "M08 (3.5, 2.25) fractional weights"
+  },
+  {
+   "args": {
+    "a": 1.0000001,
+    "b": 1
+   },
+   "expected": "0.500000025",
+   "fn": "mean",
+   "hand_checked": false,
+   "name": "M09 (1.0000001, 1) a float a"
+  },
+  {
+   "args": {
+    "a": 7,
+    "b": 7
+   },
+   "expected": "0.5",
+   "fn": "mean",
+   "hand_checked": true,
+   "name": "M10 (7, 7)"
+  },
+  {
+   "args": {
+    "a": 0,
+    "b": 1
+   },
+   "expected": "ERROR:shape",
+   "fn": "mean",
+   "hand_checked": true,
+   "name": "M11 a = 0 is refused"
+  },
+  {
+   "args": {
+    "a": 1,
+    "b": -1
+   },
+   "expected": "ERROR:shape",
+   "fn": "mean",
+   "hand_checked": true,
+   "name": "M12 b negative is refused"
+  },
+  {
+   "args": {
+    "a": true,
+    "b": 1
+   },
+   "expected": "ERROR:shape",
+   "fn": "mean",
+   "hand_checked": true,
+   "name": "M13 a boolean is refused"
+  },
+  {
+   "args": {
+    "a": "1",
+    "b": 1
+   },
+   "expected": "ERROR:shape",
+   "fn": "mean",
+   "hand_checked": true,
+   "name": "M14 a string is refused"
+  },
+  {
+   "args": {
+    "a": 0.001,
+    "b": 0.001
+   },
+   "expected": "0.5",
+   "fn": "mean",
+   "hand_checked": true,
+   "name": "M15 (1e-3, 1e-3)"
+  },
+  {
+   "args": {
+    "a": 2.5,
+    "b": 0.5
+   },
+   "expected": "0.833333333333",
+   "fn": "mean",
+   "hand_checked": true,
+   "name": "M16 (2.5, 0.5)"
+  },
+  {
+   "args": {
+    "a": 1,
+    "b": 1,
+    "level": 0.95
+   },
+   "expected": "0.025|0.975",
+   "fn": "interval",
+   "hand_checked": true,
+   "name": "I01 (1, 1) at 0.95: 0.025 and 0.975"
+  },
+  {
+   "args": {
+    "a": 2,
+    "b": 1,
+    "level": 0.95
+   },
+   "expected": "0.158113883008|0.987420882907",
+   "fn": "interval",
+   "hand_checked": true,
+   "name": "I02 (2, 1) at 0.95: sqrt(0.025) and sqrt(0.975)"
+  },
+  {
+   "args": {
+    "a": 1,
+    "b": 2,
+    "level": 0.95
+   },
+   "expected": "0.0125791170934|0.841886116992",
+   "fn": "interval",
+   "hand_checked": true,
+   "name": "I03 (1, 2) at 0.95: 1 - sqrt(0.975) and 1 - sqrt(0.025)"
+  },
+  {
+   "args": {
+    "a": 11,
+    "b": 3,
+    "level": 0.95
+   },
+   "expected": "0.545528944323|0.949618926509",
+   "fn": "interval",
+   "hand_checked": false,
+   "name": "I04 (11, 3) at 0.95"
+  },
+  {
+   "args": {
+    "a": 1,
+    "b": 11,
+    "level": 0.95
+   },
+   "expected": "0.00229897221381|0.284914152918",
+   "fn": "interval",
+   "hand_checked": false,
+   "name": "I05 (1, 11) at 0.95"
+  },
+  {
+   "args": {
+    "a": 0.5,
+    "b": 0.5,
+    "level": 0.95
+   },
+   "expected": "0.00154133313344|0.998458666867",
+   "fn": "interval",
+   "hand_checked": false,
+   "name": "I06 (0.5, 0.5) at 0.95"
+  },
+  {
+   "args": {
+    "a": 50,
+    "b": 50,
+    "level": 0.9
+   },
+   "expected": "0.418109221588|0.581890778412",
+   "fn": "interval",
+   "hand_checked": false,
+   "name": "I07 (50, 50) at 0.90"
+  },
+  {
+   "args": {
+    "a": 100,
+    "b": 1,
+    "level": 0.99
+   },
+   "expected": "0.948395970376|0.999949875838",
+   "fn": "interval",
+   "hand_checked": false,
+   "name": "I08 (100, 1) at 0.99"
+  },
+  {
+   "args": {
+    "a": 1,
+    "b": 1,
+    "level": 0.5
+   },
+   "expected": "0.25|0.75",
+   "fn": "interval",
+   "hand_checked": true,
+   "name": "I09 (1, 1) at 0.5: 0.25 and 0.75"
+  },
+  {
+   "args": {
+    "a": 3,
+    "b": 1,
+    "level": 0.95
+   },
+   "expected": "0.292401773821|0.99159624134",
+   "fn": "interval",
+   "hand_checked": true,
+   "name": "I10 (3, 1) at 0.95: 0.025^(1/3) and 0.975^(1/3)"
+  },
+  {
+   "args": {
+    "a": 1,
+    "b": 1,
+    "level": 0
+   },
+   "expected": "ERROR:level",
+   "fn": "interval",
+   "hand_checked": true,
+   "name": "I11 level 0 is refused"
+  },
+  {
+   "args": {
+    "a": 1,
+    "b": 1,
+    "level": 1
+   },
+   "expected": "ERROR:level",
+   "fn": "interval",
+   "hand_checked": true,
+   "name": "I12 level 1 is refused"
+  },
+  {
+   "args": {
+    "a": 0,
+    "b": 1,
+    "level": 0.95
+   },
+   "expected": "ERROR:shape",
+   "fn": "interval",
+   "hand_checked": true,
+   "name": "I13 a = 0 is refused"
+  },
+  {
+   "args": {
+    "a": 1000,
+    "b": 1000,
+    "level": 0.95
+   },
+   "expected": "0.478094719621|0.521905280379",
+   "fn": "interval",
+   "hand_checked": false,
+   "name": "I14 (1000, 1000) at 0.95"
+  },
+  {
+   "args": {
+    "a": 1.5,
+    "b": 0.25,
+    "level": 0.95
+   },
+   "expected": "0.238361052387|0.999999772048",
+   "fn": "interval",
+   "hand_checked": false,
+   "name": "I15 (1.5, 0.25) at 0.95"
+  },
+  {
+   "args": {
+    "a": 26,
+    "b": 4,
+    "level": 0.95
+   },
+   "expected": "0.726484802108|0.961105168705",
+   "fn": "interval",
+   "hand_checked": false,
+   "name": "I16 (26, 4) at 0.95: the thin file's neighbour"
+  },
+  {
+   "args": {
+    "a": 1,
+    "b": 1,
+    "level": true
+   },
+   "expected": "ERROR:level",
+   "fn": "interval",
+   "hand_checked": true,
+   "name": "I17 a boolean level is refused"
+  },
+  {
+   "args": {
+    "a": 1,
+    "b": 1,
+    "x": 0.3
+   },
+   "expected": "0.3",
+   "fn": "betainc",
+   "hand_checked": true,
+   "name": "B01 I_x(1, 1) = x at 0.3"
+  },
+  {
+   "args": {
+    "a": 2,
+    "b": 1,
+    "x": 0.3
+   },
+   "expected": "0.09",
+   "fn": "betainc",
+   "hand_checked": true,
+   "name": "B02 I_x(2, 1) = x^2 at 0.3"
+  },
+  {
+   "args": {
+    "a": 1,
+    "b": 3,
+    "x": 0.2
+   },
+   "expected": "0.488",
+   "fn": "betainc",
+   "hand_checked": true,
+   "name": "B03 I_x(1, 3) = 1 - (1 - x)^3 at 0.2"
+  },
+  {
+   "args": {
+    "a": 7.5,
+    "b": 7.5,
+    "x": 0.5
+   },
+   "expected": "0.5",
+   "fn": "betainc",
+   "hand_checked": true,
+   "name": "B04 I_1/2(a, a) = 1/2 at a = 7.5"
+  },
+  {
+   "args": {
+    "a": 2,
+    "b": 3,
+    "x": 0
+   },
+   "expected": "0",
+   "fn": "betainc",
+   "hand_checked": true,
+   "name": "B05 x = 0"
+  },
+  {
+   "args": {
+    "a": 2,
+    "b": 3,
+    "x": 1
+   },
+   "expected": "1",
+   "fn": "betainc",
+   "hand_checked": true,
+   "name": "B06 x = 1"
+  },
+  {
+   "args": {
+    "a": 1,
+    "b": 1,
+    "x": 0.999
+   },
+   "expected": "0.999",
+   "fn": "betainc",
+   "hand_checked": true,
+   "name": "B07 I_x(1, 1) = x at 0.999"
+  },
+  {
+   "args": {
+    "a": 5,
+    "b": 1,
+    "x": 0.9
+   },
+   "expected": "0.59049",
+   "fn": "betainc",
+   "hand_checked": true,
+   "name": "B08 I_x(5, 1) = x^5 at 0.9"
+  },
+  {
+   "args": {
+    "a": 50.5,
+    "b": 30.25,
+    "x": 0.6
+   },
+   "expected": "0.313768207009",
+   "fn": "betainc",
+   "hand_checked": false,
+   "name": "B09 (50.5, 30.25) at 0.6"
+  },
+  {
+   "args": {
+    "a": 0.5,
+    "b": 0.5,
+    "x": 0.5
+   },
+   "expected": "0.5",
+   "fn": "betainc",
+   "hand_checked": true,
+   "name": "B10 (0.5, 0.5) at 0.5 (arcsine: 1/2)"
+  },
+  {
+   "args": {
+    "a": 1000,
+    "b": 1000,
+    "x": 0.51
+   },
+   "expected": "0.814447340569",
+   "fn": "betainc",
+   "hand_checked": false,
+   "name": "B11 (1000, 1000) at 0.51"
+  },
+  {
+   "args": {
+    "a": 1,
+    "b": 1000,
+    "x": 0.001
+   },
+   "expected": "0.632304575229",
+   "fn": "betainc",
+   "hand_checked": true,
+   "name": "B12 (1, 1000) at 0.001 = 1 - 0.999^1000"
+  },
+  {
+   "args": {
+    "a": 1,
+    "b": 1,
+    "x": -0.1
+   },
+   "expected": "ERROR:x",
+   "fn": "betainc",
+   "hand_checked": true,
+   "name": "B13 x below 0 is refused"
+  },
+  {
+   "args": {
+    "a": 1,
+    "b": 1,
+    "x": 1.1
+   },
+   "expected": "ERROR:x",
+   "fn": "betainc",
+   "hand_checked": true,
+   "name": "B14 x above 1 is refused"
+  },
+  {
+   "args": {
+    "a": 1,
+    "b": 0,
+    "x": 0.5
+   },
+   "expected": "ERROR:shape",
+   "fn": "betainc",
+   "hand_checked": true,
+   "name": "B15 b = 0 is refused"
+  },
+  {
+   "args": {
+    "a": 3,
+    "b": 2,
+    "x": 0.4
+   },
+   "expected": "0.1792",
+   "fn": "betainc",
+   "hand_checked": true,
+   "name": "B16 (3, 2) at 0.4 = 6 x^3 (1/3 - x/4) ... closed form 0.1792"
+  },
+  {
+   "args": {
+    "a": 2,
+    "b": 2,
+    "x": 0.25
+   },
+   "expected": "0.15625",
+   "fn": "betainc",
+   "hand_checked": true,
+   "name": "B17 (2, 2) at 0.25 = 3x^2 - 2x^3"
+  },
+  {
+   "args": {
+    "a": 2,
+    "b": 3,
+    "p": 0
+   },
+   "expected": "0",
+   "fn": "betainc_inv",
+   "hand_checked": true,
+   "name": "Q01 p = 0"
+  },
+  {
+   "args": {
+    "a": 2,
+    "b": 3,
+    "p": 1
+   },
+   "expected": "1",
+   "fn": "betainc_inv",
+   "hand_checked": true,
+   "name": "Q02 p = 1"
+  },
+  {
+   "args": {
+    "a": 4,
+    "b": 4,
+    "p": 0.5
+   },
+   "expected": "0.5",
+   "fn": "betainc_inv",
+   "hand_checked": true,
+   "name": "Q03 (a, a) at 1/2 is 1/2"
+  },
+  {
+   "args": {
+    "a": 2,
+    "b": 1,
+    "p": 0.36
+   },
+   "expected": "0.6",
+   "fn": "betainc_inv",
+   "hand_checked": true,
+   "name": "Q04 (2, 1): sqrt(p) at 0.36"
+  },
+  {
+   "args": {
+    "a": 1,
+    "b": 3,
+    "p": 0.488
+   },
+   "expected": "0.2",
+   "fn": "betainc_inv",
+   "hand_checked": true,
+   "name": "Q05 (1, 3): 1 - (1 - p)^(1/3) at 0.488"
+  },
+  {
+   "args": {
+    "a": 1,
+    "b": 1,
+    "p": 0.025
+   },
+   "expected": "0.025",
+   "fn": "betainc_inv",
+   "hand_checked": true,
+   "name": "Q06 (1, 1): p itself at 0.025"
+  },
+  {
+   "args": {
+    "a": 1,
+    "b": 1,
+    "p": 0.975
+   },
+   "expected": "0.975",
+   "fn": "betainc_inv",
+   "hand_checked": true,
+   "name": "Q07 (1, 1): p itself at 0.975"
+  },
+  {
+   "args": {
+    "a": 11,
+    "b": 3,
+    "p": 0.025
+   },
+   "expected": "0.545528944323",
+   "fn": "betainc_inv",
+   "hand_checked": false,
+   "name": "Q08 (11, 3) at 0.025"
+  },
+  {
+   "args": {
+    "a": 11,
+    "b": 3,
+    "p": 0.975
+   },
+   "expected": "0.949618926509",
+   "fn": "betainc_inv",
+   "hand_checked": false,
+   "name": "Q09 (11, 3) at 0.975"
+  },
+  {
+   "args": {
+    "a": 0.5,
+    "b": 0.5,
+    "p": 0.1
+   },
+   "expected": "0.0244717418524",
+   "fn": "betainc_inv",
+   "hand_checked": false,
+   "name": "Q10 (0.5, 0.5) at 0.1"
+  },
+  {
+   "args": {
+    "a": 1000,
+    "b": 1,
+    "p": 0.5
+   },
+   "expected": "0.99930709299",
+   "fn": "betainc_inv",
+   "hand_checked": true,
+   "name": "Q11 (1000, 1) at 0.5 = 0.5^(1/1000)"
+  },
+  {
+   "args": {
+    "a": 1,
+    "b": 1,
+    "p": -0.5
+   },
+   "expected": "ERROR:p",
+   "fn": "betainc_inv",
+   "hand_checked": true,
+   "name": "Q12 p below 0 is refused"
+  },
+  {
+   "args": {
+    "a": 1,
+    "b": 1,
+    "p": 1.5
+   },
+   "expected": "ERROR:p",
+   "fn": "betainc_inv",
+   "hand_checked": true,
+   "name": "Q13 p above 1 is refused"
+  },
+  {
+   "args": {
+    "a": -1,
+    "b": 1,
+    "p": 0.5
+   },
+   "expected": "ERROR:shape",
+   "fn": "betainc_inv",
+   "hand_checked": true,
+   "name": "Q14 a negative is refused"
+  },
+  {
+   "args": {
+    "a": 5,
+    "b": 1,
+    "p": 0.59049
+   },
+   "expected": "0.9",
+   "fn": "betainc_inv",
+   "hand_checked": true,
+   "name": "Q15 (5, 1): p^(1/5) at 0.59049"
+  },
+  {
+   "args": {
+    "a": 30,
+    "b": 70,
+    "p": 0.5
+   },
+   "expected": "0.298661974309",
+   "fn": "betainc_inv",
+   "hand_checked": false,
+   "name": "Q16 (30, 70) at 0.5"
+  },
+  {
+   "args": {
+    "x": 1
+   },
+   "expected": "-8.881784197e-16",
+   "fn": "lgamma",
+   "hand_checked": true,
+   "name": "L01 lgamma(1) = 0 (to the approximation's error)"
+  },
+  {
+   "args": {
+    "x": 2
+   },
+   "expected": "0",
+   "fn": "lgamma",
+   "hand_checked": true,
+   "name": "L02 lgamma(2) = 0 (to the approximation's error)"
+  },
+  {
+   "args": {
+    "x": 0.5
+   },
+   "expected": "0.572364942925",
+   "fn": "lgamma",
+   "hand_checked": true,
+   "name": "L03 lgamma(1/2) = ln sqrt(pi)"
+  },
+  {
+   "args": {
+    "x": 10.5
+   },
+   "expected": "13.9406252194",
+   "fn": "lgamma",
+   "hand_checked": true,
+   "name": "L04 lgamma(10.5)"
+  },
+  {
+   "args": {
+    "x": 100
+   },
+   "expected": "359.13420537",
+   "fn": "lgamma",
+   "hand_checked": true,
+   "name": "L05 lgamma(100)"
+  },
+  {
+   "args": {
+    "x": 3
+   },
+   "expected": "0.69314718056",
+   "fn": "lgamma",
+   "hand_checked": true,
+   "name": "L06 lgamma(3) = ln 2"
+  },
+  {
+   "args": {
+    "x": 6
+   },
+   "expected": "4.78749174278",
+   "fn": "lgamma",
+   "hand_checked": true,
+   "name": "L07 lgamma(6) = ln 120"
+  },
+  {
+   "args": {
+    "x": 0.001
+   },
+   "expected": "6.90717888538",
+   "fn": "lgamma",
+   "hand_checked": true,
+   "name": "L08 lgamma(0.001)"
+  },
+  {
+   "args": {
+    "x": 0.25
+   },
+   "expected": "1.2880225247",
+   "fn": "lgamma",
+   "hand_checked": true,
+   "name": "L09 lgamma(0.25), reflection"
+  },
+  {
+   "args": {
+    "x": 1000000
+   },
+   "expected": "12815504.5691",
+   "fn": "lgamma",
+   "hand_checked": true,
+   "name": "L10 lgamma(1e6)"
+  },
+  {
+   "args": {
+    "x": 1.5
+   },
+   "expected": "-0.120782237635",
+   "fn": "lgamma",
+   "hand_checked": true,
+   "name": "L11 lgamma(1.5) = ln(sqrt(pi)/2)"
+  },
+  {
+   "args": {
+    "x": 0
+   },
+   "expected": "ERROR:lgamma",
+   "fn": "lgamma",
+   "hand_checked": true,
+   "name": "L12 x = 0 is refused"
+  },
+  {
+   "args": {
+    "x": -2.5
+   },
+   "expected": "ERROR:lgamma",
+   "fn": "lgamma",
+   "hand_checked": true,
+   "name": "L13 x negative is refused"
+  },
+  {
+   "args": {
+    "x": true
+   },
+   "expected": "ERROR:lgamma",
+   "fn": "lgamma",
+   "hand_checked": true,
+   "name": "L14 a boolean is refused"
+  },
+  {
+   "args": {
+    "x": 171.5
+   },
+   "expected": "709.143163031",
+   "fn": "lgamma",
+   "hand_checked": true,
+   "name": "L15 lgamma(171.5)"
+  },
+  {
+   "args": {
+    "x": 0.0
+   },
+   "expected": "0",
+   "fn": "canon",
+   "hand_checked": true,
+   "name": "K01 zero"
+  },
+  {
+   "args": {
+    "x": -0.0
+   },
+   "expected": "0",
+   "fn": "canon",
+   "hand_checked": true,
+   "name": "K02 negative zero"
+  },
+  {
+   "args": {
+    "x": 1.0
+   },
+   "expected": "1",
+   "fn": "canon",
+   "hand_checked": true,
+   "name": "K03 one"
+  },
+  {
+   "args": {
+    "x": 0.1
+   },
+   "expected": "0.1",
+   "fn": "canon",
+   "hand_checked": true,
+   "name": "K04 0.1"
+  },
+  {
+   "args": {
+    "x": 1e-05
+   },
+   "expected": "1e-05",
+   "fn": "canon",
+   "hand_checked": true,
+   "name": "K05 1e-5 (exponent form)"
+  },
+  {
+   "args": {
+    "x": 1000000000000.0
+   },
+   "expected": "1e+12",
+   "fn": "canon",
+   "hand_checked": true,
+   "name": "K06 1e12 (exponent form)"
+  },
+  {
+   "args": {
+    "x": 123456789012.0
+   },
+   "expected": "123456789012",
+   "fn": "canon",
+   "hand_checked": true,
+   "name": "K07 123456789012 (fixed)"
+  },
+  {
+   "args": {
+    "x": 0.3333333333333333
+   },
+   "expected": "0.333333333333",
+   "fn": "canon",
+   "hand_checked": true,
+   "name": "K08 1/3"
+  },
+  {
+   "args": {
+    "x": 2e-09
+   },
+   "expected": "2e-09",
+   "fn": "canon",
+   "hand_checked": true,
+   "name": "K09 2e-9 (C writes 2e-09)"
+  },
+  {
+   "args": {
+    "x": 1e+22
+   },
+   "expected": "1e+22",
+   "fn": "canon",
+   "hand_checked": true,
+   "name": "K10 1e22"
+  },
+  {
+   "args": {
+    "x": 0.0001
+   },
+   "expected": "0.0001",
+   "fn": "canon",
+   "hand_checked": true,
+   "name": "K11 0.0001 (fixed)"
+  },
+  {
+   "args": {
+    "x": -1.5e-10
+   },
+   "expected": "-1.5e-10",
+   "fn": "canon",
+   "hand_checked": true,
+   "name": "K12 -1.5e-10"
+  },
+  {
+   "args": {
+    "x": 7
+   },
+   "expected": "7",
+   "fn": "canon",
+   "hand_checked": true,
+   "name": "K13 an integer argument 7"
+  },
+  {
+   "args": {
+    "x": 0.024999999999999988
+   },
+   "expected": "0.025",
+   "fn": "canon",
+   "hand_checked": true,
+   "name": "K14 0.025 rounded from 0.024999999999999988"
+  },
+  {
+   "args": {
+    "x": 999999999999.5
+   },
+   "expected": "1e+12",
+   "fn": "canon",
+   "hand_checked": true,
+   "name": "K15 999999999999.5 rounds up to 1e12"
+  },
+  {
+   "args": {
+    "x": -8.881784197001252e-16
+   },
+   "expected": "-8.881784197e-16",
+   "fn": "canon",
+   "hand_checked": true,
+   "name": "K16 -8.881784197001252e-16"
+  },
+  {
+   "args": {
+    "x": 12345.678901234567
+   },
+   "expected": "12345.6789012",
+   "fn": "canon",
+   "hand_checked": true,
+   "name": "K17 12345.678901234567"
+  },
+  {
+   "args": {
+    "x": true
+   },
+   "expected": "ERROR:canon",
+   "fn": "canon",
+   "hand_checked": true,
+   "name": "K18 a boolean is refused"
+  }
+ ],
+ "corpus": "beta",
+ "version": "0.1.0"
+}

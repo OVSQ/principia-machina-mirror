@@ -1,0 +1,207 @@
+{{DISPLAYTITLE:Lake and Lean projects}}
+{{Plebeian|Lean theorem prover/Explainers/A library of mathematics}}
+{{Lean theorem prover map}}
+
+A single Lean source file can be checked with the command <code>lean</code>. Anything larger,
+a library of hundreds of files or a program with dependencies, is organised as a '''Lake
+package''' and compiled by '''Lake''', Lean's build tool, which ships with every version of
+Lean. Which version of Lean a project uses is fixed by a one-line file and enforced by
+'''elan''', the toolchain manager. This page shows a minimal project as files, the commands
+that compile and test it, and how dependencies are pinned, all with Lean 4.34.1 and the Lake
+that comes with it.
+
+== The toolchain ==
+
+A Lean '''toolchain''' is the set of programs and files for one version of Lean, among them
+<code>lean</code> itself, <code>lake</code>, a C compiler (<code>leanc</code>, a version of Clang), the
+program <code>leanchecker</code>, and the compiled standard library and runtime. Toolchains
+are installed and selected by elan.<ref name="rm-bt">"Build Tools and Distribution", a chapter of ''The Lean Language Reference'' (edition covering Lean 4.34.0). [https://lean-lang.org/doc/reference/4.34.0/Build-Tools-and-Distribution/ lean-lang.org/doc/reference/4.34.0/Build-Tools-and-Distribution/]</ref>
+The <code>lean</code> and <code>lake</code> commands a user types are small proxies installed
+by elan. Each looks for a file named <code>lean-toolchain</code> in the current directory and
+its parents, reads the toolchain named there, installs it if it is missing, and runs the
+program from that toolchain. A command can also name a toolchain directly, as in
+<code>lake +leanprover/lean4:v4.34.1 new greeting</code>.<ref name="rm-elan">"Managing Toolchains with Elan", section 24.2 of ''The Lean Language Reference'' (edition covering Lean 4.34.0). [https://lean-lang.org/doc/reference/4.34.0/Build-Tools-and-Distribution/Managing-Toolchains-with-Elan/ lean-lang.org/doc/reference/4.34.0/Build-Tools-and-Distribution/Managing-Toolchains-with-Elan/]</ref>
+
+The file holds one line:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">leanprover/lean4:v4.34.1</pre>
+
+The part before the colon names where toolchains come from, and the part after it the
+version. A project's file should name an exact version, not a channel such as
+<code>stable</code>, so that everyone working on it uses the same Lean. Changing the version
+is a one-line edit; the new toolchain is downloaded the next time it is
+needed.<ref name="rm-elan" /> This matters more for a proof assistant than for most
+languages. The elaborator, the tactics and the library change from one version of Lean to
+the next, and a proof that is accepted under one version may fail under another. The
+toolchain file records under which version a body of proofs was checked.
+
+== A minimal Lake package ==
+
+<code>lake new greeting</code> creates a directory with a library, an executable and a
+configuration file. With Lean 4.34.1 the configuration it writes, <code>lakefile.toml</code>,
+is:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">name = "greeting"
+version = "0.1.0"
+defaultTargets = ["greeting"]
+
+[[lean_lib]]
+name = "Greeting"
+
+[[lean_exe]]
+name = "greeting"
+root = "Main"</pre>
+
+The first lines describe the Lake package itself. Each <code><nowiki>[[lean_lib]]</nowiki></code> table
+declares a '''library''', a collection of Lean modules under a root name, here
+<code>Greeting</code>; each <code><nowiki>[[lean_exe]]</nowiki></code> declares an '''executable''', a
+program whose Lean module defines <code>main</code>.<ref name="rm-lake">"Lake", section 24.1 of ''The Lean Language Reference'' (edition covering Lean 4.34.0), including 24.1.1 "Concepts and Terminology", 24.1.1.2 "Builds", 24.1.1.5 "Test and Lint Drivers" and the TOML configuration reference. [https://lean-lang.org/doc/reference/4.34.0/Build-Tools-and-Distribution/Lake/ lean-lang.org/doc/reference/4.34.0/Build-Tools-and-Distribution/Lake/]</ref>
+The source files follow the names. <code>Greeting.lean</code> is the root of the library and
+imports its parts:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">-- This module serves as the root of the `Greeting` library.
+-- Import modules here that should be built as part of the library.
+import Greeting.Basic</pre>
+
+<code>Greeting/Basic.lean</code> holds the one definition:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">def hello := "world"</pre>
+
+and <code>Main.lean</code> is the program:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">import Greeting
+
+def main : IO Unit :=
+  IO.println s!"Hello, {hello}!"</pre>
+
+A Lean module's name is its path: <code>Greeting/Basic.lean</code> is the Lean module
+<code>Greeting.Basic</code>, and <code>import Greeting.Basic</code> refers to it. Lake reads
+the imports to work out the order in which the Lean modules must be compiled.<ref name="rm-lake" />
+
+The configuration can also be written in Lean, as <code>lakefile.lean</code>. <code>lake new
+greet2 std.lean</code> writes:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">import Lake
+open Lake DSL
+
+package "greet2" where
+  version := v!"0.1.0"
+
+lean_lib «Greet2» where
+  -- add library configuration options here
+
+@[default_target]
+lean_exe "greet2" where
+  root := `Main</pre>
+
+The TOML form is purely declarative. The Lean form is a Lean program and can compute its
+configuration or define new kinds of target.<ref name="rm-lake" />
+
+== Compiling ==
+
+<code>lake build</code> compiles the default targets and everything they need. In the new
+directory it reports:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">info: greeting: no previous manifest, creating one from scratch
+info: toolchain not updated; already up-to-date
+✔ [2/8] Built Greeting.Basic (277ms)
+✔ [3/8] Built Greeting.Basic:c.o (58ms)
+✔ [4/8] Built Greeting (225ms)
+✔ [5/8] Built Greeting:c.o (66ms)
+✔ [6/8] Built Main (244ms)
+✔ [7/8] Built Main:c.o (69ms)
+✔ [8/8] Built greeting:exe (289ms)
+Build completed successfully (8 jobs).</pre>
+
+The first two lines appear on the first run only, and the times in brackets vary from run
+to run. Each Lean module is elaborated, which produces an <code>.olean</code> file holding
+its definitions and theorems in compiled form, and C code, which is compiled to an object file (<code>:c.o</code>); the
+object files are linked into the executable. <code>lake exe greeting</code> then prints
+<code>Hello, world!</code>.
+
+Elaboration includes the Lean kernel's check of every definition and theorem, so a
+Lake build of a Lean module that finishes without errors or warnings gives the same assurance
+as opening it in an editor and seeing it accepted: every theorem in it, and in everything it
+imports, has been checked. The reference manual makes the comparison explicitly.<ref name="rm-validating">"Validating a Lean Proof", a chapter of ''The Lean Language Reference'' (edition covering Lean 4.34.0), section "The Blue Double Check Marks". [https://lean-lang.org/doc/reference/4.34.0/ValidatingProofs/ lean-lang.org/doc/reference/4.34.0/ValidatingProofs/]</ref>
+
+Running <code>lake build</code> again with nothing changed prints only <code>Build completed
+successfully (8 jobs).</code> Lake keeps a '''trace''' for every output, recording a digest of
+each input from which it was made; when no input has changed, the output is reused and its
+saved messages are replayed instead of being produced again.<ref name="rm-lake" /> Lake keeps its
+working state under the directory <code>.lake/</code>: compiled outputs in
+<code>.lake/build/</code> and the sources of dependencies in
+<code>.lake/packages/</code>.<ref name="rm-lake" />
+
+== Testing ==
+
+<code>lake test</code> runs the Lake package's '''test driver''', a target named in the
+configuration. Lake is not a test framework: it finds the driver, compiles it, and, for an
+executable, runs it and treats a non-zero exit code as failure. A library can serve as the
+driver, and then any elaboration error counts as a failure, including a failed
+<code>#guard</code>.<ref name="rm-lake" /> Adding <code>testDriver = "GreetingTest"</code>
+and a second library to the configuration,
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">[[lean_lib]]
+name = "GreetingTest"</pre>
+
+with the file <code>GreetingTest.lean</code>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">import Greeting
+
+#guard hello == "world"
+#guard hello.length == 5</pre>
+
+makes <code>lake test</code> succeed. Changing the last line to claim a length of 6 makes it
+fail, with this among its messages:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">error: GreetingTest.lean:4:0: Expression
+  hello.length == 6
+did not evaluate to `true`</pre>
+
+For a library of proofs the distinction between compiling and testing is thin. A theorem
+that is false, or whose proof is broken, does not compile.
+
+== Dependencies ==
+
+A Lake package may require others. In <code>lakefile.toml</code> each dependency is a
+<code><nowiki>[[require]]</nowiki></code> table. A dependency can come from Reservoir, an online index of Lake
+packages, from a Git repository at a given revision, or from a local
+path.<ref name="rm-lake" /> The reference manual's example of a dependency taken from
+Reservoir is:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">[[require]]
+name = "example"
+version = "≥2.12.0"
+scope = "exampleDev"</pre>
+
+The configuration says which dependencies are wanted. The file
+<code>lake-manifest.json</code> says exactly which versions are in use: for each dependency
+it records the source and the precise revision. Lake brings each dependency's local copy into
+line with lake-manifest.json before compiling, and creates the file if it is missing;
+<code>lake update</code> moves the recorded revisions forward. The file is meant to be kept
+with the source.<ref name="rm-lake" /> For the minimal project, which has no dependencies,
+Lake wrote:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">{"version": "1.2.0",
+ "packagesDir": ".lake/packages",
+ "packages": [],
+ "name": "greeting",
+ "lakeDir": ".lake",
+ "fixedToolchain": false}</pre>
+
+Together, <code>lean-toolchain</code>, the configuration file and lake-manifest.json fix the
+version of Lean and the exact source of every dependency. That is what makes a Lean project
+reproducible: another person, or the same person years later, can obtain the same toolchain
+and the same dependencies and have every proof checked again. The large mathematical
+libraries described in [[Lean theorem prover/Explainers/A library of mathematics|a library
+of mathematics]] are distributed in this form.
+
+== Next ==
+
+[[Lean theorem prover/System/Proof export and independent checkers|Proof export and independent checkers]]
+describes how the results of a Lake build can be checked again outside the program that
+produced them.
+
+== References ==
+
+<references />

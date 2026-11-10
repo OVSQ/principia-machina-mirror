@@ -1,0 +1,139 @@
+{{DISPLAYTITLE:Action from the endpoints}}
+{{Technical|Hamilton's principle/Mathematics/Action as a function of its endpoints}}
+{{Hamilton's principle map}}
+
+This page explains Hamilton's own idea, which is not the one usually taught first.
+It uses no mathematics. The technical page it goes with is named above.
+
+== Turning the question round ==
+
+[[File:OPL-HP-F-25.png|thumb|right|400px|Action on the true motion as a function of its endpoints.]]
+
+Everything so far has used the total cost in one way: work it out for many
+different paths, and find the path where it stops changing.
+
+Hamilton's idea was the reverse.
+
+'''Work out the cost for the true path only. Then ask how that number depends on
+where the journey started and finished.'''
+
+That is a completely different object. It is no longer a rule about paths. It is
+an ordinary quantity that depends on two places — a number attached to each pair
+of start and end points.
+
+Hamilton called it the '''characteristic function'''.
+
+== What it knows ==
+
+[[File:OPL-HP-F-30.png|thumb|right|400px|Lambert's theorem: chord and sum of radii.]]
+
+The surprise is how much that single number contains.
+
+Ask how the number changes when you move the '''finishing''' point slightly.
+The answer is the momentum the object has when it arrives.
+
+Ask how it changes when you move the '''starting''' point slightly. The answer is
+the momentum it had when it set off, with the opposite sign.
+
+So the function does not merely record a cost. Differentiating it gives you the
+motion — arrival speed, departure speed, and with a little more work the timing.
+
+Hamilton's claim was that the whole of dynamics for a system reduces to finding
+this one function and differentiating it.
+
+== Why he thought this was better ==
+
+Hamilton was explicit about what his method does and does not offer, and he is
+worth taking at his word.
+
+He did '''not''' claim it computes faster. He said in the essay that it might well
+bring no practical advantage.
+
+What he claimed is a difference of kind. The older methods produce the
+'''equations''' of motion, which then have to be solved. His method produces their
+'''solution''' directly, once the function is known.
+
+He was blunt about the older principle. Applied to finding the motion, he said, it
+only gives you the differential equations, which you could get another way — and he
+noted that Lagrange, Laplace and Poisson had for that reason thought it of little
+use.
+
+So the distinction to hold on to is: '''varying the path gives you the equations.
+Varying the endpoints gives you their solution.'''
+
+== Where the idea came from ==
+
+Not from mechanics. Hamilton built this for optics first, in his work on systems
+of light rays, and then transcribed it.
+
+He says so in the opening paragraph of the dynamics essay: the dynamical
+principle, he writes, is only another form of an idea already applied to optics.
+
+He adds a remark whose reach he could not have known. The method, he suggests, is
+probably not confined to optics and dynamics, and might one day become a separate
+branch of analysis.
+
+He was right in a way he had no means of anticipating. See
+[[Hamilton's principle/Explainers/Light and particles|Light and particles]].
+
+== A warning for anyone reading Hamilton ==
+
+There is a trap here, and it catches nearly everyone.
+
+Modern books define '''the action''' as one particular quantity. Hamilton's
+characteristic function is a '''different''' quantity.
+
+Both are called the action. Both principles built on them are called the principle
+of least action. They are not the same, and the difference matters.
+
+Anyone who opens Hamilton's 1834 essay expecting the modern quantity will misread
+every equation in it. Hamilton introduced the modern one a year later, in his
+second essay, as a technical improvement.
+
+The two are explained side by side at
+[[Hamilton's principle/Explainers/Two different actions|Two different actions]].
+
+== The place it breaks ==
+
+The characteristic function has a limitation, and it is one this volume has met
+several times now.
+
+It assumes there is '''one''' motion connecting the start and the finish. Only then
+is the cost a single well-defined number.
+
+Sometimes there is more than one. Between the poles of a sphere there are
+infinitely many shortest routes, all the same length. The function has no single
+value there, and differentiating it is meaningless.
+
+Those are the '''conjugate points''' of
+[[Hamilton's principle/Explainers/Where the minimum fails|Where the minimum fails]] again, arriving in a
+third guise: places where minimality fails, where the wave picture folds, and where
+this function loses its meaning.
+
+Three descriptions, one phenomenon. That recurrence is one of the reasons the
+subject hangs together as well as it does.
+
+== What Hamilton actually demonstrated ==
+
+The 1834 essay does not stop at general claims. Hamilton works the two-body
+problem — a planet round the sun — in detail with his method.
+
+Out come the shape of the orbit, the classification into ellipse, parabola and
+hyperbola, and the relation between position and time.
+
+And out comes something less obvious: the cost of the journey depends only on
+three quantities — the straight-line distance between the two positions, the sum of
+their distances from the sun, and the size of the orbit. It does not depend on
+where in the sky they are, or on the shape of the arc between them.
+
+That fact is used in orbit determination to this day. It was known before Hamilton,
+but his method delivers it as a remark about which quantities his function contains,
+rather than as a separate calculation.
+
+'''That is his case for the method''': not speed, but making structural facts
+visible.
+
+== Where to go next ==
+
+The volume now turns to why conserved quantities exist at all, at
+[[Hamilton's principle/Explainers/Symmetry and conservation|Symmetry and conservation]].

@@ -1,0 +1,5 @@
+{
+ "corpus": "probe_corpus.json",
+ "about": "The cases of probe_corpus.json whose answer the Calculator does not compute yet, each with its reason; a case is named by the first word of its name. Nothing is owed: the draws are SHA-256 (decision D2, Principia.Sha256) and compared exactly (decision D6), so every case is computed and compared, and Tests/Probe.lean requires this list to be empty.",
+ "owed": []
+}

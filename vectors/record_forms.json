@@ -1,0 +1,2861 @@
+{
+ "corpus": "record_forms",
+ "version": "0.4.0",
+ "spec": "Principia/Record/Check.lean: the DERIVATION's three forms, their preimage, the PMA row DERIVATION_CLASS, and a bare KERNEL refused REC-44; the texts inside a derivation read as the derivation command reads them, and record_view's step count",
+ "note": "hand-written: the record check reads a DERIVATION by its shape; expectations are literals in TPM's canonical JSON; the preimage and digest cases RF16 to RF34 were written from the Calculator and checked outside it: each DERIVATION field equal to the input's canonical JSON (keys sorted, no space) and each digest equal to SHA-256 of the field list's netstrings; the DERIVATION_CLASS cases RF35 to RF50 were written from the Calculator and checked outside it: each preimage version 1's field list with the row appended and counted, each digest SHA-256 of its netstrings, the three classes three digests, none version 1's; the cases at LANDED without the row expect REC-43 since the row was added; the text cases RF51 to RF69 (each text inside a derivation read as the derivation command reads it, a failure REC-41 at the text's own path) and the view cases RF70 to RF74 (a STRUCTURED derivation's steps as their count) were written from the Calculator and checked against pcalc derivation credit_record on the same derivations: every structured text refused here is one that command answers UNREADABLE with the same word, every name refused here one it answers REFUSED missing-citation; the bare KERNEL cases (RF03, RF17, RF54 to RF56, RF67 and RF75, REC-44 at PUSH and at LANDED) and RF76 (PROSE with a KERNEL attachment landed INSPECTION, its digest from record_digest) were written from the Calculator",
+ "cases": [
+  {
+   "name": "RF01 STRUCTURED, PUSH",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "DERIVATION": {
+      "STEPS": [
+       {
+        "EQUATION": "F = k * v + q",
+        "LAW": "drag",
+        "SITE": "rhs",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v + 0",
+        "ASSUMPTION": "A-7",
+        "SITE": "rhs.r",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v",
+        "IDENTITY": "addZero",
+        "SITE": "rhs",
+        "FORWARD": true
+       }
+      ]
+     }
+    },
+    "setting": null,
+    "stage": "PUSH",
+    "tfk": null
+   },
+   "expected": "[\"OK\"]"
+  },
+  {
+   "name": "RF02 STRUCTURED with a START, PUSH",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "DERIVATION": {
+      "START": {
+       "LAW": "drag"
+      },
+      "STEPS": [
+       {
+        "EQUATION": "F = k * v + 0",
+        "ASSUMPTION": "A-7",
+        "SITE": "rhs.r",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v",
+        "IDENTITY": "addZero",
+        "SITE": "rhs",
+        "FORWARD": true
+       }
+      ]
+     }
+    },
+    "setting": null,
+    "stage": "PUSH",
+    "tfk": null
+   },
+   "expected": "[\"OK\"]"
+  },
+  {
+   "name": "RF03 KERNEL, PUSH: a bare KERNEL is refused REC-44",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "DERIVATION": {
+      "PROOF": "opaque export text"
+     }
+    },
+    "setting": null,
+    "stage": "PUSH",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-44\",\"DERIVATION\",\"DERIVATION is a bare KERNEL, which no check credits yet: push PROSE {STEPS, TEXT} with the PROOF as its ATTACHMENT\"]]]"
+  },
+  {
+   "name": "RF04 PROSE with a STRUCTURED attachment, PUSH",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "DERIVATION": {
+      "STEPS": 3,
+      "TEXT": "Three steps.",
+      "ATTACHMENT": {
+       "STEPS": [
+        {
+         "EQUATION": "F = k * v + q",
+         "LAW": "drag",
+         "SITE": "rhs",
+         "FORWARD": true
+        },
+        {
+         "EQUATION": "F = k * v + 0",
+         "ASSUMPTION": "A-7",
+         "SITE": "rhs.r",
+         "FORWARD": true
+        },
+        {
+         "EQUATION": "F = k * v",
+         "IDENTITY": "addZero",
+         "SITE": "rhs",
+         "FORWARD": true
+        }
+       ]
+      }
+     }
+    },
+    "setting": null,
+    "stage": "PUSH",
+    "tfk": null
+   },
+   "expected": "[\"OK\"]"
+  },
+  {
+   "name": "RF05 PROSE with a KERNEL attachment, PUSH",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "DERIVATION": {
+      "STEPS": 3,
+      "TEXT": "Three steps.",
+      "ATTACHMENT": {
+       "PROOF": "opaque"
+      }
+     }
+    },
+    "setting": null,
+    "stage": "PUSH",
+    "tfk": null
+   },
+   "expected": "[\"OK\"]"
+  },
+  {
+   "name": "RF06 mixed-forms: START beside TEXT",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "DERIVATION": {
+      "STEPS": 2,
+      "TEXT": "Two steps.",
+      "START": {
+       "LAW": "drag"
+      }
+     }
+    },
+    "setting": null,
+    "stage": "PUSH",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-41\",\"DERIVATION\",\"DERIVATION does not read as a derivation: mixed-forms\"]]]"
+  },
+  {
+   "name": "RF07 mixed-forms: PROOF beside TEXT",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "DERIVATION": {
+      "PROOF": "p",
+      "TEXT": "Two steps."
+     }
+    },
+    "setting": null,
+    "stage": "PUSH",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-41\",\"DERIVATION\",\"DERIVATION does not read as a derivation: mixed-forms\"]]]"
+  },
+  {
+   "name": "RF08 no-form: an empty DERIVATION is version 1's case",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "DERIVATION": {}
+    },
+    "setting": null,
+    "stage": "PUSH",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-08\",\"DERIVATION.STEPS\",\"DERIVATION.STEPS is missing\"],[\"REC-08\",\"DERIVATION.TEXT\",\"DERIVATION.TEXT is missing\"]]]"
+  },
+  {
+   "name": "RF09 not-a-count STEPS",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "DERIVATION": {
+      "STEPS": -1,
+      "TEXT": "t",
+      "ATTACHMENT": {
+       "PROOF": "p"
+      }
+     }
+    },
+    "setting": null,
+    "stage": "PUSH",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-41\",\"DERIVATION\",\"DERIVATION does not read as a derivation: not-a-count STEPS\"]]]"
+  },
+  {
+   "name": "RF10 a step with two citations",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "DERIVATION": {
+      "STEPS": [
+       {
+        "EQUATION": "F = k * v",
+        "LAW": "drag",
+        "ASSUMPTION": "A-7",
+        "SITE": "rhs",
+        "FORWARD": true
+       }
+      ]
+     }
+    },
+    "setting": null,
+    "stage": "PUSH",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-41\",\"DERIVATION\",\"DERIVATION does not read as a derivation: step 1: several-citations\"]]]"
+  },
+  {
+   "name": "RF11 a step without FORWARD",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "DERIVATION": {
+      "STEPS": [
+       {
+        "EQUATION": "F = k * v",
+        "LAW": "drag",
+        "SITE": "rhs"
+       }
+      ]
+     }
+    },
+    "setting": null,
+    "stage": "PUSH",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-41\",\"DERIVATION\",\"DERIVATION does not read as a derivation: step 1: missing FORWARD\"]]]"
+  },
+  {
+   "name": "RF12 an attachment that does not read",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "DERIVATION": {
+      "STEPS": 2,
+      "TEXT": "t",
+      "ATTACHMENT": {
+       "PROOF": 3
+      }
+     }
+    },
+    "setting": null,
+    "stage": "PUSH",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-41\",\"DERIVATION\",\"DERIVATION does not read as a derivation: ATTACHMENT: not-a-string PROOF\"]]]"
+  },
+  {
+   "name": "RF13 an unknown member beside a list STEPS",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "DERIVATION": {
+      "STEPS": [],
+      "NOTE": "n"
+     }
+    },
+    "setting": null,
+    "stage": "PUSH",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-41\",\"DERIVATION\",\"DERIVATION does not read as a derivation: unknown-member NOTE\"]]]"
+  },
+  {
+   "name": "RF14 PROSE with an attachment keeps version 1's STEPS bound",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "DERIVATION": {
+      "STEPS": 0,
+      "TEXT": "t",
+      "ATTACHMENT": {
+       "PROOF": "p"
+      }
+     }
+    },
+    "setting": null,
+    "stage": "PUSH",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-19\",\"DERIVATION.STEPS\",\"DERIVATION.STEPS 0 is not an integer from 1 to 1000000\"]]]"
+  },
+  {
+   "name": "RF15 PROSE with an attachment keeps version 1's NOTBLANK",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "DERIVATION": {
+      "STEPS": 1,
+      "TEXT": " ",
+      "ATTACHMENT": {
+       "PROOF": "p"
+      }
+     }
+    },
+    "setting": null,
+    "stage": "PUSH",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-11\",\"DERIVATION.TEXT\",\"DERIVATION.TEXT is blank\"]]]"
+  },
+  {
+   "name": "RF16 STRUCTURED at LANDED with its digest",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "STEPS": [
+       {
+        "EQUATION": "F = k * v + q",
+        "LAW": "drag",
+        "SITE": "rhs",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v + 0",
+        "ASSUMPTION": "A-7",
+        "SITE": "rhs.r",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v",
+        "IDENTITY": "addZero",
+        "SITE": "rhs",
+        "FORWARD": true
+       }
+      ]
+     },
+     "DIGEST": "d90636881641dbd2d70f772c34208bade7987e554852288ce2215a7130c84910"
+    },
+    "setting": null,
+    "stage": "LANDED",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-43\",\"DERIVATION_CLASS\",\"DERIVATION_CLASS is missing\"]]]"
+  },
+  {
+   "name": "RF17 KERNEL at LANDED with its digest: REC-43 and REC-44",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "PROOF": "p"
+     },
+     "DIGEST": "ddbc09439c32f29561c4e8f55cf013d14817efa399e4a339dde8f84e3cce6cc8"
+    },
+    "setting": null,
+    "stage": "LANDED",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-43\",\"DERIVATION_CLASS\",\"DERIVATION_CLASS is missing\"],[\"REC-44\",\"DERIVATION\",\"DERIVATION is a bare KERNEL, which no check credits yet: push PROSE {STEPS, TEXT} with the PROOF as its ATTACHMENT\"]]]"
+  },
+  {
+   "name": "RF18 PROSE with an attachment at LANDED with its digest",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "STEPS": 1,
+      "TEXT": "t",
+      "ATTACHMENT": {
+       "PROOF": "p"
+      }
+     },
+     "DIGEST": "c16e723f1d313319bef15018838733aad02b1485ecb7a29c65b7bf5973ab931a"
+    },
+    "setting": null,
+    "stage": "LANDED",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-43\",\"DERIVATION_CLASS\",\"DERIVATION_CLASS is missing\"]]]"
+  },
+  {
+   "name": "RF19 version 1's PROSE at LANDED without DERIVATION_CLASS: REC-43 alone",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "STEPS": 3,
+      "TEXT": "Three steps."
+     }
+    },
+    "setting": null,
+    "stage": "LANDED",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-43\",\"DERIVATION_CLASS\",\"DERIVATION_CLASS is missing\"]]]"
+  },
+  {
+   "name": "RF20 STRUCTURED with a START at LANDED with its digest",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "START": {
+       "LAW": "drag"
+      },
+      "STEPS": [
+       {
+        "EQUATION": "F = k * v + 0",
+        "ASSUMPTION": "A-7",
+        "SITE": "rhs.r",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v",
+        "IDENTITY": "addZero",
+        "SITE": "rhs",
+        "FORWARD": true
+       }
+      ]
+     },
+     "DIGEST": "a9ab9df29032d9c05c80b46516f270f37171a073dae6ed0c1931d047b9ef7823"
+    },
+    "setting": null,
+    "stage": "LANDED",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-43\",\"DERIVATION_CLASS\",\"DERIVATION_CLASS is missing\"]]]"
+  },
+  {
+   "name": "RF21 PROSE with a STRUCTURED attachment at LANDED with its digest",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "STEPS": 3,
+      "TEXT": "Three steps.",
+      "ATTACHMENT": {
+       "STEPS": [
+        {
+         "EQUATION": "F = k * v + q",
+         "LAW": "drag",
+         "SITE": "rhs",
+         "FORWARD": true
+        },
+        {
+         "EQUATION": "F = k * v + 0",
+         "ASSUMPTION": "A-7",
+         "SITE": "rhs.r",
+         "FORWARD": true
+        },
+        {
+         "EQUATION": "F = k * v",
+         "IDENTITY": "addZero",
+         "SITE": "rhs",
+         "FORWARD": true
+        }
+       ]
+      }
+     },
+     "DIGEST": "bcd1a777db4fbf6e4ee70fdbb4bb68e272f4d3fb5d4fdf45befb1d97ba1ceb06"
+    },
+    "setting": null,
+    "stage": "LANDED",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-43\",\"DERIVATION_CLASS\",\"DERIVATION_CLASS is missing\"]]]"
+  },
+  {
+   "name": "RF22 record_preimage of a STRUCTURED record: its DERIVATION one canonical JSON text",
+   "fn": "record_preimage",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "STEPS": [
+       {
+        "EQUATION": "F = k * v + q",
+        "LAW": "drag",
+        "SITE": "rhs",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v + 0",
+        "ASSUMPTION": "A-7",
+        "SITE": "rhs.r",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v",
+        "IDENTITY": "addZero",
+        "SITE": "rhs",
+        "FORWARD": true
+       }
+      ]
+     }
+    }
+   },
+   "expected": "[\"OK\",[\"TPC-RECORD\",\"1\",16,\"ID\",\"RR-12\",\"CLASS\",\"RESULT\",\"GRADE\",\"PROVISIONAL\",\"BLOCK\",\"B-1\",\"AUTHOR\",\"agent-a\",\"LANDED_BY\",\"agent-a\",\"LANDED\",\"2026-09-28T12:00:00Z\",\"CITES\",0,\"ASSUMPTIONS\",1,\"A-7\",\"TPS\",\"0.4.0\",\"D_IS\",\"7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f\",\"STATEMENT\",\"The drag force is proportional to the speed.\",\"REGIME\",\"L\",\"DERIVATION\",\"{\\\"STEPS\\\":[{\\\"EQUATION\\\":\\\"F = k * v + q\\\",\\\"FORWARD\\\":true,\\\"LAW\\\":\\\"drag\\\",\\\"SITE\\\":\\\"rhs\\\"},{\\\"ASSUMPTION\\\":\\\"A-7\\\",\\\"EQUATION\\\":\\\"F = k * v + 0\\\",\\\"FORWARD\\\":true,\\\"SITE\\\":\\\"rhs.r\\\"},{\\\"EQUATION\\\":\\\"F = k * v\\\",\\\"FORWARD\\\":true,\\\"IDENTITY\\\":\\\"addZero\\\",\\\"SITE\\\":\\\"rhs\\\"}]}\",\"FALSIFIER\",\"A force that does not grow with the speed.\",\"FALSIFIER_CLASS\",\"F2\"]]"
+  },
+  {
+   "name": "RF23 record_preimage of a KERNEL record",
+   "fn": "record_preimage",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "PROOF": "p"
+     }
+    }
+   },
+   "expected": "[\"OK\",[\"TPC-RECORD\",\"1\",16,\"ID\",\"RR-12\",\"CLASS\",\"RESULT\",\"GRADE\",\"PROVISIONAL\",\"BLOCK\",\"B-1\",\"AUTHOR\",\"agent-a\",\"LANDED_BY\",\"agent-a\",\"LANDED\",\"2026-09-28T12:00:00Z\",\"CITES\",0,\"ASSUMPTIONS\",1,\"A-7\",\"TPS\",\"0.4.0\",\"D_IS\",\"7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f\",\"STATEMENT\",\"The drag force is proportional to the speed.\",\"REGIME\",\"L\",\"DERIVATION\",\"{\\\"PROOF\\\":\\\"p\\\"}\",\"FALSIFIER\",\"A force that does not grow with the speed.\",\"FALSIFIER_CLASS\",\"F2\"]]"
+  },
+  {
+   "name": "RF24 record_preimage of a PROSE record with an attachment",
+   "fn": "record_preimage",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "STEPS": 1,
+      "TEXT": "t",
+      "ATTACHMENT": {
+       "PROOF": "p"
+      }
+     }
+    }
+   },
+   "expected": "[\"OK\",[\"TPC-RECORD\",\"1\",16,\"ID\",\"RR-12\",\"CLASS\",\"RESULT\",\"GRADE\",\"PROVISIONAL\",\"BLOCK\",\"B-1\",\"AUTHOR\",\"agent-a\",\"LANDED_BY\",\"agent-a\",\"LANDED\",\"2026-09-28T12:00:00Z\",\"CITES\",0,\"ASSUMPTIONS\",1,\"A-7\",\"TPS\",\"0.4.0\",\"D_IS\",\"7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f\",\"STATEMENT\",\"The drag force is proportional to the speed.\",\"REGIME\",\"L\",\"DERIVATION\",\"{\\\"ATTACHMENT\\\":{\\\"PROOF\\\":\\\"p\\\"},\\\"STEPS\\\":1,\\\"TEXT\\\":\\\"t\\\"}\",\"FALSIFIER\",\"A force that does not grow with the speed.\",\"FALSIFIER_CLASS\",\"F2\"]]"
+  },
+  {
+   "name": "RF25 record_digest of a STRUCTURED record",
+   "fn": "record_digest",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "STEPS": [
+       {
+        "EQUATION": "F = k * v + q",
+        "LAW": "drag",
+        "SITE": "rhs",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v + 0",
+        "ASSUMPTION": "A-7",
+        "SITE": "rhs.r",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v",
+        "IDENTITY": "addZero",
+        "SITE": "rhs",
+        "FORWARD": true
+       }
+      ]
+     }
+    }
+   },
+   "expected": "[\"OK\",\"d90636881641dbd2d70f772c34208bade7987e554852288ce2215a7130c84910\"]"
+  },
+  {
+   "name": "RF26 record_digest of a KERNEL record",
+   "fn": "record_digest",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "PROOF": "p"
+     }
+    }
+   },
+   "expected": "[\"OK\",\"ddbc09439c32f29561c4e8f55cf013d14817efa399e4a339dde8f84e3cce6cc8\"]"
+  },
+  {
+   "name": "RF27 record_digest of a PROSE with an attachment record",
+   "fn": "record_digest",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "STEPS": 1,
+      "TEXT": "t",
+      "ATTACHMENT": {
+       "PROOF": "p"
+      }
+     }
+    }
+   },
+   "expected": "[\"OK\",\"c16e723f1d313319bef15018838733aad02b1485ecb7a29c65b7bf5973ab931a\"]"
+  },
+  {
+   "name": "RF28 record_digest of a STRUCTURED with a START record",
+   "fn": "record_digest",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "START": {
+       "LAW": "drag"
+      },
+      "STEPS": [
+       {
+        "EQUATION": "F = k * v + 0",
+        "ASSUMPTION": "A-7",
+        "SITE": "rhs.r",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v",
+        "IDENTITY": "addZero",
+        "SITE": "rhs",
+        "FORWARD": true
+       }
+      ]
+     }
+    }
+   },
+   "expected": "[\"OK\",\"a9ab9df29032d9c05c80b46516f270f37171a073dae6ed0c1931d047b9ef7823\"]"
+  },
+  {
+   "name": "RF29 record_digest of a PROSE with a STRUCTURED attachment record",
+   "fn": "record_digest",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "STEPS": 3,
+      "TEXT": "Three steps.",
+      "ATTACHMENT": {
+       "STEPS": [
+        {
+         "EQUATION": "F = k * v + q",
+         "LAW": "drag",
+         "SITE": "rhs",
+         "FORWARD": true
+        },
+        {
+         "EQUATION": "F = k * v + 0",
+         "ASSUMPTION": "A-7",
+         "SITE": "rhs.r",
+         "FORWARD": true
+        },
+        {
+         "EQUATION": "F = k * v",
+         "IDENTITY": "addZero",
+         "SITE": "rhs",
+         "FORWARD": true
+        }
+       ]
+      }
+     }
+    }
+   },
+   "expected": "[\"OK\",\"bcd1a777db4fbf6e4ee70fdbb4bb68e272f4d3fb5d4fdf45befb1d97ba1ceb06\"]"
+  },
+  {
+   "name": "RF30 record_digest of version 1's PROSE record: version 1's encoding",
+   "fn": "record_digest",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "STEPS": 3,
+      "TEXT": "Three steps."
+     }
+    }
+   },
+   "expected": "[\"OK\",\"616179fd12ee5ab0f3866eaac55b387cf3ef4aa812467388e71f31c54d2f6511\"]"
+  },
+  {
+   "name": "RF31 record_digest when one STRUCTURED step's EQUATION differs: another digest",
+   "fn": "record_digest",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "STEPS": [
+       {
+        "EQUATION": "F = k * v + q",
+        "LAW": "drag",
+        "SITE": "rhs",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v + 0 * q",
+        "ASSUMPTION": "A-7",
+        "SITE": "rhs.r",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v",
+        "IDENTITY": "addZero",
+        "SITE": "rhs",
+        "FORWARD": true
+       }
+      ]
+     }
+    }
+   },
+   "expected": "[\"OK\",\"4d0222af8a56c5f01d4b94459bfdc6d919064e2748770a2b50a23d246782736e\"]"
+  },
+  {
+   "name": "RF32 record_digest when the KERNEL PROOF differs: another digest",
+   "fn": "record_digest",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "PROOF": "q"
+     }
+    }
+   },
+   "expected": "[\"OK\",\"6e0a42a9aeb4841145b71963e4a6ec82412f846ea6f25455f005e335194fb1a8\"]"
+  },
+  {
+   "name": "RF33 record_digest when a STRUCTURED step is left out: another digest",
+   "fn": "record_digest",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "STEPS": [
+       {
+        "EQUATION": "F = k * v + q",
+        "LAW": "drag",
+        "SITE": "rhs",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v + 0",
+        "ASSUMPTION": "A-7",
+        "SITE": "rhs.r",
+        "FORWARD": true
+       }
+      ]
+     }
+    }
+   },
+   "expected": "[\"OK\",\"4db8d729ab6134fe0acab3b61b2e3ad08623f149efb73eb64e8217c4de5fb4b2\"]"
+  },
+  {
+   "name": "RF34 STRUCTURED at LANDED with another record's digest",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "STEPS": [
+       {
+        "EQUATION": "F = k * v + q",
+        "LAW": "drag",
+        "SITE": "rhs",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v + 0",
+        "ASSUMPTION": "A-7",
+        "SITE": "rhs.r",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v",
+        "IDENTITY": "addZero",
+        "SITE": "rhs",
+        "FORWARD": true
+       }
+      ]
+     },
+     "DIGEST": "ddbc09439c32f29561c4e8f55cf013d14817efa399e4a339dde8f84e3cce6cc8"
+    },
+    "setting": null,
+    "stage": "LANDED",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-29\",\"DIGEST\",\"DIGEST ddbc09439c32f29561c4e8f55cf013d14817efa399e4a339dde8f84e3cce6cc8 is not the record's digest d90636881641dbd2d70f772c34208bade7987e554852288ce2215a7130c84910\"],[\"REC-43\",\"DERIVATION_CLASS\",\"DERIVATION_CLASS is missing\"]]]"
+  },
+  {
+   "name": "RF35 PROSE at LANDED with DERIVATION_CLASS INSPECTION",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "STEPS": 3,
+      "TEXT": "Three steps."
+     },
+     "DERIVATION_CLASS": "INSPECTION"
+    },
+    "setting": null,
+    "stage": "LANDED",
+    "tfk": null
+   },
+   "expected": "[\"OK\"]"
+  },
+  {
+   "name": "RF36 PROSE at LANDED with DERIVATION_CLASS MECHANICAL",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "STEPS": 3,
+      "TEXT": "Three steps."
+     },
+     "DERIVATION_CLASS": "MECHANICAL"
+    },
+    "setting": null,
+    "stage": "LANDED",
+    "tfk": null
+   },
+   "expected": "[\"OK\"]"
+  },
+  {
+   "name": "RF37 PROSE at LANDED with DERIVATION_CLASS PROVED",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "STEPS": 3,
+      "TEXT": "Three steps."
+     },
+     "DERIVATION_CLASS": "PROVED"
+    },
+    "setting": null,
+    "stage": "LANDED",
+    "tfk": null
+   },
+   "expected": "[\"OK\"]"
+  },
+  {
+   "name": "RF38 DERIVATION_CLASS PROSE, a form word, at LANDED: REC-43",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "STEPS": 3,
+      "TEXT": "Three steps."
+     },
+     "DERIVATION_CLASS": "PROSE"
+    },
+    "setting": null,
+    "stage": "LANDED",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-43\",\"DERIVATION_CLASS\",\"DERIVATION_CLASS PROSE is not one of INSPECTION, MECHANICAL or PROVED\"]]]"
+  },
+  {
+   "name": "RF39 DERIVATION_CLASS not a string at LANDED: REC-43",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "STEPS": 3,
+      "TEXT": "Three steps."
+     },
+     "DERIVATION_CLASS": 3
+    },
+    "setting": null,
+    "stage": "LANDED",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-43\",\"DERIVATION_CLASS\",\"DERIVATION_CLASS 3 is not one of INSPECTION, MECHANICAL or PROVED\"]]]"
+  },
+  {
+   "name": "RF40 DERIVATION_CLASS at PUSH: written by Custos, REC-07",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "DERIVATION": {
+      "STEPS": [
+       {
+        "EQUATION": "F = k * v + q",
+        "LAW": "drag",
+        "SITE": "rhs",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v + 0",
+        "ASSUMPTION": "A-7",
+        "SITE": "rhs.r",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v",
+        "IDENTITY": "addZero",
+        "SITE": "rhs",
+        "FORWARD": true
+       }
+      ]
+     },
+     "DERIVATION_CLASS": "MECHANICAL"
+    },
+    "setting": null,
+    "stage": "PUSH",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-07\",\"DERIVATION_CLASS\",\"DERIVATION_CLASS is written by TPX\"]]]"
+  },
+  {
+   "name": "RF41 DERIVATION_CLASS on an ASSUMPTION at LANDED: an unknown field, REC-06",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [],
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-4",
+     "CITES": [],
+     "CLASS": "ASSUMPTION",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "ID": "RR-2",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "PROPOSITION": "The pivot of the pendulum does not move.",
+     "REFS": [
+      "L"
+     ],
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION_CLASS": "INSPECTION"
+    },
+    "setting": null,
+    "stage": "LANDED",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-06\",\"DERIVATION_CLASS\",\"unknown field DERIVATION_CLASS\"]]]"
+  },
+  {
+   "name": "RF42 record_preimage with DERIVATION_CLASS: the row after version 1's fields, counted",
+   "fn": "record_preimage",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "STEPS": 3,
+      "TEXT": "Three steps."
+     },
+     "DERIVATION_CLASS": "INSPECTION"
+    }
+   },
+   "expected": "[\"OK\",[\"TPC-RECORD\",\"1\",17,\"ID\",\"RR-12\",\"CLASS\",\"RESULT\",\"GRADE\",\"PROVISIONAL\",\"BLOCK\",\"B-1\",\"AUTHOR\",\"agent-a\",\"LANDED_BY\",\"agent-a\",\"LANDED\",\"2026-09-28T12:00:00Z\",\"CITES\",0,\"ASSUMPTIONS\",1,\"A-7\",\"TPS\",\"0.4.0\",\"D_IS\",\"7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f\",\"STATEMENT\",\"The drag force is proportional to the speed.\",\"REGIME\",\"L\",\"DERIVATION\",2,\"STEPS\",3,\"TEXT\",\"Three steps.\",\"FALSIFIER\",\"A force that does not grow with the speed.\",\"FALSIFIER_CLASS\",\"F2\",\"DERIVATION_CLASS\",\"INSPECTION\"]]"
+  },
+  {
+   "name": "RF43 record_digest with DERIVATION_CLASS INSPECTION",
+   "fn": "record_digest",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "STEPS": 3,
+      "TEXT": "Three steps."
+     },
+     "DERIVATION_CLASS": "INSPECTION"
+    }
+   },
+   "expected": "[\"OK\",\"f82205b51242a183cbb9a647ba3582061b1929ff6054495211c3bdeec1e27ef6\"]"
+  },
+  {
+   "name": "RF44 record_digest with DERIVATION_CLASS MECHANICAL",
+   "fn": "record_digest",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "STEPS": 3,
+      "TEXT": "Three steps."
+     },
+     "DERIVATION_CLASS": "MECHANICAL"
+    }
+   },
+   "expected": "[\"OK\",\"f233d8d31be312a5b734a150902c7dfbeebb0afca02fe73803601ae16e8a7bbc\"]"
+  },
+  {
+   "name": "RF45 record_digest with DERIVATION_CLASS PROVED",
+   "fn": "record_digest",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "STEPS": 3,
+      "TEXT": "Three steps."
+     },
+     "DERIVATION_CLASS": "PROVED"
+    }
+   },
+   "expected": "[\"OK\",\"7ec5ea583dc8a92ca0ee2af6a5406cb75a520f3974689543679d26adab39d310\"]"
+  },
+  {
+   "name": "RF46 DERIVATION_CLASS MECHANICAL at LANDED with its digest",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "STEPS": 3,
+      "TEXT": "Three steps."
+     },
+     "DERIVATION_CLASS": "MECHANICAL",
+     "DIGEST": "f233d8d31be312a5b734a150902c7dfbeebb0afca02fe73803601ae16e8a7bbc"
+    },
+    "setting": null,
+    "stage": "LANDED",
+    "tfk": null
+   },
+   "expected": "[\"OK\"]"
+  },
+  {
+   "name": "RF47 DERIVATION_CLASS PROVED at LANDED with the digest of INSPECTION: REC-29",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "STEPS": 3,
+      "TEXT": "Three steps."
+     },
+     "DERIVATION_CLASS": "PROVED",
+     "DIGEST": "f82205b51242a183cbb9a647ba3582061b1929ff6054495211c3bdeec1e27ef6"
+    },
+    "setting": null,
+    "stage": "LANDED",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-29\",\"DIGEST\",\"DIGEST f82205b51242a183cbb9a647ba3582061b1929ff6054495211c3bdeec1e27ef6 is not the record's digest 7ec5ea583dc8a92ca0ee2af6a5406cb75a520f3974689543679d26adab39d310\"]]]"
+  },
+  {
+   "name": "RF48 DERIVATION_CLASS INSPECTION at LANDED with version 1's digest: REC-29",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "STEPS": 3,
+      "TEXT": "Three steps."
+     },
+     "DERIVATION_CLASS": "INSPECTION",
+     "DIGEST": "616179fd12ee5ab0f3866eaac55b387cf3ef4aa812467388e71f31c54d2f6511"
+    },
+    "setting": null,
+    "stage": "LANDED",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-29\",\"DIGEST\",\"DIGEST 616179fd12ee5ab0f3866eaac55b387cf3ef4aa812467388e71f31c54d2f6511 is not the record's digest f82205b51242a183cbb9a647ba3582061b1929ff6054495211c3bdeec1e27ef6\"]]]"
+  },
+  {
+   "name": "RF49 record_view SUITE shows DERIVATION_CLASS",
+   "fn": "record_view",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "STEPS": 3,
+      "TEXT": "Three steps."
+     },
+     "DERIVATION_CLASS": "MECHANICAL"
+    },
+    "view": "SUITE",
+    "grade": null
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"A-7\"],\"cites\":[],\"derivation_class\":\"MECHANICAL\",\"regime\":\"L\",\"steps\":3}]"
+  },
+  {
+   "name": "RF50 record_view SUITE without DERIVATION_CLASS: version 1's view",
+   "fn": "record_view",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "STEPS": 3,
+      "TEXT": "Three steps."
+     }
+    },
+    "view": "SUITE",
+    "grade": null
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"A-7\"],\"cites\":[],\"regime\":\"L\",\"steps\":3}]"
+  },
+  {
+   "name": "RF51 a step whose SITE holds a disallowed code point: REC-41 at the SITE",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "DERIVATION": {
+      "STEPS": [
+       {
+        "EQUATION": "F = k * v + q",
+        "LAW": "drag",
+        "SITE": "rhs\u0007",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v + 0",
+        "ASSUMPTION": "A-7",
+        "SITE": "rhs.r",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v",
+        "IDENTITY": "addZero",
+        "SITE": "rhs",
+        "FORWARD": true
+       }
+      ]
+     }
+    },
+    "setting": null,
+    "stage": "PUSH",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-41\",\"DERIVATION.STEPS[1].SITE\",\"DERIVATION.STEPS[1].SITE does not read as the derivation command reads it: site-unreadable\"]]]"
+  },
+  {
+   "name": "RF52 a START EXPRESSION that does not parse: REC-41 at the EXPRESSION",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "DERIVATION": {
+      "START": {
+       "EXPRESSION": "k * + v"
+      },
+      "STEPS": [
+       {
+        "EQUATION": "F = k * v + q",
+        "LAW": "drag",
+        "SITE": "rhs",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v + 0",
+        "ASSUMPTION": "A-7",
+        "SITE": "rhs.r",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v",
+        "IDENTITY": "addZero",
+        "SITE": "rhs",
+        "FORWARD": true
+       }
+      ]
+     }
+    },
+    "setting": null,
+    "stage": "PUSH",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-41\",\"DERIVATION.START.EXPRESSION\",\"DERIVATION.START.EXPRESSION does not read as the derivation command reads it: start-unreadable: unexpected token + at 5\"]]]"
+  },
+  {
+   "name": "RF53 a blank citation name: REC-41 at the LAW",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "DERIVATION": {
+      "STEPS": [
+       {
+        "EQUATION": "F = k * v + q",
+        "LAW": " ",
+        "SITE": "rhs",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v + 0",
+        "ASSUMPTION": "A-7",
+        "SITE": "rhs.r",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v",
+        "IDENTITY": "addZero",
+        "SITE": "rhs",
+        "FORWARD": true
+       }
+      ]
+     }
+    },
+    "setting": null,
+    "stage": "PUSH",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-41\",\"DERIVATION.STEPS[1].LAW\",\"DERIVATION.STEPS[1].LAW does not read as the derivation command reads it: is blank\"]]]"
+  },
+  {
+   "name": "RF54 a KERNEL PROOF with a CR: REC-41 at the PROOF",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "DERIVATION": {
+      "PROOF": "line one\r\nline two"
+     }
+    },
+    "setting": null,
+    "stage": "PUSH",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-41\",\"DERIVATION.PROOF\",\"DERIVATION.PROOF does not read as the derivation command reads it: holds a CR: its line ends are not LF\"],[\"REC-44\",\"DERIVATION\",\"DERIVATION is a bare KERNEL, which no check credits yet: push PROSE {STEPS, TEXT} with the PROOF as its ATTACHMENT\"]]]"
+  },
+  {
+   "name": "RF55 a KERNEL PROOF not in NFC: REC-41 at the PROOF",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "DERIVATION": {
+      "PROOF": "e\u0301"
+     }
+    },
+    "setting": null,
+    "stage": "PUSH",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-41\",\"DERIVATION.PROOF\",\"DERIVATION.PROOF does not read as the derivation command reads it: is not in NFC\"],[\"REC-44\",\"DERIVATION\",\"DERIVATION is a bare KERNEL, which no check credits yet: push PROSE {STEPS, TEXT} with the PROOF as its ATTACHMENT\"]]]"
+  },
+  {
+   "name": "RF56 a blank KERNEL PROOF: REC-41 at the PROOF",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "DERIVATION": {
+      "PROOF": "  "
+     }
+    },
+    "setting": null,
+    "stage": "PUSH",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-41\",\"DERIVATION.PROOF\",\"DERIVATION.PROOF does not read as the derivation command reads it: is blank\"],[\"REC-44\",\"DERIVATION\",\"DERIVATION is a bare KERNEL, which no check credits yet: push PROSE {STEPS, TEXT} with the PROOF as its ATTACHMENT\"]]]"
+  },
+  {
+   "name": "RF57 a PROSE attachment's SITE that does not read: REC-41 at the attachment's SITE",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "DERIVATION": {
+      "STEPS": 3,
+      "TEXT": "Three steps.",
+      "ATTACHMENT": {
+       "STEPS": [
+        {
+         "EQUATION": "F = k * v + q",
+         "LAW": "drag",
+         "SITE": "rhs",
+         "FORWARD": true
+        },
+        {
+         "EQUATION": "F = k * v + 0",
+         "ASSUMPTION": "A-7",
+         "SITE": "middle",
+         "FORWARD": true
+        },
+        {
+         "EQUATION": "F = k * v",
+         "IDENTITY": "addZero",
+         "SITE": "rhs",
+         "FORWARD": true
+        }
+       ]
+      }
+     }
+    },
+    "setting": null,
+    "stage": "PUSH",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-41\",\"DERIVATION.ATTACHMENT.STEPS[2].SITE\",\"DERIVATION.ATTACHMENT.STEPS[2].SITE does not read as the derivation command reads it: site-unreadable\"]]]"
+  },
+  {
+   "name": "RF58 a PROSE attachment's PROOF with a disallowed code point: REC-41 at the attachment's PROOF",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "DERIVATION": {
+      "STEPS": 1,
+      "TEXT": "t",
+      "ATTACHMENT": {
+       "PROOF": "p\u200b"
+      }
+     }
+    },
+    "setting": null,
+    "stage": "PUSH",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-41\",\"DERIVATION.ATTACHMENT.PROOF\",\"DERIVATION.ATTACHMENT.PROOF does not read as the derivation command reads it: holds the disallowed code point U+200B\"]]]"
+  },
+  {
+   "name": "RF59 a step's EQUATION that does not parse: REC-41 at the EQUATION",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "DERIVATION": {
+      "STEPS": [
+       {
+        "EQUATION": "F = = k",
+        "LAW": "drag",
+        "SITE": "rhs",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v + 0",
+        "ASSUMPTION": "A-7",
+        "SITE": "rhs.r",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v",
+        "IDENTITY": "addZero",
+        "SITE": "rhs",
+        "FORWARD": true
+       }
+      ]
+     }
+    },
+    "setting": null,
+    "stage": "PUSH",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-41\",\"DERIVATION.STEPS[1].EQUATION\",\"DERIVATION.STEPS[1].EQUATION does not read as the derivation command reads it: equation-unreadable: unexpected token = at 5\"]]]"
+  },
+  {
+   "name": "RF60 an identity not on the checker's list: REC-41 at the IDENTITY",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "DERIVATION": {
+      "STEPS": [
+       {
+        "EQUATION": "F = k * v + q",
+        "LAW": "drag",
+        "SITE": "rhs",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v + 0",
+        "ASSUMPTION": "A-7",
+        "SITE": "rhs.r",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v",
+        "IDENTITY": "addOne",
+        "SITE": "rhs",
+        "FORWARD": true
+       }
+      ]
+     }
+    },
+    "setting": null,
+    "stage": "PUSH",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-41\",\"DERIVATION.STEPS[3].IDENTITY\",\"DERIVATION.STEPS[3].IDENTITY does not read as the derivation command reads it: unknown-identity\"]]]"
+  },
+  {
+   "name": "RF61 an empty SITE: REC-41 no-site",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "DERIVATION": {
+      "STEPS": [
+       {
+        "EQUATION": "F = k * v + q",
+        "LAW": "drag",
+        "SITE": "rhs",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v + 0",
+        "ASSUMPTION": "A-7",
+        "SITE": "",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v",
+        "IDENTITY": "addZero",
+        "SITE": "rhs",
+        "FORWARD": true
+       }
+      ]
+     }
+    },
+    "setting": null,
+    "stage": "PUSH",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-41\",\"DERIVATION.STEPS[2].SITE\",\"DERIVATION.STEPS[2].SITE does not read as the derivation command reads it: no-site\"]]]"
+  },
+  {
+   "name": "RF62 two texts that do not read: one REC-41 each",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "DERIVATION": {
+      "STEPS": [
+       {
+        "EQUATION": "F = k * v + q",
+        "LAW": "drag",
+        "SITE": "top",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v + 0",
+        "ASSUMPTION": "A-7",
+        "SITE": "rhs.r",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F =",
+        "IDENTITY": "addZero",
+        "SITE": "rhs",
+        "FORWARD": true
+       }
+      ]
+     }
+    },
+    "setting": null,
+    "stage": "PUSH",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-41\",\"DERIVATION.STEPS[1].SITE\",\"DERIVATION.STEPS[1].SITE does not read as the derivation command reads it: site-unreadable\"],[\"REC-41\",\"DERIVATION.STEPS[3].EQUATION\",\"DERIVATION.STEPS[3].EQUATION does not read as the derivation command reads it: equation-unreadable: unexpected end\"]]]"
+  },
+  {
+   "name": "RF63 a blank START ASSUMPTION: REC-41 at the START",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "DERIVATION": {
+      "START": {
+       "ASSUMPTION": ""
+      },
+      "STEPS": [
+       {
+        "EQUATION": "F = k * v + q",
+        "LAW": "drag",
+        "SITE": "rhs",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v + 0",
+        "ASSUMPTION": "A-7",
+        "SITE": "rhs.r",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v",
+        "IDENTITY": "addZero",
+        "SITE": "rhs",
+        "FORWARD": true
+       }
+      ]
+     }
+    },
+    "setting": null,
+    "stage": "PUSH",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-41\",\"DERIVATION.START.ASSUMPTION\",\"DERIVATION.START.ASSUMPTION does not read as the derivation command reads it: is blank\"]]]"
+  },
+  {
+   "name": "RF64 an ASSUMPTION citation with a disallowed code point: REC-41 at the ASSUMPTION",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "DERIVATION": {
+      "STEPS": [
+       {
+        "EQUATION": "F = k * v + q",
+        "LAW": "drag",
+        "SITE": "rhs",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v + 0",
+        "ASSUMPTION": "A-7\u0000",
+        "SITE": "rhs.r",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v",
+        "IDENTITY": "addZero",
+        "SITE": "rhs",
+        "FORWARD": true
+       }
+      ]
+     }
+    },
+    "setting": null,
+    "stage": "PUSH",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-41\",\"DERIVATION.STEPS[2].ASSUMPTION\",\"DERIVATION.STEPS[2].ASSUMPTION does not read as the derivation command reads it: holds the disallowed code point U+0000\"]]]"
+  },
+  {
+   "name": "RF65 a START LAW with a disallowed code point: REC-41 at the START",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "DERIVATION": {
+      "START": {
+       "LAW": "drag\u2028"
+      },
+      "STEPS": [
+       {
+        "EQUATION": "F = k * v + 0",
+        "ASSUMPTION": "A-7",
+        "SITE": "rhs.r",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v",
+        "IDENTITY": "addZero",
+        "SITE": "rhs",
+        "FORWARD": true
+       }
+      ]
+     }
+    },
+    "setting": null,
+    "stage": "PUSH",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-41\",\"DERIVATION.START.LAW\",\"DERIVATION.START.LAW does not read as the derivation command reads it: holds the disallowed code point U+2028\"]]]"
+  },
+  {
+   "name": "RF66 a clean STRUCTURED derivation with a START EXPRESSION passes",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "DERIVATION": {
+      "START": {
+       "EXPRESSION": "k * v + q"
+      },
+      "STEPS": [
+       {
+        "EQUATION": "F = k * v + 0",
+        "ASSUMPTION": "A-7",
+        "SITE": "rhs.r",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v",
+        "IDENTITY": "addZero",
+        "SITE": "rhs",
+        "FORWARD": true
+       }
+      ]
+     }
+    },
+    "setting": null,
+    "stage": "PUSH",
+    "tfk": null
+   },
+   "expected": "[\"OK\"]"
+  },
+  {
+   "name": "RF67 a clean KERNEL PROOF of two LF lines: no REC-41, REC-44 alone",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "DERIVATION": {
+      "PROOF": "line one\nline two"
+     }
+    },
+    "setting": null,
+    "stage": "PUSH",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-44\",\"DERIVATION\",\"DERIVATION is a bare KERNEL, which no check credits yet: push PROSE {STEPS, TEXT} with the PROOF as its ATTACHMENT\"]]]"
+  },
+  {
+   "name": "RF68 STRUCTURED at LANDED with a SITE that does not read: REC-41 beside REC-43, the digest not compared",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "STEPS": [
+       {
+        "EQUATION": "F = k * v + q",
+        "LAW": "drag",
+        "SITE": "rhs.x",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v + 0",
+        "ASSUMPTION": "A-7",
+        "SITE": "rhs.r",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v",
+        "IDENTITY": "addZero",
+        "SITE": "rhs",
+        "FORWARD": true
+       }
+      ]
+     },
+     "DIGEST": "d90636881641dbd2d70f772c34208bade7987e554852288ce2215a7130c84910"
+    },
+    "setting": null,
+    "stage": "LANDED",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-41\",\"DERIVATION.STEPS[1].SITE\",\"DERIVATION.STEPS[1].SITE does not read as the derivation command reads it: site-unreadable\"],[\"REC-43\",\"DERIVATION_CLASS\",\"DERIVATION_CLASS is missing\"]]]"
+  },
+  {
+   "name": "RF69 record_preimage of a KERNEL record whose PROOF holds a CR: refused REC-41",
+   "fn": "record_preimage",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "PROOF": "a\rb"
+     }
+    }
+   },
+   "expected": "[\"REFUSED\",[[\"REC-41\",\"DERIVATION.PROOF\",\"DERIVATION.PROOF does not read as the derivation command reads it: holds a CR: its line ends are not LF\"]]]"
+  },
+  {
+   "name": "RF70 record_view STRIKE of a three-step STRUCTURED derivation: steps 3",
+   "fn": "record_view",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "STEPS": [
+       {
+        "EQUATION": "F = k * v + q",
+        "LAW": "drag",
+        "SITE": "rhs",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v + 0",
+        "ASSUMPTION": "A-7",
+        "SITE": "rhs.r",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v",
+        "IDENTITY": "addZero",
+        "SITE": "rhs",
+        "FORWARD": true
+       }
+      ]
+     }
+    },
+    "view": "STRIKE",
+    "grade": null
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"A-7\"],\"cites\":[],\"steps\":3}]"
+  },
+  {
+   "name": "RF71 record_view SUITE of a three-step STRUCTURED derivation: steps 3",
+   "fn": "record_view",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "STEPS": [
+       {
+        "EQUATION": "F = k * v + q",
+        "LAW": "drag",
+        "SITE": "rhs",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v + 0",
+        "ASSUMPTION": "A-7",
+        "SITE": "rhs.r",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v",
+        "IDENTITY": "addZero",
+        "SITE": "rhs",
+        "FORWARD": true
+       }
+      ]
+     }
+    },
+    "view": "SUITE",
+    "grade": null
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"A-7\"],\"cites\":[],\"regime\":\"L\",\"steps\":3}]"
+  },
+  {
+   "name": "RF72 record_view STRIKE of a two-step STRUCTURED derivation with a START: steps 2",
+   "fn": "record_view",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "START": {
+       "LAW": "drag"
+      },
+      "STEPS": [
+       {
+        "EQUATION": "F = k * v + 0",
+        "ASSUMPTION": "A-7",
+        "SITE": "rhs.r",
+        "FORWARD": true
+       },
+       {
+        "EQUATION": "F = k * v",
+        "IDENTITY": "addZero",
+        "SITE": "rhs",
+        "FORWARD": true
+       }
+      ]
+     }
+    },
+    "view": "STRIKE",
+    "grade": null
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"A-7\"],\"cites\":[],\"steps\":2}]"
+  },
+  {
+   "name": "RF73 record_view STRIKE of a KERNEL derivation: unchanged, no steps",
+   "fn": "record_view",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "PROOF": "p"
+     }
+    },
+    "view": "STRIKE",
+    "grade": null
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"A-7\"],\"cites\":[]}]"
+  },
+  {
+   "name": "RF74 record_view STRIKE of version 1's PROSE derivation: its count, unchanged",
+   "fn": "record_view",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "STEPS": 3,
+      "TEXT": "Three steps."
+     }
+    },
+    "view": "STRIKE",
+    "grade": null
+   },
+   "expected": "[\"OK\",{\"assumptions\":[\"A-7\"],\"cites\":[],\"steps\":3}]"
+  },
+  {
+   "name": "RF75 a bare KERNEL at LANDED with DERIVATION_CLASS INSPECTION and its digest: REC-44",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "PROOF": "p"
+     },
+     "DERIVATION_CLASS": "INSPECTION",
+     "DIGEST": "52c1353f0fffbec761a176655814c162bca37db9ddba0e9d2afe5ffe90161f53"
+    },
+    "setting": null,
+    "stage": "LANDED",
+    "tfk": null
+   },
+   "expected": "[\"REFUSED\",[[\"REC-44\",\"DERIVATION\",\"DERIVATION is a bare KERNEL, which no check credits yet: push PROSE {STEPS, TEXT} with the PROOF as its ATTACHMENT\"]]]"
+  },
+  {
+   "name": "RF76 PROSE with a KERNEL attachment at LANDED with DERIVATION_CLASS INSPECTION and its digest passes",
+   "fn": "record_check",
+   "args": {
+    "record": {
+     "ASSUMPTIONS": [
+      "A-7"
+     ],
+     "CITES": [],
+     "CLASS": "RESULT",
+     "FALSIFIER": "A force that does not grow with the speed.",
+     "FALSIFIER_CLASS": "F2",
+     "ID": "RR-12",
+     "REGIME": "L",
+     "STATEMENT": "The drag force is proportional to the speed.",
+     "AUTHOR": "agent-a",
+     "BLOCK": "B-1",
+     "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+     "GRADE": "PROVISIONAL",
+     "LANDED": "2026-09-28T12:00:00Z",
+     "LANDED_BY": "agent-a",
+     "STATUS": "UNMARKED",
+     "TPS": "0.4.0",
+     "DERIVATION": {
+      "STEPS": 1,
+      "TEXT": "t",
+      "ATTACHMENT": {
+       "PROOF": "p"
+      }
+     },
+     "DERIVATION_CLASS": "INSPECTION",
+     "DIGEST": "f42f299cab3ef8d227ce386161eee3c15c3cd46687afbad898a5515820f51faa"
+    },
+    "setting": null,
+    "stage": "LANDED",
+    "tfk": null
+   },
+   "expected": "[\"OK\"]"
+  }
+ ]
+}

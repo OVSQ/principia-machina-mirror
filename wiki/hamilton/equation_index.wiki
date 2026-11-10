@@ -1,0 +1,864 @@
+{{DISPLAYTITLE:Hamilton's principle — Equation index}}
+{{Hamilton's principle map}}
+This index lists every numbered equation in the volume, by page. It is generated
+from the page sources rather than maintained by hand, so it cannot drift out of
+step with them.
+
+Equation numbers restart at (1) on each page. They are written inside the
+mathematics rather than with the usual tagging command, because MediaWiki's TeX
+checker does not accept it; see [[Hamilton's principle/Notation|Notation]].
+
+'''319 numbered equations across 35 pages.'''
+
+Expressions longer than one table cell holds are not reproduced here: 90 of
+them are marked and left on their own pages. They are not truncated, because a cut
+expression is invalid mathematics and would fail the volume's own checks.
+
+
+== [[Hamilton's principle/History/d'Alembert and virtual work|d'Alembert and virtual work]] ==
+
+{| class="wikitable"
+! no. !! section !! expression
+|-
+| (1) || Virtual work in statics || <math>\sum_i \mathbf{F}_i \cdot \delta \mathbf{r}_i = 0</math>
+|-
+| (2) || D'Alembert's extension || <math>\sum_i \bigl( \mathbf{F}_i - m_i\ddot{\mathbf{r}}_i \bigr) \cdot \delta \mathbf{r}_i = 0</math>
+|-
+| (3) || Compare Hamilton's formula || <math>\Sigma\, . \, m(x''\,\delta x + y''\,\delta y + z''\,\delta z) = \delta U</math>
+|-
+| (4) || From virtual work to a variational principle || ''long expression; see the page''
+|-
+| (5) || From virtual work to a variational principle || <math>\int_{t_0}^{t_1} \delta\bigl( T - V \bigr)\, dt = 0</math>
+|}
+
+== [[Hamilton's principle/Mathematics/Functionals and the space of paths|Functionals and the space of paths]] ==
+
+{| class="wikitable"
+! no. !! section !! expression
+|-
+| (1) || The admissible set || <math>\mathcal{A} = \{\, y \in C^2[a,b] \;:\; y(a) = y_a,\ y(b) = y_b \,\}</math>
+|-
+| (2) || The space of variations || <math>\mathcal{V} = \{\, \eta \in C^2[a,b] \;:\; \eta(a) = \eta(b) = 0 \,\}</math>
+|-
+| (3) || The space of variations || <math>y_\varepsilon = y + \varepsilon\eta</math>
+|-
+| (4) || The functional || <math>J[y] = \int_a^b L\bigl(x,\, y(x),\, y'(x)\bigr)\, dx</math>
+|-
+| (5) || Distance between paths || <math>\Vert \eta \Vert_1 = \max_{[a,b]} \vert \eta(x) \vert + \max_{[a,b]} \vert \eta'(x) \vert</math>
+|-
+| (6) || Distance between paths || <math>\Vert \eta \Vert_0 = \max_{[a,b]} \vert \eta(x) \vert</math>
+|}
+
+== [[Hamilton's principle/Mathematics/The first variation|the first variation]] ==
+
+{| class="wikitable"
+! no. !! section !! expression
+|-
+| (1) || The variation defined || ''long expression; see the page''
+|-
+| (2) || The variation defined || ''long expression; see the page''
+|-
+| (3) || Computing it || ''long expression; see the page''
+|-
+| (4) || Computing it || <math>\delta J[y;\eta] = \int_a^b \left[ L_y\,\eta + L_{y'}\,\eta' \right] dx</math>
+|-
+| (5) || Removing the derivative of the variation || ''long expression; see the page''
+|-
+| (6) || Removing the derivative of the variation || <math>\delta J[y;\eta] = \int_a^b \left[ L_y - \frac{d}{dx} L_{y'} \right] \eta \, dx</math>
+|-
+| (7) || Removing the derivative of the variation || <math>E(x) = L_y - \frac{d}{dx} L_{y'}</math>
+|-
+| (8) || The \delta notation || <math>\Sigma\, . \, m(x''\,\delta x + y''\,\delta y + z''\,\delta z) = \delta U</math>
+|}
+
+== [[Hamilton's principle/Mathematics/The fundamental lemma|the fundamental lemma]] ==
+
+{| class="wikitable"
+! no. !! section !! expression
+|-
+| (1) || Statement || <math>\int_a^b E(x)\,\eta(x)\, dx = 0</math>
+|-
+| (2) || Proof || <math>E(x) > \tfrac{1}{2} E(x_0) > 0 \quad \text{for}\quad \vert x - x_0 \vert < \delta</math>
+|-
+| (3) || Proof || ''long expression; see the page''
+|-
+| (4) || Proof || ''long expression; see the page''
+|-
+| (5) || Variants || <math>\int_a^b F(x)\,\eta'(x)\, dx = 0</math>
+|}
+
+== [[Hamilton's principle/Mathematics/The Euler-Lagrange equation|the Euler-Lagrange equation]] ==
+
+{| class="wikitable"
+! no. !! section !! expression
+|-
+| (1) || Statement || <math>J[y] = \int_a^b L\bigl(x,\, y(x),\, y'(x)\bigr)\, dx</math>
+|-
+| (2) || Statement || ''long expression; see the page''
+|-
+| (3) || Derivation || <math>\int_a^b \left[ L_y - \frac{d}{dx} L_{y'} \right] \eta \, dx = 0</math>
+|-
+| (4) || Expanded form || <math>\frac{d}{dx} L_{y'} = L_{y'x} + L_{y'y}\, y' + L_{y'y'}\, y''</math>
+|-
+| (5) || Expanded form || <math>L_{y'y'}\, y'' + L_{y'y}\, y' + L_{y'x} - L_y = 0</math>
+|-
+| (6) || First integrals || <math>\frac{d}{dx} L_{y'} = 0 \quad\Longrightarrow\quad L_{y'} = \text{const}</math>
+|-
+| (7) || First integrals || <math>y'\, L_{y'} - L = \text{const}</math>
+|-
+| (8) || Worked example: the shortest plane curve || <math>J[y] = \int_a^b \sqrt{1 + y'^2}\; dx</math>
+|-
+| (9) || Worked example: the shortest plane curve || <math>L_{y'} = \frac{y'}{\sqrt{1 + y'^2}} = c</math>
+|}
+
+== [[Hamilton's principle/Mathematics/Boundary terms and natural boundary conditions|Boundary terms and natural boundary conditions]] ==
+
+{| class="wikitable"
+! no. !! section !! expression
+|-
+| (1) || The term that was discarded || ''long expression; see the page''
+|-
+| (2) || The term that was discarded || ''long expression; see the page''
+|-
+| (3) || The term that was discarded || ''long expression; see the page''
+|-
+| (4) || Extracting two conditions from one requirement || <math>L_y - \frac{d}{dx} L_{y'} = 0</math>
+|-
+| (5) || Extracting two conditions from one requirement || <math>L_{y'}\bigl(b, y(b), y'(b)\bigr)\,\eta(b) = 0</math>
+|-
+| (6) || Extracting two conditions from one requirement || <math>L_{y'}\bigl(b, y(b), y'(b)\bigr) = 0</math>
+|-
+| (7) || Transversality: endpoints on a curve || <math>\Bigl[ L + (g' - y')\,L_{y'} \Bigr]_{x = b} = 0</math>
+|-
+| (8) || Corner conditions || ''long expression; see the page''
+|}
+
+== [[Hamilton's principle/Mathematics/The Beltrami identity|the Beltrami identity]] ==
+
+{| class="wikitable"
+! no. !! section !! expression
+|-
+| (1) || Statement || <math>L - y'\,\frac{\partial L}{\partial y'} = C</math>
+|-
+| (2) || Derivation || ''long expression; see the page''
+|-
+| (3) || Derivation || ''long expression; see the page''
+|-
+| (4) || Derivation || ''long expression; see the page''
+|-
+| (5) || Relation to the Hamiltonian || <math>H = y'p - L = -C</math>
+|-
+| (6) || Worked example: the catenary || <math>J[y] = \int_a^b y\,\sqrt{1 + y'^2}\; dx</math>
+|-
+| (7) || Worked example: the catenary || <math>y\sqrt{1 + y'^2} - y'\cdot\frac{y\,y'}{\sqrt{1 + y'^2}} = C</math>
+|-
+| (8) || Worked example: the catenary || <math>\frac{y}{\sqrt{1 + y'^2}} = C</math>
+|-
+| (9) || Worked example: the catenary || <math>y = C \cosh\!\left( \frac{x - x_0}{C} \right)</math>
+|}
+
+== [[Hamilton's principle/Mathematics/Several dependent variables|Several dependent variables]] ==
+
+{| class="wikitable"
+! no. !! section !! expression
+|-
+| (1) || Setup || <math>y_i(a) = y_{i,a}, \qquad y_i(b) = y_{i,b}, \qquad i = 1, \ldots, n</math>
+|-
+| (2) || Setup || <math>J[y] = \int_a^b L\bigl(x, y_i, y_i'\bigr)\, dx</math>
+|-
+| (3) || Derivation || ''long expression; see the page''
+|-
+| (4) || Derivation || ''long expression; see the page''
+|-
+| (5) || Derivation || <math>\frac{\partial L}{\partial y_k} - \frac{d}{dx}\frac{\partial L}{\partial y_k'} = 0</math>
+|-
+| (6) || Counting || ''long expression; see the page''
+|-
+| (7) || First integrals || <math>p_k = \frac{\partial L}{\partial y_k'} = \text{const}</math>
+|-
+| (8) || First integrals || <math>\sum_{i=1}^n y_i'\,\frac{\partial L}{\partial y_i'} - L = \text{const}</math>
+|-
+| (9) || Hamilton's own form || <math>\Sigma\, . \, m(x''\,\delta x + y''\,\delta y + z''\,\delta z) = \delta U</math>
+|-
+| (10) || Hamilton's own form || ''long expression; see the page''
+|-
+| (11) || Worked example: the free particle in the plane || <math>L = \tfrac{1}{2}m\bigl( \dot{y}_1^2 + \dot{y}_2^2 \bigr)</math>
+|}
+
+== [[Hamilton's principle/Mathematics/Several independent variables|Several independent variables]] ==
+
+{| class="wikitable"
+! no. !! section !! expression
+|-
+| (1) || Setup || <math>u = u_0 \quad \text{on } \partial\Omega</math>
+|-
+| (2) || Setup || <math>J[u] = \int_\Omega L\bigl(x,\, u,\, u_{,\alpha}\bigr)\, d^m x</math>
+|-
+| (3) || Derivation || ''long expression; see the page''
+|-
+| (4) || Derivation || ''long expression; see the page''
+|-
+| (5) || Derivation || ''long expression; see the page''
+|-
+| (6) || Derivation || ''long expression; see the page''
+|-
+| (7) || Derivation || ''long expression; see the page''
+|-
+| (8) || Several fields || ''long expression; see the page''
+|-
+| (9) || The boundary term does not always vanish || ''long expression; see the page''
+|-
+| (10) || Divergences and conservation || <math>\mathrm{Div}\, A = \sum_{\alpha=1}^m \frac{\partial A_\alpha}{\partial x_\alpha}</math>
+|-
+| (11) || Divergences and conservation || <math>\textstyle\sum \psi_i\, \delta u_i = \delta f + \mathrm{Div}\, A</math>
+|-
+| (12) || Worked example: the vibrating string || <math>L = \tfrac{1}{2}\rho\, u_{,t}^2 - \tfrac{1}{2}\tau\, u_{,x}^2</math>
+|-
+| (13) || Worked example: the vibrating string || ''long expression; see the page''
+|-
+| (14) || Worked example: the vibrating string || <math>\rho\, u_{,tt} = \tau\, u_{,xx}</math>
+|}
+
+== [[Hamilton's principle/Mathematics/Holonomic constraints|Holonomic constraints]] ==
+
+{| class="wikitable"
+! no. !! section !! expression
+|-
+| (1) || Definition || <math>g\bigl(x,\, y_1, \ldots, y_n\bigr) = 0</math>
+|-
+| (2) || Why the independence argument fails || <math>g\bigl(x,\, y + \varepsilon\eta\bigr) = 0</math>
+|-
+| (3) || Why the independence argument fails || <math>\sum_{i=1}^n \frac{\partial g}{\partial y_i}\, \eta_i = 0</math>
+|-
+| (4) || Why the independence argument fails || ''long expression; see the page''
+|-
+| (5) || Constraint forces || <math>E_i = -\sum_{\beta=1}^r \lambda_\beta\, \frac{\partial g_\beta}{\partial y_i}</math>
+|-
+| (6) || Worked example: the simple pendulum || ''long expression; see the page''
+|-
+| (7) || Worked example: the simple pendulum || <math>L = \tfrac{1}{2}m\ell^2\dot\theta^2 + m g_0 \ell\cos\theta</math>
+|-
+| (8) || Worked example: the simple pendulum || <math>m\ell^2\ddot\theta + m g_0 \ell \sin\theta = 0</math>
+|-
+| (9) || Non-holonomic constraints || <math>\sum_{i=1}^n a_i(x,y)\, y_i' + a_0(x,y) = 0</math>
+|}
+
+== [[Hamilton's principle/Mathematics/Lagrange multipliers|Lagrange multipliers]] ==
+
+{| class="wikitable"
+! no. !! section !! expression
+|-
+| (1) || Statement || <math>J[y] = \int_a^b L(x, y_i, y_i')\, dx</math>
+|-
+| (2) || Statement || ''long expression; see the page''
+|-
+| (3) || Derivation for one constraint || <math>\int_a^b \sum_{i=1}^n E_i\, \eta_i \, dx = 0</math>
+|-
+| (4) || Derivation for one constraint || <math>\sum_{i=1}^n \frac{\partial g}{\partial y_i}\, \eta_i = 0</math>
+|-
+| (5) || Derivation for one constraint || ''long expression; see the page''
+|-
+| (6) || Derivation for one constraint || <math>\lambda(x) = -E_n \left( \frac{\partial g}{\partial y_n} \right)^{-1}</math>
+|-
+| (7) || Derivation for one constraint || <math>E_n + \lambda\, \frac{\partial g}{\partial y_n} = 0</math>
+|-
+| (8) || Derivation for one constraint || ''long expression; see the page''
+|-
+| (9) || Derivation for one constraint || <math>E_i + \lambda\, \frac{\partial g}{\partial y_i} = 0, \qquad i = 1, \ldots, n-1</math>
+|-
+| (10) || Why the augmented functional works || <math>\frac{\partial J^*}{\partial \lambda_\beta}: \qquad g_\beta(x,y) = 0</math>
+|-
+| (11) || Worked example: the pendulum, with tension || <math>L = \tfrac{1}{2}m(\dot y_1^2 + \dot y_2^2) + m g_0 y_2, \qquad g = y_1^2 + y_2^2 - \ell^2</math>
+|-
+| (12) || Worked example: the pendulum, with tension || <math>m\ddot y_1 = -2\lambda y_1, \qquad m\ddot y_2 - m g_0 = -2\lambda y_2</math>
+|-
+| (13) || Worked example: the pendulum, with tension || <math>m\ell^2\ddot\theta + m g_0\ell\sin\theta = 0</math>
+|-
+| (14) || Worked example: the pendulum, with tension || <math>2\lambda\ell = m g_0\cos\theta - m\ell\dot\theta^2</math>
+|}
+
+== [[Hamilton's principle/Mathematics/Isoperimetric problems|Isoperimetric problems]] ==
+
+{| class="wikitable"
+! no. !! section !! expression
+|-
+| (1) || Statement || <math>J[y] = \int_a^b L(x, y, y')\, dx</math>
+|-
+| (2) || Statement || <math>K[y] = \int_a^b M(x, y, y')\, dx = \ell</math>
+|-
+| (3) || Statement || <math>L^* = L + \mu M</math>
+|-
+| (4) || Derivation || <math>y_{\varepsilon_1 \varepsilon_2} = y + \varepsilon_1\eta_1 + \varepsilon_2\eta_2</math>
+|-
+| (5) || Derivation || ''long expression; see the page''
+|-
+| (6) || Derivation || <math>\nabla\Phi(0,0) + \mu\,\nabla\Psi(0,0) = 0</math>
+|-
+| (7) || Derivation || <math>\delta J[y;\eta_j] + \mu\,\delta K[y;\eta_j] = 0, \qquad j = 1, 2</math>
+|-
+| (8) || Derivation || ''long expression; see the page''
+|-
+| (9) || Worked example: the catenary, done properly || <math>J[y] = \int_a^b y\sqrt{1 + y'^2}\; dx</math>
+|-
+| (10) || Worked example: the catenary, done properly || <math>K[y] = \int_a^b \sqrt{1 + y'^2}\; dx = \ell</math>
+|-
+| (11) || Worked example: the catenary, done properly || <math>L^* = (y + \mu)\sqrt{1 + y'^2}</math>
+|-
+| (12) || Worked example: the catenary, done properly || <math>\frac{y + \mu}{\sqrt{1 + y'^2}} = C</math>
+|-
+| (13) || Worked example: the catenary, done properly || <math>y = -\mu + C\cosh\!\left( \frac{x - x_0}{C} \right)</math>
+|-
+| (14) || Several constraints || <math>L^* = L + \sum_{\gamma=1}^{s} \mu_\gamma M_\gamma</math>
+|-
+| (15) || Mixed problems || <math>L^* = L + \sum_\beta \lambda_\beta(x)\, g_\beta + \sum_\gamma \mu_\gamma\, M_\gamma</math>
+|}
+
+== [[Hamilton's principle/Mathematics/The second variation|the second variation]] ==
+
+{| class="wikitable"
+! no. !! section !! expression
+|-
+| (1) || Definition || <math>\delta^2 J[y;\eta] = \Phi''(0)</math>
+|-
+| (2) || Definition || ''long expression; see the page''
+|-
+| (3) || Computing it || ''long expression; see the page''
+|-
+| (4) || Computing it || ''long expression; see the page''
+|-
+| (5) || Computing it || <math>\delta^2 J[y;\eta] = \int_a^b \left[ P\,\eta'^2 + Q\,\eta^2 \right] dx</math>
+|-
+| (6) || Computing it || <math>P = L_{y'y'}, \qquad Q = L_{yy} - \frac{d}{dx} L_{yy'}</math>
+|-
+| (7) || Necessary conditions, and the trap || <math>\delta^2 J[y;\eta] \geq 0 \quad \text{for all } \eta \in \mathcal{V}</math>
+|-
+| (8) || The accessory problem || <math>\frac{d}{dx}\bigl( P\,\eta' \bigr) - Q\,\eta = 0</math>
+|-
+| (9) || A first sight of the failure || <math>\delta^2 J[\,0\,;\eta] = \int_0^b \bigl( \eta'^2 - k^2\eta^2 \bigr) dx</math>
+|-
+| (10) || A first sight of the failure || <math>\delta^2 J = \frac{b}{2}\left( \frac{\pi^2}{b^2} - k^2 \right)</math>
+|}
+
+== [[Hamilton's principle/Mathematics/The Legendre condition|the Legendre condition]] ==
+
+{| class="wikitable"
+! no. !! section !! expression
+|-
+| (1) || Statement || <math>P(x) = L_{y'y'}\bigl(x, y(x), y'(x)\bigr) \geq 0</math>
+|-
+| (2) || Derivation || ''long expression; see the page''
+|-
+| (3) || Derivation || <math>\int \eta_h^2\, dx = O(h^{-1}), \qquad \int \eta_h'^2\, dx = O(h^{-3})</math>
+|-
+| (4) || Derivation || <math>\delta^2 J[y;\eta_h] = \int_I \left[ P\,\eta_h'^2 + Q\,\eta_h^2 \right] dx</math>
+|-
+| (5) || Derivation || <math>\delta^2 J[y;\eta_h] < 0</math>
+|-
+| (6) || What it does not buy || <math>\delta^2 J = \frac{b}{2}\left( \frac{\pi^2}{b^2} - k^2 \right)</math>
+|}
+
+== [[Hamilton's principle/Mathematics/The Jacobi condition and conjugate points|the Jacobi condition and conjugate points]] ==
+
+{| class="wikitable"
+! no. !! section !! expression
+|-
+| (1) || The accessory equation || <math>\frac{d}{dx}\bigl( P(x)\,\eta' \bigr) - Q(x)\,\eta = 0</math>
+|-
+| (2) || Why zeros of the accessory equation matter || <math>\eta^*(x) = \begin{cases} u(x), & a \leq x \leq c \\ 0, & c < x \leq b \end{cases}</math>
+|-
+| (3) || Why zeros of the accessory equation matter || ''long expression; see the page''
+|-
+| (4) || Why zeros of the accessory equation matter || <math>\delta^2 J[y;\eta^*] = 0</math>
+|-
+| (5) || The analytic example, revisited || <math>\eta'' + k^2\eta = 0</math>
+|-
+| (6) || The geometric counterexample: geodesics on a sphere || <math>u'' + K u = 0 \qquad \Longrightarrow \qquad u'' + u = 0</math>
+|}
+
+== [[Hamilton's principle/Mathematics/The Weierstrass excess function|the Weierstrass excess function]] ==
+
+{| class="wikitable"
+! no. !! section !! expression
+|-
+| (1) || The excess function || <math>E(x, y, p, q) = L(x, y, q) - L(x, y, p) - (q - p)\, L_{y'}(x, y, p)</math>
+|-
+| (2) || The excess function || <math>E = \tfrac{1}{2}(q - p)^2\, L_{y'y'}(x, y, \bar p)</math>
+|-
+| (3) || The conditions assembled || <math>E\bigl(x,\, y(x),\, y'(x),\, q\bigr) \geq 0</math>
+|-
+| (4) || Worked example: where the strong claim fails || <math>J[y] = \int_0^1 \bigl( y'^2 - y'^4 \bigr) dx</math>
+|-
+| (5) || Worked example: where the strong claim fails || <math>L_{y'y'} = 2 - 12y'^2</math>
+|-
+| (6) || Worked example: where the strong claim fails || <math>E(x, y, 0, q) = (q^2 - q^4) - 0 - q\cdot 0 = q^2(1 - q^2)</math>
+|-
+| (7) || Worked example: where the strong claim fails || <math>J[y_n] = \int_0^1 (4 - 16)\, dx = -12</math>
+|}
+
+== [[Hamilton's principle/Mathematics/The Legendre transform|the Legendre transform]] ==
+
+{| class="wikitable"
+! no. !! section !! expression
+|-
+| (1) || The construction || <math>p = f'(v)</math>
+|-
+| (2) || The construction || <math>g(p) = p\,v(p) - f\bigl(v(p)\bigr)</math>
+|-
+| (3) || The geometric reading || <math>h(v) = pv - f(v)</math>
+|-
+| (4) || The geometric reading || <math>g(p) = \max_v \bigl[ pv - f(v) \bigr]</math>
+|-
+| (5) || It is an involution || ''long expression; see the page''
+|-
+| (6) || It is an involution || <math>\frac{d^2 g}{dp^2} = \frac{dv}{dp} = \frac{1}{f''(v)}</math>
+|-
+| (7) || Several variables || <math>g(p) = \sum_{i=1}^n p_i v_i - f(v)</math>
+|-
+| (8) || Passive variables || <math>\frac{\partial g}{\partial u} = -\frac{\partial f}{\partial u}</math>
+|-
+| (9) || Passive variables || ''long expression; see the page''
+|-
+| (10) || The transform in mechanics || <math>p = \frac{\partial L}{\partial y'}</math>
+|-
+| (11) || The transform in mechanics || <math>H(x, y, p) = p\,y' - L(x, y, y')</math>
+|-
+| (12) || The transform in mechanics || <math>\frac{\partial H}{\partial y} = -\frac{\partial L}{\partial y}</math>
+|}
+
+== [[Hamilton's principle/Mathematics/The Hamiltonian and Hamilton's equations|the Hamiltonian and Hamilton's equations]] ==
+
+{| class="wikitable"
+! no. !! section !! expression
+|-
+| (1) || Setup || <math>p_i = \frac{\partial L}{\partial \dot q_i}</math>
+|-
+| (2) || Setup || <math>H(t, q, p) = \sum_{i=1}^n p_i \dot q_i - L</math>
+|-
+| (3) || Derivation || ''long expression; see the page''
+|-
+| (4) || Derivation || ''long expression; see the page''
+|-
+| (5) || Derivation || ''long expression; see the page''
+|-
+| (6) || Derivation || ''long expression; see the page''
+|-
+| (7) || Derivation || ''long expression; see the page''
+|-
+| (8) || Conservation || ''long expression; see the page''
+|-
+| (9) || When is H the energy? || <math>H = 2T - (T - V) = T + V</math>
+|-
+| (10) || Worked example: the harmonic oscillator || <math>L = \tfrac{1}{2}m\dot q^2 - \tfrac{1}{2}m\omega^2 q^2</math>
+|-
+| (11) || Worked example: the harmonic oscillator || ''long expression; see the page''
+|-
+| (12) || Worked example: the harmonic oscillator || <math>\dot q = \frac{p}{m}, \qquad \dot p = -m\omega^2 q</math>
+|}
+
+== [[Hamilton's principle/Mathematics/The Hamilton-Jacobi equation|the Hamilton-Jacobi equation]] ==
+
+{| class="wikitable"
+! no. !! section !! expression
+|-
+| (1) || The idea || ''long expression; see the page''
+|-
+| (2) || Statement || ''long expression; see the page''
+|-
+| (3) || Statement || <math>\frac{\partial S}{\partial \alpha_i} = \beta_i = \text{const}</math>
+|-
+| (4) || Separation of variables || <math>S(t,q) = W(q) - Et</math>
+|-
+| (5) || Separation of variables || <math>H\!\left( q, \frac{\partial W}{\partial q} \right) = E</math>
+|-
+| (6) || The optical analogy || <math>\vert \nabla W \vert^2 = 2m\bigl( E - V(q) \bigr)</math>
+|-
+| (7) || The optical analogy || <math>n(q) \;\longleftrightarrow\; \sqrt{2m\bigl(E - V(q)\bigr)}</math>
+|-
+| (8) || Hamilton's pair || ''long expression; see the page''
+|}
+
+== [[Hamilton's principle/Mathematics/Action as a function of its endpoints|Action as a function of its endpoints]] ==
+
+{| class="wikitable"
+! no. !! section !! expression
+|-
+| (1) || The characteristic function || <math>V = \int \Sigma\, . \, m(x'\,dx + y'\,dy + z'\,dz) = \int_0^t 2T\, dt</math>
+|-
+| (2) || The law of varying action || ''long expression; see the page''
+|-
+| (3) || The law of varying action || ''long expression; see the page''
+|-
+| (4) || The law of varying action || ''long expression; see the page''
+|-
+| (5) || The law of varying action || <math>\frac{\delta V}{\delta H} = t</math>
+|-
+| (6) || Relation to the modern S || <math>dS = \sum_i p_i\, dq_i - \sum_i p_{0i}\, dq_{0i} - H\, dt + H_0\, dt_0</math>
+|}
+
+== [[Hamilton's principle/Mathematics/Noether's first theorem|Noether's first theorem]] ==
+
+{| class="wikitable"
+! no. !! section !! expression
+|-
+| (1) || Setup and notation || <math>I = \int \cdots \int f\!\left( x, u, \frac{\partial u}{\partial x}, \ldots \right) dx</math>
+|-
+| (2) || Setup and notation || <math>\delta I = \int \cdots \int \sum \psi_i\, \delta u_i \; dx</math>
+|-
+| (3) || Setup and notation || <math>\sum \psi_i\, \delta u_i = \delta f + \mathrm{Div}\, A</math>
+|-
+| (4) || The two kinds of variation || <math>y_i = x_i + \Delta x_i, \qquad v_i(y) = u_i + \Delta u_i</math>
+|-
+| (5) || The two kinds of variation || ''long expression; see the page''
+|-
+| (6) || Deriving the divergence relations || <math>\delta f + \mathrm{Div}(f \cdot \Delta x) = 0</math>
+|-
+| (7) || Deriving the divergence relations || <math>\sum \psi_i\, \delta u_i = \mathrm{Div}\, B, \qquad B = A - f\cdot\Delta x</math>
+|-
+| (8) || Deriving the divergence relations || ''long expression; see the page''
+|-
+| (9) || Passing to conservation laws || <math>\mathrm{Div}\, B^{(1)} = 0, \quad \ldots \quad \mathrm{Div}\, B^{(\rho)} = 0</math>
+|}
+
+== [[Hamilton's principle/Mathematics/Noether's second theorem|Noether's second theorem]] ==
+
+{| class="wikitable"
+! no. !! section !! expression
+|-
+| (1) || Derivation || ''long expression; see the page''
+|-
+| (2) || Derivation || ''long expression; see the page''
+|-
+| (3) || Derivation || ''long expression; see the page''
+|-
+| (4) || Derivation || ''long expression; see the page''
+|-
+| (5) || Noether's own examples || <math>\sum \psi_i\, \frac{du_i}{dx} = 0</math>
+|-
+| (6) || Proper and improper conservation laws || <math>\sum \psi_i\, \frac{\partial u_i}{\partial x_\lambda} = \mathrm{Div}\, B^{(\lambda)}</math>
+|}
+
+== [[Hamilton's principle/Mathematics/Abbreviated action: Maupertuis versus Hamilton|Abbreviated action: Maupertuis versus Hamilton]] ==
+
+{| class="wikitable"
+! no. !! section !! expression
+|-
+| (1) || The two quantities || <math>S = \int_{t_0}^{t_1} L\, dt = \int_{t_0}^{t_1} (T - V)\, dt</math>
+|-
+| (2) || The two quantities || <math>W = \int \sum_i p_i\, dq_i = \int 2T\, dt</math>
+|-
+| (3) || The two quantities || <math>W = S + \int H\, dt = S + E\,(t_1 - t_0)</math>
+|-
+| (4) || Deriving Maupertuis from Hamilton || <math>\delta W = \delta S + E\,\delta(t_1 - t_0)</math>
+|-
+| (5) || Deriving Maupertuis from Hamilton || <math>\delta W = 0</math>
+|-
+| (6) || Jacobi's form || <math>W = \int \sqrt{2\bigl(E - V(q)\bigr)}\; ds, \qquad ds^2 = \sum_{i,k} g_{ik}\, dq_i\, dq_k</math>
+|-
+| (7) || Jacobi's form || <math>\tilde g_{ik} = 2\bigl(E - V(q)\bigr)\, g_{ik}</math>
+|}
+
+== [[Hamilton's principle/Applications/The brachistochrone|the brachistochrone]] ==
+
+{| class="wikitable"
+! no. !! section !! expression
+|-
+| (1) || Setting up the functional || <math>\tfrac{1}{2}mv^2 = mg_0 y \qquad \Longrightarrow \qquad v = \sqrt{2g_0 y}</math>
+|-
+| (2) || Setting up the functional || <math>J[y] = \int_0^{x_1} \frac{\sqrt{1 + y'^2}}{\sqrt{2g_0 y}}\; dx</math>
+|-
+| (3) || Solving || <math>L = \sqrt{\frac{1 + y'^2}{y}}</math>
+|-
+| (4) || Solving || <math>L - y'\,\frac{\partial L}{\partial y'} = C_1</math>
+|-
+| (5) || Solving || <math>\frac{\partial L}{\partial y'} = \frac{y'}{\sqrt{y}\,\sqrt{1 + y'^2}}</math>
+|-
+| (6) || Solving || ''long expression; see the page''
+|-
+| (7) || Solving || <math>y\,(1 + y'^2) = k^2, \qquad k^2 = 1/C_1^2</math>
+|-
+| (8) || Integrating || <math>y' = \sqrt{\frac{k^2 - y}{y}}</math>
+|-
+| (9) || Integrating || <math>dx = \sqrt{\frac{y}{k^2 - y}}\; dy</math>
+|-
+| (10) || Integrating || ''long expression; see the page''
+|-
+| (11) || Integrating || ''long expression; see the page''
+|-
+| (12) || Integrating || <math>x = a\,(\theta - \sin\theta), \qquad y = a\,(1 - \cos\theta)</math>
+|-
+| (13) || Fixing the constants || <math>\frac{x_1}{y_1} = \frac{\theta_1 - \sin\theta_1}{1 - \cos\theta_1}</math>
+|-
+| (14) || The descent time || <math>t = \sqrt{\frac{a}{g_0}}\; \theta_1</math>
+|}
+
+== [[Hamilton's principle/Applications/The catenary|the catenary]] ==
+
+{| class="wikitable"
+! no. !! section !! expression
+|-
+| (1) || The functional and the constraint || <math>J[y] = \rho g_0 \int_{x_0}^{x_1} y\,\sqrt{1 + y'^2}\; dx</math>
+|-
+| (2) || The functional and the constraint || <math>K[y] = \int_{x_0}^{x_1} \sqrt{1 + y'^2}\; dx = \ell</math>
+|-
+| (3) || The functional and the constraint || <math>L^* = (y + \mu)\sqrt{1 + y'^2}</math>
+|-
+| (4) || The shape || <math>\frac{y + \mu}{\sqrt{1 + y'^2}} = C</math>
+|-
+| (5) || The shape || <math>\frac{dy}{\sqrt{(y+\mu)^2/C^2 - 1}} = dx</math>
+|-
+| (6) || The shape || <math>y = -\mu + C \cosh\!\left( \frac{x - x_0'}{C} \right)</math>
+|-
+| (7) || Fixing the three constants || ''long expression; see the page''
+|-
+| (8) || Fixing the three constants || <math>\ell = 2C\sinh\!\left( \frac{d}{C} \right)</math>
+|-
+| (9) || Reading the multiplier || <math>T_x = \rho g_0 C</math>
+|-
+| (10) || Reading the multiplier || <math>T = \rho g_0 (y + \mu)</math>
+|-
+| (11) || The related surface || <math>A = 2\pi\int y\sqrt{1+y'^2}\; dx</math>
+|}
+
+== [[Hamilton's principle/Applications/Geodesics|Geodesics]] ==
+
+{| class="wikitable"
+! no. !! section !! expression
+|-
+| (1) || The functional || <math>ds^2 = \sum_{i,k} g_{ik}(q)\, dq_i\, dq_k</math>
+|-
+| (2) || The functional || ''long expression; see the page''
+|-
+| (3) || The functional || <math>E[q] = \tfrac{1}{2}\int \sum_{i,k} g_{ik}\,\dot q_i \dot q_k \; d\lambda</math>
+|-
+| (4) || The geodesic equation || ''long expression; see the page''
+|-
+| (5) || The geodesic equation || ''long expression; see the page''
+|-
+| (6) || The geodesic equation || <math>\ddot q_m + \Gamma^m_{ik}\, \dot q_i \dot q_k = 0</math>
+|-
+| (7) || The geodesic equation || ''long expression; see the page''
+|-
+| (8) || The sphere || <math>p_\varphi = \sin^2\theta\;\dot\varphi = h = \text{const}</math>
+|-
+| (9) || The sphere || <math>\dot\theta^2 + \sin^2\theta\,\dot\varphi^2 = 1</math>
+|-
+| (10) || The sphere || <math>\dot\theta^2 = 1 - \frac{h^2}{\sin^2\theta}</math>
+|-
+| (11) || The sphere || ''long expression; see the page''
+|-
+| (12) || The sphere || <math>d\varphi = \frac{-h\,du}{\sqrt{1 - h^2 - h^2u^2}}</math>
+|-
+| (13) || The sphere || <math>\cot\theta = \alpha \cos(\varphi - \varphi_0)</math>
+|}
+
+== [[Hamilton's principle/Applications/Fermat's principle|Fermat's principle]] ==
+
+{| class="wikitable"
+! no. !! section !! expression
+|-
+| (1) || Statement || <math>T = \int \frac{ds}{v} = \frac{1}{c}\int n(x,y,z)\; ds</math>
+|-
+| (2) || Snell's law || <math>cT(x) = n_1\sqrt{a^2 + x^2} + n_2\sqrt{b^2 + (d-x)^2}</math>
+|-
+| (3) || Snell's law || <math>c\,\frac{dT}{dx} = \frac{n_1 x}{\sqrt{a^2+x^2}} - \frac{n_2 (d-x)}{\sqrt{b^2+(d-x)^2}}</math>
+|-
+| (4) || Snell's law || <math>n_1 \sin\theta_1 = n_2 \sin\theta_2</math>
+|-
+| (5) || The continuous case || <math>J[y] = \int n(x,y)\,\sqrt{1 + y'^2}\; dx</math>
+|-
+| (6) || The continuous case || <math>\frac{n(y)}{\sqrt{1+y'^2}} = \text{const}</math>
+|-
+| (7) || Rays are geodesics || <math>d\tilde s^2 = n^2(q)\,\bigl( dx^2 + dy^2 + dz^2 \bigr)</math>
+|-
+| (8) || Rays are geodesics || <math>n(q) \;\longleftrightarrow\; \sqrt{2\bigl(E - V(q)\bigr)}</math>
+|}
+
+== [[Hamilton's principle/Applications/The optical-mechanical analogy|the optical-mechanical analogy]] ==
+
+{| class="wikitable"
+! no. !! section !! expression
+|-
+| (1) || The correspondence || <math>\int n(q)\; ds</math>
+|-
+| (2) || The correspondence || <math>\int \sqrt{2m\bigl(E - V(q)\bigr)}\; ds</math>
+|-
+| (3) || The correspondence || <math>n(q) \;\longleftrightarrow\; \sqrt{2m\bigl(E - V(q)\bigr)}</math>
+|-
+| (4) || Both are Hamilton-Jacobi || <math>\vert \nabla\Psi \vert^2 = n^2(q), \qquad \vert \nabla W \vert^2 = 2m\bigl(E - V(q)\bigr)</math>
+|-
+| (5) || Filling the hole || <math>\psi = A(q)\, \exp\!\left( \frac{i\,W(q)}{\hbar} \right)</math>
+|-
+| (6) || Filling the hole || <math>\vert \nabla W \vert^2 - \hbar^2\,\frac{\nabla^2 A}{A} = \hbar^2 k^2</math>
+|-
+| (7) || Filling the hole || <math>-\frac{\hbar^2}{2m}\nabla^2\psi + V\psi = E\psi</math>
+|}
+
+== [[Hamilton's principle/Applications/Central force and the Kepler problem|Central force and the Kepler problem]] ==
+
+{| class="wikitable"
+! no. !! section !! expression
+|-
+| (1) || Reduction || <math>U = m_1 m_2\, f(r)</math>
+|-
+| (2) || Reduction || <math>r^2\theta' = r_0^2\theta_0' = h</math>
+|-
+| (3) || The inverse-square case || <math>f(r) = \frac{1}{r}</math>
+|-
+| (4) || The inverse-square case || <math>m_1 + m_2 = \mu, \qquad \frac{h^2}{\mu} = p, \qquad \frac{-m_1m_2}{2H_0} = a</math>
+|-
+| (5) || The inverse-square case || ''long expression; see the page''
+|-
+| (6) || Kepler's equation || <math>e = \sqrt{1 - \frac{p}{a}}, \qquad \upsilon = \cos^{-1}\!\left( \frac{a - r}{ae} \right)</math>
+|-
+| (7) || Kepler's equation || ''long expression; see the page''
+|-
+| (8) || Kepler's equation || ''long expression; see the page''
+|-
+| (9) || Lambert's theorem || <math>V_0 = \frac{m_1m_2\, w}{m_1 + m_2}, \qquad w = w(\sigma, \tau, a)</math>
+|-
+| (10) || Lambert's theorem || <math>t = \frac{2a^2}{\mu}\,\frac{\delta w}{\delta a}</math>
+|-
+| (11) || Lambert's theorem || <math>w = 2\sqrt{\mu}\,\bigl( \sqrt{\sigma + \tau} \mp \sqrt{\sigma - \tau} \bigr)</math>
+|-
+| (12) || The modern route, for comparison || <math>L = \tfrac{1}{2}m\bigl( \dot r^2 + r^2\dot\theta^2 \bigr) + \frac{k}{r}</math>
+|-
+| (13) || The modern route, for comparison || <math>E = \tfrac{1}{2}m\dot r^2 + \frac{\ell^2}{2mr^2} - \frac{k}{r}</math>
+|}
+
+== [[Hamilton's principle/Applications/The rigid body|the rigid body]] ==
+
+{| class="wikitable"
+! no. !! section !! expression
+|-
+| (1) || The configuration space || <math>T = \tfrac{1}{2}M\vert \dot{R} \vert^2 + T_{\text{rot}}</math>
+|-
+| (2) || Rotational kinetic energy || <math>T_{\text{rot}} = \tfrac{1}{2}\bigl( I_1\omega_1^2 + I_2\omega_2^2 + I_3\omega_3^2 \bigr)</math>
+|-
+| (3) || Euler angles, and their defect || ''long expression; see the page''
+|-
+| (4) || The torque-free case || <math>2T = I_1\omega_1^2 + I_2\omega_2^2 + I_3\omega_3^2 = \text{const}</math>
+|-
+| (5) || The torque-free case || ''long expression; see the page''
+|-
+| (6) || The torque-free case || <math>I_1\dot\omega_1 = (I_2 - I_3)\,\omega_2\omega_3</math>
+|-
+| (7) || The intermediate axis theorem || <math>\lambda^2 = \frac{(I_2 - I_1)(I_3 - I_1)}{I_2 I_3}\,\omega_1^2</math>
+|-
+| (8) || The heavy symmetric top || ''long expression; see the page''
+|-
+| (9) || The heavy symmetric top || <math>\tfrac{1}{2}I_1\dot\vartheta^2 + V_{\text{eff}}(\vartheta) = E'</math>
+|}
+
+== [[Hamilton's principle/Applications/Continuum systems: the vibrating string|Continuum systems: the vibrating string]] ==
+
+{| class="wikitable"
+! no. !! section !! expression
+|-
+| (1) || The discrete chain || <math>\sqrt{h^2 + (u_{j+1}-u_j)^2} - h \approx \frac{(u_{j+1}-u_j)^2}{2h}</math>
+|-
+| (2) || The discrete chain || ''long expression; see the page''
+|-
+| (3) || The discrete chain || <math>m\ddot u_j = \frac{\tau}{h}\bigl( u_{j+1} - 2u_j + u_{j-1} \bigr)</math>
+|-
+| (4) || The discrete chain || ''long expression; see the page''
+|-
+| (5) || The discrete chain || ''long expression; see the page''
+|-
+| (6) || The field derivation || <math>\rho\, u_{,tt} - \tau\, u_{,xx} = 0</math>
+|-
+| (7) || The field derivation || <math>c = \sqrt{\tau/\rho}</math>
+|-
+| (8) || Conservation laws || ''long expression; see the page''
+|-
+| (9) || The free end || <math>\tau\, u_{,x}(\ell, t) = 0</math>
+|-
+| (10) || Separation and modes || <math>\omega^2 = \frac{4\tau}{\rho h^2}\sin^2\!\left( \frac{kh}{2} \right)</math>
+|}
+
+== [[Hamilton's principle/Applications/Classical field theory|Classical field theory]] ==
+
+{| class="wikitable"
+! no. !! section !! expression
+|-
+| (1) || The construction || <math>S[\phi] = \int_\Omega \mathcal{L}\bigl( \phi_i,\, \partial_\alpha\phi_i,\, x \bigr)\, d^4x</math>
+|-
+| (2) || The construction || ''long expression; see the page''
+|-
+| (3) || Building a Lagrangian from symmetry || <math>\mathcal{L} = \tfrac{1}{2}\,\partial_\alpha\phi\,\partial^\alpha\phi - V(\phi)</math>
+|-
+| (4) || Building a Lagrangian from symmetry || <math>\partial_\alpha\partial^\alpha\phi + V'(\phi) = 0</math>
+|-
+| (5) || The stress-energy tensor || ''long expression; see the page''
+|-
+| (6) || Fields with internal symmetry || <math>\phi \to e^{i\alpha}\phi</math>
+|-
+| (7) || Fields with internal symmetry || <math>j^\alpha = i\left( \phi^*\,\partial^\alpha\phi - \phi\,\partial^\alpha\phi^* \right)</math>
+|}
+
+== [[Hamilton's principle/Applications/The electromagnetic Lagrangian|the electromagnetic Lagrangian]] ==
+
+{| class="wikitable"
+! no. !! section !! expression
+|-
+| (1) || Making the phase local || <math>\phi(x) \to e^{i\alpha(x)}\,\phi(x)</math>
+|-
+| (2) || Making the phase local || ''long expression; see the page''
+|-
+| (3) || Making the phase local || <math>A_\beta \to A_\beta - \partial_\beta\alpha</math>
+|-
+| (4) || Making the phase local || <math>D_\beta\phi = \bigl( \partial_\beta + i A_\beta \bigr)\phi</math>
+|-
+| (5) || The field Lagrangian || <math>F_{\alpha\beta} = \partial_\alpha A_\beta - \partial_\beta A_\alpha</math>
+|-
+| (6) || The field Lagrangian || <math>\mathcal{L} = -\tfrac{1}{4}\,F_{\alpha\beta}F^{\alpha\beta} - j^\alpha A_\alpha</math>
+|-
+| (7) || The field Lagrangian || <math>\partial_\alpha F^{\alpha\beta} = j^\beta</math>
+|-
+| (8) || The field Lagrangian || ''long expression; see the page''
+|-
+| (9) || The action must be gauge invariant, and that constrains the source || ''long expression; see the page''
+|-
+| (10) || The action must be gauge invariant, and that constrains the source || <math>\partial_\alpha j^\alpha = 0</math>
+|-
+| (11) || Degeneracy || <math>\pi^\beta = \frac{\partial\mathcal{L}}{\partial(\partial_0 A_\beta)} = -F^{0\beta}</math>
+|-
+| (12) || The two facts are one fact || <math>\partial_\beta\bigl( \partial_\alpha F^{\alpha\beta} - j^\beta \bigr) = 0</math>
+|-
+| (13) || The charged particle || ''long expression; see the page''
+|}
+
+== [[Hamilton's principle/Applications/The Einstein-Hilbert action|the Einstein-Hilbert action]] ==
+
+{| class="wikitable"
+! no. !! section !! expression
+|-
+| (1) || The action || <math>S_{\text{EH}} = \frac{1}{2\kappa}\int R\,\sqrt{-g}\; d^4x</math>
+|-
+| (2) || Varying || ''long expression; see the page''
+|-
+| (3) || Varying || <math>g^{\alpha\beta}\,\delta R_{\alpha\beta} = \nabla_\gamma v^\gamma</math>
+|-
+| (4) || Varying || <math>R_{\alpha\beta} - \tfrac{1}{2}R\,g_{\alpha\beta} = 0</math>
+|-
+| (5) || The surface term || <math>S = S_{\text{EH}} + \frac{1}{\kappa}\oint_{\partial\Omega} K\,\sqrt{\vert h \vert}\; d^3x</math>
+|-
+| (6) || Noether's second theorem, realised || <math>\nabla_\alpha\!\left( R^{\alpha\beta} - \tfrac{1}{2}R\,g^{\alpha\beta} \right) = 0</math>
+|-
+| (7) || Geodesics recovered || <math>S = -mc\int ds</math>
+|}
+
+== [[Hamilton's principle/Applications/The Feynman path integral|the Feynman path integral]] ==
+
+{| class="wikitable"
+! no. !! section !! expression
+|-
+| (1) || The postulate || <math>K(b,a) = \sum_{\text{all paths}} \exp\!\left( \frac{i}{\hbar}\,S[q] \right)</math>
+|-
+| (2) || Making the sum meaningful || ''long expression; see the page''
+|-
+| (3) || Recovering Schrödinger's equation || ''long expression; see the page''
+|-
+| (4) || Recovering Schrödinger's equation || ''long expression; see the page''
+|-
+| (5) || The semiclassical limit and conjugate points || ''long expression; see the page''
+|}

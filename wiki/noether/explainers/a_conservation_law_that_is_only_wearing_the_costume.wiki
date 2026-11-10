@@ -1,0 +1,113 @@
+{{DISPLAYTITLE:A conservation law that is only wearing the costume}}
+{{Noether's theorems map}}
+
+''Mathematical counterpart: [[Noether's theorems/Second theorem/Proper and improper conservation laws|Proper and improper conservation laws]].''
+
+This is the last section of Noether's paper and the reason she wrote it. It
+answers a question about energy in general relativity, and the answer is sharper
+than people usually report.
+
+== Two books that both balance ==
+
+A shopkeeper's accounts balance at the end of the day. So do a bank's.
+
+For the shopkeeper, balancing is news. It means the till was counted right and
+nothing walked out of the door. It could have failed.
+
+For the bank, one particular sum balances because of how the entries are defined.
+Every transaction is written twice, once on each side. That sum cannot fail to
+balance, and a clerk who reports proudly that it did has reported nothing.
+
+Both are true statements. Only one carries information.
+
+Noether draws exactly this line. A conservation law whose conserved quantity is
+assembled out of the equations of motion themselves she calls '''improper'''. All
+others are '''proper'''.
+
+An improper conservation law is an identity in fancy dress. It is true, it looks
+like physics, and it tells you nothing the equations did not already say.
+
+== The criterion, in both directions ==
+
+Now the result, and the "exactly when" is the whole of it.
+
+Suppose a theory's scoring rule survives an ordinary global symmetry — shifting
+everything in time, say — so the first theorem gives you a conservation law.
+
+'''That conservation law is improper exactly when the global symmetry sits inside
+a local one that the rule also survives.'''
+
+Both directions hold. If the global symmetry is part of a larger local freedom,
+the conservation law is empty. If it is not, the conservation law is genuine.
+
+Noether checks the other side herself, in a footnote: the energy theorems of
+ordinary mechanics, and of special relativity, are proper — because those theories
+have no local symmetry for a global one to hide inside.
+
+That footnote is what makes this a criterion rather than an observation. Without
+it you would have a rule that only ever says yes.
+
+== What it means for gravity ==
+
+General relativity has a local symmetry: you may relabel the points of spacetime
+however you like, differently here than there. And that freedom contains, as a
+special case, the ordinary shift-everything symmetry that would otherwise give
+energy conservation.
+
+So by the criterion, the energy relations of general relativity are improper.
+
+This is the answer to a puzzle that had been troubling Göttingen since 1915.
+Attempts to write down the energy of the gravitational field had produced
+quantities that behave badly: change the coordinates and the energy density
+changes, and at any single point you can choose coordinates that make it zero.
+For years this was read as a defect — a sign that somebody would eventually find
+the right expression.
+
+'''Noether showed that nobody will, because there is nothing to find.''' The
+degeneracy is what a local symmetry produces. It is a prediction of the structure,
+not a failure of anyone's algebra.
+
+== And it is not about gravity ==
+
+Here is the part almost always dropped, and it is Noether's own emphasis.
+
+The criterion says nothing about gravity in particular. It is a statement about
+symmetries. Any theory with the relevant local freedom has improper energy
+relations, and any theory without one has proper ones.
+
+She proves this by example rather than by assertion. In that same final section
+she builds a local symmetry out of a logarithm — a construction with no physical
+content whatsoever, chosen precisely because nothing physical is attached to it —
+and shows the improper energy relations appearing exactly as the criterion says
+they must.
+
+'''Gravity is one instance. It is not the reason.''' She closes by suggesting that
+the physicists' word "relativity" would be better replaced by invariance with
+respect to a group, endorsing a remark of Klein's, and that suggestion is the
+whole point compressed into a sentence.
+
+== What improper does not mean ==
+
+Two clarifications, because the word invites over-reading.
+
+'''It does not mean false.''' An improper conservation law is perfectly true. It
+holds, it can be written down, and it can be checked. It just does not tell you
+anything the equations of motion had not already said.
+
+'''It does not mean gravity has no energy.''' For a system that is isolated — a
+star with empty space stretching away in every direction — a total energy can still
+be defined, by looking at the behaviour far away rather than by adding up a density
+point by point. That total is meaningful and it is measurable.
+
+What is unavailable is the local statement: so much energy here, so much there.
+The criterion says the local version cannot exist, and it says nothing against the
+global one.
+
+'''The distinction is exactly the one from
+[[Noether's theorems/Explainers/A flowing quantity and a standing total|the flow
+and total page]].''' In an ordinary theory the total is a consequence of the local
+statement. Here the local statement fails and a total survives anyway, by a
+different route.
+
+''No mathematics is used on this page. The mathematical treatment is on the
+counterpart page named above.''

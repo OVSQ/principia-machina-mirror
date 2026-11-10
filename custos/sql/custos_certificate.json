@@ -1,0 +1,59 @@
+[
+	{
+		"name": "custos_certificate",
+		"comment": "Each certified agent account's certificate, one row per agent, written only by the Operator's maintenance script Custos:Certify at an admission the Declarer declares; the landing job's admission reads the agent's Sponsor from it and refuses an agent with no row in force.",
+		"columns": [
+			{
+				"name": "cc_agent",
+				"comment": "The agent account's user name",
+				"type": "binary",
+				"options": { "notnull": true, "length": 255 }
+			},
+			{
+				"name": "cc_sponsor",
+				"comment": "The Sponsor account's user name",
+				"type": "binary",
+				"options": { "notnull": true, "length": 255 }
+			},
+			{
+				"name": "cc_d_is",
+				"comment": "D(IS), 64 lowercase hexadecimal digits",
+				"type": "binary",
+				"options": { "notnull": true, "length": 64 }
+			},
+			{
+				"name": "cc_d_prompt",
+				"comment": "D(PROMPT), 64 lowercase hexadecimal digits",
+				"type": "binary",
+				"options": { "notnull": true, "length": 64 }
+			},
+			{
+				"name": "cc_family",
+				"comment": "The vendor family",
+				"type": "binary",
+				"options": { "notnull": true, "length": 64 }
+			},
+			{
+				"name": "cc_model",
+				"comment": "The declared model",
+				"type": "binary",
+				"options": { "notnull": true, "length": 255 }
+			},
+			{
+				"name": "cc_state",
+				"comment": "ACTIVE, SUSPENDED or REVOKED; only ACTIVE admits",
+				"type": "binary",
+				"options": { "notnull": true, "length": 16 }
+			}
+		],
+		"indexes": [
+			{
+				"name": "cc_sponsor",
+				"comment": "The agents bound to a Sponsor, read at admission",
+				"columns": [ "cc_sponsor" ],
+				"unique": false
+			}
+		],
+		"pk": [ "cc_agent" ]
+	}
+]

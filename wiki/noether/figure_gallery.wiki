@@ -1,0 +1,91 @@
+{{DISPLAYTITLE:Figure gallery}}
+{{Noether's theorems map}}
+
+Twenty-four figures. Each is listed with the pages that place it.
+
+<gallery mode="packed" heights="200px">
+File:NT-F-01.png|A symmetry orbit through the space of configurations
+File:NT-F-02.png|A varied path against a symmetry-transformed path
+File:NT-F-03.png|Prolongation: a curve and its lifted derivative data
+File:NT-F-04.png|The Noether current as a flux through a tube
+File:NT-F-05.png|On-shell and off-shell as nested regions
+File:NT-F-06.png|The first and second theorems side by side
+File:NT-F-07.png|The symmetry-to-conservation map
+File:NT-F-08.png|A gauge orbit and the constraint surface
+File:NT-F-09.png|Killing vectors on a sphere with a geodesic
+File:NT-F-10.png|The closed Kepler orbit and the Runge-Lenz vector
+File:NT-F-11.png|The Belinfante improvement as a redistribution
+File:NT-F-12.png|A chronology from Lie to the anomaly
+File:NT-F-13.png|Identities among the field equations from a local symmetry
+File:NT-F-14.png|The origin of the boundary term
+File:NT-F-15.png|A one-parameter group: flow lines and the generator
+File:NT-F-16.png|Strict invariance against invariance up to a divergence
+File:NT-F-17.png|Gottingen 1915 to 1918: who wrote what, and when
+File:NT-F-18.png|The three levels of generality
+File:NT-F-19.png|A Lie group and its algebra as the tangent at the identity
+File:NT-F-20.png|Jet space: a function and its first jet
+File:NT-F-21.png|The moment map
+File:NT-F-22.png|Fields against independent field equations
+File:NT-F-23.png|Charge conservation as a continuity equation on a spacetime slab
+File:NT-F-24.png|Topological charge: winding, not Noether
+</gallery>
+
+== Where each figure appears ==
+
+{| class="wikitable"
+! figure !! subject !! placed on
+|-
+| NT-F-01 || A symmetry orbit through the space of configurations || B-07, F-07
+|-
+| NT-F-02 || A varied path against a symmetry-transformed path || B-01, F-01
+|-
+| NT-F-03 || Prolongation: a curve and its lifted derivative data || B-04, F-04
+|-
+| NT-F-04 || The Noether current as a flux through a tube || B-08, F-08
+|-
+| NT-F-05 || On-shell and off-shell as nested regions || B-09, F-09
+|-
+| NT-F-06 || The first and second theorems side by side || B-19, S-07
+|-
+| NT-F-07 || The symmetry-to-conservation map || R-02
+|-
+| NT-F-08 || A gauge orbit and the constraint surface || A-05, B-28
+|-
+| NT-F-09 || Killing vectors on a sphere with a geodesic || B-24, M-05
+|-
+| NT-F-10 || The closed Kepler orbit and the Runge-Lenz vector || A-02
+|-
+| NT-F-11 || The Belinfante improvement as a redistribution || B-25, M-06
+|-
+| NT-F-12 || A chronology from Lie to the anomaly || R-04, H-09
+|-
+| NT-F-13 || Identities among the field equations from a local symmetry || A-06, B-14, S-02, S-03
+|-
+| NT-F-14 || The origin of the boundary term || B-06, F-06
+|-
+| NT-F-15 || A one-parameter group: flow lines and the generator || B-03, F-03
+|-
+| NT-F-16 || Strict invariance against invariance up to a divergence || B-05, F-05
+|-
+| NT-F-17 || Gottingen 1915 to 1918: who wrote what, and when || H-01
+|-
+| NT-F-18 || The three levels of generality || F-07
+|-
+| NT-F-19 || A Lie group and its algebra as the tangent at the identity || B-20, M-01
+|-
+| NT-F-20 || Jet space: a function and its first jet || M-02
+|-
+| NT-F-21 || The moment map || M-04
+|-
+| NT-F-22 || Fields against independent field equations || A-07, B-17, S-05
+|-
+| NT-F-23 || Charge conservation as a continuity equation on a spacetime slab || A-04
+|-
+| NT-F-24 || Topological charge: winding, not Noether || A-11, B-33
+|}
+
+The figures are shipped as PNG, rendered at twice display size from vector masters.
+Images are not carried by a page import and upload separately.
+
+'''This page uses the <code>gallery</code> tag, which needs no extension, and is the
+only page in the volume that does.'''

@@ -1,0 +1,1472 @@
+{
+ "corpus": "fingerprint_corpus",
+ "version": "0.1.0",
+ "module": "tpc_fingerprint 0.1.0",
+ "test_key": "K_TEST = 000102...1f (32 bytes), a TEST KEY, never a real secret (D127.1)",
+ "counts": {
+  "hkdf": 22,
+  "key_fp": 20,
+  "agent_key": 20,
+  "key_id": 20,
+  "call_sign": 20,
+  "fingerprint": 25
+ },
+ "cases": [
+  {
+   "name": "H01 RFC 5869 test case 1",
+   "fn": "hkdf",
+   "args": {
+    "prk": "077709362c2e32df0ddc3f0dc47bba6390b6c73bb50f9c3122ec844ad7c2b3e5",
+    "info": "",
+    "info_hex": "f0f1f2f3f4f5f6f7f8f9",
+    "length": 42
+   },
+   "hand_checked": true,
+   "expected": "3cb25f25faacd57a90434f64d0362f2a2d2d0a90cf1a5a4c5db02d56ecc4c5bf34007208d5b887185865"
+  },
+  {
+   "name": "H02 RFC 5869 test case 2 (82 bytes, three blocks)",
+   "fn": "hkdf",
+   "args": {
+    "prk": "06a6b88c5853361a06104c9ceb35b45cef760014904671014a193f40c15fc244",
+    "info": "",
+    "info_hex": "b0b1b2b3b4b5b6b7b8b9babbbcbdbebfc0c1c2c3c4c5c6c7c8c9cacbcccdcecfd0d1d2d3d4d5d6d7d8d9dadbdcdddedfe0e1e2e3e4e5e6e7e8e9eaebecedeeeff0f1f2f3f4f5f6f7f8f9fafbfcfdfeff",
+    "length": 82
+   },
+   "hand_checked": true,
+   "expected": "b11e398dc80327a1c8e7f78c596a49344f012eda2d4efad8a050cc4c19afa97c59045a99cac7827271cb41c65e590e09da3275600c2f09b8367793a9aca3db71cc30c58179ec3e87c14c01d5c1f3434f1d87"
+  },
+  {
+   "name": "H03 RFC 5869 test case 3 (empty info)",
+   "fn": "hkdf",
+   "args": {
+    "prk": "19ef24a32c717b167f33a91d6f648bdf96596776afdb6377ac434c1c293ccb04",
+    "info": "",
+    "info_hex": "",
+    "length": 42
+   },
+   "hand_checked": true,
+   "expected": "8da4e775a563c18f715f802a063c5a31b8a11f5c5ee1879ec3454e5f3c738d2d9d201395faa4b61a96c8"
+  },
+  {
+   "name": "H04 the purpose key under the test key",
+   "fn": "hkdf",
+   "args": {
+    "prk": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+    "info": "TPX-FINGERPRINT-1",
+    "length": 32
+   },
+   "hand_checked": true,
+   "expected": "375f3819fdbdcef30a291d60deac368adedd9413cbd99355c8c21c33a5c6353a"
+  },
+  {
+   "name": "H05 length 1",
+   "fn": "hkdf",
+   "args": {
+    "prk": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+    "info": "x",
+    "length": 1
+   },
+   "hand_checked": true,
+   "expected": "ef"
+  },
+  {
+   "name": "H06 length 32",
+   "fn": "hkdf",
+   "args": {
+    "prk": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+    "info": "x",
+    "length": 32
+   },
+   "hand_checked": true,
+   "expected": "ef108b0fc1288bc0f8038607515b1cd648deb5014f8de180e9f1813f258bdd6e"
+  },
+  {
+   "name": "H07 length 33 (two blocks)",
+   "fn": "hkdf",
+   "args": {
+    "prk": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+    "info": "x",
+    "length": 33
+   },
+   "hand_checked": true,
+   "expected": "ef108b0fc1288bc0f8038607515b1cd648deb5014f8de180e9f1813f258bdd6e0c"
+  },
+  {
+   "name": "H08 length 8160 (the maximum)",
+   "fn": "hkdf",
+   "args": {
+    "prk": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+    "info": "x",
+    "length": 8160
+   },
+   "hand_checked": true,
+   "expected": "ef108b0fc1288bc0f8038607515b1cd648deb5014f8de180e9f1813f258bdd6e0ceb5c235a95216291663ea38eecddefd76ea95496a65f8a73649db669a2c63b1b57a18bb60ae2ac0dad8e07bc07e86e3fd3fceb3d82a1335300920e987909da22667b82a16e57cd03a8c5cf28526d85ee24a2883f909a7d637026d5a01b87203d67a088556e87a5538d3900f9580c0ce997b3642aaefbb93f85375f14cd21e81349a7432845a227b5f42a2b7fc3c3d21d9b4cf21275b0195d8cdfe12d121c57a542ae9396501f5ecc3b0ad3d73ffc35dc38164e1be921c1779b88339db64ffbdc98f256e65b368ae2712a0a690a6f697cbe47001de1a00b7dab2cf62ca40e8ca4c0d670edbb26ea70ab0b13fc04057cba48274aab2c027440ee0cf37aaaad470cd87bf38a927fc63ba9e73ec483bc648e42039e57eae72531280101b2e089272e1ce74ce010f30e18d4ec08c1819b850da1eda0700e42d73d2f812c52fa8987891d75b344863f0e4c97db9a6018b7bd30e1400f05554df7346e54a73372bc6ba641abc9ed0119a1b5be19773418a123c31d5c4bd70bd13a644a5942da74853e3894993dbd8d1b5bb5295a83c3c23cfb783dcc18ae44564a10f7885aee847dd1c6530b70b1ad70db039bb17619efa94fae32b006fe74366e170f11e9acdb91b11ef29e0a7e8171947f984f20b4012a87cb1c73406567e9746fb5c419c0c025dc78a99a5084dac74238c931c0f1c76fc15ab45c20c6b666dfd1e9358bc31967a9637766900e997f4034926ad5ba0470fdb2e2b9e0b4803c5863c44041ff5c43f2b3430ee6972b38119b6d49946eca66a08db0b0e7dda629ba6f114cf7b4dfae72e60048492731bd3b665019f345ed1459a400776b1b754f624ebee49b5d2d30589c4cf9d61f584fc4e66fdfb070c56019f10deb08ce766d89ab9627529fdcb2b876ac617670a9399a8d2d05f471f1ebe5a2fdcf3714ada38f6e304cd40d32fcb46764787ff774b0a4797061cb80dfe48183d30c5ec491d0eaf39f8af2007d35d7d9a559643802f3573136a91846c0eb30035e0c5d94310fa85f17cea78ed01b496bdacb8a3023e04c92976a57d879340e5a00be8e7d4d00a766f1f0a1ded9bd5bcd63393d41bb4905ed87a7d72bf4cbc6db61e6cad3c26e941abddd2e491e2a90f5ea22b1fe51bc7752cc355aaf450ce97c7fd8b8781552ae5a3bffc73121be3c16519aa6ca37302941420b3e5e2f0d1642707dd0bb66d08c1d5c9d53d4745d07e413470dc7d663a911f91e53ae397a987f15be62e7fef0ba68b74c1c7b5a16c293a2e1cb76ebe649e7069babd1f2f1fb8c241711b3fcd0b2c68c4bc9c0d3cc0b5c09b2503998ffad9fc1aa1383d7138e60f606241b7ebbb8a8d518012804d57532f9a4b7204e6a02646bc1ee4f86c8b46b13351c56e0fd979b37b13dfbb7d585ab1bfd81983bf5bfd3b3274165ca28b04d87f96b30059e67f3a7435e42416e28d853d04604ddf8e524504ca121953e010091191a874cbe1281cd4025cbed3610cdcf9348dd876dd568f918baaf9eb5ab04df3ef38bad0a928303316b5c40ebede095b45c6afd3d3fb1d7beaa8b9a0f67145d9662b7fc2b4130a0a1834e7ba706e8a457b9ca4bf9f2cd0f0d19f2248591261d47140940557e94ad4df1680636276846cc164fe52fd64c2e6d86c484c371828f18965834b643f2a8de06a756e3811012a390941c004f5c91b6edb1b15ea55ffae46bc5d9501fa5cc3b4dc3a11420725b4813d56e336057a0e78c73e3c219734b75130faa57f6fb7086a671e331d2280183fac3bb731ac305d5fd0cba1662225e02a956566f87f08cea8df81c9e2360b40a7b2ddff7cb3f87ca4a9e825365768e42a708cca022d2672d9b2ccdedeac7b1f5b7f7cda9e8aa93175d807217f36554e02c601a43c0464647e8ff969dfcb007ecffa30e9ef8af1988767672a368713fb647fd8914ee09b927e519846f6fe97e165beac72397e4c37633f57bb837d1aed30c11d139b6c39cc7d6cb8f57280902e5a5b238f4fef31d4be4cda84c6fc18ed42cf979cad579f68dd7c83bd6a3d10f02697f6e36c0c91d7f5d0e1220a1708aba12b615fa748b81b5650633bd4378fb57da6dd04145048cec0cd8e85f7f33e9053bb433a5cbd077dc8fefc4af81a23a90aeda3b1f3f1fc54759aba1c965477e2a2fb8165b1a5ed10ef93f3338bb24d76c1a72845259b5cf8f58a3d8f5963df54bd74184389b92ddc0cbfd45d18f5caaa03d83c529d68b1f8f642c7e90783e2467e7997d7387e4fb97d2414925a3febac525f1849916e987764f3180ed43632086d5c7784a5cbd9ce178371ffe79ac2af93a049e67608a9151297f2a485ca768bd506565a85c0f7194f2fadc430985e5e8beebcc0e0711729b0ecbb38543ded912b214ae07a2cea728bf44adb47fa1fc3925d60fad02df23613a00698d9a3b0e35f88274376d9a7a0e004afce9715f0c75d9e4c19e88d2558d02da420b0824449fc2fe25379cc3133f37e4ec2d782fc76fc74c9283e3e5f934f6310ff7341bdfd568017479bbf4d432a3c28bda03c08de0d49298787c1c9e1da2669d5f7c8eff37b185a5e75b7a5b3d16a680f0ee9d2a0c7853f884fd06ce47f86d5acb7dfbee23b1df9b11d294c9143fd44c0f7b90d44589435b8f789282f57e1006bd6f7bde91678f7d1f09edc690759a9dfe73f4a4aeca9e45227cca9c1b7811baa082f77cd52e5881aeba4c5a4b226ddc15bde4f52079fc10f5ab8b304827ae8bdc7a5df03de087c0c49de61862270e6b15c83414d17527fc61cc0051eb1edef63cc7aa9f96a3c502bc7cd43575e721bb99698a1a8d96544aefcba51fa5ba682e874fca848aca5a45e8136138cf36233b95f6203a89baba4e2ba730ef4b8ac5020b3f4c769f1776b056e0da3d0cb2d16d4a3a9111a7e9725014ad98972c274bb96f0753f97dba4ef9d83168655f7b939f914855ce90dc96e8e4b8bb6f7ad4b97ace931e84fb06185b54c5191aa293efb77294da0ba01a4e928a9832d412158b43e0a06fd8eba1d57dbbd640501f46cf73259e36a17faa0ccb955029ed5410f7566fb92a4bacdb9be7691c8b1d9abf27e31f7a47998083ff3e39d2a8df5ce7dd70034a16b6824745e1d48893d10649dcaffa4cf0778382f050267c04746810c396958e08d503b3895fbcf51fb32e516da9602f334fb651a089fafc11f206c94a8e5d13f0497108363e17e8b3170d7a1e616939bdc8e9085a1f640e608702906114d439ad182296990b3034f2919ce234fb46c739d8ffc0f66accff321fb0aca5aa726fa0e32c8092dbdcc4979a7730fb9c4797ca0165d857cb57c300f04d5fe7b3bfeabd8a54035deb9e53f2801b2c8d3f2dfff6ca0bb06db19181f7bef792b62b8e1d611a84dfa4ca9b36e9ab90b1ee87623cc3808610e519ab94a7256729e26470ed3a3202f8c3b00fc3112a84fd884a6c49cbf5a57219b69556ef20f9d018316600705038861fb7fa421f9335bc7567efe47df070cac0b3457222d1f10eedc4de04a1ead982f1f14af584d3d8ccf906c078ea67f4051da9d13032ea771516bfcab70a0ae991c0ad2ab750f4d609e1721d1c5edf3581a48efa67e4c263c2557756bec0afb85c67cb47c7a5bda9c62a1615d25548e858c2ae0bf3e13d1b2d6e45c1ac4f6fc143bf390263a9acfc4acaf474a28103c5e43214a3a8914d6e64c7cf46a4fce73aa450eea6d14c49bd8fddf7c9dab7831320a244ecac0ca9bb5e9b18e9c30d15c8fb7f60ba1e613101ac315bcf0c8da4f9e4f5afca401fda665017ce5a7bc446a20d0d2564b23c762ee7d4e71981794d6e22218ed80396ef78192afc6294e1ad86fc293806412cb99aea94479089e50d752d5d197837068992538e92b09b52f2f1efc77b1b2145e6845b4bb4c77ed789d04d6990b3912546b446c90bb3b431ccf8272a2f47d0a2fd13d89727ba86db525d3cb9ee0a72ce23cbf41a982ac4aadefa6889d98e596af7f8228a4f2c4917d5272397c0c282c3e7adf9b13a436b54149913c436668a53a86c366fdfec453d53b13e3abf4d1e094f8bd5ba4b45fc5a90e798e61f22f65fcd07a38fbac576f45dcb4355473800253893a97341bdb558d4639ce17e06e2374bb9d656c06a5d32f65690ca00329692d321973d4790201913d4ca78405d1ca348274d6c89fdaa906e99a4148db1dfe95a3e5348392ac9f33fc20d31741be04220b6cea7bde361bc15ac7c9aa84765fbeafff12d026c148c7721f16fe40c54b2d7a1a7eacd28749e5c67cf69415064b2ef560b3a461423d28f0c01c15fa3dcc4aff58e598f626723f309b9c5c5405a12fbfcd0f5ae9b38939e4c87fb8b261a24ac14a205eb6100531993eb52a0b4878b9991f02f38709dcdc0de5f83616c96781266ceeb055e9bae6f8db92c968474e6b1df43278e36b3cc7b294321d35c100e61932019c6c1f89a1338762a7c03d48a3504e8dcd6b25135d1fd70ffdf11e43fcdc201169be9577a883c51ed3278a8e15565f2a9c084a2182411f480618abc8b93a78d31aee2f00e92132cc55b6c930bdeff479ecffe54903949960ad77f8f46b4275f256a70e48aab8ed82ba77444619227d9c2143967d3b7302a2275cfa7ab2b484465ff83a6dc506b098f1ede21c8f3f2a7ae12efb616d55af0d4f73a0444ae26dfd95704951805f422b61d1df6990da6bc366aa2e15f2ca142e98f0c0023499788855d988ae69437ac222c08840ada38f824043f9cc45878777ff5c2a23d725d860f5a07477e074bd26e9f0090341a38a3258ced5f7881d4b307fc82a1a1dcb8dfc286ffc3dc8e97bf35748736723243f53e001fa33fa6e17aa4c82b7727eeb2f2e70910d0be869b67ddae1c8fa988e3169460083db47fa79eb94174a8e0746e882cddb1a1f19651c09ce0001dc434c85f44eda6b6c9c9a40127505e23b0e2950ead1eff560c0fdd926a55f54c2d90125549d4de75b26202c67faa59c198ed9e332cc6eaccd13b9a8e8000452f2eb05bfe382f785b6a41d22bede539f5678c463ba35e59474973e81a39badcd8f3bbe685f6e498886f78e58351bebc0a709c592e0ad39ffa48974c14e7e2b94d917aa3012592044ff234ec89748b5c9df15ab44f6a85d75585efb7794ef425eadcb69f827273080cbfd6b1cb5156261f652bc029323a8a999404a90878c9adf1ef1fe2c02809e708593014001759c1723d68e53a71b1c6391f306d2dee91eb6a276e368eae772089c82310849966206aaa7eb3a033b2aa0678d3d4fa35f508b59e89e73053253d3add5c61141cec2cea9ca73364e454b73b257451290f5dcf27bd81e40ea479bad73c47488f05a350928b375d18a000723fe8944815ca71f2791bdeab31df5c1da374c0a99869302428b862b130562371ac20fca3b3a03a5d04fa3b88c49691698bc6bbdc31500c48beb2c16ad2989e12681238f9f9bdb8403056d8bbabf6aecf4c90c6373089403fa5a0d77698b6091f32ae3bc5551ad165b013aff5a37d8053d21800d07f3877a7bca0cc0194252b3f7850fbd37a0cba4423f1f6a63c3c1cddc31b4271a34e48db71304b0db070fede6576541df63d35e18f611c30fbe784df1f5482e2b869b906771f09278eb5e6293fb0ec93985204abeb95acd716cec57c91991c78b10f24ef739192478cb6514376d89e463bd34a42cebf7051eadbdb2104b1727883287123899d0e9e7a6514a9841a08941385c589c1de53d598714184f1af34074460910d65f733805606ed0ba5c2f0ee490657f614072cdf37b093f1cce86be15ebfdb5544b25fab9035b493d417a6591d1266583ce1d397c6a1d155b8b79ef9e8cb91e18778c3c734dd8e132276779931f8f590da703856cfcb9f146c90f28d1d374921b27c1e4187ada3805adf472676379acc5f9bbacbdef4c95649f7762836af0cf8306f615419403cd1dfd7ff7e11c046f257883ccf750999cf02be7270c81add5cb2a61f49ed1c82ae0308a7bf973d6b3435c1636a6e882ff08e660b73dac948f4525496930039963c99221405269e3c54231f2a3b0572d6b3aed0588f3030e27e26e7e5cc634076514b292debdc8d9db5d4cfc5c28c437cccfc9523b1ff7d0fe06da76e5850473e31c6753aa12c554af7875fcbc7aba10cf0d35b0cc2e2d740783b834ee014f98321406958c9d1bf4f5bc9ab5fd3fc757c4c2d04384f0c60f76c6fe632a1bf60b0a1068e9516395c6051f3ad9e34de5584767856dac5145d1e1f4d0a5fc99c7dfb94d7b03d826a701cbf02fae77f771e2bc4d27b7d32c6811e1da621b53705e36325afeb92d59d29c6fab3f524b1b5a73db4e3bd3e8f29c4abb2c4b2839734a0230958187c7e9a96f62256d3e0cbc657b03f2815bd7708bedfbd9de9283446e4ffd2dafb9a51c15d49564ffc7c6f35355b0f5e244d64305918e8d20a667c66a7b085bea2e31447ba3fbb086a7a5f461b57222d749f0101e11b984fea7dfe245446d955f89b5f2d13743872868ac45a87a1217492467e4a36f1674adab94279c04fef88dc610ee841b57add1d15d62e1a64bba48421c26c64acc2c90c172605ff0f6f50eecf676abf9a51260c21ba08b598302b2f3e75d2c4007b069d3ed72e494152d83336b5e9b002efd3a75b3f15a3bd6222def3a667db4f080437a9476e3ad878dd06abc107fa05aefdbbd98f24c996522d0c5f0f4a7cddc5aec1a0ee35c70250a1b2a6340322e193e961f0c05e34a2feabf63305736d7e186f6a8c7e89abc5d39b99900f2b094b202c863d4a1ae6d45a6de909a22a93283be5d7ed4ee549154530d48813ea3878cf5753af4388c1cfd3ec0291f1f1fd72ff51168442b0610cc2e924d48865a560ce5d2cc6eb67f4cf5d3df53a2b48b6390da87b0c2edef30b4743c335f81e33d7cd28f72a485bd5afa362fbe5df3cc20ec45c1daf3268e256cf98bd2abadeda470991d1f8cb0000798d1a994700b2140294ce25e246e5b8ea53970bea328ff382a4721ef593d3955b8b07b8cdc7e6e7df6b825f2e776972cc48dddb12abb9a14685ccdf34a929a0937853a8eb310837f68ed288b1ea78aff165462975d27bdcf18484f8a45fd62e86ceb69b27e37de8d81aeb833b24e5836621f7474c520202341ca0f47510f1cbc6de93de18a652ff364fd05e5b8d81e8b6a9c434480b4d0ca5b02c1804210b2c0e5808e5d350f370459edfdb19d198f1714d94b30b645cd3ad5f0852b8bfdeede798a2735df8d22221cdea4754ca437f4055a34295f52f61bfb7a17742921fb921a273c2343801f32c8453750516aa3ca470b8ff74838c81234c4ea45fbd25ede9e4478383a6456187456493d80051e59356f0515b6335dd821ebdcaa9b11c8e280b104a8bb3a82f32815a147e973a4a734b4a4f9add35aa999fa24cdd8cdfb8d75cd6200ce743a491336dd962c847eb12e9c10ad436e2a3042cd810aec9626addde9c091cbec72f002ff49f4270f64a29ab5436b2d04da522d1e16917d8785229b58d3c2274ca19f85bb2c5359ce12100da96c55a041e09d9ffff0b2147c3d750ef1add324ce924ab05ae425dd4644feb2897a3fbe1339b0331b4ebbb608a76148b281dbd6149a1320268d05ceb1956d2fba0c367365526de190f88750d23da0361909f92408af790dd77968dfa04390f4884cda53678c1729b40ed018c9f4c1bd919b63af7a035996be20b757933c0b4dbeae2703606f593a1438cd3317705548bebb1d05cedff55b4ac33dec9f18f5834c42b8ddd5af304dcdcae80ce970a9c1683d1f8100808bfcd9b095fa6ba66bc02626077d62af82c96512b8c18064c069be28f545b1725e877e194746d7fd4e57f6c0d97d3c0d30e16fa3ab8899738c36ca6bfbedd8b737e1d1d5e2ca0086845d7941bed1dc42f2dafbbe6d9465c0a86f310fac737a0866c4ccbf7184d0b7cc353913b82688279b2632f44a2990f61de0248a1d171ff9cc5dc966a572a267b777bda1367f132f1b502a2b96fa4a56b7198fa11d50557d264cd955945556bc528399fbc5af1f97c1f41cbfd07639c1ccadca0cf0ac0b8a96e88691007d6e8e40c63ae3a81bc0af796427f2eb8053d1be737a7bc516926006bdcce2fe8b3497f1c9f5f1631bc49533e963103828e1f2ead24fe6f19918570349da8174b42ffe9f1c2effafc64349969372315aad7101937856fec1fca2034a10ebbe44f79315cb43f25fdfe4aaf3a6518e93d7c6980f233a3dcf60b2829d575941d026613b107cfc8f548ded7e8edf4d6f66a62496aa619c45161b82e942cc6f35666f5e9ac3139881dc42554e3e034cb1386ae4c50d4e11779a6aa743aae5a57f8a0af9e5cc17661a236944b65dbb5947d2099aa577020d014a72cfa34224ebe78384ba7f4d3672a294cb12603aacca9acda380138dc56a931cfa76f2b3d8e16529d4ba8a11f8a40e726b180795c0421258ee5e837401d8664efb3be07dc6da476cfe71c0b8fab2958eba694f68e2939b8377a981d5ab75b442b591b5fc6dece13872e7a32521951f1c0f61124d29dbc4c1626d60b88d23dda14b28dbdc5ff1df8f35784c15c075894dff24cc28836a3f9bf778342a14abdea5f7f3ae95fce83ec8e699b11649547e3be11fa1d7459238eb6d2539ab35cb58fa87e3cd1726b6a14d14686b4d2c4d93d3873eacd3a2f5796d91136d11f413a6960ddcd778decda0cd5cc03e221aa9f932e7a964a93e89a293871ea31d49d8ea4fdf7bb313ee5646bab0672686820f8e24ddf490e812227938f52edd23ccd73d937e8cfd655c25c3c868184af2260cf6830c965b4507f2f7cd76ff4d0d3bb750167819ad2677e230e8b51508af465e5f58e986b3fbae6030b9f65c1a394bbc0541604d75ab53c563b294edabc688105f3e1e4b570db262e64c78980ea3acfffb38eae728917de386d1cc886ed7d0e7cb1c7dbf10bae79a3561d3e4b5b60344cc433a90473f4d478173c39951dc5a8ee373af0a7ac5fe59fb967be17e40909fe1d514e2776c75a20e60e0fdac3c73dc3151095780571010cbb6616790f8bba014282244aeff49045a65709c622e765dc85e2a3b7445336dd0568000e9ac8fec46bed582cfc8b8219466973e4b928b8edc0f04b61fdd810ca4caa37e8c38db125e4b04e307f16d6a8a1065571101a07f9e090fc591d762c83f3ba1465cbe78553b3c1b43abef8e067c2e1c6b9e3347b59ea8970d90639671acaf366640e65d85b0e61b4cee4ef855e7c351e697953736b920ccd2e04c6ca39c0d77f01f91b5c8cc05ab3bd08e3d71e9c846d68a550c76cbbbf0c422e2935be4866062f7f930263df99570a54ebf293096a0bf9e05ad80d44991beb6f0f5c57162274e1a46edb674f313811a6618852f4f181db20bd1ea0a605e4be86371c462b48bab98e146f9587300063ab9f78741e850bdc74b40fe9958beea35f599d88ee6eaf881da8e3574b666da8ca5b52e4391210da69562736b028962e6fedb136801e36ed2ec8b7bcd2739b37af5125d2a69c498090c47d4818cbf742108417701eb66005793f7f2d69816888fc193b8dc0bb2601698502a4889ef6506fe895c21ed6c40399b1835598113727e94dc846f2c5789736bf85aebfcf18e883e63f8524cc069312c3e8bec4a20ced9a7fc9843775b55b25ed2e3594c216499f34be8f68b78da62a0d6045f2566fdcca335d6eb925cf931551a68280c2cb2500e8f40b4df19a7fca65e9af274e9de260564ef5077ae8b615440ce8ab1aec84bed689b994abf5ca4ef271eba78188f6a5f336599a8c59e7da998b3fb61e03a148576996867e33a5223db1787def6a9c679b2d8912aaae036cc56c9898384953781541ff856e158f1f802e0838467d38458ff2cd0d1651fd6c83466a97c3f068cb5987ed2904148e7ad89eec779b96e8f8a34c0e1703821727df553a82bac5943d291123dfd7f342211b86f32af4e79da7f60f9038b61703ecc2bb922812e7cb86d8446bf6207900120a97fb4afa8395251ca0b8b9f439201cc49b9a9e2eb563d0b133a3e4082674ecf1c91e9e1d20120ca36dd7989e4ba6ec24f1d1183592c9aad7e2d890426b9127611e42edd96e4493541d1d7a4f51ab57ca8f573fd8667e49ea6d92daecae81aa3fa6400b8e54956bbd38726b5998e9ba35647d56f43020720167528f07d521c0e73aeefc5a0e0ff31156dbc446256bc6760a706a2b030b7002d1e31b6486a0d7b5bcc1232f96c0cd81b69e5becb881d384d04e6f8b59b343cb9e49d91420b0bb53e7ce457db330e9c74fc3f4bf0ad5c5a0801acbbc4c40471939be978ba569ae550db51dde7c5f1b08ee443c5561a4e941493577f93c0076fbf24bd5ce2bbf5615f9a3a68ff7629477ab305b58f07325dfdb7f7285f8454f3e5e8565b26d5898038274937b21cbc4ae8e55310f5e0d4f90a4ae3cd23bee08711327283d617aa6cc5be19b9b82baf8c640e61ddb4dffe285168682d882904c6b89053cdd07c67005863a6f4c9375f4cab122b563fa22ee8ca7429bc564d1c69eae968e62fb4a5430dcab977bea2d07a37492b987cf4f5e33e9a184c7fab8631444c03945eb86bf3d9f97b8e888ebf823603154b961128d7dba65da31cda28fd95dd03c8977d623fa017c9740f30dd56a50108414f974efc29cdaf980453e040af1b35f792c6519ba9c5ee31e9286cdc64087a35c019f70895ab33550d6ea083043442841a63cb323a29aa2076bba8006e7a2fccaf8d82218ad797dafca508f8348b779c4cdc93f1901fc75f2be5bd3d6e17128c92914315406fbe2173941538abc4fb975c4e22fba77fb27f61014dea2f1464942edbcc892fc78cca345962ce1c6a37dd1c75544b54f564b1b9cb089f09f8e8333533aff148a9ed08bdb51859ca8451c8c1686ec5edef669441b3e86531419ccdcd7958629c67b327b0e958dc2e52c8d8b8195a4e76f97ebb7c4a8b5beca5cfb2816c7aa2f99dee333727b5f736e892426ebc1d80df565b0100866a83f545e64f37e673e95ceef5d94a57bcaaff3a8149bf3f1d759d69784710201189e737e1920d65bf03572f4e216b7b25933a086e45174984ca7978e5c05c52582d996056e6af414ad23b2798425f238373c32b5b2adb47ddd5d23a826c42a6b3df5eef3b2e273209e58ff2e47f23acb4adb17372378fee643a15b7b8e20bef6b6afcc38d93fae43081b3bd473d858381091416548ab59d3b01f61979d417d8b0655e08b8ff1ee349450dcb1583ce67485be024dc91889cc47fa7fcbfbc02665653381d057f5c7202a00d324d10c6bc51b892c45d38d4e713c2f002972be55723acc89822e91bb07711aa91b75d29f31ea5e28671d1b708b31c269983915911852ec4fb4a1ed6b84f8d9e568fe6d752eb1131934b7add4a51ad577963288c9e4842a1c9cc339b3f4bc12589275c8c3ed33e790b7a3ab7ffac96b33901b12e3c8cf5a90cc674e3c0c519d13131d108c2f9b6be2f67fccbc845d5c9783cc78e04eb47691830d2eec2b7229ba2954"
+  },
+  {
+   "name": "H09 a UTF-8 info",
+   "fn": "hkdf",
+   "args": {
+    "prk": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+    "info": "café",
+    "length": 32
+   },
+   "hand_checked": true,
+   "expected": "a2486ab442e456320b1186847b6de6e44817b2f3ec2c3ca980c3635143d1d284"
+  },
+  {
+   "name": "H10 a 64-byte PRK",
+   "fn": "hkdf",
+   "args": {
+    "prk": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "info": "x",
+    "length": 32
+   },
+   "hand_checked": true,
+   "expected": "6ec8cfc615d7999d2fbdfddcbf226445ea6d5dffdbe32dd6e9d24f25374e4b45"
+  },
+  {
+   "name": "H11 sweep info 0",
+   "fn": "hkdf",
+   "args": {
+    "prk": "0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b",
+    "info": "info-0",
+    "length": 16
+   },
+   "hand_checked": false,
+   "expected": "83d740e772d83792be0cc3082c3c31bf"
+  },
+  {
+   "name": "H12 sweep info 1",
+   "fn": "hkdf",
+   "args": {
+    "prk": "0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b",
+    "info": "info-1",
+    "length": 23
+   },
+   "hand_checked": false,
+   "expected": "731d799ae0e149a830cde64739df7c0599a65a3883cdde"
+  },
+  {
+   "name": "H13 sweep info 2",
+   "fn": "hkdf",
+   "args": {
+    "prk": "0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b",
+    "info": "info-2",
+    "length": 30
+   },
+   "hand_checked": false,
+   "expected": "4c948d69c1c253b646349b1075f1132b26425e843c46079de5ed9c9b1669"
+  },
+  {
+   "name": "H14 sweep info 3",
+   "fn": "hkdf",
+   "args": {
+    "prk": "0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b",
+    "info": "info-3",
+    "length": 37
+   },
+   "hand_checked": false,
+   "expected": "e293d7caf8bef7b4180cb3b0de3523ea451a08fc772dce0b9cc37c1424b866e21492e3c66b"
+  },
+  {
+   "name": "H15 sweep info 4",
+   "fn": "hkdf",
+   "args": {
+    "prk": "0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b",
+    "info": "info-4",
+    "length": 44
+   },
+   "hand_checked": false,
+   "expected": "d41c7b25276e418dbd5d39bf09c01b1a855cca8da99ebb02073e2065d78833e1bada9f07bea17c20623f6467"
+  },
+  {
+   "name": "H16 sweep info 5",
+   "fn": "hkdf",
+   "args": {
+    "prk": "0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b",
+    "info": "info-5",
+    "length": 51
+   },
+   "hand_checked": false,
+   "expected": "0be8db15b66502f0731ea1e2f37aeee468d6cd790a2d25eb92a63dddfba2a71c821de67b251a48ac059d82c517471e54194e10"
+  },
+  {
+   "name": "H17 length 0 refused",
+   "fn": "hkdf",
+   "args": {
+    "prk": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+    "info": "x",
+    "length": 0
+   },
+   "hand_checked": true,
+   "expected": "ERROR:length"
+  },
+  {
+   "name": "H18 length 8161 refused",
+   "fn": "hkdf",
+   "args": {
+    "prk": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+    "info": "x",
+    "length": 8161
+   },
+   "hand_checked": true,
+   "expected": "ERROR:length"
+  },
+  {
+   "name": "H19 a 31-byte PRK refused",
+   "fn": "hkdf",
+   "args": {
+    "prk": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e",
+    "info": "x",
+    "length": 32
+   },
+   "hand_checked": true,
+   "expected": "ERROR:key"
+  },
+  {
+   "name": "H20 uppercase hex refused",
+   "fn": "hkdf",
+   "args": {
+    "prk": "000102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F",
+    "info": "x",
+    "length": 32
+   },
+   "hand_checked": true,
+   "expected": "ERROR:key"
+  },
+  {
+   "name": "H21 info not a string refused",
+   "fn": "hkdf",
+   "args": {
+    "prk": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+    "info": 5,
+    "length": 32
+   },
+   "hand_checked": true,
+   "expected": "ERROR:info"
+  },
+  {
+   "name": "H22 odd info_hex refused",
+   "fn": "hkdf",
+   "args": {
+    "prk": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+    "info": "",
+    "info_hex": "abc",
+    "length": 32
+   },
+   "hand_checked": true,
+   "expected": "ERROR:info"
+  },
+  {
+   "name": "F01 K_FP under the test key",
+   "fn": "key_fp",
+   "args": {
+    "k": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"
+   },
+   "hand_checked": true,
+   "expected": "375f3819fdbdcef30a291d60deac368adedd9413cbd99355c8c21c33a5c6353a"
+  },
+  {
+   "name": "F02 K_FP under ff..ff",
+   "fn": "key_fp",
+   "args": {
+    "k": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+   },
+   "hand_checked": true,
+   "expected": "72c28b9cd021a272f2f20cce9d93b5c43540bcafbb457443c151a8922bccfa94"
+  },
+  {
+   "name": "F03 K_FP under 0b..0b",
+   "fn": "key_fp",
+   "args": {
+    "k": "0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b"
+   },
+   "hand_checked": true,
+   "expected": "27ac9d90188759b84c636c9bbd96ab603248ee2295b9c57a9cd3308d78031605"
+  },
+  {
+   "name": "F04 sweep key 00",
+   "fn": "key_fp",
+   "args": {
+    "k": "0000000000000000000000000000000000000000000000000000000000000000"
+   },
+   "hand_checked": true,
+   "expected": "9e8113b3c1b8d79c94c2de1c3c98b398dbc37a13a57109ffd65814e1764365bc"
+  },
+  {
+   "name": "F05 sweep key 11",
+   "fn": "key_fp",
+   "args": {
+    "k": "1111111111111111111111111111111111111111111111111111111111111111"
+   },
+   "hand_checked": true,
+   "expected": "c2c0b211287c14db323b7f7acdb2115e172274ed23fff3aec4c80a706b697d44"
+  },
+  {
+   "name": "F06 sweep key 22",
+   "fn": "key_fp",
+   "args": {
+    "k": "2222222222222222222222222222222222222222222222222222222222222222"
+   },
+   "hand_checked": true,
+   "expected": "a565ac14bc568baa33083ff6f8c38c8f7b8448f89f51c0c2a82fe1208d841d3b"
+  },
+  {
+   "name": "F07 sweep key 33",
+   "fn": "key_fp",
+   "args": {
+    "k": "3333333333333333333333333333333333333333333333333333333333333333"
+   },
+   "hand_checked": true,
+   "expected": "7610fd61c8b16d4ea27c616100e3034d22b37fdf1a7114cc58b09eaca806012c"
+  },
+  {
+   "name": "F08 sweep key 44",
+   "fn": "key_fp",
+   "args": {
+    "k": "4444444444444444444444444444444444444444444444444444444444444444"
+   },
+   "hand_checked": true,
+   "expected": "3138b74b826c28cd63363f49a47a0442738083cafbcb9e5c4abb8221c8667842"
+  },
+  {
+   "name": "F09 sweep key 55",
+   "fn": "key_fp",
+   "args": {
+    "k": "5555555555555555555555555555555555555555555555555555555555555555"
+   },
+   "hand_checked": true,
+   "expected": "6c260589025a86c1ebb679a01d07d78d373ab27eac9bffb0c644d941838397d8"
+  },
+  {
+   "name": "F10 sweep key 66",
+   "fn": "key_fp",
+   "args": {
+    "k": "6666666666666666666666666666666666666666666666666666666666666666"
+   },
+   "hand_checked": true,
+   "expected": "4bb73ccab4589b41dcd997ab30bb0989ad302d49eea0623341cc22e405db9d41"
+  },
+  {
+   "name": "F11 sweep key 77",
+   "fn": "key_fp",
+   "args": {
+    "k": "7777777777777777777777777777777777777777777777777777777777777777"
+   },
+   "hand_checked": true,
+   "expected": "346de065f70efad9fc6abfaa8100f94f8f8ea5eee306ca0c6085d12b6c038977"
+  },
+  {
+   "name": "F12 sweep key 88",
+   "fn": "key_fp",
+   "args": {
+    "k": "8888888888888888888888888888888888888888888888888888888888888888"
+   },
+   "hand_checked": true,
+   "expected": "25510a7f7908f6151b02e6cc68493c4df1834bf13dc9a8c507ce35a4593a0f12"
+  },
+  {
+   "name": "F13 a 33-byte key refused",
+   "fn": "key_fp",
+   "args": {
+    "k": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f00"
+   },
+   "hand_checked": true,
+   "expected": "ERROR:key"
+  },
+  {
+   "name": "F14 a 31-byte key refused",
+   "fn": "key_fp",
+   "args": {
+    "k": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e"
+   },
+   "hand_checked": true,
+   "expected": "ERROR:key"
+  },
+  {
+   "name": "F15 non-hex refused",
+   "fn": "key_fp",
+   "args": {
+    "k": "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"
+   },
+   "hand_checked": true,
+   "expected": "ERROR:key"
+  },
+  {
+   "name": "F16 key not a string refused",
+   "fn": "key_fp",
+   "args": {
+    "k": 5
+   },
+   "hand_checked": true,
+   "expected": "ERROR:key"
+  },
+  {
+   "name": "F17 key_fp differs from key_id's input use",
+   "fn": "key_fp",
+   "args": {
+    "k": "a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+   },
+   "hand_checked": true,
+   "expected": "5c5ac7c44acda762eed00bdc659ccf6b990a9302a1963fe88b9097b1a6794455"
+  },
+  {
+   "name": "F18 key with a trailing space refused",
+   "fn": "key_fp",
+   "args": {
+    "k": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1 "
+   },
+   "hand_checked": true,
+   "expected": "ERROR:key"
+  },
+  {
+   "name": "F19 empty key refused",
+   "fn": "key_fp",
+   "args": {
+    "k": ""
+   },
+   "hand_checked": true,
+   "expected": "ERROR:key"
+  },
+  {
+   "name": "F20 key 00..00",
+   "fn": "key_fp",
+   "args": {
+    "k": "0000000000000000000000000000000000000000000000000000000000000000"
+   },
+   "hand_checked": true,
+   "expected": "9e8113b3c1b8d79c94c2de1c3c98b398dbc37a13a57109ffd65814e1764365bc"
+  },
+  {
+   "name": "A01 per-agent key (speculation 12.1's form)",
+   "fn": "agent_key",
+   "args": {
+    "k": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+    "agent_user_id": 7,
+    "salt": "00112233445566778899aabbccddeeff"
+   },
+   "hand_checked": true,
+   "expected": "000d6c1ed38a5ef5e8c65143af00fa0103d97ffd872d1709c63ff44a0ca8177d"
+  },
+  {
+   "name": "A02 another salt",
+   "fn": "agent_key",
+   "args": {
+    "k": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+    "agent_user_id": 7,
+    "salt": "0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f"
+   },
+   "hand_checked": true,
+   "expected": "98310e47342c919e91452cae264d6b20949e4a004d4fb62f95c9ed0b082dd903"
+  },
+  {
+   "name": "A03 another user",
+   "fn": "agent_key",
+   "args": {
+    "k": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+    "agent_user_id": 8,
+    "salt": "00112233445566778899aabbccddeeff"
+   },
+   "hand_checked": true,
+   "expected": "b990630d3b6b4b1408d5647d1d54f54fe2735ef4b8d4a701aacbfd6a4ca150ff"
+  },
+  {
+   "name": "A04 sweep",
+   "fn": "agent_key",
+   "args": {
+    "k": "0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b",
+    "agent_user_id": 100,
+    "salt": "00000000000000000000000000000000"
+   },
+   "hand_checked": true,
+   "expected": "4d472c6208c04033d8b6b75d7ca88ed4c9d7c2f5f9877a90521f554e6e2ff6a9"
+  },
+  {
+   "name": "A05 sweep",
+   "fn": "agent_key",
+   "args": {
+    "k": "0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b",
+    "agent_user_id": 137,
+    "salt": "17171717171717171717171717171717"
+   },
+   "hand_checked": true,
+   "expected": "cb48ae5187f2fd558a3b26b60f70e5a7676f125bfd9188a74f14142e99c9c358"
+  },
+  {
+   "name": "A06 sweep",
+   "fn": "agent_key",
+   "args": {
+    "k": "0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b",
+    "agent_user_id": 174,
+    "salt": "2e2e2e2e2e2e2e2e2e2e2e2e2e2e2e2e"
+   },
+   "hand_checked": true,
+   "expected": "462d434ebc706feb7d7d0039b087d92a1eb058704e61833da692dcfb03c71f9f"
+  },
+  {
+   "name": "A07 sweep",
+   "fn": "agent_key",
+   "args": {
+    "k": "0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b",
+    "agent_user_id": 211,
+    "salt": "45454545454545454545454545454545"
+   },
+   "hand_checked": true,
+   "expected": "05c059db36f1d356422d3ba483494c1d191a44073058ccc1d78c544d0ec59fc9"
+  },
+  {
+   "name": "A08 sweep",
+   "fn": "agent_key",
+   "args": {
+    "k": "0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b",
+    "agent_user_id": 248,
+    "salt": "5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c"
+   },
+   "hand_checked": true,
+   "expected": "5e9e5320d661176aabe01f7f10f94f70e93485b8df221cdeba01538072abc5d1"
+  },
+  {
+   "name": "A09 sweep",
+   "fn": "agent_key",
+   "args": {
+    "k": "0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b",
+    "agent_user_id": 285,
+    "salt": "73737373737373737373737373737373"
+   },
+   "hand_checked": true,
+   "expected": "c2150d55f9ce7367eab02756c268027c2d2f4f8bbb200ade0a011ee69b95e55e"
+  },
+  {
+   "name": "A10 sweep",
+   "fn": "agent_key",
+   "args": {
+    "k": "0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b",
+    "agent_user_id": 322,
+    "salt": "8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a"
+   },
+   "hand_checked": true,
+   "expected": "f0738676882ec608c42445b50ca701388155ad33ef9ee2cb8da486810a00cfb3"
+  },
+  {
+   "name": "A11 sweep",
+   "fn": "agent_key",
+   "args": {
+    "k": "0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b",
+    "agent_user_id": 359,
+    "salt": "a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+   },
+   "hand_checked": true,
+   "expected": "a44320e1c9c93cf62dbb0d4258c458706eb32476f3f8ed8f3713d5d839c42348"
+  },
+  {
+   "name": "A12 sweep",
+   "fn": "agent_key",
+   "args": {
+    "k": "0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b",
+    "agent_user_id": 396,
+    "salt": "b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8"
+   },
+   "hand_checked": true,
+   "expected": "a415030bc981686c3ad469dfc689a91f61c4064b0908ba9e295ead0869304d70"
+  },
+  {
+   "name": "A13 sweep",
+   "fn": "agent_key",
+   "args": {
+    "k": "0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b",
+    "agent_user_id": 433,
+    "salt": "cfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcf"
+   },
+   "hand_checked": true,
+   "expected": "41b6badfde0abd0fc29ac85f11620c7d703f61186cb400eaf44345ee5af0417e"
+  },
+  {
+   "name": "A14 sweep",
+   "fn": "agent_key",
+   "args": {
+    "k": "0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b",
+    "agent_user_id": 470,
+    "salt": "e6e6e6e6e6e6e6e6e6e6e6e6e6e6e6e6"
+   },
+   "hand_checked": true,
+   "expected": "55576a5b46c55baa9fb1e8cddd3642fb444403a3f849bda66e6ec3846babfde5"
+  },
+  {
+   "name": "A15 sweep",
+   "fn": "agent_key",
+   "args": {
+    "k": "0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b",
+    "agent_user_id": 507,
+    "salt": "fdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfd"
+   },
+   "hand_checked": true,
+   "expected": "909df5e9fc66d719e180bb728b8bb94cd8c0955e2c84f5f3f5dabc7e9ebf520a"
+  },
+  {
+   "name": "A16 user_id 0 refused",
+   "fn": "agent_key",
+   "args": {
+    "k": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+    "agent_user_id": 0,
+    "salt": "00112233445566778899aabbccddeeff"
+   },
+   "hand_checked": true,
+   "expected": "ERROR:fields"
+  },
+  {
+   "name": "A17 salt 15 bytes refused",
+   "fn": "agent_key",
+   "args": {
+    "k": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+    "agent_user_id": 7,
+    "salt": "00112233445566778899aabbccddee"
+   },
+   "hand_checked": true,
+   "expected": "ERROR:fields"
+  },
+  {
+   "name": "A18 salt 17 bytes refused",
+   "fn": "agent_key",
+   "args": {
+    "k": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+    "agent_user_id": 7,
+    "salt": "00112233445566778899aabbccddeeff00"
+   },
+   "hand_checked": true,
+   "expected": "ERROR:fields"
+  },
+  {
+   "name": "A19 key malformed refused",
+   "fn": "agent_key",
+   "args": {
+    "k": "x",
+    "agent_user_id": 7,
+    "salt": "00112233445566778899aabbccddeeff"
+   },
+   "hand_checked": true,
+   "expected": "ERROR:key"
+  },
+  {
+   "name": "A20 user_id a string refused",
+   "fn": "agent_key",
+   "args": {
+    "k": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+    "agent_user_id": "7",
+    "salt": "00112233445566778899aabbccddeeff"
+   },
+   "hand_checked": true,
+   "expected": "ERROR:fields"
+  },
+  {
+   "name": "I01 key id under the test key",
+   "fn": "key_id",
+   "args": {
+    "k": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"
+   },
+   "hand_checked": true,
+   "expected": "edbdacb456856854"
+  },
+  {
+   "name": "I02 key id under ff..ff",
+   "fn": "key_id",
+   "args": {
+    "k": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+   },
+   "hand_checked": true,
+   "expected": "59a0d34c746c85c4"
+  },
+  {
+   "name": "I03 sweep 03",
+   "fn": "key_id",
+   "args": {
+    "k": "0303030303030303030303030303030303030303030303030303030303030303"
+   },
+   "hand_checked": true,
+   "expected": "90f1800d57683c03"
+  },
+  {
+   "name": "I04 sweep 2c",
+   "fn": "key_id",
+   "args": {
+    "k": "2c2c2c2c2c2c2c2c2c2c2c2c2c2c2c2c2c2c2c2c2c2c2c2c2c2c2c2c2c2c2c2c"
+   },
+   "hand_checked": true,
+   "expected": "207b7b625547a1dd"
+  },
+  {
+   "name": "I05 sweep 55",
+   "fn": "key_id",
+   "args": {
+    "k": "5555555555555555555555555555555555555555555555555555555555555555"
+   },
+   "hand_checked": true,
+   "expected": "c4b70ffa26e680b5"
+  },
+  {
+   "name": "I06 sweep 7e",
+   "fn": "key_id",
+   "args": {
+    "k": "7e7e7e7e7e7e7e7e7e7e7e7e7e7e7e7e7e7e7e7e7e7e7e7e7e7e7e7e7e7e7e7e"
+   },
+   "hand_checked": true,
+   "expected": "772cf1941109e364"
+  },
+  {
+   "name": "I07 sweep a7",
+   "fn": "key_id",
+   "args": {
+    "k": "a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7"
+   },
+   "hand_checked": true,
+   "expected": "6456a09249754fc9"
+  },
+  {
+   "name": "I08 sweep d0",
+   "fn": "key_id",
+   "args": {
+    "k": "d0d0d0d0d0d0d0d0d0d0d0d0d0d0d0d0d0d0d0d0d0d0d0d0d0d0d0d0d0d0d0d0"
+   },
+   "hand_checked": true,
+   "expected": "58c9c2db6a0e6420"
+  },
+  {
+   "name": "I09 sweep f9",
+   "fn": "key_id",
+   "args": {
+    "k": "f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9"
+   },
+   "hand_checked": true,
+   "expected": "59d63db0569e588f"
+  },
+  {
+   "name": "I10 sweep 22",
+   "fn": "key_id",
+   "args": {
+    "k": "2222222222222222222222222222222222222222222222222222222222222222"
+   },
+   "hand_checked": true,
+   "expected": "8d675717cf744674"
+  },
+  {
+   "name": "I11 sweep 4b",
+   "fn": "key_id",
+   "args": {
+    "k": "4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b"
+   },
+   "hand_checked": true,
+   "expected": "96d31621712a9ba3"
+  },
+  {
+   "name": "I12 sweep 74",
+   "fn": "key_id",
+   "args": {
+    "k": "7474747474747474747474747474747474747474747474747474747474747474"
+   },
+   "hand_checked": true,
+   "expected": "c42f598f381737c4"
+  },
+  {
+   "name": "I13 sweep 9d",
+   "fn": "key_id",
+   "args": {
+    "k": "9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d"
+   },
+   "hand_checked": true,
+   "expected": "123928a4cb194016"
+  },
+  {
+   "name": "I14 sweep c6",
+   "fn": "key_id",
+   "args": {
+    "k": "c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6"
+   },
+   "hand_checked": true,
+   "expected": "e95b15f7b9deecc7"
+  },
+  {
+   "name": "I15 sweep ef",
+   "fn": "key_id",
+   "args": {
+    "k": "efefefefefefefefefefefefefefefefefefefefefefefefefefefefefefefef"
+   },
+   "hand_checked": true,
+   "expected": "fbc00b9eaf2d8a9f"
+  },
+  {
+   "name": "I16 sweep 18",
+   "fn": "key_id",
+   "args": {
+    "k": "1818181818181818181818181818181818181818181818181818181818181818"
+   },
+   "hand_checked": true,
+   "expected": "dc42c67997a3b459"
+  },
+  {
+   "name": "I17 sweep 41",
+   "fn": "key_id",
+   "args": {
+    "k": "4141414141414141414141414141414141414141414141414141414141414141"
+   },
+   "hand_checked": true,
+   "expected": "f6554096d88063d8"
+  },
+  {
+   "name": "I18 a 31-byte key refused",
+   "fn": "key_id",
+   "args": {
+    "k": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e"
+   },
+   "hand_checked": true,
+   "expected": "ERROR:key"
+  },
+  {
+   "name": "I19 uppercase refused",
+   "fn": "key_id",
+   "args": {
+    "k": "000102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F"
+   },
+   "hand_checked": true,
+   "expected": "ERROR:key"
+  },
+  {
+   "name": "I20 key not a string refused",
+   "fn": "key_id",
+   "args": {
+    "k": null
+   },
+   "hand_checked": true,
+   "expected": "ERROR:key"
+  },
+  {
+   "name": "C01 the call sign is the first 16 hex",
+   "fn": "call_sign",
+   "args": {
+    "fp": "22f59d4401109a8b3660d16b8e483248c2e21648875022a1b66395aecdaf86c3"
+   },
+   "hand_checked": true,
+   "expected": "22f59d4401109a8b"
+  },
+  {
+   "name": "C02 all zeros",
+   "fn": "call_sign",
+   "args": {
+    "fp": "0000000000000000000000000000000000000000000000000000000000000000"
+   },
+   "hand_checked": true,
+   "expected": "0000000000000000"
+  },
+  {
+   "name": "C03 sweep",
+   "fn": "call_sign",
+   "args": {
+    "fp": "52f5cbfca55d2d7c9a958bb34c3adcfa5889be778973afa0ea3a617b126ffb8a"
+   },
+   "hand_checked": true,
+   "expected": "52f5cbfca55d2d7c"
+  },
+  {
+   "name": "C04 sweep",
+   "fn": "call_sign",
+   "args": {
+    "fp": "8b44391cb28ca42bddfbf66b4be97cb0cb9d7665aed303fd468f8ebc7ab0fd4f"
+   },
+   "hand_checked": true,
+   "expected": "8b44391cb28ca42b"
+  },
+  {
+   "name": "C05 sweep",
+   "fn": "call_sign",
+   "args": {
+    "fp": "27321e07197e4d90d196e8ddec937344e6c7803f1d203d2e564eb3185e8b1ce1"
+   },
+   "hand_checked": true,
+   "expected": "27321e07197e4d90"
+  },
+  {
+   "name": "C06 sweep",
+   "fn": "call_sign",
+   "args": {
+    "fp": "0270ead95bb1ec78625ea9d786d73a15609d36e0d191d1e8a9bf67352e51fe92"
+   },
+   "hand_checked": true,
+   "expected": "0270ead95bb1ec78"
+  },
+  {
+   "name": "C07 sweep",
+   "fn": "call_sign",
+   "args": {
+    "fp": "aa8ebf86720ae5dd38222ca249efee187d7ca392ec9c18d9abaf997363a774a2"
+   },
+   "hand_checked": true,
+   "expected": "aa8ebf86720ae5dd"
+  },
+  {
+   "name": "C08 sweep",
+   "fn": "call_sign",
+   "args": {
+    "fp": "976bff9c173be90fda2ac7381a5fadc212c1ba83f6be489ff6df7704897e4044"
+   },
+   "hand_checked": true,
+   "expected": "976bff9c173be90f"
+  },
+  {
+   "name": "C09 sweep",
+   "fn": "call_sign",
+   "args": {
+    "fp": "bfdf7fb44997e0ef47f3a92ebe0cb507c3ce3e5ea307028722b6420b56760cd0"
+   },
+   "hand_checked": true,
+   "expected": "bfdf7fb44997e0ef"
+  },
+  {
+   "name": "C10 sweep",
+   "fn": "call_sign",
+   "args": {
+    "fp": "2c9cc56ff50c14a8d0f485c061c60645a571dd1fd06e5091c5ae3185eb458392"
+   },
+   "hand_checked": true,
+   "expected": "2c9cc56ff50c14a8"
+  },
+  {
+   "name": "C11 sweep",
+   "fn": "call_sign",
+   "args": {
+    "fp": "9552a5d5a50b7750575c3f9199cda5da44abdd999ba8dfc6c771fbcf3888d939"
+   },
+   "hand_checked": true,
+   "expected": "9552a5d5a50b7750"
+  },
+  {
+   "name": "C12 sweep",
+   "fn": "call_sign",
+   "args": {
+    "fp": "1229547898228af449924101d275398ec0e613efa3b5b0e916174c9930a6e039"
+   },
+   "hand_checked": true,
+   "expected": "1229547898228af4"
+  },
+  {
+   "name": "C13 sweep",
+   "fn": "call_sign",
+   "args": {
+    "fp": "709ece40821cba3f373ed14472876673c1f00aa2f02571f76a04cef136605340"
+   },
+   "hand_checked": true,
+   "expected": "709ece40821cba3f"
+  },
+  {
+   "name": "C14 sweep",
+   "fn": "call_sign",
+   "args": {
+    "fp": "9d400b7574df8c6e7360031611d281d5a4484c9c5ab851967b5f5132611be042"
+   },
+   "hand_checked": true,
+   "expected": "9d400b7574df8c6e"
+  },
+  {
+   "name": "C15 sweep",
+   "fn": "call_sign",
+   "args": {
+    "fp": "87ef398be6a5d4d45b3ce3b8714bf0ac75da74496ab426a3fcc0a9fb47175a0a"
+   },
+   "hand_checked": true,
+   "expected": "87ef398be6a5d4d4"
+  },
+  {
+   "name": "C16 sweep",
+   "fn": "call_sign",
+   "args": {
+    "fp": "780731159dbf21908a07a5f7609f84a593fa645f35bd902296d54f9c24b0f0bd"
+   },
+   "hand_checked": true,
+   "expected": "780731159dbf2190"
+  },
+  {
+   "name": "C17 sweep",
+   "fn": "call_sign",
+   "args": {
+    "fp": "16f4dd0b9cea52cdeeae18beb65b5f3d0d5aebf342001ab70fa7a29cb8f1add4"
+   },
+   "hand_checked": true,
+   "expected": "16f4dd0b9cea52cd"
+  },
+  {
+   "name": "C18 63 hex refused",
+   "fn": "call_sign",
+   "args": {
+    "fp": "22f59d4401109a8b3660d16b8e483248c2e21648875022a1b66395aecdaf86c"
+   },
+   "hand_checked": true,
+   "expected": "ERROR:fingerprint"
+  },
+  {
+   "name": "C19 uppercase refused",
+   "fn": "call_sign",
+   "args": {
+    "fp": "22F59D4401109A8B3660D16B8E483248C2E21648875022A1B66395AECDAF86C3"
+   },
+   "hand_checked": true,
+   "expected": "ERROR:fingerprint"
+  },
+  {
+   "name": "C20 not a string refused",
+   "fn": "call_sign",
+   "args": {
+    "fp": 5
+   },
+   "hand_checked": true,
+   "expected": "ERROR:fingerprint"
+  },
+  {
+   "name": "P01 the reference pairing under the test key",
+   "fn": "fingerprint",
+   "args": {
+    "k": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+    "fields": {
+     "sponsor_user_id": 1,
+     "sponsor_registration": "20250101000000",
+     "agent_user_id": 7,
+     "agent_registration": "20260924062344",
+     "salt": "00112233445566778899aabbccddeeff",
+     "cert_serial": 1,
+     "cert_time": "20261001120000"
+    }
+   },
+   "hand_checked": true,
+   "expected": "22f59d4401109a8b3660d16b8e483248c2e21648875022a1b66395aecdaf86c3|22f59d4401109a8b|edbdacb456856854|31353a5450582d46494e4745525052494e54313a31313a3131343a3230323530313031303030303030313a3731343a323032363039323430363233343431363a00112233445566778899aabbccddeeff313a3131343a3230323631303031313230303030"
+  },
+  {
+   "name": "P02 another key: another fingerprint",
+   "fn": "fingerprint",
+   "args": {
+    "k": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "fields": {
+     "sponsor_user_id": 1,
+     "sponsor_registration": "20250101000000",
+     "agent_user_id": 7,
+     "agent_registration": "20260924062344",
+     "salt": "00112233445566778899aabbccddeeff",
+     "cert_serial": 1,
+     "cert_time": "20261001120000"
+    }
+   },
+   "hand_checked": true,
+   "expected": "f4891f072fd8403388c0e01730bdf9c0459136f939044bbb42af0fabd1972788|f4891f072fd84033|59a0d34c746c85c4|31353a5450582d46494e4745525052494e54313a31313a3131343a3230323530313031303030303030313a3731343a323032363039323430363233343431363a00112233445566778899aabbccddeeff313a3131343a3230323631303031313230303030"
+  },
+  {
+   "name": "P03 another salt: another fingerprint for the same pair",
+   "fn": "fingerprint",
+   "args": {
+    "k": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+    "fields": {
+     "sponsor_user_id": 1,
+     "sponsor_registration": "20250101000000",
+     "agent_user_id": 7,
+     "agent_registration": "20260924062344",
+     "salt": "0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f",
+     "cert_serial": 1,
+     "cert_time": "20261001120000"
+    }
+   },
+   "hand_checked": true,
+   "expected": "f9f9b68b26f0a69bceb10962fb9294c133f57909f3a2c43ff71a58d0fd65e19d|f9f9b68b26f0a69b|edbdacb456856854|31353a5450582d46494e4745525052494e54313a31313a3131343a3230323530313031303030303030313a3731343a323032363039323430363233343431363a0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f313a3131343a3230323631303031313230303030"
+  },
+  {
+   "name": "P04 the certificate's serial enters",
+   "fn": "fingerprint",
+   "args": {
+    "k": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+    "fields": {
+     "sponsor_user_id": 1,
+     "sponsor_registration": "20250101000000",
+     "agent_user_id": 7,
+     "agent_registration": "20260924062344",
+     "salt": "00112233445566778899aabbccddeeff",
+     "cert_serial": 2,
+     "cert_time": "20261001120000"
+    }
+   },
+   "hand_checked": true,
+   "expected": "7835eacf2299e63c215e6b32f676e7e2ba15c8eb75ca4f3f4a9aa060277ceedf|7835eacf2299e63c|edbdacb456856854|31353a5450582d46494e4745525052494e54313a31313a3131343a3230323530313031303030303030313a3731343a323032363039323430363233343431363a00112233445566778899aabbccddeeff313a3231343a3230323631303031313230303030"
+  },
+  {
+   "name": "P05 the certificate's time enters",
+   "fn": "fingerprint",
+   "args": {
+    "k": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+    "fields": {
+     "sponsor_user_id": 1,
+     "sponsor_registration": "20250101000000",
+     "agent_user_id": 7,
+     "agent_registration": "20260924062344",
+     "salt": "00112233445566778899aabbccddeeff",
+     "cert_serial": 1,
+     "cert_time": "20261001120001"
+    }
+   },
+   "hand_checked": true,
+   "expected": "a7d3d6b8e617af722c51bc55929aefd5c20c834e7bb6496806ab9c9dc83f67b6|a7d3d6b8e617af72|edbdacb456856854|31353a5450582d46494e4745525052494e54313a31313a3131343a3230323530313031303030303030313a3731343a323032363039323430363233343431363a00112233445566778899aabbccddeeff313a3131343a3230323631303031313230303031"
+  },
+  {
+   "name": "P06 the sponsor's registration enters",
+   "fn": "fingerprint",
+   "args": {
+    "k": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+    "fields": {
+     "sponsor_user_id": 1,
+     "sponsor_registration": "20250101000001",
+     "agent_user_id": 7,
+     "agent_registration": "20260924062344",
+     "salt": "00112233445566778899aabbccddeeff",
+     "cert_serial": 1,
+     "cert_time": "20261001120000"
+    }
+   },
+   "hand_checked": true,
+   "expected": "538f07687cc4166db5d10e089adcefa76556135850cb8d95db97c145dc83d8da|538f07687cc4166d|edbdacb456856854|31353a5450582d46494e4745525052494e54313a31313a3131343a3230323530313031303030303031313a3731343a323032363039323430363233343431363a00112233445566778899aabbccddeeff313a3131343a3230323631303031313230303030"
+  },
+  {
+   "name": "P07 the agent's registration enters",
+   "fn": "fingerprint",
+   "args": {
+    "k": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+    "fields": {
+     "sponsor_user_id": 1,
+     "sponsor_registration": "20250101000000",
+     "agent_user_id": 7,
+     "agent_registration": "20260924062345",
+     "salt": "00112233445566778899aabbccddeeff",
+     "cert_serial": 1,
+     "cert_time": "20261001120000"
+    }
+   },
+   "hand_checked": true,
+   "expected": "399fbcb6619cc3365f3369f88a35d65dc456e39b025804f08698846c729f8b0c|399fbcb6619cc336|edbdacb456856854|31353a5450582d46494e4745525052494e54313a31313a3131343a3230323530313031303030303030313a3731343a323032363039323430363233343531363a00112233445566778899aabbccddeeff313a3131343a3230323631303031313230303030"
+  },
+  {
+   "name": "P08 a large user_id",
+   "fn": "fingerprint",
+   "args": {
+    "k": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+    "fields": {
+     "sponsor_user_id": 1,
+     "sponsor_registration": "20250101000000",
+     "agent_user_id": 123456789,
+     "agent_registration": "20260924062344",
+     "salt": "00112233445566778899aabbccddeeff",
+     "cert_serial": 1,
+     "cert_time": "20261001120000"
+    }
+   },
+   "hand_checked": true,
+   "expected": "6d36aad108e08dd4340023e329e2cc75e624e87d65ec89516ba30cfa9385a2c2|6d36aad108e08dd4|edbdacb456856854|31353a5450582d46494e4745525052494e54313a31313a3131343a3230323530313031303030303030393a31323334353637383931343a323032363039323430363233343431363a00112233445566778899aabbccddeeff313a3131343a3230323631303031313230303030"
+  },
+  {
+   "name": "P09 the sponsor as its own agent's pair (user_id 1, 1)",
+   "fn": "fingerprint",
+   "args": {
+    "k": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+    "fields": {
+     "sponsor_user_id": 1,
+     "sponsor_registration": "20250101000000",
+     "agent_user_id": 1,
+     "agent_registration": "20260924062344",
+     "salt": "00112233445566778899aabbccddeeff",
+     "cert_serial": 1,
+     "cert_time": "20261001120000"
+    }
+   },
+   "hand_checked": true,
+   "expected": "50e29bde37bef0b6d3b8c5ec4cf67322109c07e8db86c84cbb39817e6e2887d1|50e29bde37bef0b6|edbdacb456856854|31353a5450582d46494e4745525052494e54313a31313a3131343a3230323530313031303030303030313a3131343a323032363039323430363233343431363a00112233445566778899aabbccddeeff313a3131343a3230323631303031313230303030"
+  },
+  {
+   "name": "P10 sweep",
+   "fn": "fingerprint",
+   "args": {
+    "k": "0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b",
+    "fields": {
+     "sponsor_user_id": 10,
+     "sponsor_registration": "20250101000000",
+     "agent_user_id": 20,
+     "agent_registration": "20260924062344",
+     "salt": "00000000000000000000000000000000",
+     "cert_serial": 1,
+     "cert_time": "20261001120000"
+    }
+   },
+   "hand_checked": true,
+   "expected": "c26eb9e0c36c20e264ae2388670328b1918a5383307e5ce4460802f209433104|c26eb9e0c36c20e2|fea73a39e52cd307|31353a5450582d46494e4745525052494e54313a31323a313031343a3230323530313031303030303030323a323031343a323032363039323430363233343431363a00000000000000000000000000000000313a3131343a3230323631303031313230303030"
+  },
+  {
+   "name": "P11 sweep",
+   "fn": "fingerprint",
+   "args": {
+    "k": "0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b",
+    "fields": {
+     "sponsor_user_id": 11,
+     "sponsor_registration": "20250101000000",
+     "agent_user_id": 23,
+     "agent_registration": "20260924062344",
+     "salt": "1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f",
+     "cert_serial": 2,
+     "cert_time": "20261001120000"
+    }
+   },
+   "hand_checked": true,
+   "expected": "974e3a0c85943b4d7f2f52a464fcbbc8f7a20a5b609c830cef2fdda014596de1|974e3a0c85943b4d|fea73a39e52cd307|31353a5450582d46494e4745525052494e54313a31323a313131343a3230323530313031303030303030323a323331343a323032363039323430363233343431363a1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f313a3231343a3230323631303031313230303030"
+  },
+  {
+   "name": "P12 sweep",
+   "fn": "fingerprint",
+   "args": {
+    "k": "0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b",
+    "fields": {
+     "sponsor_user_id": 12,
+     "sponsor_registration": "20250101000000",
+     "agent_user_id": 26,
+     "agent_registration": "20260924062344",
+     "salt": "3e3e3e3e3e3e3e3e3e3e3e3e3e3e3e3e",
+     "cert_serial": 3,
+     "cert_time": "20261001120000"
+    }
+   },
+   "hand_checked": true,
+   "expected": "8348882ba333cadfc8ccf089c081253364f926daafb49cb1e8bf8b1094bf502b|8348882ba333cadf|fea73a39e52cd307|31353a5450582d46494e4745525052494e54313a31323a313231343a3230323530313031303030303030323a323631343a323032363039323430363233343431363a3e3e3e3e3e3e3e3e3e3e3e3e3e3e3e3e313a3331343a3230323631303031313230303030"
+  },
+  {
+   "name": "P13 sweep",
+   "fn": "fingerprint",
+   "args": {
+    "k": "0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b",
+    "fields": {
+     "sponsor_user_id": 13,
+     "sponsor_registration": "20250101000000",
+     "agent_user_id": 29,
+     "agent_registration": "20260924062344",
+     "salt": "5d5d5d5d5d5d5d5d5d5d5d5d5d5d5d5d",
+     "cert_serial": 4,
+     "cert_time": "20261001120000"
+    }
+   },
+   "hand_checked": true,
+   "expected": "96a37580e7dff4e0f6a173a6f4f4946f7b848e3d9f592845edb762c09f761432|96a37580e7dff4e0|fea73a39e52cd307|31353a5450582d46494e4745525052494e54313a31323a313331343a3230323530313031303030303030323a323931343a323032363039323430363233343431363a5d5d5d5d5d5d5d5d5d5d5d5d5d5d5d5d313a3431343a3230323631303031313230303030"
+  },
+  {
+   "name": "P14 sweep",
+   "fn": "fingerprint",
+   "args": {
+    "k": "0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b",
+    "fields": {
+     "sponsor_user_id": 14,
+     "sponsor_registration": "20250101000000",
+     "agent_user_id": 32,
+     "agent_registration": "20260924062344",
+     "salt": "7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c",
+     "cert_serial": 5,
+     "cert_time": "20261001120000"
+    }
+   },
+   "hand_checked": true,
+   "expected": "081068417f07798c1baab813bb4ce362b0ff1c21eeac4cf91eb9252a1e8f69af|081068417f07798c|fea73a39e52cd307|31353a5450582d46494e4745525052494e54313a31323a313431343a3230323530313031303030303030323a333231343a323032363039323430363233343431363a7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c313a3531343a3230323631303031313230303030"
+  },
+  {
+   "name": "P15 sweep",
+   "fn": "fingerprint",
+   "args": {
+    "k": "0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b",
+    "fields": {
+     "sponsor_user_id": 15,
+     "sponsor_registration": "20250101000000",
+     "agent_user_id": 35,
+     "agent_registration": "20260924062344",
+     "salt": "9b9b9b9b9b9b9b9b9b9b9b9b9b9b9b9b",
+     "cert_serial": 6,
+     "cert_time": "20261001120000"
+    }
+   },
+   "hand_checked": true,
+   "expected": "8ae45a22aa5571c473ea1f85864a9eddbd59ef38ac819209c38183939f5724e3|8ae45a22aa5571c4|fea73a39e52cd307|31353a5450582d46494e4745525052494e54313a31323a313531343a3230323530313031303030303030323a333531343a323032363039323430363233343431363a9b9b9b9b9b9b9b9b9b9b9b9b9b9b9b9b313a3631343a3230323631303031313230303030"
+  },
+  {
+   "name": "P16 sweep",
+   "fn": "fingerprint",
+   "args": {
+    "k": "0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b",
+    "fields": {
+     "sponsor_user_id": 16,
+     "sponsor_registration": "20250101000000",
+     "agent_user_id": 38,
+     "agent_registration": "20260924062344",
+     "salt": "babababababababababababababababa",
+     "cert_serial": 7,
+     "cert_time": "20261001120000"
+    }
+   },
+   "hand_checked": true,
+   "expected": "e8267c5f156ecac157a9b2f460265115a19140129c3aa9df52e0476f10299c26|e8267c5f156ecac1|fea73a39e52cd307|31353a5450582d46494e4745525052494e54313a31323a313631343a3230323530313031303030303030323a333831343a323032363039323430363233343431363ababababababababababababababababa313a3731343a3230323631303031313230303030"
+  },
+  {
+   "name": "P17 registration 13 digits refused",
+   "fn": "fingerprint",
+   "args": {
+    "k": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+    "fields": {
+     "sponsor_user_id": 1,
+     "sponsor_registration": "20250101000000",
+     "agent_user_id": 7,
+     "agent_registration": "2026092406234",
+     "salt": "00112233445566778899aabbccddeeff",
+     "cert_serial": 1,
+     "cert_time": "20261001120000"
+    }
+   },
+   "hand_checked": true,
+   "expected": "ERROR:fields"
+  },
+  {
+   "name": "P18 registration with a letter refused",
+   "fn": "fingerprint",
+   "args": {
+    "k": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+    "fields": {
+     "sponsor_user_id": 1,
+     "sponsor_registration": "20250101000000",
+     "agent_user_id": 7,
+     "agent_registration": "2026092406234x",
+     "salt": "00112233445566778899aabbccddeeff",
+     "cert_serial": 1,
+     "cert_time": "20261001120000"
+    }
+   },
+   "hand_checked": true,
+   "expected": "ERROR:fields"
+  },
+  {
+   "name": "P19 cert_serial 0 refused",
+   "fn": "fingerprint",
+   "args": {
+    "k": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+    "fields": {
+     "sponsor_user_id": 1,
+     "sponsor_registration": "20250101000000",
+     "agent_user_id": 7,
+     "agent_registration": "20260924062344",
+     "salt": "00112233445566778899aabbccddeeff",
+     "cert_serial": 0,
+     "cert_time": "20261001120000"
+    }
+   },
+   "hand_checked": true,
+   "expected": "ERROR:fields"
+  },
+  {
+   "name": "P20 salt malformed refused",
+   "fn": "fingerprint",
+   "args": {
+    "k": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+    "fields": {
+     "sponsor_user_id": 1,
+     "sponsor_registration": "20250101000000",
+     "agent_user_id": 7,
+     "agent_registration": "20260924062344",
+     "salt": "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",
+     "cert_serial": 1,
+     "cert_time": "20261001120000"
+    }
+   },
+   "hand_checked": true,
+   "expected": "ERROR:fields"
+  },
+  {
+   "name": "P21 a missing field refused",
+   "fn": "fingerprint",
+   "args": {
+    "k": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+    "fields": {
+     "sponsor_user_id": 1,
+     "sponsor_registration": "20250101000000",
+     "agent_user_id": 7,
+     "agent_registration": "20260924062344",
+     "cert_serial": 1,
+     "cert_time": "20261001120000"
+    }
+   },
+   "hand_checked": true,
+   "expected": "ERROR:fields"
+  },
+  {
+   "name": "P22 an extra field refused",
+   "fn": "fingerprint",
+   "args": {
+    "k": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+    "fields": {
+     "sponsor_user_id": 1,
+     "sponsor_registration": "20250101000000",
+     "agent_user_id": 7,
+     "agent_registration": "20260924062344",
+     "salt": "00112233445566778899aabbccddeeff",
+     "cert_serial": 1,
+     "cert_time": "20261001120000",
+     "model": "x"
+    }
+   },
+   "hand_checked": true,
+   "expected": "ERROR:fields"
+  },
+  {
+   "name": "P23 the key refused before the fields",
+   "fn": "fingerprint",
+   "args": {
+    "k": "x",
+    "fields": {
+     "sponsor_user_id": 1,
+     "sponsor_registration": "20250101000000",
+     "agent_user_id": 7,
+     "agent_registration": "20260924062344",
+     "salt": "00112233445566778899aabbccddeeff",
+     "cert_serial": 0,
+     "cert_time": "20261001120000"
+    }
+   },
+   "hand_checked": true,
+   "expected": "ERROR:key"
+  },
+  {
+   "name": "P24 user_id a boolean refused",
+   "fn": "fingerprint",
+   "args": {
+    "k": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+    "fields": {
+     "sponsor_user_id": 1,
+     "sponsor_registration": "20250101000000",
+     "agent_user_id": true,
+     "agent_registration": "20260924062344",
+     "salt": "00112233445566778899aabbccddeeff",
+     "cert_serial": 1,
+     "cert_time": "20261001120000"
+    }
+   },
+   "hand_checked": true,
+   "expected": "ERROR:fields"
+  },
+  {
+   "name": "P25 cert_time an integer refused (TS_MW form only)",
+   "fn": "fingerprint",
+   "args": {
+    "k": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+    "fields": {
+     "sponsor_user_id": 1,
+     "sponsor_registration": "20250101000000",
+     "agent_user_id": 7,
+     "agent_registration": "20260924062344",
+     "salt": "00112233445566778899aabbccddeeff",
+     "cert_serial": 1,
+     "cert_time": 1700000000
+    }
+   },
+   "hand_checked": true,
+   "expected": "ERROR:fields"
+  }
+ ]
+}

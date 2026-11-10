@@ -1,0 +1,100 @@
+{{DISPLAYTITLE:Moving the bookkeeping without changing the total}}
+{{Noether's theorems map}}
+
+''Mathematical counterpart: [[Noether's theorems/Mathematics/The Belinfante-Rosenfeld improvement|The Belinfante-Rosenfeld improvement]].''
+
+[[File:NT-F-11.png|thumb|right|360px|alt=Two bar charts of equal total area. The left, the canonical stress-energy assignment, has uneven bars; the right, the improved assignment, has evened ones. An arrow joins them. The caption states that the total and the conservation law are unchanged and only the distribution differs.|The Belinfante improvement as a redistribution]]
+
+The first theorem hands you an account of where energy and momentum sit. The
+account it hands you is not the only correct one, and for gravity it is the wrong
+shape.
+
+== Two departments, one company ==
+
+A firm has two departments sharing a building. The finance office assigns the
+heating bill to one of them.
+
+Reassign it to the other. Every departmental figure changes. The company's total
+does not, and neither does the amount of heat used.
+
+That is the situation exactly. What the first theorem gives you is one assignment
+of energy and momentum to places. Another assignment is available, it disagrees
+about where things are, and it agrees about every total.
+
+== Why more than one assignment is allowed ==
+
+Recall from
+[[Noether's theorems/Explainers/A flowing quantity and a standing total|the flow
+and total page]] that you can always add a circulating pattern to a flow — one that
+carries things round in a loop and never accumulates anywhere. Totals are
+untouched.
+
+The reassignment here is that, done with two indices instead of one. You add a term
+built to be antisymmetric: swap two of its slots and it changes sign.
+
+Then the argument is one line. To see whether the reassignment disturbs the
+conservation law, you differentiate it twice. Differentiating twice does not care
+which order you do it in — that is symmetric. Your added term is antisymmetric. A
+symmetric thing multiplied by an antisymmetric thing and summed gives zero.
+
+So the conservation law survives untouched, and it survives '''identically''' —
+not only for real motions, but always. The totals survive too, because the
+reassigned part only ever shows up as a term at the far boundary.
+
+== Why anyone bothers ==
+
+Because general relativity is fussy about shape.
+
+The object that tells gravity how much energy and momentum are present must be
+symmetric — swap its two slots and nothing changes. That is forced by how Einstein's
+equations are built.
+
+What the first theorem delivers is not symmetric in general. So it cannot be the
+thing gravity responds to, and something has to be done.
+
+The something is the reassignment above, chosen so the result comes out symmetric.
+It is called the Belinfante-Rosenfeld improvement, and the extra piece it moves
+around is the contribution from the spin of the fields involved.
+
+== The part usually got backwards ==
+
+It is natural to read this as fixing a flaw in Noether's result. It is not.
+
+Her proof determines the assignment '''up to exactly this freedom''', and she says
+so. In the middle of proving her second theorem she produces, as a by-product, a
+non-zero quantity whose flow vanishes identically — which is the freedom arriving as
+an output of the mathematics rather than as an embarrassment to be explained.
+
+So the improvement is a choice made inside a latitude she had already mapped. And
+the reason for choosing one option over another does not come from her theorem at
+all. It comes from general relativity, which needs a particular shape.
+
+'''The non-uniqueness is a property of the theorem. The choice is physics.'''
+
+== Which assignment is the real one ==
+
+A natural question, and the answer is less comfortable than it looks.
+
+If two assignments disagree about how much energy is in a given region, and both
+are consistent with everything the theory says, is there a fact of the matter?
+
+For the totals, yes. Every assignment agrees on the total, and the total is
+measurable.
+
+For the local distribution, the theory does not settle it by itself. What settles
+it, in the end, is gravity — because gravity responds to energy and momentum
+locally, and how it responds picks out one assignment as the one nature uses. The
+symmetric one is the one that appears in Einstein's equations, and that is the
+sense in which the improvement is not merely tidier.
+
+So the sequence is worth getting the right way round. Noether's theorem produces a
+family of correct assignments. General relativity, arriving later, selects from
+that family. Nothing about the selection was available in 1918, and nothing in her
+theorem anticipated it or needed to.
+
+'''A latitude in a mathematical result got closed by a physical theory that did
+not exist when the result was proved.''' That happens more often in this subject
+than the textbook order of presentation suggests.
+
+''No mathematics is used on this page. The mathematical treatment is on the
+counterpart page named above.''

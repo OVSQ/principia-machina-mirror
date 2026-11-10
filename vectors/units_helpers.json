@@ -1,0 +1,304 @@
+{
+ "meta": {
+  "name": "units_helpers",
+  "note": "Hand-written: the helpers of the units family that v1's corpora test only through other functions. dimension_out_of_range and dec_sign by hand; is_pos_finite from CPython's float(), which is v1's definition of the test (a positive decimal whose nearest double is positive and finite), including the exact halfway points 2^-1075 and 2^1024 - 2^970, which round to zero and to infinity."
+ },
+ "cases": [
+  {
+   "id": "dim/out-of-range/one",
+   "fn": "dimension_out_of_range",
+   "input": {
+    "s": "1"
+   },
+   "expect": false
+  },
+  {
+   "id": "dim/out-of-range/at-bound",
+   "fn": "dimension_out_of_range",
+   "input": {
+    "s": "L9999"
+   },
+   "expect": false
+  },
+  {
+   "id": "dim/out-of-range/sum-past-bound",
+   "fn": "dimension_out_of_range",
+   "input": {
+    "s": "L9999 L1"
+   },
+   "expect": true
+  },
+  {
+   "id": "dim/out-of-range/sum-below-bound",
+   "fn": "dimension_out_of_range",
+   "input": {
+    "s": "L-9999 L-1"
+   },
+   "expect": true
+  },
+  {
+   "id": "dim/out-of-range/sum-returns",
+   "fn": "dimension_out_of_range",
+   "input": {
+    "s": "L9999 L1 L-1"
+   },
+   "expect": false
+  },
+  {
+   "id": "dim/out-of-range/two-bases",
+   "fn": "dimension_out_of_range",
+   "input": {
+    "s": "T9999 TH9999 TH1"
+   },
+   "expect": true
+  },
+  {
+   "id": "dim/out-of-range/bad-token",
+   "fn": "dimension_out_of_range",
+   "input": {
+    "s": "Q1"
+   },
+   "expect": false
+  },
+  {
+   "id": "dim/out-of-range/bad-token-past-bound",
+   "fn": "dimension_out_of_range",
+   "input": {
+    "s": "L9999 L1 Q1"
+   },
+   "expect": false
+  },
+  {
+   "id": "dim/out-of-range/empty",
+   "fn": "dimension_out_of_range",
+   "input": {
+    "s": ""
+   },
+   "expect": false
+  },
+  {
+   "id": "dim/out-of-range/double-space",
+   "fn": "dimension_out_of_range",
+   "input": {
+    "s": "L9999  L1"
+   },
+   "expect": false
+  },
+  {
+   "id": "dec/sign/zero",
+   "fn": "dec_sign",
+   "input": {
+    "s": "0"
+   },
+   "expect": 0
+  },
+  {
+   "id": "dec/sign/point-zero",
+   "fn": "dec_sign",
+   "input": {
+    "s": "0.000"
+   },
+   "expect": 0
+  },
+  {
+   "id": "dec/sign/minus-zero",
+   "fn": "dec_sign",
+   "input": {
+    "s": "-0"
+   },
+   "expect": 0
+  },
+  {
+   "id": "dec/sign/minus-zero-exp",
+   "fn": "dec_sign",
+   "input": {
+    "s": "-0.0e5"
+   },
+   "expect": 0
+  },
+  {
+   "id": "dec/sign/positive",
+   "fn": "dec_sign",
+   "input": {
+    "s": "007.10"
+   },
+   "expect": 1
+  },
+  {
+   "id": "dec/sign/negative",
+   "fn": "dec_sign",
+   "input": {
+    "s": "-1.5E+3"
+   },
+   "expect": -1
+  },
+  {
+   "id": "dec/sign/tiny-negative",
+   "fn": "dec_sign",
+   "input": {
+    "s": "-1e-400"
+   },
+   "expect": -1
+  },
+  {
+   "id": "dec/sign/not-decimal",
+   "fn": "dec_sign",
+   "input": {
+    "s": "x"
+   },
+   "expect": 0
+  },
+  {
+   "id": "dec/sign/plus",
+   "fn": "dec_sign",
+   "input": {
+    "s": "+1"
+   },
+   "expect": 0
+  },
+  {
+   "id": "dec/sign/empty",
+   "fn": "dec_sign",
+   "input": {
+    "s": ""
+   },
+   "expect": 0
+  },
+  {
+   "id": "dec/pos-finite/two",
+   "fn": "is_pos_finite",
+   "input": {
+    "s": "2"
+   },
+   "expect": true
+  },
+  {
+   "id": "dec/pos-finite/small",
+   "fn": "is_pos_finite",
+   "input": {
+    "s": "1e-4"
+   },
+   "expect": true
+  },
+  {
+   "id": "dec/pos-finite/zero",
+   "fn": "is_pos_finite",
+   "input": {
+    "s": "0"
+   },
+   "expect": false
+  },
+  {
+   "id": "dec/pos-finite/negative",
+   "fn": "is_pos_finite",
+   "input": {
+    "s": "-1"
+   },
+   "expect": false
+  },
+  {
+   "id": "dec/pos-finite/underflows",
+   "fn": "is_pos_finite",
+   "input": {
+    "s": "1e-400"
+   },
+   "expect": false
+  },
+  {
+   "id": "dec/pos-finite/overflows",
+   "fn": "is_pos_finite",
+   "input": {
+    "s": "1e400"
+   },
+   "expect": false
+  },
+  {
+   "id": "dec/pos-finite/largest-double",
+   "fn": "is_pos_finite",
+   "input": {
+    "s": "1.7976931348623157e308"
+   },
+   "expect": true
+  },
+  {
+   "id": "dec/pos-finite/rounds-to-largest",
+   "fn": "is_pos_finite",
+   "input": {
+    "s": "1.7976931348623158e308"
+   },
+   "expect": true
+  },
+  {
+   "id": "dec/pos-finite/rounds-to-infinity",
+   "fn": "is_pos_finite",
+   "input": {
+    "s": "1.7976931348623159e308"
+   },
+   "expect": false
+  },
+  {
+   "id": "dec/pos-finite/just-below-halfway-up",
+   "fn": "is_pos_finite",
+   "input": {
+    "s": "179769313486231580793728971405303415079934132710037826936173778980444968292764750946649017977587207096330286416692887910946555547851940402630657488671505820681908902000708383676273854845817711531764475730270069855571366959622842914819860834936475292719074168444365510704342711559699508093042880177904174497791"
+   },
+   "expect": true
+  },
+  {
+   "id": "dec/pos-finite/halfway-up",
+   "fn": "is_pos_finite",
+   "input": {
+    "s": "179769313486231580793728971405303415079934132710037826936173778980444968292764750946649017977587207096330286416692887910946555547851940402630657488671505820681908902000708383676273854845817711531764475730270069855571366959622842914819860834936475292719074168444365510704342711559699508093042880177904174497792"
+   },
+   "expect": false
+  },
+  {
+   "id": "dec/pos-finite/least-subnormal",
+   "fn": "is_pos_finite",
+   "input": {
+    "s": "4.9406564584124654e-324"
+   },
+   "expect": true
+  },
+  {
+   "id": "dec/pos-finite/above-half-least",
+   "fn": "is_pos_finite",
+   "input": {
+    "s": "2.4703282292062328e-324"
+   },
+   "expect": true
+  },
+  {
+   "id": "dec/pos-finite/below-half-least",
+   "fn": "is_pos_finite",
+   "input": {
+    "s": "2.4703282292062327e-324"
+   },
+   "expect": false
+  },
+  {
+   "id": "dec/pos-finite/half-least",
+   "fn": "is_pos_finite",
+   "input": {
+    "s": "0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000024703282292062327208828439643411068618252990130716238221279284125033775363510437593264991818081799618989828234772285886546332835517796989819938739800539093906315035659515570226392290858392449105184435931802849936536152500319370457678249219365623669863658480757001585769269903706311928279558551332927834338409351978015531246597263579574622766465272827220056374006485499977096599470454020828166226237857393450736339007967761930577506740176324673600968951340535537458516661134223766678604162159680461914467291840300530057530849048765391711386591646239524912623653881879636239373280423891018672348497668235089863388587925628302755995657524455507255189313690836254779186948667994968324049705821028513185451396213837722826145437693412532098591327667236328125"
+   },
+   "expect": false
+  },
+  {
+   "id": "dec/pos-finite/just-above-half-least",
+   "fn": "is_pos_finite",
+   "input": {
+    "s": "0.00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000247032822920623272088284396434110686182529901307162382212792841250337753635104375932649918180817996189898282347722858865463328355177969898199387398005390939063150356595155702263922908583924491051844359318028499365361525003193704576782492193656236698636584807570015857692699037063119282795585513329278343384093519780155312465972635795746227664652728272200563740064854999770965994704540208281662262378573934507363390079677619305775067401763246736009689513405355374585166611342237666786041621596804619144672918403005300575308490487653917113865916462395249126236538818796362393732804238910186723484976682350898633885879256283027559956575244555072551893136908362547791869486679949683240497058210285131854513962138377228261454376934125320985913276672363281251"
+   },
+   "expect": true
+  },
+  {
+   "id": "dec/pos-finite/not-decimal",
+   "fn": "is_pos_finite",
+   "input": {
+    "s": "1e12345"
+   },
+   "expect": false
+  }
+ ]
+}

@@ -1,0 +1,11 @@
+<includeonly>{{Section map
+| title = Hamilton's principle: map
+| label1 = Reading the volume
+| links1 = [[Hamilton's principle#How to read this volume|How to read this volume]]<br />[[Hamilton's principle/Notation|Notation]]<br />[[Hamilton's principle/Glossary|Glossary]]<br />[[Hamilton's principle/Equation index|Equation index]]<br />[[Hamilton's principle/Figure gallery|Figure gallery]]
+| label2 = Reading by level
+| links2 = [[Hamilton's principle/Explainers/Comparing paths|Start here: Comparing paths]]<br />[[Hamilton's principle/Mathematics/Functionals and the space of paths|The mathematics: Functionals and the space of paths]]<br />[[Hamilton's principle/Mathematics/The Jacobi condition and conjugate points|Stationary is not least: The Jacobi condition and conjugate points]]<br />[[Hamilton's principle/Applications/The brachistochrone|The applications: The brachistochrone]]<br />[[Hamilton's principle/History/Hamilton 1834 and 1835|The history: Hamilton 1834 and 1835]]
+| label3 = Sources
+| links3 = [[Hamilton's principle/Sources|Sources]]<br />[[Hamilton's principle/Chronology|Chronology]]
+| label4 = Related
+| links4 = [[Noether's theorems|Noether's theorems]]<br />[[On Physical Lines of Force|On Physical Lines of Force]]
+}}</includeonly><noinclude>The navigation panel of Hamilton's principle, carried by the root, the explainers and the reference pages. Its frame is [[Template:Section map]]. Published from the Principia Machina source; an edit made here is overwritten.</noinclude>

@@ -1,0 +1,424 @@
+{
+ "name": "pi_scale",
+ "note": "Hand-written. SR3's test |d| > c S sqrt(v) with S^2 a ratio of polynomials in pi (Principia.Strike.PiScale.exceedsPi): dd = d^2 and ccv = c^2 v as polynomials in pi, each {shift, coefs} meaning the sum of coefs[i] pi^(shift+i); the expectations of the cases with c > 0 are checked by scripts/pi_scale_check.py at 120 digits.",
+ "cases": [
+  {
+   "id": "exceeds/scaled-contradicts",
+   "fn": "exceeds_pi",
+   "input": {
+    "dd": {
+     "shift": 0,
+     "coefs": [
+      "9.61",
+      "-6.2",
+      "1"
+     ]
+    },
+    "ccv": {
+     "shift": 0,
+     "coefs": [
+      "0.0004"
+     ]
+    },
+    "c_sign": "gt",
+    "v_pos": true,
+    "s2_num": {
+     "shift": 1,
+     "coefs": [
+      "1"
+     ]
+    },
+    "s2_den": {
+     "shift": 0,
+     "coefs": [
+      "3"
+     ]
+    }
+   },
+   "note": "(pi - 3.1)^2 against 2^2 x 0.01^2 x S^2, S^2 = pi/3: 0.00173 > 0.000419",
+   "expect": "true"
+  },
+  {
+   "id": "exceeds/scaled-agrees",
+   "fn": "exceeds_pi",
+   "input": {
+    "dd": {
+     "shift": 0,
+     "coefs": [
+      "9.61",
+      "-6.2",
+      "1"
+     ]
+    },
+    "ccv": {
+     "shift": 0,
+     "coefs": [
+      "0.0036"
+     ]
+    },
+    "c_sign": "gt",
+    "v_pos": true,
+    "s2_num": {
+     "shift": 1,
+     "coefs": [
+      "1"
+     ]
+    },
+    "s2_den": {
+     "shift": 0,
+     "coefs": [
+      "3"
+     ]
+    }
+   },
+   "note": "(pi - 3.1)^2 against 2^2 x 0.03^2 x pi/3: 0.00173 < 0.00377",
+   "expect": "false"
+  },
+  {
+   "id": "exceeds/negative-denominator",
+   "fn": "exceeds_pi",
+   "input": {
+    "dd": {
+     "shift": 0,
+     "coefs": [
+      "9.61",
+      "-6.2",
+      "1"
+     ]
+    },
+    "ccv": {
+     "shift": 0,
+     "coefs": [
+      "0.0004"
+     ]
+    },
+    "c_sign": "gt",
+    "v_pos": true,
+    "s2_num": {
+     "shift": 1,
+     "coefs": [
+      "-1"
+     ]
+    },
+    "s2_den": {
+     "shift": 0,
+     "coefs": [
+      "-3"
+     ]
+    }
+   },
+   "note": "S^2 = -pi / -3, the same ratio with a negative denominator: multiplied through with its sign",
+   "expect": "true"
+  },
+  {
+   "id": "exceeds/laurent-agrees",
+   "fn": "exceeds_pi",
+   "input": {
+    "dd": {
+     "shift": 0,
+     "coefs": [
+      "0.01"
+     ]
+    },
+    "ccv": {
+     "shift": 0,
+     "coefs": [
+      "0.1"
+     ]
+    },
+    "c_sign": "gt",
+    "v_pos": true,
+    "s2_num": {
+     "shift": 0,
+     "coefs": [
+      "1"
+     ]
+    },
+    "s2_den": {
+     "shift": 2,
+     "coefs": [
+      "1"
+     ]
+    }
+   },
+   "note": "0.01 against 0.1 x S^2, S^2 = 1/pi^2: 0.01 < 0.010132",
+   "expect": "false"
+  },
+  {
+   "id": "exceeds/laurent-contradicts",
+   "fn": "exceeds_pi",
+   "input": {
+    "dd": {
+     "shift": 0,
+     "coefs": [
+      "0.0102"
+     ]
+    },
+    "ccv": {
+     "shift": 0,
+     "coefs": [
+      "0.1"
+     ]
+    },
+    "c_sign": "gt",
+    "v_pos": true,
+    "s2_num": {
+     "shift": 0,
+     "coefs": [
+      "1"
+     ]
+    },
+    "s2_den": {
+     "shift": 2,
+     "coefs": [
+      "1"
+     ]
+    }
+   },
+   "note": "0.0102 against 0.1 / pi^2: 0.0102 > 0.010132",
+   "expect": "true"
+  },
+  {
+   "id": "exceeds/negative-c",
+   "fn": "exceeds_pi",
+   "input": {
+    "dd": {
+     "shift": 0,
+     "coefs": [
+      "0"
+     ]
+    },
+    "ccv": {
+     "shift": 0,
+     "coefs": [
+      "1"
+     ]
+    },
+    "c_sign": "lt",
+    "v_pos": true,
+    "s2_num": {
+     "shift": 1,
+     "coefs": [
+      "1"
+     ]
+    },
+    "s2_den": {
+     "shift": 0,
+     "coefs": [
+      "3"
+     ]
+    }
+   },
+   "note": "c < 0 and v > 0: every |d| exceeds the bound, S aside",
+   "expect": "true"
+  },
+  {
+   "id": "exceeds/zero-c-zero-d",
+   "fn": "exceeds_pi",
+   "input": {
+    "dd": {
+     "shift": 0,
+     "coefs": []
+    },
+    "ccv": {
+     "shift": 0,
+     "coefs": [
+      "1"
+     ]
+    },
+    "c_sign": "eq",
+    "v_pos": false,
+    "s2_num": {
+     "shift": 1,
+     "coefs": [
+      "1"
+     ]
+    },
+    "s2_den": {
+     "shift": 0,
+     "coefs": [
+      "3"
+     ]
+    }
+   },
+   "note": "c = 0 and d = 0: no excess",
+   "expect": "false"
+  },
+  {
+   "id": "exceeds/zero-denominator",
+   "fn": "exceeds_pi",
+   "input": {
+    "dd": {
+     "shift": 0,
+     "coefs": [
+      "1"
+     ]
+    },
+    "ccv": {
+     "shift": 0,
+     "coefs": [
+      "1"
+     ]
+    },
+    "c_sign": "gt",
+    "v_pos": true,
+    "s2_num": {
+     "shift": 0,
+     "coefs": [
+      "1"
+     ]
+    },
+    "s2_den": {
+     "shift": 0,
+     "coefs": []
+    }
+   },
+   "note": "S^2 with the zero polynomial as its denominator: not decided",
+   "expect": "undecided"
+  },
+  {
+   "id": "exceeds/le-pair-one",
+   "fn": "exceeds_pi",
+   "input": {
+    "dd": {
+     "shift": 0,
+     "coefs": [
+      "9.61",
+      "-6.2",
+      "1"
+     ]
+    },
+    "ccv": {
+     "shift": 0,
+     "coefs": [
+      "0.0016"
+     ]
+    },
+    "c_sign": "gt",
+    "v_pos": true,
+    "s2_num": {
+     "shift": 0,
+     "coefs": [
+      "1"
+     ]
+    },
+    "s2_den": {
+     "shift": 0,
+     "coefs": [
+      "1"
+     ]
+    }
+   },
+   "note": "(pi - 3.1)^2 against 0.0016 x S^2, S^2 = 1, the smallest of the pair with S^2 = pi/3 and pi^2/9: 0.00173 > 0.0016",
+   "expect": "true"
+  },
+  {
+   "id": "exceeds/le-pair-pi-third",
+   "fn": "exceeds_pi",
+   "input": {
+    "dd": {
+     "shift": 0,
+     "coefs": [
+      "9.61",
+      "-6.2",
+      "1"
+     ]
+    },
+    "ccv": {
+     "shift": 0,
+     "coefs": [
+      "0.0016"
+     ]
+    },
+    "c_sign": "gt",
+    "v_pos": true,
+    "s2_num": {
+     "shift": 1,
+     "coefs": [
+      "1"
+     ]
+    },
+    "s2_den": {
+     "shift": 0,
+     "coefs": [
+      "3"
+     ]
+    }
+   },
+   "note": "(pi - 3.1)^2 against 0.0016 x S^2, S^2 = pi/3 >= 1: 0.00173 > 0.00168, an excess the smaller S^2 = 1 also finds",
+   "expect": "true"
+  },
+  {
+   "id": "exceeds/le-pair-pi-sq-ninth",
+   "fn": "exceeds_pi",
+   "input": {
+    "dd": {
+     "shift": 0,
+     "coefs": [
+      "9.61",
+      "-6.2",
+      "1"
+     ]
+    },
+    "ccv": {
+     "shift": 0,
+     "coefs": [
+      "0.0016"
+     ]
+    },
+    "c_sign": "gt",
+    "v_pos": true,
+    "s2_num": {
+     "shift": 2,
+     "coefs": [
+      "1"
+     ]
+    },
+    "s2_den": {
+     "shift": 0,
+     "coefs": [
+      "9"
+     ]
+    }
+   },
+   "note": "(pi - 3.1)^2 against 0.0016 x S^2, S^2 = pi^2/9 >= pi/3: 0.00173 < 0.00175, refused at the larger S^2 while the smaller ones find the excess",
+   "expect": "false"
+  },
+  {
+   "id": "exceeds/le-pair-scaled-one",
+   "fn": "exceeds_pi",
+   "input": {
+    "dd": {
+     "shift": 0,
+     "coefs": [
+      "9.61",
+      "-6.2",
+      "1"
+     ]
+    },
+    "ccv": {
+     "shift": 0,
+     "coefs": [
+      "0.0004"
+     ]
+    },
+    "c_sign": "gt",
+    "v_pos": true,
+    "s2_num": {
+     "shift": 0,
+     "coefs": [
+      "1"
+     ]
+    },
+    "s2_den": {
+     "shift": 0,
+     "coefs": [
+      "1"
+     ]
+    }
+   },
+   "note": "(pi - 3.1)^2 against 0.0004 x S^2, S^2 = 1 <= pi/3: the excess of exceeds/scaled-contradicts found at the smaller S^2: 0.00173 > 0.0004",
+   "expect": "true"
+  }
+ ]
+}

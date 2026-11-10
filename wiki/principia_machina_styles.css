@@ -1,0 +1,229 @@
+/* Principia Machina pages: every figure fits its column.
+   Published from the Principia Machina source; an edit made here is overwritten. */
+.pma-fig img,
+.pma-fig svg {
+	max-width: 100%;
+	height: auto;
+}
+
+/* The status panel: lamps. */
+.pma-lamp-green {
+	background: #14866d;
+	color: #ffffff;
+}
+.pma-lamp-lgreen {
+	background: #b5e3c6;
+	color: #0d3b2c;
+}
+.pma-lamp-amber {
+	background: #ffcc33;
+	color: #202122;
+}
+.pma-lamp-red {
+	background: #d73333;
+	color: #ffffff;
+}
+.pma-lamp-grey {
+	background: #54595d;
+	color: #ffffff;
+}
+.pma-label {
+	display: inline-block;
+	padding: 0 0.45em;
+	border-radius: 2px;
+	font-size: 0.85em;
+	font-weight: bold;
+	letter-spacing: 0.03em;
+	white-space: nowrap;
+	line-height: 1.6;
+}
+.pma-legend {
+	font-size: 0.9em;
+	margin: 0.3em 0 0.6em 0;
+	line-height: 1.9;
+}
+/* The master annunciator: one tile per phase and the first release, on a dark bezel. */
+.pma-strip {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px;
+	padding: 6px;
+	background: #27292d;
+	color: #eaecf0;
+	border: 2px solid #101418;
+	border-radius: 4px;
+	margin: 0 0 1em 0;
+}
+.pma-strip-head {
+	flex: 1 1 100%;
+	font-size: 0.78em;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+.pma-tile {
+	flex: 1 0 7.6em;
+	max-width: 9.6em;
+	box-sizing: border-box;
+	min-height: 5.4em;
+	padding: 4px 3px;
+	border: 1px solid #101418;
+	border-radius: 3px;
+	text-align: center;
+	line-height: 1.3;
+	font-size: 0.82em;
+}
+.pma-tile-name,
+.pma-tile-word,
+.pma-tile-meta,
+.pma-tile-flag {
+	display: block;
+}
+.pma-tile-name,
+.pma-tile-word {
+	font-weight: bold;
+}
+.pma-tile-word {
+	letter-spacing: 0.04em;
+}
+.pma-tile-meta {
+	font-size: 0.92em;
+}
+.pma-tile-flag {
+	margin: 2px 4px 0 4px;
+	border: 1px solid #101418;
+	font-weight: bold;
+	font-size: 0.9em;
+}
+/* The panels: Figure 8's form, the state cell a lamp. */
+.pma-panel-wrap {
+	overflow-x: auto;
+	margin: 0 0 1em 0;
+}
+table.pma-panel {
+	border-collapse: collapse;
+	table-layout: fixed;
+	width: 100%;
+	font-size: 0.88em;
+	line-height: 1.35;
+	background: #ffffff;
+	color: #202122;
+}
+table.pma-panel caption {
+	text-align: left;
+	font-weight: bold;
+	padding: 3px 6px;
+	background: #eaecf0;
+	color: #202122;
+	border: 1px solid #a2a9b1;
+	border-bottom: 0;
+}
+table.pma-panel th,
+table.pma-panel td {
+	border: 1px solid #a2a9b1;
+	padding: 2px 6px;
+	vertical-align: middle;
+}
+table.pma-panel th {
+	background: #f8f9fa;
+	text-align: left;
+}
+table.pma-panel th.pma-c-state {
+	width: 8.6em;
+}
+table.pma-panel th.pma-c-owner {
+	width: 5.2em;
+}
+table.pma-panel th.pma-c-date {
+	width: 6.2em;
+}
+table.pma-panel th.pma-c-phase {
+	width: 4.6em;
+}
+table.pma-panel td.pma-lamp {
+	text-align: center;
+	font-weight: bold;
+	letter-spacing: 0.03em;
+	white-space: nowrap;
+}
+.pma-lamp-sub {
+	font-size: 0.82em;
+	font-weight: normal;
+}
+table.pma-stale {
+	outline: 3px solid #ffcc33;
+}
+table.pma-stale caption {
+	background: #ffcc33;
+	color: #202122;
+}
+.pma-note {
+	color: #54595d;
+	font-size: 0.92em;
+}
+.pma-date {
+	white-space: nowrap;
+}
+.pma-faults {
+	margin: 0 0 1em 0;
+}
+.pma-caption {
+	font-size: 0.88em;
+	color: #54595d;
+	margin: 0 0 0.9em 0;
+}
+@media (max-width: 640px) {
+	.pma-wide {
+		display: none;
+	}
+	table.pma-panel {
+		font-size: 0.82em;
+	}
+	table.pma-panel th.pma-c-state {
+		width: 7.4em;
+	}
+	table.pma-panel td.pma-lamp {
+		letter-spacing: 0;
+	}
+}
+/* The Main Page's Research Toolkit box: its figure fits the column, as a pma-fig figure does. */
+#mp-toolkit img,
+#mp-toolkit svg {
+	max-width: 100%;
+	height: auto;
+}
+/* The section map: a navigation panel, as "The Principia Machina: map". */
+.pma-map {
+	float: right;
+	clear: right;
+	margin: 0 0 1em 1.5em;
+	width: 19em;
+	border: 1px solid #a2a9b1;
+	background: #f8f9fa;
+	color: #202122;
+	font-size: 90%;
+	line-height: 1.4;
+}
+.pma-map-head {
+	background: #eaecf0;
+	padding: 0.4em 0.6em;
+	text-align: left;
+	border-bottom: 1px solid #a2a9b1;
+}
+.pma-map-row {
+	padding: 0.4em 0.6em;
+}
+.pma-map tr + tr + tr > .pma-map-row {
+	border-top: 1px solid #c8ccd1;
+}
+.pma-map-note {
+	color: #54595d;
+}
+@media (max-width: 719px) {
+	.pma-map {
+		float: none;
+		clear: none;
+		width: 100%;
+		box-sizing: border-box;
+		margin: 0 0 1em 0;
+	}
+}

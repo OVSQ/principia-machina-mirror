@@ -1,0 +1,1068 @@
+{
+  "pages": [
+    {
+      "title": "Template:Principia Machina/styles.css",
+      "file": "principia_machina_styles.css",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Template:Section map",
+      "file": "templates/section_map.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Template:Hamilton's principle map",
+      "file": "templates/hamilton_map.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Template:Noether's theorems map",
+      "file": "templates/noether_map.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Template:On Physical Lines of Force map",
+      "file": "templates/maxwell_map.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Template:Research Toolkit map",
+      "file": "templates/toolkit_map.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Template:Lean theorem prover map",
+      "file": "templates/lean_map.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Template:Principia Machina map",
+      "file": "templates/v2_map.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Principia Machina/Lean transition",
+      "file": "principia_machina_lean_transition.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Principia Machina/Lean transition/Status",
+      "file": "principia_machina_lean_transition_status.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Principia Machina/Terminology",
+      "file": "principia_machina_terminology.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Hamilton's principle",
+      "file": "hamilton/hub.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Hamilton's principle/Chronology",
+      "file": "hamilton/chronology.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Hamilton's principle/Equation index",
+      "file": "hamilton/equation_index.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Hamilton's principle/Explainers/Action from the endpoints",
+      "file": "hamilton/explainers/action_from_the_endpoints.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Hamilton's principle/Explainers/Comparing paths",
+      "file": "hamilton/explainers/comparing_paths.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Hamilton's principle/Explainers/Constraints",
+      "file": "hamilton/explainers/constraints.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Hamilton's principle/Explainers/Electromagnetism from an action",
+      "file": "hamilton/explainers/electromagnetism_from_an_action.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Hamilton's principle/Explainers/Fields",
+      "file": "hamilton/explainers/fields.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Hamilton's principle/Explainers/Fixed length problems",
+      "file": "hamilton/explainers/fixed_length_problems.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Hamilton's principle/Explainers/Free ends",
+      "file": "hamilton/explainers/free_ends.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Hamilton's principle/Explainers/Gravity from an action",
+      "file": "hamilton/explainers/gravity_from_an_action.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Hamilton's principle/Explainers/Is it really a minimum",
+      "file": "hamilton/explainers/is_it_really_a_minimum.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Hamilton's principle/Explainers/Light and particles",
+      "file": "hamilton/explainers/light_and_particles.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Hamilton's principle/Explainers/More than one variable",
+      "file": "hamilton/explainers/more_than_one_variable.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Hamilton's principle/Explainers/Multipliers",
+      "file": "hamilton/explainers/multipliers.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Hamilton's principle/Explainers/Reading a curve two ways",
+      "file": "hamilton/explainers/reading_a_curve_two_ways.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Hamilton's principle/Explainers/Strong and weak",
+      "file": "hamilton/explainers/strong_and_weak.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Hamilton's principle/Explainers/Sum over histories",
+      "file": "hamilton/explainers/sum_over_histories.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Hamilton's principle/Explainers/Symmetry and conservation",
+      "file": "hamilton/explainers/symmetry_and_conservation.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Hamilton's principle/Explainers/The Hamiltonian",
+      "file": "hamilton/explainers/the_hamiltonian.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Hamilton's principle/Explainers/Two different actions",
+      "file": "hamilton/explainers/two_different_actions.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Hamilton's principle/Explainers/Waves and rays",
+      "file": "hamilton/explainers/waves_and_rays.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Hamilton's principle/Explainers/What the Euler-Lagrange equation says",
+      "file": "hamilton/explainers/what_the_euler_lagrange_equation_says.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Hamilton's principle/Explainers/When symmetry is local",
+      "file": "hamilton/explainers/when_symmetry_is_local.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Hamilton's principle/Explainers/Where the minimum fails",
+      "file": "hamilton/explainers/where_the_minimum_fails.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Hamilton's principle/Figure gallery",
+      "file": "hamilton/figure_gallery.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Hamilton's principle/Glossary",
+      "file": "hamilton/glossary.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Hamilton's principle/Notation",
+      "file": "hamilton/notation.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Hamilton's principle/Sources",
+      "file": "hamilton/sources.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems",
+      "file": "noether/hub.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Bibliography",
+      "file": "noether/bibliography.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Chronology",
+      "file": "noether/chronology.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Explainers/A conservation law that is only wearing the costume",
+      "file": "noether/explainers/a_conservation_law_that_is_only_wearing_the_costume.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Explainers/A conserved quantity Noether does not explain",
+      "file": "noether/explainers/a_conserved_quantity_noether_does_not_explain.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Explainers/A flowing quantity and a standing total",
+      "file": "noether/explainers/a_flowing_quantity_and_a_standing_total.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Explainers/An identity hiding inside Einstein's equations",
+      "file": "noether/explainers/an_identity_hiding_inside_einsteins_equations.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Explainers/Counting the equations a gauge theory really has",
+      "file": "noether/explainers/counting_the_equations_a_gauge_theory_really_has.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Explainers/Drifting centres and electric charge",
+      "file": "noether/explainers/drifting_centres_and_electric_charge.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Explainers/Equations that were never independent",
+      "file": "noether/explainers/equations_that_were_never_independent.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Explainers/Groups of continuous motions",
+      "file": "noether/explainers/groups_of_continuous_motions.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Explainers/Moving the bookkeeping without changing the total",
+      "file": "noether/explainers/moving_the_bookkeeping_without_changing_the_total.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Explainers/Nudging a path and seeing what changes",
+      "file": "noether/explainers/nudging_a_path_and_seeing_what_changes.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Explainers/Reading the second theorem backwards",
+      "file": "noether/explainers/reading_the_second_theorem_backwards.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Explainers/Reading the theorem backwards",
+      "file": "noether/explainers/reading_the_theorem_backwards.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Explainers/Symmetries of a curved space",
+      "file": "noether/explainers/symmetries_of_a_curved_space.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Explainers/Symmetry and conservation, the first theorem",
+      "file": "noether/explainers/symmetry_and_conservation_the_first_theorem.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Explainers/Symmetry that can differ from place to place",
+      "file": "noether/explainers/symmetry_that_can_differ_from_place_to_place.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Explainers/The conserved thing is the thing that does the moving",
+      "file": "noether/explainers/the_conserved_thing_is_the_thing_that_does_the_moving.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Explainers/The second theorem, and why it is not the first",
+      "file": "noether/explainers/the_second_theorem_and_why_it_is_not_the_first.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Explainers/The symmetry behind the strong and weak forces",
+      "file": "noether/explainers/the_symmetry_behind_the_strong_and_weak_forces.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Explainers/The theorem after quantum mechanics",
+      "file": "noether/explainers/the_theorem_after_quantum_mechanics.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Explainers/The two theorems compared",
+      "file": "noether/explainers/the_two_theorems_compared.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Explainers/True everywhere against true for real motions",
+      "file": "noether/explainers/true_everywhere_against_true_for_real_motions.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Explainers/Two ways a thing can stay the same",
+      "file": "noether/explainers/two_ways_a_thing_can_stay_the_same.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Explainers/What a continuous symmetry is",
+      "file": "noether/explainers/what_a_continuous_symmetry_is.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Explainers/What an action is",
+      "file": "noether/explainers/what_an_action_is.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Explainers/What happens at the edges",
+      "file": "noether/explainers/what_happens_at_the_edges.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Explainers/What the Standard Model conserves",
+      "file": "noether/explainers/what_the_standard_model_conserves.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Explainers/When a symmetry does not survive",
+      "file": "noether/explainers/when_a_symmetry_does_not_survive.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Explainers/Where the light's energy goes",
+      "file": "noether/explainers/where_the_lights_energy_goes.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Explainers/Why Noether needed a third symbol",
+      "file": "noether/explainers/why_noether_needed_a_third_symbol.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Explainers/Why energy and momentum are conserved",
+      "file": "noether/explainers/why_energy_and_momentum_are_conserved.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Explainers/Why gravity has no local energy",
+      "file": "noether/explainers/why_gravity_has_no_local_energy.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Explainers/Why speed has to come along for the ride",
+      "file": "noether/explainers/why_speed_has_to_come_along_for_the_ride.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Explainers/Why the moment map resists plain language",
+      "file": "noether/explainers/why_the_moment_map_resists_plain_language.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Figure gallery",
+      "file": "noether/figure_gallery.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Further reading",
+      "file": "noether/further_reading.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Glossary",
+      "file": "noether/glossary.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Index of symmetries",
+      "file": "noether/index_of_symmetries.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Notation",
+      "file": "noether/notation.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Noether's theorems/Sources",
+      "file": "noether/sources.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "On Physical Lines of Force",
+      "file": "maxwell/hub.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "On Physical Lines of Force/Chronology",
+      "file": "maxwell/chronology.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "On Physical Lines of Force/Explainers",
+      "file": "maxwell/explainers.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "On Physical Lines of Force/Explainers/A wrong model that produced right answers",
+      "file": "maxwell/explainers/a_wrong_model_that_produced_right_answers.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "On Physical Lines of Force/Explainers/How Maxwell found the speed of light",
+      "file": "maxwell/explainers/how_maxwell_found_the_speed_of_light.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "On Physical Lines of Force/Explainers/Magnetism twists light",
+      "file": "maxwell/explainers/magnetism_twists_light.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "On Physical Lines of Force/Explainers/The missing term",
+      "file": "maxwell/explainers/the_missing_term.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "On Physical Lines of Force/Explainers/The sea of spinning cells",
+      "file": "maxwell/explainers/the_sea_of_spinning_cells.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "On Physical Lines of Force/Explainers/Two ways to measure electricity",
+      "file": "maxwell/explainers/two_ways_to_measure_electricity.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "On Physical Lines of Force/Explainers/What came after",
+      "file": "maxwell/explainers/what_came_after.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "On Physical Lines of Force/Explainers/What is a line of force",
+      "file": "maxwell/explainers/what_is_a_line_of_force.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "On Physical Lines of Force/Explainers/What is an electric current",
+      "file": "maxwell/explainers/what_is_an_electric_current.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "On Physical Lines of Force/Explainers/Why Maxwell wanted a mechanism",
+      "file": "maxwell/explainers/why_maxwell_wanted_a_mechanism.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "On Physical Lines of Force/Explainers/Why a changing magnet makes a current",
+      "file": "maxwell/explainers/why_a_changing_magnet_makes_a_current.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "On Physical Lines of Force/Explainers/Why spinning makes a pull",
+      "file": "maxwell/explainers/why_spinning_makes_a_pull.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "On Physical Lines of Force/Explainers/Why the cells had to be springy",
+      "file": "maxwell/explainers/why_the_cells_had_to_be_springy.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "On Physical Lines of Force/Figures",
+      "file": "maxwell/figures.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "On Physical Lines of Force/Glossary",
+      "file": "maxwell/glossary.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "On Physical Lines of Force/Index of numbered equations",
+      "file": "maxwell/index_of_numbered_equations.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "On Physical Lines of Force/Introduction",
+      "file": "maxwell/introduction.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "On Physical Lines of Force/Notation and concordance",
+      "file": "maxwell/notation_and_concordance.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "On Physical Lines of Force/Sources and editorial method",
+      "file": "maxwell/sources_and_editorial_method.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "The Principia Machina/Research Toolkit",
+      "file": "toolkit/hub.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "The Principia Machina/Research Toolkit/Agent flow control",
+      "file": "toolkit/agent_flow_control.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "The Principia Machina/Research Toolkit/Bibliography",
+      "file": "toolkit/bibliography.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "The Principia Machina/Research Toolkit/Manual",
+      "file": "toolkit/manual.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "The Principia Machina/Research Toolkit/Research methods",
+      "file": "toolkit/research_methods.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "The Principia Machina/Research Toolkit/Research tools",
+      "file": "toolkit/research_tools.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "The Principia Machina/Tools",
+      "file": "tools/hub.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "The Principia Machina/Tools/General reader",
+      "file": "tools/general_reader.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "The Principia Machina/Tools/Operator's guide",
+      "file": "tools/operators_guide.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "The Principia Machina/Tools/Primer",
+      "file": "tools/primer.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "The Principia Machina/Tools/AIFeynman",
+      "file": "tools/aifeynman.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "The Principia Machina/Tools/Cadabra2",
+      "file": "tools/cadabra2.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "The Principia Machina/Tools/Clawpack",
+      "file": "tools/clawpack.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "The Principia Machina/Tools/Dedalus",
+      "file": "tools/dedalus.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "The Principia Machina/Tools/DeepXDE",
+      "file": "tools/deepxde.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "The Principia Machina/Tools/Devito",
+      "file": "tools/devito.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "The Principia Machina/Tools/EinsteinToolkit",
+      "file": "tools/einsteintoolkit.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "The Principia Machina/Tools/FEniCS",
+      "file": "tools/fenics.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "The Principia Machina/Tools/FORM",
+      "file": "tools/form.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "The Principia Machina/Tools/FeynCalc",
+      "file": "tools/feyncalc.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "The Principia Machina/Tools/FiPy",
+      "file": "tools/fipy.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "The Principia Machina/Tools/LagrangianNN",
+      "file": "tools/lagrangiannn.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "The Principia Machina/Tools/Modelica",
+      "file": "tools/modelica.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "The Principia Machina/Tools/ModelingToolkit",
+      "file": "tools/modelingtoolkit.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "The Principia Machina/Tools/Physlib",
+      "file": "tools/physlib.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "The Principia Machina/Tools/PySINDy",
+      "file": "tools/pysindy.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "The Principia Machina/Tools/PySR",
+      "file": "tools/pysr.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "The Principia Machina/Tools/QuTiP",
+      "file": "tools/qutip.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "The Principia Machina/Tools/SageMath",
+      "file": "tools/sagemath.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "The Principia Machina/Tools/SpECTRE",
+      "file": "tools/spectre.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "The Principia Machina/Tools/SymPy",
+      "file": "tools/sympy.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "The Principia Machina/Tools/xAct",
+      "file": "tools/xact.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover",
+      "file": "lean/hub.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Explainers/What a proof assistant does",
+      "file": "lean/explainers/what_a_proof_assistant_does.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Explainers/Checking instead of convincing",
+      "file": "lean/explainers/checking_instead_of_convincing.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Explainers/Propositions as types",
+      "file": "lean/explainers/propositions_as_types.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Explainers/Types as specifications",
+      "file": "lean/explainers/types_as_specifications.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Explainers/Why there is no type of all types",
+      "file": "lean/explainers/why_there_is_no_type_of_all_types.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Explainers/What the axioms are",
+      "file": "lean/explainers/what_the_axioms_are.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Explainers/Two kinds of equality",
+      "file": "lean/explainers/equality_a_machine_can_decide.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Explainers/Functions that always finish",
+      "file": "lean/explainers/functions_that_always_finish.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Explainers/Building things from constructors",
+      "file": "lean/explainers/building_things_from_constructors.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Explainers/Induction, as the machine sees it",
+      "file": "lean/explainers/induction_as_the_machine_sees_it.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Explainers/Tactics",
+      "file": "lean/explainers/tactics.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Explainers/Holes and goals",
+      "file": "lean/explainers/holes_and_goals.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Explainers/Automation and its limits",
+      "file": "lean/explainers/automation_and_its_limits.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Explainers/When Lean says no",
+      "file": "lean/explainers/when_lean_says_no.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Explainers/Computation inside proofs",
+      "file": "lean/explainers/computation_inside_proofs.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Explainers/The small trusted core",
+      "file": "lean/explainers/the_small_trusted_core.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Explainers/What has to be trusted",
+      "file": "lean/explainers/what_has_to_be_trusted.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Explainers/Checking a proof again later",
+      "file": "lean/explainers/checking_a_proof_again_later.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Explainers/Stating the right thing",
+      "file": "lean/explainers/stating_the_right_thing.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Explainers/Programs and proofs in one language",
+      "file": "lean/explainers/programs_and_proofs_in_one_language.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Explainers/A library of mathematics",
+      "file": "lean/explainers/a_library_of_mathematics.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Explainers/Lean and physics",
+      "file": "lean/explainers/lean_and_physics.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Foundations/Terms, types and judgments",
+      "file": "lean/foundations/terms_types_and_judgments.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Foundations/Dependent function types",
+      "file": "lean/foundations/dependent_function_types.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Foundations/Universes and Prop",
+      "file": "lean/foundations/universes_and_prop.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Foundations/Inductive types and recursors",
+      "file": "lean/foundations/inductive_types_and_recursors.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Foundations/Structural and well-founded recursion",
+      "file": "lean/foundations/structural_and_well_founded_recursion.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Foundations/Definitional equality",
+      "file": "lean/foundations/definitional_equality.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Foundations/Propositional equality",
+      "file": "lean/foundations/propositional_equality.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Foundations/Quotient types",
+      "file": "lean/foundations/quotient_types.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Foundations/The three axioms",
+      "file": "lean/foundations/the_three_axioms.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Foundations/Classical logic from choice",
+      "file": "lean/foundations/classical_logic_from_choice.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Foundations/Proof irrelevance and subsingleton elimination",
+      "file": "lean/foundations/proof_irrelevance_and_subsingleton_elimination.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Foundations/Consistency and the metatheory",
+      "file": "lean/foundations/consistency_and_the_metatheory.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/System/Elaboration",
+      "file": "lean/system/elaboration.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/System/The Lean kernel",
+      "file": "lean/system/the_lean_kernel.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/System/Metavariables and unification",
+      "file": "lean/system/metavariables_and_unification.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/System/Type classes and instance resolution",
+      "file": "lean/system/type_classes_and_instance_resolution.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/System/The tactic framework",
+      "file": "lean/system/the_tactic_framework.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/System/Decision procedures",
+      "file": "lean/system/decision_procedures.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/System/Syntax extension and hygienic macros",
+      "file": "lean/system/syntax_extension_and_hygienic_macros.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/System/Metaprogramming in Lean",
+      "file": "lean/system/metaprogramming_in_lean.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/System/The compiler and runtime",
+      "file": "lean/system/the_compiler_and_runtime.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/System/Lake and Lean projects",
+      "file": "lean/system/lake_and_lean_projects.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/System/Proof export and independent checkers",
+      "file": "lean/system/proof_export_and_independent_checkers.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/System/Monads and do-notation",
+      "file": "lean/system/monads_and_do_notation.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/History/Automath",
+      "file": "lean/history/automath.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/History/LCF and the tactic idea",
+      "file": "lean/history/lcf_and_the_tactic_idea.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/History/Martin-L\u00f6f type theory",
+      "file": "lean/history/martin_lof_type_theory.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/History/The Calculus of Constructions",
+      "file": "lean/history/the_calculus_of_constructions.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/History/Lean 1 to Lean 3",
+      "file": "lean/history/lean_1_to_lean_3.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/History/Lean 4",
+      "file": "lean/history/lean_4.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/History/Mathlib and its community",
+      "file": "lean/history/mathlib_and_its_community.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/History/The Liquid Tensor Experiment",
+      "file": "lean/history/the_liquid_tensor_experiment.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/History/Lean since 2023",
+      "file": "lean/history/lean_since_2023.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Applications/Research mathematics",
+      "file": "lean/applications/research_mathematics.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Applications/The polynomial Freiman-Ruzsa conjecture",
+      "file": "lean/applications/the_polynomial_freiman_ruzsa_conjecture.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Applications/The Fermat's Last Theorem project",
+      "file": "lean/applications/the_fermats_last_theorem_project.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Applications/The equational theories project",
+      "file": "lean/applications/the_equational_theories_project.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Applications/Software verification",
+      "file": "lean/applications/software_verification.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Applications/Teaching with Lean",
+      "file": "lean/applications/teaching_with_lean.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Applications/Machine learning and theorem proving",
+      "file": "lean/applications/machine_learning_and_theorem_proving.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Applications/Physics in Lean",
+      "file": "lean/applications/physics_in_lean.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Applications/Principia Machina",
+      "file": "lean/applications/principia_machina.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Chronology",
+      "file": "lean/chronology.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Glossary",
+      "file": "lean/glossary.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Notation",
+      "file": "lean/notation.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Sources",
+      "file": "lean/sources.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Bibliography",
+      "file": "lean/bibliography.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Lean theorem prover/Further reading",
+      "file": "lean/further_reading.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Principia Machina/Builder Contract",
+      "file": "principia_machina_builder_contract.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Principia Machina/Development",
+      "file": "principia_machina_development.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Principia Machina/Development/Work units",
+      "file": "principia_machina_development_work_units.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Principia Machina/Development/Acceptance",
+      "file": "principia_machina_development_acceptance.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
+      "title": "Main Page",
+      "file": "main_page.wiki",
+      "class": "MARKED",
+      "blocks": [
+        "lean",
+        "lean-edition"
+      ]
+    }
+  ]
+}

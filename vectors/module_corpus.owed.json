@@ -1,0 +1,6 @@
+{
+ "corpus": "module_corpus.json",
+ "note": "Cases of module_corpus.json the Calculator does not answer yet, each with the reason; neither a pass nor a failure. Tests/Provision.lean requires every owed case to be listed here for its reason, and every case listed here to come out owed for it; none is, since the Calculator's digests are SHA-256 (decision D2, option 1). It also runs every case with v1's SHA-256 values for the preimages the Calculator computes (module_corpus.digests.json), where each must be answered as v1 answered it. The corpus itself is never edited.",
+ "reasons": {},
+ "owed": []
+}

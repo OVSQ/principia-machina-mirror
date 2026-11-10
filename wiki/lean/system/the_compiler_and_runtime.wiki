@@ -1,0 +1,208 @@
+{{DISPLAYTITLE:The compiler and runtime}}
+{{Plebeian|Lean theorem prover/Explainers/Programs and proofs in one language}}
+{{Lean theorem prover map}}
+
+A Lean definition is used in two ways. The Lean kernel checks it as a term of the type theory,
+and the compiler turns it into machine code that runs. The two paths start from the same
+definition and, except in the cases described at the end of this page, do not meet again.
+This page follows the second path in Lean 4.34.1: from a definition through the compiler's
+intermediate representations to C, the run-time system's reference counting and its updates
+in place, the attributes that let compiled code differ from the definition the Lean kernel
+sees, and what all of this adds to what has to be trusted.
+
+== Two consumers of one definition ==
+
+When a definition is elaborated, the result goes two ways. The compiler receives it with its
+recursion intact; the Lean kernel receives a version in which recursion has been expressed
+through recursors or well-founded recursion and can be checked.<ref name="rm-ec">"Elaboration and Compilation", a chapter of ''The Lean Language Reference'' (edition covering Lean 4.34.0), sections "Elaboration Results" and "Compilation". [https://lean-lang.org/doc/reference/4.34.0/Elaboration-and-Compilation/ lean-lang.org/doc/reference/4.34.0/Elaboration-and-Compilation/]</ref>
+Before generating code, the compiler erases proofs, which have no run-time
+content.<ref name="cade">Leonardo de Moura and Sebastian Ullrich, "The Lean 4 Theorem Prover and Programming Language (System Description)", in ''Automated Deduction: CADE 28'', Lecture Notes in Computer Science 12699, Springer, 2021, pp. 625–635, section 3. doi:[https://doi.org/10.1007/978-3-030-79876-5_37 10.1007/978-3-030-79876-5_37]; author's copy [https://lean-lang.org/papers/lean4.pdf lean-lang.org/papers/lean4.pdf].</ref>
+The compiled code is never shown to the Lean kernel. A theorem about a function is a theorem
+about the definition; that the machine code computes the same function is a property of the
+compiler, not something the Lean kernel has checked.
+
+== From definitions to C ==
+
+Lean's notes for version 4.22.0, of 14 August 2025, state that "the old compiler has been
+replaced by the new compiler".<ref name="rn422">"Lean 4.22.0", in "Release Notes", ''The Lean Language Reference'' (edition covering Lean 4.34.0), Highlights, "New compiler". [https://lean-lang.org/doc/reference/4.34.0/releases/v4.22.0/ lean-lang.org/doc/reference/4.34.0/releases/v4.22.0/]</ref>
+In 4.34.1 that compiler, written in Lean, is the one in use. It works in stages:
+
+# The elaborated definition is translated into '''LCNF''', the Lean Compiler Normal Form, a representation in A-normal form in which every intermediate result is bound to a name.<ref name="lcnf">Module documentation of <code>Lean.Compiler.LCNF.Basic</code>, "Lean Compiler Normal Form (LCNF)", Lean API documentation. [https://lean-lang.org/doc/api/Lean/Compiler/LCNF/Basic.html lean-lang.org/doc/api/Lean/Compiler/LCNF/Basic.html]</ref>
+# Later passes, still over LCNF, make allocation, reference-count updates and memory reuse explicit instructions. The result is also translated into the compiler's '''IR''', the form that Lean prints on request (below).<ref name="src-compiler">Lean 4 source code, version 4.34.1 (2026), directory <code>src/Lean/Compiler/LCNF</code>: in <code>Passes.lean</code> the passes of the impure phase (<code>insertResetReuse</code>, <code>inferBorrow</code>, <code>explicitBoxing</code>, <code>explicitRc</code>, <code>expandResetReuse</code>), in <code>Main.lean</code> the translation of their result to IR (<code>IR.toIR</code>), and <code>EmitC.lean</code>, which emits C. Apache License 2.0. https://github.com/leanprover/lean4/tree/v4.34.1/src/Lean/Compiler/LCNF</ref><ref name="rm-rc">"Reference Counting", section 12.2 of ''The Lean Language Reference'' (edition covering Lean 4.34.0), including 12.2.2 "Compiler IR". [https://lean-lang.org/doc/reference/4.34.0/Run-Time-Code/Reference-Counting/ lean-lang.org/doc/reference/4.34.0/Run-Time-Code/Reference-Counting/]</ref>
+# The same result is emitted as C. Each Lean module becomes a C file, which a C compiler shipped with Lean compiles to native code.<ref name="src-compiler" /><ref name="rm-ec" />
+
+When Lean evaluates code while processing a file, as <code>#eval</code> does, an
+interpreter runs the IR, and switches to native code for any function that has been
+compiled ahead of time, which includes the standard library.<ref name="cade" /><ref name="rm-ec" />
+
+The IR of a definition can be printed. This function adds one to every element of a list.
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+set_option trace.compiler.ir.result true in
+def incAll : List Nat → List Nat
+  | [] => []
+  | x :: xs => (x + 1) :: incAll xs
+</pre>
+
+Lean 4.34.1 prints:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">[Compiler.IR] [result]
+    def incAll (x_1 : tobj) : tobj :=
+      case x_1 : tobj of
+      List.nil →
+        ret x_1
+      List.cons →
+        let x_2 : tobj := proj[0] x_1;
+        let x_3 : tobj := proj[1] x_1;
+        block_4 (x_5 : tobj) (x_6 : u8) :=
+          let x_7 : tagged := 1;
+          let x_8 : tobj := Nat.add x_2 x_7;
+          dec x_2;
+          let x_9 : tobj := incAll x_3;
+          block_10 (x_11 : obj) :=
+            ret x_11;
+          case x_6 : u8 of
+          Bool.false →
+            set x_5[1] := x_9;
+            set x_5[0] := x_8;
+            jmp block_10 x_5
+          Bool.true →
+            let x_12 : obj := ctor_1[List.cons] x_8 x_9;
+            jmp block_10 x_12;
+        let x_13 : u8 := isShared x_1;
+        case x_13 : u8 of
+        Bool.false →
+          jmp block_4 x_1 x_13
+        Bool.true →
+          inc x_3;
+          inc x_2;
+          dec x_1;
+          jmp block_4 ◾ x_13</pre>
+
+The same definition, given to <code>lean -c</code>, yields a C function. In an excerpt, the
+test, the call to the C implementation of addition and the two ways of producing the new
+cell read:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">v_isSharedCheck_13_ = !lean_is_exclusive(v_x_1_);
+…
+v___x_8_ = lean_nat_add(v_head_2_, v___x_7_);
+…
+if (v_isShared_6_ == 0)
+{
+lean_ctor_set(v___x_5_, 1, v___x_9_);
+lean_ctor_set(v___x_5_, 0, v___x_8_);
+…
+v_reuseFailAlloc_12_ = lean_alloc_ctor(1, 2, 0);</pre>
+
+== Reference counting and update in place ==
+
+Lean manages memory by '''reference counting'''. Every object on the heap carries a count of
+the references to it; the count rises when a reference is copied and falls when one is
+dropped, and an object whose count reaches zero is freed at once.<ref name="rm-rc" /> The
+traditional objection to reference counting in functional languages is its cost.
+Ullrich and de Moura's answer is that an exact count is also information: it says whether a
+value is '''shared''', and a value that is not shared may be changed in place without any
+observer being able to tell.<ref name="beans">Sebastian Ullrich and Leonardo de Moura, "Counting Immutable Beans: Reference Counting Optimized for Purely Functional Programming", in ''Proceedings of the 31st Symposium on Implementation and Application of Functional Languages (IFL 2019)'', ACM, 2019, article 3, pp. 1–12. doi:[https://doi.org/10.1145/3412932.3412935 10.1145/3412932.3412935]; preprint [https://arxiv.org/abs/1908.05647 arXiv:1908.05647].</ref>
+
+The IR above shows the mechanism. <code>isShared x_1</code> tests the count of the incoming
+list cell. If the cell is not shared, the branch <code>Bool.false</code> overwrites its two
+fields with <code>set</code> and returns the same cell: the old list is updated in place.
+If it is shared, <code>ctor_1[List.cons]</code> allocates a new cell and the old one is left
+for its other owners. In the paper this pair of steps is a <code>reset</code> instruction,
+which drops an unshared value's references to its fields but keeps its cell, followed by
+<code>reuse</code>, which places the new constructor in that cell. The authors observe that
+many objects die just before an object of the same kind is created, which they call the
+'''resurrection hypothesis''', and that a function such as <code>map</code> applied to an
+unshared list therefore allocates no memory at all.<ref name="beans" /> In the Lean 4 system
+description this is presented as a programming style, '''functional but in place''': code
+is written as pure functions, and runs with destructive updates wherever values are not
+shared.<ref name="cade" />
+
+Arrays and strings follow the same rule. Their primitive operations modify the value in place
+when they hold the only reference, and copy it otherwise.<ref name="rm-rc" /><ref name="beans" />
+Two further techniques keep the cost down. '''Borrowed''' parameters, which a function uses
+without consuming, need no count updates, and the compiler infers many of them; and values
+reachable from only one thread use cheaper, unsynchronised count updates. Reference counting
+cannot reclaim cycles, but the part of Lean that can be reasoned about cannot create
+cyclic data, so the runtime has no cycle collector.<ref name="rm-rc" /><ref name="beans" />
+
+== Code that differs from its definition ==
+
+Two attributes let the code that runs differ from the definition that the Lean kernel checks.
+
+'''<code>@[extern "sym"]</code>''' binds a definition to a C symbol: compiled code calls the C
+function <code>sym</code> instead of code generated from the definition.<ref name="rm-ffi">"Foreign Function Interface", section 12.4 of ''The Lean Language Reference'' (edition covering Lean 4.34.0). [https://lean-lang.org/doc/reference/4.34.0/Run-Time-Code/Foreign-Function-Interface/ lean-lang.org/doc/reference/4.34.0/Run-Time-Code/Foreign-Function-Interface/]</ref>
+Addition of natural numbers is an example. The definition of <code>Nat.add</code>, the one
+theorems are about, is by recursion on the unary representation (zero and successor);
+compiled code calls <code>lean_nat_add</code>, as in the C above. At run time a natural
+number is either a small value stored directly in the machine word or a pointer to a
+multi-precision number.<ref name="rm-ffi" /> Lean reports the binding:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+import Lean
+open Lean
+
+#eval show CoreM (Option String) from do
+  return getExternNameFor (← getEnv) `c ``Nat.add
+</pre>
+
+This prints <code>some "lean_nat_add"</code>.
+
+'''<code>@[implemented_by f]</code>''' replaces a definition by another Lean function
+<code>f</code> in compiled code. Lean's own documentation of the attribute states that "the
+provided implementation is not checked to be equivalent to the original
+definition".<ref name="impl">Documentation of <code>Lean.Compiler.implementedByAttr</code>, Lean API documentation. [https://lean-lang.org/doc/api/Lean/Compiler/ImplementedByAttr.html lean-lang.org/doc/api/Lean/Compiler/ImplementedByAttr.html]</ref>
+Nothing prevents a wrong one.
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+def alwaysZero (_ : Nat) : Nat := 0
+
+@[implemented_by alwaysZero]
+def ident (n : Nat) : Nat := n
+
+#eval ident 5
+
+theorem ident_five : ident 5 = 5 := rfl
+</pre>
+
+<code>#eval</code> prints <code>0</code>, and the theorem that <code>ident 5 = 5</code> is
+accepted. Both are correct by their own lights: <code>#eval</code> ran the code the compiler
+was told to use, and the Lean kernel checked the definition. The most common uses, according to
+the same documentation, are to give an efficient unsafe implementation of a function whose
+definition is simple to reason about, and to make an unsafe function callable from safe
+code.<ref name="impl" /> A safer variant,
+<code>@[csimp]</code>, makes the same substitution only on the strength of a proved
+equation between the two functions.<ref name="impl" />
+
+== What it adds to what has to be trusted ==
+
+For a proof, ordinarily nothing. Apart from one deprecated primitive,
+<code>Lean.reduceBool</code>, whose use <code>#print axioms</code> reports as the axiom
+<code>Lean.trustCompiler</code>, the Lean kernel never runs compiled code,<ref name="src-core">Lean 4 source code, version 4.34.1 (2026), file <code>src/Init/Core.lean</code>: the documentation of <code>Lean.reduceBool</code> ("When the kernel tries to reduce a term <code>Lean.reduceBool c</code>, it will invoke the Lean interpreter to evaluate <code>c</code>"), deprecated since 2026-02-01, and of <code>Lean.trustCompiler</code> and <code>Lean.ofReduceBool</code>. Apache License 2.0. https://github.com/leanprover/lean4/blob/v4.34.1/src/Init/Core.lean</ref> so neither the
+compiler nor any <code>@[extern]</code> or <code>@[implemented_by]</code> annotation is
+consulted when a theorem is checked. The theorem <code>ident_five</code> above holds whatever
+the compiled code does.
+
+For a program, everything above is trusted: the compiler, the C compiler, the runtime, and the
+claim behind every <code>@[extern]</code> and <code>@[implemented_by]</code> that the code
+computes what the definition says. A proof about a function is a proof about the definition.
+
+The two meet in one place. Some tactics, such as <code>decide +native</code> and
+<code>bv_decide</code>, prove a statement by running compiled code and admitting its result.
+Such a proof depends on the compiler and on every <code>@[extern]</code> and
+<code>@[implemented_by]</code> on the path,
+and can be wrong when the compiled code disagrees with the definition. Since Lean 4.29.0 each
+such computation introduces its own axiom, which <code>#print axioms</code> lists, so the
+dependence is visible.<ref name="rm-validating">"Validating a Lean Proof", a chapter of ''The Lean Language Reference'' (edition covering Lean 4.34.0), section "On Lean.trustCompiler (up to Lean 4.28.0)". [https://lean-lang.org/doc/reference/4.34.0/ValidatingProofs/ lean-lang.org/doc/reference/4.34.0/ValidatingProofs/]</ref>
+[[Lean theorem prover/System/Proof export and independent checkers|Proof export and independent checkers]]
+shows the function <code>ident</code> above used to prove a falsehood in exactly this way, and
+how the axiom gives it away.
+
+== Next ==
+
+[[Lean theorem prover/System/Lake and Lean projects|Lake and Lean projects]] describes how
+Lean source files are organised into Lake packages and compiled together.
+
+== References ==
+
+<references />

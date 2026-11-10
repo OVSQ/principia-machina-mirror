@@ -1,0 +1,52 @@
+{{DISPLAYTITLE:Mathlib and its community}}
+{{Lean theorem prover map}}
+Mathlib is the main library of formalised mathematics for Lean. It began in 2017 as mathlib, a library for Lean 3, and was carried over to Lean 4 in 2023, where it is written with a capital letter. It is maintained by its users, not by Lean's developers. This page covers how it started, how changes to it are reviewed, where its community talks, and how large it is, with each figure dated.
+
+== From the core library to mathlib ==
+
+The library's own account of its origins is the paper "The Lean Mathematical Library", presented at the Conference on Certified Programs and Proofs (CPP) in New Orleans in January 2020. It was published under the collective name "The mathlib Community", standing for the 73 contributors listed in its acknowledgements.<ref name="cpp2020">The mathlib Community, "The Lean Mathematical Library", in ''Proceedings of the 9th ACM SIGPLAN International Conference on Certified Programs and Proofs (CPP 2020)'', ACM, 2020, pp. 367–381. doi:10.1145/3372885.3373824. Preprint: https://arxiv.org/abs/1910.09336</ref>
+
+According to the paper, in the summer of 2017 much of the core library that came with Lean 3 was moved out of the system's own code, and this became the base of mathlib. The project was led at first by Mario Carneiro and Johannes Hölzl at Carnegie Mellon University. It drew users through Lean's documentation, its emphasis on classical mathematics, and its real-time chat. In the two years after the split it grew from 15,000 to 140,000 lines of code, not counting blank lines and comments.<ref name="cpp2020" />
+
+The paper names the features that set mathlib apart: dependently typed foundations, a focus on classical mathematics, an extensive hierarchy of structures, automation at both large and small scale, and a distributed organisation. It notes that, unlike most such libraries, many of its contributors have a background in pure mathematics, and that this shaped its contents. It treats the writing of tactics as part of library design, not of system development, a division of labour it credits to Lean 3's metaprogramming.<ref name="cpp2020" /> How the hierarchy of structures is organised is described at [[Lean theorem prover/Explainers/A library of mathematics|A library of mathematics]] and [[Lean theorem prover/System/Type classes and instance resolution|Type classes and instance resolution]].
+
+== Review and maintainers ==
+
+Mathlib has no central organisation directing its content; design decisions and directions are discussed in public.<ref name="cpp2020" /> Changes are proposed openly and reviewed before they are accepted. In 2020 eleven community members had been designated maintainers, responsible for approving changes in their areas, and reviews were welcomed from anyone.<ref name="cpp2020" />
+
+The community's own description of the maintainers, as read in October 2026, is that they have the power to give final approval to proposed changes and must keep the library's design cohesive and its implementation of high quality. They usually have research-level knowledge of some field of mathematics or computer science. They join at the invitation of the current maintainers, and serve renewable two-year terms. The page then listed 28 maintainers.<ref name="maintainers">Lean community, "Mathlib maintainers" (read 14 October 2026). https://leanprover-community.github.io/teams/maintainers.html</ref> A separate team of reviewers does much of the daily reviewing and passes changes it judges ready to the maintainers for a final decision. Other teams handle moderation, the code of conduct and the community's infrastructure.<ref name="teams">Lean community, "Community teams" and "Mathlib reviewers" (read 14 October 2026). https://leanprover-community.github.io/teams.html</ref>
+
+The contribution guide asks contributors to consider whether material belongs in the library at all. It suggests asking whether the material is taught or studied in a mathematics department, and whether it lies within the maintainers' mathematical interests, since material outside them may be hard for them to maintain. It states plainly that the library's remit is not all of mathematics, and that a review need not come from a maintainer.<ref name="contribute">Lean community, "Contributing to mathlib" (read 14 October 2026). https://leanprover-community.github.io/contribute/index.html</ref>
+
+== The Zulip forum ==
+
+Much of the discussion takes place on the Lean Zulip, a chat forum organised into channels. The 2020 paper describes a channel for new members that welcomes elementary questions, and another for formalising advanced mathematics; it reports that several people cited the forum's accessibility as their reason for choosing Lean.<ref name="cpp2020" /> Projects built on the library range from published research to weekend collaborations coordinated there.<ref name="cpp2020" /> One of them is described at [[Lean theorem prover/History/The Liquid Tensor Experiment|The Liquid Tensor Experiment]].
+
+== From mathlib to Mathlib ==
+
+The move to Lean 4 is described at [[Lean theorem prover/History/Lean 4|Lean 4]]. The Lean 4 library describes itself as "a user maintained library for the Lean theorem prover", containing programming infrastructure, mathematics, and the tactics that serve both.<ref name="mathlib4readme">Mathlib, README of the Lean 4 library. https://github.com/leanprover-community/mathlib4</ref> The Lean 3 library is now marked as no longer actively maintained.<ref name="mathlib3readme">Lean 3 mathlib, README. https://github.com/leanprover-community/mathlib</ref>
+
+== Size ==
+
+Dozens of changes are approved every week, so each figure here carries the date of its source.<ref name="maintainers" />
+
+* At the end of Lean 3 mathlib had over one million lines; the Lean reference manual, in the edition for version 4.34.0, says Mathlib has since grown to over 1.5 million.<ref name="refhist">''The Lean Language Reference'', section 1.1 "History", for version 4.34.0 of Lean. https://lean-lang.org/doc/reference/4.34.0/Introduction/</ref>
+* In October 2025 Renaissance Philanthropy described the library as nearly two million lines of computer-verified mathematics.<ref name="rpinterview">Renaissance Philanthropy, "Kevin Buzzard and Alex Kontorovich on the Future of Formal Mathematics: A Mathlib Initiative Interview", 3 October 2025. https://www.renaissancephilanthropy.org/insights/kevin-buzzard-and-alex-kontorovich-on-the-future-of-formal-mathematics-a-mathlib-initiative-interview</ref>
+* As of October 2026 the community's statistics page counted 137,993 definitions, 290,354 theorems and 772 contributors.<ref name="stats">Lean community, "Mathlib statistics" (read 14 October 2026). https://leanprover-community.github.io/mathlib_stats.html</ref>
+
+Review has not kept pace with contributions. In the same 2025 interview, Oliver Nash reported that August 2025 was the library's busiest month, with over 1,100 contributions reviewed and added, and that about 2,000 more were waiting for review.<ref name="rpinterview" />
+
+== The Mathlib Initiative ==
+
+In July 2025 Alex Gerko, founder of XTX Markets, announced a gift of $5 million to Mathlib, alongside $5 million to the Lean Focused Research Organization. With the gift for Mathlib, a new Mathlib Initiative was to be set up within Renaissance Philanthropy.<ref name="rpgift">Renaissance Philanthropy, "Lean FRO and Mathlib receive $10M from XTX Markets Founder Alex Gerko to further advance the use of AI for mathematical research", 24 July 2025. https://www.renaissancephilanthropy.org/insights/lean-fro-and-mathlib-receive-10m-from-xtx-markets-founder-alex-gerko-to-further-advance-the-use-of-ai-for-mathematical-research</ref> Its stated purpose is to give the library professional support while keeping it open and collaborative. It is led by Johan Commelin, Oliver Nash and Adam Topaz, and a major aim is to increase the capacity for review.<ref name="rpinterview" /> Several maintainers now describe themselves, on the maintainers' page, as working for it.<ref name="maintainers" />
+
+<blockquote>
+Provenance: the 2020 CPP paper, the community's team, contribution and statistics pages (read on 14 October 2026), the README files, the Lean reference manual and the two Renaissance Philanthropy pages were read. The one quotation is the Lean 4 library's description of itself. Figures from different sources measure different things (lines, definitions, theorems) and are not comparable with each other.
+</blockquote>
+
+== Next ==
+
+[[Lean theorem prover/History/The Liquid Tensor Experiment|The Liquid Tensor Experiment]]
+
+== References ==
+<references />

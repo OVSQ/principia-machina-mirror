@@ -1,0 +1,129 @@
+{{DISPLAYTITLE:Comparing paths}}
+{{Technical|Hamilton's principle/Mathematics/Functionals and the space of paths|Hamilton's principle/Mathematics/The first variation}}
+{{Hamilton's principle map}}
+
+This page explains how physics compares paths. It uses no mathematics. The
+technical pages it goes with are named above.
+
+== A number for a whole journey ==
+
+[[File:OPL-HP-F-01.png|thumb|right|400px|A true path and several comparison paths between fixed endpoints.]]
+
+Think about driving from your home to a shop. There is more than one route. Each
+route takes a certain amount of fuel.
+
+Fuel use is a number. A route is a whole path. So fuel use is a rule that takes a
+whole path and gives back one number.
+
+Physics uses rules like this all the time. The rule might give the time a journey
+takes. It might give the length of a curve. It might give a quantity called the
+'''action''', which this volume is about.
+
+A rule that turns a whole path into one number has a name. It is called a
+'''functional'''. That is the only new word on this page, and it means exactly
+what the last paragraph said.
+
+== Why this is different from ordinary maths ==
+
+[[File:OPL-HP-F-02.png|thumb|right|400px|A one-parameter family of paths through the true path.]]
+
+A function takes a number and gives back a number. Put in 3, get out 9.
+
+A functional is different. You do not put in a number. You put in a '''whole
+path''' — every point of it, from start to finish.
+
+That makes the usual methods harder to apply. To find the lowest point of a hill
+you walk downhill. But a path is not a point on a hill, and there are infinitely
+many ways to change one: push it up in the middle, wobble it near an end, stretch
+it. Which of those counts as a small change?
+
+Answering that is the first real task.
+
+== The rules of the comparison ==
+
+Physics compares paths under strict rules.
+
+'''All the paths start and end at the same two points.''' If you are asking which
+route to the shop is best, every route must actually reach the shop. Routes that
+end somewhere else are not in the competition.
+
+'''All the paths are smooth.''' No sudden jumps. No sharp corners, at least to
+begin with. Later work relaxes this, but the simple version starts here.
+
+'''Only the true path is real.''' The other paths do not happen. They are
+imaginary journeys, invented so that the true one can be compared against them.
+
+That last rule matters more than it looks. When physics compares the real motion
+of a ball with a nearby path, that nearby path is not a motion the ball could
+make. It breaks the laws of physics. It is a made-up comparison, and it exists
+only to be worse than the real thing.
+
+Hamilton said this himself, in 1834. He described the comparison paths as
+imaginable in geometry but impossible in dynamics.
+
+== Nudging a path ==
+
+Here is the trick that makes the whole subject work.
+
+Take the true path. Take any smooth nudge — a shape that is zero at both ends and
+whatever you like in between. Now add a small amount of the nudge to the path.
+How small is set by a single dial.
+
+Turn the dial to zero and you have the true path back. Turn it up a little and you
+get a nearby path. Turn it up more and you get a path further away.
+
+The dial is one number. So the problem has changed shape completely. Instead of
+asking about infinitely many paths at once, you can ask what happens to your
+functional as you turn one dial.
+
+That is an ordinary question, of the kind school mathematics can answer.
+
+== What "stationary" means ==
+
+Turn the dial and watch the number.
+
+For most paths the number changes straight away. Turn the dial a little and the
+number goes up, or down.
+
+For the true path something different happens. Turn the dial a little and the
+number '''barely moves'''. It changes far less than the size of the nudge would
+suggest. To a first approximation it does not change at all.
+
+That is what '''stationary''' means. The number stops responding to small changes
+in the path.
+
+You have seen this before. At the top of a hill the ground is flat. Take a step in
+any direction and your height barely changes. The same is true at the bottom of a
+valley. And it is true at a mountain pass, which is neither a top nor a bottom.
+
+'''Flat is flat.''' The ground being level tells you that you are at a top, a
+bottom, or a pass. It does not tell you which.
+
+== The word "least" is wrong ==
+
+This is why this volume does not say the action is '''least'''.
+
+Being stationary means the number stops changing for small nudges. It does not
+mean the number is as small as it can be. Sometimes it is. Sometimes it is as
+'''large''' as it can be. Sometimes it is neither.
+
+Here is a case anyone can picture. On a globe, the shortest way between London and
+Tokyo is the short way round. But you could also fly the long way round, the other
+side of the world, along the same great circle. That long route obeys exactly the
+same rule at every point of the journey. Locally it looks just as straight. It is
+stationary — and it is very clearly not the shortest.
+
+Nothing you could measure while flying would tell you which of the two you were
+on. The difference is not in any single place. It is in the journey as a whole.
+
+Working out exactly when stationary does mean shortest took mathematicians most of
+the nineteenth century. It is covered later in this volume.
+
+== Where to go next ==
+
+The next step is to work out what actually happens to the number when you turn the
+dial. That gives a rule the true path must obey, and it is the most useful single
+result in this subject.
+
+It is explained at
+[[Hamilton's principle/Explainers/What the Euler-Lagrange equation says|What the Euler-Lagrange equation says]].

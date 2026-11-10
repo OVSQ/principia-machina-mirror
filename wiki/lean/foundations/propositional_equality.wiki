@@ -1,0 +1,236 @@
+{{DISPLAYTITLE:Propositional equality}}
+{{Plebeian|Lean theorem prover/Explainers/Two kinds of equality}}
+{{Lean theorem prover map}}
+
+'''Propositional equality''' is the proposition <code>a = b</code>. A proof of it is a term
+of that type, built and used like any other proof. It is distinct from
+[[Lean theorem prover/Foundations/Definitional equality|definitional equality]], which is a
+judgment the checker tests by computation and which no term records. Lean defines
+propositional equality as an inductive family with a single constructor. Symmetry,
+transitivity, substitution and congruence are all derived from its eliminator. Function
+extensionality is a theorem, proved from quotient types. Uniqueness of identity proofs
+holds with no axiom at all.
+
+== Equality as an inductive family ==
+
+Lean's core library defines <code>Eq</code> as an inductive type in <code>Prop</code> with
+one constructor, <code>Eq.refl</code>.<ref name="prelude">Lean 4 source, file <code>src/Init/Prelude.lean</code>, version 4.34.1: the definitions of <code>Eq</code>, <code>HEq</code>, <code>cast</code>, <code>congrArg</code>, <code>congr</code>, <code>congrFun</code> and <code>funext</code>, with their documentation comments. Apache License 2.0. https://github.com/leanprover/lean4/blob/v4.34.1/src/Init/Prelude.lean</ref> Lean prints it so:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+#print Eq
+example : 2 + 2 = 4 := rfl
+</pre>
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+inductive Eq.{u_1} : {α : Sort u_1} → α → α → Prop
+number of parameters: 2
+constructors:
+Eq.refl : ∀ {α : Sort u_1} (a : α), a = a
+</pre>
+
+The two parameters are the type <code>α</code> and the left-hand side <code>a</code>. The
+right-hand side is an '''index''': it varies between the type and the constructor's result,
+and the constructor fixes it to <code>a</code>. The constructor alone therefore proves only
+statements of the form <code>a = a</code>; every other equation needs an argument that ends
+in one. Written as rules, formation and introduction are
+
+:<math>\frac{\Gamma \vdash A : \mathrm{Sort}\,u \quad \Gamma \vdash a : A \quad \Gamma \vdash b : A}{\Gamma \vdash a = b : \mathrm{Prop}} \qquad \frac{\Gamma \vdash a : A}{\Gamma \vdash \mathrm{Eq.refl}\,a : a = a}</math>
+
+The term <code>rfl</code> is <code>Eq.refl</code> with its argument left implicit. The
+example <code>2 + 2 = 4 := rfl</code> is accepted because the checker finds
+<code>2 + 2</code> and <code>4</code> definitionally equal; <code>rfl</code> then has the
+type the statement asks for. Every proof by <code>rfl</code> is a definitional equality
+packaged as a propositional one. Not every propositional equality is definitional: most
+equations in mathematics need an argument, because no amount of computation turns one side
+into the other.
+
+== The eliminator ==
+
+The recursor that [[Lean theorem prover/Foundations/Inductive types and recursors|every inductive type receives]]
+is, for <code>Eq</code>, the principle that makes equality useful.
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+set_option pp.proofs true in
+#check @Eq.rec
+</pre>
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+@Eq.rec : {α : Sort u_2} →
+  {a : α} → {motive : (a_1 : α) → a = a_1 → Sort u_1} → motive a (Eq.refl a) → {a_1 : α} → (t : a = a_1) → motive a_1 t
+</pre>
+
+The motive, written <math>C</math> below, is a family over every right-hand side <code>y</code> and every
+proof that <code>a = y</code>. To produce an element of <code>C b h</code> it suffices to
+produce one at the constructor, <code>C a (Eq.refl a)</code>:
+
+:<math>\frac{\Gamma \vdash C : \Pi (y : A).\, a = y \to \mathrm{Sort}\,v \quad \Gamma \vdash c : C\,a\,(\mathrm{Eq.refl}\,a) \quad \Gamma \vdash h : a = b}{\Gamma \vdash \mathrm{Eq.rec}\,c\,h : C\,b\,h}</math>
+
+with the computation rule
+
+:<math>\mathrm{Eq.rec}\,c\,(\mathrm{Eq.refl}\,a) \equiv c</math>
+
+'''The motive may land in any universe, not only in <code>Prop</code>.''' A proof of an
+equation can therefore change the type of a piece of data. This is unusual for a
+proposition: Lean permits it only because <code>Eq</code> passes the test for subsingleton
+elimination, which is the subject of
+[[Lean theorem prover/Foundations/Proof irrelevance and subsingleton elimination|proof irrelevance and subsingleton elimination]].<ref name="refman-ind">''The Lean Language Reference'', version 4.34.0, §4.4 "Inductive Types", subsection "Subsingleton Elimination" (the recursor of <code>Eq</code>). https://lean-lang.org/doc/reference/4.34.0/The-Type-System/Inductive-Types/#subsingleton-elimination</ref>
+
+== Transport ==
+
+Applying the eliminator with a motive that does not depend on the proof gives
+'''transport''': from <code>h : a = b</code> and a term whose type mentions <code>a</code>,
+obtain the same term at <code>b</code>. Lean's core library defines <code>Eq.subst</code>
+and <code>cast</code> this way.<ref name="prelude" /> The triangle <code>h ▸ e</code> is a
+macro over <code>Eq.rec</code> and <code>Eq.symm</code>: it tries both orientations of
+<code>h</code>, and rewrites the expected type when there is one, otherwise the type of
+<code>e</code>.<ref name="parser">Lean 4 source, file <code>src/Lean/Parser/Term.lean</code>, version 4.34.1: the documentation comment of the <code>h ▸ e</code> syntax. Apache License 2.0. https://github.com/leanprover/lean4/blob/v4.34.1/src/Lean/Parser/Term.lean</ref> With it the familiar laws of equality are one line
+each:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem symm' {α : Sort u} {a b : α} (h : a = b) : b = a :=
+  h ▸ rfl
+
+theorem trans' {α : Sort u} {a b c : α} (h₁ : a = b) (h₂ : b = c) : a = c :=
+  h₂ ▸ h₁
+
+theorem subst' {α : Sort u} {a b : α} (p : α → Prop) (h : a = b) (ha : p a) : p b :=
+  h ▸ ha
+
+theorem congrArg' {α : Sort u} {β : Sort v} {a₁ a₂ : α} (f : α → β) (h : a₁ = a₂) :
+    f a₁ = f a₂ :=
+  h ▸ rfl
+
+def castAlong {α β : Type} (h : α = β) (x : α) : β :=
+  h ▸ x
+
+#print axioms trans'
+</pre>
+
+The last command prints <code>'trans'' does not depend on any axioms</code>. Nothing beyond
+the inductive definition is used. The definition <code>castAlong</code> is the case that
+needs the large motive: its result is data of type <code>β</code>, obtained from data of
+type <code>α</code> by a proof that the two types are equal.
+
+== Congruence ==
+
+The theorem <code>congrArg</code> above is the first congruence principle: equal arguments
+give equal values. The core library adds <code>congrFun</code> (equal functions give equal
+values at one argument) and <code>congr</code> (both at once), each proved by transport in
+the same way. The library's documentation notes that tactics such as <code>congr</code>
+and <code>simp</code> use <code>congrArg</code> internally to apply equalities inside
+subterms.<ref name="prelude" /> <code>congrArg</code> and <code>congr</code> are stated for non-dependent functions. When the type of the
+result depends on the argument, <code>f a₁</code> and <code>f a₂</code> have different
+types, and the statement <code>f a₁ = f a₂</code> cannot even be formed. That case needs a
+different relation.
+
+== Heterogeneous equality ==
+
+'''Heterogeneous equality''' relates terms whose types are not known to be definitionally
+equal. It is a second inductive family, written <code>a ≍ b</code> in Lean 4.34.1:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+#print HEq
+#check fun (n m : Nat) (x : Fin (n + m)) (y : Fin (m + n)) => x ≍ y
+#check @type_eq_of_heq
+#check @eq_of_heq
+</pre>
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+inductive HEq.{u} : {α : Sort u} → α → {β : Sort u} → β → Prop
+number of parameters: 2
+constructors:
+HEq.refl : ∀ {α : Sort u} (a : α), a ≍ a
+fun n m x y => x ≍ y : (n m : Nat) → Fin (n + m) → Fin (m + n) → Prop
+@type_eq_of_heq : ∀ {α β : Sort u_1} {a : α} {b : β}, a ≍ b → α = β
+@eq_of_heq : ∀ {α : Sort u_1} {a a' : α}, a ≍ a' → a = a'
+</pre>
+
+The statement <code>x ≍ y</code> is well formed even though <code>Fin (n + m)</code> and
+<code>Fin (m + n)</code> are equal only by a theorem about addition. The same statement
+with <code>=</code> is rejected:
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+#check fun (n m : Nat) (x : Fin (n + m)) (y : Fin (m + n)) => x = y
+</pre>
+
+Lean reports <code>Type mismatch</code>: <code>y</code> has type <code>Fin (m + n)</code> but
+is expected to have type <code>Fin (n + m)</code>. A proof of <code>x ≍ y</code> carries a
+proof that the types agree, which <code>type_eq_of_heq</code> extracts, and at a single type
+it collapses to ordinary equality by <code>eq_of_heq</code>. The core library's own
+documentation advises avoiding <code>HEq</code> where possible: the analogue of
+<code>congr</code> fails for it, since from <code>f ≍ g</code> and <code>x ≍ y</code> it does
+not follow that <code>f x ≍ g y</code>; the equality of types that <code>HEq</code> carries is
+often too weak.<ref name="prelude" />
+
+== Function extensionality ==
+
+'''Function extensionality''' says that functions which agree at every argument are equal.
+The eliminator of <code>Eq</code> offers no way to compare two lambda terms by their
+values. The Lean reference manual notes that function extensionality would have to be an
+axiom in Lean, were it not for quotient types, whose lifting operator has a definitional
+computation rule.<ref name="refman-quot">''The Lean Language Reference'', version 4.34.0, §4.5.6 "Quotients and Function Extensionality". https://lean-lang.org/doc/reference/4.34.0/The-Type-System/Quotients/#quotient-funext</ref> The proof in the
+core library forms the quotient of the function type by pointwise equality and applies each
+class to an argument:<ref name="prelude" />
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem funext' {α : Sort u} {β : α → Sort v} {f g : (x : α) → β x}
+    (h : ∀ x, f x = g x) : f = g :=
+  let eqv (f g : (x : α) → β x) : Prop := ∀ x, f x = g x
+  let app (q : Quot eqv) (x : α) : β x := Quot.lift (fun f => f x) (fun _ _ h => h x) q
+  congrArg app (Quot.sound h)
+
+#print axioms funext'
+#print axioms funext
+</pre>
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+'funext'' depends on axioms: [Quot.sound]
+'funext' depends on axioms: [Quot.sound]
+</pre>
+
+The axiom <code>Quot.sound</code> makes the classes of <code>f</code> and <code>g</code>
+equal, and <code>congrArg</code> carries that equality through <code>app</code>. The proof
+type-checks only because <code>app (Quot.mk eqv f)</code> reduces, by the computation rule
+for <code>Quot.lift</code>, to <code>fun x => f x</code>, which is <code>f</code> up to
+η. A merely propositional computation rule would not do: rewriting under the binder would
+already need function extensionality.<ref name="refman-quot" /> The axiom itself, and why
+it is one, are on [[Lean theorem prover/Foundations/The three axioms|the three axioms]].
+
+== Uniqueness of identity proofs ==
+
+'''Uniqueness of identity proofs''' (UIP) says that any two proofs of
+<code>a = b</code> are equal. Streicher's '''axiom K''' is the special case that every
+proof of <code>a = a</code> is <code>Eq.refl a</code>, and the two are equivalent.<ref name="hott">The Univalent Foundations Program, ''Homotopy Type Theory: Univalent Foundations of Mathematics'', Institute for Advanced Study, 2013; Notes to Chapter 1, Example 3.1.9 and §7.2. https://homotopytypetheory.org/book/</ref>
+In Lean both hold by definition:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem uip {α : Sort u} {a b : α} (h₁ h₂ : a = b) : h₁ = h₂ := rfl
+
+theorem axiomK {α : Sort u} {a : α} (C : α → Sort v) (h : a = a) (x : C a) :
+    h ▸ x = x := rfl
+
+#print axioms uip
+#print axioms axiomK
+</pre>
+
+Both report that they do not depend on any axioms. The first is definitional proof
+irrelevance: <code>a = b</code> is a proposition, so any two of its proofs are definitionally
+equal. The second is what Carneiro calls K-like reduction: for a subsingleton eliminator,
+proof irrelevance lets the major premise be replaced by the constructor, after which the
+ordinary computation rule applies. For <code>Eq</code> this means that transport along
+<code>h : a = a</code> reduces to the identity, whatever <code>h</code> is.<ref name="carneiro">Mario Carneiro, ''The Type Theory of Lean'', Master's thesis, Carnegie Mellon University, 2019; p. 4 (UIP and univalence), p. 12 (K-like reduction), p. 15 (proof irrelevance and axiom K in Lean and Coq). https://github.com/digama0/lean-type-theory/releases/tag/v1.0</ref>
+Carneiro lists proof irrelevance and axiom K among the axioms commonly added to Coq, and
+observes that they hold in Lean with no axioms.<ref name="carneiro" />
+
+Homotopy type theory takes the opposite course. It reads a proof of equality as a path,
+keeps proofs of equality relevant, and treats UIP as a property some types have rather
+than an axiom.<ref name="hott" /> Its univalence axiom identifies equivalent types. The
+two-element type then has a non-trivial self-equality, the swap, so the universe is not a
+set, and univalence is inconsistent with UIP.<ref name="hott" /><ref name="carneiro" />
+Because Lean's UIP is part of definitional equality rather than an axiom that could be
+left out, univalence cannot be added to Lean without making it inconsistent.
+
+== Next ==
+
+[[Lean theorem prover/Foundations/Quotient types|Quotient types]] treats the construction
+that the proof of function extensionality used.
+
+== References ==
+
+<references />

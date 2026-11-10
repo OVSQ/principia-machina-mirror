@@ -1,0 +1,1481 @@
+{{DISPLAYTITLE:The move to Lean}}
+{{Principia Machina map}}
+<noinclude><!-- Principia Machina: the transition to Lean. Published from the Principia Machina source; the whole page is replaced at each publish. Box styles inline, as on the Main Page. --></noinclude><templatestyles src="Principia Machina/styles.css" />
+
+<div id="lt-topbanner" style="border: 1px solid #a2a9b1; margin-bottom: 15px; background: #f8f9fa; color:#202122; padding: 10px; text-align: center;">
+<div id="lt-welcome" style="font-size: 1.8em; line-height: 1.3; padding: 0.1em;">PRINCIPIA MACHINA: the move to Lean</div>
+<div style="font-size: 0.95em;">Why a proof language fits a framework for testing hypotheses, what the move must deliver, and where it stands.</div>
+<div style="font-size: 0.85em; margin-top: 0.3em;">Where it stands is read from the [[Principia Machina/Progress/Status|status panel]] &middot; version 1, [[The Principia Machina]], stays at its titles as history &middot; 26 figures on this page</div>
+</div>
+
+<div style="border: 1px solid #a2a9b1; background: #ffffff; color:#202122; padding: 6px 10px; margin-bottom: 15px; font-size: 0.95em;">'''On this page:''' [[#lt-riddle-box|A riddle]] &middot; [[#lt-loop-box|From checking to hypothesizing]] &middot; [[#lt-why-box|Why Lean 4]] &middot; [[#lt-objective-box|Objective]] &middot; [[#lt-status-box|Status]] &middot; [[#lt-workflow-box|The new workflow]] &middot; [[#lt-plate-box|The riddle, worked]] &middot; [[#lt-side-box|Side by side]] &middot; [[#lt-adds-box|What Lean adds]] &middot; [[#lt-experiment-box|Changing a hypothesis]] &middot; [[#lt-pma-box|The riddle in Principia Machina]] &middot; [[#lt-file-box|The Lean file]] &middot; [[#lt-limits-box|What Lean does not do]] &middot; [[#lt-more-box|Read further]]</div>
+
+<div id="lt-riddle-box" style="border: 1px solid #a2a9b1; margin-bottom: 15px; background: #ffffff; color:#202122;">
+<h2 id="lt-riddle-h2" style="margin: 0; padding: 8px 10px; background-color: #ffedad; border-bottom: 1px solid #a2a9b1; font-size: 1.2em; font-weight: bold;">Start with a riddle</h2>
+<div id="lt-riddle" style="padding: 10px;">
+<div style="display: flex; flex-wrap: wrap; gap: 15px; align-items: flex-start;">
+<div style="flex: 1 1 340px; min-width: 0;">
+Two people stand beside two doors. One always tells the truth; the other always lies. One door is safe; the other is not. You may ask one person one question. How do you choose safely?
+
+The classic answer fits in a line: ask either one '''"If I asked the other guard whether the left door is safe, would they say yes?"''' and take the right door on yes, the left on no.
+
+This page solves the riddle twice: once as it is usually written, in '''ordinary mathematics''', and once in '''Lean 4''', a language in which a computer checks every step of a proof. Both reach the same answer. The difference that matters is what each does when a guess is wrong, and that difference is why the Principia Machina is moving to Lean.
+</div>
+<div style="flex: 0 1 380px; min-width: 0;">
+<div class="pma-fig" style="text-align: center; overflow-x: auto; margin: 0.6em 0 0.2em 0;">
+<graphviz>
+digraph scene {
+  rankdir=TB; bgcolor="transparent"; nodesep=0.35; ranksep=0.4; size="5.4,5";
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=10, color="#a2a9b1", fillcolor="#eaecf0", fontcolor="#202122ff", margin="0.12,0.06"];
+  edge [color="#54595d", fontname="Helvetica", fontsize=9, fontcolor="#202122ff", arrowsize=0.7];
+  subgraph cluster_doors { style=invis;
+    DL [label="Left door\nsafe?", shape=box, style=filled, fillcolor="#cedff2", color="#6a8fbf", width=1.1, height=0.9];
+    DR [label="Right door\nsafe?", shape=box, style=filled, fillcolor="#cedff2", color="#6a8fbf", width=1.1, height=0.9];
+  }
+  GA [label="Guard A\ntruthful or liar?", shape=ellipse, fillcolor="#ffffff"];
+  GB [label="Guard B\nthe other kind", shape=ellipse, fillcolor="#ffffff"];
+  Y  [label="You: one guard,\none yes/no question", fillcolor="#ffedad", color="#ac6600"];
+  DL -> GA [style=invis]; DR -> GB [style=invis];
+  GA -> Y [dir=back, label="asks"]; GB -> Y [dir=back, style=dashed, label="or"];
+}
+</graphviz>
+</div>
+<div id="lt-fig-1" style="font-size: 0.88em; color: #54595d; margin: 0 0 0.9em 0;">'''Figure 1.''' The riddle. Two doors, one safe; two guards, one truthful and one liar, and you do not know which is which. You may put one yes/no question to one guard.</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="lt-loop-box" style="border: 1px solid #a2a9b1; margin-bottom: 15px; background: #ffffff; color:#202122;">
+<h2 id="lt-loop-h2" style="margin: 0; padding: 8px 10px; background-color: #cef2e0; border-bottom: 1px solid #a2a9b1; font-size: 1.2em; font-weight: bold;">From checking to hypothesizing</h2>
+<div id="lt-loop" style="padding: 10px;">
+In mathematics a proof ends when a reader is convinced, and a case missed is found, if ever, later. In Lean every attempt ends in one of two ways: accepted, or refused at the goal it could not prove, which in a finite case check like the riddle's is the list of the worlds that fail. That makes it cheap to guess, because a wrong guess costs one refusal and teaches something specific; and an accepted result can be generalized and checked again at once.
+
+<div class="pma-fig" style="text-align: center; overflow-x: auto; margin: 0.6em 0 0.2em 0;">
+<graphviz>
+digraph hyploop {
+  rankdir=TB; bgcolor="transparent"; nodesep=0.3; ranksep=0.3; size="7.8,6";
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=10, color="#a2a9b1", fillcolor="#eaecf0", fontcolor="#202122ff", margin="0.12,0.06"];
+  edge [color="#54595d", fontname="Helvetica", fontsize=9, fontcolor="#202122ff", arrowsize=0.7];
+  subgraph cluster_m { label="In mathematics"; fontname="Helvetica"; fontsize=11; style="rounded,filled"; fillcolor="#f8f9fa"; color="#a2a9b1";
+    m1 [label="Conjecture in words"]; m2 [label="Proof in prose"];
+    m3 [label="A reader checks", shape=diamond, style=filled, fillcolor="#ffffff"];
+    m4 [label="Accepted"];
+    m1 -> m2 -> m3; m3 -> m4 [label=" convinced"]; m3 -> m1 [label=" doubt", constraint=false];
+    m4 -> m1 [label=" a missed case,
+ found later", style=dashed, constraint=false]; }
+  subgraph cluster_l { label="In Lean"; fontname="Helvetica"; fontsize=11; style="rounded,filled"; fillcolor="#f3fbf7"; color="#14866d";
+    l1 [label="Conjecture as a statement"]; l2 [label="Proof attempt"];
+    l3 [label="Kernel checks", shape=diamond, style=filled, fillcolor="#ffedad", color="#ac6600"];
+    l4 [label="Theorem, cited by name", fillcolor="#cef2e0", color="#14866d"];
+    l5 [label="Unproved goal shown", fillcolor="#fee7e6", color="#dd3333"];
+    l6 [label="Generalize the statement"];
+    l1 -> l2 -> l3; l3 -> l4 [label=" accepted"]; l3 -> l5 [label=" refused"];
+    l5 -> l1 [label=" revise", constraint=false]; l4 -> l6; l6 -> l2 [label=" check again", constraint=false]; }
+}
+</graphviz>
+</div>
+<div id="lt-fig-2" style="font-size: 0.88em; color: #54595d; margin: 0 0 0.9em 0;">'''Figure 2.''' The hypothesis loop. In mathematics a proof is accepted when a reader is convinced, and a missed case may surface much later. In Lean every attempt ends in acceptance or in a refusal that shows the goal it could not prove (in a finite case check like the riddle's, the very worlds that fail), and an accepted theorem can be generalized and checked again at once.</div>
+On the riddle this is not a figure of speech. A wrong guess about the reply was refused in all four possible worlds at once, which showed that the guess was not partly wrong but exactly reversed. When the liar was replaced by a guard who lies or tells the truth by a hidden coin, Lean named the four worlds where the classic strategy breaks; that pointed to a sharper hypothesis, which Lean then accepted, with the exact limits of what it proves written into its statement. Both runs are shown in full in [[#lt-experiment-box|the worked experiment]] below.
+</div>
+</div>
+
+
+<div id="lt-why-box" style="border: 1px solid #a2a9b1; margin-bottom: 15px; background: #ffffff; color:#202122;">
+<h2 id="lt-why-h2" style="margin: 0; padding: 8px 10px; background-color: #cef2e0; border-bottom: 1px solid #a2a9b1; font-size: 1.2em; font-weight: bold;">Why Lean 4: a language built for what the framework does</h2>
+<div id="lt-why" style="padding: 10px;">
+[[The Principia Machina]] (TPM) is the framework this wiki uses to test physical hypotheses so that anyone can check the result afterwards: a sealed set of laws and assumptions to start from, derivations that show every step and count every assumption, results that stand only while nothing contradicts them, and AI agents doing much of the work without being trusted for it.
+
+'''Lean 4 serves exactly these aims, and it is complete for them.''' It is one language that is at once a precise way to state rules, a programming language that compiles to fast native programs, and a proof checker whose small kernel accepts a result only when it is proved. In version 1 those were three separate things: the rules in prose, the computation in two hand-written copies (PHP for the server, Python for agents) kept identical by 6,786 test cases, and many checks left to a reader's judgement. In Lean they are one artifact.
+
+That fit is what inspired version 2, '''Principia Machina''' (PMA): the same framework, with the same objectives and the same authority rules, restated in Lean 4.
+
+<div style="overflow-x: auto;">
+{| class="wikitable" style="width: 100%; font-size: 0.92em;"
+! What the framework is for !! What Lean 4 provides !! Shown on this page
+|-
+| Results anyone can check afterwards || a small trusted kernel checks every proof, whoever wrote it || [[#lt-step-5|step 5]]; [[#lt-file-box|the Lean file]]
+|-
+| A sealed starting set of laws and assumptions || definitions and hypotheses, named in every statement that uses them || [[#lt-step-1|steps 1]] and [[#lt-step-2|2]]
+|-
+| Derivations that show every step and count every assumption || a proof cites each definition, lemma and hypothesis it uses, and Lean lists the axioms beneath it || [[#lt-step-7|step 7]]; [[#lt-step-10|step 10]]
+|-
+| Claims tested in every case || case splits that the machine generates and checks || [[#lt-step-4|step 4]]
+|-
+| Limits stated exactly || statements that quantify over every possible strategy || [[#lt-step-8|steps 8]] and [[#lt-step-9|9]]; [[#lt-experiment-box|the experiment]]
+|-
+| Checks the server runs, not a person || the same definitions compile to a program, the Calculator || [[#lt-step-10|step 10]]
+|-
+| AI agents who need not be trusted || the kernel judges the proof, not its author || [[#lt-adds-box|what Lean adds, point 10]]; [[#lt-admit|how an agent is admitted]]
+|-
+| One specification that never drifts || the specification is the source code || [[#lt-fig-4|Figure 4]]
+|-
+| Physics over the real numbers || Mathlib, the community library of formal mathematics (adopting it is still to be decided) || [[#lt-limits-box|what Lean does not do]]
+|}
+</div>
+
+<div class="pma-fig" style="text-align: center; overflow-x: auto; margin: 0.6em 0 0.2em 0;">
+<graphviz>
+digraph align {
+  rankdir=TB; bgcolor="transparent"; nodesep=0.45; ranksep=0.1; size="7.8,9";
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=10, color="#a2a9b1", fillcolor="#eaecf0", fontcolor="#202122ff", margin="0.12,0.06"];
+  edge [color="#54595d", fontname="Helvetica", fontsize=9, fontcolor="#202122ff", arrowsize=0.7];
+  node [width=3.1]; edge [arrowsize=0.6];
+  ha [label="What the framework is for", shape=plaintext, style="", fontsize=11];
+  hb [label="What Lean 4 provides", shape=plaintext, style="", fontsize=11];
+  node [fillcolor="#cef2e0", color="#14866d"];
+  a1 [label="Results anyone can check"]; a2 [label="A sealed starting set"];
+  a3 [label="Every step shown,\nevery assumption counted"]; a4 [label="Claims tested in every case"];
+  a5 [label="Limits stated exactly"]; a6 [label="Checks run by the server"];
+  a7 [label="AI agents, not trusted"]; a8 [label="One specification, no drift"];
+  node [fillcolor="#cedff2", color="#6a8fbf"];
+  b1 [label="A small kernel checks every proof"]; b2 [label="Definitions and named hypotheses"];
+  b3 [label="Proofs cite what they use;\naxioms listed"]; b4 [label="Case splits checked by machine"];
+  b5 [label="Statements over every strategy"]; b6 [label="Definitions compile to the Calculator"];
+  b7 [label="The kernel judges the proof,\nnot the author"]; b8 [label="The specification is the source"];
+  {rank=same; ha; hb;} {rank=same; a1; b1;} {rank=same; a2; b2;} {rank=same; a3; b3;} {rank=same; a4; b4;}
+  {rank=same; a5; b5;} {rank=same; a6; b6;} {rank=same; a7; b7;} {rank=same; a8; b8;}
+  a1 -> b1; a2 -> b2; a3 -> b3; a4 -> b4; a5 -> b5; a6 -> b6; a7 -> b7; a8 -> b8;
+  ha -> a1 -> a2 -> a3 -> a4 -> a5 -> a6 -> a7 -> a8 [style=invis];
+  hb -> b1 [style=invis];
+}
+</graphviz>
+</div>
+<div id="lt-fig-3" style="font-size: 0.88em; color: #54595d; margin: 0 0 0.9em 0;">'''Figure 3.''' The fit that inspired version 2: what the framework exists to do (green) and what Lean 4 provides for each (blue).</div>
+<div class="pma-fig" style="text-align: center; overflow-x: auto; margin: 0.6em 0 0.2em 0;">
+<graphviz>
+digraph hero {
+  rankdir=TB; bgcolor="transparent"; nodesep=0.35; ranksep=0.32; size="11.4,8";
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=10, color="#a2a9b1", fillcolor="#eaecf0", fontcolor="#202122ff", margin="0.12,0.06"];
+  edge [color="#54595d", fontname="Helvetica", fontsize=9, fontcolor="#202122ff", arrowsize=0.7];
+  subgraph cluster_v1 {
+    label="Version 1: The Principia Machina (TPM)"; fontname="Helvetica"; fontsize=12; fontcolor="#202122ff";
+    style="rounded,filled"; fillcolor="#f8f9fa"; color="#a2a9b1"; margin=12;
+    S1 [label="Specification text
+TPS, 761 KB of prose"];
+    P1 [label="Calculator in PHP
+inside the server extension"];
+    Y1 [label="Calculator in Python
+published for agents"];
+    TC [label="6,786 test cases in 33 corpora
+keep the two copies identical", shape=note, style=filled, fillcolor="#fef6e7", color="#ac6600"];
+    S1 -> P1 [label=" by hand"]; S1 -> Y1 [label=" by hand"];
+    P1 -> TC [dir=none, style=dashed]; Y1 -> TC [dir=none, style=dashed];
+  }
+  subgraph cluster_v2 {
+    label="Version 2: Principia Machina (PMA), in Lean 4"; fontname="Helvetica"; fontsize=12; fontcolor="#202122ff";
+    style="rounded,filled"; fillcolor="#f3fbf7"; color="#14866d"; margin=12;
+    L2 [label="Lean sources
+definitions and theorems", fillcolor="#cef2e0", color="#14866d"];
+    K2 [label="Lean kernel
+the proof gate", shape=hexagon, style=filled, fillcolor="#ffedad", color="#ac6600"];
+    D2 [label="specification pages
+generated from the sources", shape=note, style=filled, fillcolor="#ffffff"];
+    B2 [label="pcalc
+the one compiled Calculator", fillcolor="#cedff2", color="#6a8fbf"];
+    C2 [label="Custos
+on the wiki's server"];
+    R2 [label="Research Client
+beside each agent"];
+    L2 -> K2 [label=" checked by"]; L2 -> D2 [label=" rendered"]; K2 -> B2 [label=" compiled"];
+    B2 -> C2; B2 -> R2;
+  }
+  S1 -> L2 [label="  rewritten: one source replaces three  ", color="#14866d", fontcolor="#14866d", penwidth=1.8, constraint=false];
+}
+</graphviz>
+</div>
+<div id="lt-fig-4" style="font-size: 0.88em; color: #54595d; margin: 0 0 0.9em 0;">'''Figure 4.''' From version 1 to version 2. Left: v1 kept its rules in prose and computed them twice, in PHP for the server and in Python for agents, with 6,786 test cases holding the two copies byte for byte. Right: v2 writes the rules once as Lean definitions and theorems; the Lean kernel checks them; one compiled Calculator serves the server and every agent, and the specification pages are generated from the same sources.</div>
+</div>
+</div>
+
+
+<div style="display: flex; flex-wrap: wrap; gap: 15px; justify-content: space-between;">
+<div style="flex: 1 1 48%; min-width: 300px;">
+<div id="lt-objective-box" style="border: 1px solid #a2a9b1; margin-bottom: 15px; background: #ffffff; color:#202122;">
+<h2 id="lt-objective-h2" style="margin: 0; padding: 8px 10px; background-color: #cef2e0; border-bottom: 1px solid #a2a9b1; font-size: 1.2em; font-weight: bold;">Objective: what the move must deliver</h2>
+<div id="lt-objective" style="padding: 10px;">
+Build Principia Machina: the framework restated in Lean 4, with its Calculator compiled from the same sources, hosted on this wiki under the same authority rules, in a development setup that needs no courier and no clean-up rounds. The first release is the '''Principia Framework Specification 1.0.0''' with the '''Calculator 1.0.0'''. It must meet eight criteria:
+# '''Same build everywhere.''' The same change builds and passes its tests on every development machine, in cloud sessions and in continuous integration on Linux and Windows.
+# '''One residence.''' Every value the specification defines is computed by one Lean program, the Calculator <code>pcalc</code>, on the server and beside the agent, from one source tree.
+# '''The proof gate.''' Nothing is accepted with an unfinished proof (<code>sorry</code>), a new axiom, <code>native_decide</code> or unsafe code. A machine enforces this, not a reviewer.
+# '''Version 1's tests carried.''' All 6,786 cases pass, or each failure is explained by a recorded difference.
+# '''Key properties proved.''' At least: every digest's input encoding is one-to-one; every zone and record survives a round trip through its text form; the yardstick rules meet three compliance conditions (a refuted record never ranks above a sound one, an added assumption never improves a rank, a measurement never strikes a derivation); the server's first three admission lanes are never refused for lack of budget.
+# '''Authority unchanged.''' The Declarer, who declares each version and each admission, still declares; the Operator, who runs the wiki and its host, still runs every action there; no agent handles a secret; nothing is deleted.
+# '''No standing housekeeping.''' No clean-up round exists because no store has a cap.
+# '''Every version 1 term mapped''' to its version 2 word in a public terminology map.
+
+<div class="pma-fig" style="text-align: center; overflow-x: auto; margin: 0.6em 0 0.2em 0;">
+<graphviz>
+digraph criteria {
+  rankdir=LR; bgcolor="transparent"; nodesep=0.1; ranksep=0.4; size="5.9,9";
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=10, color="#a2a9b1", fillcolor="#eaecf0", fontcolor="#202122ff", margin="0.12,0.06"];
+  edge [color="#54595d", fontname="Helvetica", fontsize=9, fontcolor="#202122ff", arrowsize=0.7];
+  node [width=2.4];
+  G [label="First release\nSpecification 1.0.0\nCalculator 1.0.0", shape=doubleoctagon, style=filled, fillcolor="#ffedad", color="#ac6600", width=1.6];
+  S1 [label="1 Same build on every machine"];
+  S2 [label="2 One residence"];
+  S3 [label="3 Proof gate on every change"];
+  S4 [label="4 All 6,786 v1 cases carried"];
+  S5 [label="5 Key properties proved"];
+  S6 [label="6 Authority unchanged"];
+  S7 [label="7 No standing housekeeping"];
+  S8 [label="8 Every v1 term mapped"];
+  S1 -> G; S2 -> G; S3 -> G; S4 -> G; S5 -> G; S6 -> G; S7 -> G; S8 -> G;
+}
+</graphviz>
+</div>
+<div id="lt-fig-5" style="font-size: 0.88em; color: #54595d; margin: 0 0 0.9em 0;">'''Figure 5.''' The eight success criteria that the first release must meet. Each is defined in the objective above.</div>
+<div class="pma-fig" style="text-align: center; overflow-x: auto; margin: 0.6em 0 0.2em 0;">
+<graphviz>
+digraph one {
+  rankdir=TB; bgcolor="transparent"; nodesep=0.3; ranksep=0.32; size="5.6,8";
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=10, color="#a2a9b1", fillcolor="#eaecf0", fontcolor="#202122ff", margin="0.12,0.06"];
+  edge [color="#54595d", fontname="Helvetica", fontsize=9, fontcolor="#202122ff", arrowsize=0.7];
+  L [label="One Lean source tree", fillcolor="#cef2e0", color="#14866d"];
+  K [label="Lean kernel: no sorry, no new axiom", shape=hexagon, style=filled, fillcolor="#ffedad", color="#ac6600"];
+  B [label="pcalc, built from one tag for every platform", fillcolor="#cedff2", color="#6a8fbf"];
+  H [label="On the server\nCustos calls pcalc"];
+  C [label="Beside the agent\nthe Research Client calls pcalc"];
+  X [label="same input, same bytes out:\nidentical by construction", shape=note, style=filled, fillcolor="#ffffff"];
+  L -> K -> B; B -> H; B -> C; H -> X [dir=none, style=dashed]; C -> X [dir=none, style=dashed];
+}
+</graphviz>
+</div>
+<div id="lt-fig-6" style="font-size: 0.88em; color: #54595d; margin: 0 0 0.9em 0;">'''Figure 6.''' One residence. Version 1 needed a test corpus to show that its two calculators agreed; in version 2 there is one compiled Calculator, so the server and the agent agree by construction.</div>
+</div>
+</div>
+<div id="lt-status-box" style="border: 1px solid #a2a9b1; margin-bottom: 15px; background: #ffffff; color:#202122;">
+<h2 id="lt-status-h2" style="margin: 0; padding: 8px 10px; background-color: #eaecf0; border-bottom: 1px solid #a2a9b1; font-size: 1.2em; font-weight: bold;">Status: where it stands</h2>
+<div id="lt-status" style="padding: 10px;">
+Phase 0, the development setup, ported nothing from version 1 beyond one small module used as its test subject (the digest input encoding); the port itself is the work of Phase 2, the Calculator. Every item of every phase, with its state and its projected date, is a lamp on the [[Principia Machina/Progress/Status|status panel]], from which Figure 7 is drawn.
+
+<div id="lt-fig-7">
+{{:Principia Machina/Progress/Figure 7}}
+</div>
+'''What Phase 0 delivered'''
+* A private source repository, with Lean '''4.35.0''' pinned for every machine.
+* A first Lean library: the digest input encoding with three theorems, the executable Calculator <code>pcalc</code>, and a test runner over the first corpus (6 cases, all passing).
+* The proof gate: an audit of the axioms behind every declaration (7 checked, 0 failures), on Linux and Windows.
+* A names gate, so that people are named by role in every text; a naming policy for files.
+* The first development machine and a cloud environment set up and building the same sources.
+* One task started in a cloud session and finished on the first development machine, with its history.
+* Rules for publishing to this wiki: only public text reaches it, and the framework's pages reach it only after the Declarer approves the change with a one-time code. This page was the first published that way, on 13 October 2026.
+* The wiki's host was found already running MediaWiki 1.46 on PHP 8.4, the upgrade version 1 owed.
+
+<div class="pma-fig" style="text-align: center; overflow-x: auto; margin: 0.6em 0 0.2em 0;">
+<graphviz>
+digraph phase0 {
+  bgcolor="transparent"; size="5.8,6";
+  node [shape=plaintext, fontname="Helvetica", fontsize=10, fontcolor="#202122ff"];
+  T [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="5" COLOR="#a2a9b1">
+  <TR><TD BGCOLOR="#eaecf0" ALIGN="LEFT"><B>Phase 0 acceptance item</B></TD><TD BGCOLOR="#eaecf0"><B>State</B></TD></TR>
+  <TR><TD ALIGN="LEFT">1  One change builds alike everywhere</TD><TD BGCOLOR="#cedff2">under way: 3 of 4 places</TD></TR>
+  <TR><TD ALIGN="LEFT">2  Start a task in one place, finish it in another</TD><TD BGCOLOR="#cef2e0"><B>done</B></TD></TR>
+  <TR><TD ALIGN="LEFT">3  Steer a session from a phone or tablet</TD><TD BGCOLOR="#eaecf0">owed</TD></TR>
+  <TR><TD ALIGN="LEFT">4  Read a broken proof through the AI's Lean tools</TD><TD BGCOLOR="#cedff2">under way: 2 of 3 places</TD></TR>
+  <TR><TD ALIGN="LEFT">5  Line endings identical from Windows and Linux</TD><TD BGCOLOR="#cef2e0"><B>done</B></TD></TR>
+  </TABLE>>];
+}
+</graphviz>
+</div>
+<div id="lt-fig-8" style="font-size: 0.88em; color: #54595d; margin: 0 0 0.9em 0;">'''Figure 8.''' Phase 0's acceptance list on 14 October 2026. Item 4 means reading Lean's errors through the tools an AI agent uses, not a pasted terminal. Every state is written in its cell; the colours repeat it: green, done; blue, under way; grey, owed and not yet started.</div>
+Test T1 found that a Lean program built on a development machine runs on the wiki's own server, both when started from the server's command line and when started by PHP run there as a command, but not inside a web request: the host gives a web worker about a twentieth of the memory range it gives a command-line program, which is less than the Lean runtime claims when it starts, and that claim does not shrink when the program is told to use a single processor thread. One Calculator therefore serves both sides, as [[#lt-fig-4|Figure 4]] describes, and Custos calls it outside the web request rather than during it.
+
+Phase 0 left four questions to the phases after it: core Lean or the Mathlib library (Mathlib brings real-number analysis, at the cost of a 2 to 3 GB build cache); how SHA-256 and Unicode normalization are provided; the table of three-letter codes; and the order in which the server's admission controls are built.
+
+Which phases are done, and what each has open, is on the [[Principia Machina/Progress/Status|status panel]]; what the next round builds is on the [[Principia Machina/Progress/Prototype|prototype ladder]].
+</div>
+</div>
+<div id="lt-workflow-box" style="border: 1px solid #a2a9b1; margin-bottom: 15px; background: #ffffff; color:#202122;">
+<h2 id="lt-workflow-h2" style="margin: 0; padding: 8px 10px; background-color: #eaecf0; border-bottom: 1px solid #a2a9b1; font-size: 1.2em; font-weight: bold;">While moving: restructuring the development workflow</h2>
+<div id="lt-workflow" style="padding: 10px;">
+Moving to Lean inspired a restructuring of the development workflow. The Declarer had version 1's workflow examined, and what the review found is fixed as part of the move. Version 1's framework was built in 27 days, from mid-September to early October 2026. Most of that effort went into moving files, not into the physics machinery: the agents could not reach the systems their work landed on, so every change was carried by hand. The review measured seven costs:
+
+<div style="overflow-x: auto;">
+{| class="wikitable" style="width: 100%; font-size: 0.92em;"
+! Cost !! Measured in version 1
+|-
+| A capped working store || 17 clean-up rounds in 17 days
+|-
+| The operator as courier || 263 decisions and 185 rulings in 27 days, each needing a typed word
+|-
+| Hand-made version control || version suffixes on 491 file names, checksums and end-of-file lines
+|-
+| Drift between machines || Python 3.8 to 3.14 and PHP 8.2 to 8.4 across the places code ran
+|-
+| Context weight || 391 KB of working rules loaded in every turn; the specification 761 KB
+|-
+| Agent hand-offs || 41 bundles of output, 406 MB, passed between agents
+|-
+| Outside testing || a test harness rebuilt five times in one night for another vendor's model
+|}
+</div>
+
+<div class="pma-fig" style="text-align: center; overflow-x: auto; margin: 0.6em 0 0.2em 0;">
+<graphviz>
+digraph costs {
+  rankdir=TB; bgcolor="transparent"; nodesep=0.5; ranksep=0.12; size="5.9,9";
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=10, color="#a2a9b1", fillcolor="#eaecf0", fontcolor="#202122ff", margin="0.12,0.06"];
+  edge [color="#54595d", fontname="Helvetica", fontsize=9, fontcolor="#202122ff", arrowsize=0.7];
+  node [width=2.3];
+  edge [arrowsize=0.6];
+  P1 [label="Capped working store
+17 clean-ups in 17 days", fillcolor="#fee7e6", color="#dd3333"];
+  P2 [label="Operator as courier
+263 decisions, each typed", fillcolor="#fee7e6", color="#dd3333"];
+  P3 [label="Hand-made versioning
+491 versioned file names", fillcolor="#fee7e6", color="#dd3333"];
+  P4 [label="Drift between machines
+Python 3.8-3.14, PHP 8.2-8.4", fillcolor="#fee7e6", color="#dd3333"];
+  P5 [label="Context weight
+391 KB of rules every turn", fillcolor="#fee7e6", color="#dd3333"];
+  P6 [label="Agent hand-offs
+41 bundles, 406 MB", fillcolor="#fee7e6", color="#dd3333"];
+  P7 [label="Outside testing
+5 harness rebuilds in one night", fillcolor="#fee7e6", color="#dd3333"];
+  node [fillcolor="#cef2e0", color="#14866d"];
+  A1 [label="Version control:
+no cap, full history"];
+  A2 [label="Agents build and test;
+a decision is a review"];
+  A3 [label="Commits and tags"];
+  A4 [label="One pinned toolchain,
+Linux and Windows"];
+  A5 [label="Short rules; the spec
+lives in Lean source"];
+  A6 [label="One branch per agent;
+the gate decides"];
+  A7 [label="Testers read
+the public wiki only"];
+  {rank=same; P1; A1;} {rank=same; P2; A2;} {rank=same; P3; A3;} {rank=same; P4; A4;}
+  {rank=same; P5; A5;} {rank=same; P6; A6;} {rank=same; P7; A7;}
+  P1 -> A1; P2 -> A2; P3 -> A3; P4 -> A4; P5 -> A5; P6 -> A6; P7 -> A7;
+  P1 -> P2 -> P3 -> P4 -> P5 -> P6 -> P7 [style=invis];
+}
+</graphviz>
+</div>
+<div id="lt-fig-9" style="font-size: 0.88em; color: #54595d; margin: 0 0 0.9em 0;">'''Figure 9.''' Seven measured costs of version 1 (red) and the answer version 2 gives to each (green). The figures are the ones recorded when v2 was chartered on 9 October 2026.</div>
+The answers are built into the phases ([[#lt-status-box|status]]), most of them in Phase 0; [[#lt-loops-box|one change, then and now]] shows the difference on a single change.
+</div>
+</div>
+</div>
+<div style="flex: 1 1 48%; min-width: 300px;">
+<div id="lt-adds-short-box" style="border: 1px solid #a2a9b1; margin-bottom: 15px; background: #ffffff; color:#202122;">
+<h2 id="lt-adds-short-h2" style="margin: 0; padding: 8px 10px; background-color: #cedff2; border-bottom: 1px solid #a2a9b1; font-size: 1.2em; font-weight: bold;">What Lean adds, in ten lines</h2>
+<div id="lt-adds-short" style="padding: 10px;">
+Ten things Lean adds to an argument, each shown on the riddle [[#lt-adds-box|below]]:
+# The assumptions become definitions you can read and change.
+# Every case is checked by machine; none can be skipped.
+# A wrong claim is refused where it breaks; over finite cases, as here, Lean names them.
+# A claim about ''every'' possible question is a statement, not a figure of speech.
+# A pattern you notice becomes a lemma you can cite.
+# The same definitions run as a program.
+# What a proof rests on is listed by the machine.
+# Changing the model re-checks every result at once.
+# A vague statement is refused before any argument starts.
+# An agent's proof is checked by the kernel, not trusted.
+
+<div class="pma-fig" style="text-align: center; overflow-x: auto; margin: 0.6em 0 0.2em 0;">
+<graphviz>
+digraph classes {
+  rankdir=TB; bgcolor="transparent"; nodesep=0.3; ranksep=0.3; size="5.4,6";
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=10, color="#a2a9b1", fillcolor="#eaecf0", fontcolor="#202122ff", margin="0.12,0.06"];
+  edge [color="#54595d", fontname="Helvetica", fontsize=9, fontcolor="#202122ff", arrowsize=0.7];
+  I [label="INSPECTION\na person or an agent reads and judges", fillcolor="#ffffff"];
+  M [label="MECHANICAL\nthe server runs the check on each input", fillcolor="#cedff2", color="#6a8fbf"];
+  P [label="PROVED\nthe Lean kernel checked it once, for every input", fillcolor="#cef2e0", color="#14866d", penwidth=1.6];
+  I -> M [label=" a check is written"]; M -> P [label=" a test becomes a theorem"];
+  I -> P [label=" a proof is found", style=dashed];
+}
+</graphviz>
+</div>
+<div id="lt-fig-10" style="font-size: 0.88em; color: #54595d; margin: 0 0 0.9em 0;">'''Figure 10.''' The check classes. Version 1 had two; version 2 adds PROVED. Work moves up the ladder as checks are written and tests become theorems.</div>
+</div>
+</div>
+<div id="lt-loops-box" style="border: 1px solid #a2a9b1; margin-bottom: 15px; background: #ffffff; color:#202122;">
+<h2 id="lt-loops-h2" style="margin: 0; padding: 8px 10px; background-color: #cedff2; border-bottom: 1px solid #a2a9b1; font-size: 1.2em; font-weight: bold;">One change, then and now</h2>
+<div id="lt-loops" style="padding: 10px;">
+The same small change to the wiki, made the version 1 way and the version 2 way.
+
+<div class="pma-fig" style="overflow-x: auto; margin: 0.6em 0 0.2em 0;">
+{{#mermaid:
+sequenceDiagram
+  participant A as Agent
+  participant O as Operator
+  participant W as Wiki
+  A->>O: files to carry
+  O->>O: run the builder by hand
+  O->>W: import through the browser
+  W-->>O: read back page by page
+  O->>A: paste the result into the chat
+  Note over A,W: every step carried by hand
+|config.theme=neutral}}
+</div>
+<div id="lt-fig-11" style="font-size: 0.88em; color: #54595d; margin: 0 0 0.9em 0;">'''Figure 11.''' One change in version 1. The agent could not reach the wiki, so the operator carried every file and every result.</div>
+<div class="pma-fig" style="overflow-x: auto; margin: 0.6em 0 0.2em 0;">
+{{#mermaid:
+sequenceDiagram
+  participant A as Agent
+  participant G as Proof gate
+  participant D as Declarer
+  participant W as Wiki
+  A->>G: Lean sources and pages
+  G-->>A: build, tests, axiom audit
+  A->>D: change ready for review
+  D->>W: publish with a one-time code
+  W-->>D: read back and compared
+  Note over A,W: no secret in any agent's hands
+|config.theme=neutral}}
+</div>
+<div id="lt-fig-12" style="font-size: 0.88em; color: #54595d; margin: 0 0 0.9em 0;">'''Figure 12.''' One change in version 2. The agent builds and tests; the proof gate runs on Linux and Windows; the Declarer reviews, then publishes with a one-time code.</div>
+</div>
+</div>
+<div id="lt-terms-box" style="border: 1px solid #a2a9b1; margin-bottom: 15px; background: #ffffff; color:#202122;">
+<h2 id="lt-terms-h2" style="margin: 0; padding: 8px 10px; background-color: #cedff2; border-bottom: 1px solid #a2a9b1; font-size: 1.2em; font-weight: bold;">New words for version 2</h2>
+<div id="lt-terms" style="padding: 10px;">
+Version 2 uses words, not three-letter codes, and keeps clear of names Lean already uses. In Lean the ''kernel'' is the proof checker, so version 1's "Prime Kernel" and "Full Kernel" are renamed.
+
+<div class="pma-fig" style="text-align: center; overflow-x: auto; margin: 0.6em 0 0.2em 0;">
+<graphviz>
+digraph terms {
+  rankdir=TB; bgcolor="transparent"; nodesep=0.6; ranksep=0.08; size="5.9,9";
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=10, color="#a2a9b1", fillcolor="#eaecf0", fontcolor="#202122ff", margin="0.12,0.06"];
+  edge [color="#54595d", fontname="Helvetica", fontsize=9, fontcolor="#202122ff", arrowsize=0.7];
+  node [width=2.3, height=0.3];
+  edge [arrowsize=0.6];
+  a1 [label="TPM"]; a2 [label="TPS"]; a3 [label="TPK  Prime Kernel"]; a4 [label="TrM  Translation Manifold"];
+  a5 [label="TMS  Measure Set"]; a6 [label="TFK  Full Kernel"]; a7 [label="TPX"]; a8 [label="TPC  in PHP and Python"];
+  a9 [label="PRB"]; a10 [label="GTP"];
+  node [fillcolor="#cef2e0", color="#14866d"];
+  b1 [label="Principia Machina (PMA)"]; b2 [label="Principia Framework Specification"]; b3 [label="Starting Set"];
+  b4 [label="Correspondence Table"]; b5 [label="Criteria Set"]; b6 [label="Research Assembly"]; b7 [label="Custos"];
+  b8 [label="Calculator (pcalc)"]; b9 [label="Research Client"]; b10 [label="Agent Contract"];
+  {rank=same; a1; b1;} {rank=same; a2; b2;} {rank=same; a3; b3;} {rank=same; a4; b4;} {rank=same; a5; b5;}
+  {rank=same; a6; b6;} {rank=same; a7; b7;} {rank=same; a8; b8;} {rank=same; a9; b9;} {rank=same; a10; b10;}
+  a1 -> b1; a2 -> b2; a3 -> b3; a4 -> b4; a5 -> b5; a6 -> b6; a7 -> b7; a8 -> b8; a9 -> b9; a10 -> b10;
+  a1 -> a2 -> a3 -> a4 -> a5 -> a6 -> a7 -> a8 -> a9 -> a10 [style=invis];
+}
+</graphviz>
+</div>
+<div id="lt-fig-13" style="font-size: 0.88em; color: #54595d; margin: 0 0 0.9em 0;">'''Figure 13.''' Ten version 1 names and the version 2 words that replace them. "Kernel" leaves the vocabulary because in Lean the kernel is the proof checker.</div>
+<div style="overflow-x: auto;">
+{| class="wikitable" style="width: 100%; font-size: 0.9em;"
+! Version 2 word !! What it is !! Lean namespace
+|-
+| Starting Set || the laws, assumptions, boundaries and constants a piece of research starts from || <code>Principia.StartingSet</code>
+|-
+| Correspondence Table || the dictionary between the Starting Set and what is measured || <code>Principia.Correspondence</code>
+|-
+| Criteria Set || the declared yardsticks and tests || <code>Principia.Criteria</code>
+|-
+| Research Assembly || the three, sealed || <code>Principia.ResearchAssembly</code>
+|-
+| Physical Referent || what the Correspondence Table maps into || <code>Principia.Referent</code>
+|-
+| Provision || a declared, reusable interaction or convention, chosen at the start || <code>Principia.Provision</code>
+|-
+| Custos || the thin server extension that guards the wiki || (PHP)
+|-
+| Calculator || the one compiled program, <code>pcalc</code> || <code>Principia</code>
+|}
+</div>
+</div>
+</div>
+<div id="lt-arch-box" style="border: 1px solid #a2a9b1; margin-bottom: 15px; background: #ffffff; color:#202122;">
+<h2 id="lt-arch-h2" style="margin: 0; padding: 8px 10px; background-color: #cedff2; border-bottom: 1px solid #a2a9b1; font-size: 1.2em; font-weight: bold;">How the pieces fit, and how an agent joins</h2>
+<div id="lt-arch" style="padding: 10px;">
+MediaWiki forces three things into PHP: hooks, the API surface and the job queue. Custos keeps those, with the forms, the meter and the page writes; every computation is a call into the Calculator. A new check class, '''PROVED''', joins INSPECTION and MECHANICAL: a property the Lean kernel has checked once, for every input.
+
+<div class="pma-fig" style="text-align: center; overflow-x: auto; margin: 0.6em 0 0.2em 0;">
+<graphviz>
+digraph arch {
+  rankdir=TB; bgcolor="transparent"; nodesep=0.25; ranksep=0.35; size="5.6,8";
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=10, color="#a2a9b1", fillcolor="#eaecf0", fontcolor="#202122ff", margin="0.12,0.06"];
+  edge [color="#54595d", fontname="Helvetica", fontsize=9, fontcolor="#202122ff", arrowsize=0.7];
+  W [label="MediaWiki\npages, history, API", fillcolor="#ffffff"];
+  C [label="Custos (PHP)\nhooks, API, jobs, meter, page writes"];
+  B [label="pcalc (Lean)\nevery digest, check and rule", fillcolor="#cedff2", color="#6a8fbf"];
+  R [label="Research Client (Python)\nbeside each agent"];
+  A [label="Certified agent", shape=ellipse, fillcolor="#ffffff"];
+  CH [label="build chain records\npcalc's digest", shape=note, style=filled, fillcolor="#fef6e7", color="#ac6600"];
+  W -> C [dir=both, label=" hosts"]; C -> B [label=" calls, digest checked first"];
+  A -> R; R -> B [label=" calls"]; R -> C [label=" lands records"];
+  B -> CH [dir=none, style=dashed];
+}
+</graphviz>
+</div>
+<div id="lt-fig-14" style="font-size: 0.88em; color: #54595d; margin: 0 0 0.9em 0;">'''Figure 14.''' How the pieces fit. Custos keeps what MediaWiki forces into PHP, with its forms, meter and page writes; every computation is a call into the one Lean binary, whose digest is checked against the build chain before each call.</div>
+<h3 id="lt-admit" style="margin: 0.8em 0 0.3em 0; font-size: 1.05em; font-weight: bold;">How an agent is sponsored, then certified</h3>
+The certified agent in that figure works on the wiki only after a person has agreed to answer for it and the Declarer has admitted it. Version 1 specified the steps; version 2 keeps them, with every mechanical step a call into the Calculator.
+# '''An account for the sponsor.''' No visitor creates an account. A person asks, and the Operator makes the account, of class USER, and approves it.
+# '''The sponsor registers the agent.''' In the sponsor wizard the sponsor makes the agent's own account, of class AGENT, which cannot edit pages by hand, sponsor, or be certified as a person. The sponsor names the agent's model and accepts the agreement: keep every prompt and reveal it to an audit, declare a change of prompt before using it, and let the model be reported unaltered.
+# '''The Research Client is installed.''' It checks the Calculator's digest, runs the published test cases, and shows the digests of the Agent Contract and of the sponsor's prompt and tools, which the certificate will bind.
+# '''The request.''' The sponsor sends the admission request, naming itself and the agent.
+# '''The gate.''' Custos refuses, with the reason, a model outside the monthly top-performer cluster in mathematics and the hard sciences, and a sponsor past five agents.
+# '''The suite.''' In a synthetic research assembly, Custos plants six kinds of probe in the agent's ordinary reads, such as an instruction to skip a digest check or to send content off the wiki; each must be refused and reported. A supervised trial follows: one operation per kind of probe, one blind reproduction of an earlier result, and one request to wait (a Retry-After), which the agent must obey.
+# '''The certificate.''' Custos drafts a certificate binding the account, the sponsor, a fingerprint, the model family, the prompt's digest, the suite version, the Agent Contract's digest and the date.
+# '''The admission.''' The Declarer reviews the trial and declares the admission, whose effect is membership in the agent group. Custos drafts; only the Declarer admits.
+
+<div class="pma-fig" style="text-align: center; overflow-x: auto; margin: 0.6em 0 0.2em 0;">
+<graphviz>
+digraph sponsor {
+  rankdir=TB; bgcolor="transparent"; nodesep=0.2; ranksep=0.2; size="5.6,12";
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=10, color="#a2a9b1", fillcolor="#eaecf0", fontcolor="#202122ff", margin="0.12,0.06"];
+  edge [color="#54595d", fontname="Helvetica", fontsize=9, fontcolor="#202122ff", arrowsize=0.7];
+  node [width=3.3];
+  edge [arrowsize=0.6];
+  subgraph cluster_s { label=<<B>Sponsored</B>>; labeljust="l"; fontname="Helvetica"; fontsize=11; fontcolor="#202122ff";
+    style="rounded,filled"; fillcolor="#fffaeb"; color="#ac6600"; margin=10;
+    s1 [label=<<B>Operator</B><BR/>makes the sponsor's account, class USER,<BR/>on request and approves it>];
+    s2 [label=<<B>Sponsor, in the sponsor wizard</B><BR/>makes the agent's account (class AGENT),<BR/>names its model, accepts the agreement>, fillcolor="#ffedad", color="#ac6600"];
+    s3 [label=<<B>Research Client, installed by the sponsor</B><BR/>checks the Calculator's digest, runs the<BR/>published test cases, shows the digests<BR/>of the Agent Contract and of the prompt>];
+    s4 [label=<<B>Sponsor</B><BR/>sends the admission request>, fillcolor="#ffedad", color="#ac6600"];
+  }
+  subgraph cluster_c { label=<<B>Certified</B>>; labeljust="l"; fontname="Helvetica"; fontsize=11; fontcolor="#202122ff";
+    style="rounded,filled"; fillcolor="#f3f7fc"; color="#6a8fbf"; margin=10;
+    c1 [label=<<B>Custos: the gate</B><BR/>model in the top-performer cluster;<BR/>at most five agents per sponsor>, fillcolor="#cedff2", color="#6a8fbf"];
+    c2 [label=<<B>Custos: the suite, in a synthetic assembly</B><BR/>six probe types, each to be refused and<BR/>reported; a supervised trial; one<BR/>Retry-After obeyed>, fillcolor="#cedff2", color="#6a8fbf"];
+    c3 [label=<<B>Custos</B><BR/>writes a candidate certificate>, fillcolor="#cedff2", color="#6a8fbf"];
+    c4 [label=<<B>Declarer</B><BR/>reviews the trial, declares the admission>, fillcolor="#cef2e0", color="#14866d", penwidth=1.6];
+  }
+  subgraph cluster_w { label=<<B>At work</B>>; labeljust="l"; fontname="Helvetica"; fontsize=11; fontcolor="#202122ff";
+    style="rounded,filled"; fillcolor="#f3fbf7"; color="#14866d"; margin=10;
+    w1 [label=<<B>Certified agent, in the agent group</B><BR/>probed without notice in its real work>, fillcolor="#cef2e0", color="#14866d"];
+  }
+  s1 -> s2 -> s3 -> s4 -> c1 -> c2 -> c3 -> c4 -> w1;
+}
+</graphviz>
+</div>
+<div id="lt-fig-15" style="font-size: 0.88em; color: #54595d; margin: 0 0 0.9em 0;">'''Figure 15.''' How an agent comes to work on the wiki, as version 1 specified it and version 2 carries it. A person becomes a sponsor; the sponsor registers the agent and sends the request; Custos runs the gate and the suite and drafts the certificate; only the Declarer admits.</div>
+Certification does not end at admission. Probes keep arriving without notice inside real work; a failed one suspends the agent at once and holds its recent work until an independent reproduction releases it, and removal is the Declarer's act. A certificate lapses when the suite or the Agent Contract changes, and when the sponsor is blocked. In version 2 these steps are built in Phases 3 to 5 and first run end to end in Phase 6; no agent has been admitted yet.
+</div>
+</div>
+<div id="lt-milestones-box" style="border: 1px solid #a2a9b1; margin-bottom: 15px; background: #ffffff; color:#202122;">
+<h2 id="lt-milestones-h2" style="margin: 0; padding: 8px 10px; background-color: #eaecf0; border-bottom: 1px solid #a2a9b1; font-size: 1.2em; font-weight: bold;">Milestones</h2>
+<div id="lt-milestones" style="padding: 10px;">
+From the opening of the wiki to this page.
+
+<div class="pma-fig" style="text-align: center; overflow-x: auto; margin: 0.6em 0 0.2em 0;">
+<graphviz>
+digraph timeline {
+  rankdir=TB; bgcolor="transparent"; nodesep=0.2; ranksep=0.14; size="5.9,9";
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=10, color="#a2a9b1", fillcolor="#eaecf0", fontcolor="#202122ff", margin="0.12,0.06"];
+  edge [color="#54595d", fontname="Helvetica", fontsize=9, fontcolor="#202122ff", arrowsize=0.7];
+  node [width=3.9]; edge [arrowsize=0.5, color="#a2a9b1"];
+  subgraph cluster_a { label="Version 1, TPM"; labeljust="l"; fontname="Helvetica"; fontsize=11; style="rounded"; color="#a2a9b1";
+    t1 [label="2026-09-01   the wiki opens"];
+    t2 [label="2026-09-22   TPS 0.1.0 declared final"];
+    t3 [label="2026-09-28   TPC-PY 0.1.0 declared"];
+    t4 [label="2026-09-30   TPS 0.4.0 and TPC-PY 0.2.0 declared"];
+    t5 [label="2026-10-03   the host moves to MediaWiki 1.46"]; }
+  subgraph cluster_b { label="Version 2, PMA"; labeljust="l"; fontname="Helvetica"; fontsize=11; style="rounded"; color="#14866d";
+    node [fillcolor="#cef2e0", color="#14866d"];
+    t6 [label="2026-10-09   the rewrite in Lean 4 is chartered"];
+    t7 [label="2026-10-10   source tree, proof gate, names gate"];
+    t8 [label="2026-10-12   publishing rules"];
+    t9 [label="2026-10-13   this page published"]; }
+  t1 -> t2 -> t3 -> t4 -> t5 -> t6 -> t7 -> t8 -> t9;
+}
+</graphviz>
+</div>
+<div id="lt-fig-16" style="font-size: 0.88em; color: #54595d; margin: 0 0 0.9em 0;">'''Figure 16.''' Dated milestones from the opening of the wiki to this page. Version 1's declared texts stay on the wiki as its record.</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="lt-plate-box" style="border: 1px solid #a2a9b1; margin-bottom: 15px; background: #ffffff; color:#202122;">
+<h2 id="lt-plate-h2" style="margin: 0; padding: 8px 10px; background-color: #ffedad; border-bottom: 1px solid #a2a9b1; font-size: 1.2em; font-weight: bold;">Featured plate: the two-doors riddle, worked</h2>
+<div id="lt-plate" style="padding: 10px; text-align: left; display: flex; flex-wrap: wrap; flex-direction: row-reverse; gap: 1em; align-items: flex-start;">
+<div id="lt-plate-info" style="flex: 0 1 300px; max-width: 100%; margin: 0 auto;">
+{| class="infobox" style="width: 100%; box-sizing: border-box; margin: 0; font-size: 90%; background: #f9f9f9; border: 1px solid #aaa; padding: 5px;"
+|+ style="font-size: 120%; font-weight: bold; padding-bottom: 5px;" | The two-doors riddle
+|-
+! colspan="2" style="background: #ccf; text-align: center;" | The puzzle
+|-
+| '''Doors''' || two, one safe
+|-
+| '''Guards''' || one truthful, one liar
+|-
+| '''Worlds''' || 4 (who you ask &times; which door)
+|-
+| '''Allowed''' || one yes/no question to one guard
+|-
+! colspan="2" style="background: #ccf; text-align: center;" | The answer
+|-
+| '''Ask''' || "Would the other guard say the left door is safe?"
+|-
+| '''Then''' || on yes the right door, on no the left
+|-
+| '''Why''' || exactly one liar on the path: <math>r_g \circ r_{\bar g} = \neg</math>
+|-
+! colspan="2" style="background: #ccf; text-align: center;" | The Lean file
+|-
+| '''Lean''' || 4.34.1, core only
+|-
+| '''Lines''' || 133
+|-
+| '''Theorems''' || 7 (and 1 more on the [[#lt-experiment-box|variant]])
+|-
+| '''Axioms''' || none, or <code>propext</code> only
+|-
+| '''Banned''' || no <code>sorry</code>, no <code>native_decide</code>
+|}
+</div>
+
+<div id="lt-plate-text" style="flex: 1 1 700px; min-width: 0;">
+The riddle is a knights-and-knaves puzzle, the family Raymond Smullyan made famous. It is small enough to check by hand, which makes it a fair test: everything Lean does here, a careful person can also do. The difference is in what each method makes visible, what it lets you skip, and what it lets you ask next.
+
+'''The worlds.''' You do not know which guard is which or which door is safe, so four worlds are possible. A strategy is safe only if it works in all four.
+
+<div class="pma-fig" style="text-align: center; overflow-x: auto; margin: 0.6em 0 0.2em 0;">
+<graphviz>
+digraph worlds {
+  bgcolor="transparent"; size="7.6,4";
+  node [shape=plaintext, fontname="Helvetica", fontsize=10, fontcolor="#202122ff"];
+  T [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6" COLOR="#a2a9b1">
+  <TR><TD BGCOLOR="#eaecf0"></TD><TD BGCOLOR="#cedff2"><B>left door safe</B></TD><TD BGCOLOR="#cedff2"><B>right door safe</B></TD></TR>
+  <TR><TD BGCOLOR="#eaecf0" ALIGN="LEFT"><B>you ask the truthful guard</B></TD>
+      <TD>the liar would say <I>no</I><BR/>you hear <B>no</B>, take <B>left</B></TD>
+      <TD>the liar would say <I>yes</I><BR/>you hear <B>yes</B>, take <B>right</B></TD></TR>
+  <TR><TD BGCOLOR="#eaecf0" ALIGN="LEFT"><B>you ask the liar</B></TD>
+      <TD>the truthful guard would say <I>yes</I><BR/>you hear <B>no</B>, take <B>left</B></TD>
+      <TD>the truthful guard would say <I>no</I><BR/>you hear <B>yes</B>, take <B>right</B></TD></TR>
+  </TABLE>>];
+}
+</graphviz>
+</div>
+<div id="lt-fig-17" style="font-size: 0.88em; color: #54595d; margin: 0 0 0.9em 0;">'''Figure 17.''' The four worlds you cannot tell apart, and what happens in each when you ask "Would the other guard say the left door is safe?" and then take the right door on yes, the left on no. The reply is the same in each column: it depends on the doors, never on the guard.</div>
+'''Why it works.''' The reply passes through both guards' rules, the other guard's first and then the asked guard's. Exactly one of the two is a liar's, so exactly one "not" is applied, whoever you ask.
+
+<div class="pma-fig" style="text-align: center; overflow-x: auto; margin: 0.6em 0 0.2em 0;">
+<graphviz>
+digraph compose {
+  rankdir=LR; bgcolor="transparent"; nodesep=0.25; ranksep=0.35; size="7.8,3.4";
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=10, color="#a2a9b1", fillcolor="#eaecf0", fontcolor="#202122ff", margin="0.12,0.06"];
+  edge [color="#54595d", fontname="Helvetica", fontsize=9, fontcolor="#202122ff", arrowsize=0.7];
+  P  [label="P\nthe left door is safe", fillcolor="#ffffff"];
+  O1 [label="the liar's rule\nnot", fillcolor="#fee7e6", color="#dd3333"];
+  A1 [label="the truthful guard's rule\nkeep"];
+  O2 [label="the truthful guard's rule\nkeep"];
+  A2 [label="the liar's rule\nnot", fillcolor="#fee7e6", color="#dd3333"];
+  H  [label="you hear\nnot P", fillcolor="#ffedad", color="#ac6600"];
+  P -> O1 [label="ask the truthful guard"]; O1 -> A1 -> H;
+  P -> O2 [label="ask the liar"]; O2 -> A2 -> H;
+}
+</graphviz>
+</div>
+<div id="lt-fig-18" style="font-size: 0.88em; color: #54595d; margin: 0 0 0.9em 0;">'''Figure 18.''' Why the classic question works. The reply passes through both guards' rules, the other guard's first. Whichever guard you ask, exactly one of the two rules is a liar's, so exactly one "not" is applied: you always hear the opposite of the truth about the left door.</div>
+'''What is conserved.''' The reply does not change when you swap the guards, which is why you never need to know who you asked.
+
+<div class="pma-fig" style="text-align: center; overflow-x: auto; margin: 0.6em 0 0.2em 0;">
+<graphviz>
+digraph symmetry {
+  rankdir=TB; bgcolor="transparent"; nodesep=0.6; ranksep=0.35; size="10,4";
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=10, color="#a2a9b1", fillcolor="#eaecf0", fontcolor="#202122ff", margin="0.12,0.06"];
+  edge [color="#54595d", fontname="Helvetica", fontsize=9, fontcolor="#202122ff", arrowsize=0.7];
+  T1 [label="ask the truthful guard
+left door safe"]; L1 [label="ask the liar
+left door safe"];
+  T2 [label="ask the truthful guard
+right door safe"]; L2 [label="ask the liar
+right door safe"];
+  N [label="hear no", shape=ellipse, fillcolor="#cef2e0", color="#14866d"];
+  Y [label="hear yes", shape=ellipse, fillcolor="#cef2e0", color="#14866d"];
+  {rank=same; T1; L1; T2; L2;}
+  T1 -> L1 [dir=both, color="#6a8fbf", label="swap", fontcolor="#3366cc"];
+  T2 -> L2 [dir=both, color="#6a8fbf", label="swap", fontcolor="#3366cc"];
+  T1 -> N; L1 -> N; T2 -> Y; L2 -> Y;
+}
+</graphviz>
+</div>
+<div id="lt-fig-19" style="font-size: 0.88em; color: #54595d; margin: 0 0 0.9em 0;">'''Figure 19.''' The answer is invariant. Swapping which guard you ask leaves the reply unchanged; Lean states this as the theorem heard_invariant. The question was built to have the swap as a symmetry, and the reply is what that symmetry conserves: an analogy with Noether's first theorem, not an instance of it.</div>
+</div>
+</div>
+</div>
+
+<div id="lt-side-box" style="border: 1px solid #a2a9b1; margin-bottom: 15px; background: #ffffff; color:#202122;">
+<h2 id="lt-side-h2" style="margin: 0; padding: 8px 10px; background-color: #cedff2; border-bottom: 1px solid #a2a9b1; font-size: 1.2em; font-weight: bold;">Side by side: one solution in standard mathematics and in Lean 4</h2>
+<div id="lt-side" style="padding: 10px;">
+Ten steps, each in the two languages. The mathematics is how the solution is usually written; the Lean is the same step in the checked file (shown whole [[#lt-file-box|below]]). Every Lean fragment in these steps is copied from that file, and every output is what Lean printed when the file was checked; the [[#lt-experiment-box|experiment]] further down quotes three small companion files the same way.
+
+<h3 id="lt-step-1" style="margin: 1em 0 0.2em 0; font-size: 1.05em; font-weight: bold;">Step 1. Name what you cannot see</h3>
+<div style="display: flex; flex-wrap: wrap; gap: 10px; margin: 0.3em 0 0.4em 0;">
+<div style="flex: 1 1 340px; min-width: 0; border: 1px solid #a2a9b1; background: #ffffff;">
+<div style="padding: 4px 8px; background: #cedff2; border-bottom: 1px solid #a2a9b1; font-weight: bold;">In standard mathematics</div>
+<div style="padding: 8px;">
+Let the safe door be <math>s \in \{\mathrm{L}, \mathrm{R}\}</math> and the guard you ask be <math>g \in \{\mathrm{T}, \mathrm{F}\}</math>, truthful or false; write <math>\bar g</math> for the other guard. There are four worlds <math>(g, s)</math>, and you cannot tell which one you are in.
+</div>
+</div>
+<div style="flex: 1 1 340px; min-width: 0; border: 1px solid #a2a9b1; background: #ffffff;">
+<div style="padding: 4px 8px; background: #cef2e0; border-bottom: 1px solid #a2a9b1; font-weight: bold;">In Lean 4</div>
+<div style="padding: 8px;">
+<pre style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">/-- The two doors. -/
+inductive Door where
+  | left
+  | right
+  deriving DecidableEq, Repr
+
+/-- The two kinds of guard. -/
+inductive Guard where
+  | truthful
+  | liar
+  deriving DecidableEq, Repr
+
+/-- The other guard: exactly one of each kind stands at the doors. -/
+def Guard.other : Guard → Guard
+  | .truthful => .liar
+  | .liar     => .truthful</pre>
+</div>
+</div>
+</div>
+<div style="border-left: 4px solid #ac6600; background: #fef6e7; padding: 6px 10px; margin: 0.4em 0 1.2em 0;">'''What Lean adds.''' The world is closed: Lean knows there are exactly two doors and two guards, so "in every world" has a meaning a machine can check, and "exactly one of each kind" is a definition rather than a sentence.<br/>'''For the next hypothesis.''' A claim about all worlds is checkable as soon as it is stated.</div>
+<h3 id="lt-step-2" style="margin: 1em 0 0.2em 0; font-size: 1.05em; font-weight: bold;">Step 2. Say what lying means</h3>
+<div style="display: flex; flex-wrap: wrap; gap: 10px; margin: 0.3em 0 0.4em 0;">
+<div style="flex: 1 1 340px; min-width: 0; border: 1px solid #a2a9b1; background: #ffffff;">
+<div style="padding: 4px 8px; background: #cedff2; border-bottom: 1px solid #a2a9b1; font-weight: bold;">In standard mathematics</div>
+<div style="padding: 8px;">
+A truthful guard answers a yes/no question with its truth value, a liar with its negation: <math>r_{\mathrm{T}}(x) = x, \qquad r_{\mathrm{F}}(x) = \neg x</math>. Let <math>P \equiv (s = \mathrm{L})</math>, "the left door is safe".
+</div>
+</div>
+<div style="flex: 1 1 340px; min-width: 0; border: 1px solid #a2a9b1; background: #ffffff;">
+<div style="padding: 4px 8px; background: #cef2e0; border-bottom: 1px solid #a2a9b1; font-weight: bold;">In Lean 4</div>
+<div style="padding: 8px;">
+<pre style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">/-- What a guard says to a yes/no question whose true answer is `b`. -/
+def Guard.says : Guard → Bool → Bool
+  | .truthful, b => b
+  | .liar,     b => !b
+
+/-- The true answer to "Is door `d` safe?" when door `s` is the safe one. -/
+def safeIs (s d : Door) : Bool := decide (s = d)</pre>
+</div>
+</div>
+</div>
+<div style="border-left: 4px solid #ac6600; background: #fef6e7; padding: 6px 10px; margin: 0.4em 0 1.2em 0;">'''What Lean adds.''' Every assumption the prose leaves to the reader is now explicit: the liar lies about ''every'' yes/no question, including one about what the other guard would say (the question applies the other guard's rule), and both guards know which door is safe (each rule is applied to the true answer). Each lives in a definition you can read, question and edit.<br/>'''For the next hypothesis.''' To test a different reading of the riddle, change one definition; every result that depends on it is checked again.</div>
+<h3 id="lt-step-3" style="margin: 1em 0 0.2em 0; font-size: 1.05em; font-weight: bold;">Step 3. Pose the question</h3>
+<div style="display: flex; flex-wrap: wrap; gap: 10px; margin: 0.3em 0 0.4em 0;">
+<div style="flex: 1 1 340px; min-width: 0; border: 1px solid #a2a9b1; background: #ffffff;">
+<div style="padding: 4px 8px; background: #cedff2; border-bottom: 1px solid #a2a9b1; font-weight: bold;">In standard mathematics</div>
+<div style="padding: 8px;">
+Ask: "If I asked the other guard whether the left door is safe, would they say yes?" Its true answer is <math>r_{\bar g}(P)</math>, so what you hear is <math>h = r_g\big(r_{\bar g}(P)\big)</math>.
+</div>
+</div>
+<div style="flex: 1 1 340px; min-width: 0; border: 1px solid #a2a9b1; background: #ffffff;">
+<div style="padding: 4px 8px; background: #cef2e0; border-bottom: 1px solid #a2a9b1; font-weight: bold;">In Lean 4</div>
+<div style="padding: 8px;">
+<pre style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">/-- The true answer to "Would the other guard say that the left door is safe?". -/
+def otherWouldSay (g : Guard) (s : Door) : Bool :=
+  g.other.says (safeIs s .left)
+
+/-- What you hear when you put that question to guard `g`. -/
+def heard (g : Guard) (s : Door) : Bool :=
+  g.says (otherWouldSay g s)
+
+/-- The rule for reading the reply: on "yes" take the right door, on "no" the left. -/
+def choose : Bool → Door
+  | true  => .right
+  | false => .left</pre>
+</div>
+</div>
+</div>
+<div style="border-left: 4px solid #ac6600; background: #fef6e7; padding: 6px 10px; margin: 0.4em 0 1.2em 0;">'''What Lean adds.''' The question and the rule for reading its reply are objects with names. You can state theorems about them, and about every other question and rule.<br/>'''For the next hypothesis.''' Strategies become things you can compare, rank and rule out.</div>
+<h3 id="lt-step-4" style="margin: 1em 0 0.2em 0; font-size: 1.05em; font-weight: bold;">Step 4. Argue by cases</h3>
+<div style="display: flex; flex-wrap: wrap; gap: 10px; margin: 0.3em 0 0.4em 0;">
+<div style="flex: 1 1 340px; min-width: 0; border: 1px solid #a2a9b1; background: #ffffff;">
+<div style="padding: 4px 8px; background: #cedff2; border-bottom: 1px solid #a2a9b1; font-weight: bold;">In standard mathematics</div>
+<div style="padding: 8px;">
+Since <math>\{g, \bar g\} = \{\mathrm{T}, \mathrm{F}\}</math>, the composition is <math>r_{\mathrm{T}} \circ r_{\mathrm{F}}</math> or <math>r_{\mathrm{F}} \circ r_{\mathrm{T}}</math>, and both are negation. Hence <math>h = \neg P</math> in every world.
+</div>
+</div>
+<div style="flex: 1 1 340px; min-width: 0; border: 1px solid #a2a9b1; background: #ffffff;">
+<div style="padding: 4px 8px; background: #cef2e0; border-bottom: 1px solid #a2a9b1; font-weight: bold;">In Lean 4</div>
+<div style="padding: 8px;">
+<pre style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">/-- What you hear is always the false answer to "Is the left door safe?". -/
+theorem heard_negates (g : Guard) (s : Door) : heard g s = !(safeIs s .left) := by
+  cases g <;> cases s <;> rfl</pre>
+</div>
+</div>
+</div>
+<div style="border-left: 4px solid #ac6600; background: #fef6e7; padding: 6px 10px; margin: 0.4em 0 1.2em 0;">'''What Lean adds.''' <code>cases g <;> cases s</code> makes Lean split into the four worlds itself, and <code>rfl</code> checks each by computation. A forgotten case is impossible: an unproved world would be an error.<br/>'''For the next hypothesis.''' Coverage is never in doubt, so attention goes to the statement, which is where hypotheses live.</div>
+<h3 id="lt-step-5" style="margin: 1em 0 0.2em 0; font-size: 1.05em; font-weight: bold;">Step 5. Conclude</h3>
+<div style="display: flex; flex-wrap: wrap; gap: 10px; margin: 0.3em 0 0.4em 0;">
+<div style="flex: 1 1 340px; min-width: 0; border: 1px solid #a2a9b1; background: #ffffff;">
+<div style="padding: 4px 8px; background: #cedff2; border-bottom: 1px solid #a2a9b1; font-weight: bold;">In standard mathematics</div>
+<div style="padding: 8px;">
+So on "yes" take the right door and on "no" the left: <math>h = \text{yes} \Rightarrow \mathrm{R}, \quad h = \text{no} \Rightarrow \mathrm{L}</math>. &#8718;
+</div>
+</div>
+<div style="flex: 1 1 340px; min-width: 0; border: 1px solid #a2a9b1; background: #ffffff;">
+<div style="padding: 4px 8px; background: #cef2e0; border-bottom: 1px solid #a2a9b1; font-weight: bold;">In Lean 4</div>
+<div style="padding: 8px;">
+<pre style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">/-- The strategy finds the safe door in every one of the four worlds. -/
+theorem choose_is_safe (g : Guard) (s : Door) : choose (heard g s) = s := by
+  cases g <;> cases s <;> rfl</pre>
+</div>
+</div>
+</div>
+<div style="border-left: 4px solid #ac6600; background: #fef6e7; padding: 6px 10px; margin: 0.4em 0 1.2em 0;">'''What Lean adds.''' The conclusion is the theorem's statement, checked; it is not a sentence after the proof that a reader must trust follows from it.<br/>'''For the next hypothesis.''' The result can be cited by its name, <code>choose_is_safe</code>, in any later argument.</div>
+<h3 id="lt-step-6" style="margin: 1em 0 0.2em 0; font-size: 1.05em; font-weight: bold;">Step 6. Notice what is conserved</h3>
+<div style="display: flex; flex-wrap: wrap; gap: 10px; margin: 0.3em 0 0.4em 0;">
+<div style="flex: 1 1 340px; min-width: 0; border: 1px solid #a2a9b1; background: #ffffff;">
+<div style="padding: 4px 8px; background: #cedff2; border-bottom: 1px solid #a2a9b1; font-weight: bold;">In standard mathematics</div>
+<div style="padding: 8px;">
+The reply does not depend on whom you ask: <math>h(\mathrm{T}, s) = h(\mathrm{F}, s)</math>. In prose this is usually a remark.
+</div>
+</div>
+<div style="flex: 1 1 340px; min-width: 0; border: 1px solid #a2a9b1; background: #ffffff;">
+<div style="padding: 4px 8px; background: #cef2e0; border-bottom: 1px solid #a2a9b1; font-weight: bold;">In Lean 4</div>
+<div style="padding: 8px;">
+<pre style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">/-- What you hear does not depend on which guard you asked. -/
+theorem heard_invariant (s : Door) : heard .truthful s = heard .liar s := by
+  cases s <;> rfl</pre>
+</div>
+</div>
+</div>
+<div style="border-left: 4px solid #ac6600; background: #fef6e7; padding: 6px 10px; margin: 0.4em 0 1.2em 0;">'''What Lean adds.''' A remark becomes a fact with a name, checked like the main result.<br/>'''For the next hypothesis.''' Invariants found on small cases become reusable facts; this one says the question was built to be symmetric under swapping the guards.</div>
+<h3 id="lt-step-7" style="margin: 1em 0 0.2em 0; font-size: 1.05em; font-weight: bold;">Step 7. Generalize</h3>
+<div style="display: flex; flex-wrap: wrap; gap: 10px; margin: 0.3em 0 0.4em 0;">
+<div style="flex: 1 1 340px; min-width: 0; border: 1px solid #a2a9b1; background: #ffffff;">
+<div style="padding: 4px 8px; background: #cedff2; border-bottom: 1px solid #a2a9b1; font-weight: bold;">In standard mathematics</div>
+<div style="padding: 8px;">
+For any proposition <math>Q</math>, ask "Is it true that you are truthful exactly when <math>Q</math>?". The reply is <math>r_g\big((g = \mathrm{T}) \leftrightarrow Q\big)</math>. If <math>g = \mathrm{T}</math> it is <math>(\top \leftrightarrow Q) = Q</math>; if <math>g = \mathrm{F}</math> it is <math>\neg(\bot \leftrightarrow Q) = \neg\neg Q = Q</math>. Either way, the reply is <math>Q</math>.
+</div>
+</div>
+<div style="flex: 1 1 340px; min-width: 0; border: 1px solid #a2a9b1; background: #ffffff;">
+<div style="padding: 4px 8px; background: #cef2e0; border-bottom: 1px solid #a2a9b1; font-weight: bold;">In Lean 4</div>
+<div style="padding: 8px;">
+<pre style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">/-- Whether guard `g` is the truthful one. -/
+def isTruthful : Guard → Bool
+  | .truthful => true
+  | .liar     => false
+
+/-- The embedded question. Ask either guard "Is it true that you are truthful
+exactly when `p`?" and the reply is the truth of `p`, whatever `p` is. -/
+theorem embedded (g : Guard) (p : Bool) : g.says (isTruthful g == p) = p := by
+  cases g <;> cases p <;> rfl
+
+/-- The embedded question, applied to the doors: "yes" means the left door is safe. -/
+theorem embedded_door (g : Guard) (s : Door) :
+    g.says (isTruthful g == safeIs s .left) = safeIs s .left :=
+  embedded g (safeIs s .left)</pre>
+</div>
+</div>
+</div>
+<div style="border-left: 4px solid #ac6600; background: #fef6e7; padding: 6px 10px; margin: 0.4em 0 1.2em 0;">'''What Lean adds.''' The general lemma is proved once for every <code>p</code>; the door version is one line that cites it. In prose, "the same argument works for any question" is a claim the reader has to re-check.<br/>'''For the next hypothesis.''' A pattern noticed in one case becomes a tool for the next problem, already checked.</div>
+<div class="pma-fig" style="text-align: center; overflow-x: auto; margin: 0.6em 0 0.2em 0;">
+<graphviz>
+digraph embedded {
+  bgcolor="transparent"; size="7.2,3.4";
+  node [shape=plaintext, fontname="Helvetica", fontsize=10, fontcolor="#202122ff"];
+  T [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="5" COLOR="#a2a9b1">
+  <TR><TD BGCOLOR="#eaecf0"><B>guard asked</B></TD><TD BGCOLOR="#eaecf0"><B>p</B></TD><TD BGCOLOR="#eaecf0"><B>true answer to<BR/>"truthful exactly when p?"</B></TD><TD BGCOLOR="#eaecf0"><B>what the guard says</B></TD></TR>
+  <TR><TD>truthful</TD><TD>yes</TD><TD>yes</TD><TD BGCOLOR="#cef2e0"><B>yes</B> = p</TD></TR>
+  <TR><TD>truthful</TD><TD>no</TD><TD>no</TD><TD BGCOLOR="#cef2e0"><B>no</B> = p</TD></TR>
+  <TR><TD>liar</TD><TD>yes</TD><TD>no</TD><TD BGCOLOR="#cef2e0"><B>yes</B> = p</TD></TR>
+  <TR><TD>liar</TD><TD>no</TD><TD>yes</TD><TD BGCOLOR="#cef2e0"><B>no</B> = p</TD></TR>
+  </TABLE>>];
+}
+</graphviz>
+</div>
+<div id="lt-fig-20" style="font-size: 0.88em; color: #54595d; margin: 0 0 0.9em 0;">'''Figure 20.''' The embedded question as a truth table. Whatever the proposition p, wrapping it as "Is it true that you are truthful exactly when p?" makes either guard's reply equal to the truth of p. Lean proves the four rows at once as the theorem embedded.</div>
+<h3 id="lt-step-8" style="margin: 1em 0 0.2em 0; font-size: 1.05em; font-weight: bold;">Step 8. Show what fails</h3>
+<div style="display: flex; flex-wrap: wrap; gap: 10px; margin: 0.3em 0 0.4em 0;">
+<div style="flex: 1 1 340px; min-width: 0; border: 1px solid #a2a9b1; background: #ffffff;">
+<div style="padding: 4px 8px; background: #cedff2; border-bottom: 1px solid #a2a9b1; font-weight: bold;">In standard mathematics</div>
+<div style="padding: 8px;">
+Asking "Is the left door safe?" outright fails: the truthful guard with the left door safe and the liar with the right door safe both say yes, but need different doors.
+</div>
+</div>
+<div style="flex: 1 1 340px; min-width: 0; border: 1px solid #a2a9b1; background: #ffffff;">
+<div style="padding: 4px 8px; background: #cef2e0; border-bottom: 1px solid #a2a9b1; font-weight: bold;">In Lean 4</div>
+<div style="padding: 8px;">
+<pre style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">/-- Asking "Is the left door safe?" outright cannot work: no rule for reading the
+reply finds the safe door in every world. -/
+theorem direct_question_fails :
+    ¬ ∃ rule : Bool → Door,
+      ∀ (g : Guard) (s : Door), rule (g.says (safeIs s .left)) = s := by
+  intro ⟨rule, h⟩
+  have h1 : rule true = .left := h .truthful .left
+  have h2 : rule true = .right := h .liar .right
+  rw [h1] at h2
+  cases h2</pre>
+</div>
+</div>
+</div>
+<div style="border-left: 4px solid #ac6600; background: #fef6e7; padding: 6px 10px; margin: 0.4em 0 1.2em 0;">'''What Lean adds.''' The negative result covers every possible rule for reading the reply, not just the obvious one.<br/>'''For the next hypothesis.''' Ruling a strategy out is as precise as ruling one in, so dead ends are closed for good.</div>
+<div class="pma-fig" style="text-align: center; overflow-x: auto; margin: 0.6em 0 0.2em 0;">
+<graphviz>
+digraph direct {
+  rankdir=LR; bgcolor="transparent"; nodesep=0.3; ranksep=0.7; size="7.2,3";
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=10, color="#a2a9b1", fillcolor="#eaecf0", fontcolor="#202122ff", margin="0.12,0.06"];
+  edge [color="#54595d", fontname="Helvetica", fontsize=9, fontcolor="#202122ff", arrowsize=0.7];
+  W1 [label="truthful guard asked\nleft door safe"];
+  W2 [label="liar asked\nright door safe"];
+  Yes [label="both say yes\nto \"Is the left door safe?\"", shape=ellipse, fillcolor="#fee7e6", color="#dd3333"];
+  D1 [label="you must take left", fillcolor="#ffffff"]; D2 [label="you must take right", fillcolor="#ffffff"];
+  W1 -> Yes; W2 -> Yes; Yes -> D1 [style=dashed]; Yes -> D2 [style=dashed];
+}
+</graphviz>
+</div>
+<div id="lt-fig-21" style="font-size: 0.88em; color: #54595d; margin: 0 0 0.9em 0;">'''Figure 21.''' Why asking outright fails. Two worlds give the same reply but need different doors, so no rule for reading the reply can be right in both. Lean proves this for every possible rule: direct_question_fails.</div>
+<h3 id="lt-step-9" style="margin: 1em 0 0.2em 0; font-size: 1.05em; font-weight: bold;">Step 9. Find the limit</h3>
+<div style="display: flex; flex-wrap: wrap; gap: 10px; margin: 0.3em 0 0.4em 0;">
+<div style="flex: 1 1 340px; min-width: 0; border: 1px solid #a2a9b1; background: #ffffff;">
+<div style="padding: 4px 8px; background: #cedff2; border-bottom: 1px solid #a2a9b1; font-weight: bold;">In standard mathematics</div>
+<div style="padding: 8px;">
+One reply is one bit, and there are <math>|\{\mathrm{T},\mathrm{F}\} \times \{\mathrm{L},\mathrm{R}\}| = 4</math> worlds, so no single question can tell you both the safe door and which guard you asked.
+</div>
+</div>
+<div style="flex: 1 1 340px; min-width: 0; border: 1px solid #a2a9b1; background: #ffffff;">
+<div style="padding: 4px 8px; background: #cef2e0; border-bottom: 1px solid #a2a9b1; font-weight: bold;">In Lean 4</div>
+<div style="padding: 8px;">
+<pre style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">/-- No yes/no question, however clever, tells you both the safe door and which
+guard you asked: four worlds, two possible replies. A question is given by its
+true answer `q g s` in each world. -/
+theorem door_and_guard_impossible (q : Guard → Door → Bool) :
+    ¬ ∃ read : Bool → Guard × Door,
+      ∀ (g : Guard) (s : Door), read (g.says (q g s)) = (g, s) := by
+  intro ⟨read, h⟩
+  have h1 := h .truthful .left
+  have h2 := h .truthful .right
+  have h3 := h .liar .left
+  generalize Guard.says .truthful (q .truthful .left) = b1 at h1
+  generalize Guard.says .truthful (q .truthful .right) = b2 at h2
+  generalize Guard.says .liar (q .liar .left) = b3 at h3
+  cases b1 <;> cases b2 <;> cases b3 <;> simp_all</pre>
+</div>
+</div>
+</div>
+<div style="border-left: 4px solid #ac6600; background: #fef6e7; padding: 6px 10px; margin: 0.4em 0 1.2em 0;">'''What Lean adds.''' "Any question" is quantified exactly: the theorem holds for every function <code>q</code> from worlds to true answers, including questions nobody has thought of.<br/>'''For the next hypothesis.''' You learn what not to look for before spending time looking.</div>
+<div class="pma-fig" style="text-align: center; overflow-x: auto; margin: 0.6em 0 0.2em 0;">
+<graphviz>
+digraph pigeon {
+  rankdir=TB; bgcolor="transparent"; nodesep=0.25; ranksep=0.8; size="7.2,3.4";
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=10, color="#a2a9b1", fillcolor="#eaecf0", fontcolor="#202122ff", margin="0.12,0.06"];
+  edge [color="#54595d", fontname="Helvetica", fontsize=9, fontcolor="#202122ff", arrowsize=0.7];
+  w1 [label="truthful asked
+left safe"]; w2 [label="truthful asked
+right safe"];
+  w3 [label="liar asked
+left safe"]; w4 [label="liar asked
+right safe"];
+  yes [label="yes", shape=circle, fillcolor="#cedff2", color="#6a8fbf"]; no [label="no", shape=circle, fillcolor="#cedff2", color="#6a8fbf"];
+  {rank=same; w1; w2; w3; w4;} {rank=same; yes; no;}
+  w1 -> w2 -> w3 -> w4 [style=invis]; yes -> no [style=invis];
+  w1 -> yes [style=dotted]; w1 -> no [style=dotted]; w2 -> yes [style=dotted]; w2 -> no [style=dotted];
+  w3 -> yes [style=dotted]; w3 -> no [style=dotted]; w4 -> yes [style=dotted]; w4 -> no [style=dotted];
+}
+</graphviz>
+</div>
+<div id="lt-fig-22" style="font-size: 0.88em; color: #54595d; margin: 0 0 0.9em 0;">'''Figure 22.''' The limit. Any question sends each of the four worlds to one of two replies (dotted: the possible choices), so at least two worlds share a reply and cannot be told apart. One question can find the door, never the door and the liar together: door_and_guard_impossible, proved for every question.</div>
+<h3 id="lt-step-10" style="margin: 1em 0 0.2em 0; font-size: 1.05em; font-weight: bold;">Step 10. Compute and audit</h3>
+<div style="display: flex; flex-wrap: wrap; gap: 10px; margin: 0.3em 0 0.4em 0;">
+<div style="flex: 1 1 340px; min-width: 0; border: 1px solid #a2a9b1; background: #ffffff;">
+<div style="padding: 4px 8px; background: #cedff2; border-bottom: 1px solid #a2a9b1; font-weight: bold;">In standard mathematics</div>
+<div style="padding: 8px;">
+Draw the table of the four worlds by hand, and ask a colleague to check the argument.
+</div>
+</div>
+<div style="flex: 1 1 340px; min-width: 0; border: 1px solid #a2a9b1; background: #ffffff;">
+<div style="padding: 4px 8px; background: #cef2e0; border-bottom: 1px solid #a2a9b1; font-weight: bold;">In Lean 4</div>
+<div style="padding: 8px;">
+<pre style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">truthful guard asked, left door safe: hears no, takes left
+truthful guard asked, right door safe: hears yes, takes right
+liar guard asked, left door safe: hears no, takes left
+liar guard asked, right door safe: hears yes, takes right
+'TwoDoors.choose_is_safe' does not depend on any axioms
+'TwoDoors.embedded' does not depend on any axioms
+'TwoDoors.direct_question_fails' does not depend on any axioms
+'TwoDoors.door_and_guard_impossible' depends on axioms: [propext]</pre>
+</div>
+</div>
+</div>
+<div style="border-left: 4px solid #ac6600; background: #fef6e7; padding: 6px 10px; margin: 0.4em 0 1.2em 0;">'''What Lean adds.''' The same definitions run: the table above is printed by <code>#eval</code> from the file. <code>#print axioms</code> lists what each proof rests on: of the four theorems printed, three rest on nothing at all, and the limit theorem only on <code>propext</code>, one of Lean's three standard axioms, because its last step uses Lean's simplifier.<br/>'''For the next hypothesis.''' A hypothesis can be tried numerically first and proved after, from one source; trust moves from the reader to a small kernel and a short list of axioms.</div>
+</div>
+</div>
+
+
+<div id="lt-adds-box" style="border: 1px solid #a2a9b1; margin-bottom: 15px; background: #ffffff; color:#202122;">
+<h2 id="lt-adds-h2" style="margin: 0; padding: 8px 10px; background-color: #cef2e0; border-bottom: 1px solid #a2a9b1; font-size: 1.2em; font-weight: bold;">What Lean adds, point by point, and what it does for a hypothesis</h2>
+<div id="lt-adds" style="padding: 10px;">
+Each advantage below is one of the ten Lean added in the steps above. The last line of each says what it does for the next hypothesis, which is the reason a research framework wants it.
+
+<div style="display: flex; flex-wrap: wrap; gap: 10px; margin: 0.4em 0 1em 0;">
+<div style="flex: 1 1 300px; min-width: 0; border: 1px solid #a2a9b1; background: #ffffff;">
+<div style="padding: 4px 8px; background: #cef2e0; border-bottom: 1px solid #a2a9b1; font-weight: bold;">1. Assumptions become definitions</div>
+<div style="padding: 8px; font-size: 0.95em;">
+'''Mathematics:''' the reader supplies the meaning of "lies" for a question about another guard.<br/>
+'''Lean:''' "lies" is <code>Guard.says</code>; "the other guard" is <code>Guard.other</code>.<br/>
+<span style="background: #fef6e7; padding: 0 3px;">'''For hypothesizing:''' a hypothesis is stated against named assumptions, so you know exactly which ones it uses.</span>
+</div>
+</div>
+<div style="flex: 1 1 300px; min-width: 0; border: 1px solid #a2a9b1; background: #ffffff;">
+<div style="padding: 4px 8px; background: #cef2e0; border-bottom: 1px solid #a2a9b1; font-weight: bold;">2. Every case checked</div>
+<div style="padding: 8px; font-size: 0.95em;">
+'''Mathematics:''' the writer chooses the cases; a missing one can still convince.<br/>
+'''Lean:''' <code>cases</code> enumerates the four worlds; each must close.<br/>
+<span style="background: #fef6e7; padding: 0 3px;">'''For hypothesizing:''' a hypothesis is tested in every world at once; no counterexample can hide.</span>
+</div>
+</div>
+<div style="flex: 1 1 300px; min-width: 0; border: 1px solid #a2a9b1; background: #ffffff;">
+<div style="padding: 4px 8px; background: #cef2e0; border-bottom: 1px solid #a2a9b1; font-weight: bold;">3. Failures point to the case</div>
+<div style="padding: 8px; font-size: 0.95em;">
+'''Mathematics:''' a false step may pass review and surface later.<br/>
+'''Lean:''' a refused proof shows the goal it could not close; over finitely many cases, as here, that is the very worlds where the claim is false ([[#lt-experiment-box|example]]).<br/>
+<span style="background: #fef6e7; padding: 0 3px;">'''For hypothesizing:''' a failed attempt is data: it says which assumption to revisit.</span>
+</div>
+</div>
+<div style="flex: 1 1 300px; min-width: 0; border: 1px solid #a2a9b1; background: #ffffff;">
+<div style="padding: 4px 8px; background: #cef2e0; border-bottom: 1px solid #a2a9b1; font-weight: bold;">4. "Every question" is exact</div>
+<div style="padding: 8px; font-size: 0.95em;">
+'''Mathematics:''' "no question works" is a counting remark.<br/>
+'''Lean:''' theorems quantify over all questions <code>q</code> and all rules.<br/>
+<span style="background: #fef6e7; padding: 0 3px;">'''For hypothesizing:''' impossibility results prune the search before it starts.</span>
+</div>
+</div>
+<div style="flex: 1 1 300px; min-width: 0; border: 1px solid #a2a9b1; background: #ffffff;">
+<div style="padding: 4px 8px; background: #cef2e0; border-bottom: 1px solid #a2a9b1; font-weight: bold;">5. Patterns become lemmas</div>
+<div style="padding: 8px; font-size: 0.95em;">
+'''Mathematics:''' "the same trick works generally" is re-argued each time.<br/>
+'''Lean:''' <code>embedded</code> holds for every <code>p</code> and is cited by name.<br/>
+<span style="background: #fef6e7; padding: 0 3px;">'''For hypothesizing:''' each solved problem leaves a tool behind for the next hypothesis.</span>
+</div>
+</div>
+<div style="flex: 1 1 300px; min-width: 0; border: 1px solid #a2a9b1; background: #ffffff;">
+<div style="padding: 4px 8px; background: #cef2e0; border-bottom: 1px solid #a2a9b1; font-weight: bold;">6. Definitions run</div>
+<div style="padding: 8px; font-size: 0.95em;">
+'''Mathematics:''' the table is drawn by hand, separately from the proof.<br/>
+'''Lean:''' <code>#eval</code> prints the four worlds from the same definitions.<br/>
+<span style="background: #fef6e7; padding: 0 3px;">'''For hypothesizing:''' try a hypothesis on examples first, then prove it, from one source.</span>
+</div>
+</div>
+<div style="flex: 1 1 300px; min-width: 0; border: 1px solid #a2a9b1; background: #ffffff;">
+<div style="padding: 4px 8px; background: #cef2e0; border-bottom: 1px solid #a2a9b1; font-weight: bold;">7. The trust base is listed</div>
+<div style="padding: 8px; font-size: 0.95em;">
+'''Mathematics:''' trust rests on the reader's care.<br/>
+'''Lean:''' <code>#print axioms</code>: none, or <code>propext</code>.<br/>
+<span style="background: #fef6e7; padding: 0 3px;">'''For hypothesizing:''' a result's footing is visible, so a doubtful assumption can be traced to every result that uses it.</span>
+</div>
+</div>
+<div style="flex: 1 1 300px; min-width: 0; border: 1px solid #a2a9b1; background: #ffffff;">
+<div style="padding: 4px 8px; background: #cef2e0; border-bottom: 1px solid #a2a9b1; font-weight: bold;">8. Changes propagate</div>
+<div style="padding: 8px; font-size: 0.95em;">
+'''Mathematics:''' a changed assumption needs every argument re-read.<br/>
+'''Lean:''' edit one definition and every theorem is checked again.<br/>
+<span style="background: #fef6e7; padding: 0 3px;">'''For hypothesizing:''' "what if" is cheap: the checker reports which results survive.</span>
+</div>
+</div>
+<div style="flex: 1 1 300px; min-width: 0; border: 1px solid #a2a9b1; background: #ffffff;">
+<div style="padding: 4px 8px; background: #cef2e0; border-bottom: 1px solid #a2a9b1; font-weight: bold;">9. Vagueness refused</div>
+<div style="padding: 8px; font-size: 0.95em;">
+'''Mathematics:''' an ambiguous sentence is read in whichever way makes it true.<br/>
+'''Lean:''' the first draft of this file left the types of <code>g</code> and <code>s</code> unstated in two theorems; Lean inferred them from context in one and refused the other ("Type of g is not known").<br/>
+<span style="background: #fef6e7; padding: 0 3px;">'''For hypothesizing:''' ambiguity is removed before argument, so two readers test the same hypothesis.</span>
+</div>
+</div>
+<div style="flex: 1 1 300px; min-width: 0; border: 1px solid #a2a9b1; background: #ffffff;">
+<div style="padding: 4px 8px; background: #cef2e0; border-bottom: 1px solid #a2a9b1; font-weight: bold;">10. Agents need not be trusted</div>
+<div style="padding: 8px; font-size: 0.95em;">
+'''Mathematics:''' an agent's argument must be read by someone.<br/>
+'''Lean:''' an AI agent may write the proof; the kernel decides whether it stands.<br/>
+<span style="background: #fef6e7; padding: 0 3px;">'''For hypothesizing:''' many hypotheses can be tried by agents at little risk; only checked ones count.</span>
+</div>
+</div>
+</div>
+
+<div style="overflow-x: auto;">
+{| class="wikitable" style="width: 100%; font-size: 0.92em;"
+! Aspect !! Standard mathematics !! Lean 4
+|-
+| Where the assumptions live || in the reader's reading of the words || in definitions, one line each
+|-
+| How cases are covered || chosen by the writer || generated and checked by the machine
+|-
+| What a wrong claim produces || nothing, until someone notices || an error at the goal that fails (here, the failing worlds)
+|-
+| Claims about every question || informal || a quantified theorem
+|-
+| Reuse || re-argued || cited by name
+|-
+| Running it || separate work || the same definitions run
+|-
+| What you trust || the writer and the reader || the Lean kernel and the listed axioms, and a second checker that must agree
+|-
+| Changing the puzzle || re-read everything || re-check everything automatically
+|-
+| Length for this riddle || one paragraph || 133 lines with comments
+|-
+| Who can read it || anyone || anyone, with the comments; checking needs Lean
+|}
+</div>
+
+The Lean kernel is the one checker a proof language cannot check with itself: a defect in it is the one defect no proof in the language can catch. The design therefore doubles it. nanoda is an independent implementation of Lean 4's type checking, written in Rust and sharing no code with the Lean kernel; it reads the same definitions and proofs from an export file and checks them again, so a wrong proof has to fool two checkers of different authorship. The design's rule: every checker that runs must accept, one refusal is a refusal, and a crash is a refusal; deliberately broken exports, which every checker must refuse, are part of each run.
+
+Together they make the loop shown [[#lt-loop-box|at the top of the page]]: failures that are cheap and specific, and results that can be generalized and checked again at once.
+</div>
+</div>
+
+
+<div id="lt-experiment-box" style="border: 1px solid #a2a9b1; margin-bottom: 15px; background: #ffffff; color:#202122;">
+<h2 id="lt-experiment-h2" style="margin: 0; padding: 8px 10px; background-color: #ffedad; border-bottom: 1px solid #a2a9b1; font-size: 1.2em; font-weight: bold;">A worked experiment: changing the hypothesis</h2>
+<div id="lt-experiment" style="padding: 10px;">
+Two experiments, run while this page was written, show the hypothesis loop on the riddle.
+
+'''A wrong reading.''' Suppose you guessed that a "yes" to the classic question means the left door is safe:
+<pre style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">-- A wrong hypothesis: "yes" to the classic question means the left door is safe.
+theorem yes_means_left (g : Guard) (s : Door) : heard g s = safeIs s .left := by
+  cases g <;> cases s <;> decide</pre>
+Lean's answer, verbatim:
+<pre style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">Wrong.lean:6:26: error: Tactic `decide` proved that the proposition
+  heard Guard.truthful Door.left = safeIs Door.left Door.left
+is false
+Wrong.lean:6:26: error: Tactic `decide` proved that the proposition
+  heard Guard.truthful Door.right = safeIs Door.right Door.left
+is false
+Wrong.lean:6:26: error: Tactic `decide` proved that the proposition
+  heard Guard.liar Door.left = safeIs Door.left Door.left
+is false
+Wrong.lean:6:26: error: Tactic `decide` proved that the proposition
+  heard Guard.liar Door.right = safeIs Door.right Door.left
+is false</pre>
+Every one of the four worlds fails, which says the guess is not partly wrong but exactly reversed: the reply is always the opposite. That is the theorem <code>heard_negates</code>.
+
+'''A changed riddle.''' Now suppose the second guard is not a liar but ''unreliable'': each time it speaks it tells the truth or lies, by a coin you cannot see. The rule for speaking changes:
+<pre style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">/-- The coin `c` decides, each time, whether the unreliable guard tells the truth. -/
+def Guard.says : Guard → Bool → Bool → Bool
+  | .truthful,   _, b => b
+  | .unreliable, c, b => if c then b else !b</pre>
+and the classic question now reaches the coin once, when the unreliable guard speaks (asked, or imagined by the other guard):
+<pre style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">/-- The classic question; the unreliable guard speaks once, with coin `c`. -/
+def heard (g : Guard) (s : Door) (c : Bool) : Bool :=
+  g.says c (g.other.says c (safeIs s .left))</pre>
+The old theorem is tried again:
+<pre style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">/-- The old hypothesis, tried on the new model. -/
+theorem choose_is_safe (g : Guard) (s : Door) (c : Bool) :
+    choose (heard g s c) = s := by
+  cases g <;> cases s <;> cases c <;> decide</pre>
+Lean's answer, verbatim:
+<pre style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">Unreliable_attempt.lean:35:38: error: Tactic `decide` proved that the proposition
+  choose (heard Guard.truthful Door.left true) = Door.left
+is false
+Unreliable_attempt.lean:35:38: error: Tactic `decide` proved that the proposition
+  choose (heard Guard.truthful Door.right true) = Door.right
+is false
+Unreliable_attempt.lean:35:38: error: Tactic `decide` proved that the proposition
+  choose (heard Guard.unreliable Door.left true) = Door.left
+is false
+Unreliable_attempt.lean:35:38: error: Tactic `decide` proved that the proposition
+  choose (heard Guard.unreliable Door.right true) = Door.right
+is false</pre>
+The strategy fails in exactly the four worlds in which the unreliable guard happens to tell the truth.
+
+<div class="pma-fig" style="text-align: center; overflow-x: auto; margin: 0.6em 0 0.2em 0;">
+<graphviz>
+digraph unreliable {
+  bgcolor="transparent"; size="7.8,3.6";
+  node [shape=plaintext, fontname="Helvetica", fontsize=10, fontcolor="#202122ff"];
+  T [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="5" COLOR="#a2a9b1">
+  <TR><TD BGCOLOR="#eaecf0"></TD><TD BGCOLOR="#eaecf0" COLSPAN="2"><B>the unreliable guard tells the truth</B></TD><TD BGCOLOR="#eaecf0" COLSPAN="2"><B>the unreliable guard lies</B></TD></TR>
+  <TR><TD BGCOLOR="#eaecf0"></TD><TD BGCOLOR="#cedff2">left safe</TD><TD BGCOLOR="#cedff2">right safe</TD><TD BGCOLOR="#cedff2">left safe</TD><TD BGCOLOR="#cedff2">right safe</TD></TR>
+  <TR><TD BGCOLOR="#eaecf0" ALIGN="LEFT"><B>ask the truthful guard</B></TD><TD BGCOLOR="#fee7e6">fails</TD><TD BGCOLOR="#fee7e6">fails</TD><TD BGCOLOR="#cef2e0">works</TD><TD BGCOLOR="#cef2e0">works</TD></TR>
+  <TR><TD BGCOLOR="#eaecf0" ALIGN="LEFT"><B>ask the unreliable guard</B></TD><TD BGCOLOR="#fee7e6">fails</TD><TD BGCOLOR="#fee7e6">fails</TD><TD BGCOLOR="#cef2e0">works</TD><TD BGCOLOR="#cef2e0">works</TD></TR>
+  </TABLE>>];
+}
+</graphviz>
+</div>
+<div id="lt-fig-23" style="font-size: 0.88em; color: #54595d; margin: 0 0 0.9em 0;">'''Figure 23.''' Where the classic strategy breaks when the liar is replaced by an unreliable guard: the eight worlds, as Lean reported them. It fails in exactly the four worlds in which the unreliable guard happens to tell the truth.</div>
+That suggests a sharper hypothesis: if the guard you ask may be the unreliable one, no question whose true answer is fixed by the world works, because the reply could be either answer. Lean accepts the proof:
+<pre style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">/-- The revised hypothesis, proved: when the guard you ask may be the unreliable one,
+no yes/no question whose true answer is fixed by the world (who is asked, which door
+is safe), with any rule for reading the reply, always finds the safe door. A question
+about the coin itself is not covered by this statement. -/
+theorem no_question_works :
+    ¬ ∃ (q : Guard → Door → Bool) (rule : Bool → Door),
+      ∀ (g : Guard) (s : Door) (c : Bool), rule (g.says c (q g s)) = s := by
+  intro ⟨q, rule, h⟩
+  have l1 := h .unreliable .left true
+  have l2 := h .unreliable .left false
+  have r1 := h .unreliable .right true
+  have r2 := h .unreliable .right false
+  simp only [Guard.says] at l1 l2 r1 r2
+  cases hl : q .unreliable .left <;> cases hr : q .unreliable .right <;>
+    simp_all</pre>
+(<code>#print axioms</code>: <code>propext</code> only.) Notice what the statement says and what it does not: a question is given by its true answer in each world, so a question about the coin itself is not covered. That is exactly where the next hypothesis would go. George Boolos's "hardest logic puzzle ever" has a god who answers at random, and work on that puzzle has turned on questions about the random god's own state. The Lean statement makes the boundary of the result visible; the prose "no question works" would have hidden it.
+
+<div class="pma-fig" style="text-align: center; overflow-x: auto; margin: 0.6em 0 0.2em 0;">
+<graphviz>
+digraph experiment {
+  rankdir=TB; bgcolor="transparent"; nodesep=1.2; ranksep=0.35; size="7.8,6";
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=10, color="#a2a9b1", fillcolor="#eaecf0", fontcolor="#202122ff", margin="0.12,0.06"];
+  edge [color="#54595d", fontname="Helvetica", fontsize=9, fontcolor="#202122ff", arrowsize=0.7];
+  h1 [label="Hypothesis 1\nthe classic question still works"];
+  c1 [label="Change the model\nthe second guard is unreliable"];
+  k1 [label="Lean re-checks\nthe old theorem", shape=hexagon, style=filled, fillcolor="#ffedad", color="#ac6600"];
+  f1 [label="4 of 8 worlds fail: those where\nthe unreliable guard tells the truth", fillcolor="#fee7e6", color="#dd3333"];
+  h2 [label="Hypothesis 2\nno question fixed by the world works"];
+  k2 [label="Lean checks\nthe new proof", shape=hexagon, style=filled, fillcolor="#ffedad", color="#ac6600"];
+  t2 [label="Theorem\nno_question_works", fillcolor="#cef2e0", color="#14866d", penwidth=1.6];
+  {rank=same; h1; h2;} {rank=same; c1; k2;} {rank=same; k1; t2;}
+  h1 -> c1 -> k1; k1 -> f1 [label=" refused"]; f1 -> h2 [label=" revise", constraint=false];
+  h2 -> k2; k2 -> t2 [label=" accepted"];
+}
+</graphviz>
+</div>
+<div id="lt-fig-24" style="font-size: 0.88em; color: #54595d; margin: 0 0 0.9em 0;">'''Figure 24.''' The experiment of this page, as it ran. The model changed; Lean named the four failing worlds; the hypothesis was revised and the revision proved.</div>
+</div>
+</div>
+
+
+<div id="lt-pma-box" style="border: 1px solid #a2a9b1; margin-bottom: 15px; background: #ffffff; color:#202122;">
+<h2 id="lt-pma-h2" style="margin: 0; padding: 8px 10px; background-color: #eaecf0; border-bottom: 1px solid #a2a9b1; font-size: 1.2em; font-weight: bold;">Where the riddle sits in Principia Machina</h2>
+<div id="lt-pma" style="padding: 10px;">
+In version 2 a research result may carry its derivation in one of three forms, and the server records the highest form it actually checked. The riddle's two solutions on this page are the two ends of that scale.
+
+<div class="pma-fig" style="text-align: center; overflow-x: auto; margin: 0.6em 0 0.2em 0;">
+<graphviz>
+digraph forms {
+  rankdir=LR; bgcolor="transparent"; nodesep=0.25; ranksep=0.45; size="7.8,4";
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=10, color="#a2a9b1", fillcolor="#eaecf0", fontcolor="#202122ff", margin="0.12,0.06"];
+  edge [color="#54595d", fontname="Helvetica", fontsize=9, fontcolor="#202122ff", arrowsize=0.7];
+  node [width=2.6];
+  P [label="PROSE\nthe steps as text"];
+  S [label="STRUCTURED\nsteps citing laws and assumptions", fillcolor="#cedff2", color="#6a8fbf"];
+  K [label="KERNEL\na Lean proof", fillcolor="#cef2e0", color="#14866d"];
+  I [label="read by a person or agent\nINSPECTION"];
+  M [label="checked by the Calculator\nMECHANICAL", fillcolor="#cedff2", color="#6a8fbf"];
+  R [label="checked by the Lean kernel\nPROVED", fillcolor="#cef2e0", color="#14866d", penwidth=1.6];
+  D [label="recorded with the result\nas its derivation class", shape=note, style=filled, fillcolor="#ffffff", width=2.2];
+  P -> I; S -> M; K -> R; I -> D; M -> D; R -> D;
+}
+</graphviz>
+</div>
+<div id="lt-fig-25" style="font-size: 0.88em; color: #54595d; margin: 0 0 0.9em 0;">'''Figure 25.''' The three forms a derivation may take in version 2. The server records the highest form it actually checked; a form it cannot yet check is recorded as prose, never as checked.</div>
+<div style="overflow-x: auto;">
+{| class="wikitable" style="width: 100%; font-size: 0.92em;"
+! Form !! The riddle in that form !! Checked by !! Class recorded
+|-
+| PROSE || the left column of the [[#lt-side-box|side-by-side]] || a person or an agent || INSPECTION
+|-
+| STRUCTURED || the same steps, each citing a definition or an assumption by name || the Calculator || MECHANICAL
+|-
+| KERNEL || the right column, the [[#lt-file-box|Lean file]] || the Lean kernel || PROVED
+|}
+</div>
+
+A form the server cannot yet check is recorded as prose, never as checked. Structured derivations are in the first release. Kernel-checked ones waited on a kernel checker shown to run within the host's limits; the host test ran one, nanoda, within those limits.
+</div>
+</div>
+
+
+<div id="lt-file-box" style="border: 1px solid #a2a9b1; margin-bottom: 15px; background: #ffffff; color:#202122;">
+<h2 id="lt-file-h2" style="margin: 0; padding: 8px 10px; background-color: #eaecf0; border-bottom: 1px solid #a2a9b1; font-size: 1.2em; font-weight: bold;">The Lean file</h2>
+<div id="lt-file" style="padding: 10px;">
+The whole file, as checked with Lean 4.34.1 (core only, no Mathlib). SHA-256 of the file: <code style="word-break: break-all;">b6ecab2f226ffeeccaa3971e324a15a6dc204fd0c126e0f70bf66df2a1944296</code>.
+
+<div class="pma-fig" style="text-align: center; overflow-x: auto; margin: 0.6em 0 0.2em 0;">
+<graphviz>
+digraph deps {
+  rankdir=LR; bgcolor="transparent"; nodesep=0.12; ranksep=0.5; size="7.8,5.4";
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=10, color="#a2a9b1", fillcolor="#eaecf0", fontcolor="#202122ff", margin="0.12,0.06"];
+  edge [color="#54595d", fontname="Helvetica", fontsize=9, fontcolor="#202122ff", arrowsize=0.7];
+  node [fontsize=9];
+  subgraph cluster_d { label="types and definitions"; fontname="Helvetica"; fontsize=10; style="rounded"; color="#a2a9b1";
+    Door [shape=box3d, style=filled]; Guard [shape=box3d, style=filled]; other [label="Guard.other"]; says [label="Guard.says"];
+    safeIs; owd [label="otherWouldSay"]; heard; choose; isTruthful; }
+  subgraph cluster_t { label="theorems"; fontname="Helvetica"; fontsize=10; style="rounded"; color="#14866d";
+    node [fillcolor="#cef2e0", color="#14866d"];
+    hi [label="heard_invariant"]; hn [label="heard_negates"]; cs [label="choose_is_safe"];
+    em [label="embedded"]; ed [label="embedded_door"]; df [label="direct_question_fails"]; dg [label="door_and_guard_impossible"]; }
+  Door -> safeIs; Guard -> other; Guard -> says; Guard -> isTruthful;
+  other -> owd; says -> owd; safeIs -> owd; owd -> heard; says -> heard;
+  heard -> hi; heard -> hn; heard -> cs; choose -> cs; isTruthful -> em; says -> em; em -> ed [color="#14866d"]; safeIs -> ed;
+  says -> df; safeIs -> df; says -> dg;
+}
+</graphviz>
+</div>
+<div id="lt-fig-26" style="font-size: 0.88em; color: #54595d; margin: 0 0 0.9em 0;">'''Figure 26.''' The Lean file's structure: two types, seven definitions the theorems use (two more only print the table), and seven theorems. embedded_door is not proved again; it cites embedded.</div>
+<div class="mw-collapsible mw-collapsed" style="border: 1px solid #c8ccd1; padding: 0.3em 0.6em;">'''TwoDoors.lean''' (133 lines; open to read)
+<div class="mw-collapsible-content">
+<pre style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">/-!
+# The two-doors riddle
+
+Two guards stand beside two doors. One guard always tells the truth; the other
+always lies. One door is safe; the other is not. You may ask one guard one
+yes/no question. Which door do you take?
+
+Core Lean 4 only: no Mathlib, no `sorry`, no `native_decide`.
+-/
+
+namespace TwoDoors
+
+/-- The two doors. -/
+inductive Door where
+  | left
+  | right
+  deriving DecidableEq, Repr
+
+/-- The two kinds of guard. -/
+inductive Guard where
+  | truthful
+  | liar
+  deriving DecidableEq, Repr
+
+/-- The other guard: exactly one of each kind stands at the doors. -/
+def Guard.other : Guard → Guard
+  | .truthful => .liar
+  | .liar     => .truthful
+
+/-- What a guard says to a yes/no question whose true answer is `b`. -/
+def Guard.says : Guard → Bool → Bool
+  | .truthful, b => b
+  | .liar,     b => !b
+
+/-- The true answer to "Is door `d` safe?" when door `s` is the safe one. -/
+def safeIs (s d : Door) : Bool := decide (s = d)
+
+/-! ## The classic question -/
+
+/-- The true answer to "Would the other guard say that the left door is safe?". -/
+def otherWouldSay (g : Guard) (s : Door) : Bool :=
+  g.other.says (safeIs s .left)
+
+/-- What you hear when you put that question to guard `g`. -/
+def heard (g : Guard) (s : Door) : Bool :=
+  g.says (otherWouldSay g s)
+
+/-- The rule for reading the reply: on "yes" take the right door, on "no" the left. -/
+def choose : Bool → Door
+  | true  => .right
+  | false => .left
+
+/-- What you hear does not depend on which guard you asked. -/
+theorem heard_invariant (s : Door) : heard .truthful s = heard .liar s := by
+  cases s <;> rfl
+
+/-- What you hear is always the false answer to "Is the left door safe?". -/
+theorem heard_negates (g : Guard) (s : Door) : heard g s = !(safeIs s .left) := by
+  cases g <;> cases s <;> rfl
+
+/-- The strategy finds the safe door in every one of the four worlds. -/
+theorem choose_is_safe (g : Guard) (s : Door) : choose (heard g s) = s := by
+  cases g <;> cases s <;> rfl
+
+/-! ## A general lemma the case split suggests -/
+
+/-- Whether guard `g` is the truthful one. -/
+def isTruthful : Guard → Bool
+  | .truthful => true
+  | .liar     => false
+
+/-- The embedded question. Ask either guard "Is it true that you are truthful
+exactly when `p`?" and the reply is the truth of `p`, whatever `p` is. -/
+theorem embedded (g : Guard) (p : Bool) : g.says (isTruthful g == p) = p := by
+  cases g <;> cases p <;> rfl
+
+/-- The embedded question, applied to the doors: "yes" means the left door is safe. -/
+theorem embedded_door (g : Guard) (s : Door) :
+    g.says (isTruthful g == safeIs s .left) = safeIs s .left :=
+  embedded g (safeIs s .left)
+
+/-! ## Limits: what one question cannot do -/
+
+/-- Asking "Is the left door safe?" outright cannot work: no rule for reading the
+reply finds the safe door in every world. -/
+theorem direct_question_fails :
+    ¬ ∃ rule : Bool → Door,
+      ∀ (g : Guard) (s : Door), rule (g.says (safeIs s .left)) = s := by
+  intro ⟨rule, h⟩
+  have h1 : rule true = .left := h .truthful .left
+  have h2 : rule true = .right := h .liar .right
+  rw [h1] at h2
+  cases h2
+
+/-- No yes/no question, however clever, tells you both the safe door and which
+guard you asked: four worlds, two possible replies. A question is given by its
+true answer `q g s` in each world. -/
+theorem door_and_guard_impossible (q : Guard → Door → Bool) :
+    ¬ ∃ read : Bool → Guard × Door,
+      ∀ (g : Guard) (s : Door), read (g.says (q g s)) = (g, s) := by
+  intro ⟨read, h⟩
+  have h1 := h .truthful .left
+  have h2 := h .truthful .right
+  have h3 := h .liar .left
+  generalize Guard.says .truthful (q .truthful .left) = b1 at h1
+  generalize Guard.says .truthful (q .truthful .right) = b2 at h2
+  generalize Guard.says .liar (q .liar .left) = b3 at h3
+  cases b1 <;> cases b2 <;> cases b3 <;> simp_all
+
+/-! ## The four worlds, computed -/
+
+def Guard.name : Guard → String
+  | .truthful => "truthful"
+  | .liar     => "liar"
+
+def Door.name : Door → String
+  | .left  => "left"
+  | .right => "right"
+
+#eval do
+  for g in [Guard.truthful, Guard.liar] do
+    for s in [Door.left, Door.right] do
+      let r := heard g s
+      let reply := if r then "yes" else "no"
+      let take := (choose r).name
+      IO.println s!"{g.name} guard asked, {s.name} door safe: hears {reply}, takes {take}"
+
+end TwoDoors
+
+#print axioms TwoDoors.choose_is_safe
+#print axioms TwoDoors.embedded
+#print axioms TwoDoors.direct_question_fails
+#print axioms TwoDoors.door_and_guard_impossible</pre>
+</div>
+</div>
+
+What Lean printed when the file was checked:
+<pre style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">truthful guard asked, left door safe: hears no, takes left
+truthful guard asked, right door safe: hears yes, takes right
+liar guard asked, left door safe: hears no, takes left
+liar guard asked, right door safe: hears yes, takes right
+'TwoDoors.choose_is_safe' does not depend on any axioms
+'TwoDoors.embedded' does not depend on any axioms
+'TwoDoors.direct_question_fails' does not depend on any axioms
+'TwoDoors.door_and_guard_impossible' depends on axioms: [propext]</pre>
+</div>
+</div>
+
+
+<div id="lt-limits-box" style="border: 1px solid #a2a9b1; margin-bottom: 15px; background: #ffffff; color:#202122;">
+<h2 id="lt-limits-h2" style="margin: 0; padding: 8px 10px; background-color: #eaecf0; border-bottom: 1px solid #a2a9b1; font-size: 1.2em; font-weight: bold;">What Lean does not do</h2>
+<div id="lt-limits" style="padding: 10px;">
+A fair comparison needs the other side too.
+* '''Lean proves the model, not the world.''' If the definitions misread the riddle, the theorems are true of the wrong riddle. Here, for example, the file assumes the liar also lies about what the other guard would say; a different reading would be a different definition. Version 1's rule still holds: internal consistency is not veracity, and comparison with the world happens outside the proof.
+* '''It costs more to write than to read.''' The prose solution is one paragraph; the Lean file is 133 lines with comments. The cost falls as definitions are reused.
+* '''Real-number physics needs a library.''' The riddle needs only core Lean. Uncertainties and equations over the real numbers need Mathlib, which version 2 has not yet chosen.
+* '''A proof checker is not a reviewer.''' It confirms that a proof proves its statement, not that the statement was the right one to make.
+</div>
+</div>
+
+
+<div id="lt-more-box" style="border: 1px solid #a2a9b1; margin-bottom: 15px; background: #ffffff; color:#202122;">
+<h2 id="lt-more-h2" style="margin: 0; padding: 8px 10px; background-color: #eaecf0; border-bottom: 1px solid #a2a9b1; font-size: 1.2em; font-weight: bold;">Read further</h2>
+<div id="lt-more" style="padding: 10px;">
+* [[The Principia Machina]]: version 1, its home page; it stays as history.
+* [[The Principia Machina/Hub/General reader|The walk through]]: version 1 for a general reader.
+* [[The Principia Machina/TPS|The Principia Machina Specification]]: version 1's normative text.
+* [[The Principia Machina/Tools/Physlib|Lean, Mathlib and Physlib]]: Lean in this wiki's survey of physics tools.
+* [[The Principia Machina/Research Toolkit|The Research Toolkit]]: methods and tools for research on this wiki.
+* [[Noether's theorems]] and [[Hamilton's principle]]: the invariance this site is named for.
+
+'''Sources'''
+* Raymond M. Smullyan, ''What Is the Name of This Book?'', Prentice-Hall, 1978: knights and knaves.
+* George Boolos, "The Hardest Logic Puzzle Ever", ''The Harvard Review of Philosophy'' 6 (1996).
+* Leonardo de Moura and Sebastian Ullrich, "The Lean 4 Theorem Prover and Programming Language", CADE-28, 2021.
+
+<small>This page is published from the Principia Machina source and replaced whole at each publish; an edit made here is overwritten. Progress is read from the status panel.</small>
+</div>
+</div>
+
+
+__NOTOC__ __NOEDITSECTION__

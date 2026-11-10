@@ -1,0 +1,17 @@
+{{DISPLAYTITLE:FEniCS Framework}}
+'''FEniCS Framework: Weak Variational Finite Element Solvers'''
+[[Category:Principia Machina]] [[Category:Tools]]
+
+== Overview & Architectural Fit ==
+The '''FEniCS Framework''' is an automated finite element library engineered to solve continuous spatial partial differential equations using weak variational formulations.
+
+== Mathematical Evaluation for TPM & SVD ==
+* '''Weak Variational Action Formulation (9.5/10):''' FEniCS translates spatial action integrals (<math>\int_\Omega \mathcal{L} \, dx</math>) directly into continuous finite element matrix equations using Unified Form Language (UFL).
+* '''Maxwell & Continuum Mechanics:''' Exceptional for 3D electromagnetic field equations, vector wave equations, and vacuum stress-energy tensor distributions.
+
+== References ==
+''Added on 2026-10-06 by the [[The Principia Machina/Research Toolkit|Research Toolkit]]: the tool's citations, each checked against the registry or the project's own page that day. The text above is the survey's own.''
+The project's citing page now asks for the DOLFINx paper (first below), two Basix papers and the UFL paper, which are not listed here; the 2012 book and the FEniCS 1.5 paper are the earlier citations (checked 2026-10-06).
+* '''[[The Principia Machina/Research Toolkit/Bibliography#DOLFINX23|DOLFINX23]]''' &ndash; Baratta, I. A., Dean, J. P., Dokken, J. S., Habera, M., Hale, J. S., Richardson, C. N., Rognes, M. E., Scroggs, M. W., Sime, N., Wells, G. N. (2023). DOLFINx: The next generation FEniCS problem solving environment. Zenodo preprint v1, 31 Dec 2023. [https://doi.org/10.5281/zenodo.10447666 doi:10.5281/zenodo.10447666].
+* '''[[The Principia Machina/Research Toolkit/Bibliography#FENICS15|FENICS15]]''' &ndash; Alnæs, M., Blechta, J., Hake, J., Johansson, A., Kehlet, B., Logg, A., Richardson, C., Ring, J., Rognes, M. E., Wells, G. N. (2015). The FEniCS Project Version 1.5. Archive of Numerical Software 3(100). [https://doi.org/10.11588/ans.2015.100.20553 doi:10.11588/ans.2015.100.20553].
+* '''[[The Principia Machina/Research Toolkit/Bibliography#FENICS12|FENICS12]]''' &ndash; Logg, A., Mardal, K.-A., Wells, G. N. (eds.) (2012). Automated Solution of Differential Equations by the Finite Element Method: The FEniCS Book. Springer, Lecture Notes in Computational Science and Engineering (ISSN 1439-7358). [https://doi.org/10.1007/978-3-642-23099-8 doi:10.1007/978-3-642-23099-8].

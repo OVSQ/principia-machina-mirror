@@ -1,0 +1,173 @@
+{{DISPLAYTITLE:Hamilton's principle — Figure gallery}}
+{{Hamilton's principle map}}
+Every figure in the volume, with the pages that carry it. This page is generated
+from the figure manifest, so it cannot fall out of step with what is shipped.
+
+'''58 figures, 131 placements.'''
+
+All figures are original to this volume. They are drawn as SVG and shipped as PNG;
+the reasons are given at the foot of this page.
+
+
+== The method ==
+
+{| class="wikitable"
+! figure !! shows !! carried by
+|-
+| F-01 || A true path and several comparison paths between fixed endpoints || [[Hamilton's principle/Mathematics/Functionals and the space of paths|Functionals and the space of paths]] · [[Hamilton's principle/Mathematics/The first variation|the first variation]] · [[Hamilton's principle]] · [[Hamilton's principle/Explainers/Comparing paths|Comparing paths]]
+|-
+| F-02 || A one-parameter family of paths through the true path || [[Hamilton's principle/Mathematics/The first variation|the first variation]] · [[Hamilton's principle/Explainers/Comparing paths|Comparing paths]]
+|-
+| F-03 || A localised test function || [[Hamilton's principle/Mathematics/The fundamental lemma|the fundamental lemma]] · [[Hamilton's principle/Explainers/What the Euler-Lagrange equation says|What the Euler-Lagrange equation says]]
+|-
+| F-04 || A free endpoint and its natural boundary condition || [[Hamilton's principle/Mathematics/Boundary terms and natural boundary conditions|Boundary terms and natural boundary conditions]] · [[Hamilton's principle/Explainers/Free ends|Free ends]]
+|-
+| F-16 || A needle variation || [[Hamilton's principle/Mathematics/The Legendre condition|the Legendre condition]] · [[Hamilton's principle/Explainers/Is it really a minimum|Is it really a minimum]]
+|-
+| F-39 || The two rates the Euler-Lagrange equation balances || [[Hamilton's principle/Mathematics/The Euler-Lagrange equation|the Euler-Lagrange equation]] · [[Hamilton's principle/Explainers/What the Euler-Lagrange equation says|What the Euler-Lagrange equation says]]
+|-
+| F-40 || The boundary term left by integration by parts || [[Hamilton's principle/Mathematics/The first variation|the first variation]] · [[Hamilton's principle/Mathematics/Boundary terms and natural boundary conditions|Boundary terms and natural boundary conditions]] · [[Hamilton's principle/Explainers/Free ends|Free ends]]
+|-
+| F-41 || An endpoint free to lie on a curve || [[Hamilton's principle/Mathematics/Boundary terms and natural boundary conditions|Boundary terms and natural boundary conditions]]
+|-
+| F-42 || A corner in an extremal || [[Hamilton's principle/Mathematics/Boundary terms and natural boundary conditions|Boundary terms and natural boundary conditions]] · [[Hamilton's principle/Mathematics/The Weierstrass excess function|the Weierstrass excess function]]
+|-
+| F-43 || A quantity conserved along the whole path || [[Hamilton's principle/Mathematics/The Beltrami identity|the Beltrami identity]] · [[Hamilton's principle/Explainers/Free ends|Free ends]]
+|-
+| F-44 || Varying one degree of freedom at a time || [[Hamilton's principle/Mathematics/Several dependent variables|Several dependent variables]] · [[Hamilton's principle/Mathematics/Holonomic constraints|Holonomic constraints]] · [[Hamilton's principle/Explainers/More than one variable|More than one variable]] · [[Hamilton's principle/Explainers/Constraints|Constraints]]
+|-
+| F-56 || From one independent variable to several || [[Hamilton's principle/Mathematics/Several independent variables|Several independent variables]] · [[Hamilton's principle/Explainers/More than one variable|More than one variable]]
+|}
+
+== Whether a path is best ==
+
+{| class="wikitable"
+! figure !! shows !! carried by
+|-
+| F-05 || Geodesics from a pole refocusing at the antipode || [[Hamilton's principle/Mathematics/The Jacobi condition and conjugate points|the Jacobi condition and conjugate points]] · [[Hamilton's principle/Applications/Geodesics|Geodesics]] · [[Hamilton's principle/Explainers/Where the minimum fails|Where the minimum fails]]
+|-
+| F-07 || The second variation changing sign as the interval lengthens || [[Hamilton's principle/Mathematics/The second variation|the second variation]] · [[Hamilton's principle/Explainers/Is it really a minimum|Is it really a minimum]]
+|-
+| F-13 || A sawtooth competitor close in position and far in slope || [[Hamilton's principle/Mathematics/The Weierstrass excess function|the Weierstrass excess function]] · [[Hamilton's principle/Explainers/Strong and weak|Strong and weak]]
+|-
+| F-14 || Two stationary light paths around a mass || [[Hamilton's principle/Applications/The Einstein-Hilbert action|the Einstein-Hilbert action]] · [[Hamilton's principle/Explainers/Where the minimum fails|Where the minimum fails]] · [[Hamilton's principle/Explainers/Gravity from an action|Gravity from an action]]
+|-
+| F-17 || Local penalty against accumulated reward || [[Hamilton's principle/Mathematics/The second variation|the second variation]] · [[Hamilton's principle/Explainers/Is it really a minimum|Is it really a minimum]]
+|-
+| F-22 || Geodesic behaviour on flat, spherical and saddle surfaces || [[Hamilton's principle/Mathematics/The Jacobi condition and conjugate points|the Jacobi condition and conjugate points]] · [[Hamilton's principle/Applications/Geodesics|Geodesics]]
+|-
+| F-34 || The Weierstrass excess function as a gap above the tangent || [[Hamilton's principle/Mathematics/The Weierstrass excess function|the Weierstrass excess function]] · [[Hamilton's principle/Explainers/Strong and weak|Strong and weak]]
+|-
+| F-49 || The four conditions of the sufficiency theory || [[Hamilton's principle/Mathematics/The Legendre condition|the Legendre condition]] · [[Hamilton's principle/Mathematics/The Weierstrass excess function|the Weierstrass excess function]] · [[Hamilton's principle/Explainers/Strong and weak|Strong and weak]]
+|-
+| F-50 || Rays crossing a focus || [[Hamilton's principle/Applications/The Feynman path integral|the Feynman path integral]] · [[Hamilton's principle/Mathematics/The Jacobi condition and conjugate points|the Jacobi condition and conjugate points]] · [[Hamilton's principle/Explainers/Waves and rays|Waves and rays]]
+|}
+
+== Structure ==
+
+{| class="wikitable"
+! figure !! shows !! carried by
+|-
+| F-10 || The Legendre transform as a tangent-line description || [[Hamilton's principle/Mathematics/The Legendre transform|the Legendre transform]] · [[Hamilton's principle/Explainers/Reading a curve two ways|Reading a curve two ways]]
+|-
+| F-11 || Phase portrait of a pendulum || [[Hamilton's principle/Mathematics/The Hamiltonian and Hamilton's equations|the Hamiltonian and Hamilton's equations]] · [[Hamilton's principle/Explainers/The Hamiltonian|the Hamiltonian]]
+|-
+| F-12 || Wavefronts and the rays orthogonal to them || [[Hamilton's principle/Mathematics/The Hamilton-Jacobi equation|the Hamilton-Jacobi equation]] · [[Hamilton's principle/Applications/The optical-mechanical analogy|the optical-mechanical analogy]] · [[Hamilton's principle/Explainers/Waves and rays|Waves and rays]]
+|-
+| F-24 || Lagrangian and Hamiltonian descriptions compared || [[Hamilton's principle/Mathematics/The Hamiltonian and Hamilton's equations|the Hamiltonian and Hamilton's equations]] · [[Hamilton's principle/Explainers/The Hamiltonian|the Hamiltonian]]
+|-
+| F-25 || Action on the true motion as a function of its endpoints || [[Hamilton's principle/Mathematics/Action as a function of its endpoints|Action as a function of its endpoints]] · [[Hamilton's principle/Explainers/Action from the endpoints|Action from the endpoints]]
+|-
+| F-32 || From n second-order equations to one partial differential equation || [[Hamilton's principle/Mathematics/The Hamilton-Jacobi equation|the Hamilton-Jacobi equation]] · [[Hamilton's principle/Explainers/Waves and rays|Waves and rays]]
+|-
+| F-36 || What each action principle holds fixed || [[Hamilton's principle/Mathematics/Abbreviated action: Maupertuis versus Hamilton|Abbreviated action: Maupertuis versus Hamilton]] · [[Hamilton's principle/Explainers/Two different actions|Two different actions]]
+|-
+| F-38 || The optical-mechanical dictionary || [[Hamilton's principle/Applications/The optical-mechanical analogy|the optical-mechanical analogy]] · [[Hamilton's principle/Explainers/Light and particles|Light and particles]]
+|-
+| F-48 || The empty corner of the optical-mechanical analogy || [[Hamilton's principle/Applications/The optical-mechanical analogy|the optical-mechanical analogy]] · [[Hamilton's principle/Explainers/Light and particles|Light and particles]] · [[Hamilton's principle/History/Hamilton 1834 and 1835|Hamilton 1834 and 1835]]
+|}
+
+== Symmetry ==
+
+{| class="wikitable"
+! figure !! shows !! carried by
+|-
+| F-09 || Symmetry to conservation, four examples || [[Hamilton's principle/Mathematics/Noether's first theorem|Noether's first theorem]] · [[Hamilton's principle/Explainers/Symmetry and conservation|Symmetry and conservation]]
+|-
+| F-26 || Counting physical polarisations from gauge redundancy || [[Hamilton's principle/Applications/The electromagnetic Lagrangian|the electromagnetic Lagrangian]] · [[Hamilton's principle/Explainers/Electromagnetism from an action|Electromagnetism from an action]]
+|-
+| F-37 || Identities among field equations from a local symmetry || [[Hamilton's principle/Mathematics/Noether's second theorem|Noether's second theorem]] · [[Hamilton's principle/Applications/The electromagnetic Lagrangian|the electromagnetic Lagrangian]] · [[Hamilton's principle/Explainers/When symmetry is local|When symmetry is local]]
+|-
+| F-51 || Locality: influence passing from neighbour to neighbour || [[Hamilton's principle/Applications/Classical field theory|Classical field theory]] · [[Hamilton's principle/Explainers/Fields|Fields]]
+|}
+
+== Worked problems ==
+
+{| class="wikitable"
+! figure !! shows !! carried by
+|-
+| F-06 || The brachistochrone as a cycloid || [[Hamilton's principle/Applications/The brachistochrone|the brachistochrone]]
+|-
+| F-08 || Snell's law from stationary time || [[Hamilton's principle/Applications/Fermat's principle|Fermat's principle]] · [[Hamilton's principle/Explainers/Light and particles|Light and particles]]
+|-
+| F-15 || Phases adding near the stationary path and cancelling elsewhere || [[Hamilton's principle/Applications/The Feynman path integral|the Feynman path integral]] · [[Hamilton's principle/Explainers/Sum over histories|Sum over histories]]
+|-
+| F-18 || A constraint force normal to the permitted motion || [[Hamilton's principle/Mathematics/Holonomic constraints|Holonomic constraints]] · [[Hamilton's principle/History/d'Alembert and virtual work|d'Alembert and virtual work]] · [[Hamilton's principle/Explainers/Constraints|Constraints]]
+|-
+| F-19 || Tension in a swinging load || [[Hamilton's principle/Mathematics/Lagrange multipliers|Lagrange multipliers]] · [[Hamilton's principle/Explainers/Multipliers|Multipliers]]
+|-
+| F-20 || Fixed perimeter, varying area || [[Hamilton's principle/Mathematics/Isoperimetric problems|Isoperimetric problems]] · [[Hamilton's principle/Explainers/Fixed length problems|Fixed length problems]]
+|-
+| F-23 || A catenary and the directrix from which its tension is measured || [[Hamilton's principle/Applications/The catenary|the catenary]] · [[Hamilton's principle/Explainers/Free ends|Free ends]]
+|-
+| F-27 || Stability of rotation about the three principal axes || [[Hamilton's principle/Applications/The rigid body|the rigid body]]
+|-
+| F-28 || Fundamental modes with both ends fixed and with one end free || [[Hamilton's principle/Applications/Continuum systems: the vibrating string|Continuum systems: the vibrating string]] · [[Hamilton's principle/Explainers/Free ends|Free ends]]
+|-
+| F-29 || Local conservation as a flow across a boundary || [[Hamilton's principle/Applications/Classical field theory|Classical field theory]] · [[Hamilton's principle/Explainers/Fields|Fields]]
+|-
+| F-30 || Lambert's theorem: chord and sum of radii || [[Hamilton's principle/Applications/Central force and the Kepler problem|Central force and the Kepler problem]] · [[Hamilton's principle/Explainers/Action from the endpoints|Action from the endpoints]]
+|-
+| F-31 || A bead chain approaching a continuous string || [[Hamilton's principle/Applications/Continuum systems: the vibrating string|Continuum systems: the vibrating string]] · [[Hamilton's principle/Explainers/More than one variable|More than one variable]]
+|-
+| F-33 || D'Alembert's principle: dynamics rewritten as statics || [[Hamilton's principle/History/d'Alembert and virtual work|d'Alembert and virtual work]] · [[Hamilton's principle/Explainers/Constraints|Constraints]]
+|-
+| F-35 || A two-parameter family for an isoperimetric problem || [[Hamilton's principle/Mathematics/Isoperimetric problems|Isoperimetric problems]] · [[Hamilton's principle/Explainers/Fixed length problems|Fixed length problems]]
+|-
+| F-45 || Free fall as a straight path in a curved geometry || [[Hamilton's principle/Applications/The Einstein-Hilbert action|the Einstein-Hilbert action]] · [[Hamilton's principle/Explainers/Gravity from an action|Gravity from an action]]
+|-
+| F-46 || Maxwell's equations split into dynamics and identities || [[Hamilton's principle/Applications/The electromagnetic Lagrangian|the electromagnetic Lagrangian]] · [[Hamilton's principle/Explainers/Electromagnetism from an action|Electromagnetism from an action]]
+|-
+| F-47 || The effective potential of a central-force problem || [[Hamilton's principle/Applications/Central force and the Kepler problem|Central force and the Kepler problem]] · [[Hamilton's principle/Applications/The rigid body|the rigid body]]
+|-
+| F-52 || The boundary term in one dimension and in a field || [[Hamilton's principle/Mathematics/Several independent variables|Several independent variables]] · [[Hamilton's principle/Applications/The Einstein-Hilbert action|the Einstein-Hilbert action]] · [[Hamilton's principle/Explainers/Gravity from an action|Gravity from an action]]
+|}
+
+== History and method ==
+
+{| class="wikitable"
+! figure !! shows !! carried by
+|-
+| F-21 || Chronology of the action principle || [[Hamilton's principle/Chronology|Chronology]] · [[Hamilton's principle]]
+|-
+| F-53 || The three provenance classes, and the empty one || [[Hamilton's principle/Sources|Sources]]
+|-
+| F-54 || Four states an electronic source can be in || [[Hamilton's principle/Sources|Sources]] · [[Hamilton's principle/History/Least time before least action|Least time before least action]]
+|-
+| F-55 || Three modernised statements attributed to their authors || [[Hamilton's principle/Sources|Sources]] · [[Hamilton's principle/History/Least time before least action|Least time before least action]] · [[Hamilton's principle/History/Maupertuis and the 1744 memoir|Maupertuis and the 1744 memoir]] · [[Hamilton's principle/History/Euler and the Methodus inveniendi|Euler and the Methodus inveniendi]]
+|-
+| F-57 || Transcribed against corroborated || [[Hamilton's principle/Sources|Sources]] · [[Hamilton's principle/History/Maupertuis and the 1744 memoir|Maupertuis and the 1744 memoir]]
+|-
+| F-58 || The two long gaps in the subject's history || [[Hamilton's principle/Chronology|Chronology]] · [[Hamilton's principle/History/Lagrange and the Mecanique analytique|Lagrange and the Mecanique analytique]] · [[Hamilton's principle/History/Jacobi|Jacobi]] · [[Hamilton's principle/History/Feynman 1948|Feynman 1948]] · [[Hamilton's principle]]
+|}
+
+== Note on format ==
+
+The volume ships raster figures rather than vector ones. A MediaWiki install
+accepts PNG with no configuration change, while SVG needs the upload extension
+list altered and the rasteriser bypassed. The masters are vector and the PNGs
+are rendered from them at twice the display size.
+
+Every figure carries an opaque background, so the set reads consistently on a
+light skin and sits as a light panel on a dark one. That trade was chosen, not
+defaulted.

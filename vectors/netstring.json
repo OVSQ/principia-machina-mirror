@@ -1,0 +1,16 @@
+[
+  {"fields": [], "expected": ""},
+  {"fields": [""], "expected": "0:"},
+  {"fields": ["a"], "expected": "1:a"},
+  {"fields": ["TPC-EXECUTION-CHALLENGE", "1", "ab"], "expected": "23:TPC-EXECUTION-CHALLENGE1:12:ab"},
+  {"fields": ["é"], "expected": "2:é"},
+  {"fields": ["12:ab", "x"], "expected": "5:12:ab1:x"},
+  {"fields": ["😀"], "expected": "4:😀"},
+  {"fields": ["中文"], "expected": "6:中文"},
+  {"fields": ["abcdefghij"], "expected": "10:abcdefghij"},
+  {"fields": ["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"], "expected": "100:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"},
+  {"fields": ["", "", ""], "expected": "0:0:0:"},
+  {"fields": [":", "0:"], "expected": "1::2:0:"},
+  {"fields": ["é"], "expected": "3:é"},
+  {"fields": ["a\nb"], "expected": "3:a\nb"}
+]

@@ -1,0 +1,113 @@
+{{DISPLAYTITLE:Symmetries of a curved space}}
+{{Noether's theorems map}}
+
+''Mathematical counterpart: [[Noether's theorems/Mathematics/Killing vectors and conserved quantities along geodesics|Killing vectors and conserved quantities along geodesics]].''
+
+[[File:NT-F-09.png|thumb|right|360px|alt=A sphere drawn with dashed latitude and longitude lines, a great circle marked as a geodesic, and three arrows tangent to the surface marked as Killing vectors. A side panel counts Killing vectors for a sphere, a cylinder, a flat plane and a lumpy surface, the last being zero.|Killing vectors on a sphere with a geodesic]]
+
+A curved surface can have symmetries just as a flat one can, and where it does,
+things moving freely across it conserve something.
+
+== Sliding a shape along itself ==
+
+A sphere can be turned about any axis and lands on itself exactly. Three
+independent ways to turn it, so three symmetries.
+
+A cylinder can be turned about its long axis, and slid along that axis. Two
+symmetries.
+
+A potato has none. Move it any way at all and it does not land on itself.
+
+The mathematical name for a direction you can slide a space along without
+distorting it is a '''Killing vector''', after the mathematician who wrote down
+the condition. Its defining property is that distances are unchanged by the
+sliding.
+
+== What free motion conserves ==
+
+Something moving freely across a curved surface — no forces, just the surface —
+follows the straightest available path. Call that a geodesic. On a sphere,
+geodesics are the great circles.
+
+Now the result. '''For each Killing vector, a moving object conserves the amount
+of its motion that lies along that direction.'''
+
+The proof is three lines and its whole content is a mismatch of symmetry. The
+Killing condition makes one object antisymmetric — swap two of its slots and it
+flips sign. The motion supplies a symmetric one — swap and nothing happens.
+Multiply them together and add up, and every term cancels against its partner.
+
+So the quantity does not change, and nothing about curvature entered the argument.
+One Killing vector, one conserved quantity, exactly the count
+[[Noether's theorems/Explainers/What a continuous symmetry is|the counting rule]]
+predicts.
+
+== The two familiar cases ==
+
+If the shape of space does not change with time, the time direction is a Killing
+vector, and the conserved quantity is the energy of a freely falling object.
+
+If it looks the same all the way round an axis, that rotation is a Killing vector,
+and the conserved quantity is the angular momentum.
+
+These are how orbits around a star are calculated. Both conserved quantities come
+from symmetries of the space itself rather than from anything about the orbiting
+object.
+
+== The catch, and it is a large one ==
+
+'''A spacetime picked at random has no Killing vectors whatsoever.'''
+
+This is not a rare misfortune. It is the ordinary case. The condition a Killing
+vector has to satisfy is far more demanding than it looks, and a generic curved
+space satisfies it for nothing but the trivial direction that goes nowhere.
+
+The spacetimes in textbooks — the static ones, the spherically symmetric ones — all
+have Killing vectors, which is exactly why they are the ones in textbooks. They can
+be solved. That gives a badly misleading impression of how available these
+conserved quantities are.
+
+== Two different ways of failing ==
+
+Worth keeping apart, because general relativity manages both and they get run
+together.
+
+'''No symmetry.''' A lumpy spacetime has no Killing vector, so there is nothing
+for the theorem to work on and no conserved quantity exists.
+
+'''A symmetry that gives nothing.''' Even where there is one, the local freedom of
+general relativity can make the resulting conservation law
+[[Noether's theorems/Explainers/A conservation law that is only wearing the costume|empty]].
+
+Absent and empty are not the same failure. The first is a shortage of symmetry. The
+second is a surplus of it.
+
+== Spaces with the most symmetry possible ==
+
+There is a ceiling on how symmetric a space can be, and it is worth knowing
+because the spaces at the ceiling are the ones every textbook uses.
+
+For an ordinary surface, the maximum is three: two ways of sliding and one of
+turning. Exactly three kinds of surface achieve it — the flat plane, the sphere,
+and a saddle-shaped surface that curves away in every direction at once. Nothing
+else comes close.
+
+For spacetime the ceiling is ten, and the flat spacetime of special relativity
+sits exactly at it: one for time, three for space, three for turning, three for
+changing to a laboratory moving at a steady speed. That is the same ten as the
+count on
+[[Noether's theorems/Explainers/Why energy and momentum are conserved|the earlier
+page]], and it is not a coincidence — that page counted the symmetries of flat
+spacetime and this one counts them again from the geometry.
+
+Now the honest part. Once you put anything in that spacetime — a star, a galaxy,
+anything at all — the symmetry count collapses. A spacetime containing a single
+non-rotating star retains four. A realistic one, with matter distributed unevenly,
+retains none.
+
+'''So the conserved quantities of general relativity are a feature of its
+idealised solutions, not of the theory.''' The textbook cases are chosen for
+solvability, and solvability is symmetry.
+
+''No mathematics is used on this page. The mathematical treatment is on the
+counterpart page named above.''

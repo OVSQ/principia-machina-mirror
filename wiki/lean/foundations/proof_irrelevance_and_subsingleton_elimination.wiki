@@ -1,0 +1,194 @@
+{{DISPLAYTITLE:Proof irrelevance and subsingleton elimination}}
+{{Plebeian|Lean theorem prover/Explainers/Two kinds of equality}}
+{{Lean theorem prover map}}
+
+Two rules govern how proofs behave in Lean. '''Definitional proof irrelevance''' makes any
+two proofs of the same proposition definitionally equal. '''Restricted elimination''' allows
+a proof to be taken apart to produce data only when the proposition is a
+'''subsingleton''', one that by its shape can have at most one proof. The first rule says
+that the content of a proof never matters; the second is what keeps that consistent. This
+page states both rules, lists which propositions pass the test, explains why the test is
+needed, and sets out the cost: together with the accessibility predicate, the two rules make
+Lean's definitional equality undecidable.
+
+== Definitional proof irrelevance ==
+
+Carneiro's presentation of Lean's type theory includes the rule<ref name="carneiro">Mario Carneiro, ''The Type Theory of Lean'', Master's thesis, Carnegie Mellon University, 2019; §2.2 (pp. 6–7), §2.6.2 (pp. 10–11), §2.6.4 (p. 12), §2.8 (p. 15), §3.1 (pp. 16–17), Lemma 3.4 (pp. 18–19) and Corollary 6.8 (p. 41). https://github.com/digama0/lean-type-theory/releases/tag/v1.0</ref>
+
+:<math>\frac{\Gamma \vdash p : \mathrm{Prop} \quad \Gamma \vdash h : p \quad \Gamma \vdash h' : p}{\Gamma \vdash h \equiv h'}</math>
+
+It is a rule of definitional equality, so the checker applies it during conversion, without
+any proof term. The reference manual lists it among the defining properties of
+<code>Prop</code>, beside the erasure of propositions from compiled code.<ref name="refman-props">''The Lean Language Reference'', version 4.34.0, §4.2 "Propositions". https://lean-lang.org/doc/reference/4.34.0/The-Type-System/Propositions/</ref>
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+example (p : Prop) (h₁ h₂ : p) : h₁ = h₂ := rfl
+
+example (h₁ h₂ : 0 &lt; 5) : (⟨5, h₁⟩ : {n : Nat // 0 &lt; n}) = ⟨5, h₂⟩ := rfl
+
+example (α : Type) (h₁ h₂ : Nonempty α) : Classical.choice h₁ = Classical.choice h₂ := rfl
+</pre>
+
+All three are accepted. The second shows the practical use: elements of a subtype are equal
+as soon as their values are, whatever proofs they carry. The third shows that global choice
+returns one element per type, not one per proof. Carneiro, writing in 2019, notes that Coq
+then had proof irrelevance only as an axiom asserting a propositional equality, and calls
+Lean's definitional version "a major departure for the theory".<ref name="carneiro" />
+
+== Why elimination must be restricted ==
+
+Suppose a program could inspect which constructor built a proof of a disjunction, and so
+return <code>true</code> on <code>Or.inl trivial : True ∨ True</code> and <code>false</code>
+on <code>Or.inr trivial</code>. Those two proofs have the same type, so proof irrelevance
+makes them definitionally equal, the two results would be definitionally equal, and
+<code>true = false</code> would follow by <code>rfl</code>. One of the two rules has to
+give way. Lean keeps proof irrelevance and forbids the inspection: having been given a
+proof, a program must not be able to tell which proof it received.<ref name="refman-ind">''The Lean Language Reference'', version 4.34.0, §4.4 "Inductive Types", subsection "Subsingleton Elimination". https://lean-lang.org/doc/reference/4.34.0/The-Type-System/Inductive-Types/#subsingleton-elimination</ref>
+Lean refuses the function:
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+def which (h : True ∨ True) : Bool :=
+  match h with
+  | .inl _ => true
+  | .inr _ => false
+</pre>
+
+The message begins <code>Tactic `cases` failed with a nested error:</code> and continues
+<code>Tactic `induction` failed: recursor `Or.casesOn` can only eliminate into `Prop`</code>.
+The restriction is visible in the recursors themselves. The motive of <code>Or.rec</code>
+and of <code>Exists.rec</code> returns <code>Prop</code>, while the motives of
+<code>True.rec</code>, <code>False.rec</code> and <code>And.rec</code> return an arbitrary
+<code>Sort u_1</code>:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+#check @True.rec
+#check @False.rec
+#check @And.rec
+#check @Or.rec
+#check @Exists.rec
+</pre>
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+@True.rec : {motive : True → Sort u_1} → motive True.intro → (t : True) → motive t
+False.rec : (motive : False → Sort u_1) → (t : False) → motive t
+@And.rec : {a b : Prop} → {motive : a ∧ b → Sort u_1} → ((left : a) → (right : b) → motive ⋯) → (t : a ∧ b) → motive t
+@Or.rec : ∀ {a b : Prop} {motive : a ∨ b → Prop},
+  (∀ (h : a), motive ⋯) → (∀ (h : b), motive ⋯) → ∀ (t : a ∨ b), motive t
+@Exists.rec : ∀ {α : Sort u_1} {p : α → Prop} {motive : Exists p → Prop},
+  (∀ (w : α) (h : p w), motive ⋯) → ∀ (t : Exists p), motive t
+</pre>
+
+== The rule ==
+
+An inductive type in <code>Prop</code> may be eliminated into any universe, which is
+'''large elimination''', when it is a syntactic subsingleton. The reference manual states
+the test as two conditions: there is at most one constructor, and every argument of that
+constructor either has a proposition as its type or is a parameter or an index of the
+type.<ref name="refman-ind" /> Carneiro's formulation is that there is at most one constructor
+and every non-recursive argument of it either has a proposition as its type or appears
+directly in the constructor's output type.<ref name="carneiro" /> Otherwise the motive of the recursor must return
+<code>Prop</code>. The test is deliberately conservative: it does not ask for a proof that
+the proposition has at most one proof, only for a shape that guarantees it.<ref name="refman-ind" />
+
+The standard cases:
+
+* '''<code>True</code>''' has one constructor with no arguments, and '''<code>False</code>''' has none. From <code>h : False</code>, <code>h.elim</code> produces an element of any type.<ref name="refman-ind" />
+* '''<code>And</code>''' has one constructor whose arguments are proofs.<ref name="refman-ind" />
+* '''<code>Eq</code>''' has one constructor, <code>Eq.refl a</code>, whose argument is fixed by the type's parameters. This is why a proof of an equation can rewrite the type of data, the operation called transport on [[Lean theorem prover/Foundations/Propositional equality|propositional equality]].<ref name="refman-ind" />
+* '''<code>Acc</code>''', the accessibility predicate, has one constructor <code>Acc.intro x h</code>. Its argument <code>x</code> appears in the result type <code>Acc r x</code> and its argument <code>h</code> is a proof, so it too eliminates into any universe. Carneiro singles it out as the source of proof by well-founded recursion.<ref name="carneiro" />
+
+<code>Or</code> fails because it has two constructors. <code>Exists</code> and
+<code>Nonempty</code> fail because their constructor stores a witness that is neither a
+proof nor part of the type. Their proofs therefore cannot yield the witness as data; that
+requires <code>Classical.choose</code>, as on
+[[Lean theorem prover/Foundations/Classical logic from choice|classical logic from choice]].
+Where the witness is wanted as data, the subtype <code>{x // p x}</code>, which lives in
+<code>Type</code>, carries it.
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+def fromFalse (h : False) : Nat := h.elim
+
+def castAlong {α β : Type} (h : α = β) (x : α) : β := h ▸ x
+
+def bothThen {p q : Prop} (h : p ∧ q) (f : p → q → Nat) : Nat :=
+  match h with
+  | ⟨hp, hq⟩ => f hp hq
+
+set_option pp.proofs true in
+#check @Acc.rec
+</pre>
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+@Acc.rec : {α : Sort u_2} →
+  {r : α → α → Prop} →
+    {motive : (a : α) → Acc r a → Sort u_1} →
+      ((x : α) →
+          (h : ∀ (y : α), r y x → Acc r y) → ((y : α) → (a : r y x) → motive y (h y a)) → motive x (Acc.intro x h)) →
+        {a : α} → (t : Acc r a) → motive a t
+</pre>
+
+For subsingletons the checker also applies an extra reduction, which Carneiro calls K-like
+reduction: by proof irrelevance the major premise may be replaced by the constructor, and
+the ordinary computation rule then fires. It applies only when every argument of the
+constructor can be read off the type, which is the reason for the shape of the
+test.<ref name="carneiro" /> For <code>Eq</code> it makes transport along any proof of
+<code>a = a</code> reduce to the identity.
+
+== The cost: definitional equality is undecidable ==
+
+Proof irrelevance and the large eliminator of <code>Acc</code> together break the
+decidability of definitional equality. Carneiro's argument runs as follows.<ref name="carneiro" />
+From a proof <code>a : Acc r x</code> one can project, with the eliminator, a function
+giving accessibility of every smaller element; call it <code>a.inv</code>. Rebuilding with
+the constructor gives a proof of the same proposition, so by proof irrelevance
+<code>a</code> and <code>Acc.intro x a.inv</code> are definitionally equal:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+example {α : Sort u} {r : α → α → Prop} {x : α} (a : Acc r x) :
+    a = Acc.intro x (fun _ h => a.inv h) := rfl
+</pre>
+
+That step turns any proof, even an opaque variable, into a constructor on which the
+recursor can compute. Now take a decidable predicate <math>P</math> on the natural
+numbers, such as "machine <math>M</math> runs for at least <math>n</math> steps without
+halting", and a function <math>f</math> defined by recursion on <code>Acc</code> for the
+relation <math>></math>, which at <math>n</math> returns a fixed value if
+<math>P(n)</math> fails and otherwise calls itself at <math>n+1</math>. The relation
+<math>></math> on the natural numbers is not well founded, so a hypothesis
+<math>a : \mathrm{Acc}\,(>)\,0</math> is unprovable, but definitional equality is
+judged in every context, inconsistent ones included. In that context each use of the
+equation above lets <math>f\,0\,a</math> take one more step of the search. If
+<math>P(n)</math> fails for some <math>n</math>, the search ends and <math>f\,0\,a</math> is
+definitionally equal to the fixed value; if <math>P</math> holds everywhere, every term
+definitionally equal to <math>f\,0\,a</math> still contains a call of <math>f</math>.
+Deciding that one definitional equality would decide whether <math>M</math> halts.
+
+Lean's checker cannot implement an undecidable relation. It implements a decidable
+approximation, which Carneiro calls algorithmic equality, and the two must differ: the
+chain of equalities above holds step by step, but the checker, which does not perform the
+"creative" re-expansion of a normal term, does not relate its two ends. Algorithmic
+equality is therefore not transitive.<ref name="carneiro" /> The reference manual records
+the same fact: definitional equality as Lean checks it is reflexive and symmetric, but not
+transitive.<ref name="refman-ts">''The Lean Language Reference'', version 4.34.0, §4 "The Type System" (definitional equality). https://lean-lang.org/doc/reference/4.34.0/The-Type-System/</ref> Carneiro also shows that, measured against the
+algorithmic relation, typing fails subject reduction: a term can be well typed and reduce
+to one that the checker rejects.<ref name="carneiro" />
+
+None of this lets the checker accept a false theorem. Algorithmic equality implies the
+ideal definitional equality for well-typed terms, so whatever the checker accepts is
+derivable in the theory; Carneiro uses exactly this step in his consistency proof. The
+defect is incompleteness, not unsoundness.<ref name="carneiro" />
+Abel and Coquand later showed a related failure: with an impredicative <code>Prop</code>
+and proof-irrelevant equality, reduction need not terminate at all.<ref name="abel-coquand">Andreas Abel and Thierry Coquand, "Failure of normalization in impredicative type theory with proof-irrelevant propositional equality", ''Logical Methods in Computer Science'' 16(2) (2020), paper 14. https://doi.org/10.23638/LMCS-16(2:14)2020</ref>
+That result, and why the checker remains sound regardless, are treated on
+[[Lean theorem prover/Foundations/Consistency and the metatheory|consistency and the metatheory]].
+Abel and Coquand also note the other design: Agda and Coq had recently gained a proof-irrelevant universe
+of strict propositions in which equality can be defined but cannot be eliminated into types
+that are not themselves strict propositions, and under that restriction normalisation and
+decidable type checking have been proved for the predicative case.<ref name="abel-coquand" />
+
+== Next ==
+
+[[Lean theorem prover/Foundations/Consistency and the metatheory|Consistency and the metatheory]]
+asks what is known about the soundness of the whole system.
+
+== References ==
+
+<references />

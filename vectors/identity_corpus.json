@@ -1,0 +1,2187 @@
+{
+ "cases": [
+  {
+   "args": {
+    "json": "{ \"b\" : 1 , \"a\" : 2 }"
+   },
+   "expected": "{\"a\":2,\"b\":1}",
+   "fn": "tools",
+   "hand_checked": true,
+   "name": "T01 keys sorted, whitespace removed"
+  },
+  {
+   "args": {
+    "json": "{\"z\": {\"y\": [3, {\"x\": null}]}, \"a\": []}"
+   },
+   "expected": "{\"a\":[],\"z\":{\"y\":[3,{\"x\":null}]}}",
+   "fn": "tools",
+   "hand_checked": true,
+   "name": "T02 nested objects and arrays"
+  },
+  {
+   "args": {
+    "json": "[\"e\\u0301\", \"\\u00e9\"]"
+   },
+   "expected": "[\"é\",\"é\"]",
+   "fn": "tools",
+   "hand_checked": true,
+   "name": "T03 NFC: a decomposed string equals its composed form"
+  },
+  {
+   "args": {
+    "json": "[1.0, 1, 1e0, 1.50, 0.001e-2, -0, -0.0, 12.340E+3]"
+   },
+   "expected": "[1,1,1,15e-1,1e-5,0,0,1234e1]",
+   "fn": "tools",
+   "hand_checked": true,
+   "name": "T04 decimals: 1.0, 1, 1e0, 1.50, 0.001e-2, -0, -0.0, 12.340E+3"
+  },
+  {
+   "args": {
+    "json": "[{\"name\": \"read_page\", \"description\": \"Read a wiki page\", \"parameters\": {\"type\": \"object\", \"properties\": {\"title\": {\"type\": \"string\"}}, \"required\": [\"title\"]}}, {\"name\": \"push\", \"parameters\": {\"type\": \"object\", \"properties\": {\"records\": {\"type\": \"array\", \"items\": {\"type\": \"object\"}}}}}]"
+   },
+   "expected": "[{\"description\":\"Read a wiki page\",\"name\":\"read_page\",\"parameters\":{\"properties\":{\"title\":{\"type\":\"string\"}},\"required\":[\"title\"],\"type\":\"object\"}},{\"name\":\"push\",\"parameters\":{\"properties\":{\"records\":{\"items\":{\"type\":\"object\"},\"type\":\"array\"}},\"type\":\"object\"}}]",
+   "fn": "tools",
+   "hand_checked": false,
+   "name": "T05 a realistic tool definition list"
+  },
+  {
+   "args": {
+    "json": "[{\"parameters\":{\"required\":[\"title\"],\"properties\":{\"title\":{\"type\":\"string\"}},\"type\":\"object\"},\"description\":\"Read a wiki page\",\"name\":\"read_page\"},{\"parameters\":{\"type\":\"object\",\"properties\":{\"records\":{\"items\":{\"type\":\"object\"},\"type\":\"array\"}}},\"name\":\"push\"}]"
+   },
+   "expected": "[{\"description\":\"Read a wiki page\",\"name\":\"read_page\",\"parameters\":{\"properties\":{\"title\":{\"type\":\"string\"}},\"required\":[\"title\"],\"type\":\"object\"}},{\"name\":\"push\",\"parameters\":{\"properties\":{\"records\":{\"items\":{\"type\":\"object\"},\"type\":\"array\"}},\"type\":\"object\"}}]",
+   "fn": "tools",
+   "hand_checked": false,
+   "name": "T06 the same list with other whitespace and key order canonicalizes alike"
+  },
+  {
+   "args": {
+    "json": "[1, 2,]"
+   },
+   "expected": "ERROR:tools",
+   "fn": "tools",
+   "hand_checked": true,
+   "name": "T07 a trailing comma is refused"
+  },
+  {
+   "args": {
+    "json": "{\"a\": 1, \"a\": 2}"
+   },
+   "expected": "ERROR:tools",
+   "fn": "tools",
+   "hand_checked": true,
+   "name": "T08 a duplicate key is refused"
+  },
+  {
+   "args": {
+    "json": "{\"\\u00e9\": 1, \"e\\u0301\": 2}"
+   },
+   "expected": "ERROR:tools",
+   "fn": "tools",
+   "hand_checked": true,
+   "name": "T09 a duplicate key after NFC is refused"
+  },
+  {
+   "args": {
+    "json": "[NaN]"
+   },
+   "expected": "ERROR:tools",
+   "fn": "tools",
+   "hand_checked": true,
+   "name": "T10 NaN is refused"
+  },
+  {
+   "args": {
+    "json": "\"\\ud800\""
+   },
+   "expected": "ERROR:tools",
+   "fn": "tools",
+   "hand_checked": true,
+   "name": "T11 a lone surrogate escape is refused"
+  },
+  {
+   "args": {
+    "json": "\"\\ud83d\\ude00\""
+   },
+   "expected": "\"😀\"",
+   "fn": "tools",
+   "hand_checked": true,
+   "name": "T12 a surrogate pair escape gives the astral character raw"
+  },
+  {
+   "args": {
+    "json": "\"a\tb\""
+   },
+   "expected": "ERROR:tools",
+   "fn": "tools",
+   "hand_checked": true,
+   "name": "T13 a raw control character in a string is refused"
+  },
+  {
+   "args": {
+    "json": "\"\\b\\f\\n\\r\\t\\/\\\"\\\\\\u0001\\u007f\""
+   },
+   "expected": "\"\\b\\f\\n\\r\\t/\\\"\\\\\\u0001\"",
+   "fn": "tools",
+   "hand_checked": true,
+   "name": "T14 escapes: \\b \\f \\n \\r \\t \\/ \\\" \\\\ \\u0001 \\u007f"
+  },
+  {
+   "args": {
+    "json": "1e12345"
+   },
+   "expected": "ERROR:tools",
+   "fn": "tools",
+   "hand_checked": true,
+   "name": "T15 an exponent of five digits is refused"
+  },
+  {
+   "args": {
+    "json": "1e1234"
+   },
+   "expected": "1e1234",
+   "fn": "tools",
+   "hand_checked": true,
+   "name": "T16 an exponent of four digits is kept"
+  },
+  {
+   "args": {
+    "json": "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[1]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]"
+   },
+   "expected": "ERROR:tools",
+   "fn": "tools",
+   "hand_checked": true,
+   "name": "T17 depth 65 is refused"
+  },
+  {
+   "args": {
+    "json": "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[1]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]"
+   },
+   "expected": "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[1]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]",
+   "fn": "tools",
+   "hand_checked": true,
+   "name": "T18 depth 64 is kept"
+  },
+  {
+   "args": {
+    "json": " \t\r\n{ \t\"a\"\r\n:\t[ 1 ,\n2 ] }\n"
+   },
+   "expected": "{\"a\":[1,2]}",
+   "fn": "tools",
+   "hand_checked": true,
+   "name": "T19 the four whitespace characters around tokens"
+  },
+  {
+   "args": {
+    "json": ""
+   },
+   "expected": "ERROR:tools",
+   "fn": "tools",
+   "hand_checked": true,
+   "name": "T20 empty input is refused"
+  },
+  {
+   "args": {
+    "json": "[1] x"
+   },
+   "expected": "ERROR:tools",
+   "fn": "tools",
+   "hand_checked": true,
+   "name": "T21 trailing text is refused"
+  },
+  {
+   "args": {
+    "json": "01"
+   },
+   "expected": "ERROR:tools",
+   "fn": "tools",
+   "hand_checked": true,
+   "name": "T22 a leading zero is refused"
+  },
+  {
+   "args": {
+    "json": "[\"x\", -0.5e1, true, false, null]"
+   },
+   "expected": "[\"x\",-5,true,false,null]",
+   "fn": "tools",
+   "hand_checked": true,
+   "name": "T23 top-level string, number and literals"
+  },
+  {
+   "args": {
+    "json": "{\"\\u4e2d\": 1, \"\\u00e9\": 2, \"a\": 3, \"Z\": 4, \"a\\nb\": 5, \"\": 6}"
+   },
+   "expected": "{\"\":6,\"Z\":4,\"a\":3,\"a\\nb\":5,\"é\":2,\"中\":1}",
+   "fn": "tools",
+   "hand_checked": true,
+   "name": "T24 key order by code point: Z, a, e-acute, CJK, and a key with an escape"
+  },
+  {
+   "args": {
+    "json": 12
+   },
+   "expected": "ERROR:tools",
+   "fn": "tools",
+   "hand_checked": true,
+   "name": "T25 not a string is refused"
+  },
+  {
+   "args": {
+    "json": "1."
+   },
+   "expected": "ERROR:tools",
+   "fn": "tools",
+   "hand_checked": true,
+   "name": "T26 a number with a fraction but no digits after the point is refused"
+  },
+  {
+   "args": {
+    "json": "\"模型\""
+   },
+   "expected": "\"模型\"",
+   "fn": "tools",
+   "hand_checked": true,
+   "name": "T27 an unescaped DEL and non-ASCII raw text are kept"
+  },
+  {
+   "args": {
+    "json": "[123456789012345678901234567890, 0.10000000000000000555]"
+   },
+   "expected": "[12345678901234567890123456789e1,10000000000000000555e-20]",
+   "fn": "tools",
+   "hand_checked": true,
+   "name": "T28 a large integer stays exact (no float rounding)"
+  },
+  {
+   "args": {
+    "family": "6:CLOSED16:Anthropic/Claude",
+    "salt": "0123456789abcdef0123456789abcdef",
+    "template": "You are a certified agent of The Principia Machina.\nWork the register.",
+    "tools": "[{\"name\": \"read_page\", \"description\": \"Read a wiki page\", \"parameters\": {\"type\": \"object\", \"properties\": {\"title\": {\"type\": \"string\"}}, \"required\": [\"title\"]}}, {\"name\": \"push\", \"parameters\": {\"type\": \"object\", \"properties\": {\"records\": {\"type\": \"array\", \"items\": {\"type\": \"object\"}}}}}]"
+   },
+   "expected": "f6eaa47303ba98da00c3964bc844e53226f170e4e5b40eeb47ddf3cf2066d394",
+   "fn": "digest",
+   "hand_checked": true,
+   "name": "D01 a digest; recomputed independently below"
+  },
+  {
+   "args": {
+    "family": "6:CLOSED16:Anthropic/Claude",
+    "salt": "0123456789abcdef0123456789abcdef",
+    "template": "Résumé the work.",
+    "tools": "[]"
+   },
+   "expected": "be87686697e2cef3a13633b2be3697e5d167e71122c8abbaac02bdd38b34712e",
+   "fn": "digest",
+   "hand_checked": true,
+   "name": "D02 the template in NFD gives the same digest as in NFC"
+  },
+  {
+   "args": {
+    "family": "6:CLOSED16:Anthropic/Claude",
+    "salt": "0123456789abcdef0123456789abcdef",
+    "template": "Résumé the work.",
+    "tools": "[]"
+   },
+   "expected": "be87686697e2cef3a13633b2be3697e5d167e71122c8abbaac02bdd38b34712e",
+   "fn": "digest",
+   "hand_checked": true,
+   "name": "D02b the same template in NFC"
+  },
+  {
+   "args": {
+    "family": "6:CLOSED16:Anthropic/Claude",
+    "salt": "0123456789abcdef0123456789abcdef",
+    "template": "You are a certified agent of The Principia Machina.\nWork the register.",
+    "tools": "[{\"parameters\":{\"required\":[\"title\"],\"properties\":{\"title\":{\"type\":\"string\"}},\"type\":\"object\"},\"description\":\"Read a wiki page\",\"name\":\"read_page\"},{\"parameters\":{\"type\":\"object\",\"properties\":{\"records\":{\"items\":{\"type\":\"object\"},\"type\":\"array\"}}},\"name\":\"push\"}]"
+   },
+   "expected": "f6eaa47303ba98da00c3964bc844e53226f170e4e5b40eeb47ddf3cf2066d394",
+   "fn": "digest",
+   "hand_checked": true,
+   "name": "D03 tool key order and whitespace do not change the digest"
+  },
+  {
+   "args": {
+    "family": "6:CLOSED16:Anthropic/Claude",
+    "salt": "0123456789abcdef0123456789abcdef",
+    "template": "You are a certified agent of The Principia Machina.\nWork the register..",
+    "tools": "[{\"name\": \"read_page\", \"description\": \"Read a wiki page\", \"parameters\": {\"type\": \"object\", \"properties\": {\"title\": {\"type\": \"string\"}}, \"required\": [\"title\"]}}, {\"name\": \"push\", \"parameters\": {\"type\": \"object\", \"properties\": {\"records\": {\"type\": \"array\", \"items\": {\"type\": \"object\"}}}}}]"
+   },
+   "expected": "b07574cbc1220d294b48541de5141b1db3333f0c69d82fccf53278e92d9fd1a2",
+   "fn": "digest",
+   "hand_checked": true,
+   "name": "D04 one changed character in the template changes the digest"
+  },
+  {
+   "args": {
+    "family": "6:CLOSED16:Anthropic/Claude",
+    "salt": "0123456789abcdef0123456789abcdef",
+    "template": "You are a certified agent of The Principia Machina.\nWork the register.",
+    "tools": "[{\"name\": \"read_page\", \"description\": \"Read a wiki page\", \"parameters\": {\"type\": \"object\", \"properties\": {\"title\": {\"type\": \"string\"}}, \"required\": [\"title\"]}}, {\"name\": \"Push\", \"parameters\": {\"type\": \"object\", \"properties\": {\"records\": {\"type\": \"array\", \"items\": {\"type\": \"object\"}}}}}]"
+   },
+   "expected": "c692a1a400fb3606d723a5477b59eabfe7fd6954bbb4b78ca232130646217dda",
+   "fn": "digest",
+   "hand_checked": true,
+   "name": "D05 one changed character in the tools changes the digest"
+  },
+  {
+   "args": {
+    "family": "6:CLOSED16:Anthropic/Claude",
+    "salt": "0123456789ABCDEF0123456789ABCDEF",
+    "template": "You are a certified agent of The Principia Machina.\nWork the register.",
+    "tools": "[{\"name\": \"read_page\", \"description\": \"Read a wiki page\", \"parameters\": {\"type\": \"object\", \"properties\": {\"title\": {\"type\": \"string\"}}, \"required\": [\"title\"]}}, {\"name\": \"push\", \"parameters\": {\"type\": \"object\", \"properties\": {\"records\": {\"type\": \"array\", \"items\": {\"type\": \"object\"}}}}}]"
+   },
+   "expected": "ERROR:salt",
+   "fn": "digest",
+   "hand_checked": true,
+   "name": "D06 a salt in upper case is refused"
+  },
+  {
+   "args": {
+    "family": "6:CLOSED16:Anthropic/Claude",
+    "salt": "0123456789abcdef0123456789abcde",
+    "template": "You are a certified agent of The Principia Machina.\nWork the register.",
+    "tools": "[{\"name\": \"read_page\", \"description\": \"Read a wiki page\", \"parameters\": {\"type\": \"object\", \"properties\": {\"title\": {\"type\": \"string\"}}, \"required\": [\"title\"]}}, {\"name\": \"push\", \"parameters\": {\"type\": \"object\", \"properties\": {\"records\": {\"type\": \"array\", \"items\": {\"type\": \"object\"}}}}}]"
+   },
+   "expected": "ERROR:salt",
+   "fn": "digest",
+   "hand_checked": true,
+   "name": "D07 a salt of 31 characters is refused"
+  },
+  {
+   "args": {
+    "family": "6:CLOSED16:Anthropic/Claude",
+    "salt": "0123456789abcdef0123456789abcdef0",
+    "template": "You are a certified agent of The Principia Machina.\nWork the register.",
+    "tools": "[{\"name\": \"read_page\", \"description\": \"Read a wiki page\", \"parameters\": {\"type\": \"object\", \"properties\": {\"title\": {\"type\": \"string\"}}, \"required\": [\"title\"]}}, {\"name\": \"push\", \"parameters\": {\"type\": \"object\", \"properties\": {\"records\": {\"type\": \"array\", \"items\": {\"type\": \"object\"}}}}}]"
+   },
+   "expected": "ERROR:salt",
+   "fn": "digest",
+   "hand_checked": true,
+   "name": "D08 a salt of 33 characters is refused"
+  },
+  {
+   "args": {
+    "family": "6:CLOSED16:Anthropic/Claude",
+    "salt": "0123456789abcdef0123456789abcdeg",
+    "template": "You are a certified agent of The Principia Machina.\nWork the register.",
+    "tools": "[{\"name\": \"read_page\", \"description\": \"Read a wiki page\", \"parameters\": {\"type\": \"object\", \"properties\": {\"title\": {\"type\": \"string\"}}, \"required\": [\"title\"]}}, {\"name\": \"push\", \"parameters\": {\"type\": \"object\", \"properties\": {\"records\": {\"type\": \"array\", \"items\": {\"type\": \"object\"}}}}}]"
+   },
+   "expected": "ERROR:salt",
+   "fn": "digest",
+   "hand_checked": true,
+   "name": "D09 a salt with a non-hex character is refused"
+  },
+  {
+   "args": {
+    "family": "6:CLOSED16:Anthropic/Claude",
+    "salt": 123,
+    "template": "You are a certified agent of The Principia Machina.\nWork the register.",
+    "tools": "[{\"name\": \"read_page\", \"description\": \"Read a wiki page\", \"parameters\": {\"type\": \"object\", \"properties\": {\"title\": {\"type\": \"string\"}}, \"required\": [\"title\"]}}, {\"name\": \"push\", \"parameters\": {\"type\": \"object\", \"properties\": {\"records\": {\"type\": \"array\", \"items\": {\"type\": \"object\"}}}}}]"
+   },
+   "expected": "ERROR:salt",
+   "fn": "digest",
+   "hand_checked": true,
+   "name": "D10 a salt that is not a string is refused"
+  },
+  {
+   "args": {
+    "family": "",
+    "salt": "0123456789abcdef0123456789abcdef",
+    "template": "You are a certified agent of The Principia Machina.\nWork the register.",
+    "tools": "[{\"name\": \"read_page\", \"description\": \"Read a wiki page\", \"parameters\": {\"type\": \"object\", \"properties\": {\"title\": {\"type\": \"string\"}}, \"required\": [\"title\"]}}, {\"name\": \"push\", \"parameters\": {\"type\": \"object\", \"properties\": {\"records\": {\"type\": \"array\", \"items\": {\"type\": \"object\"}}}}}]"
+   },
+   "expected": "ERROR:family",
+   "fn": "digest",
+   "hand_checked": true,
+   "name": "D11 an empty family is refused"
+  },
+  {
+   "args": {
+    "family": "6:CLOSED16:Anthropic/Claude",
+    "salt": "0123456789abcdef0123456789abcdef",
+    "template": "You are a certified agent of The Principia Machina.\nWork the register.",
+    "tools": "[1,"
+   },
+   "expected": "ERROR:tools",
+   "fn": "digest",
+   "hand_checked": true,
+   "name": "D12 invalid tools JSON is refused"
+  },
+  {
+   "args": {
+    "family": "6:CLOSED16:Anthropic/Claude",
+    "salt": "0123456789abcdef0123456789abcdef",
+    "template": "",
+    "tools": "[]"
+   },
+   "expected": "5cf38bd67dbb097369cfebbd63eaaafd1047495c0fdbbf1c93f19081dbeabcc4",
+   "fn": "digest",
+   "hand_checked": true,
+   "name": "D13 an empty template is a digest"
+  },
+  {
+   "args": {
+    "family": "6:CLOSED16:Anthropic/Claude",
+    "salt": "0123456789abcdef0123456789abcdef",
+    "template": "You are a certified agent of The Principia Machina.  \nWork the register.",
+    "tools": "[{\"name\": \"read_page\", \"description\": \"Read a wiki page\", \"parameters\": {\"type\": \"object\", \"properties\": {\"title\": {\"type\": \"string\"}}, \"required\": [\"title\"]}}, {\"name\": \"push\", \"parameters\": {\"type\": \"object\", \"properties\": {\"records\": {\"type\": \"array\", \"items\": {\"type\": \"object\"}}}}}]"
+   },
+   "expected": "8e4eae2e2f1fb9bb28dc6751926ce4c017ce6d6c3418c6cfc1a3d5b5646b83cf",
+   "fn": "digest",
+   "hand_checked": true,
+   "name": "D14 a whitespace difference in the template changes the digest (no collapsing)"
+  },
+  {
+   "args": {
+    "family": "6:CLOSED16:Anthropic/Claude",
+    "salt": "0123456789abcdef0123456789abcdef",
+    "template": null,
+    "tools": "[{\"name\": \"read_page\", \"description\": \"Read a wiki page\", \"parameters\": {\"type\": \"object\", \"properties\": {\"title\": {\"type\": \"string\"}}, \"required\": [\"title\"]}}, {\"name\": \"push\", \"parameters\": {\"type\": \"object\", \"properties\": {\"records\": {\"type\": \"array\", \"items\": {\"type\": \"object\"}}}}}]"
+   },
+   "expected": "ERROR:template",
+   "fn": "digest",
+   "hand_checked": true,
+   "name": "D15 a template that is not a string is refused"
+  },
+  {
+   "args": {
+    "family": "6:CLOSED16:Anthropic/Claude",
+    "salt": "ffffffffffffffffffffffffffffffff",
+    "template": "You are a certified agent of The Principia Machina.\nWork the register.",
+    "tools": "[{\"name\": \"read_page\", \"description\": \"Read a wiki page\", \"parameters\": {\"type\": \"object\", \"properties\": {\"title\": {\"type\": \"string\"}}, \"required\": [\"title\"]}}, {\"name\": \"push\", \"parameters\": {\"type\": \"object\", \"properties\": {\"records\": {\"type\": \"array\", \"items\": {\"type\": \"object\"}}}}}]"
+   },
+   "expected": "47b57d0f1265ba4e000fb5fef9b474f185f8b6bb4b09040108dc96c603ff2439",
+   "fn": "digest",
+   "hand_checked": true,
+   "name": "D16 another salt gives another digest"
+  },
+  {
+   "args": {
+    "family": "6:CLOSED12:模型/乙",
+    "salt": "0123456789abcdef0123456789abcdef",
+    "template": "你好",
+    "tools": "{}"
+   },
+   "expected": "958f2d7bde8751142a71273c24bd28e9d91f0a2c0c627cb01bb9514370a041ff",
+   "fn": "digest",
+   "hand_checked": true,
+   "name": "D17 a CJK family and template"
+  },
+  {
+   "args": {
+    "family": "6:CLOSED13:Google/Gemini",
+    "salt": "0123456789abcdef0123456789abcdef",
+    "template": "You are a certified agent of The Principia Machina.\nWork the register.",
+    "tools": "[{\"name\": \"read_page\", \"description\": \"Read a wiki page\", \"parameters\": {\"type\": \"object\", \"properties\": {\"title\": {\"type\": \"string\"}}, \"required\": [\"title\"]}}, {\"name\": \"push\", \"parameters\": {\"type\": \"object\", \"properties\": {\"records\": {\"type\": \"array\", \"items\": {\"type\": \"object\"}}}}}]"
+   },
+   "expected": "eff0acebe01c44dd94fae8202120cbe7b22de6f8f54749b4de0f3cba7aca2b18",
+   "fn": "digest",
+   "hand_checked": true,
+   "name": "D18 another family gives another digest"
+  },
+  {
+   "args": {
+    "map": [
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-fable-5-1-20260601",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-fable-5-1",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "anthropic.claude-fable-5-1-v1:0",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-opus-4-20250514",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Google/Gemini",
+      "name": "gemini-3-pro",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Meta/Llama-4",
+      "name": "together/llama-4-70b-fp8",
+      "open": true,
+      "quantization": "fp8",
+      "server": "together"
+     },
+     {
+      "family": "Meta/Llama-4",
+      "name": "fireworks/llama-4-70b-bf16",
+      "open": true,
+      "quantization": "bf16",
+      "server": "fireworks"
+     },
+     {
+      "family": "Maison/Modèle",
+      "name": "modèle-é",
+      "open": false,
+      "quantization": null,
+      "server": null
+     }
+    ],
+    "model": "claude-fable-5-1-20260601"
+   },
+   "expected": "MAPPED|Anthropic/Claude|false|-|-|6:CLOSED16:Anthropic/Claude",
+   "fn": "family",
+   "hand_checked": true,
+   "name": "F01 a dated snapshot"
+  },
+  {
+   "args": {
+    "map": [
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-fable-5-1-20260601",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-fable-5-1",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "anthropic.claude-fable-5-1-v1:0",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-opus-4-20250514",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Google/Gemini",
+      "name": "gemini-3-pro",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Meta/Llama-4",
+      "name": "together/llama-4-70b-fp8",
+      "open": true,
+      "quantization": "fp8",
+      "server": "together"
+     },
+     {
+      "family": "Meta/Llama-4",
+      "name": "fireworks/llama-4-70b-bf16",
+      "open": true,
+      "quantization": "bf16",
+      "server": "fireworks"
+     },
+     {
+      "family": "Maison/Modèle",
+      "name": "modèle-é",
+      "open": false,
+      "quantization": null,
+      "server": null
+     }
+    ],
+    "model": "claude-fable-5-1"
+   },
+   "expected": "MAPPED|Anthropic/Claude|false|-|-|6:CLOSED16:Anthropic/Claude",
+   "fn": "family",
+   "hand_checked": true,
+   "name": "F02 a dateless alias"
+  },
+  {
+   "args": {
+    "map": [
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-fable-5-1-20260601",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-fable-5-1",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "anthropic.claude-fable-5-1-v1:0",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-opus-4-20250514",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Google/Gemini",
+      "name": "gemini-3-pro",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Meta/Llama-4",
+      "name": "together/llama-4-70b-fp8",
+      "open": true,
+      "quantization": "fp8",
+      "server": "together"
+     },
+     {
+      "family": "Meta/Llama-4",
+      "name": "fireworks/llama-4-70b-bf16",
+      "open": true,
+      "quantization": "bf16",
+      "server": "fireworks"
+     },
+     {
+      "family": "Maison/Modèle",
+      "name": "modèle-é",
+      "open": false,
+      "quantization": null,
+      "server": null
+     }
+    ],
+    "model": "anthropic.claude-fable-5-1-v1:0"
+   },
+   "expected": "MAPPED|Anthropic/Claude|false|-|-|6:CLOSED16:Anthropic/Claude",
+   "fn": "family",
+   "hand_checked": true,
+   "name": "F03 a server-prefixed spelling of a closed model stays in the family (D156.1 (c))"
+  },
+  {
+   "args": {
+    "map": [
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-fable-5-1-20260601",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-fable-5-1",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "anthropic.claude-fable-5-1-v1:0",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-opus-4-20250514",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Google/Gemini",
+      "name": "gemini-3-pro",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Meta/Llama-4",
+      "name": "together/llama-4-70b-fp8",
+      "open": true,
+      "quantization": "fp8",
+      "server": "together"
+     },
+     {
+      "family": "Meta/Llama-4",
+      "name": "fireworks/llama-4-70b-bf16",
+      "open": true,
+      "quantization": "bf16",
+      "server": "fireworks"
+     },
+     {
+      "family": "Maison/Modèle",
+      "name": "modèle-é",
+      "open": false,
+      "quantization": null,
+      "server": null
+     }
+    ],
+    "model": "together/llama-4-70b-fp8"
+   },
+   "expected": "MAPPED|Meta/Llama-4|true|together|fp8|4:OPEN12:Meta/Llama-48:together3:fp8",
+   "fn": "family",
+   "hand_checked": true,
+   "name": "F04 open weights with a pinned server and quantization: the key carries the triple"
+  },
+  {
+   "args": {
+    "map": [
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-fable-5-1-20260601",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-fable-5-1",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "anthropic.claude-fable-5-1-v1:0",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-opus-4-20250514",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Google/Gemini",
+      "name": "gemini-3-pro",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Meta/Llama-4",
+      "name": "together/llama-4-70b-fp8",
+      "open": true,
+      "quantization": "fp8",
+      "server": "together"
+     },
+     {
+      "family": "Meta/Llama-4",
+      "name": "fireworks/llama-4-70b-bf16",
+      "open": true,
+      "quantization": "bf16",
+      "server": "fireworks"
+     },
+     {
+      "family": "Maison/Modèle",
+      "name": "modèle-é",
+      "open": false,
+      "quantization": null,
+      "server": null
+     }
+    ],
+    "model": "fireworks/llama-4-70b-bf16"
+   },
+   "expected": "MAPPED|Meta/Llama-4|true|fireworks|bf16|4:OPEN12:Meta/Llama-49:fireworks4:bf16",
+   "fn": "family",
+   "hand_checked": true,
+   "name": "F05 the same lineage through another server is another key (D156.1 (b))"
+  },
+  {
+   "args": {
+    "map": [
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-fable-5-1-20260601",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-fable-5-1",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "anthropic.claude-fable-5-1-v1:0",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-opus-4-20250514",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Google/Gemini",
+      "name": "gemini-3-pro",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Meta/Llama-4",
+      "name": "together/llama-4-70b-fp8",
+      "open": true,
+      "quantization": "fp8",
+      "server": "together"
+     },
+     {
+      "family": "Meta/Llama-4",
+      "name": "fireworks/llama-4-70b-bf16",
+      "open": true,
+      "quantization": "bf16",
+      "server": "fireworks"
+     },
+     {
+      "family": "Maison/Modèle",
+      "name": "modèle-é",
+      "open": false,
+      "quantization": null,
+      "server": null
+     }
+    ],
+    "model": "llama-4-70b"
+   },
+   "expected": "UNMAPPED",
+   "fn": "family",
+   "hand_checked": true,
+   "name": "F06 open weights without a pinned server: no row, UNMAPPED"
+  },
+  {
+   "args": {
+    "map": [
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-fable-5-1-20260601",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-fable-5-1",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "anthropic.claude-fable-5-1-v1:0",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-opus-4-20250514",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Google/Gemini",
+      "name": "gemini-3-pro",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Meta/Llama-4",
+      "name": "together/llama-4-70b-fp8",
+      "open": true,
+      "quantization": "fp8",
+      "server": "together"
+     },
+     {
+      "family": "Meta/Llama-4",
+      "name": "fireworks/llama-4-70b-bf16",
+      "open": true,
+      "quantization": "bf16",
+      "server": "fireworks"
+     },
+     {
+      "family": "Maison/Modèle",
+      "name": "modèle-é",
+      "open": false,
+      "quantization": null,
+      "server": null
+     }
+    ],
+    "model": "gpt-9"
+   },
+   "expected": "UNMAPPED",
+   "fn": "family",
+   "hand_checked": true,
+   "name": "F07 an unknown model is UNMAPPED"
+  },
+  {
+   "args": {
+    "map": [
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-fable-5-1-20260601",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-fable-5-1",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "anthropic.claude-fable-5-1-v1:0",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-opus-4-20250514",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Google/Gemini",
+      "name": "gemini-3-pro",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Meta/Llama-4",
+      "name": "together/llama-4-70b-fp8",
+      "open": true,
+      "quantization": "fp8",
+      "server": "together"
+     },
+     {
+      "family": "Meta/Llama-4",
+      "name": "fireworks/llama-4-70b-bf16",
+      "open": true,
+      "quantization": "bf16",
+      "server": "fireworks"
+     },
+     {
+      "family": "Maison/Modèle",
+      "name": "modèle-é",
+      "open": false,
+      "quantization": null,
+      "server": null
+     }
+    ],
+    "model": "Claude-Fable-5-1"
+   },
+   "expected": "UNMAPPED",
+   "fn": "family",
+   "hand_checked": true,
+   "name": "F08 a case difference is UNMAPPED (exact match)"
+  },
+  {
+   "args": {
+    "map": [
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-fable-5-1-20260601",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-fable-5-1",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "anthropic.claude-fable-5-1-v1:0",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-opus-4-20250514",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Google/Gemini",
+      "name": "gemini-3-pro",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Meta/Llama-4",
+      "name": "together/llama-4-70b-fp8",
+      "open": true,
+      "quantization": "fp8",
+      "server": "together"
+     },
+     {
+      "family": "Meta/Llama-4",
+      "name": "fireworks/llama-4-70b-bf16",
+      "open": true,
+      "quantization": "bf16",
+      "server": "fireworks"
+     },
+     {
+      "family": "Maison/Modèle",
+      "name": "modèle-é",
+      "open": false,
+      "quantization": null,
+      "server": null
+     }
+    ],
+    "model": "modèle-é"
+   },
+   "expected": "MAPPED|Maison/Modèle|false|-|-|6:CLOSED14:Maison/Modèle",
+   "fn": "family",
+   "hand_checked": true,
+   "name": "F09 the model string in NFD matches its NFC row"
+  },
+  {
+   "args": {
+    "map": [
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-fable-5-1-20260601",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-fable-5-1",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "anthropic.claude-fable-5-1-v1:0",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-opus-4-20250514",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Google/Gemini",
+      "name": "gemini-3-pro",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Meta/Llama-4",
+      "name": "together/llama-4-70b-fp8",
+      "open": true,
+      "quantization": "fp8",
+      "server": "together"
+     },
+     {
+      "family": "Meta/Llama-4",
+      "name": "fireworks/llama-4-70b-bf16",
+      "open": true,
+      "quantization": "bf16",
+      "server": "fireworks"
+     },
+     {
+      "family": "Maison/Modèle",
+      "name": "modèle-é",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Y",
+      "name": "x",
+      "open": true,
+      "quantization": "fp8",
+      "server": null
+     }
+    ],
+    "model": "x"
+   },
+   "expected": "ERROR:model_map",
+   "fn": "family",
+   "hand_checked": true,
+   "name": "F10 an open row without a server is refused"
+  },
+  {
+   "args": {
+    "map": [
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-fable-5-1-20260601",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-fable-5-1",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "anthropic.claude-fable-5-1-v1:0",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-opus-4-20250514",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Google/Gemini",
+      "name": "gemini-3-pro",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Meta/Llama-4",
+      "name": "together/llama-4-70b-fp8",
+      "open": true,
+      "quantization": "fp8",
+      "server": "together"
+     },
+     {
+      "family": "Meta/Llama-4",
+      "name": "fireworks/llama-4-70b-bf16",
+      "open": true,
+      "quantization": "bf16",
+      "server": "fireworks"
+     },
+     {
+      "family": "Maison/Modèle",
+      "name": "modèle-é",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Y",
+      "name": "x",
+      "open": false,
+      "quantization": null,
+      "server": "s"
+     }
+    ],
+    "model": "x"
+   },
+   "expected": "ERROR:model_map",
+   "fn": "family",
+   "hand_checked": true,
+   "name": "F11 a closed row with a server is refused"
+  },
+  {
+   "args": {
+    "map": [
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-fable-5-1-20260601",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-fable-5-1",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "anthropic.claude-fable-5-1-v1:0",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-opus-4-20250514",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Google/Gemini",
+      "name": "gemini-3-pro",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Meta/Llama-4",
+      "name": "together/llama-4-70b-fp8",
+      "open": true,
+      "quantization": "fp8",
+      "server": "together"
+     },
+     {
+      "family": "Meta/Llama-4",
+      "name": "fireworks/llama-4-70b-bf16",
+      "open": true,
+      "quantization": "bf16",
+      "server": "fireworks"
+     },
+     {
+      "family": "Maison/Modèle",
+      "name": "modèle-é",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Google/Gemini",
+      "name": "gemini-3-pro",
+      "open": false,
+      "quantization": null,
+      "server": null
+     }
+    ],
+    "model": "x"
+   },
+   "expected": "ERROR:model_map",
+   "fn": "family",
+   "hand_checked": true,
+   "name": "F12 a duplicate name is refused"
+  },
+  {
+   "args": {
+    "map": [
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-fable-5-1-20260601",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-fable-5-1",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "anthropic.claude-fable-5-1-v1:0",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-opus-4-20250514",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Google/Gemini",
+      "name": "gemini-3-pro",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Meta/Llama-4",
+      "name": "together/llama-4-70b-fp8",
+      "open": true,
+      "quantization": "fp8",
+      "server": "together"
+     },
+     {
+      "family": "Meta/Llama-4",
+      "name": "fireworks/llama-4-70b-bf16",
+      "open": true,
+      "quantization": "bf16",
+      "server": "fireworks"
+     },
+     {
+      "family": "Maison/Modèle",
+      "name": "modèle-é",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Maison/Modèle",
+      "name": "modèle-é",
+      "open": false,
+      "quantization": null,
+      "server": null
+     }
+    ],
+    "model": "x"
+   },
+   "expected": "ERROR:model_map",
+   "fn": "family",
+   "hand_checked": true,
+   "name": "F13 a duplicate name after NFC is refused"
+  },
+  {
+   "args": {
+    "map": [
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-fable-5-1-20260601",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-fable-5-1",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "anthropic.claude-fable-5-1-v1:0",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-opus-4-20250514",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Google/Gemini",
+      "name": "gemini-3-pro",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Meta/Llama-4",
+      "name": "together/llama-4-70b-fp8",
+      "open": true,
+      "quantization": "fp8",
+      "server": "together"
+     },
+     {
+      "family": "Meta/Llama-4",
+      "name": "fireworks/llama-4-70b-bf16",
+      "open": true,
+      "quantization": "bf16",
+      "server": "fireworks"
+     },
+     {
+      "family": "Maison/Modèle",
+      "name": "modèle-é",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Y",
+      "name": "",
+      "open": false,
+      "quantization": null,
+      "server": null
+     }
+    ],
+    "model": "x"
+   },
+   "expected": "ERROR:model_map",
+   "fn": "family",
+   "hand_checked": true,
+   "name": "F14 an empty name is refused"
+  },
+  {
+   "args": {
+    "map": [
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-fable-5-1-20260601",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-fable-5-1",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "anthropic.claude-fable-5-1-v1:0",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-opus-4-20250514",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Google/Gemini",
+      "name": "gemini-3-pro",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Meta/Llama-4",
+      "name": "together/llama-4-70b-fp8",
+      "open": true,
+      "quantization": "fp8",
+      "server": "together"
+     },
+     {
+      "family": "Meta/Llama-4",
+      "name": "fireworks/llama-4-70b-bf16",
+      "open": true,
+      "quantization": "bf16",
+      "server": "fireworks"
+     },
+     {
+      "family": "Maison/Modèle",
+      "name": "modèle-é",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Y",
+      "name": "x",
+      "open": 1,
+      "quantization": null,
+      "server": null
+     }
+    ],
+    "model": "x"
+   },
+   "expected": "ERROR:model_map",
+   "fn": "family",
+   "hand_checked": true,
+   "name": "F15 open not a boolean is refused"
+  },
+  {
+   "args": {
+    "map": [
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-fable-5-1-20260601",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-fable-5-1",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "anthropic.claude-fable-5-1-v1:0",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-opus-4-20250514",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Google/Gemini",
+      "name": "gemini-3-pro",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Meta/Llama-4",
+      "name": "together/llama-4-70b-fp8",
+      "open": true,
+      "quantization": "fp8",
+      "server": "together"
+     },
+     {
+      "family": "Meta/Llama-4",
+      "name": "fireworks/llama-4-70b-bf16",
+      "open": true,
+      "quantization": "bf16",
+      "server": "fireworks"
+     },
+     {
+      "family": "Maison/Modèle",
+      "name": "modèle-é",
+      "open": false,
+      "quantization": null,
+      "server": null
+     }
+    ],
+    "model": ""
+   },
+   "expected": "ERROR:model",
+   "fn": "family",
+   "hand_checked": true,
+   "name": "F16 an empty model string is refused"
+  },
+  {
+   "args": {
+    "map": [
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-fable-5-1-20260601",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-fable-5-1",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "anthropic.claude-fable-5-1-v1:0",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Anthropic/Claude",
+      "name": "claude-opus-4-20250514",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Google/Gemini",
+      "name": "gemini-3-pro",
+      "open": false,
+      "quantization": null,
+      "server": null
+     },
+     {
+      "family": "Meta/Llama-4",
+      "name": "together/llama-4-70b-fp8",
+      "open": true,
+      "quantization": "fp8",
+      "server": "together"
+     },
+     {
+      "family": "Meta/Llama-4",
+      "name": "fireworks/llama-4-70b-bf16",
+      "open": true,
+      "quantization": "bf16",
+      "server": "fireworks"
+     },
+     {
+      "family": "Maison/Modèle",
+      "name": "modèle-é",
+      "open": false,
+      "quantization": null,
+      "server": null
+     }
+    ],
+    "model": 5
+   },
+   "expected": "ERROR:model",
+   "fn": "family",
+   "hand_checked": true,
+   "name": "F17 a model that is not a string is refused"
+  },
+  {
+   "args": {
+    "map": {
+     "name": "x"
+    },
+    "model": "x"
+   },
+   "expected": "ERROR:model_map",
+   "fn": "family",
+   "hand_checked": true,
+   "name": "F18 a map that is not a list is refused"
+  },
+  {
+   "args": {
+    "map": [
+     {
+      "family": "Y",
+      "name": "x",
+      "note": "",
+      "open": false,
+      "quantization": null,
+      "server": null
+     }
+    ],
+    "model": "x"
+   },
+   "expected": "ERROR:model_map",
+   "fn": "family",
+   "hand_checked": true,
+   "name": "F19 an extra key in a row is refused"
+  },
+  {
+   "args": {
+    "map": [],
+    "model": "x"
+   },
+   "expected": "UNMAPPED",
+   "fn": "family",
+   "hand_checked": true,
+   "name": "F20 an empty map: UNMAPPED"
+  },
+  {
+   "args": {
+    "map": [
+     {
+      "family": "",
+      "name": "x",
+      "open": false,
+      "quantization": null,
+      "server": null
+     }
+    ],
+    "model": "x"
+   },
+   "expected": "ERROR:model_map",
+   "fn": "family",
+   "hand_checked": true,
+   "name": "F21 an empty family is refused"
+  },
+  {
+   "args": {
+    "certified": "6:CLOSED16:Anthropic/Claude",
+    "last": "claude-fable-5-1",
+    "lookup": {
+     "cluster": null,
+     "family": "6:CLOSED16:Anthropic/Claude"
+    },
+    "reported": "claude-fable-5-1"
+   },
+   "expected": "SAME|-",
+   "fn": "class",
+   "hand_checked": true,
+   "name": "CL01 the same model reported: SAME, the cluster not read"
+  },
+  {
+   "args": {
+    "certified": "6:CLOSED16:Anthropic/Claude",
+    "last": "claude-opus-4-20250514",
+    "lookup": {
+     "cluster": "IN",
+     "family": "6:CLOSED16:Anthropic/Claude"
+    },
+    "reported": "claude-fable-5-1"
+   },
+   "expected": "RECORDED CHANGE|IN",
+   "fn": "class",
+   "hand_checked": true,
+   "name": "CL02 a changed model inside the family, IN: RECORDED CHANGE"
+  },
+  {
+   "args": {
+    "certified": "6:CLOSED16:Anthropic/Claude",
+    "last": "claude-opus-4-20250514",
+    "lookup": {
+     "cluster": "CUSP",
+     "family": "6:CLOSED16:Anthropic/Claude"
+    },
+    "reported": "claude-fable-5-1"
+   },
+   "expected": "CUSP PATH|CUSP",
+   "fn": "class",
+   "hand_checked": true,
+   "name": "CL03 a changed model inside the family, CUSP: CUSP PATH"
+  },
+  {
+   "args": {
+    "certified": "6:CLOSED16:Anthropic/Claude",
+    "last": "claude-opus-4-20250514",
+    "lookup": {
+     "cluster": "OUT",
+     "family": "6:CLOSED16:Anthropic/Claude"
+    },
+    "reported": "claude-fable-5-1"
+   },
+   "expected": "REFUSED MODEL|OUT",
+   "fn": "class",
+   "hand_checked": true,
+   "name": "CL04 a changed model, OUT: REFUSED MODEL"
+  },
+  {
+   "args": {
+    "certified": "6:CLOSED16:Anthropic/Claude",
+    "last": "claude-opus-4-20250514",
+    "lookup": {
+     "cluster": "FADING",
+     "family": "6:CLOSED16:Anthropic/Claude"
+    },
+    "reported": "claude-fable-5-1"
+   },
+   "expected": "REFUSED MODEL|FADING",
+   "fn": "class",
+   "hand_checked": true,
+   "name": "CL05 a changed model, FADING through SUCCESSOR or CARRIED: REFUSED MODEL"
+  },
+  {
+   "args": {
+    "certified": "6:CLOSED16:Anthropic/Claude",
+    "last": "claude-opus-4-20250514",
+    "lookup": {
+     "cluster": "UNLISTED",
+     "family": "6:CLOSED16:Anthropic/Claude"
+    },
+    "reported": "claude-fable-5-1"
+   },
+   "expected": "REFUSED MODEL|UNLISTED",
+   "fn": "class",
+   "hand_checked": true,
+   "name": "CL06 a changed model, UNLISTED: REFUSED MODEL"
+  },
+  {
+   "args": {
+    "certified": "6:CLOSED16:Anthropic/Claude",
+    "last": "claude-opus-4-20250514",
+    "lookup": {
+     "cluster": "EXCLUDED",
+     "family": "6:CLOSED16:Anthropic/Claude"
+    },
+    "reported": "claude-fable-5-1"
+   },
+   "expected": "REFUSED MODEL|EXCLUDED",
+   "fn": "class",
+   "hand_checked": true,
+   "name": "CL07 a changed model, excluded: REFUSED MODEL"
+  },
+  {
+   "args": {
+    "certified": "6:CLOSED16:Anthropic/Claude",
+    "last": "claude-fable-5-1",
+    "lookup": {
+     "cluster": "IN",
+     "family": "6:CLOSED13:Google/Gemini"
+    },
+    "reported": "gemini-3-pro"
+   },
+   "expected": "REFUSED FAMILY|FAMILY",
+   "fn": "class",
+   "hand_checked": true,
+   "name": "CL08 another family, even IN: REFUSED FAMILY"
+  },
+  {
+   "args": {
+    "certified": "6:CLOSED16:Anthropic/Claude",
+    "last": "claude-fable-5-1",
+    "lookup": {
+     "cluster": null,
+     "family": "UNMAPPED"
+    },
+    "reported": "claude-fable-6"
+   },
+   "expected": "REFUSED MODEL|UNMAPPED",
+   "fn": "class",
+   "hand_checked": true,
+   "name": "CL09 an UNMAPPED model: REFUSED MODEL, detail UNMAPPED"
+  },
+  {
+   "args": {
+    "certified": "6:CLOSED16:Anthropic/Claude",
+    "last": "claude-opus-4-20250514",
+    "lookup": {
+     "cluster": null,
+     "family": "6:CLOSED16:Anthropic/Claude"
+    },
+    "reported": "claude-fable-5-1"
+   },
+   "expected": "ERROR:lookup",
+   "fn": "class",
+   "hand_checked": true,
+   "name": "CL10 a changed model with no cluster answer is refused"
+  },
+  {
+   "args": {
+    "certified": "6:CLOSED16:Anthropic/Claude",
+    "last": "gemini-3-pro",
+    "lookup": {
+     "cluster": "IN",
+     "family": "6:CLOSED13:Google/Gemini"
+    },
+    "reported": "gemini-3-pro"
+   },
+   "expected": "REFUSED FAMILY|FAMILY",
+   "fn": "class",
+   "hand_checked": true,
+   "name": "CL11 the same string but a family that no longer matches: REFUSED FAMILY (the family check first)"
+  },
+  {
+   "args": {
+    "certified": "6:CLOSED16:Anthropic/Claude",
+    "last": "a",
+    "lookup": {
+     "cluster": "MAYBE",
+     "family": "6:CLOSED16:Anthropic/Claude"
+    },
+    "reported": "b"
+   },
+   "expected": "ERROR:lookup",
+   "fn": "class",
+   "hand_checked": true,
+   "name": "CL12 an unknown cluster value is refused"
+  },
+  {
+   "args": {
+    "certified": "6:CLOSED16:Anthropic/Claude",
+    "last": "a",
+    "lookup": {
+     "cluster": "IN",
+     "family": "6:CLOSED16:Anthropic/Claude"
+    },
+    "reported": ""
+   },
+   "expected": "ERROR:reported_model",
+   "fn": "class",
+   "hand_checked": true,
+   "name": "CL13 an empty reported model is refused"
+  },
+  {
+   "args": {
+    "certified": "6:CLOSED16:Anthropic/Claude",
+    "last": "a",
+    "lookup": {
+     "family": "6:CLOSED16:Anthropic/Claude"
+    },
+    "reported": "b"
+   },
+   "expected": "ERROR:lookup",
+   "fn": "class",
+   "hand_checked": true,
+   "name": "CL14 a lookup missing its cluster key is refused"
+  },
+  {
+   "args": {
+    "certified": "6:CLOSED16:Anthropic/Claude",
+    "last": "modèle",
+    "lookup": {
+     "cluster": null,
+     "family": "6:CLOSED16:Anthropic/Claude"
+    },
+    "reported": "modèle"
+   },
+   "expected": "SAME|-",
+   "fn": "class",
+   "hand_checked": true,
+   "name": "CL15 the reported model in NFD equals the last in NFC: SAME"
+  },
+  {
+   "args": {
+    "certified": "4:OPEN12:Meta/Llama-48:together3:fp8",
+    "last": "together/llama-4-70b-fp8",
+    "lookup": {
+     "cluster": "IN",
+     "family": "4:OPEN12:Meta/Llama-49:fireworks4:bf16"
+    },
+    "reported": "fireworks/llama-4-70b-bf16"
+   },
+   "expected": "REFUSED FAMILY|FAMILY",
+   "fn": "class",
+   "hand_checked": true,
+   "name": "CL16 open weights: a change of server is a change of family key: REFUSED FAMILY"
+  },
+  {
+   "args": {
+    "certified": "6:CLOSED16:Anthropic/Claude",
+    "last": "claude-fable-5-1",
+    "lookup": {
+     "cluster": "OUT",
+     "family": "6:CLOSED16:Anthropic/Claude"
+    },
+    "reported": "claude-fable-5-1"
+   },
+   "expected": "SAME|-",
+   "fn": "class",
+   "hand_checked": true,
+   "name": "CL17 SAME with a cluster answer supplied: still SAME"
+  },
+  {
+   "args": {
+    "certified": "",
+    "last": "a",
+    "lookup": {
+     "cluster": "IN",
+     "family": "6:CLOSED16:Anthropic/Claude"
+    },
+    "reported": "b"
+   },
+   "expected": "ERROR:certified_family",
+   "fn": "class",
+   "hand_checked": true,
+   "name": "CL18 an empty certified family is refused"
+  },
+  {
+   "args": {
+    "declared": "Anthropic",
+    "inferred": "Anthropic",
+    "relayed": "Anthropic",
+    "stated": "Anthropic"
+   },
+   "expected": "overall|AGREE|0\ndeclared|stated|AGREE\ndeclared|relayed|AGREE\ndeclared|inferred|AGREE\nstated|relayed|AGREE\nstated|inferred|AGREE\nrelayed|inferred|AGREE",
+   "fn": "compare",
+   "hand_checked": true,
+   "name": "CP01 all four agree"
+  },
+  {
+   "args": {
+    "declared": "Anthropic",
+    "inferred": null,
+    "relayed": "Anthropic",
+    "stated": "Anthropic"
+   },
+   "expected": "overall|AGREE|0\ndeclared|stated|AGREE\ndeclared|relayed|AGREE\ndeclared|inferred|ABSENT\nstated|relayed|AGREE\nstated|inferred|ABSENT\nrelayed|inferred|ABSENT",
+   "fn": "compare",
+   "hand_checked": true,
+   "name": "CP02 the inferred vendor absent: three pairs ABSENT, AGREE"
+  },
+  {
+   "args": {
+    "declared": "Anthropic",
+    "inferred": "Anthropic",
+    "relayed": "Google",
+    "stated": "Anthropic"
+   },
+   "expected": "overall|DIFFER|3\ndeclared|stated|AGREE\ndeclared|relayed|DIFFER\ndeclared|inferred|AGREE\nstated|relayed|DIFFER\nstated|inferred|AGREE\nrelayed|inferred|DIFFER",
+   "fn": "compare",
+   "hand_checked": true,
+   "name": "CP03 the relayed vendor differs: DIFFER on its three pairs"
+  },
+  {
+   "args": {
+    "declared": null,
+    "inferred": null,
+    "relayed": null,
+    "stated": null
+   },
+   "expected": "overall|ABSENT|0\ndeclared|stated|ABSENT\ndeclared|relayed|ABSENT\ndeclared|inferred|ABSENT\nstated|relayed|ABSENT\nstated|inferred|ABSENT\nrelayed|inferred|ABSENT",
+   "fn": "compare",
+   "hand_checked": true,
+   "name": "CP04 all absent: ABSENT"
+  },
+  {
+   "args": {
+    "declared": "Anthropic",
+    "inferred": null,
+    "relayed": null,
+    "stated": null
+   },
+   "expected": "overall|ABSENT|0\ndeclared|stated|ABSENT\ndeclared|relayed|ABSENT\ndeclared|inferred|ABSENT\nstated|relayed|ABSENT\nstated|inferred|ABSENT\nrelayed|inferred|ABSENT",
+   "fn": "compare",
+   "hand_checked": true,
+   "name": "CP05 only the declared vendor: ABSENT"
+  },
+  {
+   "args": {
+    "declared": "Anthropic",
+    "inferred": null,
+    "relayed": null,
+    "stated": "Anthropic"
+   },
+   "expected": "overall|AGREE|0\ndeclared|stated|AGREE\ndeclared|relayed|ABSENT\ndeclared|inferred|ABSENT\nstated|relayed|ABSENT\nstated|inferred|ABSENT\nrelayed|inferred|ABSENT",
+   "fn": "compare",
+   "hand_checked": true,
+   "name": "CP06 declared and stated only, agreeing: AGREE"
+  },
+  {
+   "args": {
+    "declared": "Anthropic",
+    "inferred": "Anthropic",
+    "relayed": "Anthropic",
+    "stated": "OpenAI"
+   },
+   "expected": "overall|DIFFER|3\ndeclared|stated|DIFFER\ndeclared|relayed|AGREE\ndeclared|inferred|AGREE\nstated|relayed|DIFFER\nstated|inferred|DIFFER\nrelayed|inferred|AGREE",
+   "fn": "compare",
+   "hand_checked": true,
+   "name": "CP07 the stated vendor differs"
+  },
+  {
+   "args": {
+    "declared": "Anthropic",
+    "inferred": "Anthropic",
+    "relayed": "Anthropic",
+    "stated": "anthropic"
+   },
+   "expected": "overall|DIFFER|3\ndeclared|stated|DIFFER\ndeclared|relayed|AGREE\ndeclared|inferred|AGREE\nstated|relayed|DIFFER\nstated|inferred|DIFFER\nrelayed|inferred|AGREE",
+   "fn": "compare",
+   "hand_checked": true,
+   "name": "CP08 a case difference is a difference"
+  },
+  {
+   "args": {
+    "declared": "Société",
+    "inferred": null,
+    "relayed": null,
+    "stated": "Société"
+   },
+   "expected": "overall|AGREE|0\ndeclared|stated|AGREE\ndeclared|relayed|ABSENT\ndeclared|inferred|ABSENT\nstated|relayed|ABSENT\nstated|inferred|ABSENT\nrelayed|inferred|ABSENT",
+   "fn": "compare",
+   "hand_checked": true,
+   "name": "CP09 NFD against NFC agrees"
+  },
+  {
+   "args": {
+    "declared": "",
+    "inferred": null,
+    "relayed": null,
+    "stated": "Anthropic"
+   },
+   "expected": "ERROR:declared",
+   "fn": "compare",
+   "hand_checked": true,
+   "name": "CP10 an empty declared value is refused"
+  },
+  {
+   "args": {
+    "declared": "Anthropic",
+    "inferred": null,
+    "relayed": null,
+    "stated": 3
+   },
+   "expected": "ERROR:stated",
+   "fn": "compare",
+   "hand_checked": true,
+   "name": "CP11 a value that is not a string is refused"
+  },
+  {
+   "args": {
+    "declared": "Anthropic",
+    "inferred": "Google",
+    "relayed": "Anthropic",
+    "stated": "Anthropic"
+   },
+   "expected": "overall|DIFFER|3\ndeclared|stated|AGREE\ndeclared|relayed|AGREE\ndeclared|inferred|DIFFER\nstated|relayed|AGREE\nstated|inferred|DIFFER\nrelayed|inferred|DIFFER",
+   "fn": "compare",
+   "hand_checked": true,
+   "name": "CP12 the inferred vendor differs from the other three"
+  },
+  {
+   "args": {
+    "declared": null,
+    "inferred": null,
+    "relayed": "Google",
+    "stated": "Anthropic"
+   },
+   "expected": "overall|DIFFER|1\ndeclared|stated|ABSENT\ndeclared|relayed|ABSENT\ndeclared|inferred|ABSENT\nstated|relayed|DIFFER\nstated|inferred|ABSENT\nrelayed|inferred|ABSENT",
+   "fn": "compare",
+   "hand_checked": true,
+   "name": "CP13 two absent, the remaining pair differs"
+  },
+  {
+   "args": {
+    "declared": "A",
+    "inferred": "D",
+    "relayed": "C",
+    "stated": "B"
+   },
+   "expected": "overall|DIFFER|6\ndeclared|stated|DIFFER\ndeclared|relayed|DIFFER\ndeclared|inferred|DIFFER\nstated|relayed|DIFFER\nstated|inferred|DIFFER\nrelayed|inferred|DIFFER",
+   "fn": "compare",
+   "hand_checked": true,
+   "name": "CP14 four distinct vendors: six differences"
+  },
+  {
+   "args": {
+    "declared": null,
+    "inferred": "Anthropic",
+    "relayed": "Anthropic",
+    "stated": "Anthropic"
+   },
+   "expected": "overall|AGREE|0\ndeclared|stated|ABSENT\ndeclared|relayed|ABSENT\ndeclared|inferred|ABSENT\nstated|relayed|AGREE\nstated|inferred|AGREE\nrelayed|inferred|AGREE",
+   "fn": "compare",
+   "hand_checked": true,
+   "name": "CP15 the declared vendor absent, the other three agree"
+  },
+  {
+   "args": {
+    "declared": "Anthropic",
+    "inferred": null,
+    "relayed": null,
+    "stated": "Anthropic "
+   },
+   "expected": "overall|DIFFER|1\ndeclared|stated|DIFFER\ndeclared|relayed|ABSENT\ndeclared|inferred|ABSENT\nstated|relayed|ABSENT\nstated|inferred|ABSENT\nrelayed|inferred|ABSENT",
+   "fn": "compare",
+   "hand_checked": true,
+   "name": "CP16 whitespace is not collapsed: a trailing space differs"
+  }
+ ],
+ "corpus": "identity",
+ "version": "0.1.0"
+}

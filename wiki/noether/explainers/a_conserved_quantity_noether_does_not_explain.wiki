@@ -1,0 +1,110 @@
+{{DISPLAYTITLE:A conserved quantity Noether does not explain}}
+{{Noether's theorems map}}
+
+''Mathematical counterpart: [[Noether's theorems/Applications/Topological charge, which is not a Noether charge|Topological charge, which is not a Noether charge]].''
+
+[[File:NT-F-24.png|thumb|right|360px|alt=Three dashed circles containing configurations with winding number zero, one and two. A note says you cannot pass from one to another without cutting. A red panel records that the conservation does not use the field equations, so no symmetry is responsible and neither theorem explains it.|Topological charge: winding, not Noether]]
+
+The slogan says every continuous symmetry gives a conserved quantity. People
+usually hear it as saying every conserved quantity comes from a symmetry. This
+page is the counterexample.
+
+== A knot you cannot untie ==
+
+Take a long strip of rubber, put a twist in it, and join the ends into a loop.
+
+You can stretch the loop, deform it, wobble it about. What you cannot do, without
+cutting, is remove the twist. Count the twists and you have a number that stays
+the same no matter what you do to the rubber.
+
+The number is conserved. Nothing about symmetry came into it. It is conserved
+because of the '''shape''' of the thing — because there is no continuous way to
+get from one twist to none.
+
+Physics has fields that behave this way. A field configuration can wrap around in
+a way that cannot be smoothly undone, the wrapping count is a whole number, and it
+does not change as the field evolves. These are called topological charges.
+
+== Why it is not a Noether charge, in one question ==
+
+Recall the two-step structure from
+[[Noether's theorems/Explainers/True everywhere against true for real motions|the
+identity page]].
+
+A Noether current satisfies an identity that holds for '''every''' configuration,
+real or not. It becomes conserved only when you add the condition that the system
+obeys its equations of motion. That second step is where physics enters, and
+without it there is no conservation law at all.
+
+A topological charge skips that step. Its conservation follows from how the
+quantity is built, and it holds for every configuration, including ones that
+violate every law of physics you care to name.
+
+So the test is a single question.
+
+'''Were the equations of motion used?'''
+
+If yes, it may well be a Noether charge, and by the reverse direction there is
+definitely a symmetry to find. If no, it is not, and looking for a symmetry is
+looking for something that is not there.
+
+== Why the slogan misleads ==
+
+The theorem runs one way. Continuous symmetry gives conserved quantity.
+
+Noether also proved a reverse direction, and it is genuinely useful — but it is
+narrower than the slogan suggests. What she proved is that every conserved
+quantity '''of the kind her theorem produces''' comes from a symmetry. That
+qualification is not decoration. It is what excludes cases like this one.
+
+Drop the qualification and you get a false statement that sounds like a theorem,
+and a physicist who believes it will hunt for a symmetry behind a topological
+charge indefinitely.
+
+== Why this matters more than it sounds ==
+
+Because whole-number conserved quantities are unusually valuable in physics.
+
+A Noether charge is generally a continuous quantity — an amount of something, which
+can be any value. A topological charge is a count, and a count cannot drift a
+little. It is either three or it is four.
+
+That makes such quantities exceptionally robust, and physics uses them where
+robustness matters: for particle-like objects that cannot decay because their
+wrapping has nowhere to go, and for states of matter that keep their properties
+despite disorder and imperfection.
+
+'''So the one place in this volume where Noether's theorems fall silent is also
+one of the more useful corners of modern physics.''' Knowing where a theorem stops
+is part of knowing what it says.
+
+== Why a count cannot drift ==
+
+The most useful property of these quantities follows from their being whole
+numbers, and it is worth seeing why that matters so much.
+
+An ordinary conserved quantity is an amount. In a real system, subject to
+imperfections and disturbances, an amount that is supposed to stay fixed will
+generally stay '''nearly''' fixed. Small effects the theory left out produce small
+drifts.
+
+A count cannot do that. There is no such thing as three and a bit twists in the
+rubber loop. Whatever disturbs the system either has enough effect to move the
+count by a whole unit — which usually means cutting the loop — or it has no effect
+on the count at all.
+
+'''Small perturbations do not produce small errors. They produce no errors.'''
+
+Physics uses this wherever robustness matters. Certain particle-like objects
+cannot decay, because decaying would require their wrapping to unwind and there is
+nowhere for it to go — no gradual route from three to two. Certain states of
+matter keep their electrical properties to extraordinary precision despite being
+full of impurities and defects, because the property being measured is a count.
+
+So the corner of the subject where Noether's theorems have nothing to say is also
+the corner where conservation is at its most reliable. The two facts are connected:
+what makes these quantities immune to the theorem — that no equation of motion was
+needed — is exactly what makes them immune to disturbance.
+
+''No mathematics is used on this page. The mathematical treatment is on the
+counterpart page named above.''

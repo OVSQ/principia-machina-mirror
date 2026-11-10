@@ -1,0 +1,55 @@
+{{DISPLAYTITLE:What is a line of force}}
+{{On Physical Lines of Force map}}
+''[[On Physical Lines of Force]] → [[On Physical Lines of Force/Explainers|Explainers]] → Lines of force''
+
+<blockquote>
+'''In one sentence.''' A line of force is a line drawn so that at every point along it, it points the same way as the force does at that point.
+</blockquote>
+
+Sprinkle iron filings on a sheet of paper, hold a magnet underneath, and tap the paper gently. The filings do not stay scattered. They gather into curved threads that sweep out from one end of the magnet and curl round into the other. Most people have seen this picture at some point in school. Maxwell's paper of 1861 begins with it, and with a question that sounds naive and turns out not to be. What is that pattern a picture '''of'''?
+
+== The experiment on the table ==
+
+[[File:OPL-fig-lines-of-force.svg|thumb|center|620px|Iron filings trace the lines of force about a bar magnet]]
+
+The filings behave that way because each one becomes a small magnet while it sits near the big one. A magnet has two ends of opposite character, called poles: a north pole and a south pole. Opposite poles attract each other. So each filing turns until its north end faces the south end of the filing next to it, and the filings link up nose to tail into fibres. Each fibre lies along the direction in which the magnetic force acts at that spot.
+
+That is worth stating carefully, because it is the reason the picture is trusted. Nobody arranged the filings. They report, at thousands of points at once, the direction of something that was already there before they were sprinkled.
+
+== What the line actually is ==
+
+Now strip the experiment down to its idea. Pick any point in the space near the magnet. Ask which way the magnetic force pushes at that point. Take one short step in that direction, and ask the same question again at the new point. Take another step. Keep going. The path you trace is a line of force.
+
+So the definition is a rule for drawing, and nothing more. A line of force is a curve that agrees with the direction of the force everywhere along its length. Draw enough of these curves and you have recorded the direction of the force throughout the whole region, in a form the eye can take in at a glance.
+
+Two features of the drawing carry meaning:
+
+* '''Which way the curve runs''' tells you the direction of the force at every point it passes through.
+* '''How crowded the curves are''' tells you how strong the force is. In an earlier paper Maxwell had set this out precisely, drawing the lines so that their number indicated the amount of force. Where the lines bunch together, the force is strong. Where they spread apart, it is weak.
+
+Notice what the definition does not do. It does not say that anything exists along the curve. It does not say the space is filled with anything. It is a bookkeeping device: a tidy way of writing down measurements you could in principle make one at a time with a compass needle. On this reading, a line of force is no more a real object than a contour line on a map is a real ridge in the ground.
+
+== The lines have two distinct ends ==
+
+One more property matters for everything that follows. A line of force is not just a curve. It has a direction along it, and the two ends of that direction are not interchangeable.
+
+Follow a line from the north pole of a bar magnet round to the south pole and you can say which end you started from. Magnetism always comes with this two-endedness. There is no such thing as a magnetic force with only one character to it, in the way that a temperature can simply be high or low. Any account of what a line of force '''is''' has to reproduce that fact, and it has to do so naturally, rather than by having the two ends bolted on afterwards. Maxwell took this requirement seriously, and it turned out to steer his choice of mechanism more than anything else did. That story is told in [[On Physical Lines of Force/Explainers/The sea of spinning cells|The sea of spinning cells]].
+
+== A picture that caused an argument ==
+
+By 1861 the filings picture had been in circulation for decades, and opinion about it had split.
+
+Michael Faraday, who had done more experiments on the subject than anyone alive, believed the lines of force were physically real. He thought of them as things in their own right, present in the space around a magnet whether or not any filings were there to reveal them. What Faraday did not have was any mathematics for the claim. He could describe the lines, count them, and reason with them, but he could not turn his conviction into the kind of formal argument other physicists would accept.
+
+Most mathematical physicists therefore treated the lines as a picturesque crutch. Their own theories described magnets as acting on each other directly across the intervening space, with nothing happening in between, and those theories worked. The filings pattern was a helpful illustration for beginners and an amusing party trick, but it was not, in their view, evidence of anything.
+
+Maxwell's position was a third one, and it is the starting point of the whole paper. He did not claim the mathematicians were wrong. He claimed that a correct calculation was not the same thing as an explanation, and that the space between two magnets deserved an account of its own. Why he thought so is the subject of the next page.
+
+== Where this is in the paper ==
+
+* [[On Physical Lines of Force/Part I/The introductory discussion|Part I: the introductory discussion]] — Maxwell's own definition of a line of force, the iron filings passage, and his statement of what the paper is for.
+* [[On Physical Lines of Force/Glossary|Glossary]] — short definitions of pole, line of force, and the other terms used across this edition.
+
+----
+
+''Next: [[On Physical Lines of Force/Explainers/Why Maxwell wanted a mechanism|Why Maxwell wanted a mechanism]] · Previous: [[On Physical Lines of Force/Explainers|The explainers]]''

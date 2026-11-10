@@ -1,0 +1,148 @@
+{{DISPLAYTITLE:Hamilton's principle — Chronology}}
+{{Hamilton's principle map}}
+A timeline of the subject, from the first variational principle in physics to the
+explanation of why such principles exist.
+
+Dates are of first statement or first publication, as marked. Where this volume's
+source survey could not verify a claim, the entry says so; see
+[[Hamilton's principle/Sources|Sources]].
+
+== The seventeenth century ==
+
+[[File:OPL-HP-F-21.png|thumb|right|400px|Chronology of the action principle.]]
+
+{| class="wikitable"
+! date !! event !! page
+|-
+| 1621 || Snel derives the law of refraction and does not publish it || —
+|-
+| 1637 || Descartes publishes the refraction law, assuming light moves faster in a dense medium || [[Hamilton's principle/History/Least time before least action|Least time before least action]]
+|-
+| 1656 || Huygens invents the pendulum clock and begins looking for a curve of equal-time descent || [[Hamilton's principle/Applications/The brachistochrone|the brachistochrone]]
+|-
+| 1662 || '''Fermat''', ''Synthesis ad refractiones''. Derives the same law from the opposite assumption, on the postulate that nature operates by the easiest and readiest ways || [[Hamilton's principle/History/Least time before least action|Least time before least action]]
+|-
+| 1691 || The hanging chain is shown to be a catenary and not a parabola || [[Hamilton's principle/Applications/The catenary|the catenary]]
+|-
+| 1696 || Johann Bernoulli poses the brachistochrone problem || [[Hamilton's principle/Applications/The brachistochrone|the brachistochrone]]
+|}
+
+== The eighteenth century ==
+
+[[File:OPL-HP-F-58.png|thumb|right|400px|The two long gaps in the subject's history.]]
+
+{| class="wikitable"
+! date !! event !! page
+|-
+| 1743 || '''d'Alembert''', ''Traité de dynamique''. Reduces dynamics to statics by treating inertia as a force || [[Hamilton's principle/History/d'Alembert and virtual work|d'Alembert and virtual work]]
+|-
+| 15 Apr 1744 || '''Maupertuis''' reads the ''Accord'' to the Académie. Action is speed times distance, with no mass. Printed 1748 || [[Hamilton's principle/History/Maupertuis and the 1744 memoir|Maupertuis and the 1744 memoir]]
+|-
+| 1744 || '''Euler''', ''Methodus inveniendi''. The first treatise on the calculus of variations; the action principle appears in its second appendix || [[Hamilton's principle/History/Euler and the Methodus inveniendi|Euler and the Methodus inveniendi]]
+|-
+| 1746 || Maupertuis extends the definition of action to include mass, in a Berlin memoir || [[Hamilton's principle/History/Maupertuis and the 1744 memoir|Maupertuis and the 1744 memoir]]
+|-
+| 1750s || Lagrange sends Euler a variational derivation of the Euler-Lagrange equation. Euler adopts it and names the calculus of variations || [[Hamilton's principle/History/Lagrange and the Mecanique analytique|Lagrange and the Mecanique analytique]]
+|-
+| 1751–53 || The '''Maupertuis-Koenig affair'''. The Berlin Academy declares the Leibniz letter a forgery; the letter is now generally held authentic || [[Hamilton's principle/History/The Maupertuis-Koenig affair|the Maupertuis-Koenig affair]]
+|-
+| 1786 || '''Legendre''' proposes his condition and believes it sufficient. Lagrange finds the error || [[Hamilton's principle/Mathematics/The Legendre condition|the Legendre condition]]
+|-
+| 1788 || '''Lagrange''', ''Mécanique analytique'', first edition. Mechanics as analysis, with no diagrams || [[Hamilton's principle/History/Lagrange and the Mecanique analytique|Lagrange and the Mecanique analytique]]
+|}
+
+== The nineteenth century ==
+
+{| class="wikitable"
+! date !! event !! page
+|-
+| 1811–15 || Lagrange's second edition, described by him as in many respects a new work || [[Hamilton's principle/History/Lagrange and the Mecanique analytique|Lagrange and the Mecanique analytique]]
+|-
+| 1833 || Hamilton announces the dynamical principle in the ''Dublin University Review'' || [[Hamilton's principle/History/Hamilton 1834 and 1835|Hamilton 1834 and 1835]]
+|-
+| 1834 || '''Hamilton''', ''On a General Method in Dynamics''. The characteristic function and the law of varying action. Corrects ''least'' to ''stationary'' in passing || [[Hamilton's principle/Mathematics/Action as a function of its endpoints|Action as a function of its endpoints]]
+|-
+| 1835 || Hamilton's ''Second Essay'' introduces the function modern texts call the action || [[Hamilton's principle/History/Hamilton 1834 and 1835|Hamilton 1834 and 1835]]
+|-
+| 1837 || '''Jacobi''' supplies the conjugate-point condition, closing the gap Legendre left || [[Hamilton's principle/Mathematics/The Jacobi condition and conjugate points|the Jacobi condition and conjugate points]]
+|-
+| 1842–43 || Jacobi's Königsberg lectures. Reduces Hamilton's two equations to one || [[Hamilton's principle/History/Jacobi|Jacobi]]
+|-
+| 1850 || '''Foucault''' measures light as slower in a dense medium, settling the question against Descartes and Maupertuis, and for Fermat || [[Hamilton's principle/History/Least time before least action|Least time before least action]]
+|-
+| 1866 || Jacobi's ''Vorlesungen über Dynamik'' published, fifteen years after his death || [[Hamilton's principle/History/Jacobi|Jacobi]]
+|-
+| later 19th c. || '''Weierstrass''' supplies the excess function and the theory of strong minima || [[Hamilton's principle/Mathematics/The Weierstrass excess function|the Weierstrass excess function]]
+|}
+
+== The twentieth century ==
+
+{| class="wikitable"
+! date !! event !! page
+|-
+| 1915 || General relativity published. Energy conservation in it becomes contested || [[Hamilton's principle/Applications/The Einstein-Hilbert action|the Einstein-Hilbert action]]
+|-
+| 26 Jul 1918 || '''Noether''', ''Invariante Variationsprobleme'', presented to the Göttingen Scientific Society. Two theorems; the second settles the Hilbert assertion || [[Hamilton's principle/History/Noether 1918|Noether 1918]]
+|-
+| 1926 || '''Schrödinger''' constructs wave mechanics by completing Hamilton's optical-mechanical analogy || [[Hamilton's principle/Applications/The optical-mechanical analogy|the optical-mechanical analogy]]
+|-
+| 1942 || Feynman's doctoral thesis on the principle of least action in quantum mechanics. Published 2005 || [[Hamilton's principle/History/Feynman 1948|Feynman 1948]]
+|-
+| 1948 || '''Feynman''', ''Space-Time Approach to Non-Relativistic Quantum Mechanics''. The sum over paths || [[Hamilton's principle/Applications/The Feynman path integral|the Feynman path integral]]
+|-
+| 1971 || Tavel's English translation of Noether, fifty-three years after publication || [[Hamilton's principle/History/Noether 1918|Noether 1918]]
+|}
+
+== Two long silences ==
+
+The timeline has two gaps worth naming, because each is longer than it looks and
+each was ended by the same kind of act.
+
+'''1662 to 1744, eighty-two years.''' Fermat's principle stood as an isolated
+result about light. Nobody extended a variational principle to matter until
+Maupertuis and Euler did so independently in the same year.
+
+'''1834 to 1926, ninety-two years.''' Hamilton observed that mechanics and ray
+optics obey the same equation. Ray optics is the short-wavelength approximation to
+wave optics, so mechanics should be the short-wavelength approximation to
+something. Nobody pursued it, because there was no evidence of a wavelength and
+nothing to be waving. Schrödinger then completed the analogy by working it
+backwards.
+
+The second silence is the more striking. The observation was published, the
+inference is short, and the mathematics needed was in place the whole time. What
+was missing was a reason to believe the missing corner existed.
+
+== A pattern in the corrections ==
+
+Four moments in the timeline are corrections rather than discoveries, and they run
+in the same direction.
+
+Lagrange corrects Legendre in 1786: a local condition is not sufficient.
+
+Hamilton corrects the name in 1834: not least, but stationary.
+
+Jacobi supplies the reason in 1837: minimality fails past a conjugate point.
+
+Weierstrass supplies the rest later in the century: a path can lose to competitors
+close in position but not in slope.
+
+'''Every one of them weakens a claim.''' The subject's history is largely the
+history of finding out that ''least'' was too strong a word, and the process took
+from 1786 to the end of the century.
+
+Feynman's 1948 account then removes the word's basis entirely: nothing is
+minimised, because nothing is choosing.
+
+== Dates this volume could not verify ==
+
+Several entries above rest on secondary sources rather than on documents this
+volume has opened.
+
+Verified against ESTABLISHED sources: the 1834 and 1835 essays, and Noether's 1918
+paper by way of its translation.
+
+Everything else in these tables — including the Huygens, Bernoulli, Galileo,
+Legendre, Jacobi, Foucault and Schrödinger entries — is editorial. Dates are as
+reported by secondary literature and are not independently confirmed. See
+[[Hamilton's principle/Sources|Sources]].

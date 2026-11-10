@@ -1,0 +1,211 @@
+{{DISPLAYTITLE:The three axioms}}
+{{Plebeian|Lean theorem prover/Explainers/What the axioms are}}
+{{Lean theorem prover map}}
+
+Lean's type theory, with its dependent functions, universes, inductive types and quotients,
+is extended in the core library by three '''axioms''': propositional extensionality
+(<code>propext</code>), the soundness of quotients (<code>Quot.sound</code>) and global
+choice (<code>Classical.choice</code>). An axiom is a constant with a type and no
+definition; it does not reduce, and the compiler cannot generate code for it.<ref name="refman-axioms">''The Lean Language Reference'', version 4.34.0, chapter 8 "Axioms": the introduction, §8.2 "Consistency", §8.3 "Reduction", §8.4 "Standard Axioms" and §8.5 "Displaying Axiom Dependencies". https://lean-lang.org/doc/reference/4.34.0/Axioms/</ref> Lean records, for every
+definition and theorem, which axioms it depends on, and prints the list on request. This
+page states the three as Lean prints them, says what each makes possible, shows the
+dependency audit on examples, and sets out the further axioms that are not mathematics at
+all.
+
+== As Lean prints them ==
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+#print propext
+#print Quot.sound
+#print Classical.choice
+</pre>
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+axiom propext : ∀ {a b : Prop}, (a ↔ b) → a = b
+axiom Quot.sound.{u} : ∀ {α : Sort u} {r : α → α → Prop} {a b : α}, r a b → Quot.mk r a = Quot.mk r b
+axiom Classical.choice.{u} : {α : Sort u} → Nonempty α → α
+</pre>
+
+In Lean 4.34.1 <code>propext</code> is stated in the file <code>Init/Core.lean</code>, and
+the other two in <code>Init/Prelude.lean</code>.<ref name="src">Lean 4 source, version 4.34.1: files <code>src/Init/Core.lean</code> (<code>propext</code>), <code>src/Init/Prelude.lean</code> (<code>Quot.sound</code>, <code>Classical.choice</code>, <code>sorryAx</code>) and <code>src/Init/Classical.lean</code> (the proof of <code>Classical.em</code>). Apache License 2.0. https://github.com/leanprover/lean4/tree/v4.34.1/src/Init</ref> As rules, with
+<math>a, b : \mathrm{Prop}</math>:
+
+:<math>\frac{\Gamma \vdash h : a \leftrightarrow b}{\Gamma \vdash \mathrm{propext}\,h : a = b} \qquad \frac{\Gamma \vdash p : r\,a\,b}{\Gamma \vdash \mathrm{Quot.sound}\,p : \mathrm{Quot.mk}\,r\,a = \mathrm{Quot.mk}\,r\,b} \qquad \frac{\Gamma \vdash h : \mathrm{Nonempty}\,\alpha}{\Gamma \vdash \mathrm{Classical.choice}\,h : \alpha}</math>
+
+The first two conclude equations, which are propositions. The third concludes an element of
+an arbitrary type. That difference decides how each one interacts with computation.
+
+== What each makes possible ==
+
+'''Propositional extensionality''' says that logically equivalent propositions are equal,
+so that one may be replaced by the other in any context. The reference manual notes that
+the ordinary connectives respect logical equivalence provably, without the axiom, but that
+it is needed for an unknown predicate <code>P : Prop → Prop</code> applied to equivalent
+arguments, and for equality between propositions itself.<ref name="refman-props">''The Lean Language Reference'', version 4.34.0, §4.2 "Propositions" (the axiom <code>propext</code> and its documentation). https://lean-lang.org/doc/reference/4.34.0/The-Type-System/Propositions/</ref> It is
+valid intuitionistically.<ref name="refman-props" /> ''Theorem Proving in Lean 4'' adds that
+it agrees with set-theoretic readings in which every proposition is either empty or a
+one-element set.<ref name="tpil">Jeremy Avigad, Leonardo de Moura, Soonho Kong and Sebastian Ullrich, ''Theorem Proving in Lean 4'', chapter 12 "Axioms and Computation". https://lean-lang.org/theorem_proving_in_lean4/Axioms-and-Computation/</ref>
+
+'''Quotient soundness''' identifies the classes of related elements in a
+[[Lean theorem prover/Foundations/Quotient types|quotient type]]. It is also the only
+axiom behind function extensionality, which Lean proves as a theorem from quotients; the
+proof is on [[Lean theorem prover/Foundations/Propositional equality|propositional equality]]. With <code>propext</code> it gives an extensional theory of sets represented as
+predicates: two predicates true of the same elements are equal.<ref name="tpil" />
+
+'''Global choice''' turns a proof that a type is inhabited into an element of it.
+<code>Nonempty α</code> is a proposition, and a proof of it carries no information about
+which element exists. <code>Classical.choice</code> nevertheless returns one, and returns the
+same one for any proof, since all proofs of a proposition are equal. ''Theorem Proving in
+Lean 4'' derives from it the principle of indefinite description, and, with the other two
+axioms, excluded middle, the decidability of every proposition and Hilbert's epsilon
+operator.<ref name="tpil" /> That derivation is
+[[Lean theorem prover/Foundations/Classical logic from choice|classical logic from choice]].
+
+The first two can block evaluation in Lean's kernel, because a cast along an equation proved by
+an axiom does not reduce, but they are compatible with compiled code, which erases proofs.
+Choice is not: it manufactures data from a proposition, and definitions that use it for data
+must be marked <code>noncomputable</code>.<ref name="tpil" />
+
+== The audit: #print axioms ==
+
+<code>#print axioms</code> lists every axiom a constant depends on, directly or through the
+definitions and theorems it uses.<ref name="refman-axioms" /> Five small theorems show
+the range from none to all three:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem two_add_two : 2 + 2 = 4 := rfl
+
+theorem and_swap (p q : Prop) : p ∧ q ↔ q ∧ p :=
+  ⟨fun ⟨hp, hq⟩ => ⟨hq, hp⟩, fun ⟨hq, hp⟩ => ⟨hp, hq⟩⟩
+
+theorem and_swap_eq (p q : Prop) : (p ∧ q) = (q ∧ p) :=
+  propext (and_swap p q)
+
+theorem add_zero_fun : (fun n : Nat => n + 0) = (fun n => n) :=
+  funext fun _ => rfl
+
+theorem em' (p : Prop) : p ∨ ¬p := Classical.em p
+
+#print axioms two_add_two
+#print axioms and_swap
+#print axioms and_swap_eq
+#print axioms add_zero_fun
+#print axioms em'
+</pre>
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+'two_add_two' does not depend on any axioms
+'and_swap' does not depend on any axioms
+'and_swap_eq' depends on axioms: [propext]
+'add_zero_fun' depends on axioms: [Quot.sound]
+'em'' depends on axioms: [propext, Classical.choice, Quot.sound]
+</pre>
+
+Here the computation checked by <code>rfl</code> and the logical equivalence need nothing, the
+equation between propositions needs <code>propext</code>, and the equation between functions
+needs <code>Quot.sound</code>, through <code>funext</code>. Excluded middle needs all three,
+because the proof of <code>Classical.em</code> in the core library uses choice,
+<code>propext</code> and <code>funext</code>.<ref name="src" />
+
+== sorry and sorryAx ==
+
+The term <code>sorry</code> closes any goal. It elaborates to the axiom
+<code>sorryAx</code>, which inhabits every type, and so it is used for unfinished work and
+never belongs in a finished proof.<ref name="refman-axioms" />
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+#print sorryAx
+
+theorem unfinished : 1 = 2 := sorry
+
+theorem uses_unfinished : 2 = 3 := congrArg (· + 1) unfinished
+
+#print axioms uses_unfinished
+</pre>
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+axiom sorryAx.{u} : (α : Sort u) → Bool → α
+'uses_unfinished' depends on axioms: [sorryAx]
+</pre>
+
+Lean warns once, with <code>declaration uses `sorry`</code>, at <code>unfinished</code>,
+where <code>sorry</code> is written. The
+theorem <code>uses_unfinished</code> raises no warning of its own, yet it proves a falsehood,
+and only the axiom list shows why. The reference manual makes the same point about the
+editor's check marks: they appear even when a dependency uses <code>sorry</code>, and
+printing the axioms is what detects it.<ref name="refman-validating">''The Lean Language Reference'', version 4.34.0, "Validating a Lean Proof", sections "The Blue Double Check Marks", "Printing Axioms" and "On Lean.trustCompiler (up to Lean 4.28.0)". https://lean-lang.org/doc/reference/4.34.0/ValidatingProofs/</ref>
+
+== Axioms that are not mathematics ==
+
+Any user can write an axiom, and Lean accepts it. Lean cannot check that a
+new axiom is consistent with the others.<ref name="refman-axioms" />
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+axiom everything_is_equal : ∀ (a b : Nat), a = b
+
+theorem one_eq_two : 1 = 2 := everything_is_equal 1 2
+
+#print axioms one_eq_two
+</pre>
+
+The last line prints <code>'one_eq_two' depends on axioms: [everything_is_equal]</code>.
+The theorem is checked and accepted; the audit is what exposes its premise.
+
+An axiom can also be harmless on its own and inconsistent with the standard three. The
+reference manual's example is a "free theorem" of parametricity, which says that a function
+polymorphic in the element type of a list commutes with mapping over the list. With excluded
+middle every proposition is decidable, so a function can test whether its type argument is
+<code>Nat</code> and behave differently when it is. That function is not parametric, and
+together with the free theorem it proves <code>False</code>.<ref name="refman-axioms" />
+
+The core library itself states three further axioms, <code>Lean.trustCompiler</code>,
+<code>Lean.ofReduceBool</code> and <code>Lean.ofReduceNat</code>. The reference manual
+describes them as mathematically trivial: they mark proofs that depend on the correctness of
+the whole compiler rather than only on Lean's small kernel.<ref name="refman-axioms" /> The
+tactic <code>native_decide</code>, which settles a decidable statement by running compiled
+code, creates a dedicated axiom for each use, stating exactly the fact the compiled code
+asserted:<ref name="refman-axioms" />
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem big : 123456 * 654321 = 80779853376 := by native_decide
+
+#print axioms big
+</pre>
+
+Lean 4.34.1 prints <code>'big' depends on axioms: [big._native.native_decide.ax_1_1]</code>.
+Such a theorem rests on the correctness of the whole compiler, not only on Lean's kernel and
+the three axioms: each use of the tactic widens what has to be trusted.<ref name="refman-validating" />
+
+== Why audit per theorem ==
+
+The three standard axioms are, in the reference manual's words, "known to be
+consistent".<ref name="refman-axioms" /> Carneiro's model of Lean's type theory in set
+theory, published in 2019, covers all three axioms together;<ref name="carneiro">Mario Carneiro, ''The Type Theory of Lean'', Master's thesis, Carnegie Mellon University, 2019; abstract, §2.7 (pp. 12–13) and Corollary 6.8 (p. 41). https://github.com/digama0/lean-type-theory/releases/tag/v1.0</ref> it is described, with its limits, in
+[[Lean theorem prover/Foundations/Consistency and the metatheory|consistency and the metatheory]].
+Every other axiom is a premise the reader has to accept separately. The manual's guide to
+validating a proof therefore asks that <code>#print axioms</code> report only
+<code>propext</code>, <code>Classical.choice</code> and <code>Quot.sound</code>: a
+<code>sorryAx</code> means an incomplete proof, <code>Lean.trustCompiler</code> means trust in
+native evaluation, and anything else means a custom axiom on which the result is
+conditional.<ref name="refman-validating" />
+
+A list of axioms also says what kind of result a theorem is. A theorem whose list omits
+<code>Classical.choice</code> uses no classical reasoning obtained from it, and one with an
+empty list holds in the type theory alone. The check can be made permanent. The manual suggests pairing <code>#print axioms</code> with
+<code>#guard_msgs</code>, so that a change in a library one depends on cannot silently add
+an axiom:<ref name="refman-axioms" />
+
+<pre class="lean lean-cont" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+/-- info: 'two_add_two' does not depend on any axioms -/
+#guard_msgs in
+#print axioms two_add_two
+</pre>
+
+If the proof of <code>two_add_two</code> ever came to depend on an axiom, the message would
+change, and this command would fail.
+
+== Next ==
+
+[[Lean theorem prover/Foundations/Classical logic from choice|Classical logic from choice]]
+follows the third axiom into excluded middle.
+
+== References ==
+
+<references />

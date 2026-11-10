@@ -1,0 +1,19 @@
+{{DISPLAYTITLE:AI Feynman}}
+'''AI Feynman: Physics-Inspired Symmetry & Dimensional Symbolic Discovery'''
+[[Category:Principia Machina]] [[Category:Tools]]
+
+== Overview & Architectural Fit ==
+Developed by Udrescu & Tegmark (MIT), '''AI Feynman''' is a symbolic regression framework designed specifically around the fundamental structural properties of theoretical physics: dimensional homogeneity, translational/rotational symmetries, separable sub-functions, and polynomial invariants.
+
+== Mathematical Evaluation for TPM & SVD ==
+* '''Noether Symmetry Exploitation (9.0/10):''' Unlike blind genetic algorithms, AI Feynman tests datasets for fundamental physical symmetries (e.g., <math>f(x, y) = g(x + y)</math> or <math>f(x, y) = g(\sqrt{x^2 + y^2})</math>). This directly mirrors Noether's First Theorem: identified symmetries correspond to underlying continuous conservation laws.
+* '''Dimensional Analysis (Buckingham <math>\Pi</math> Theorem):''' Enforces strict physical units, reducing the dimensional search space prior to expression generation.
+* '''NN-Driven Recursive Graph Decomposition:''' Uses trained neural networks as surrogates to inspect partial derivatives and split complex multi-variable field dynamics into simpler, separable lower-dimensional algebraic trees.
+
+== Strategic Role in SVD ==
+AI Feynman serves as the primary automated tool within TPM for verifying whether empirical field data exhibits the precise Maxwellian symmetries required by Structured Vacuum Dynamics (SVD).
+
+== References ==
+''Added on 2026-10-06 by the [[The Principia Machina/Research Toolkit|Research Toolkit]]: the tool's citations, each checked against the registry or the project's own page that day. The text above is the survey's own.''
+* '''[[The Principia Machina/Research Toolkit/Bibliography#AIF20|AIF20]]''' &ndash; Udrescu, S.-M., Tegmark, M. (2020). AI Feynman: A physics-inspired method for symbolic regression. Science Advances 6, eaay2631. [https://doi.org/10.1126/sciadv.aay2631 doi:10.1126/sciadv.aay2631]; [https://arxiv.org/abs/1905.11481 arXiv:1905.11481].
+* '''[[The Principia Machina/Research Toolkit/Bibliography#AIF2-20|AIF2-20]]''' &ndash; Udrescu, S.-M., Tan, A., Feng, J., Neto, O., Wu, T., Tegmark, M. (2020). AI Feynman 2.0: Pareto-optimal symbolic regression exploiting graph modularity. Advances in Neural Information Processing Systems 33 (NeurIPS 2020), 4860–4871. [https://arxiv.org/abs/2006.10782 arXiv:2006.10782].

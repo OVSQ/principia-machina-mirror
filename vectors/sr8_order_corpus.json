@@ -1,0 +1,27 @@
+{
+ "meta": {
+  "name": "tpc_sr8_order_corpus",
+  "version": "0.1.0",
+  "status": "VERIFIED (both residences)",
+  "conforms_tps": "0.1.0 revision 4 (SR8, TPS 4.4)",
+  "module": "tpc_strike 0.1.1",
+  "note": "Ill-conditioned SR8 inputs where the operation order shows after canon(); expectations from TPC-PHP."
+ },
+ "cases": [
+  {"id": "sr8/op-order-1", "fn": "sr8_scale_factor",
+   "input": {"measurements": [{"x": 9846610.80984243, "u": 1.5822615395810278e-05}, {"x": 0.0038145315461680144, "u": 287923.4304921431}]},
+   "before_fix": "34.1987131414", "expect": "34.1987131412"},
+  {"id": "sr8/op-order-2", "fn": "sr8_scale_factor",
+   "input": {"measurements": [{"x": -1584388362.27871, "u": 4.806467584521203e-06}, {"x": 22.70131971090118, "u": 2524031.3370337626}, {"x": 20615.91282076606, "u": 141208.2040439008}]},
+   "before_fix": "7946.4094217", "expect": "7946.40942162"},
+  {"id": "sr8/op-order-3", "fn": "sr8_scale_factor",
+   "input": {"measurements": [{"x": -7716423.681290181, "u": 2.872899182820292e-06}, {"x": 2774253.1950992066, "u": 254364.93029610152}, {"x": -756347.9729775285, "u": 570079.7540444033}]},
+   "before_fix": "30.4139147242", "expect": "30.4139147233"},
+  {"id": "sr8/op-order-4", "fn": "sr8_scale_factor",
+   "input": {"measurements": [{"x": 857.9928255687573, "u": 285226.0583909543}, {"x": 358803.2905123125, "u": 3.144464414394274e-08}]},
+   "before_fix": "1.25495436535", "expect": "1.25495300011"},
+  {"id": "sr8/op-order-5", "fn": "sr8_scale_factor",
+   "input": {"measurements": [{"x": -0.004984302674057946, "u": 2661207.9023190914}, {"x": 140425686.29099628, "u": 0.0002930210897765783}]},
+   "before_fix": "52.7676496729", "expect": "52.7676496728"}
+ ]
+}

@@ -1,0 +1,15 @@
+{{DISPLAYTITLE:ModelingToolkit.jl}}
+'''ModelingToolkit.jl: Symbolic-Numeric Acausal DAE Optimization'''
+[[Category:Principia Machina]] [[Category:Tools]]
+
+== Overview & Architectural Fit ==
+'''ModelingToolkit.jl''' (MTK) is a symbolic-numeric composable modeling framework written in Julia. It acts as an advanced, next-generation acausal compiler that directly addresses the symbolic limitations of traditional Modelica.
+
+== Mathematical Evaluation for TPM & SVD ==
+* '''Euler-Lagrange Derivation & DAE Compilation (9.5/10):''' MTK accepts symbolic Lagrangian actions <math>L(q, \dot{q}, t)</math> and natively computes symbolic partial derivatives (<math>\frac{\partial L}{\partial \dot{q}}</math>, <math>\frac{\partial L}{\partial q}</math>) to generate full Euler-Lagrange DAEs automatically before performing Pantelides index reduction.
+* '''Structural Simplification:''' Automatically eliminates redundant algebraic constraints and simplifies complex multi-body systems prior to numerical code generation.
+* '''Composable Scientific Machine Learning (SciML):''' Integrates natively with neural ODEs and parameter estimation pipelines.
+
+== References ==
+''Added on 2026-10-06 by the [[The Principia Machina/Research Toolkit|Research Toolkit]]: the tool's citations, each checked against the registry or the project's own page that day. The text above is the survey's own.''
+* '''[[The Principia Machina/Research Toolkit/Bibliography#MTK21|MTK21]]''' &ndash; Ma, Y., Gowda, S., Anantharaman, R., Laughman, C., Shah, V., Rackauckas, C. (2021). ModelingToolkit: A Composable Graph Transformation System For Equation-Based Modeling. arXiv preprint, v1 9 Mar 2021, v3 9 Feb 2022, no journal-ref. [https://arxiv.org/abs/2103.05244 arXiv:2103.05244].

@@ -1,0 +1,103 @@
+{{DISPLAYTITLE:What a continuous symmetry is}}
+{{Noether's theorems map}}
+
+''Mathematical counterpart: [[Noether's theorems/First theorem/One-parameter groups and their generators|One-parameter groups and their generators]].''
+
+[[File:NT-F-15.png|thumb|right|360px|alt=A family of parallel flow curves. One point carries a tangent arrow labelled the generator, and a series of dots along the curve shows the finite transformation built by repeating the small step. A caption states that both proofs run on the generator because the group is recoverable from it.|A one-parameter group: flow lines and the generator]]
+
+A snowflake looks the same if you turn it by sixty degrees. A dinner plate looks
+the same if you turn it by any angle you like.
+
+Both are symmetries. Only the second is the kind Noether's theorems use.
+
+== Continuous means adjustable ==
+
+The snowflake gives you six choices. The plate gives you a dial: turn it by any
+amount, and every amount works.
+
+That dial is what "continuous" means. There is a knob, it turns smoothly, and
+every setting is as good as any other.
+
+A symmetry can have more than one knob. Move an object in space and you have
+three: left-right, forward-back, up-down. Turn it and you have three more. Each
+knob is called a '''parameter''', and counting them is the first thing either
+theorem asks you to do, because the count of knobs is the count of results you
+get back.
+
+== The smallest possible turn ==
+
+Set every knob to zero and nothing happens. That is the setting where the
+transformation does nothing at all, and you can always arrange the knobs so that
+zero means "do nothing".
+
+Now turn one knob by the tiniest amount. What you get is an '''infinitesimal
+transformation''' — the smallest recognisable version of the change.
+
+This turns out to be the only version you need. Turn the knob by a tiny amount,
+then again, then again, and you can build up any amount you like. So the whole
+symmetry is recoverable from its smallest step, and both proofs work entirely
+with the smallest step. Physicists call the smallest step the '''generator''',
+because it generates everything else.
+
+== Two kinds of knob, and the difference is not size ==
+
+Here is the distinction the whole volume turns on.
+
+'''One knob for the whole thing.''' Rotate the plate. You choose one angle and
+that angle applies everywhere on the plate at once. Turn the knob and the entire
+object moves together.
+
+'''One knob at every point.''' Now imagine a change you can dial differently
+here than there — a little here, a lot over there, nothing at all in the corner.
+You are not setting a number. You are choosing a whole pattern of numbers, one
+for each place.
+
+The first kind gives you Noether's first theorem. The second gives you her second
+theorem. They give different answers, and the difference is not that the second
+has more knobs. It is that the second does not have knobs at all in the ordinary
+sense — it has a shape you can draw freely.
+
+Adding more knobs to the first kind never turns it into the second. A hundred
+knobs is still a hundred numbers. A free pattern is a different sort of thing.
+See
+[[Noether's theorems/Explainers/Symmetry that can differ from place to place|Symmetry
+that can differ from place to place]].
+
+== Why the count is exact ==
+
+Both theorems return one result per knob, or one per free pattern. Not roughly
+one. Exactly one, and the results are independent of each other.
+
+That exactness is doing real work. If you find three conserved quantities and the
+symmetry has three knobs, there are no more to find. If you find a fourth, you
+have missed a knob.
+
+== Symmetries that give nothing ==
+
+Not every symmetry is the useful kind, and it is worth knowing which are not.
+
+Reflect a system in a mirror. The physics may well be unchanged. But there is no
+dial: you either reflect or you do not, and there is no such thing as reflecting
+by thirty per cent.
+
+Run time backwards. Same situation — a switch, not a knob.
+
+Swap two identical particles. Again a switch.
+
+These are all genuine symmetries and they matter enormously in physics. Mirror
+symmetry, for instance, is what tells you certain reactions cannot happen. But
+neither of Noether's theorems has anything to say about them, and no conserved
+quantity of the kind she describes comes out of any of them.
+
+The reason is the smallest step. Both proofs work by taking a symmetry, shrinking
+it until it barely does anything, and reading off what that tiny change costs.
+A switch has no tiny version. There is nothing to shrink.
+
+'''So the theorems are silent on a whole class of real symmetries, and the silence
+is structural rather than an oversight.''' Physics does get conservation laws out
+of switch-like symmetries — parity is conserved by most interactions — but those
+laws are found another way and obey different rules. They are conserved as
+labels, not as amounts, and you cannot have half of one.
+
+''No mathematics is used on this page. The mathematical treatment is on the
+counterpart page named above.''

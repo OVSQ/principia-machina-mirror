@@ -1,0 +1,11 @@
+<includeonly>{{Section map
+| title = Research Toolkit: map
+| label1 = Reading the toolkit
+| links1 = [[The Principia Machina/Research Toolkit/Manual|Arriving as an AI? The manual]]<br />[[The Principia Machina/Research Toolkit/Agent flow control|Agent flow control]]<br />[[The Principia Machina/Research Toolkit/Research methods|Research methods]]<br />[[The Principia Machina/Research Toolkit/Research tools|Research tools]]<br />[[The Principia Machina/Research Toolkit/Bibliography|Bibliography]]
+| label2 = The physics tools
+| links2 = [[The Principia Machina/Tools|The survey]]<br />[[The Principia Machina/Tools/General reader|In plain language]]<br />[[The Principia Machina/Tools/Operator's guide|The operator's guide]]<br />[[The Principia Machina/Tools/Primer|The primer]]
+| label3 = For AI agents
+| links3 = [[The Principia Machina/Agent/Research toolkit|The toolkit as a card]]<br />[[The Principia Machina/Agent/Tools|The tools, machine-optimized]]
+| label4 = Related
+| links4 = [[The Principia Machina|The Principia Machina]]
+}}</includeonly><noinclude>The navigation panel of the Research Toolkit, carried by its six pages and the physics tools' four front pages. Its frame is [[Template:Section map]]. Published from the Principia Machina source; an edit made here is overwritten.</noinclude>

@@ -1,0 +1,167 @@
+{{DISPLAYTITLE:Sources}}
+{{Noether's theorems map}}
+
+This page states what the rest of the volume is worth. It is not a bibliography;
+[[Noether's theorems/Bibliography|that is separate]]. It is an accounting of which
+text was read, which was not, what follows from each, and what would close the
+gaps.
+
+The short version, before the detail. '''The equations are in the best condition
+this subject allows. The history is not.''' One of the nine primary sources was
+read in full. Five were never reached at all.
+
+== The three classes ==
+
+Every passage in this volume is one of three things.
+
+'''Verbatim.''' The source was opened and the text read from it. In this volume
+that means one source: the German original of ''Invariante Variationsprobleme'',
+public domain, read in full, with its mathematics intact.
+
+'''Editorial.''' The volume's own prose, argument or arrangement. Most of the
+volume is this, and the substantive judgements are listed below rather than left
+for a reader to find.
+
+'''Reconstructed.''' A passage or equation restated at second hand, from secondary
+accounts rather than from the source itself.
+
+'''This volume contains no reconstructed equations,''' and the claim is meant
+precisely rather than as a boast. Every mathematical expression in it is either
+reproduced from the public-domain German original in Noether's own notation, or
+derived in full on the page where it appears. There is no third category. Where a
+result could be neither read nor derived at this depth — the general moment map,
+the Ward-Takahashi identity, the Belinfante construction, the Bianchi identities
+themselves — it is '''stated and tagged as unverified''', and no equation is given
+for it.
+
+Seventeen of her twenty numbered equations appear, (N1) through (N17). Every
+expression in the volume was passed through MediaWiki's own TeX checker before
+delivery: 710 expressions, none rejected.
+
+== The quotation rule, and why ==
+
+'''Noether's German is quotable. Nothing else in this volume is.'''
+
+The 1918 original is public domain. Every full English translation is under
+copyright — Tavel's of 1971 is the standard one, and the copies circulating are
+reproductions rather than re-licensed texts. Klein's papers were read only in a
+modern English translation whose terms of reuse were not established, and his
+German was not reached.
+
+The rule that follows, applied on every page:
+
+* her equations are reproduced verbatim, in her own symbols;
+* her prose is paraphrased throughout and marked as paraphrased;
+* '''no English wording of hers is transcribed anywhere in this volume;'''
+* no other primary source is quoted at all, in any language.
+
+German technical terms appear where she coined them and no English equivalent is
+standard — ''eigentlich'' and ''uneigentlich'', ''Lagrangesche Ausdrücke'',
+''Erhaltungssätze''. Those are her words, given as terms rather than as quotation.
+
+== Reachability ==
+
+Matching [[Noether's theorems/Bibliography|the bibliography]] row for row. A
+disagreement between the two pages would be a defect in one of them.
+
+{| class="wikitable"
+! source !! state !! what it cost
+|-
+| Noether 1918, German || '''read in full''', text-bearing, mathematics intact || nothing. This is the volume's foundation
+|-
+| Tavel translation 1971 || located, under copyright || no English wording of hers appears
+|-
+| Klein 1918, second note || read in English translation only || content verified, wording not quotable
+|-
+| Klein 1917, first note || an open translation located, not read || the Hilbert correspondence is summarised at second hand
+|-
+| Klein 1918, third note || not reached || not used
+|-
+| Hilbert 1915, first communication || '''not reached'''; only an OCR-damaged copy of the second was found || his Theorem I and his remark on prediction are paraphrased from a corrupt text and never quoted
+|-
+| Bessel-Hagen 1921 || '''not reached''' || the account of divergence invariance is entirely secondary, on the one point where this volume corrects the standard attribution
+|-
+| Weyl 1918 || '''not reached''' || appears only as a precursor Noether names
+|-
+| Lie 1891 || '''not reached''' || her three citations to it, including Theorem VII at page 391, are reported as hers
+|}
+
+== Three transcription discrepancies, and the collation they require ==
+
+The German original was read in a transcription proofread against the source, not
+from page images. Three places disagree with what the surrounding argument
+requires. All three are written here as the argument requires and flagged on their
+pages.
+
+# Her equation (5): the electronic text carries one index where the pattern of the surrounding terms requires another. [[Noether's theorems/First theorem/The Lagrange expressions and the first variation|Flagged there]].
+# Her equation (14): the electronic text carries the unbarred variation where its own derivation requires the barred one. [[Noether's theorems/Second theorem/The second theorem stated and proved|Flagged there]].
+# Her equation (14) again: the sign factor is punctuated with the exponent inside the parenthesis, where the same factor in her (16) puts it outside. Same page.
+
+Whether each slip belongs to the 1918 printing or to the transcription cannot be
+decided without the page images.
+
+'''This is scheduled work, not a note.''' The transcription is backed by a
+page-by-page apparatus over a scan, so the collation is a defined task with a
+defined endpoint: open the three pages, compare, and either correct the volume or
+record the printing's own error. Until it is done, those three equations carry the
+volume's only unresolved textual questions.
+
+== What the five unreached sources cost, page by page ==
+
+Not a list of absences. Each one changes what a particular page can say.
+
+'''Hilbert.''' [[Noether's theorems/History/Hilbert and Klein|The page on Hilbert
+and Klein]] describes his Theorem I and his statement about prediction from an
+OCR-damaged copy, at word level. It quotes nothing and cannot. Reaching the 1915
+Nachrichten would let that page quote the assertion Noether's final section was
+written to prove.
+
+'''Bessel-Hagen.''' This is the sharpest cost. The volume corrects a standard
+misattribution — divergence invariance is his, not hers — on four pages, and does so
+entirely from secondary literature.
+[[Noether's theorems/History/Bessel-Hagen and the first uses|His page]] says so.
+The correction is very likely right and it is not verified.
+
+'''Weyl and Lie.''' Both are named by Noether as precursors, and
+[[Noether's theorems/History/The precursors|the precursor page]] reports whom she
+names, with her loci, and makes no priority claim whatever. That restraint is
+forced by not having read them.
+
+'''Klein's German.''' His content is verified; his words are not available. Every
+statement attributed to him in this volume is a paraphrase of a paraphrase.
+
+== What is editorial ==
+
+The volume makes judgements a reader should be able to identify and reject. These
+are the substantive ones.
+
+* '''That Theorem II is the theorem the paper was written to prove,''' and that quoting only Theorem I gives the corollary without the argument. Stated on [[Noether's theorems/Second theorem/The two theorems side by side|the side-by-side page]].
+* '''That the moment map is not Noether's theorem in another language,''' and the same refusal for the Ward-Takahashi identity. Both rest on the off-shell content having no counterpart in a phase space or in a set of expectation values.
+* '''That an anomaly does not refute either theorem,''' because a conditional whose hypothesis fails has not been contradicted. This is a point of logic, not of physics.
+* '''That the internal-versus-spacetime distinction is one physics adds afterwards.''' The theorem cannot tell the two apart.
+* '''That absent symmetry and empty conservation law are different failures,''' and that general relativity exhibits both.
+* '''That Noether's third variation symbol exists because it commutes with differentiation.''' She does not say so; the property is derived and the inference is the volume's.
+* '''That the gauge identity forces charge conservation rather than permitting it.''' The argument is exhibited; the framing is the volume's.
+* '''That "symmetry implies conservation" is not her statement of Theorem I.'''
+* '''The account of what the name now means to physicists and to mathematicians,''' which is assessment rather than sourced history.
+
+== What would close the remaining gaps ==
+
+'''For the equations.''' Collate the three flagged places against the page images.
+That is the whole of what is outstanding on the mathematics, and it is a short
+task.
+
+'''For the history.''' Reach the Göttingen ''Nachrichten'' for 1915 and 1918, and
+''Mathematische Annalen'' volume 84. Those three volumes carry Hilbert's first
+communication, Klein's German, and Bessel-Hagen. Together they would move six
+pages from summary to quotation and verify the volume's one substantive
+correction to the standard account.
+
+'''For the reception.''' A citation trace of the 1918 paper from 1918 to 1960,
+separated by discipline. Nothing of the kind was attempted, and
+[[Noether's theorems/History/The long neglect|the page on the neglect]] reports
+the usual explanations as claims rather than as findings.
+
+'''For the precursors.''' Read the eight papers Noether names, against her two
+theorems, and decide for each what it establishes and under what restriction. No
+priority verdict should be made before that reading, and none is made here.

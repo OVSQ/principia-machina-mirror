@@ -1,0 +1,43 @@
+{{DISPLAYTITLE:The Fermat's Last Theorem project}}
+{{Lean theorem prover map}}
+The '''Fermat's Last Theorem project''' is a multi-author, open-source effort, led by Kevin Buzzard at Imperial College London, to formalise in Lean a proof of Fermat's Last Theorem.<ref name="readme">Kevin Buzzard et al., "Fermat's Last Theorem" (project page and README), Imperial College London, read 14 October 2026. https://imperialcollegelondon.github.io/FLT/ and https://github.com/ImperialCollegeLondon/FLT</ref> This page describes its aims, its method and its state as of October 2026, including the separate, machine-written formalisation of the theorem announced in September 2026.
+
+== The theorem and the proof ==
+
+Fermat's Last Theorem says that if <math>x, y, z, n</math> are positive integers and <math>n \ge 3</math>, then <math>x^n + y^n</math> never equals <math>z^n</math>. Fermat raised it in 1637; Andrew Wiles, assisted by Richard Taylor, settled it more than 350 years later. Although the statement is about counting numbers, every known proof uses much deeper mathematics: elliptic curves, modular forms, finite flat group schemes and Galois representations, among other things. Written out in full from the axioms, any known proof would run to several thousand pages.<ref name="general">Kevin Buzzard, "A Lean formalisation of Fermat's Last Theorem" (the project's general information), written December 2023. https://github.com/ImperialCollegeLondon/FLT/blob/main/GENERAL.md</ref>
+
+== Aims ==
+
+The project is funded by a fellowship from the Engineering and Physical Sciences Research Council, "Formalising Fermat" (EP/Y022904/1), worth £934,043, which runs from October 2024 to September 2029.<ref name="ukri">UK Research and Innovation, Gateway to Research, "Formalising Fermat", grant EP/Y022904/1, principal investigator Kevin Buzzard, Imperial College London. https://gtr.ukri.org/projects?ref=EP%2FY022904%2F1</ref> Buzzard announced it on the Lean community's blog in April 2024.<ref name="announce">Kevin Buzzard, "The Fermat's Last Theorem Project", Lean community blog, 30 April 2024. https://leanprover-community.github.io/blog/posts/FLT-announcement/</ref>
+
+The first goal is not the whole theorem. It is to reduce Fermat's Last Theorem to claims that mathematicians knew by the end of the 1980s, which would then be assumed rather than proved.<ref name="announce" /> The grant's own summary puts the same aim another way: to formalise much of the mathematics of a modern proof, and so to reduce the task to formalising results from the 1980s.<ref name="ukri" />
+
+Buzzard gave several reasons for the work. Many standard objects of modern number theory had not been defined in Lean or in any other theorem prover, so many recent results could not even be stated, let alone proved; the project would have to define them. Foundational material would go into Mathlib, Lean's mathematical library. And when he wrote, in December 2023, Fermat's Last Theorem was the one problem left unformalised on Freek Wiedijk's list of 100 challenge theorems for computer formalisation.<ref name="general" />
+
+== Method ==
+
+The proof being formalised is not Wiles's original. It is a modern variant of the Wiles and Taylor–Wiles argument that borrows heavily from the ideas of Khare and Wintenberger, and its route was planned almost entirely by Richard Taylor in discussions with Buzzard.<ref name="readme" /> At its heart is still the idea, proved by Wiles in crucial cases, that a certain deformation ring <math>R</math> is isomorphic to a Hecke algebra <math>T</math>.<ref name="general" />
+
+The project is organised with a blueprint, the LaTeX map of the proof whose dependency graph shows which pieces are done, a method described on [[Lean theorem prover/Applications/The polynomial Freiman-Ruzsa conjecture|the polynomial Freiman–Ruzsa conjecture]]. It works from both ends at once: down from the main theorem, stating the large claims to be assumed, and up from the basics, adding general material to Mathlib, with the aim of meeting in the middle.<ref name="general" />
+
+Formalisation checks the literature as well as the proof. In 2024 the work on divided powers, on which the theory of crystalline cohomology relies, met a problem in the literature: a lemma in a 1965 paper by Norbert Roby appeared to be false, and the gap blocked a definition the project needed. Antoine Chambert-Loir and María Inés de Frutos-Fernández were formalising the theory; Chambert-Loir worked on a repair, and by December 2024 Buzzard reported the issues sorted out and the project back on track. In the same period Andrew Yang proved in Lean an abstract result of commutative algebra on which the <math>R = T</math> step depends.<ref name="going">Kevin Buzzard, "Fermat's Last Theorem — how it's going", ''Xena'' (blog), 11 December 2024. https://xenaproject.wordpress.com/2024/12/11/fermats-last-theorem-how-its-going/</ref>
+
+In 2026 Buzzard gave a lecture course of eleven lectures on the proof's route, and announced a workshop in London for July 2026, funded by the company Logos Research, to find out which parts of the proof AI tools could formalise. In May 2026 he judged that such tools could not yet reliably formalise definitions correctly, or state theorems in the idiom of Mathlib, without help.<ref name="workshop">Kevin Buzzard, "Formalizing Fermat workshop", ''Xena'' (blog), 15 May 2026. https://xenaproject.wordpress.com/2026/05/15/formalizing-fermat-workshop/</ref>
+
+== A complete formal proof by other means ==
+
+On 4 September 2026 Anthropic announced a complete formal proof of Fermat's Last Theorem in Lean, produced, by its account, in about 11 days by dozens of instances of its model Claude working largely on their own on Prove2Me, a collaborative formalisation platform from Columbia University. The proof follows the 1995 exposition of Wiles's argument by Henri Darmon, Fred Diamond and Richard Taylor.<ref name="beaten" /> It is about 13 million lines of Lean, proves some 30,300 theorems of which about 29,500 are used in the final proof, rests only on Lean's three standard axioms, and adapts pieces of the Imperial project and of an earlier formalisation of the theorem for regular primes. A comparison tool confirmed that the statement proved matches Mathlib's own statement of Fermat's Last Theorem.<ref name="anthropic">Anthropic, "Formalizing Fermat's Last Theorem", 4 September 2026. https://www.anthropic.com/research/formalizing-fermats-last-theorem</ref>
+
+Buzzard compiled the code and ran the comparison himself, and reported that it checks out; he also described the proof as gigantic, over 13.4 million lines that take nearly twenty times as long to compile as Mathlib. He noted that the formalisation follows the early literature and adds nothing new mathematically, and that it closes Wiedijk's list.<ref name="beaten">Kevin Buzzard, "FLT: Anthropic has beaten me to it", ''Xena'' (blog), 4 September 2026. https://xenaproject.wordpress.com/2026/09/04/flt-anthropic-has-beaten-me-to-it/</ref> Its route is the older one, not the modern proof the Imperial project follows.<ref name="beaten" /> In answer to readers who asked whether the program could have exploited a flaw in Lean, he described asking an AI agent to list everything in the code that was neither a definition nor a proof, and inspecting the roughly 100 lines it found, which he concluded only defined a convenience tactic; he added that this was not a perfect approach.<ref name="beaten" /> What the Lean kernel's check does and does not establish is the subject of [[Lean theorem prover/Explainers/What has to be trusted|What has to be trusted]].
+
+== State as of October 2026 ==
+
+The machine-written proof goes further than the grant's first goal, since it proves the whole theorem rather than reducing it to the 1980s. Buzzard wrote that it does not discharge the project's other commitments: to add the fundamental objects of modern number theory to Mathlib, which is continuing, and to produce a document through which people can explore the modern proof.<ref name="beaten" /> The project page still describes the work as ongoing, led by Buzzard and funded until September 2029.<ref name="readme" />
+
+== Next ==
+
+* [[Lean theorem prover/Applications/The equational theories project|The equational theories project]], a collaboration on a different scale.
+* [[Lean theorem prover/Applications/Machine learning and theorem proving|Machine learning and theorem proving]], for machine-written proofs in general.
+
+== References ==
+<references />

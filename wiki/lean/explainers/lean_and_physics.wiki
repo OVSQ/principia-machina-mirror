@@ -1,0 +1,133 @@
+{{DISPLAYTITLE:Lean and physics}}
+{{Lean theorem prover map}}
+
+A proof checker can do one thing for physics: check that a conclusion follows from
+stated assumptions. It cannot check that the assumptions describe the world. This page says what that
+division means in practice, how real numbers, units and approximations enter a formal statement,
+and what has been done in Lean on physics so far. It closes with this wiki's own physics.
+
+== A derivation, as Lean sees it ==
+
+A derivation in physics starts from laws and assumptions and arrives at a result. In Lean the
+laws and assumptions become hypotheses, the result becomes the statement, and the derivation
+becomes the proof. Here a body is assumed to move at a constant speed <code>v</code>, and the
+theorem says how far it moves between two times:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem displacement (x : Int → Int) (x₀ v : Int)
+    (law : ∀ t, x t = x₀ + v * t) (t₁ t₂ : Int) :
+    x t₂ - x t₁ = v * (t₂ - t₁) := by
+  rw [law t₂, law t₁]
+  grind
+</pre>
+
+Lean accepts it. What it has checked is a conditional: if the position <code>x</code> follows
+the law named <code>law</code>, then the displacement is speed times elapsed time. It has not
+checked that any body moves that way. Whether one does is a question for measurement, and no
+proof can answer it. (The example uses whole numbers so that it runs in Lean without any library;
+the same statement over the real numbers needs Mathlib.)
+
+The project this wiki records puts the point in one line: Lean proves the model, not the world
+(see [[Principia Machina/Lean transition|the move to Lean]]).
+
+== What Lean can and cannot check ==
+
+Lean can check that every step of a derivation is valid, that no case is skipped, and that the
+assumptions used are exactly the ones stated. An assumption that a written derivation uses without
+saying so becomes, in Lean, a hypothesis that must be written down, or else the proof fails.
+
+Lean cannot check three things. It cannot check that the assumptions are true of nature; that is
+what experiments are for. It cannot check that the symbols stand for the things they are meant to,
+that <code>x</code> really is a position measured from a chosen point; that link between the
+mathematics and the world is made by people. And it cannot check that the statement proved is the
+one that was wanted (see [[Lean theorem prover/Explainers/Stating the right thing|stating the right thing]]).
+
+== Real numbers ==
+
+Physics is written over the real numbers, and core Lean has none (see
+[[Lean theorem prover/Explainers/A library of mathematics|a library of mathematics]]). Mathlib
+defines them as classes of Cauchy sequences of rational numbers, sequences whose terms get and
+stay arbitrarily close to one another.<ref name="real">Mathlib, source file <code>Mathlib/Basic/Real/Basic.lean</code>, module documentation "Real numbers from Cauchy sequences". [https://github.com/leanprover-community/mathlib4/blob/master/Mathlib/Basic/Real/Basic.lean github.com/leanprover-community/mathlib4], consulted 14 October 2026.</ref>
+These are the exact real numbers of mathematics, not the rounded numbers a computer calculates
+with. A theorem about real numbers therefore says nothing by itself about the rounding errors of a
+numerical simulation. Connecting the two takes a further statement, one that bounds the error.
+
+== Units ==
+
+On paper, units are checked by hand. In Lean they can be made part of the types, so that adding a
+length to a time is refused before any proof begins. A small version:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+structure Metres where
+  val : Int
+
+structure Seconds where
+  val : Int
+
+instance : Add Metres := ⟨fun a b => ⟨a.val + b.val⟩⟩
+
+def d : Metres := ⟨3⟩
+def t : Seconds := ⟨2⟩
+
+#eval (d + d).val
+</pre>
+
+Lean prints <code>6</code>: two lengths add. A length and a time do not:
+
+<pre class="lean lean-cont lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+#eval (d + t).val
+</pre>
+
+Lean answers: failed to synthesize instance of type class, naming the missing addition of
+<code>Metres</code> and <code>Seconds</code>. A fuller treatment exists. A 2025 preprint formalised
+dimensional analysis in Lean: a dimension is a map from base dimensions to their exponents, dimensions
+form a group under multiplication, physical quantities pair a value with a dimension, and the
+framework covers SI units, fundamental constants and the Buckingham Pi theorem, with the
+Lennard-Jones potential as a worked case.<ref name="dims">Maxwell P. Bobbin, Colin Jones, John Velkey and Tyler R. Josephson, "Formalizing dimensional analysis using the Lean theorem prover", arXiv:2509.13142, 16 September 2025. [https://arxiv.org/abs/2509.13142 arxiv.org/abs/2509.13142]</ref>
+
+== Approximations ==
+
+Physics leans on approximations: small angles, weak fields, slow speeds. The sign "≈" means
+nothing to Lean. An approximation has to be stated as an exact claim, usually an inequality with an
+explicit bound on the error, or a statement about a limit. Writing it out that way shows what the
+approximation actually assumes: how small the angle must be, and how large the error can then get.
+That can be harder than the derivation it serves, and it is part of what formal proof adds.
+
+== Physics in Lean so far ==
+
+In 2024 Joseph Tooby-Smith introduced '''HepLean''', a project to formalise high energy physics in
+Lean 4, with first examples from flavour physics (CKM matrices), local anomaly cancellation and
+Higgs physics. Its stated aims include making results easier to find, helping new results to be
+found by artificial intelligence and automated methods, making the mathematical checking of papers easier, and new ways of
+teaching.<ref name="heplean">Joseph Tooby-Smith, "HepLean: Digitalising high energy physics", ''Computer Physics Communications'' 308 (2025), article 109457. [https://doi.org/10.1016/j.cpc.2024.109457 doi:10.1016/j.cpc.2024.109457]; preprint arXiv:2405.08863.</ref>
+HepLean was renamed PhysLean and later merged with Lean-QuantumInfo, a library for quantum
+information, to form '''Physlib''', an open-source community project under the Apache 2.0 licence
+that depends on Mathlib. Its core library holds reviewed formalisations; a separate area with
+lighter review accepts larger and faster contributions, including some generated by AI.<ref name="physlib">''Physlib'' (README). [https://github.com/leanprover-community/physlib github.com/leanprover-community/physlib], consulted 14 October 2026; also [https://physlib.io physlib.io].</ref>
+
+Formalisation has also found a mistake. In 2026 Tooby-Smith formalised a widely cited paper of 2006,
+by Maniatis, von Manteuffel, Nachtmann and Nagel, on the stability of the two-Higgs-doublet
+potential, and found an error in its arguments that invalidates its main theorem on stability. He
+suggests that this may be the first non-trivial error in a physics paper found through
+formalisation.<ref name="2hdm">Joseph Tooby-Smith, "Formalizing the stability of the two Higgs doublet model potential into Lean: identifying an error in the literature", arXiv:2603.08139, version 2, 20 April 2026. [https://arxiv.org/abs/2603.08139 arxiv.org/abs/2603.08139]</ref>
+[[Lean theorem prover/Applications/Physics in Lean|Physics in Lean]] describes this work further.
+
+== This wiki's physics ==
+
+The physics editions on this wiki, [[Hamilton's principle]], [[Noether's theorems]] and
+[[On Physical Lines of Force]], are written in ordinary mathematics and prose, not in Lean.
+The framework this wiki records is moving to Lean (see
+[[Lean theorem prover/Applications/Principia Machina|Principia Machina]]). Its own account notes
+that physics over the real numbers needs Mathlib, which it has not yet chosen to adopt
+(see [[Principia Machina/Lean transition|the move to Lean]]).
+
+== Next ==
+
+[[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]]
+begins the technical pages, on the type theory that Lean checks.
+[[Lean theorem prover/Applications/Physics in Lean|Physics in Lean]] describes the formal physics
+done in Lean so far.
+
+== References ==
+
+<references />

@@ -1,0 +1,72 @@
+{{DISPLAYTITLE:Why spinning makes a pull}}
+{{On Physical Lines of Force map}}
+''[[On Physical Lines of Force]] → [[On Physical Lines of Force/Explainers|Explainers]] → Why spinning makes a pull''
+
+<blockquote>
+'''In one sentence.''' Anything spinning bulges outward at its middle and draws in along its axis, and that is precisely the pattern of push and pull that magnets are observed to produce.
+</blockquote>
+
+The previous page filled space with spinning cells. This page is about why that was worth doing. A model earns its place by delivering what it was built for, and preferably something more. Maxwell's model does both.
+
+== The load that magnetism needs ==
+
+First, restate the requirement. Reasoning back from the way magnets behave, Maxwell concluded that the space around them must be under a particular kind of mechanical load.
+
+'''Stress''' is the general word for push and pull between neighbouring parts of a material. A rope holding a weight is under stress; so is the leg of a table. The stress magnetism calls for has two components at every point:
+
+* a '''tension''' along each line of force — a pull, in the direction the line runs. Maxwell's comparison is with the tension of a rope.
+* a '''pressure''' across the lines — a push, sideways, at right angles to them.
+
+[[File:OPL-fig-stress-in-medium.svg|thumb|center|620px|Tension along the lines of force, pressure across them]]
+
+He compresses this into a phrase. The lines of force, he says, indicate the direction of minimum pressure at every point of the medium. The medium is squeezed everywhere, but least hard along the lines, and that unevenness is the whole of magnetism.
+
+You can check it against what magnets do. Bring a north pole near a south pole and they pull together, as though the lines between them were shortening cords. Bring two north poles together and they push apart, as though the crowded lines were shoving each other sideways. Tension along, pressure across, and both cases are covered.
+
+== Why spinning supplies exactly that ==
+
+Now the mechanism. Anything going round in a circle is being turned away from the straight line it would otherwise travel along, and it presses outward against whatever is doing the turning. It is the ordinary effect of a fairground ride. Maxwell's term for it is '''centrifugal force'''.
+
+So consider one cell. Its substance is whirling about the axis, every part of it pressing outward, and the pressing is strongest at the rim, where the motion is fastest. The cell therefore pushes hardest in the belt around its middle — its equator — and least along its axis. Spin a soft ball of dough and it flattens into a disc: it spreads sideways and shortens along the spin axis.
+
+Line the cells up with their axes along the lines of force and count what you get. Sideways pressure, since every cell is bulging at its equator against its neighbours. And less pressure along the axis, which amounts to a pull in that direction. Tension along the line, pressure across it.
+
+That is the result of Part I. The stress magnetism requires has been produced by a mechanism that does nothing but spin, and the two halves of the requirement were not fitted separately: both fall out of one motion at once.
+
+[[File:OPL-fig-maxwell-stress.svg|thumb|center|620px|The stress on a small cube of the medium]]
+
+== Five forces out of one calculation ==
+
+The stronger evidence comes next, and it is easy to undersell.
+
+A uniform load moves nothing. Squeeze a block equally on all sides and it stays where it is. Force appears only where the stress '''changes from place to place''', because then the medium pushes harder on one side of a small piece of itself than on the other, and the difference is a net shove.
+
+So in Proposition III Maxwell works out how his stress varies from point to point. It is a page of bookkeeping, and it yields five separate terms at once:
+
+* the force on magnetic poles — the familiar pull and push between magnets;
+* the force that draws magnetisable objects, such as an iron nail, toward the stronger part of a field;
+* two further terms, which together give the force on wires carrying an electric current;
+* an ordinary pressure, of the everyday sort.
+
+Nothing on that list was put in by hand. Maxwell did not add an assumption about currents and then recover a law about currents. He assumed spinning cells, worked out how their stress varies, and the known laws of magnets, of magnetisable materials, and of electric currents dropped out of the same calculation together. A theory that returns more than was put into it has done something an arbitrary picture cannot, and that is why such results carry weight even with readers who doubt the model.
+
+== A prediction that could have settled it ==
+
+Maxwell also saw where his account and the older one part company, and he said how to test the difference.
+
+On action at a distance, two magnets pull on each other directly, and whatever sits in the gap is beside the point. On the stress theory it is not, because the stress is a state of that material, and the material's properties must therefore matter.
+
+So he predicted a difference, and named real substances rather than speaking in generalities. Submerge two magnets in a '''paramagnetic''' fluid — one weakly drawn toward a magnet, such as oxygen or a solution of an iron salt — and the pull between them should be '''weaker''' than in air. Submerge them in a '''diamagnetic''' one — weakly pushed away, such as water or melted bismuth — and the pull should be '''stronger'''. For two wires carrying current, the effect should run the opposite way.
+
+Then he raised the objection to his own proposal. The experiment, he noted, would require great precision. The effect is small, and the range of magnetic behaviour available in known fluids is narrow. He had offered a genuine test and pointed out in the same breath how hard it would be to perform.
+
+== Where this is in the paper ==
+
+* [[On Physical Lines of Force/Part I/Prop. II|Part I, Prop. II]] — the stress resolved into components.
+* [[On Physical Lines of Force/Part I/Prop. III|Part I, Prop. III]] — the central proposition, where the five forces appear together.
+* [[On Physical Lines of Force/Part I/Applications|Part I: the applications, and a prediction]] — the paramagnetic and diamagnetic test in Maxwell's own words.
+* [[On Physical Lines of Force/Modern derivations/The Maxwell stress tensor|The stress tensor today]] — the same result in modern form.
+
+----
+
+''Next: [[On Physical Lines of Force/Explainers/What is an electric current|The idle wheels]] · Previous: [[On Physical Lines of Force/Explainers/The sea of spinning cells|The sea of spinning cells]]''

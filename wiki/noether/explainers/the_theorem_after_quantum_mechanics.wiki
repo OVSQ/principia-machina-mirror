@@ -1,0 +1,110 @@
+{{DISPLAYTITLE:The theorem after quantum mechanics}}
+{{Noether's theorems map}}
+
+''Mathematical counterpart: [[Noether's theorems/Mathematics/The Ward-Takahashi identity|The Ward-Takahashi identity]].''
+
+'''A note about this page.''' Its counterpart does not derive anything either. It
+states a result and marks it as unchecked, because deriving it needs quantum field
+theory, which this volume does not set up. So this page explains a shape rather
+than an argument, and you should hold it more loosely than the rest of the
+volume.
+
+== Why the question arises ==
+
+Both of Noether's theorems are about classical physics. They are about a system
+that follows one history, chosen because a nudge to it changes nothing.
+
+Quantum mechanics does not work like that. A quantum system does not follow one
+history. Every history contributes, including the ones classical physics rejects,
+and what you can ask about is the average behaviour over all of them.
+
+So the classical statement cannot simply carry across. There is no single history
+for the conserved quantity to be conserved along.
+
+The question is what survives.
+
+== What is said to survive ==
+
+'''Unchecked, all of the following.'''
+
+A symmetry of the classical scoring rule does constrain the quantum theory. What
+it constrains is not a quantity but a set of averages — the numbers you get when
+you ask what the theory predicts for various measurements.
+
+The constraint says certain combinations of those averages are equal to each other.
+It carries the name of Ward and Takahashi, and it reduces to the classical
+conservation law when the quantum contributions are switched off.
+
+Notice how the sentence changed shape. Classically you say "this quantity is
+conserved". Quantum mechanically you say "these predictions are related". The
+conserved current is still in there, but it is inside the statement rather than
+being its subject.
+
+== What it is used for ==
+
+Mostly, for keeping theories honest.
+
+Recall from
+[[Noether's theorems/Explainers/Counting the equations a gauge theory really has|the
+counting page]] that a theory with a local symmetry carries slack — parts of the
+description that mean nothing. The classical theory handles that cleanly.
+
+The quantum theory has to be checked. Nothing guarantees in advance that the slack
+stays meaningless once you start summing over all histories, and if it does not,
+the theory predicts nonsense. These identities are what does the checking.
+
+So the second theorem's structure reappears in the quantum theory as a consistency
+requirement, and it is the reason the identities matter rather than being a formal
+curiosity.
+
+== The claim to be careful about ==
+
+You will read that this is Noether's theorem restated for quantum mechanics.
+Treat that as loose.
+
+The two are connected by a limit, not by a translation. Noether's theorems hold
+identically, for every conceivable configuration, in a framework with no
+probabilities in it. The quantum identity is about expectation values in one
+particular quantised theory, and it depends on how the quantising was done.
+
+That dependence is not a technicality. It is exactly what makes the next page
+possible: sometimes the quantising cannot be done in a way that respects the
+symmetry at all. See
+[[Noether's theorems/Explainers/When a symmetry does not survive|When a symmetry
+does not survive]].
+
+== The honest summary ==
+
+The classical theorems have a quantum descendant. It has a name, it does real
+work, and this volume has not derived it and does not depend on it anywhere.
+
+== What "average over all histories" actually means ==
+
+The phrase does a lot of work above and deserves unpacking, since it is where the
+classical picture breaks.
+
+Classically you ask: what does the system do? There is one answer.
+
+Quantum mechanically you cannot ask that. What you can ask is: if I set things up
+this way and then measure this, what do I get? And the answer is a distribution,
+whose average is computable by adding up a contribution from every conceivable
+history — including the ones that violate the classical equations, each weighted in
+its own way.
+
+Now put those two facts side by side with
+[[Noether's theorems/Explainers/True everywhere against true for real motions|the
+identity page]], and something interesting appears.
+
+The classical conservation law was a statement about the one real history. It has
+no obvious quantum counterpart, because there is no one real history.
+
+But the '''identity''' — the statement that held for every conceivable
+configuration, real or not — is in much better shape. Every conceivable
+configuration is exactly what the quantum theory sums over.
+
+That is not a derivation and this page does not claim it is one. But it is the
+reason the off-shell statement, which looks like the weaker and less useful of the
+two, is the one with a future.
+
+''No mathematics is used on this page. The mathematical treatment is on the
+counterpart page named above.''

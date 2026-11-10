@@ -1,0 +1,97 @@
+{{DISPLAYTITLE:An identity hiding inside Einstein's equations}}
+{{Noether's theorems map}}
+
+''Mathematical counterpart: [[Noether's theorems/Applications/General relativity and the Bianchi identity|General relativity and the Bianchi identity]].''
+
+Einstein's field equations are ten equations. Six of them are doing the work. This
+page says how the second theorem knows that in advance.
+
+== The count, before any calculation ==
+
+General relativity's local symmetry is the freedom to label the points of
+spacetime however you like — and differently here than there. Spacetime has four
+dimensions, so that is four free labels, four free shapes.
+
+Feed that into
+[[Noether's theorems/Explainers/Counting the equations a gauge theory really has|the
+counting result]] and out comes: four identities among the field equations, and
+four of them following from the rest.
+
+'''Notice what was not needed.''' Nothing about curvature. Nothing about how
+gravity works. Nothing about the equations themselves beyond the fact that they
+come from a scoring rule with that freedom. The number four was fixed the moment
+somebody said "you may relabel the coordinates".
+
+Noether gives this very case as an example in her opening section, before proving
+anything.
+
+== What the four identities turn out to be ==
+
+'''Unchecked.''' In the literature they are the contracted Bianchi identities:
+the statement that a particular combination built out of the curvature has
+vanishing divergence, automatically, for any spacetime whatever. This volume does
+not derive that, because deriving it needs the symmetries of the curvature tensor
+and this volume does not set them up.
+
+== Three things that follow from the count alone ==
+
+'''Four of the ten equations are not independent.''' If you count Einstein's
+equations and conclude the theory is overdetermined, you have counted wrong. It is
+not.
+
+'''Whatever sits on the right must be divergence-free.''' The left-hand side of
+the field equations has vanishing divergence identically. The right-hand side is
+the energy and momentum of matter. So the matter's energy and momentum must be
+divergence-free too, or the equations are simply inconsistent.
+
+That is the same structure as
+[[Noether's theorems/Explainers/Counting the equations a gauge theory really has|charge
+conservation in electromagnetism]], and it is not a coincidence: in both cases the
+local symmetry produces an identity, and the identity forces a conservation law
+onto whatever the theory is coupled to. '''Gravity cannot couple to matter that
+does not conserve energy and momentum. The theory refuses.'''
+
+'''The future is not determined by the present.''' Four functions' worth of any
+solution is a choice of labels, carrying no physical content. Hilbert had spelled
+this out in 1916 and found it disturbing; the second theorem shows it is the
+generic behaviour of a theory with a local symmetry, not a peculiarity of gravity.
+
+== Who found what ==
+
+Worth stating plainly, because the four identities are often attributed to
+Noether and were not hers.
+
+Hilbert asserted them for one particular scoring rule, in 1915. Klein derived them
+in general form, before Noether's paper appeared. Hilbert's own reprint of his
+papers, in 1924, credits Klein with the general derivation and Noether with the
+general proof of the theorem that has them as one instance among many.
+
+'''The identities are not her discovery. The theorem is.''' Which is the larger
+result, and the reason her name is on the subject rather than theirs.
+
+== What it is like to use ==
+
+The practical consequence is stranger than it sounds, and worth spelling out.
+
+Normally you count equations against unknowns. Ten equations, ten unknowns, one
+answer. That instinct is wrong here and will mislead you in a specific way.
+
+Ten equations, four of which follow from the others, gives six real constraints on
+ten quantities. Four quantities' worth of the answer is undetermined — and if you
+go looking for the extra equations that would pin them down, you will not find
+them, because they do not exist and were never missing.
+
+What you do instead is decide. Pick coordinates, write the choice down, and carry
+on. Two people who choose differently get descriptions that disagree everywhere
+and agree on every measurable thing, which is the test that they both did it
+right.
+
+'''The four undetermined functions are not ignorance. They are the labels.'''
+
+The reason to know this in advance, rather than discovering it halfway through a
+calculation, is that the symptom is confusing. Equations that will not close look
+like a mistake. The count tells you before you start exactly how much will not
+close, and that the amount is correct.
+
+''No mathematics is used on this page. The mathematical treatment is on the
+counterpart page named above.''

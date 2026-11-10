@@ -1,0 +1,6 @@
+{
+ "corpus": "zone_corpus.json",
+ "note": "Cases of zone_corpus.json the Calculator does not judge yet, each with the reason; neither a pass nor a failure. Tests/Zone.lean requires every owed case to be listed here for its reason, and every case listed here to come out owed for it. The corpus itself is never edited.",
+ "reasons": {},
+ "owed": []
+}

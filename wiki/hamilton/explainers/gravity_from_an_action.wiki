@@ -1,0 +1,146 @@
+{{DISPLAYTITLE:Gravity from an action}}
+{{Technical|Hamilton's principle/Applications/The Einstein-Hilbert action}}
+{{Hamilton's principle map}}
+
+This page explains how gravity comes out of the same method. It uses no
+mathematics. The technical page it goes with is named above.
+
+== The demand ==
+
+[[File:OPL-HP-F-14.png|thumb|right|400px|Two stationary light paths around a mass.]]
+
+[[Hamilton's principle/Explainers/Electromagnetism from an action|Electromagnetism from an action]] built
+electromagnetism from one requirement: a certain adjustment must have no physical
+effect, at every point independently.
+
+Gravity comes from a similar demand, applied to something more basic.
+
+'''Nothing physical may depend on your choice of coordinates.'''
+
+Coordinates are labels. Where you put the origin, which way the axes point, what
+units you use — all of that is your bookkeeping, not the world's. And you should be
+free to choose differently in different places.
+
+Insist on that, write the simplest cost rule that respects it, and general
+relativity comes out.
+
+== What is being varied ==
+
+[[File:OPL-HP-F-45.png|thumb|right|400px|Free fall as a straight path in a curved geometry.]]
+
+There is one thing to decide first: what the theory is about.
+
+For electromagnetism it was a field spread through space. For gravity, the thing
+that varies is the '''shape of space and time itself''' — specifically, the rule
+for measuring distances and durations from place to place.
+
+That rule can differ from place to place. Where it does, the geometry is curved.
+
+So gravity is not a force acting in space. It is a statement about the shape of
+space, and the cost rule is a cost rule for shapes.
+
+== Free fall is going straight ==
+
+[[File:OPL-HP-F-52.png|thumb|right|400px|The boundary term in one dimension and in a field.]]
+
+The consequence for motion follows without extra assumptions.
+
+An object with nothing pushing it travels as straight as the geometry allows. That
+is the shortest-path idea from
+[[Hamilton's principle/Explainers/Where the minimum fails|Where the minimum fails]], now applied to space
+and time together.
+
+Near a massive body, the geometry is curved. Straight in that geometry looks bent
+from a distance. That bending is what we call gravity.
+
+'''A falling apple is not being pulled. It is going straight through a curved
+geometry.''' Nothing distinguishes free fall from doing nothing at all — which is
+why astronauts float, and why you feel nothing during a fall until you land.
+
+== The edge of the problem ==
+
+Something happens here that did not happen anywhere else in this volume, and it is
+worth flagging.
+
+Every calculation so far quietly discarded a leftover term at the boundary of the
+region considered. The usual justification is that nothing is being nudged at the
+edge, so the term vanishes.
+
+For gravity it does not vanish. The cost rule involves shapes in a way that leaves
+something behind at the boundary even when the edge is held fixed.
+
+The fix is to add a matching term by hand that cancels it.
+
+This is not tidying. That boundary term turns out to carry the '''energy of the
+gravitational field''', and treatments that discard it get the equations right and
+lose everything that depends on the value of the total. The warning issued much
+earlier in this volume — that a leftover term must be argued away rather than
+assumed away — is paid for here.
+
+== Where energy goes wrong ==
+
+Now the deepest consequence, and it is the one Noether's second theorem was
+written for.
+
+For ordinary theories, energy conservation is a real dynamical statement with a
+definite local meaning. You can point at a region and say how much energy is in
+it.
+
+For gravity you cannot.
+
+Every attempt to define the energy stored in the gravitational field at a point
+gives an answer that depends on your choice of coordinates. Change coordinates and
+the energy density changes, though nothing physical has.
+
+For a long time this looked like a failure of ingenuity. It is not. Noether proved
+that '''any''' theory with this kind of local symmetry has exactly this property:
+its energy conservation becomes an identity, true by construction, rather than a
+dynamical law.
+
+There is no local gravitational energy to find. The searching failed because the
+thing does not exist.
+
+That is a rare kind of result — a proof that a research programme cannot succeed,
+with the reason given.
+
+'''Energy has not stopped being conserved.''' For a system that settles down at
+large distances, a perfectly good total energy can be defined, and it lives in
+exactly the boundary term of the previous section. What has gone is the ability to
+say where the energy '''is'''.
+
+== A prediction you can photograph ==
+
+The volume's central point turns up in the sky.
+
+A massive galaxy bends light passing near it. Light from a distant object behind it
+can therefore reach us by more than one route, curving round different sides.
+
+We see several images of the same object. Astronomers photograph them regularly.
+
+Each route is a legitimate straightest path. Only one is the quickest. The others
+are perfectly good paths that are not shortest — which is exactly what this volume
+has been saying since its first page, now in a photograph.
+
+The routes have different lengths, so the light on them left at different times.
+When the distant object flickers, the images flicker one after another, sometimes
+weeks apart.
+
+== What the method achieved ==
+
+Stand back and look at what was assumed.
+
+Not that gravity attracts. Not an inverse square law. Not that mass bends light.
+Only that the laws must not depend on your choice of labels, and that the cost rule
+should be the simplest one respecting that.
+
+Out came a theory that predicts the bending of light, the precession of Mercury,
+the slowing of clocks in a gravitational field, and gravitational waves — all
+confirmed, some of them decades later.
+
+That is the strongest case for the whole approach in this volume. Write down what a
+theory must ignore, and the theory writes itself.
+
+== Where to go next ==
+
+The volume's final argument, explaining why any of this works at all, is at
+[[Hamilton's principle/Explainers/Sum over histories|Sum over histories]].

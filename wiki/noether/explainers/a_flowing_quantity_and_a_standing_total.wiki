@@ -1,0 +1,115 @@
+{{DISPLAYTITLE:A flowing quantity and a standing total}}
+{{Noether's theorems map}}
+
+''Mathematical counterpart: [[Noether's theorems/First theorem/The Noether current and the Noether charge|The Noether current and the Noether charge]].''
+
+[[File:NT-F-04.png|thumb|right|360px|alt=A tube drawn in perspective with arrows flowing along it, labelled the current. A dashed elliptical cross-section partway along is labelled the charge, with a note that the amount crossing is the same at every slice. A caption states that conservation means the books balance rather than that nothing moves.|The Noether current as a flux through a tube]]
+
+The first theorem hands you an object for each knob. This page says what that
+object is.
+
+== Flow and total ==
+
+Think of water in a network of pipes.
+
+At any point you can ask how fast water is moving and in which direction. That is
+the '''flow'''. It is a different arrow at every point.
+
+You can also draw a surface across the network and ask how much water crosses it.
+That is a '''total'''.
+
+If water is never created or destroyed anywhere in the network, the total crossing
+one surface equals the total crossing any other. The number does not depend on
+where you cut.
+
+The first theorem produces exactly this pair. Physicists call the flow the
+'''current''' and the total the '''charge''' — including when the quantity in
+question is energy rather than electricity, which is a piece of vocabulary worth
+bracing for.
+
+== Where the flow comes from ==
+
+Two contributions, and they have different origins.
+
+Part of it comes from the things in the system changing. Part of it comes from
+the frame having moved, in the sense of
+[[Noether's theorems/Explainers/What happens at the edges|the picture-frame
+picture]].
+
+A treatment that never moves the frame gets only the first part. Energy comes from
+moving the frame in time, so that treatment cannot produce energy. This is a
+common shortcut and it quietly costs the most famous case.
+
+== The flow is not unique ==
+
+Here is something that surprises people and is not a defect.
+
+Add to your flow a circulating pattern — water going round in a loop, never
+accumulating anywhere. Every total across every surface is unchanged, because
+whatever the loop carries across, it carries back.
+
+So there are many flows giving the same totals, and nothing in the theorem picks
+one out. Physics later found reasons to prefer particular choices, but the theorem
+itself does not care, and the freedom is genuine rather than an artefact of a
+clumsy derivation.
+
+== Counting is not the same as counting facts ==
+
+The theorem promises one result per knob, and the results are independent in a
+precise technical sense.
+
+They need not be independent in the sense you care about.
+
+A car travelling at a steady speed gives you two true statements: its speed is
+constant, and the square of its speed is constant. Those are two statements. They
+are not two facts. Knowing either tells you the other.
+
+Noether gives exactly this example herself, with a system where two properly
+independent symmetries deliver two conserved quantities that turn out to be
+tied together.
+
+'''So the count is a count of relations, not a count of things you have
+learned.''' Read the number that way and it will not mislead you.
+
+== When the flow does not balance ==
+
+One last case, which Noether puts in a footnote in 1918 and which turns out to
+matter enormously later.
+
+Suppose the system is not isolated — something outside is feeding into it. Then
+the flow does not balance, and the totals across different surfaces differ. The
+difference is exactly what was fed in.
+
+She writes this down without comment. Modern physics calls the feeding term a
+source, and the whole of how forces couple to matter is written in this shape.
+
+== What a total means when the flow is through time ==
+
+The pipe picture has one feature that needs unpacking, because it is where the
+word "conserved" comes from.
+
+In the pipe network you drew a surface and asked how much crossed it. In physics
+the surfaces are usually snapshots: all of space, at one moment.
+
+So the total is a quantity spread over the whole of space at one instant, and the
+statement that the total is the same across different surfaces means it is the
+same at every instant.
+
+That is conservation, and it is worth noticing that it came from a statement about
+'''flow''' rather than about staying still. Nothing is required to sit motionless.
+Energy moves around constantly. What the theorem gives you is that the books
+balance: whatever leaves a region has gone somewhere adjacent, never nowhere.
+
+== Why this matters for gravity ==
+
+The local statement — nothing is created or destroyed anywhere — is the strong one.
+The total is a consequence of it.
+
+You might hope to keep the total even if the local statement fails. In general
+relativity that hope is where the trouble starts, because there the local
+statement is the one that goes wrong. See
+[[Noether's theorems/Explainers/Why gravity has no local energy|Why gravity has no
+local energy]].
+
+''No mathematics is used on this page. The mathematical treatment is on the
+counterpart page named above.''

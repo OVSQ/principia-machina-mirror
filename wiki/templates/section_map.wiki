@@ -1,0 +1,7 @@
+<includeonly><templatestyles src="Principia Machina/styles.css" /><table class="pma-map">
+<tr><th class="pma-map-head">{{{title}}}</th></tr>{{#if:{{{label1|}}}|
+<tr><td class="pma-map-row">'''{{{label1}}}'''<br />{{{links1|}}}</td></tr>}}{{#if:{{{label2|}}}|
+<tr><td class="pma-map-row">'''{{{label2}}}'''<br />{{{links2|}}}</td></tr>}}{{#if:{{{label3|}}}|
+<tr><td class="pma-map-row">'''{{{label3}}}'''<br />{{{links3|}}}</td></tr>}}{{#if:{{{label4|}}}|
+<tr><td class="pma-map-row">'''{{{label4}}}'''<br />{{{links4|}}}</td></tr>}}
+</table></includeonly><noinclude>The frame of every section's navigation panel, the box headed by the section's name and ": map": floated right, 19em wide, with up to four rows, each a bold label and links one per line; below 720 pixels wide it spans the column. Each section's map template calls it with a title and its rows (label1, links1 ... label4, links4). Published from the Principia Machina source; an edit made here is overwritten.</noinclude>

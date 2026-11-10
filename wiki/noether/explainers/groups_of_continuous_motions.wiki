@@ -1,0 +1,102 @@
+{{DISPLAYTITLE:Groups of continuous motions}}
+{{Noether's theorems map}}
+
+''Mathematical counterpart: [[Noether's theorems/Mathematics/Lie groups and Lie algebras|Lie groups and Lie algebras]].''
+
+[[File:NT-F-19.png|thumb|right|360px|alt=A curved closed region representing the group, with a marked point labelled the identity. A straight line touching the region at that point is labelled the algebra, the set of smallest steps. A caption describes closure under the commutator as the structure the theorems use.|A Lie group and its algebra as the tangent at the identity]]
+
+Noether's theorems rest on a body of work by Sophus Lie, and she cites him three
+times. This page covers only the part her proofs actually use.
+
+== Order matters, and the difference is the point ==
+
+Take a globe. Turn it a quarter turn about the vertical axis, then a quarter turn
+about an axis pointing at you.
+
+Now start again and do the same two turns in the other order.
+
+The globe ends up somewhere else. Rotations do not commute, and you can check this
+with any object to hand.
+
+The '''difference''' between the two outcomes is itself a rotation. That is not
+obvious and it is the fact everything is built on: doing two motions in each order
+and comparing gives you back a motion of the same kind, not something new.
+
+== Why that is surprising ==
+
+Each of the two sequences involves doing something twice. You might expect the
+comparison to be a second-order thing — twice as complicated as a single turn.
+
+It is not. When you subtract, the complicated parts cancel exactly, and what
+survives is a plain single motion.
+
+The cancellation happens for a reason you already know in another form: it does
+not matter which way round you take two derivatives. Slope-of-the-slope is the
+same either way. That symmetry is what kills the complicated part, and it is worth
+knowing because it is the entire technical content of the result.
+
+== A closed family ==
+
+A collection of continuous motions is called a '''group''' when doing two of them
+in a row lands you inside the collection.
+
+Combine that with the fact above and you get the structure Lie discovered. Take
+your smallest motions — one for each knob, in the language of
+[[Noether's theorems/Explainers/What a continuous symmetry is|the earlier page]].
+Compare any two in both orders. The result must be one of your smallest motions
+again, or some combination of them.
+
+That single requirement is enormously restrictive. It fixes how the motions can
+fit together, and the pattern of how they combine is a complete fingerprint of the
+symmetry. Two symmetries with the same fingerprint behave identically no matter
+what they are symmetries of.
+
+== How Noether uses it ==
+
+At one place, and she uses it as a '''test''' rather than as a fact.
+
+Proving the reverse direction of her first theorem, she has recovered a family of
+transformations and needs to know whether they form a proper closed family. Her
+argument runs by contradiction: if they did not, then comparing two of them in
+both orders would produce a motion outside the family. But her scoring rule
+survives that motion too — so it would have to contribute another conserved
+quantity, and she would end up with more than the count she started with. That
+contradicts her assumption, so the family is closed.
+
+She also relies on a result of Lie's guaranteeing that a family of smallest
+motions of a certain kind always belongs to a genuine family of full-sized ones.
+She cites it by theorem number and page, which tells you she was using it
+carefully rather than in passing.
+
+== What this page leaves out ==
+
+Almost all of Lie theory. The classification of the possible fingerprints is a
+major piece of mathematics and neither theorem needs any of it. If you want that,
+go to a book on the subject; this page exists only so that Noether's three
+citations mean something when you meet them.
+
+== How much symmetry can a thing have ==
+
+The pattern of how motions combine is a complete fingerprint. Two symmetries whose
+motions combine the same way are, for every purpose in this subject, the same
+symmetry — even when the objects they act on have nothing in common.
+
+That is why a single piece of mathematics covers rotating a globe, rotating a
+compass needle, and rotating the internal properties of a particle, none of which
+resemble each other. They share a fingerprint.
+
+It also puts a ceiling on things. The fingerprint has to be consistent with itself:
+compare three motions in every possible pairing, and the results have to agree.
+That requirement is severe enough to rule out most patterns you might invent, and
+the surviving ones have been catalogued.
+
+For this volume the practical consequence is the count. Ask how many independent
+continuous symmetries a situation has and you get a definite number — three for
+rotations in space, one for a rotation of a pair, four for the coordinate freedom
+of spacetime. That number is what both of Noether's theorems return results
+against, so getting it right is the first step in applying either of them, and
+the fingerprint is what makes it a matter of fact rather than of counting by hand
+and hoping.
+
+''No mathematics is used on this page. The mathematical treatment is on the
+counterpart page named above.''

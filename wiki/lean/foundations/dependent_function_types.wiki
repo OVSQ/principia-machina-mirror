@@ -1,0 +1,226 @@
+{{DISPLAYTITLE:Dependent function types}}
+{{Plebeian|Lean theorem prover/Explainers/Propositions as types|Lean theorem prover/Explainers/Types as specifications}}
+{{Lean theorem prover map}}
+
+A '''dependent function type''' is the type of functions whose result type may vary with the
+argument. In Lean it is written <code>(x : A) → B</code>, where <code>B</code> may mention
+<code>x</code>, and in the literature it is often written
+<math>\Pi x : A.\, B</math>. It is the only kind of function type in Lean's core theory. The
+ordinary arrow <code>A → B</code>, universal quantification <code>∀ x : A, P x</code> and
+implication <code>P → Q</code> are all instances of it. This page gives its rules, shows how
+the familiar forms arise as special cases, and explains the implicit and instance-implicit
+arguments that the elaborator adds on top of the same type.
+
+== What the type means ==
+
+Given a type <code>A</code> and, for each <code>a : A</code>, a type <code>B a</code>, a
+function <code>f : (x : A) → B x</code> is a function that sends each <code>a : A</code> to
+an element <code>f a</code> of <code>B a</code>. The type of the result depends on the
+argument.<ref name="tpil">Jeremy Avigad, Leonardo de Moura, Soonho Kong and Sebastian
+Ullrich, ''Theorem Proving in Lean 4'', lean-lang.org (version for Lean 4.33.0), chapter 2,
+"Dependent Type Theory".
+https://lean-lang.org/theorem_proving_in_lean4/Dependent-Type-Theory/</ref> Read as sets,
+such a function is an element of the product <math>\prod_{a \in A} B(a)</math>, which is why
+these types are also called '''dependent products''' or <math>\Pi</math>-types.<ref name="refman-fn">''The
+Lean Language Reference'', for Lean 4.34.0, lean-lang.org, 2026, section 4.1, "Functions".
+https://lean-lang.org/doc/reference/4.34.0/The-Type-System/Functions/</ref>
+
+A small example: <code>Fin k</code> is the type of natural numbers less than
+<code>k</code>, so a function that returns the number 0 as an element of
+<code>Fin (n + 1)</code> has a different result type for every <code>n</code>.
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+def zeroFin : (n : Nat) → Fin (n + 1) := fun n => ⟨0, Nat.succ_pos n⟩
+
+#check zeroFin 4
+#check zeroFin 0
+</pre>
+
+Lean 4.34.1 prints <code>zeroFin 4 : Fin (4 + 1)</code> and
+<code>zeroFin 0 : Fin (0 + 1)</code>: one function, two result types.
+
+== The rules ==
+
+The type has the usual four kinds of rule, in the notation of
+[[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]].
+They are Carneiro's rules for Lean, with <math>\mathrm{Sort}\,u</math> for his
+<math>\mathrm{U}_u</math>; as on that page, the introduction rule also requires the domain
+to be a type.<ref name="carneiro2019">Mario Carneiro, ''The Type Theory of
+Lean'', MSc thesis, Carnegie Mellon University, 2019.
+https://github.com/digama0/lean-type-theory/releases/tag/v1.0</ref>
+
+'''Formation.''' A dependent function type exists when its domain is a type and its codomain
+is a type in the context extended by the bound variable:
+
+:<math>\frac{\Gamma \vdash A : \mathrm{Sort}\,u \qquad \Gamma, x : A \vdash B : \mathrm{Sort}\,v}{\Gamma \vdash (x : A) \to B : \mathrm{Sort}\,(\mathrm{imax}\,u\,v)}</math>
+
+The universe of the result is <math>\mathrm{imax}\,u\,v</math>, which equals
+<math>\max(u, v)</math> unless <math>v = 0</math>, in which case it is 0. That exception
+makes a function type whose codomain is a proposition itself a proposition, whatever its
+domain; why it is
+needed is the subject of [[Lean theorem prover/Foundations/Universes and Prop|Universes and Prop]].
+
+'''Introduction.''' A function is made by abstraction. If <math>A</math> is a type and
+<math>e</math> has type <math>B</math> when <math>x : A</math> is assumed, then
+<math>\lambda x : A.\, e</math> has the dependent function type:
+
+:<math>\frac{\Gamma \vdash A : \mathrm{Sort}\,u \qquad \Gamma, x : A \vdash e : B}{\Gamma \vdash \lambda x : A.\, e : (x : A) \to B}</math>
+
+'''Elimination.''' A function is used by application, and the argument is substituted into
+the result type:
+
+:<math>\frac{\Gamma \vdash f : (x : A) \to B \qquad \Gamma \vdash a : A}{\Gamma \vdash f\,a : B[a/x]}</math>
+
+The substitution <math>B[a/x]</math> is where dependency shows: in the example above,
+<math>B</math> is <code>Fin (n + 1)</code> and applying to 4 gives
+<code>Fin (4 + 1)</code>.
+
+'''Computation and uniqueness.''' Applying an abstraction reduces by substitution, the
+'''beta''' rule; and every function equals the abstraction of its own application, the
+'''eta''' rule:
+
+:<math>(\lambda x : A.\, e)\,a \equiv e[a/x] \qquad\qquad \lambda x : A.\, f\,x \equiv f</math>
+
+Both are definitional equalities in Lean, so both can be proved by <code>rfl</code>:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+example : (fun x : Nat => x + 1) 2 = 3 := rfl
+example (f : Nat → Nat) : (fun x => f x) = f := rfl
+</pre>
+
+Definitional equality of functions goes no further than this. Two functions that agree on
+every argument but are computed differently are not, in general, definitionally equal; that
+they are equal is a theorem, <code>funext</code>, which Lean proves using quotient
+types.<ref name="refman-fn" /> See [[Lean theorem prover/Foundations/Definitional equality|Definitional equality]] and [[Lean theorem prover/Foundations/Quotient types|Quotient types]].
+
+In the core language every function takes exactly one argument. A function "of two
+arguments" is a function that returns a function, and Lean's notation for several arguments
+is an abbreviation for this nesting.<ref name="refman-fn" />
+
+== The arrow is the non-dependent case ==
+
+When <code>B</code> does not mention <code>x</code>, the type <code>(x : A) → B</code> is
+written <code>A → B</code>. Nothing else changes: the core language has only one function
+type, and a non-dependent function type is a dependent one whose bound variable is
+unused.<ref name="refman-fn" /> Lean confirms that the two spellings denote the same type:
+
+<pre class="lean lean-cont" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+example : ((x : Nat) → Bool) = (Nat → Bool) := rfl
+</pre>
+
+The same construction gives the logical connectives. When <code>B</code> is a proposition,
+<code>(x : A) → B</code> is the proposition "for every <code>x : A</code>, <code>B</code>",
+and Lean prints it with <code>∀</code>. When moreover <code>A</code> is a proposition and
+<code>B</code> does not mention <code>x</code>, it is the implication <code>A → B</code>. A
+proof of a universal statement is a function from instances to proofs, and using the
+statement is applying the function:
+
+<pre class="lean lean-cont" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem add_zero' : ∀ n : Nat, n + 0 = n := fun n => Nat.add_zero n
+
+#check add_zero' 5
+#check fun (p q : Prop) (hp : p) (_ : q) => hp
+</pre>
+
+The output is <code>add_zero' 5 : 5 + 0 = 5</code> and
+<code>fun p q hp x => hp : ∀ (p q : Prop), p → q → p</code>. The second term is a proof of
+the propositional tautology <math>p \to (q \to p)</math>, and its type is printed with
+<code>∀</code> for the dependent binders and <code>→</code> for the others. This
+correspondence between propositions and types, proofs and terms, is described in plain
+language in [[Lean theorem prover/Explainers/Propositions as types|Propositions as types]].
+
+== Implicit and instance-implicit arguments ==
+
+A binder in a function type carries a mark saying how the elaborator should supply the
+argument at a call site:<ref name="refman-fntypes">''The Lean Language Reference'', for Lean
+4.34.0, lean-lang.org, 2026, section 13.2, "Function Types".
+https://lean-lang.org/doc/reference/4.34.0/Terms/Function-Types/</ref>
+
+* <code>(x : A)</code>, '''explicit''': the caller writes the argument.
+* <code>{x : A}</code>, '''implicit''': the elaborator inserts a placeholder and fills it by unification, from the other arguments and the expected type.
+* <code>⦃x : A⦄</code>, '''strict implicit''': as implicit, but the placeholder is inserted only once a later explicit argument is given.
+* <code>[C]</code> or <code>[inst : C]</code>, '''instance implicit''': the elaborator finds the argument by type class instance synthesis ([[Lean theorem prover/System/Type classes and instance resolution|Type classes and instance resolution]]).
+
+The mark is stored in the term as a <code>BinderInfo</code> field of the binder. It is
+information for the elaborator only. It does not affect type checking or definitional
+equality in the core theory, and two function types that differ only in it are
+definitionally equal.<ref name="refman-fn" />
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+import Lean
+open Lean Meta
+
+def double {α : Type} [inst : Add α] (x : α) : α := x + x
+
+#check @double
+#eval double 21
+#eval @double Nat instAddNat 21
+example : ({α : Type} → α → α) = ((α : Type) → α → α) := rfl
+
+#eval show MetaM Unit from do
+  let some c := (← getEnv).find? ``double | throwError "missing"
+  IO.println (repr c.type)
+</pre>
+
+<code>#check @double</code> prints <code>@double : {α : Type} → [inst : Add α] → α → α</code>;
+the <code>@</code> asks for every argument to be shown and accepted explicitly. Both
+evaluations print <code>42</code>: in the first the elaborator found <code>α := Nat</code> by
+unification and the instance <code>instAddNat</code> by synthesis; in the second both were
+written out. The <code>example</code> is accepted, so an implicit and an explicit binder give
+definitionally equal types. The last command prints the stored type of
+<code>double</code>:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+Lean.Expr.forallE
+  `α
+  (Lean.Expr.sort (Lean.Level.succ (Lean.Level.zero)))
+  (Lean.Expr.forallE
+    `inst
+    (Lean.Expr.app (Lean.Expr.const `Add [Lean.Level.zero]) (Lean.Expr.bvar 0))
+    (Lean.Expr.forallE `x (Lean.Expr.bvar 1) (Lean.Expr.bvar 2) (Lean.BinderInfo.default))
+    (Lean.BinderInfo.instImplicit))
+  (Lean.BinderInfo.implicit)
+</pre>
+
+It is three nested <code>forallE</code> binders, as for any function of three arguments; the
+only trace of the braces and brackets is the last field of each binder,
+<code>implicit</code>, <code>instImplicit</code> and <code>default</code>. To the core theory,
+<code>double</code> is a function of three explicit arguments, the first a type and the
+second a structure of operations on it.
+
+Implicit arguments are a convenience, and they can fail. When nothing determines an implicit
+argument, the elaborator reports it rather than guessing:
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+def nothing := List.nil
+</pre>
+
+Lean 4.34.1 reports <code>don't know how to synthesize implicit argument `α`</code>, showing
+the partial term <code>@List.nil ?m.3</code>, in which <code>?m.3</code> is the unfilled
+placeholder: no element type for the empty list was given or can be inferred.
+
+== Polymorphism ==
+
+Because a domain may itself be a universe, the same type expresses polymorphism. The
+identity function is a single term of type <code>{α : Sort u} → α → α</code>:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+#check @id
+</pre>
+
+Lean prints <code>@id : {α : Sort u_1} → α → α</code>. Its first argument is a type, and the type of its
+second argument depends on the first. There is no separate mechanism for generic functions:
+a generic function is a dependent function whose first argument is a type. Quantifying over
+types this way raises the question of what universe the function type itself lives in, which
+is answered by the <math>\mathrm{imax}</math> in the formation rule and taken up on the next
+page.
+
+== Next ==
+
+[[Lean theorem prover/Foundations/Universes and Prop|Universes and Prop]] explains the
+universe levels in the formation rule, the impredicativity of <code>Prop</code>, and why
+there is no type of all types.
+
+== References ==
+
+<references />

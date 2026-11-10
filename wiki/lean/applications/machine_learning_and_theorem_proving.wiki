@@ -1,0 +1,61 @@
+{{DISPLAYTITLE:Machine learning and theorem proving}}
+{{Lean theorem prover map}}
+Machine-learning systems now write Lean proofs, from competition problems to large formalisations of research mathematics. Lean's role in this work is that of the checker: a proof that the Lean kernel accepts is correct whoever, or whatever, wrote it. This page describes the benchmarks the field uses, the main results so far, why the check matters, and what it leaves open, chiefly whether the statement that was proved is the statement that was meant.
+
+== Why a checker matters ==
+
+A language model can write text that looks like a proof and is not. Read by a person, such output costs time to check and may still mislead. Written in Lean, the same output is either accepted by the Lean kernel or refused, and an accepted proof is correct relative to Lean's axioms and the stated theorem, whatever produced it. Microsoft's SymCrypt team states the arrangement plainly: AI agents help draft its proofs, Lean's small trusted kernel checks every one of them, and an agent's proof counts only if Lean accepts it.<ref name="symcrypt">Son Ho, Cédric Fournet, Antoine Delignat-Lavaud, Samuel Lee, Jason Fisher and Jessica Krynitsky, "Verifying Rust cryptography in SymCrypt, from standards to code", Microsoft Research Blog, 13 July 2026. https://www.microsoft.com/en-us/research/blog/verifying-rust-cryptography-in-symcrypt-from-standards-to-code/</ref> Kevin Buzzard has made the same point: when machine-written mathematics comes with Lean code, that code at least guarantees that the argument is correct, so a reader can be more confident that the time spent reading it is not wasted.<ref name="annals">Kevin Buzzard, "The Annals Challenge", ''Xena'' (blog), 13 August 2026. https://xenaproject.wordpress.com/2026/08/13/the-annals-challenge/</ref>
+
+The check has a second use. Because Lean decides automatically whether a proof is correct, it can grade a learning system's attempts without a person, and a system can learn from its own verified successes; DeepMind's AlphaProof, described below, feeds the proofs it finds back into its training in this way.<ref name="dmblog" />
+
+== Benchmarks ==
+
+'''miniF2F''', published in 2021 by Kunhao Zheng, Jesse Michael Han and Stanislas Polu, is a set of 488 formal problem statements drawn from the AIME and AMC competitions, the International Mathematical Olympiad, and high-school and undergraduate courses. It was written for Metamath and Lean, with partial coverage of Isabelle and HOL Light, so that systems built on different provers could be compared.<ref name="minif2f">Kunhao Zheng, Jesse Michael Han and Stanislas Polu, "MiniF2F: a cross-system benchmark for formal Olympiad-level mathematics", International Conference on Learning Representations (ICLR), 2022. arXiv:2109.00110</ref>
+
+'''LeanDojo''', by Kaiyu Yang and colleagues, is an open-source toolkit that extracts data from Lean and lets a program interact with Lean as a user would, step by step. Its benchmark contains 98,734 theorems and proofs from Lean's mathematical library, split so as to test whether a system can use library lemmas it never saw in training. With it the authors trained ReProver, a prover that retrieves relevant lemmas from the library before proposing a step.<ref name="leandojo">Kaiyu Yang, Aidan M. Swope, Alex Gu, Rahul Chalamala, Peiyang Song, Shixing Yu, Saad Godil, Ryan Prenger and Anima Anandkumar, "LeanDojo: Theorem Proving with Retrieval-Augmented Language Models", NeurIPS 2023 Datasets and Benchmarks Track. arXiv:2306.15626</ref>
+
+== Competition mathematics ==
+
+At the International Mathematical Olympiad of 2024, Google DeepMind's AlphaProof proved two algebra problems and one number theory problem, including the hardest problem of the contest, in Lean; a separate system, AlphaGeometry 2, solved the geometry problem. Together they scored 28 of 42 points, the standard of a silver medal. The problems were translated into formal language by hand, and some solutions took up to three days rather than the nine hours allowed to contestants.<ref name="dmblog">Google DeepMind, "AI achieves silver-medal standard solving International Mathematical Olympiad problems", 25 July 2024. https://deepmind.google/discover/blog/ai-solves-imo-problems-at-silver-medal-level/</ref> The method was published in ''Nature'' in November 2025: AlphaProof learns by reinforcement learning, in the manner of AlphaZero, from millions of problems that were translated into Lean automatically, and for the hardest problems it generates and learns from variants of the problem while solving it.<ref name="nature">Thomas Hubert, Rishi Mehta, Laurent Sartran, et al., "Olympiad-level formal mathematical reasoning with reinforcement learning", ''Nature'' 651, pp. 607–613, published online 12 November 2025. doi:10.1038/s41586-025-09833-y</ref>
+
+At the 2025 Olympiad two companies announced results in Lean: ByteDance's Seed Prover, at silver-medal level or at gold with additional attempts, and Harmonic's system, at gold-medal level, both by their own accounts. Buzzard pointed out that the Olympiad set no rules for machine entrants, that the companies marked their own work, and that neither company said how the answers to the problems that ask for a value were given to its system.<ref name="imo2025">Kevin Buzzard, "AI at IMO 2025: a round-up", ''Xena'' (blog), 3 August 2025. https://xenaproject.wordpress.com/2025/08/03/ai-at-imo-2025-a-round-up/</ref>
+
+== Research mathematics ==
+
+By 2026 machine systems were completing large formalisations of research mathematics. The formal proof of sphere packing in dimension 8 was finished in February 2026, its final stages carried out by Math, Inc.'s autoformalisation model Gauss.<ref name="packing">Sidharth Hariharan, Christopher Birkbeck, Seewoo Lee, Ho Kiu Gareth Ma, Bhavik Mehta, Auguste Poiroux and Maryna Viazovska, "Progress in Formalizing Sphere Packing in Dimension 8", arXiv:2604.23468, April 2026. https://arxiv.org/abs/2604.23468</ref> In September 2026 Anthropic announced a complete formal proof of Fermat's Last Theorem, about 13 million lines of Lean written in some 11 days by agents of its model Claude, with mathematical input from people limited, by the company's account, to occasional high-level instructions.<ref name="anthropic">Anthropic, "Formalizing Fermat's Last Theorem", 4 September 2026. https://www.anthropic.com/research/formalizing-fermats-last-theorem</ref> Both are described on [[Lean theorem prover/Applications/Research mathematics|Research mathematics]], and the second in full, with Buzzard's assessment of it, on [[Lean theorem prover/Applications/The Fermat's Last Theorem project|The Fermat's Last Theorem project]]. Not every project found language models useful: in the [[Lean theorem prover/Applications/The equational theories project|equational theories project]], automated theorem provers did most of the work, and on the hardest cases the participants found that language models offered nothing beyond what they could propose themselves.<ref name="etp">Matthew Bolan, Joachim Breitner, Jose Brox, et al. (34 authors, including Terence Tao), "The Equational Theories Project: Advancing Collaborative Mathematical Research at Scale", arXiv:2512.07087, December 2025, section 11. https://arxiv.org/abs/2512.07087</ref>
+
+== What the check does not cover ==
+
+'''What the proof rests on.''' A proof can be accepted because it assumes what it should prove. The command <code>#print axioms</code> lists every axiom a theorem depends on, so an assumption slipped in by the author shows up:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+/-- An assumption slipped in by whoever wrote the proof. -/
+axiom shortcut : ∀ n : Nat, n * 0 = 1
+
+theorem claimed (n : Nat) : n * 0 = 1 := shortcut n
+
+#print axioms claimed
+</pre>
+
+Lean 4.34.1 accepts this and prints <code>'claimed' depends on axioms: [shortcut]</code>. A proof left unfinished with <code>sorry</code> is caught the same way: Lean warns, and the list shows <code>sorryAx</code>.
+
+'''Whether the statement is the one meant.''' This is the harder limit. Lean checks that the proof proves the theorem as written; it cannot check that the theorem as written says what the problem meant. A mistyped hypothesis can make a theorem true for no interesting reason:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+/-- Intended: "a number below 10 is at most 9". The hypothesis was mistyped as `x &lt; 0`,
+which no natural number satisfies, so the theorem says nothing at all. -/
+theorem vacuous (x : Nat) (h : x &lt; 0) : x ≤ 9 := by
+  omega
+</pre>
+
+Lean accepts it without comment. Translating a problem into Lean is itself a source of such errors, and translation, Buzzard notes, is not uniquely determined by the problem. Olympiad problems that ask for a value raise a further difficulty: a system must not be allowed to answer "the value is whatever satisfies the condition", so the answer is usually supplied first and then proved, and that formal question has to be checked against the original.<ref name="imo2025" /> In May 2026 Buzzard judged that automatic formalisation could not yet reliably, on its own, formalise definitions correctly or state theorems idiomatically.<ref name="workshop">Kevin Buzzard, "Formalizing Fermat workshop", ''Xena'' (blog), 15 May 2026. https://xenaproject.wordpress.com/2026/05/15/formalizing-fermat-workshop/</ref> One remedy is to compare the proved statement with one written independently. The machine-written proof of Fermat's Last Theorem was checked in both of the ways described here: its announcement reports that it uses only Lean's three standard axioms, and that a comparison tool confirmed that the statement proved matches the one already in Mathlib.<ref name="anthropic" /> Buzzard ran the comparison again himself, and also had an AI agent list everything in the code that was neither a definition nor a proof, then inspected the roughly 100 lines it found, an approach he called not perfect.<ref name="beaten">Kevin Buzzard, "FLT: Anthropic has beaten me to it", ''Xena'' (blog), 4 September 2026. https://xenaproject.wordpress.com/2026/09/04/flt-anthropic-has-beaten-me-to-it/</ref>
+
+'''The checker itself.''' The guarantee is only as good as the Lean kernel and the hardware and software it runs on; [[Lean theorem prover/Explainers/What has to be trusted|What has to be trusted]] sets out that list, and [[Lean theorem prover/Explainers/Stating the right thing|Stating the right thing]] treats the statement problem in general.
+
+== Next ==
+
+* [[Lean theorem prover/Applications/Physics in Lean|Physics in Lean]].
+* [[Lean theorem prover/Explainers/Checking instead of convincing|Checking instead of convincing]].
+
+== References ==
+<references />

@@ -1,0 +1,139 @@
+{{DISPLAYTITLE:Constraints}}
+{{Technical|Hamilton's principle/Mathematics/Holonomic constraints}}
+{{Hamilton's principle map}}
+
+This page explains what happens when the parts of a system are tied together. It
+uses no mathematics. The technical page it goes with is named above.
+
+== Things that are not free to move ==
+
+[[File:OPL-HP-F-18.png|thumb|right|400px|A constraint force normal to the permitted motion.]]
+
+Most systems are not free. A bead is threaded on a wire. A pendulum bob hangs on a
+rigid rod. Two railway trucks are coupled together. A door swings on hinges.
+
+In each case something restricts the motion. Physics calls such a restriction a
+'''constraint'''.
+
+Constraints are not a nuisance to be tidied away. They are usually the point. A
+pendulum is interesting '''because''' the rod holds the bob at a fixed distance. A
+door is useful because the hinges stop it wandering off.
+
+== Why constraints break the method ==
+
+[[File:OPL-HP-F-33.png|thumb|right|400px|D'Alembert's principle: dynamics rewritten as statics.]]
+
+[[Hamilton's principle/Explainers/More than one variable|More than one variable]] handled systems with
+several parts by a simple trick: nudge one part, leave the others alone, and read
+off a rule for the part you nudged. Repeat for each part.
+
+Constraints kill that trick.
+
+Take the pendulum. Describe the bob by how far across it is and how far down. Now
+try to nudge the across-position while leaving the down-position exactly as it
+was.
+
+You cannot. The rod is a fixed length. Move the bob sideways and it must rise or
+fall to stay on the circle.
+
+So you cannot test one part at a time, and the argument that gave a rule per part
+no longer runs.
+
+== What survives ==
+
+[[File:OPL-HP-F-44.png|thumb|right|400px|Varying one degree of freedom at a time.]]
+
+Something weaker does survive. The method still says the total cost does not
+change under any nudge the constraint '''allows'''.
+
+That is genuinely less information. Before, you knew nothing was changing
+anywhere. Now you only know that nothing changes in the directions you are
+permitted to look.
+
+Picture standing on a hillside path that runs around the slope. Walk along the
+path and your height does not change. That does not mean you are on flat ground.
+The hill still slopes — steeply — but it slopes in a direction the path will not
+let you go.
+
+A constrained system is exactly like this. The cost is not flat. It is only flat
+in the allowed directions.
+
+== The forces you cannot see ==
+
+There is a physical reading of that hillside, and it is the useful one.
+
+Something is holding you on the path: the ground pushes back. In a pendulum the
+rod pulls on the bob. In a bead on a wire the wire pushes on the bead.
+
+These are '''constraint forces'''. They exist precisely to stop motion that the
+constraint forbids.
+
+And they have a special property. They always push at right angles to the
+permitted directions — sideways into the hill, never along the path. So they do no
+work on any motion the system is actually allowed to make.
+
+That is why the two accounts fit together. The cost is not flat, because the
+constraint force is pushing. But you can never detect that push by moving in a
+permitted direction, because the push has no component that way.
+
+== Two ways to proceed ==
+
+'''Change the description.''' Instead of tracking the pendulum bob's across and
+down positions, track the single angle the rod makes with the vertical. The
+constraint is now built into the description and cannot be violated. One quantity,
+free to take any value, and the original method works untouched.
+
+'''Keep the description and account for the forces.''' Sometimes the tidy
+description does not exist. And sometimes you specifically want the constraint
+force, because it is what will break.
+
+An engineer designing a crane needs the tension in the cable. The tidy angle
+description of the swinging load never mentions tension at all. It gives the
+motion and throws away the number the engineer came for.
+
+The second method is at
+[[Hamilton's principle/Explainers/Multipliers|Multipliers]].
+
+== The kind of constraint that behaves ==
+
+Everything above assumed a particular kind of restriction: one that limits '''where
+things can be'''. The rod fixes a distance. The hinges fix an axis.
+
+There is a second kind, and it behaves differently. Some restrictions limit not
+where you can be but '''how you can move'''.
+
+A coin rolling upright on a table without slipping is the standard example. The
+rolling condition does not forbid any position: with enough manoeuvring you can
+get the coin to any spot on the table, facing any direction. Nothing is out of
+reach.
+
+But at every instant, the way it may move is restricted. It cannot slide
+sideways.
+
+So the coin has full freedom of destination and restricted freedom of route. That
+is a different kind of constraint, and it is called '''non-holonomic'''.
+
+Parallel parking is the everyday version. A car can end up in any parking space,
+facing any way. It just cannot get there by sliding directly sideways, which is
+why the manoeuvre takes several moves.
+
+== A genuine warning ==
+
+The methods on the following pages are built for the first kind of constraint, the
+kind that limits position.
+
+Applied to the rolling kind, they give an answer, and the answer is '''wrong'''.
+Not approximately wrong. It describes a different system from the one you asked
+about.
+
+This is unusual and worth flagging. Most methods in physics either work or visibly
+fail. This one fails quietly, producing plausible equations for a body that does
+not exist.
+
+Getting rolling bodies right needs a different route, and this volume does not
+take it. It notes the boundary so that nobody walks across it by accident.
+
+== Where to go next ==
+
+The method for keeping the description and getting the forces out is at
+[[Hamilton's principle/Explainers/Multipliers|Multipliers]].

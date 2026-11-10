@@ -1,0 +1,143 @@
+{{DISPLAYTITLE:Two kinds of equality}}
+{{Technical|Lean theorem prover/Foundations/Definitional equality|Lean theorem prover/Foundations/Propositional equality|Lean theorem prover/Foundations/Proof irrelevance and subsingleton elimination}}
+{{Lean theorem prover map}}
+
+Lean has two different ways for two things to be the same. Some equalities are
+true '''by calculation''': the checker sees them for itself by working the two
+sides out. Others are true '''by proof''': they are statements, and someone has to
+prove them. This page explains the difference, shows where the line falls in a
+simple case, says why it matters, and ends with a rule called '''proof
+irrelevance''' that sits on the calculation side of the line.
+
+== Same by calculation ==
+
+Lean knows how its definitions compute. Given <code>2 + 3</code>, it can unfold
+what addition means and work out the answer, 5. Two expressions that come out the
+same when worked out in this way are called '''definitionally equal'''. Lean's
+reference manual describes this as the mechanically checkable relation that treats
+expressions as equal when their computational behaviour is the same: it unfolds
+definitions, substitutes arguments into functions, and works through definitions by
+cases.<ref name="ref-types">The Lean Developers, "The type system", ''The Lean Language Reference'', for Lean 4.35.0, chapter 4. [https://lean-lang.org/doc/reference/4.35.0/The-Type-System/ lean-lang.org/doc/reference/4.35.0/The-Type-System/] (accessed 13 October 2026).</ref>
+
+The checker uses definitional equality silently, all the time. If a value has one
+type, and that type is definitionally equal to a second type, the value has the
+second type too; nobody has to say so.<ref name="ref-types" />
+
+The simplest proof of an equation is <code>rfl</code>, short for
+'''reflexivity''': everything is equal to itself. It proves an equation exactly
+when the two sides are definitionally equal, because then, to the checker, they are
+the same thing.<ref name="tpil-qe">Jeremy Avigad, Leonardo de Moura, Soonho Kong and Sebastian Ullrich, with contributions from the Lean Community, ''Theorem Proving in Lean 4'', chapter 4, "Quantifiers and Equality", section 4.2, "Equality", online book for Lean 4.33.0. [https://lean-lang.org/theorem_proving_in_lean4/Quantifiers-and-Equality/ lean-lang.org/theorem_proving_in_lean4/Quantifiers-and-Equality/] (accessed 13 October 2026).</ref>
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+example : 2 + 3 = 5 := rfl
+example (n : Nat) : n + 0 = n := rfl
+</pre>
+
+Both lines are accepted. The second is the more interesting. It holds for every
+natural number ''n'', and Lean still sees it by calculation, without knowing what
+''n'' is.
+
+== Same by proof ==
+
+The mirror image of that second line is refused:
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+example (n : Nat) : 0 + n = n := rfl
+</pre>
+
+Lean 4.34.1 reports a "Type mismatch": <code>rfl</code> proves that something
+equals itself, and Lean cannot make <code>0 + n</code> and <code>n</code> into the
+same thing by calculation.
+
+The reason lies in how addition is defined. Addition of natural numbers works by
+going down the '''second''' number one step at a time: adding 0 gives back the
+first number, and adding one more than ''k'' gives one more than the result of
+adding ''k''.<ref name="tpil-ind">Jeremy Avigad, Leonardo de Moura, Soonho Kong and Sebastian Ullrich, ''Theorem Proving in Lean 4'', chapter 7, "Inductive Types", section 7.4, "Defining the Natural Numbers". [https://lean-lang.org/theorem_proving_in_lean4/Inductive-Types/ lean-lang.org/theorem_proving_in_lean4/Inductive-Types/] (accessed 14 October 2026).</ref> So <code>n + 0</code> matches the first rule
+at once, whatever ''n'' is. But <code>0 + n</code> asks which rule applies to
+''n'', and while ''n'' is unknown the calculation cannot start.
+
+The statement <code>0 + n = n</code> is still true. It is a '''propositional
+equality''': a statement of the form "''a'' equals ''b''" that needs a proof, here
+a proof by induction.<ref name="tpil-ind" />
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem my_zero_add (n : Nat) : 0 + n = n := by
+  induction n with
+  | zero => rfl
+  | succ k ih => exact congrArg Nat.succ ih
+</pre>
+
+Read it in two cases. For ''n'' = 0 the claim is 0 + 0 = 0, true by calculation.
+For ''n'' one more than some ''k'', calculation turns <code>0 + (k + 1)</code> into
+"one more than <code>0 + k</code>", and the case before, called
+<code>ih</code>, says that <code>0 + k</code> equals ''k''. The induction does the
+rest.
+
+Every proposition of the form "''a'' = ''b''" is a statement of this kind. Some,
+like <code>n + 0 = n</code>, happen to be provable by <code>rfl</code> because the
+two sides are definitionally equal. The rest need an argument.
+
+This is the sense of the page's title. Definitional equality is something the
+checker settles by itself, by working things out, within limits described below.
+Truth in general is not: in the
+1930s Alonzo Church and Alan Turing showed that no mechanical procedure can decide,
+for every logical statement, whether it holds.<ref name="wadler2015">Philip Wadler, "Propositions as types", ''Communications of the ACM'' 58 (12), 2015, pp. 75–84, section 1. [https://doi.org/10.1145/2699407 doi:10.1145/2699407]</ref> So for the
+second kind of equality the machine does not find the answer; it checks a proof
+that a person, or a search program, has supplied.
+
+== Why the line matters ==
+
+'''Definitional equalities are free.''' The checker applies them by itself. A
+propositional equality has to be invoked: a proof must say where it is used,
+usually by rewriting one side into the other. The page on
+[[Lean theorem prover/Explainers/Tactics|tactics]] shows the commands that do
+this.
+
+'''They reach into types.''' Because types can depend on values, as described on
+[[Lean theorem prover/Explainers/Types as specifications|types as specifications]],
+the line affects which values have which types. A list whose type says its length
+is <code>n + 0</code> can be used at once where a list of length <code>n</code> is
+expected, because the two types are definitionally equal. With
+<code>0 + n</code> it cannot; the proof that the lengths agree has to be applied
+first.<ref name="ref-types" />
+
+'''The choice of definition matters.''' Two definitions of the same function can
+agree on every input and still differ in which equations hold by calculation. The
+choice between them shapes every proof that uses the function.
+
+'''Calculation has a cost, and limits.''' Deciding definitional equality means
+doing the computation, and a computation can be long. Lean's kernel has time and
+depth limits, so that in many cases a calculation that would run for ever is
+stopped instead.<ref name="lean4lean">Mario Carneiro, "Lean4Lean: Verifying a Typechecker for Lean, in Lean", in ''31st International Conference on Types for Proofs and Programs (TYPES 2025)'', Leibniz International Proceedings in Informatics 384, Schloss Dagstuhl, 2026, pp. 2:1–2:23. [https://doi.org/10.4230/LIPIcs.TYPES.2025.2 doi:10.4230/LIPIcs.TYPES.2025.2]; preprint [https://arxiv.org/abs/2403.14064 arXiv:2403.14064].</ref>
+Some cases are beyond it altogether: because of known undecidability results for
+Lean's logic, there are expressions that are definitionally equal by the rules but
+that Lean's kernel cannot confirm to be equal.<ref name="lean4lean" /> Lean's reference manual also records a technical irregularity: as Lean defines it,
+definitional equality is reflexive and symmetric but not transitive, so two steps
+that each hold by calculation need not combine into one that
+does.<ref name="ref-types" /> In ordinary work these limits are rarely met.
+
+== Proof irrelevance ==
+
+One rule on the calculation side concerns proofs themselves. In Lean, '''any two
+proofs of the same proposition are definitionally equal'''.<ref name="ref-types" /><ref name="tpil-props">Jeremy Avigad, Leonardo de Moura, Soonho Kong and Sebastian Ullrich, ''Theorem Proving in Lean 4'', chapter 3, "Propositions and Proofs", section 3.1. [https://lean-lang.org/theorem_proving_in_lean4/Propositions-and-Proofs/ lean-lang.org/theorem_proving_in_lean4/Propositions-and-Proofs/] (accessed 13 October 2026).</ref>
+The checker never asks which proof was given, only whether there is one.
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem two_proofs (p : Prop) (h₁ h₂ : p) : h₁ = h₂ := rfl
+#print axioms two_proofs
+</pre>
+
+Lean accepts this by calculation alone and prints <code>'two_proofs' does not
+depend on any axioms</code>: proof irrelevance is a rule of Lean's logic, not one
+of
+[[Lean theorem prover/Explainers/What the axioms are|its axioms]]. A practical
+consequence: the number 3, packaged with one proof that it is below 5, is the same
+value of <code>Fin 5</code> as 3 packaged with any other such proof.
+
+== Next ==
+
+* [[Lean theorem prover/Explainers/Functions that always finish|Functions that always finish]]: why Lean insists that every function it accepts comes to an end.
+
+== References ==
+
+<references />

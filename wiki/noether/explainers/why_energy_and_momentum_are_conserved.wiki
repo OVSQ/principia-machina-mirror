@@ -1,0 +1,114 @@
+{{DISPLAYTITLE:Why energy and momentum are conserved}}
+{{Noether's theorems map}}
+
+''Mathematical counterpart: [[Noether's theorems/First theorem/Energy, momentum and angular momentum|Energy, momentum and angular momentum]].''
+
+Three famous conservation laws, three symmetries, one theorem. This page says
+which goes with which and what the connection actually asserts.
+
+== Start with what was already known ==
+
+Energy, momentum and angular momentum were known to be conserved long before
+1918. Pendulums, planets, colliding billiard balls — the evidence was centuries
+old and nobody doubted it.
+
+'''Noether did not discover these conservation laws.''' What she found was why
+they hold, and that the answer is the same answer three times over.
+
+== Time does not matter, so energy is conserved ==
+
+Set up a pendulum and start it swinging. Come back tomorrow, set up the same
+pendulum the same way, and start it again.
+
+It does the same thing. The laws did not change overnight.
+
+That is a symmetry: shifting when you run the experiment leaves the scoring rule
+alone. One knob — how far you shift.
+
+One knob, one conserved quantity. That quantity is energy.
+
+Note what the symmetry is not. It is not that nothing changes with time; the
+pendulum swings. It is that the '''rules''' do not change with time.
+
+== Place does not matter, so momentum is conserved ==
+
+Same experiment, moved across the room. Same result.
+
+Three knobs, since you can move it three independent ways. Three conserved
+quantities, and together they are momentum.
+
+There is a version of this you meet earlier in physics without knowing it is the
+same thing. If a coordinate never appears in the scoring rule — only how fast it
+is changing does — then the quantity conjugate to it is conserved. That is exactly
+this symmetry, and the theorem explains why the trick works.
+
+== Direction does not matter, so angular momentum is conserved ==
+
+Turn the whole experiment to face a different way. Same result.
+
+Three knobs again, one for each axis. Three conserved quantities, which together
+are angular momentum.
+
+A spinning skater pulling her arms in speeds up. Nothing pushed her. The reason
+she speeds up is that space does not care which way she is facing.
+
+== The structural difference between the three ==
+
+Energy is not quite like the other two, and it is worth seeing why.
+
+Momentum and angular momentum come from moving the '''things''' — the positions,
+the orientations. Energy comes from moving the '''clock'''.
+
+Because energy comes from moving the clock, its flow picks up an extra
+contribution that the other two do not have, from the frame having shifted. That
+is the picture-frame effect from
+[[Noether's theorems/Explainers/What happens at the edges|the edges page]], and it
+is why a treatment that only ever moves the things can produce momentum but not
+energy.
+
+== What the theorem is really telling you ==
+
+Not that energy is conserved. You knew that.
+
+It is telling you that '''energy conservation and the uniformity of time are the
+same fact'''. Not two facts that happen to agree. One fact, written two ways.
+
+Which means the connection can fail. In a situation where the rules genuinely do
+change with time, energy is not conserved — and this is not a breakdown of
+physics, it is exactly what the theorem predicts. The expanding universe is such a
+situation, and there is
+[[Noether's theorems/Explainers/Where the light's energy goes|a page on it]].
+
+== How many are there altogether ==
+
+The theorem lets you count, and the count for ordinary physics in empty space is
+worth knowing.
+
+One for shifting the clock. Three for moving through space. Three for turning.
+And three more for changing to a laboratory that is sliding at a steady speed,
+which is the case on
+[[Noether's theorems/Explainers/Drifting centres and electric charge|the next
+page]] and needs a slightly weaker condition than the others.
+
+Ten in total. Ten symmetries of empty space, ten conserved quantities, and no
+eleventh. If somebody claims a new conservation law for an isolated system in
+ordinary space, the theorem says it is either one of these ten in disguise or it
+does not come from a symmetry of this kind at all.
+
+== When the reasons stop applying ==
+
+Each of the three on this page rests on a fact about the world that could fail,
+and in at least one case does.
+
+Time is uniform in the laboratory. It is not uniform across the history of the
+universe, which has been expanding since it began. The rules governing light
+travelling across that expansion genuinely do change with time — and light
+travelling across it genuinely does lose energy. See
+[[Noether's theorems/Explainers/Where the light's energy goes|Where the light's
+energy goes]].
+
+That is not an exception to the theorem. It is the theorem, read in the direction
+people rarely read it.
+
+''No mathematics is used on this page. The mathematical treatment is on the
+counterpart page named above.''

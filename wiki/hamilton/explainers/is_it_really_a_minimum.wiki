@@ -1,0 +1,145 @@
+{{DISPLAYTITLE:Is it really a minimum}}
+{{Technical|Hamilton's principle/Mathematics/The second variation|Hamilton's principle/Mathematics/The Legendre condition}}
+{{Hamilton's principle map}}
+
+This page asks whether a stationary path is actually the best one. It uses no
+mathematics. The technical pages it goes with are named above.
+
+== The question that has been waiting ==
+
+[[File:OPL-HP-F-07.png|thumb|right|400px|The second variation changing sign as the interval lengthens.]]
+
+Every method in this volume so far finds paths where the total '''stops
+changing''' under small nudges.
+
+Not one of them shows the total is '''smallest'''.
+
+That gap was flagged on the first page and has been left open ever since. This
+page begins to close it, and the answer is more interesting than a simple yes.
+
+== Flat ground tells you less than you think ==
+
+[[File:OPL-HP-F-16.png|thumb|right|400px|A needle variation.]]
+
+Stand somewhere and find the ground perfectly level. Where are you?
+
+At the bottom of a valley. Or at the top of a hill. Or at a mountain pass, which
+is a low point along the ridge and a high point along the path across it.
+
+Level ground is level. It does not say which.
+
+To tell the difference you have to look at the '''curvature''' — how the ground
+bends away as you step off. Curving up in every direction means a valley. Curving
+down in every direction means a summit. Curving up one way and down another means
+a pass.
+
+The same applies to paths. Finding a stationary path is finding level ground. To
+learn what kind, you have to look at how the total bends.
+
+== Two things that push against each other ==
+
+[[File:OPL-HP-F-17.png|thumb|right|400px|Local penalty against accumulated reward.]]
+
+Look at the bending, and it turns out to have two parts pulling in opposite
+directions.
+
+'''A penalty for wobbling.''' Deviating from the path costs something, and it
+costs more the more sharply you wobble.
+
+'''A reward for straying.''' Being away from the path may, in some problems, be
+worth something.
+
+If the penalty always wins, the path is a minimum. If the reward can win, it is
+not.
+
+And these two behave completely differently in an important respect, which is what
+makes the rest of the subject necessary.
+
+== The local test ==
+
+The wobble penalty can be checked '''one point at a time'''.
+
+Here is the reason. You can make a nudge that is tiny in size but very sharp — a
+narrow, steep wiggle in a short stretch of the path, leaving the rest untouched.
+Such a wiggle barely moves the path but wobbles it violently.
+
+For that nudge, the wobble penalty is overwhelming and the straying reward is
+negligible. So the wiggle tests the penalty alone.
+
+Do this everywhere. If the penalty is ever negative — if wobbling somewhere
+actually '''pays''' — then a wiggle there makes the total smaller, and the path is
+not a minimum.
+
+That gives a necessary condition, and it is easy to check: '''wobbling must never
+pay, anywhere along the path.'''
+
+This test is named after Legendre, who found it in 1786.
+
+== Legendre's mistake ==
+
+Legendre thought his test was enough. If wobbling never pays anywhere, he
+reasoned, the path must be a minimum.
+
+It is a very natural mistake. For an ordinary hill it would be right: curving
+upwards in every direction really does mean a valley.
+
+Lagrange found the error. It took another half century for Jacobi to supply what
+was missing.
+
+The reason for the failure is worth understanding, because it is the reason this
+part of the subject exists at all.
+
+== Why local checks are not enough ==
+
+The wiggle test only ever looks at one small stretch. That is what makes it
+convenient, and it is also what makes it blind.
+
+The straying reward does not act in one place. It '''accumulates''' along the
+path. Over a short journey there is not enough of it to matter. Over a long enough
+journey it adds up, and it can eventually beat a wobble penalty that is perfectly
+healthy at every single point.
+
+A nudge that exploits this is not a sharp wiggle in one place. It is a gentle bulge
+spread over the whole path. The wiggle test never builds such a nudge, and so
+never sees the failure.
+
+'''The length of the journey is part of the answer.''' Two paths can satisfy every
+local condition identically and differ only in how far they run — and one can be a
+minimum while the other is not.
+
+Nothing about the path at any single point records this. That is the strangeness,
+and it is why a second, non-local test is needed.
+
+== A case you can check ==
+
+There is a simple setup where a hand calculation shows exactly this.
+
+Take a system where staying near the middle is rewarded, and follow it for a
+certain time.
+
+Over a short time, the answer is a clean minimum. The wobble penalty dominates and
+everything behaves.
+
+Extend the time and the reward accumulates. At a particular length the two balance
+exactly. Beyond it, the reward wins, and the path is no longer a minimum.
+
+Nothing about the system changed. The rules are the same, the path satisfies the
+same equation at every point, and the local test passes throughout. Only the
+duration is different.
+
+That case is worked in full on the technical pages, and its answer comes out as an
+exact length at which the switch happens.
+
+== The missing test ==
+
+What is needed is a test that looks at the journey as a whole rather than point by
+point.
+
+Jacobi supplied it in 1837, and it has a picture attached that makes it easy to
+hold on to: paths that set off in slightly different directions can '''come back
+together'''.
+
+Where they meet again, minimality fails.
+
+That is the next page:
+[[Hamilton's principle/Explainers/Where the minimum fails|Where the minimum fails]].

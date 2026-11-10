@@ -1,0 +1,11 @@
+<includeonly>{{Section map
+| title = Principia Machina: map
+| label1 = Reading the program
+| links1 = [[Principia Machina/Lean transition|The move to Lean]]<br />[[Principia Machina/Progress/Prototype|The prototype]]<br />[[Principia Machina/Progress/Status|Status]]<br />[[Principia Machina/Progress/Nightly runs|Nightly runs]]<br />[[Principia Machina/Terminology|Terminology: the words of both versions]]<br />[[Principia Machina/Builder Contract|Builder Contract: for outside builders]]
+| label2 = Development
+| links2 = [[Principia Machina/Development|The parts and how they fit]]<br />[[Principia Machina/Development/Work units|Work units: for outside builders]]<br />[[Principia Machina/Development/Acceptance|Acceptance: the checks and the ladder]]
+| label3 = Lean itself
+| links3 = [[Lean theorem prover|Lean theorem prover]]<br />[[Lean theorem prover/Applications/Principia Machina|Principia Machina in Lean]]
+| label4 = Version 1
+| links4 = [[The Principia Machina|The Principia Machina]]<br />[[The Principia Machina/TPS|its specification]]
+}}</includeonly><noinclude>The navigation panel of Principia Machina, the Lean 4 version of The Principia Machina, carried by every page of its own: the move to Lean, the terminology, the progress pages, the Builder Contract and the Development pages. Its last row links version 1. Its frame is [[Template:Section map]]. Published from the Principia Machina source; an edit made here is overwritten.</noinclude>

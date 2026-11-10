@@ -1,0 +1,90 @@
+{{DISPLAYTITLE:The missing term}}
+{{On Physical Lines of Force map}}
+''[[On Physical Lines of Force]] → [[On Physical Lines of Force/Explainers|Explainers]] → The missing term''
+
+<blockquote>
+'''In one sentence.''' Electricity pushed inside an insulator shifts a little and stops, and while that shift is changing something really is moving — so a change of shift counts as a current, and adding that to the equations is what eventually allows electromagnetic waves.
+</blockquote>
+
+This page is about one term added to one equation. It is Proposition XIV, equation (112), in Part III of the paper, published in January 1862. It is called the '''displacement current'''. Of everything in Maxwell's four instalments, it is the piece that outlived the machine.
+
+== The shift ==
+
+Start where the previous page finished. The cells are springy in shape. Inside an insulator the particles cannot flow away as they would along a wire, because the electricity in each molecule stays with its own molecule.
+
+Now push on those particles. Something does happen. The cells around them distort, and the particles move a short way. The more they move, the harder the distorted cells push back. At some point the elastic reaction exactly balances the push, and everything stops. What is left is a small, settled displacement, held there by a balance of forces — like a spring squashed and left squashed.
+
+[[File:OPL-fig-displacement.svg|thumb|center|620px|A push shifts the particles until the elastic reaction of the cells balances it]]
+
+Maxwell calls that shift the '''electric displacement'''. And then he says the thing that matters.
+
+<blockquote>
+This displacement does not amount to a current, because when it has attained a certain value it remains constant, but it is the commencement of a current, and its variations constitute currents in the positive or negative direction, according as the displacement is increasing or diminishing.
+</blockquote>
+
+Three claims are packed into that sentence, and they are best taken one at a time.
+
+# A displacement sitting at a steady value is '''not''' a current. Nothing is moving. The spring is squashed and staying squashed.
+# It is nevertheless the '''beginning''' of a current. The particles did move to get there.
+# While the displacement is '''changing''', particles are moving — and moving particles are a current. Growing displacement is a current one way. Shrinking displacement is a current the other way.
+
+The distinction is between a position and a change of position. A parked car is not traffic. A car pulling out of the space is.
+
+== The term Maxwell added ==
+
+Maxwell then does the obvious thing, which nobody had done. He takes his equations for electric currents and adds the rate at which the displacement is changing.
+
+The consequence is larger than the edit. Until this point a current meant electricity travelling through something — a wire, a solution, a flame. After this point, any place where the electric displacement is changing counts as carrying a current, whether or not there is any matter there to carry it. The gap between two metal plates carries a current. So, in the end, does empty space.
+
+== Why the term has to be there ==
+
+There is a way to see that something was missing, and it does not require the model at all.
+
+The rule linking electricity to magnetism says roughly this. Choose a closed loop. Go all the way round it, adding up the magnetism you meet. The total tells you how much current is passing through the loop.
+
+That rule contains a hidden difficulty. A loop is only a rim. To say what passes ''through'' it, you need a surface with the loop as its edge, and there is no single such surface. You could stretch a flat drum-skin across the loop. You could let the surface bulge out into a bag. Every one of them has the same rim, so every one of them ought to give the same answer.
+
+Now take two metal plates facing each other across a gap, wired to a battery. Charge piles up on one plate and drains off the other. Current flows in the wires. No charge crosses the gap.
+
+Put a loop around one of the wires, close to a plate, and try two surfaces.
+
+{| class="wikitable"
+! Surface !! What pierces it !! Current counted
+|-
+| A flat drum-skin across the loop || the wire || the full current in the wire
+|-
+| A bag bulging out and passing through the gap || nothing at all || none
+|}
+
+[[File:OPL-fig-displacement-current.svg|thumb|center|620px|The same loop, two surfaces: one pierced by the wire, one passing through the gap]]
+
+Same loop. Same magnetism around it. Two different answers. That cannot stand, and it shows that the rule as it stood was incomplete.
+
+The repair is Maxwell's term. In the gap between the plates, the electric displacement is changing all the while the plates are charging. Count a changing displacement as a current, as Maxwell's equation does, and the bulging surface now has something passing through it — exactly enough to match what the wire delivers to the flat one. Both surfaces agree. The rule works for every surface you can stretch across the loop, which is what a sound rule has to do.
+
+== What it made possible ==
+
+Set the last three pages beside each other.
+
+* A changing magnetic field drives electricity. That was induction.
+* A current makes magnetism. That was the first half of the paper.
+* A changing electric displacement is a current. That is this page.
+
+Follow the chain round. A changing electric state makes magnetism; the changing magnetism drives electricity; that changing electric state makes magnetism again. Each half feeds the other, and neither needs a wire. The pair can move off through the medium on their own, carrying nothing but themselves. That is a wave.
+
+Maxwell went on, later in Part III, to work out how fast such a disturbance would travel through his springy cells. The number he got is the subject of the next page.
+
+The vortices and their idle wheels did not survive. Maxwell said himself that he never expected them to. The extra term did survive, and it is in every modern treatment of electromagnetism.
+
+== Where this is in the paper ==
+
+* [[On Physical Lines of Force/Part III/Prop. XIII|Prop. XIII]] — electromotive force and the displacement it produces
+* [[On Physical Lines of Force/Part III/Prop. XIV|Prop. XIV]] — '''the displacement current''', equation (112)
+* [[On Physical Lines of Force/Part III/Conduction and induction|Conduction and induction]] — why insulators shift instead of conducting
+* [[On Physical Lines of Force/Modern derivations/The displacement current|The displacement current today]] — the modern derivation
+* [[On Physical Lines of Force/Modern derivations/The electromagnetic wave equation|The wave equation]] — what the extra term makes possible
+* [[On Physical Lines of Force/Index of numbered equations|Index of numbered equations]] — equation (112) in context
+
+----
+
+''Next: [[On Physical Lines of Force/Explainers/How Maxwell found the speed of light|Light]] · Previous: [[On Physical Lines of Force/Explainers/Why the cells had to be springy|Why the cells had to be springy]]''

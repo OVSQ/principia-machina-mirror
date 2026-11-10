@@ -1,0 +1,34 @@
+[
+	{
+		"name": "custos_seat",
+		"comment": "Each account's seat buckets, one row per account and kind, in the governor's form [level, since] (pcalc governor admit); the landing job reads them into the metered state and writes back the charge admit answers.",
+		"columns": [
+			{
+				"name": "cs_account",
+				"comment": "The account's user name",
+				"type": "binary",
+				"options": { "notnull": true, "length": 255 }
+			},
+			{
+				"name": "cs_kind",
+				"comment": "agent or sponsor",
+				"type": "binary",
+				"options": { "notnull": true, "length": 16 }
+			},
+			{
+				"name": "cs_level",
+				"comment": "The bucket's level, the governor's units",
+				"type": "bigint",
+				"options": { "unsigned": true, "notnull": true, "default": 0 }
+			},
+			{
+				"name": "cs_since",
+				"comment": "The server time, whole seconds, the level was last set",
+				"type": "bigint",
+				"options": { "unsigned": true, "notnull": true, "default": 0 }
+			}
+		],
+		"indexes": [],
+		"pk": [ "cs_account", "cs_kind" ]
+	}
+]

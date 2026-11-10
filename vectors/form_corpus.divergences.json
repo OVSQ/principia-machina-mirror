@@ -1,0 +1,13 @@
+{
+ "corpus": "form_corpus.json",
+ "about": "Where the Calculator's answer departs from v1's on a case of form_corpus.json, and why. v1 evaluated a form in IEEE doubles and printed each value to twelve significant digits; the Calculator evaluates exactly, a rational times a power of pi, and rounds the exact value once to twelve digits, while the decision between exact values and binary64 is open. Each entry gives the case, v1's expectation as the corpus has it, the Calculator's answer in the same form, the cause and the reason. The vector runner checks both strings for every entry, so an entry that stops applying fails.",
+ "divergences": [
+  {
+   "id": "eval/cos",
+   "v1": "[OK,6.12323399574e-17,none]",
+   "v2": "[OK,0,none]",
+   "cause": "exact value",
+   "reason": "theta is 90 deg, exactly pi/2 rad, and cos(pi/2) is exactly 0. v1 took the cosine of the double nearest pi/2, 1.5707963267948966, which lies about 6.12e-17 below pi/2, and printed that cosine."
+  }
+ ]
+}

@@ -1,0 +1,148 @@
+{{DISPLAYTITLE:Electromagnetism from an action}}
+{{Technical|Hamilton's principle/Applications/The electromagnetic Lagrangian}}
+{{Hamilton's principle map}}
+
+This page explains how electromagnetism can be derived rather than discovered. It
+uses no mathematics. The technical page it goes with is named above.
+
+== A theory that was found twice ==
+
+[[File:OPL-HP-F-26.png|thumb|right|400px|Counting physical polarisations from gauge redundancy.]]
+
+Electromagnetism was worked out over a century, from experiments. Coulomb measured
+forces between charges. Ørsted found that currents deflect compasses. Faraday found
+that moving magnets make currents. Maxwell assembled it.
+
+That is how it happened, and it took a hundred years.
+
+There is a second route. Start from a single requirement about what a theory must
+ignore, and electromagnetism comes out. Nothing about electricity or magnetism has
+to be put in.
+
+This page follows the second route. It is not how the subject was discovered, and
+it is how the subject is now taught to people who will build the next theory.
+
+== The requirement ==
+
+[[File:OPL-HP-F-46.png|thumb|right|400px|Maxwell's equations split into dynamics and identities.]]
+
+Start with a description of matter that involves a quantity with no direct physical
+meaning — something like the setting of a dial, where only '''differences''' in
+the setting matter, not the setting itself.
+
+If only differences matter, you should be able to turn all the dials by the same
+amount everywhere and change nothing. That is an ordinary symmetry, and by
+[[Hamilton's principle/Explainers/Symmetry and conservation|Symmetry and conservation]] it gives a conserved
+quantity. That quantity is electric charge.
+
+Now make the harder demand. '''You should be able to turn each dial by a different
+amount, independently at every point in space, and still change nothing.'''
+
+== Why that demand cannot be met alone ==
+
+It fails immediately, and the reason is easy to see.
+
+Physics cares about how things change from place to place. If you turn the dial by
+different amounts at neighbouring points, you have manufactured a change between
+them. The theory notices.
+
+So the demand is impossible as it stands.
+
+Unless something else changes to compensate.
+
+== The field appears ==
+
+Suppose there is another quantity, spread through space, whose job is to cancel
+exactly that manufactured difference. When you turn the dials by varying amounts,
+this quantity shifts in a matching way, and the two effects cancel.
+
+Then the demand can be met.
+
+'''That compensating quantity is the electromagnetic potential.''' The electric
+and magnetic fields are built from it.
+
+The logic is worth stating slowly, because it is easy to skate past. You did not
+put in electricity. You did not put in magnetism. You demanded that a certain
+adjustment have no physical effect, discovered that the demand was impossible, and
+found that it becomes possible if a new field exists.
+
+'''The field is forced into existence by the requirement.'''
+
+== Its own behaviour ==
+
+The new field needs its own rules. Those are fixed the same way: write the simplest
+cost rule that respects the same requirement.
+
+There is very little freedom. Essentially one possibility survives, and turning the
+handle produces '''Maxwell's equations'''.
+
+Or rather, half of them. And the split is interesting.
+
+== Two halves of Maxwell, two kinds of statement ==
+
+Maxwell's equations come in two groups, and the standard presentation treats them
+as four equations of equal standing. They are not.
+
+'''One group is dynamics.''' It says how the field responds to charges and
+currents. It comes out of the cost rule, and it could have been otherwise.
+
+'''The other group is bookkeeping.''' It says there are no magnetic monopoles, and
+it gives the law of induction. These follow '''automatically''' from the fact that
+the field was built out of the compensating quantity. They are true by
+construction, for any conceivable field, before any physics is put in.
+
+That asymmetry looks arbitrary when the four equations are simply listed. Seen this
+way it is not arbitrary at all. Two of them are laws and two of them are
+consequences of how the description is built.
+
+== Charge conservation is not optional ==
+
+One more result comes free, and it is a strong one.
+
+If you couple the field to a flow of charge, the whole construction only works if
+that charge is '''conserved'''. A theory in which charge could appear or vanish
+fails the requirement outright. It is not a theory at all.
+
+So charge conservation is not an experimental fact that the theory happens to
+respect. It is a precondition for the theory existing.
+
+== The price of the description ==
+
+The compensating quantity is not unique. Several different versions of it give
+exactly the same electric and magnetic fields, and hence the same physics.
+
+That is the '''redundancy''' described at
+[[Hamilton's principle/Explainers/When symmetry is local|When symmetry is local]]. The description carries
+spare parts.
+
+Two consequences, both predicted by Noether's second theorem.
+
+Some of the equations are not independent — they follow from the others as a matter
+of arithmetic.
+
+And the tidy reformulation of
+[[Hamilton's principle/Explainers/The Hamiltonian|the Hamiltonian]] does not apply cleanly, because
+it needs a description without spare parts.
+
+The redundancy also explains a number. Counting the description gives four
+quantities. Removing the redundancy and the dependent equation leaves '''two''' —
+and light has exactly two independent polarisations, which is why sunglasses work.
+
+That count came out of an argument about what a theory must ignore.
+
+== Why this route matters ==
+
+Electromagnetism did not need deriving. It was already known.
+
+The point is that the method '''generalises'''. Make the same kind of demand about
+a different quantity and you get a different force. The strong and weak nuclear
+forces were constructed this way in the twentieth century, and neither could have
+been found by the patient experimental route that worked for electricity.
+
+Electromagnetism is the worked example that showed the method is trustworthy.
+
+== Where to go next ==
+
+The same construction, applied to the choice of coordinates rather than a dial,
+gives gravity. It is at
+[[Hamilton's principle/Explainers/Gravity from an action|Gravity from an action]].

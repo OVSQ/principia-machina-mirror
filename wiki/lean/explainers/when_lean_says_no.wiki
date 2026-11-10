@@ -1,0 +1,195 @@
+{{DISPLAYTITLE:When Lean says no}}
+{{Technical|Lean theorem prover/System/Elaboration|Lean theorem prover/System/Metavariables and unification}}
+{{Lean theorem prover map}}
+
+A check that fails ends in a message. The message is not a mark of failure to be cleared
+away; it says what Lean was trying to do and where it stopped. This page goes through the
+refusals met most often and shows how to read each one. Every message quoted here is the one
+Lean 4.34.1 prints for the code shown.
+
+== Where a refusal comes from ==
+
+Lean reads a source file in stages. It parses the text, then '''elaborates''' it: it turns
+what the author wrote into terms of its core logic, filling in the details left out and
+running the tactics. Then the Lean kernel checks each finished term against the rules of the
+logic.<ref name="ref-elab">''The Lean Language Reference'', version for Lean 4.34.0
+(lean-lang.org, 2026), chapter 2, "Elaboration and Compilation", with section 2.3, "The
+Kernel". https://lean-lang.org/doc/reference/4.34.0/Elaboration-and-Compilation/</ref> The
+messages met day to day come from elaboration, which still knows what the author wrote and
+can report in those terms. The Lean kernel's own check is there to guard against mistakes in
+elaboration itself.<ref name="ref-elab" />
+
+Each message is attached to a place in the file, given as line and column, and has a
+severity: an error means that the definition or theorem was not accepted as written; a warning
+does not. An editor connected to Lean underlines the place and shows the text.
+
+== A value of the wrong type ==
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+def three : Nat := "three"
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+Type mismatch
+  "three"
+has type
+  String
+but is expected to have type
+  Nat
+</pre>
+
+The message has three parts: what was given, the type it has, and the type that was needed.
+Here a piece of text was given where a number was promised. In a proof the same message
+means that the proof offered proves a different statement from the one asked, since a
+statement is the type of its proofs (see
+[[Lean theorem prover/Explainers/Types as specifications|types as specifications]]). The two
+types side by side usually show where they part.
+
+== Something left to prove ==
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem zero_add' (n : Nat) : 0 + n = n := by
+  induction n with
+  | zero => rfl
+  | succ k ih => rw [Nat.add_succ]
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+unsolved goals
+case succ
+k : Nat
+ih : 0 + k = k
+⊢ (0 + k).succ = k + 1
+</pre>
+
+The tactics ran out with a goal still open, and Lean shows it in full: the hypotheses above
+the line, what remains below it. Read this way the message nearly gives the answer. The
+hypothesis <code>ih</code> says that 0 + k is k, and the goal contains 0 + k. Adding
+<code>ih</code> to the rewrite finishes the proof, as on the page
+[[Lean theorem prover/Explainers/Induction, as the machine sees it|induction, as the machine
+sees it]]. Goals and their display are described in
+[[Lean theorem prover/Explainers/Holes and goals|holes and goals]].
+
+== No known way to do it ==
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+structure Colour where
+  red : Nat
+  green : Nat
+  blue : Nat
+
+def mix (a b : Colour) : Colour := a + b
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+failed to synthesize instance of type class
+  HAdd Colour Colour ?m.3
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+</pre>
+
+The sign + means different things for natural numbers, for integers and for other types. Lean finds
+the right meaning by looking up an '''instance''': a definition, registered in advance, that
+says how to add two values of given types. The message says that the lookup failed. Lean
+looked for a way to add a <code>Colour</code> to a <code>Colour</code>, giving a result of a
+type it had not yet settled, written <code>?m.3</code> (an unfilled hole, in the sense of
+[[Lean theorem prover/Explainers/Holes and goals|holes and goals]]), and found none, because
+nobody has said what adding colours means. The message carries the name
+<code>lean.synthInstanceFailed</code>, and the Lean Language Reference has an explanation
+under that name. It notes that many such failures come from using the wrong operation, such
+as <code>+</code> where <code>++</code>, which joins two pieces of text, was
+meant.<ref name="ref-synth">''The Lean Language Reference'', version for Lean 4.34.0
+(lean-lang.org, 2026), "Error Explanations": <code>lean.synthInstanceFailed</code>.
+https://lean-lang.org/doc/reference/4.34.0/Error-Explanations/About___--synthInstanceFailed/</ref>
+
+== No reason to stop ==
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+def climb (n : Nat) : Nat :=
+  if n = 0 then 0 else climb (n + 1)
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+fail to show termination for
+  climb
+with errors
+failed to infer structural recursion:
+Cannot use parameter n:
+  failed to eliminate recursive application
+    climb (n + 1)
+
+
+failed to prove termination, possible solutions:
+  - Use `have`-expressions to prove the remaining goals
+  - Use `termination_by` to specify a different well-founded relation
+  - Use `decreasing_by` to specify your own tactic for discharging this kind of goal
+n : Nat
+h✝ : ¬n = 0
+⊢ n + 1 &lt; n
+</pre>
+
+Every function in Lean's logic must be shown to finish (see
+[[Lean theorem prover/Explainers/Functions that always finish|functions that always
+finish]]). Lean tried two ways and reports both. Structural recursion failed because the
+call is on n + 1, which is not a part of n. Well-founded recursion, with n itself as the
+measure, failed too, and the last three lines show the obligation it could not meet: knowing that n is not 0, show that n + 1
+is less than n. That is false. Here the message has found a real fault: for any n other than
+0, the function would call itself for ever. When the obligation is true but Lean's default
+search cannot prove it, the remedies listed in the message apply.<ref name="ref-rec">''The
+Lean Language Reference'', version for Lean 4.34.0 (lean-lang.org, 2026), section 7.6,
+"Recursive Definitions".
+https://lean-lang.org/doc/reference/4.34.0/Definitions/Recursive-Definitions/</ref>
+
+== A statement that is false ==
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+example : 2 + 2 = 5 := by decide
+</pre>
+
+Lean answers <code>Tactic `decide` proved that the proposition</code> <code>2 + 2 = 5</code>
+<code>is false</code>. This refusal is stronger than the others. The tactic
+<code>decide</code> computes whether a statement is true, and here the computation came out
+the other way, so the message is in effect a disproof.<ref name="ref-tacref">''The Lean
+Language Reference'', version for Lean 4.34.0 (lean-lang.org, 2026), section 14.5, "Tactic
+Reference": entry for <code>decide</code>.
+https://lean-lang.org/doc/reference/4.34.0/Tactic-Proofs/Tactic-Reference/</ref> Most
+refusals say less. An unsolved goal or a failed search says only that this attempt did not
+succeed; the statement may still be true (see
+[[Lean theorem prover/Explainers/Automation and its limits|automation and its limits]]).
+
+== Reading a message ==
+
+The same order of reading serves for all of these. First the place: which line, which part of
+it. Then the first line of the message, which names the kind of failure. Then the detail:
+what was given against what was expected, or the goal that remains with what may be used for
+it.
+
+Lean tries to carry on after an error, so that one mistake does not hide the rest of the
+file. Often a definition that fails is kept with a hole where the error was, and later
+results that use it are still checked:
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+def three : Nat := "three"
+
+theorem t : three = three := rfl
+#print axioms t
+</pre>
+
+The file gives the type mismatch shown above, and then <code>'t' depends on axioms:
+[sorryAx]</code>. The theorem was accepted, but only on credit: it rests on the axiom behind
+<code>sorry</code>, described in [[Lean theorem prover/Explainers/Holes and goals|holes and
+goals]]. A file is finished when it has no errors at all, not when the results at its end
+are accepted.
+
+A refusal costs little. It changes nothing that was already accepted, and it points to one
+place and one kind of fault. That is why proving in Lean can proceed by trial: a wrong guess
+ends in a specific message, and the message says where to look next.
+
+== Next ==
+
+* [[Lean theorem prover/Explainers/Computation inside proofs|Computation inside proofs]]: proofs that are settled by computing.
+* [[Lean theorem prover/System/Elaboration|Elaboration]]: the technical treatment.
+
+== References ==
+
+<references />

@@ -1,0 +1,6 @@
+{
+ "corpus": "eom_corpus.json",
+ "note": "Cases of eom_corpus.json the Calculator does not answer yet, each with the reason; neither a pass nor a failure. Tests/Eom.lean requires every owed case to be listed here for its reason, and every case listed here to come out owed for it. The corpus itself is never edited.",
+ "reasons": {},
+ "owed": []
+}

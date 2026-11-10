@@ -1,0 +1,151 @@
+{{DISPLAYTITLE:What the axioms are}}
+{{Technical|Lean theorem prover/Foundations/The three axioms|Lean theorem prover/Foundations/Classical logic from choice|Lean theorem prover/Foundations/Quotient types}}
+{{Lean theorem prover map}}
+
+Every proof Lean accepts rests on two things: the rules of Lean's logic, and
+whatever '''axioms''' the proof uses, statements assumed without proof. Lean
+itself provides three.<ref name="ref-axioms" /> This page says what each one says in plain
+words, why the third makes Lean's logic the classical logic most mathematicians
+use, and how to ask Lean which axioms a given theorem depends on.
+
+== Rules and axioms ==
+
+The rules of Lean's logic say how types, functions and inductive definitions
+work, and how proofs are built from them. Much can be proved with these rules
+alone, with no axioms at all, as the example at the end of this page shows.
+
+An '''axiom''' is something more. In Lean it is a new constant of a given type,
+simply postulated. When the type is a proposition, the axiom is an assumed proof of
+it.<ref name="ref-axioms">The Lean Developers, "Axioms", ''The Lean Language Reference'', for Lean 4.35.0, chapter 8. [https://lean-lang.org/doc/reference/4.35.0/Axioms/ lean-lang.org/doc/reference/4.35.0/Axioms/] (accessed 13 October 2026).</ref> That makes axioms dangerous. Lean cannot check that an
+axiom is consistent with the rest of the logic, and an axiom that is false lets
+every statement be proved. Any proof that relies on an axiom is only as good as the
+axiom.<ref name="ref-axioms" />
+
+For this reason Lean keeps track of the axioms beneath every theorem, so that they
+can be audited.<ref name="ref-axioms" /> And the three that Lean provides are
+well studied; Lean's reference manual describes them as known to be
+consistent.<ref name="ref-axioms" />
+
+== Propositional extensionality ==
+
+The first axiom, '''propositional extensionality''' (Lean's name is
+<code>propext</code>), says: '''if two propositions imply each other, they are
+equal'''.<ref name="tpil-axioms">Jeremy Avigad, Leonardo de Moura, Soonho Kong and Sebastian Ullrich, with contributions from the Lean Community, ''Theorem Proving in Lean 4'', chapter 12, "Axioms and Computation", online book for Lean 4.33.0. [https://lean-lang.org/theorem_proving_in_lean4/Axioms-and-Computation/ lean-lang.org/theorem_proving_in_lean4/Axioms-and-Computation/] (accessed 13 October 2026).</ref>
+
+In plain words, a proposition is identified by when it is true, not by how it is
+worded. "''p'' and true" holds in exactly the cases where ''p'' holds, so by this
+axiom it is the same proposition as ''p'', and one may be replaced by the other
+anywhere. This fits the reading of a proposition as a type that is either empty,
+when it is false, or has a single element, when it is true.<ref name="tpil-axioms" />
+It is also acceptable to constructive mathematicians.<ref name="ref-props">The Lean Developers, "Propositions", ''The Lean Language Reference'', for Lean 4.35.0, section 4.2, entry for <code>propext</code>. [https://lean-lang.org/doc/reference/4.35.0/The-Type-System/Propositions/ lean-lang.org/doc/reference/4.35.0/The-Type-System/Propositions/] (accessed 13 October 2026).</ref>
+
+== Quotient soundness ==
+
+The second axiom concerns '''quotients'''. A quotient is a new type made from an
+old one by declaring some of its values to count as the same. The fractions 1/2
+and 2/4 are different pairs of numbers but the same rational number; the numbers 3
+and 10 are different, but the same when counting in sevens. The page on
+[[Lean theorem prover/Foundations/Quotient types|quotient types]] treats the
+construction.
+
+Lean's logic provides the construction itself. The axiom, '''quotient
+soundness''' (<code>Quot.sound</code>), supplies the one fact that makes it a real
+quotient: '''values declared to count as the same become equal in the
+quotient'''.<ref name="tpil-axioms" />
+
+A useful consequence follows from it: '''function extensionality''', the principle
+that two functions giving equal results on every input are equal. In Lean this is a
+theorem proved from quotients, not a separate axiom.<ref name="tpil-axioms" />
+
+== Choice ==
+
+The third axiom, '''choice''' (<code>Classical.choice</code>), says: '''from the
+bare knowledge that a type has at least one value, one may obtain a value of
+it'''.<ref name="tpil-axioms" />
+
+In plain words: if you know that something exists, you may name one, without
+saying how to find it. Mathematicians use this freely. For a program it is
+strange, because the knowledge that something exists, being a proof, carries no
+information about where to look. The authors of ''Theorem Proving in Lean 4''
+describe choice as entirely at odds with a computational reading, and Lean
+requires any definition that uses it to produce data to be marked
+<code>noncomputable</code>.<ref name="tpil-axioms" />
+
+== Why choice makes the logic classical ==
+
+Without axioms, Lean's logic is '''constructive'''. To prove "''P'' or ''Q''" one
+must supply a proof of one side and say which, as the page on
+[[Lean theorem prover/Explainers/Propositions as types|propositions as types]]
+describes. In such a logic the '''law of the excluded middle''', "every proposition
+is either true or false", cannot be proved in general, because nothing tells us
+which side holds.
+
+Choice changes this. A result known as Diaconescu's theorem, after a paper by
+Radu Diaconescu of 1975, shows that choice together with the two extensionality
+principles proves the law of the excluded
+middle.<ref name="diaconescu1975">Radu Diaconescu, "Axiom of choice and complementation", ''Proceedings of the American Mathematical Society'' 51 (1), 1975, pp. 176–178. [https://doi.org/10.1090/S0002-9939-1975-0373893-X doi:10.1090/S0002-9939-1975-0373893-X]</ref><ref name="tpil-axioms" /> Lean's core library proves it that way, and with it
+the familiar classical methods: proof by contradiction, proof by cases on whether
+a statement holds, and the elimination of double negation.<ref name="tpil-axioms" />
+So the three axioms together give the classical logic that most of mathematics is
+written in. The page on
+[[Lean theorem prover/Foundations/Classical logic from choice|classical logic from choice]]
+gives the proof.
+
+The price is paid in computation, not in correctness. Proofs are dropped when
+Lean compiles a program, so a program whose proofs use any of the three axioms
+still runs; what Lean cannot compile is a definition that obtains data from
+choice.<ref name="tpil-axioms" /><ref name="ref-axioms" /> When Lean's kernel
+evaluates an expression, the axioms can also stop the evaluation before it reaches
+an answer.<ref name="tpil-axioms" />
+
+== Asking Lean ==
+
+The command <code>#print axioms</code>, followed by the name of a theorem or
+definition, lists every axiom it depends on, directly or through other theorems it
+uses.<ref name="ref-axioms" /> Here are three small theorems: that "p and q"
+implies "q and p"; that "p and true" is the same proposition as ''p''; and the law
+of the excluded middle, taken from Lean's core library.
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem swap (p q : Prop) : p ∧ q → q ∧ p := fun ⟨hp, hq⟩ => ⟨hq, hp⟩
+theorem same_prop (p : Prop) : (p ∧ True) = p := propext ⟨fun h => h.1, fun h => ⟨h, trivial⟩⟩
+theorem either (p : Prop) : p ∨ ¬p := Classical.em p
+#print axioms swap
+#print axioms same_prop
+#print axioms either
+</pre>
+
+Lean 4.34.1 prints:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+'swap' does not depend on any axioms
+'same_prop' depends on axioms: [propext]
+'either' depends on axioms: [propext, Classical.choice, Quot.sound]
+</pre>
+
+The first proof uses only the rules of the logic. The second uses propositional
+extensionality, by name. The third uses all three axioms, because Lean's
+proof of the excluded middle goes through choice and the two extensionality
+principles.
+
+== Other names that can appear ==
+
+The list printed by <code>#print axioms</code> is the place to look for anything
+that weakens a proof.<ref name="ref-validating">The Lean Developers, "Validating a Lean proof", ''The Lean Language Reference'', for Lean 4.35.0. [https://lean-lang.org/doc/reference/4.35.0/ValidatingProofs/ lean-lang.org/doc/reference/4.35.0/ValidatingProofs/] (accessed 13 October 2026).</ref>
+
+* <code>sorryAx</code> appears when a proof, or a theorem it relies on, is unfinished. Lean lets a proof be left open with the word <code>sorry</code> while work goes on; such a proof proves nothing.<ref name="ref-axioms" />
+* A name containing <code>_native</code> means that part of the proof was settled by running compiled code, so the result also trusts Lean's compiler and not only Lean's kernel.<ref name="ref-axioms" /><ref name="ref-validating" />
+* Any other name is an axiom someone added, and the theorem holds only if that axiom is true.<ref name="ref-validating" />
+
+Lean's reference manual recommends exactly this check: a finished theorem should
+report no axioms beyond the three standard ones.<ref name="ref-validating" />
+Principia Machina applies the same test to its own Lean sources; see
+[[Principia Machina/Lean transition|the move to Lean]].
+
+== Next ==
+
+* [[Lean theorem prover/Explainers/Two kinds of equality|Two kinds of equality]]: the two kinds of equality in Lean, and why the difference matters.
+
+== References ==
+
+<references />

@@ -1,0 +1,146 @@
+{{DISPLAYTITLE:Symmetry and conservation}}
+{{Technical|Hamilton's principle/Mathematics/Noether's first theorem}}
+{{Hamilton's principle map}}
+
+This page explains why conserved quantities exist. It uses no mathematics. The
+technical page it goes with is named above.
+
+== Things that do not change ==
+
+[[File:OPL-HP-F-09.png|thumb|right|400px|Symmetry to conservation, four examples.]]
+
+Some quantities in physics stay the same no matter what happens.
+
+Energy is one. Momentum is another. Angular momentum, the quantity that keeps a
+skater spinning, is a third.
+
+For a long time these were facts. Careful experiments showed the numbers did not
+change, and physics recorded that they did not. Nobody could say '''why''' these
+particular quantities and not others.
+
+Emmy Noether answered that in 1918, and the answer is one of the most useful in
+physics.
+
+== The answer ==
+
+'''Every continuous symmetry gives a conserved quantity.'''
+
+A symmetry means something you can change about your description without changing
+the physics.
+
+Do your experiment a metre to the left. If it behaves identically, the laws do not
+care about position. Do it tomorrow. If it behaves identically, the laws do not
+care about time. Turn the whole apparatus to face north. If it behaves identically,
+the laws do not care about direction.
+
+Each of those indifferences produces a conserved quantity.
+
+{| class="wikitable"
+! the laws do not care about !! what is conserved
+|-
+| where you are || momentum
+|-
+| what time it is || energy
+|-
+| which way you face || angular momentum
+|}
+
+The three great conservation laws are three statements about what the universe is
+indifferent to.
+
+== Why it works ==
+
+The argument, in outline and without any symbols, runs like this.
+
+The whole of this volume rests on a total cost for a path. A symmetry means moving
+the path — shifting it sideways, or later in time — leaves that total unchanged.
+
+Now put those two facts together. Nudging a true path leaves the total unchanged,
+because the path is stationary. Shifting the path leaves the total unchanged,
+because of the symmetry.
+
+Two different reasons for the same conclusion. Combining them produces a
+constraint, and that constraint says a particular quantity cannot change as the
+motion proceeds.
+
+The full working is on the technical page. The shape of it is what matters here:
+'''two independent reasons for one fact, combined.'''
+
+== Why this changed things ==
+
+Before 1918, conservation laws were experimental results. You checked them.
+
+After, they became consequences. If you believe the laws of physics are the same
+everywhere, you '''must''' believe momentum is conserved. They are not separate
+claims.
+
+The reverse direction is at least as useful. Find a new conserved quantity in an
+experiment and you have found a symmetry you did not know about — and symmetries
+tell you about the structure of the theory.
+
+That reversal is how much of modern particle physics is done. Conservation of
+electric charge, for instance, comes from a symmetry that has nothing to do with
+space or time at all, but with a quantity that can be shifted without physical
+effect. Charge is conserved because of that indifference.
+
+== Where the volume already used it ==
+
+This theorem explains things this volume derived earlier without knowing why.
+
+A skater on flat ice keeps their momentum, because the ice is the same
+everywhere. A pendulum keeps its energy, because the laws do not change from
+moment to moment. A planet sweeps out equal areas in equal times, because space
+has no preferred direction — that is Kepler's second law, and it is angular
+momentum conservation wearing seventeenth-century clothes.
+
+Each of those was found separately, by its own calculation. They are one theorem.
+
+== Two cautions ==
+
+'''The symmetry has to be a symmetry of the cost rule.'''
+
+That is a stronger requirement than it sounds. The equations of motion can have
+symmetries that the cost rule does not, and those produce nothing. Only
+indifferences of the underlying rule count.
+
+'''Independent symmetries need not give independent quantities.'''
+
+Sometimes two symmetries yield conserved quantities that turn out to be related,
+so the second tells you nothing new. Noether pointed this out herself. Counting
+symmetries does not straightforwardly count useful conservation laws.
+
+== The limits ==
+
+The theorem needs the symmetry to be '''continuous''' — something you can do a
+little bit of.
+
+You can shift by a millimetre, or a micrometre, or any amount you like. That is
+continuous, and the theorem applies.
+
+Some symmetries are not like that. A snowflake looks the same after turning by
+sixty degrees, but not after turning by one degree. That is a discrete symmetry,
+and it gives no conserved quantity by this route. Discrete symmetries matter in
+physics for other reasons.
+
+The theorem also assumes the system has a cost rule at all. Systems with friction
+usually do not, in the simple form, and their energy is genuinely not conserved —
+it leaks into heat, which is a description of parts the model left out.
+
+== A second theorem ==
+
+Noether's paper contains '''two''' theorems, not one.
+
+The second treats a different kind of symmetry: one where the change can be
+chosen '''independently at each point in space''', rather than being the same
+everywhere.
+
+It gives a completely different conclusion, and it is the theorem she wrote the
+paper to prove. It is far less known than the first, which misrepresents the paper.
+
+It is at
+[[Hamilton's principle/Explainers/When symmetry is local|When symmetry is local]].
+
+== Where to go next ==
+
+The local case, and what it produces instead of conservation laws, is at
+[[Hamilton's principle/Explainers/When symmetry is local|When symmetry is local]].

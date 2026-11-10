@@ -1,0 +1,47 @@
+{{DISPLAYTITLE:Further reading}}
+{{Lean theorem prover map}}
+This edition describes Lean; it does not teach it. The works below do, and all of them can be
+read free of charge online. Each line says what the work is for; the link is in its
+reference. Most are cited on the edition's pages, which are named where they draw on a work.
+
+== Books and manuals ==
+
+* '''''Theorem Proving in Lean 4''''', by Jeremy Avigad, Leonardo de Moura, Soonho Kong and Sebastian Ullrich: Lean's logic from the inside, from dependent type theory and propositions to tactics, inductive types, type classes and the axioms; the companion to the [[Lean theorem prover/Foundations/Terms, types and judgments|Foundations]] pages.<ref name="tpil">Jeremy Avigad, Leonardo de Moura, Soonho Kong and Sebastian Ullrich, with contributions from the Lean community, ''Theorem Proving in Lean 4'', online book, lean-lang.org. https://lean-lang.org/theorem_proving_in_lean4/</ref>
+* '''''Functional Programming in Lean''''', by David Thrane Christiansen: Lean as a programming language, from its basics through type classes and monads to dependent types and proofs about programs; the companion to [[Lean theorem prover/System/Monads and do-notation|Monads and do-notation]].<ref name="fpil">David Thrane Christiansen, ''Functional Programming in Lean'', online book, lean-lang.org. https://lean-lang.org/functional_programming_in_lean/</ref>
+* '''''Mathematics in Lean''''', by Jeremy Avigad and Patrick Massot: doing mathematics with Mathlib, from basic logic and number theory to topology, calculus and measure theory.<ref name="mil">Jeremy Avigad and Patrick Massot, ''Mathematics in Lean'', online book. https://leanprover-community.github.io/mathematics_in_lean/</ref>
+* '''''The Lean Language Reference''''', by the Lean developers: the precise description of the language, a reference work rather than a tutorial, with an edition for each version of Lean; this edition cites the one for Lean 4.34.0.<ref name="refman">''The Lean Language Reference'', for Lean 4.34.0, lean-lang.org, 2026. https://lean-lang.org/doc/reference/4.34.0/</ref>
+* '''''Metaprogramming in Lean 4''''', by Arthur Paulino and others: how to write new notation, commands and tactics in Lean; the companion to [[Lean theorem prover/System/Metaprogramming in Lean|Metaprogramming in Lean]].<ref name="mpb">Arthur Paulino, Damiano Testa, Edward Ayers, Evgenia Karunus, Henrik Böving, Jannis Limperg, Siddhartha Gadgil and Siddharth Bhat, ''Metaprogramming in Lean 4'', online book, Lean community. https://leanprover-community.github.io/lean4-metaprogramming-book/</ref>
+* '''''Logic and Proof''''', by J. Avigad, R. Y. Lewis and F. van Doorn, adapted to Lean 4 by J. Hua: an introduction to symbolic logic and to writing proofs, with Lean.<ref name="lap">J. Avigad, J. Hua, R. Y. Lewis and F. van Doorn, ''Logic and Proof'', online textbook, Lean 4 edition. https://leanprover-community.github.io/logic_and_proof/</ref>
+* '''''The Mechanics of Proof''''', by Heather Macbeth: a first university course in writing careful proofs, with Lean beside the text.<ref name="mop">Heather Macbeth, ''The Mechanics of Proof'', online book for Math 2001, Fordham University, 2022–2024. https://hrmacbeth.github.io/math2001/</ref>
+* '''''Formalising Mathematics''''', by Kevin Buzzard: the handbook of a course for mathematics students who want to formalise with Mathlib.<ref name="fm">Kevin Buzzard, ''Formalising Mathematics'', course handbook, Imperial College London, 2024 edition. https://www.ma.imperial.ac.uk/~buzzard/xena/formalising-mathematics-2024/</ref>
+
+[[Lean theorem prover/Applications/Teaching with Lean|Teaching with Lean]] describes several of these books and the courses built on them.
+
+== A game ==
+
+* '''The Natural Number Game''', by Kevin Buzzard, Jon Eugster and others: played in a web browser, it constructs the natural numbers from zero and the next number and proves their facts one level at a time.<ref name="nng">Kevin Buzzard, Jon Eugster et al., ''Natural Number Game'', Lean 4 version, on the Lean Game Server: https://adam.math.hhu.de/#/g/leanprover-community/nng4 (source and credits: https://github.com/leanprover-community/NNG4)</ref>
+
+== Papers ==
+
+* The first description of Lean, by Leonardo de Moura and four colleagues (2015).<ref name="lean2015">Leonardo de Moura, Soonho Kong, Jeremy Avigad, Floris van Doorn and Jakob von Raumer, "The Lean Theorem Prover (system description)", in ''Automated Deduction – CADE-25'', Lecture Notes in Computer Science 9195, Springer, 2015, pp. 378–388. doi:10.1007/978-3-319-21401-6_26. Author's copy: https://lean-lang.org/papers/system.pdf</ref>
+* Tactics written in Lean itself, in Lean 3 (2017).<ref name="ebner2017">Gabriel Ebner, Sebastian Ullrich, Jared Roesch, Jeremy Avigad and Leonardo de Moura, "A metaprogramming framework for formal verification", ''Proceedings of the ACM on Programming Languages'' 1 (ICFP), article 34, 2017. doi:10.1145/3110278. Author's copy: https://lean-lang.org/papers/tactic.pdf</ref>
+* The design of Lean 4, by de Moura and Ullrich (2021).<ref name="lean4">Leonardo de Moura and Sebastian Ullrich, "The Lean 4 Theorem Prover and Programming Language (System Description)", in ''Automated Deduction – CADE 28'', Lecture Notes in Computer Science 12699, Springer, 2021, pp. 625–635. doi:10.1007/978-3-030-79876-5_37. Author's copy: https://lean-lang.org/papers/lean4.pdf</ref>
+* Mathlib's own account of itself (2020).<ref name="cpp2020">The mathlib Community, "The Lean Mathematical Library", in ''Proceedings of the 9th ACM SIGPLAN International Conference on Certified Programs and Proofs (CPP 2020)'', ACM, 2020, pp. 367–381. doi:10.1145/3372885.3373824. Preprint: https://arxiv.org/abs/1910.09336</ref>
+* Lean's type theory written out rule by rule, with a proof of its consistency relative to set theory, for Lean 3 (2019).<ref name="carneiro2019">Mario Carneiro, ''The Type Theory of Lean'', MSc thesis, Carnegie Mellon University, 2019. https://github.com/digama0/lean-type-theory/releases/tag/v1.0</ref>
+* A complete type checker for Lean 4 written in Lean, and work towards proving it correct (2026).<ref name="lean4lean">Mario Carneiro, "Lean4Lean: Verifying a Typechecker for Lean, in Lean", in ''31st International Conference on Types for Proofs and Programs (TYPES 2025)'', LIPIcs vol. 384, pp. 2:1–2:23, 2026. https://doi.org/10.4230/LIPIcs.TYPES.2025.2</ref>
+* Lean's hygienic macros (2022).<ref name="bn">Sebastian Ullrich and Leonardo de Moura, "Beyond Notations: Hygienic Macro Expansion for Theorem Proving Languages", ''Logical Methods in Computer Science'' 18 (2), 2022, article 1. https://doi.org/10.46298/lmcs-18(2:1)2022</ref>
+* The reference counting behind Lean's runtime (2019).<ref name="beans">Sebastian Ullrich and Leonardo de Moura, "Counting Immutable Beans: Reference Counting Optimized for Purely Functional Programming", in ''Proceedings of the 31st Symposium on Implementation and Application of Functional Languages (IFL 2019)'', ACM, 2019. doi:10.1145/3412932.3412935. Preprint: https://arxiv.org/abs/1908.05647</ref>
+* The search behind Lean 4's type classes (2020).<ref name="selsam">Daniel Selsam, Sebastian Ullrich and Leonardo de Moura, "Tabled Typeclass Resolution", arXiv:2001.04301, 2020. https://arxiv.org/abs/2001.04301</ref>
+* Why mathematics might be checked by machine, and the de Bruijn criterion (2005).<ref name="bw2005">Henk Barendregt and Freek Wiedijk, "The challenge of computer mathematics", ''Philosophical Transactions of the Royal Society A'' 363 (1835), 2005, pp. 2351–2375. doi:10.1098/rsta.2005.1650. Author's copy: https://www.cs.ru.nl/~freek/pubs/rspaper.pdf</ref>
+* What it takes to believe a proof a machine has checked (1998).<ref name="pollack">R. Pollack, "How to believe a machine-checked proof", in G. Sambin and J. M. Smith (eds), ''Twenty Five Years of Constructive Type Theory'', Oxford University Press, 1998; first issued as BRICS Report RS-97-18, Aarhus University, 1997. https://doi.org/10.7146/brics.v4i18.18945</ref>
+* The history of LCF and its descendants, by a participant (2000).<ref name="gordon2000">Mike Gordon, "From LCF to HOL: a short history", in G. Plotkin, C. Stirling and M. Tofte (eds), ''Proof, Language, and Interaction: Essays in Honour of Robin Milner'', MIT Press, 2000. Author's copy: https://www.cl.cam.ac.uk/~mjcg/papers/HolHistory.pdf</ref>
+
+Every work cited in the edition is listed in the [[Lean theorem prover/Bibliography|Bibliography]].
+
+== Next ==
+
+[[Lean theorem prover|Lean theorem prover]], the start of the edition.
+
+== References ==
+
+<references />

@@ -1,0 +1,41 @@
+{
+  "corpus": "units_corpus.json",
+  "about": "Where the Calculator's answer departs from v1's on a case of units_corpus.json, and why. v1 computed unit scales and normalized values in IEEE doubles and printed them to twelve significant digits; the Calculator computes them exactly, as a rational times a power of pi, while the decision between exact values and binary64 is open. It keeps v1's refusal of a scale or a value that is zero or infinite as a double, decided on the exact value. Each entry gives the case, v1's expectation as the corpus has it, the Calculator's answer in the same bracket form with its numbers written exactly (a canonical decimal such as 5e-2, or a fraction in lowest terms such as 1/60, then pi and its power when there is one), the cause, and the reason. The vector runner checks both strings for every entry. For the cause rounding it also checks that v1's printed number is the exact value rounded to twelve significant digits, using bounds on pi from Machin's formula; for the cause partial product, that v1 refused the case.",
+  "divergences": [
+    {
+      "id": "scale/per-minute",
+      "v1": "[OK,0.0166666666667]",
+      "v2": "[OK,1/60]",
+      "cause": "rounding",
+      "reason": "min-1 is exactly 1/60 per second; v1 printed its double to twelve significant digits."
+    },
+    {
+      "id": "scale/square-degree",
+      "v1": "[OK,0.000304617419787]",
+      "v2": "[OK,1/32400 pi2]",
+      "cause": "rounding",
+      "reason": "deg2 is exactly (pi/180)^2 sr; v1 printed its double to twelve significant digits."
+    },
+    {
+      "id": "scale/arcsecond",
+      "v1": "[OK,4.8481368111e-06]",
+      "v2": "[OK,1/648000 pi]",
+      "cause": "rounding",
+      "reason": "arcsec is exactly pi/648000 rad; v1 printed its double to twelve significant digits."
+    },
+    {
+      "id": "scale/km-per-hour",
+      "v1": "[OK,0.277777777778]",
+      "v2": "[OK,5/18]",
+      "cause": "rounding",
+      "reason": "km h-1 is exactly 1000/3600 = 5/18 m s-1; v1 printed its double to twelve significant digits."
+    },
+    {
+      "id": "scale/partial-overflow",
+      "v1": "[REFUSED,UNIT Qm11 qm11 has no finite scale]",
+      "v2": "[OK,1]",
+      "cause": "partial product",
+      "reason": "Qm11 qm11 is exactly 1 m22, well inside the double range. v1 multiplied token by token in doubles, where the partial products 1e330 and 1e-330 leave the range, and refused the whole (tpm_units 0.2.0, 12.3); the Calculator decides the range on the exact scale, which has no partial products."
+    }
+  ]
+}

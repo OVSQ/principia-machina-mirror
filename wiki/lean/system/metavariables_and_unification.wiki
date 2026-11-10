@@ -1,0 +1,128 @@
+{{DISPLAYTITLE:Metavariables and unification}}
+{{Plebeian|Lean theorem prover/Explainers/Holes and goals|Lean theorem prover/Explainers/When Lean says no}}
+{{Lean theorem prover map}}
+
+A '''metavariable''' is a named hole in a term: a placeholder for a subterm not yet known. '''Unification''' is the search for values of metavariables that make two terms definitionally equal. Lean's elaborator, its tactic framework, its instance resolution and its simplifier all rest on these two things. This page describes them as Lean 4.34.1 implements them, explains why unification in Lean's type theory cannot be solved in general, and says what Lean does instead and what its failures mean.
+
+== Holes with contexts ==
+
+When the elaborator meets <code>id 5</code>, it does not yet know the implicit type argument of <code>id</code>. It creates a metavariable, written <code>?α</code> or <code>?m.7</code> in Lean's output, applies <code>id</code> to it, and continues; the numeral <code>5</code> must have type <code>?α</code>, and the instance problem it brings, <code>OfNat ?α 5</code>, later fixes <code>?α := Nat</code> through a default instance ([[Lean theorem prover/System/Elaboration|elaboration]]). A goal in a tactic proof is the same thing: an unassigned metavariable whose type is the proposition to prove.<ref name="mpbook">Arthur Paulino, Damiano Testa, Edward Ayers, Evgenia Karunus, Henrik Böving, Jannis Limperg, Siddhartha Gadgil and Siddharth Bhat, ''Metaprogramming in Lean 4'', online book, chapter "MetaM". https://leanprover-community.github.io/lean4-metaprogramming-book/main/04_metam.html</ref>
+
+Each metavariable is declared in a '''local context''', the list of variables and hypotheses in scope where the hole was made, and it may be assigned only a term whose free variables come from that context. Lean's source writes this <code>C |- ?m : t</code>.<ref name="src-defeq">Lean 4 source code, version 4.34.1 (2026), file <code>src/Lean/Meta/ExprDefEq.lean</code>: the notes on pattern unification and its approximations A1 to A7. Apache License 2.0. https://github.com/leanprover/lean4/blob/v4.34.1/src/Lean/Meta/ExprDefEq.lean</ref> The restriction is what keeps a solution from capturing a variable that did not exist where the hole was made.
+
+The assignments live in a '''metavariable context''', separate from the terms. Assigning <code>?m</code> does not rewrite the terms that mention it; a later call to <code>instantiateMVars</code> substitutes the current assignments.<ref name="mpbook" /> A term handed to the Lean kernel must contain no metavariables at all ([[Lean theorem prover/System/The Lean kernel|the Lean kernel]]).
+
+== Three kinds ==
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+import Lean
+#print Lean.MetavarKind
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+inductive Lean.MetavarKind : Type
+number of parameters: 0
+constructors:
+Lean.MetavarKind.natural : Lean.MetavarKind
+Lean.MetavarKind.synthetic : Lean.MetavarKind
+Lean.MetavarKind.syntheticOpaque : Lean.MetavarKind
+</pre>
+
+The design notes in Lean's source give the rules. A '''natural''' metavariable may be assigned freely by unification; implicit arguments are of this kind. A '''synthetic''' one may be assigned by unification, but unification avoids doing so when it has a choice, because another procedure, usually instance resolution, is responsible for it and must check any value unification chose. A '''synthetic opaque''' one is never assigned by unification. Tactics such as <code>intro</code> make their new goals of this kind: a goal counts as solved when its metavariable is assigned, so unification must not close it behind the user's back.<ref name="src-mctx">Lean 4 source code, version 4.34.1 (2026), file <code>src/Lean/MetavarContext.lean</code>: the design notes at the head of the file. Apache License 2.0. https://github.com/leanprover/lean4/blob/v4.34.1/src/Lean/MetavarContext.lean</ref>
+
+Metavariables also carry a '''depth'''. A nested procedure, such as instance resolution called from inside unification, raises the depth of the metavariable context, and while it runs, unification does not assign metavariables of lower depth. This lets a subsidiary search create and solve its own holes without committing its caller to anything.<ref name="src-mctx" />
+
+== Delayed assignment ==
+
+A difficulty arises when a term containing a hole is put under a binder. Suppose <code>?m</code> may mention <code>x</code>, and the elaborator forms <code>fun x => t[?m]</code>. If <code>?m</code> is later assigned a term containing <code>x</code>, that occurrence must refer to the new bound variable. Lean handles this by creating a fresh metavariable <code>?n</code> of function type, with <code>x</code> removed from its context, and producing <code>fun x => t[?n x]</code>. For a natural or synthetic <code>?m</code> it simply assigns <code>?m := ?n x</code>. For a synthetic opaque <code>?m</code>, which may not be assigned that way, it records a '''delayed assignment''' <code>?n #[x] := ?m</code>: once <code>?m</code> receives a value with no metavariables left in it, each <code>?n r</code> is replaced by that value with <code>r</code> for <code>x</code>.<ref name="src-mctx" /> This is how a tactic block inside a <code>fun</code> can be run after the surrounding term has been closed over its variables.
+
+== Unification ==
+
+The unifier is Lean's definitional equality test with metavariables allowed. In the traces below it is written <code>s =?= t</code>, and it runs in the monad <code>MetaM</code> under a '''transparency''' setting that limits which definitions it may unfold, from <code>reducible</code> through <code>default</code> to <code>all</code>.<ref name="mpbook" /> First-order cases are easy. To make <code>?n + 2</code> equal to <code>5</code>, Lean solves <code>?n := 3</code>:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem w : ∃ n : Nat, n + 2 = 5 := ⟨_, rfl⟩
+#print w
+</pre>
+
+This prints <code>Exists.intro 3 rfl</code> as the proof. The hard cases have a metavariable applied to arguments, <code>?f a =?= t</code>: then <code>?f</code> stands for a function, and the problem is '''higher-order unification'''.
+
+== Why it cannot be solved in general ==
+
+Higher-order unification is undecidable. Gérard Huet's 1975 procedure for the typed λ-calculus is a semi-decision algorithm: it finds a unifier when one exists, but on problems with no unifier it may never stop, and Huet cites the undecidability of the problem as the reason.<ref name="huet">Gérard P. Huet, "A unification algorithm for typed λ-calculus", ''Theoretical Computer Science'' 1(1), 1975, pp. 27–57. doi:10.1016/0304-3975(75)90011-0</ref> For simply typed λ-terms it is undecidable already from order 2 upwards, a result due to Warren Goldfarb in 1981.<ref name="goldfarb">Warren D. Goldfarb, "The undecidability of the second-order unification problem", ''Theoretical Computer Science'' 13(2), 1981, pp. 225–230. doi:10.1016/0304-3975(81)90040-2. Not consulted directly; the result is stated, with this citation, in the introduction of Miller 1991.</ref> Unifiers are also not unique: <code>?f 3 =?= 3 + 3</code> is solved by <code>fun x => x + x</code>, by <code>fun x => 3 + x</code>, by <code>fun x => x + 3</code> and by the constant function returning <code>3 + 3</code>, and none is more general than the others.
+
+Dale Miller isolated a fragment that behaves well. In a '''pattern''', a metavariable is applied only to distinct bound variables. Unification restricted to patterns is decidable and has most general unifiers whenever it has unifiers at all.<ref name="miller">Dale Miller, "A logic programming language with lambda-abstraction, function variables, and simple unification", ''Journal of Logic and Computation'' 1(4), 1991, pp. 497–536. doi:10.1093/logcom/1.4.497</ref> The solution is read off directly:
+
+<math>?m\ a_1 \ldots a_n =^{?} t \quad\Longrightarrow\quad ?m := \lambda a_1 \ldots a_n.\ t</math>
+
+== What Lean does ==
+
+Lean's unifier, in <code>ExprDefEq.lean</code>, states its own version of Miller's condition. The constraint <code>?m@C a₁ … aₙ =?= t</code> is a pattern when the <code>aᵢ</code> are pairwise distinct free variables that are not local definitions and are not in <code>C</code>, when <code>t</code> uses only variables from <code>C</code> and the <code>aᵢ</code>, when every metavariable in <code>t</code> has a context that is a prefix of <code>C</code>, and when <code>?m</code> does not occur in <code>t</code>. Then <code>?m := fun a₁ … aₙ => t</code>.<ref name="src-defeq" /> The following problem is a pattern, because <code>x</code> is bound after the hole for <code>f</code> was made:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem dbl : ∃ f : Nat → Nat, ∀ x, f x = x * 2 := ⟨_, fun _ => rfl⟩
+#print dbl
+</pre>
+
+The proof printed is <code>Exists.intro (fun x => x * 2) fun x => rfl</code>. With <code>set_option trace.Meta.isDefEq.assign true</code> the unifier reports the step, among 67 lines of trace:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+[Meta.isDefEq.assign] ✅️ ?m.12 x✝ := x✝ * 2
+  [Meta.isDefEq.assign.beforeMkLambda] ?m.12 [x✝] := x✝ * 2
+  [Meta.isDefEq.assign.checkTypes] ✅️ (?m.12 : Nat → Nat) := (fun x => x * 2 : Nat → Nat)
+</pre>
+
+Outside the pattern fragment Lean does not search, as Huet's procedure would. It applies workarounds and approximations, listed in the source as A1 to A7. Among them: '''first-order approximation''', which solves <code>?m a₁ … aₙ =?= f b₁ … bₖ</code> by matching the last arguments pairwise and unifying <code>?m</code> applied to the rest with <code>f</code> applied to the rest; and '''constant approximation''', which assigns <code>?m</code> a function ignoring its arguments. The notes say plainly that constant approximation may produce bad solutions, and give an example on which another of the approximations fails.<ref name="src-defeq" /> Each picks one unifier and commits to it:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem d (h : (3 : Nat) = 3) : 3 + 3 = 3 + 3 := congrArg _ h
+#print d
+</pre>
+
+The conclusion of <code>congrArg</code> is <code>?f ?x = ?f ?y</code>, and the elaborator unifies it with the expected type before it looks at <code>h</code>. So the first constraint is <code>?f ?x =?= 3 + 3</code>, whose argument is itself unknown: not a pattern. The trace shows first-order approximation at work. It reads <code>3 + 3</code> as <code>HAdd.hAdd 3 3</code>, matches the last argument, <code>?x := 3</code>, and the rest, <code>?f := HAdd.hAdd 3</code>. The proof printed is <code>fun h => congrArg (HAdd.hAdd 3) h</code>: of the four solutions above, the one that reads <code>3 + x</code>.
+
+== When it fails ==
+
+The same approximation can choose wrongly. Here <code>?f a =?= a * 2</code> and <code>?f b =?= b * 2</code> must both hold, and <code>a</code> belongs to the context in which <code>?f</code> was made, so the first constraint is not a pattern:
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+example (a b : Nat) (h : a = b) : a * 2 = b * 2 := congrArg _ h
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+error: Type mismatch
+  congrArg ?m.19 h
+has type
+  ?m.19 a = ?m.19 b
+but is expected to have type
+  a * 2 = b * 2
+</pre>
+
+The trace option <code>trace.Meta.isDefEq</code> shows why. In this excerpt, lines marked … are omitted:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+[Meta.isDefEq] ❌️ a * 2 = b * 2 =?= ?m.19 a = ?m.19 b
+  …
+  [Meta.isDefEq] ✅️ a * 2 =?= ?m.19 a
+    [Meta.isDefEq] a * 2 [nonassignable] =?= ?m.19 a [assignable]
+    [Meta.isDefEq.foApprox] ?m.19 [a] := a * 2
+    [Meta.isDefEq] ❌️ a =?= 2
+    …
+    [Meta.isDefEq.foApprox] ?m.19 [a] := (a.mul 1).add a
+    [Meta.isDefEq] ✅️ a =?= a
+    [Meta.isDefEq] ✅️ ?m.19 =?= (a.mul 1).add
+  …
+  [Meta.isDefEq] ❌️ b * 2 =?= (a.mul 1).add b
+</pre>
+
+First-order approximation first tries to match <code>a * 2</code> against <code>?m.19 a</code> and fails on <code>a =?= 2</code>. After unfolding multiplication it succeeds, with <code>?m.19 := (a.mul 1).add</code>, a function that satisfies the first constraint and not the second. Writing the function explicitly, <code>congrArg (· * 2) h</code>, removes the higher-order problem and the proof is accepted.
+
+A message such as <code>Type mismatch</code>, or from a tactic <code>could not unify</code>, therefore reports that the unifier returned false. That has three possible causes. The terms may differ under every assignment. The unifier may have committed to a wrong approximation, as above, or met a problem outside what it attempts. Or the transparency setting may have forbidden an unfolding that would have shown the terms equal. Only the first is a fact about the mathematics. The cure for the other two is to supply the missing information: an explicit argument, a type ascription, or a lemma that rewrites one side into the shape of the other.
+
+== Next ==
+
+[[Lean theorem prover/System/Type classes and instance resolution|Type classes and instance resolution]] describes the search that fills synthetic metavariables, and [[Lean theorem prover/System/The tactic framework|the tactic framework]] the one that fills goals.
+
+== References ==
+
+<references />

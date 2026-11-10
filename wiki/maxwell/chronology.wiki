@@ -1,0 +1,73 @@
+{{DISPLAYTITLE:On Physical Lines of Force — Chronology}}
+{{On Physical Lines of Force map}}
+''[[On Physical Lines of Force]] → Chronology''
+
+[[File:OPL-fig-timeline.svg|thumb|center|620px|Where the paper sits]]
+
+== Before the paper ==
+
+{| class="wikitable"
+! year !! event !! why it matters here
+|-
+| 1820 || '''Ørsted''' finds that a current deflects a compass needle || Electricity and magnetism become one subject
+|-
+| 1820s || '''Ampère''' establishes the law of force between currents || The result Maxwell recovers in [[On Physical Lines of Force/Part I/Applications|Part I]]
+|-
+| 1831 || '''Faraday''' discovers electromagnetic induction || Derived in [[On Physical Lines of Force/Part II/Prop. VIII|Part II, Prop. VIII]]
+|-
+| 1837 || Faraday's work on '''specific inductive capacity''' || Cited in [[On Physical Lines of Force/Part III/Conduction and induction|Part III]]
+|-
+| 1845 || '''Faraday''' finds that magnetism rotates the plane of polarized light || The subject of [[On Physical Lines of Force/Part IV|Part IV]], and Maxwell's reason for treating magnetism as rotation
+|-
+| 1847 || '''W. Thomson''', "Mechanical Representation of Electric, Magnetic, and Galvanic Forces" || Quoted at length in [[On Physical Lines of Force/Part I/The introductory discussion|the introductory discussion]]
+|-
+| 1849 || '''Fizeau''' measures the velocity of light with a toothed wheel || One of the two numbers compared in [[On Physical Lines of Force/Part III/Prop. XVI|Prop. XVI]]
+|-
+| 1855–56 || '''Maxwell''', ''On Faraday's Lines of Force'' || Analogy, not mechanism: "to assist the imagination, but not to account for the phenomena"
+|-
+| 1856 || '''Weber and Kohlrausch''' measure the ratio of the electrical units || The other number in [[On Physical Lines of Force/Part III/Prop. XVI|Prop. XVI]]
+|}
+
+== The paper ==
+
+{| class="wikitable"
+! date !! instalment !! contents
+|-
+| '''March 1861''' || [[On Physical Lines of Force/Part I|Part I]] — Phil. Mag. XXI, no. 139, pp. 161–175 || Molecular vortices; the magnetic stress; Props. I–III; equations (9) and (12)–(14)
+|-
+| '''April 1861''' || [[On Physical Lines of Force/Part II|Part II]], first half — XXI, no. 140, pp. 281–291 || The idle wheels; Props. IV onward; the current equation derived
+|-
+| '''May 1861''' || [[On Physical Lines of Force/Part II|Part II]], second half — XXI, no. 141, pp. 338–348 || Induction; Props. up to XI; equations (54)–(58), (77)
+|-
+| '''January 1862''' || [[On Physical Lines of Force/Part III|Part III]] — XXIII, no. 151, pp. 12–24 || Elasticity of the cells; '''the displacement current''', eq. (112); '''the velocity of light''', Prop. XVI
+|-
+| '''February 1862''' || [[On Physical Lines of Force/Part IV|Part IV]] — XXIII, no. 152, pp. 85–95 || Magnetism and polarized light; the six results (A)–(F)
+|}
+
+Note the eight-month gap between Part II and Part III. The two results the paper is remembered for are both on the far side of it.
+
+== After ==
+
+{| class="wikitable"
+! year !! event
+|-
+| 1863 || Maxwell begins work on '''electrical standards''' for the British Association — including, in effect, a better measurement of the very ratio [[On Physical Lines of Force/Part III/Prop. XVI|Prop. XVI]] depends on
+|-
+| '''8 December 1864''' || ''A Dynamical Theory of the Electromagnetic Field'' read to the Royal Society; published ''Phil. Trans.'' 155 (1865), pp. 459–512. The vortices are gone; the field equations remain, and the wave equation is derived without them
+|-
+| 1873 || ''A Treatise on Electricity and Magnetism''. Art. 822 still develops the molecular-vortex hypothesis for magneto-optical rotation; Art. 831 calls the theory "of a provisional kind"
+|-
+| 1879 || Maxwell dies, aged 48
+|-
+| 1884–85 || '''Heaviside''', working in parallel with '''Gibbs''', recasts the twenty equations of 1865 into the four vector equations now called Maxwell's
+|-
+| 1890 || Niven's edition of the ''Scientific Papers'' reprints all four Parts, vol. I, pp. 451–513
+|}
+
+== Where this edition stops ==
+
+This wiki follows the paper and its immediate sequels to 1873, with the note on Heaviside and Gibbs above because the notation matters for reading the original. It does not cover the experimental confirmation of electromagnetic waves, the electron, relativity, or anything later, except where a modern result throws light back on something Maxwell wrote — the [[On Physical Lines of Force/Part II/Induced currents|anchor ring]] and the Aharonov–Bohm effect being the clearest case.
+
+----
+
+''See also: [[On Physical Lines of Force/Introduction|Introduction]] · [[On Physical Lines of Force/Part IV/What became of the vortices|What became of the vortices]] · [[On Physical Lines of Force/Sources and editorial method|Sources]]''

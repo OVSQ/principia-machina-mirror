@@ -1,0 +1,82 @@
+{{DISPLAYTITLE:On Physical Lines of Force — Figures}}
+{{On Physical Lines of Force map}}
+''[[On Physical Lines of Force]] → Figures''
+
+Nineteen drawings prepared for this edition. Those marked ''after Maxwell'' follow the composition of his Plate V; the rest are explanatory and have no counterpart in the printed paper.
+
+== Part I — magnetic phenomena ==
+
+[[File:OPL-fig-lines-of-force.svg|thumb|center|620px|Fig. A — Lines of force about a bar magnet]]
+'''Fig. A. Lines of force about a bar magnet.''' The iron-filings experiment, and Maxwell's definition of a line of force. → [[On Physical Lines of Force/Part I/The introductory discussion|The introductory discussion]]
+
+[[File:OPL-fig-vortex-single.svg|thumb|center|620px|Fig. B — The centrifugal force of one vortex]]
+'''Fig. B. The centrifugal force of one vortex.''' Pressure at the axis, at the circumference, and the mean parallel to the axis. → [[On Physical Lines of Force/Part I/Prop. I|Prop. I]]
+
+[[File:OPL-fig-stress-in-medium.svg|thumb|center|620px|Fig. C — The two components of the stress]]
+'''Fig. C. Tension along the lines, pressure across them.''' Why unlike poles attract and like poles repel on one state of stress. → [[On Physical Lines of Force/Explainers/Why spinning makes a pull|Why spinning makes a pull]]
+
+[[File:OPL-fig-vortex-array.svg|thumb|center|620px|Fig. K — Parallel vortices make an anisotropic medium]]
+'''Fig. K. A bundle of parallel vortices.''' The medium spreads sideways and shortens along the axes. → [[On Physical Lines of Force/Part I/Prop. I|Prop. I]]
+
+[[File:OPL-fig-maxwell-stress.svg|thumb|center|620px|Fig. S — Resolving the stress on an element of the medium]]
+'''Fig. S. The stress on a cube of the medium.''' Hydrostatic pressure plus a tension along the vortex axis, projected on the coordinate planes. → [[On Physical Lines of Force/Part I/Prop. II|Prop. II]] · [[On Physical Lines of Force/Modern derivations/The Maxwell stress tensor|modern form]]
+
+== Part II — electric currents ==
+
+[[File:OPL-fig-plate-fig2.svg|thumb|center|680px|Fig. D — Vortex cells and the particles between them]]
+'''Fig. D. Vortex cells and the particles between them.''' ''After Maxwell, Plate V. fig. 2.'' The current AB, the rows of cells turning oppositely above and below it, and the idle-wheel particles at every cell corner. → [[On Physical Lines of Force/Part II/The mechanism of idle wheels|The mechanism]]
+
+[[File:OPL-fig-plate-fig1.svg|thumb|center|620px|Fig. E — The electric circuit, the line of force, and the vortices]]
+'''Fig. E. Circuit, line of force, and vortices.''' ''After Maxwell, Plate V. fig. 1.'' Fixes the handedness relating current direction to the sense of rotation. → [[On Physical Lines of Force/Part II/The mechanism of idle wheels|The mechanism]]
+
+[[File:OPL-fig-plate-fig3.svg|thumb|center|640px|Fig. F — The anchor ring]]
+'''Fig. F. The anchor ring.''' ''After Maxwell, Plate V. fig. 3.'' Induction with no external magnetic field anywhere. → [[On Physical Lines of Force/Part II/Induced currents|Induced currents]] · [[On Physical Lines of Force/Modern derivations/The vector potential|the vector potential]]
+
+[[File:OPL-fig-idle-wheel-gearing.svg|thumb|center|640px|Fig. G — Why a layer of particles is needed]]
+'''Fig. G. The idle wheel.''' Two vortices in direct contact cannot both turn the same way; a particle between them can make them. → [[On Physical Lines of Force/Part II/Prop. IV|Prop. IV]]
+
+[[File:OPL-fig-induction-sequence.svg|thumb|center|700px|Fig. L — How an induced current arises]]
+'''Fig. L. How an induced current arises.''' Three stages: the current starts, the neighbouring vortices resist being spun up, and the next layer of particles is driven backwards. → [[On Physical Lines of Force/Part II/Induced currents|Induced currents]]
+
+== Part III — statical electricity ==
+
+[[File:OPL-fig-displacement.svg|thumb|center|640px|Fig. M — Conductor and dielectric compared]]
+'''Fig. M. The porous membrane and the elastic one.''' Conduction and induction as two independent qualities of bodies. → [[On Physical Lines of Force/Part III/Conduction and induction|Conduction and induction]]
+
+[[File:OPL-fig-cell-elasticity.svg|thumb|center|640px|Fig. H — The cell yields, and pushes back]]
+'''Fig. H. The cell yields, and pushes back.''' Electromotive force distorts a cell; the elastic reaction balances it; the particles come to rest displaced. → [[On Physical Lines of Force/Part III/Prop. XIII|Prop. XIII]]
+
+[[File:OPL-fig-displacement-current.svg|thumb|center|680px|Fig. I — The variation of displacement is itself a current]]
+'''Fig. I. The displacement current closes the circuit.''' The charging capacitor, and the two surfaces spanning one loop. → [[On Physical Lines of Force/Part III/Prop. XIV|Prop. XIV]]
+
+[[File:OPL-fig-transverse-wave.svg|thumb|center|680px|Fig. J — Transverse undulations of the electromagnetic medium]]
+'''Fig. J. A transverse undulation.''' Displacement and magnetic force at right angles to each other and to the direction of travel. → [[On Physical Lines of Force/Part III/Prop. XVI|Prop. XVI]] · [[On Physical Lines of Force/Modern derivations/The electromagnetic wave equation|the wave equation]]
+
+[[File:OPL-fig-units-ratio.svg|thumb|center|660px|Fig. R — The coincidence that settled it]]
+'''Fig. R. The two measures of electricity.''' Their ratio is a velocity; Weber and Kohlrausch measured it; Fizeau had measured the speed of light. → [[On Physical Lines of Force/Modern derivations/The unit ratio|The unit ratio]]
+
+== Part IV — polarized light ==
+
+[[File:OPL-fig-faraday-rotation.svg|thumb|center|680px|Fig. N — Why magnetism turns the plane of polarization]]
+'''Fig. N. Magnetic rotation of the plane of polarization.''' The two circular components travel at different speeds in a medium whose vortices are already turning. → [[On Physical Lines of Force/Part IV/Why magnetism must be rotatory|Why magnetism must be rotatory]]
+
+== Reference figures ==
+
+[[File:OPL-fig-curl.svg|thumb|center|640px|Fig. O — From work round a circuit to the curl]]
+'''Fig. O. Circulation and the curl.''' Maxwell's verbal statement of the current law, and what it becomes when the loop shrinks to a point. → [[On Physical Lines of Force/Modern derivations/Ampere's law and its correction|Ampère–Maxwell]]
+
+[[File:OPL-fig-notation-map.svg|thumb|center|620px|Fig. Q — A concordance of notation]]
+'''Fig. Q. A concordance of notation.''' Maxwell's 1861 symbols and their modern equivalents. → [[On Physical Lines of Force/Notation and concordance|Notation]]
+
+[[File:OPL-fig-timeline.svg|thumb|center|620px|Fig. P — Where the paper sits]]
+'''Fig. P. Chronology, 1820 to 1873.''' → [[On Physical Lines of Force/Chronology|Chronology]]
+
+== A note on the figures ==
+
+These are original drawings, not reproductions of the 1862 plate. No page image of Maxwell's Plate V was available for this edition, so the three marked ''after Maxwell'' were reconstructed from his textual descriptions of them — which are detailed enough to fix the composition but not the draughtsmanship. His fig. 2 in particular is drawn here as a regular hexagonal tiling with a particle at every vertex; the printed figure may differ in the number of rows and in the exact packing. See [[On Physical Lines of Force/Sources and editorial method|Sources and editorial method]].
+
+All figures are SVG and will scale without loss. If they do not display, they were probably not uploaded — an XML import carries page text only. See [[On Physical Lines of Force/Rendering test|Rendering test]].
+
+----
+
+''[[On Physical Lines of Force|Back to the contents]]''

@@ -1,0 +1,113 @@
+{{DISPLAYTITLE:Counting the equations a gauge theory really has}}
+{{Noether's theorems map}}
+
+''Mathematical counterpart: [[Noether's theorems/Second theorem/Fewer independent field equations than fields|Fewer independent field equations than fields]].''
+
+[[File:NT-F-22.png|thumb|right|360px|alt=Three columns of stacked bars. Eight field variables on the left, eight field equations in the middle with the last two shaded to mark them as dependent, and six independent facts on the right. An arrow labelled minus two joins the middle column to the right. The caption explains that two free functions in the symmetry give two identities and two equations that follow from the others.|Fields against independent field equations]]
+
+The second theorem's identities hold whether or not anything obeys the laws of
+physics. This page asks what happens when something does.
+
+== The answer is not a conservation law ==
+
+For the first theorem, imposing the laws of physics turns an identity into a
+conservation law. It is tempting to expect the same move to work here.
+
+It does not. Imposing the laws of physics on a Noether identity gives you a
+statement about the laws themselves: '''some of them follow from the others'''.
+
+One free shape in the symmetry, one identity, one equation that was never
+independent. The bookkeeping is exact.
+
+== Describing a photograph ==
+
+Suppose you describe a black-and-white photograph by giving a brightness number
+for every point.
+
+Now suppose the only thing anyone can ever see is '''contrast''' — differences in
+brightness between neighbouring points. Add the same amount to every number and
+the picture looks identical.
+
+You have more numbers than you have picture. Exactly one number's worth of your
+description carries no information, and no measurement will ever pin it down.
+That is not a gap in your data. It is a feature of the description you chose.
+
+Now allow yourself to add a different amount at each point, in a smooth pattern,
+and still get the same visible picture. You have handed over a whole shape's worth
+of description that means nothing, and the equations describing your picture will
+have exactly one relation among them for each free shape.
+
+That is the situation of every theory in modern physics that describes a force.
+
+== The consequence for prediction ==
+
+This has a sharp edge, and Hilbert put his finger on it in 1916 before the theorem
+existed to explain it.
+
+If some of your equations follow from the others, then knowing everything about
+the present does not determine the future.
+
+That sounds like a disaster and is not. What is undetermined is not anything you
+could observe. It is the part of the description that was never carrying
+information — the overall brightness in the photograph. Two futures that differ
+only in that respect are the same future, described twice.
+
+Hilbert stated the problem for his own scoring rule and spelled out the
+consequence for prediction in his second paper. What he could not say, and what
+the second theorem supplies, is that this is a general fact about local
+symmetries rather than a peculiarity of one theory.
+
+== The counts ==
+
+For general relativity: four free shapes, one for each coordinate you are free to
+relabel, so four identities and four equations that follow from the rest.
+
+For electromagnetism: one free shape, one identity — and this is exactly why the
+potentials of electromagnetism are not determined by the field equations, a fact
+usually presented as a quirk of the subject rather than as an instance of a
+theorem.
+
+For the theories of the strong and weak forces, the counts are larger and the
+principle is identical.
+
+== Two things this does not say ==
+
+'''It does not say the theory has too few equations.''' The number of equations
+matches the number of physically distinct things exactly. It is the number of
+'''variables''' that is larger than both, and it is larger on purpose, because
+that is how a local symmetry gets written down.
+
+'''It does not say the redundant equations are useless.''' They are true and they
+are used constantly. They are simply not independent, and a physicist who counts
+them as independent will conclude the theory is overdetermined when it is not.
+
+== Why anyone would build a theory this way ==
+
+The redundancy is not a price paid for some separate benefit. It '''is''' having
+a local symmetry. Any theory with one has it, and every theory of a fundamental
+force turns out to have one.
+
+== What you do about it in practice ==
+
+Since part of your description carries no information, you have to decide what to
+do with the slack before you can calculate anything.
+
+The usual answer is to make an arbitrary choice and write it down. Fix the overall
+brightness of the photograph at some value and stop worrying about it. Physicists
+call this '''fixing the gauge''', and it is one of the routine steps in setting up
+almost any calculation about a force.
+
+Two things about it are worth knowing.
+
+The choice is genuinely arbitrary. Different choices are convenient for different
+problems, and none is more correct than another. If two people make different
+choices and compute the same observable quantity, they must get the same answer —
+and if they do not, one of them has made a mistake, because a difference that
+depends on the choice cannot be physical.
+
+And the choice is not optional. Without it the equations do not determine a unique
+answer, and a calculation that forgets to make one will run into that fact halfway
+through, usually in a confusing form.
+
+''No mathematics is used on this page. The mathematical treatment is on the
+counterpart page named above.''

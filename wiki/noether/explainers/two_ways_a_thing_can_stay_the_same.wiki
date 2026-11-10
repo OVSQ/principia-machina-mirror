@@ -1,0 +1,113 @@
+{{DISPLAYTITLE:Two ways a thing can stay the same}}
+{{Noether's theorems map}}
+
+''Mathematical counterpart: [[Noether's theorems/First theorem/Invariance of the action, strict and up to a divergence|Invariance of the action: strict, and up to a divergence]].''
+
+[[File:NT-F-16.png|thumb|right|360px|alt=Two boxed conditions side by side. The left, Noether's, requires the action to be unchanged. The right, Bessel-Hagen's, allows it to change by a divergence. Below, a path between two fixed endpoints illustrates that a term fixed by the endpoints cannot respond to a nudge in the middle, so both conditions give the same equations of motion.|Strict invariance against invariance up to a divergence]]
+
+There are two conditions in circulation. Noether used one of them. The other is
+usually presented as hers and is not.
+
+== The strict condition ==
+
+Transform everything. Add up the score again. Get the same total.
+
+That is Noether's condition, and it is the only one in her 1918 paper. Nothing
+weaker appears anywhere in it.
+
+== The weaker condition ==
+
+Now consider a ledger.
+
+You keep a running account through the day. At close of business you compare
+today's total with yesterday's, and they differ — but the difference turns out to
+be entirely a transfer that came in at opening and went out at closing. Nothing
+that happened during the day contributed anything.
+
+That is the weaker condition. The score is allowed to change, provided the change
+depends only on the two endpoints and not on anything in between.
+
+Why should that be good enough? Because the whole test in this subject is whether
+a small nudge in the middle changes the score. A term fixed by the endpoints
+cannot respond to a nudge in the middle. It is there, it is not zero, and it is
+invisible to the only question being asked.
+
+== Who added it ==
+
+'''Erich Bessel-Hagen, in 1921, three years after Noether's paper.'''
+
+This volume states the attribution on every page where the weaker condition is
+used, and it is not a point about credit. It is a point about what a reader
+should expect to find if they open the 1918 paper.
+
+Bessel-Hagen also noticed something that gets dropped when his condition is
+folded into hers. Under the strict condition, if the smallest step works then
+building it up to a large change also works, automatically. Under the weaker
+condition that guarantee is gone. So the weaker condition has to be stated for
+the smallest step and cannot be stated for the finished transformation.
+
+That is a real structural difference and almost every modern statement omits it.
+
+== What it buys ==
+
+One case above all: sliding your whole laboratory at a steady speed instead of
+leaving it parked.
+
+Under the strict condition, this gives nothing. Under the weaker condition it
+gives a genuine and useful result — that the centre of mass of an isolated system
+drifts at a constant rate. See
+[[Noether's theorems/Explainers/Drifting centres and electric charge|Drifting
+centres and electric charge]].
+
+So the weakening is not a technicality. It rescues a real conservation law that
+strict invariance loses.
+
+== What Noether actually says about divergences ==
+
+She does make a remark in this neighbourhood, and it is worth separating from the
+above so the two are not confused.
+
+Take a scoring rule. Add to it a term that only ever contributes at the endpoints.
+You now have a second rule. Her observation is that the second rule has the same
+symmetries as the first — though the way those symmetries are described may look
+more complicated for one rule than the other.
+
+'''That is a statement about two rules sharing one symmetry. Bessel-Hagen's is a
+statement about one rule having more symmetries than strict invariance admits.'''
+They are neighbours. They are not the same, and only his gives the drifting
+centre of mass.
+
+== Why an endpoint term is invisible to the physics ==
+
+It is worth seeing why the weaker condition is allowed at all, rather than taking
+it on trust.
+
+Everything in this subject is settled by one test: nudge the system somewhere in
+the middle, and see whether the score responds.
+
+Now add to the score a term that is fixed entirely by the two endpoints. Nudge the
+middle. The endpoints did not move, so the added term did not change. It
+contributed exactly nothing to the test.
+
+Which means the equations of motion are the same for both scoring rules. Not
+similar — identical. You cannot tell the two rules apart by any experiment,
+because they predict the same behaviour in every situation.
+
+So a symmetry that preserves the score exactly and a symmetry that preserves it up
+to an endpoint term are, as far as the physics goes, equally good symmetries. Only
+one of them is covered by the 1918 paper.
+
+== How to tell which you are dealing with ==
+
+Transform your scoring rule and look at the difference.
+
+If it is zero, you have a strict symmetry and Noether's own condition applies.
+
+If it is not zero, ask whether the difference is the rate of change of something.
+If it is, the difference only ever contributes at the ends, and you have the
+weaker case.
+
+If it is neither, you do not have a symmetry at all and neither theorem applies.
+
+''No mathematics is used on this page. The mathematical treatment is on the
+counterpart page named above.''

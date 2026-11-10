@@ -1,0 +1,95 @@
+{{DISPLAYTITLE:Glossary}}
+{{Noether's theorems map}}
+
+Each entry names the page that defines the term. Where a term is later than 1918
+and not Noether's own, the entry says so.
+
+== Terms from the 1918 paper ==
+
+'''Action.''' The number a scoring rule assigns to a whole history. Noether calls
+it the integral and writes <math>I</math>.
+[[Noether's theorems/First theorem/The action and the variational setup|Definition]], or [[Noether's theorems/Explainers/What an action is|in plain language]].
+
+'''Lagrange expressions.''' The left-hand sides of the equations of the
+variational problem, written <math>\psi_{i}</math>. Kept as expressions, never
+set to zero inside either proof.
+[[Noether's theorems/First theorem/The Lagrange expressions and the first variation|Definition]], or [[Noether's theorems/Explainers/Nudging a path and seeing what changes|in plain language]].
+
+'''Divergence.''' A sum of partial derivatives of a system of functions, one per
+independent variable. Integrates to a boundary term. Same page.
+
+'''Finite continuous group.''' A group whose transformations depend on a fixed
+number of essential constant parameters.
+[[Noether's theorems/First theorem/One-parameter groups and their generators|Definition]], or [[Noether's theorems/Explainers/What a continuous symmetry is|in plain language]].
+
+'''Infinite continuous group.''' A group whose transformations depend on
+arbitrary functions of the independent variables. Not the same as a group with
+infinitely many parameters, which Noether treats as an intermediate case.
+[[Noether's theorems/Second theorem/Groups depending on arbitrary functions|Definition]], or [[Noether's theorems/Explainers/Symmetry that can differ from place to place|in plain language]].
+
+'''Mixed group.''' A group depending on both arbitrary functions and parameters.
+Both theorems apply and give independent results. Same page.
+
+'''Generator.''' The infinitesimal transformation belonging to a one-parameter
+family, from which the finite transformations are recovered by integration.
+[[Noether's theorems/First theorem/One-parameter groups and their generators|Definition]], or [[Noether's theorems/Explainers/What a continuous symmetry is|in plain language]].
+
+'''Prolongation.''' Extension of a transformation to the derivatives, in the way
+the chain rule forces.
+[[Noether's theorems/First theorem/Prolongation to derivatives|Definition]], or [[Noether's theorems/Explainers/Why speed has to come along for the ride|in plain language]].
+
+'''Noether current, Noether charge.''' The system of functions whose divergence
+appears in the first theorem's output, and the integral of one of its components
+over a cross-section. The current is not unique.
+[[Noether's theorems/First theorem/The Noether current and the Noether charge|Definition]], or [[Noether's theorems/Explainers/A flowing quantity and a standing total|in plain language]].
+
+'''Proper, improper.''' A divergence relation is improper when its conserved
+quantity can be assembled from the Lagrange expressions and their derivatives.
+Noether's own terms, from her sixth section.
+[[Noether's theorems/Second theorem/Proper and improper conservation laws|Definition]], or [[Noether's theorems/Explainers/A conservation law that is only wearing the costume|in plain language]].
+
+'''Energy relations, energy components.''' Her names for the divergence relations
+belonging to the translation group and for the quantities appearing in them. Same
+page.
+
+== Terms later than 1918 ==
+
+'''On-shell, off-shell.''' Holding for actual solutions, against holding
+regardless. Noether says instead that she passes to the variational problem.
+[[Noether's theorems/First theorem/On-shell and off-shell|Discussion]], or [[Noether's theorems/Explainers/True everywhere against true for real motions|in plain language]].
+
+'''Noether identities.''' The relations the second theorem returns. She calls them
+dependencies, or identical relations.
+[[Noether's theorems/Second theorem/The Noether identities|Discussion]], or [[Noether's theorems/Explainers/Equations that were never independent|in plain language]].
+
+'''Divergence symmetry, quasi-symmetry.''' Invariance up to a divergence.
+'''Bessel-Hagen's, 1921, not Noether's.'''
+[[Noether's theorems/First theorem/Invariance of the action, strict and up to a divergence|Discussion]], or [[Noether's theorems/Explainers/Two ways a thing can stay the same|in plain language]].
+
+'''Jet.''' A position bundled with its derivatives to some order, treated as a
+single point of a larger space.
+[[Noether's theorems/Mathematics/Jet space and prolongation|Discussion]], or [[Noether's theorems/Explainers/Why Noether needed a third symbol|in plain language]].
+
+'''Moment map.''' The rule assigning to each generator the quantity whose flow it
+is. Written <math>J</math> here, to avoid Noether's <math>\mu</math>.
+[[Noether's theorems/Mathematics/The symplectic form of the theorem and the moment map|Discussion]], or [[Noether's theorems/Explainers/Why the moment map resists plain language|in plain language]].
+
+'''Killing vector.''' A direction along which a metric can be slid without
+distortion.
+[[Noether's theorems/Mathematics/Killing vectors and conserved quantities along geodesics|Definition]], or [[Noether's theorems/Explainers/Symmetries of a curved space|in plain language]].
+
+'''Canonical stress-energy tensor.''' The two-index object the first theorem
+returns for translations. Neither unique nor generally symmetric.
+[[Noether's theorems/Mathematics/The Belinfante-Rosenfeld improvement|Definition]], or [[Noether's theorems/Explainers/Moving the bookkeeping without changing the total|in plain language]].
+
+'''Belinfante-Rosenfeld improvement.''' The addition of a divergence term that
+symmetrises the canonical tensor without changing the conserved charges. Same
+page.
+
+'''Anomaly.''' A classical symmetry that does not survive quantisation. Not a
+failure of either theorem.
+[[Noether's theorems/Mathematics/Anomalies|Discussion]], or [[Noether's theorems/Explainers/When a symmetry does not survive|in plain language]].
+
+'''Topological charge.''' A conserved quantity whose conservation does not use the
+field equations, and which therefore has no symmetry behind it.
+[[Noether's theorems/Applications/Topological charge, which is not a Noether charge|Discussion]], or [[Noether's theorems/Explainers/A conserved quantity Noether does not explain|in plain language]].

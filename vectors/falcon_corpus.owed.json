@@ -1,0 +1,6 @@
+{
+ "corpus": "falcon_corpus.json",
+ "note": "Cases of falcon_corpus.json the Calculator does not judge yet, each with the reason; neither a pass nor a failure. Nothing is owed: with SHA-256 (decision D2, Principia.Sha256) for the draw's h and the output schema's digest, and Unicode 15.1.0's tables (decision D3), every case is judged, and Tests/Falcon.lean requires this list to be empty. The corpus itself is never edited.",
+ "reasons": {},
+ "owed": []
+}

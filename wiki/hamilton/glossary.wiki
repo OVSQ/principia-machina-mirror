@@ -1,0 +1,225 @@
+{{DISPLAYTITLE:Hamilton's principle — Glossary}}
+{{Hamilton's principle map}}
+Terms used in this volume, with the page where each is introduced. Definitions
+here are short; the pages carry the working ones.
+
+Symbols, and the places where this volume's notation collides with the primary
+sources, are at [[Hamilton's principle/Notation|Notation]].
+
+== A ==
+
+'''Abbreviated action.''' The integral of momentum along a path. Distinct from
+Hamilton's action, and the quantity Hamilton himself called <math>V</math>. See
+[[Hamilton's principle/Mathematics/Abbreviated action: Maupertuis versus Hamilton|Abbreviated action: Maupertuis versus Hamilton]].
+
+'''Accessory equation.''' The equation whose solutions govern the second
+variation, and whose zeros are the conjugate points. Also called the Jacobi
+equation. See
+[[Hamilton's principle/Mathematics/The Jacobi condition and conjugate points|the Jacobi condition and conjugate points]].
+
+'''Action.''' Ambiguous without qualification. Two different quantities carry the
+name. See the entry for abbreviated action.
+
+'''Admissible.''' Satisfying whatever the problem requires of a competitor: the
+right endpoints, the required smoothness, and any constraint. See
+[[Hamilton's principle/Mathematics/Functionals and the space of paths|Functionals and the space of paths]].
+
+== B ==
+
+'''Beltrami identity.''' The first integral available when the integrand carries
+no explicit independent variable. In mechanics it is conservation of energy. See
+[[Hamilton's principle/Mathematics/The Beltrami identity|the Beltrami identity]].
+
+'''Brachistochrone.''' The curve of fastest descent under gravity. A cycloid. See
+[[Hamilton's principle/Applications/The brachistochrone|the brachistochrone]].
+
+== C ==
+
+'''Canonical equations.''' Hamilton's first-order equations for position and
+momentum. See
+[[Hamilton's principle/Mathematics/The Hamiltonian and Hamilton's equations|the Hamiltonian and Hamilton's equations]].
+
+'''Catenary.''' The curve of a uniform chain hanging under its own weight. A
+hyperbolic cosine, not a parabola. See
+[[Hamilton's principle/Applications/The catenary|the catenary]].
+
+'''Characteristic function.''' Hamilton's name for the action evaluated on the
+true motion, treated as a function of the endpoints. See
+[[Hamilton's principle/Mathematics/Action as a function of its endpoints|Action as a function of its endpoints]].
+
+'''Conjugate momentum.''' The derivative of the integrand with respect to a
+velocity. Conserved when its coordinate is absent from the integrand. See
+[[Hamilton's principle/Mathematics/The Euler-Lagrange equation|the Euler-Lagrange equation]].
+
+'''Conjugate point.''' A point where neighbouring extremals from a common start
+refocus. Beyond the first one, an extremal is not a minimum. Identical with an
+optical focus. See
+[[Hamilton's principle/Mathematics/The Jacobi condition and conjugate points|the Jacobi condition and conjugate points]].
+
+'''Constraint.''' A restriction on the configurations or motions a system may
+have. Holonomic if it restricts configurations; non-holonomic otherwise. See
+[[Hamilton's principle/Mathematics/Holonomic constraints|Holonomic constraints]].
+
+'''Cyclic coordinate.''' One absent from the integrand, whose conjugate momentum
+is therefore conserved. Also called ignorable.
+
+== D ==
+
+'''Degenerate.''' Said of a problem whose Hessian in the velocities is singular,
+so that momenta cannot be solved for velocities. Characteristic of gauge
+theories. See [[Hamilton's principle/Mathematics/The Legendre transform|the Legendre transform]].
+
+'''Divergence.''' The sum of the derivatives of a vector's components. Noether's
+theorems are statements about when combinations of field equations become
+divergences. See
+[[Hamilton's principle/Mathematics/Several independent variables|Several independent variables]].
+
+== E ==
+
+'''Euler-Lagrange equation.''' The differential equation satisfied by every
+stationary path. Necessary, never sufficient. See
+[[Hamilton's principle/Mathematics/The Euler-Lagrange equation|the Euler-Lagrange equation]].
+
+'''Excess function.''' Weierstrass's measure of how much the integrand exceeds
+its own tangent line in the velocity. Non-negativity is required for a strong
+minimum. See [[Hamilton's principle/Mathematics/The Weierstrass excess function|the Weierstrass excess function]].
+
+'''Extremal.''' A solution of the Euler-Lagrange equation. The word records that
+the equation is satisfied and claims nothing about minimality.
+
+== F ==
+
+'''Fermat's principle.''' Light follows a path of stationary optical length. See
+[[Hamilton's principle/Applications/Fermat's principle|Fermat's principle]].
+
+'''Field.''' A quantity with a value at every point of space, or of spacetime.
+See [[Hamilton's principle/Applications/Classical field theory|Classical field theory]].
+
+'''First variation.''' The derivative of a functional along a one-parameter
+family of paths, at the parameter value giving the path of interest. See
+[[Hamilton's principle/Mathematics/The first variation|the first variation]].
+
+'''Functional.''' A rule assigning one number to a whole function. See
+[[Hamilton's principle/Mathematics/Functionals and the space of paths|Functionals and the space of paths]].
+
+'''Fundamental lemma.''' A continuous function whose integral against every
+admissible test function vanishes is itself zero. The step converting an integral
+statement into a pointwise one. See
+[[Hamilton's principle/Mathematics/The fundamental lemma|the fundamental lemma]].
+
+== G ==
+
+'''Gauge freedom.''' Redundancy in a description: several descriptions
+representing one physical situation. Produces identities among the field
+equations. See [[Hamilton's principle/Mathematics/Noether's second theorem|Noether's second theorem]].
+
+'''Geodesic.''' A stationary curve of arc length on a surface or in a curved
+space. See [[Hamilton's principle/Applications/Geodesics|Geodesics]].
+
+== H ==
+
+'''Hamiltonian.''' The Legendre transform of the Lagrangian in the velocities.
+Conserved when the Lagrangian carries no explicit time. Equal to the energy only
+under stated conditions. See
+[[Hamilton's principle/Mathematics/The Hamiltonian and Hamilton's equations|the Hamiltonian and Hamilton's equations]].
+
+'''Hamilton-Jacobi equation.''' A single partial differential equation whose
+complete solution integrates the whole mechanical problem. The eikonal equation
+of mechanics. See
+[[Hamilton's principle/Mathematics/The Hamilton-Jacobi equation|the Hamilton-Jacobi equation]].
+
+'''Hamilton's principle.''' The action is stationary among paths with fixed
+endpoints and fixed elapsed time.
+
+== I ==
+
+'''Improper conservation law.''' Noether's term for a divergence relation whose
+conserved quantity is built from the field equations, so that it is an identity
+rather than a dynamical statement. See
+[[Hamilton's principle/Mathematics/Noether's second theorem|Noether's second theorem]].
+
+'''Isoperimetric.''' Said of a problem where a second integral is held at a
+prescribed value. Its multiplier is a constant, not a function. See
+[[Hamilton's principle/Mathematics/Isoperimetric problems|Isoperimetric problems]].
+
+== J ==
+
+'''Jacobi condition.''' No conjugate point in the open interval. Necessary for a
+minimum, and with the other conditions strengthened, sufficient for a weak one.
+
+== L ==
+
+'''Lagrangian.''' The integrand of the action. For ordinary mechanical systems,
+kinetic minus potential energy.
+
+'''Legendre condition.''' The coefficient of the squared velocity variation in
+the second variation must not be negative. Local, necessary, and decisively
+insufficient. See [[Hamilton's principle/Mathematics/The Legendre condition|the Legendre condition]].
+
+'''Legendre transform.''' Exchange of a variable for the slope of a function with
+respect to it. Requires convexity. See
+[[Hamilton's principle/Mathematics/The Legendre transform|the Legendre transform]].
+
+== M ==
+
+'''Maslov index.''' The count of conjugate points a path crosses, contributing a
+phase in the semiclassical approximation. See
+[[Hamilton's principle/Applications/The Feynman path integral|the Feynman path integral]].
+
+'''Maupertuis' principle.''' The abbreviated action is stationary among paths of
+fixed energy joining fixed endpoints. Elapsed time is free.
+
+'''Multiplier.''' The unknown introduced to carry a constraint. Equals the
+constraint force. A function for pointwise constraints, a constant for
+isoperimetric ones. See
+[[Hamilton's principle/Mathematics/Lagrange multipliers|Lagrange multipliers]].
+
+== N ==
+
+'''Natural boundary condition.''' A condition at a free endpoint produced by the
+variational problem rather than imposed on it. See
+[[Hamilton's principle/Mathematics/Boundary terms and natural boundary conditions|Boundary terms and natural boundary conditions]].
+
+'''Noether's first theorem.''' A continuous symmetry with finitely many
+parameters yields that many conserved quantities.
+
+'''Noether's second theorem.''' A symmetry depending on arbitrary functions
+yields identities among the field equations.
+
+== P ==
+
+'''Phase space.''' The space of positions and momenta, in which a single point
+determines the entire future and trajectories never cross. See
+[[Hamilton's principle/Mathematics/The Hamiltonian and Hamilton's equations|the Hamiltonian and Hamilton's equations]].
+
+'''Plebeian track.''' This volume's name for its plain-language pages, each
+paired with a technical counterpart.
+
+== S ==
+
+'''Second variation.''' The second derivative of the functional along a family of
+paths. Its sign begins to decide whether an extremal is a minimum. See
+[[Hamilton's principle/Mathematics/The second variation|the second variation]].
+
+'''Stationary.''' The first variation vanishes. Weaker than minimal, and the
+reason this volume avoids the word ''least''.
+
+'''Strong minimum.''' Better than every competitor close in position, whatever
+its slopes. The stronger claim, despite the weaker-sounding name of its
+counterpart.
+
+== T ==
+
+'''Transversality condition.''' The condition at an endpoint constrained to a
+curve rather than a point. For arc length it gives a right angle; in general it
+is not about angles.
+
+== V ==
+
+'''Variation.''' An admissible direction in which a path may be nudged, vanishing
+wherever the endpoints are fixed.
+
+== W ==
+
+'''Weak minimum.''' Better than every competitor close in both position and
+slope. The weaker claim.

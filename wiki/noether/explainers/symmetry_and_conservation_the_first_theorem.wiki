@@ -1,0 +1,119 @@
+{{DISPLAYTITLE:Symmetry and conservation: the first theorem}}
+{{Noether's theorems map}}
+
+''Mathematical counterpart: [[Noether's theorems/First theorem/The first theorem stated and proved|The first theorem stated and proved]].''
+
+[[File:NT-F-01.png|thumb|right|360px|alt=An irregular closed region representing all field configurations, with a curve running through it marked as one symmetry orbit. Points along the curve are marked, one of them highlighted as a solution. The caption states that the action has the same value everywhere along the orbit.|A symmetry orbit through the space of configurations]]
+
+This is the primer. If you read one page of this volume, read this one.
+
+== The statement ==
+
+Take a scoring rule for whole histories — an
+[[Noether's theorems/Explainers/What an action is|action]]. Suppose there is a
+smoothly adjustable change that leaves every score alone. Count its knobs.
+
+Then for each knob there is a quantity that flows without accumulating anywhere.
+And once the system is actually obeying its equations of motion, that quantity is
+conserved: it has the same value at the end as at the beginning.
+
+Turn a knob for time and you get energy. Turn one for place and you get momentum.
+Turn one for direction and you get angular momentum.
+
+== What is surprising about this ==
+
+Nothing in the setup mentions energy. Nothing mentions conservation. You put in a
+statement about the shape of a scoring rule and you get out a quantity that
+nature keeps constant.
+
+The three quantities above were known to be conserved for centuries before 1918.
+Noether did not discover them. What she supplied was the reason — and the reason
+turned out to be the same reason in all three cases, which nobody had known.
+
+She also supplied the count. Three knobs for rotation, three conserved
+quantities, and no fourth to look for.
+
+== Two things the theorem does not say ==
+
+'''It does not say every conserved quantity comes from a symmetry.''' Some do
+not, and this volume has
+[[Noether's theorems/Explainers/A conserved quantity Noether does not explain|a
+page on one]].
+
+'''It does not say conservation is the output.''' This is the point most
+compressed accounts lose, and it is worth being slow about.
+
+What the theorem gives you first is a statement true of '''every''' possible
+history, including impossible ones. It says a certain combination flows without
+piling up. That statement holds for a ball on a path it would never take.
+
+Conservation arrives only when you add the extra condition that the system is
+doing what physics says. That is a second step, Noether takes it separately and
+visibly, and there is a
+[[Noether's theorems/Explainers/True everywhere against true for real motions|whole
+page]] on why keeping the two apart is worth the trouble.
+
+== It works backwards too ==
+
+Noether proved the reverse as well: find such a flowing quantity, and there must
+be a symmetry behind it.
+
+Most textbooks give one direction only. The reverse is the direction that does
+real work, because it turns an observation into evidence. Something is conserved
+and you do not know why? The theorem says look for the symmetry, and it is there.
+See
+[[Noether's theorems/Explainers/Reading the theorem backwards|Reading the theorem
+backwards]].
+
+== And there is a second theorem ==
+
+The page you are reading covers one of Noether's two theorems.
+
+The other one takes a different kind of symmetry — one that can be dialled
+differently from place to place — and it does not give conservation laws at all.
+It gives something stranger and, for modern physics, more important.
+
+It is the theorem the paper was written to prove, and it is the one that usually
+gets left out. See
+[[Noether's theorems/Explainers/The second theorem, and why it is not the first|The
+second theorem, and why it is not the first]].
+
+== One slogan to be careful with ==
+
+You will often see the theorem compressed to four words: symmetry implies
+conservation.
+
+It is a good slogan and it is not the theorem. It drops the identity that holds
+before physics is imposed, it drops the reverse direction, and it leaves no room
+at all for the second theorem. Use it to remember the shape. Do not use it to
+decide what is true.
+
+== One case, all the way through ==
+
+A pendulum clock in a sealed room.
+
+'''The scoring rule.''' At each instant the pendulum has a position and a speed.
+The rule combines them into a number, and adding that number up over the whole
+swing gives the score for that history.
+
+'''The symmetry.''' Nothing in the rule mentions what time it is. Start the clock
+now or in an hour, and the rule is the same rule. One knob: how far you shift the
+start.
+
+'''The count.''' One knob, so exactly one conserved quantity, and no second one to
+hunt for.
+
+'''The quantity.''' It turns out to be the sum of the energy of motion and the
+energy of position — the total energy. Nobody put energy into the setup. It fell
+out of the fact that the rule does not mention the time.
+
+'''The check.''' Now open a window and let the room warm through the afternoon,
+so that the air resistance changes as the day goes on. The rule now does mention
+the time. The symmetry is gone, and so is the conservation law — the pendulum
+really does lose energy, and the theorem correctly predicts that it may.
+
+That last step is the one worth remembering. The theorem is not a guarantee that
+energy is conserved. It is a statement about exactly when it is.
+
+''No mathematics is used on this page. The mathematical treatment is on the
+counterpart page named above.''

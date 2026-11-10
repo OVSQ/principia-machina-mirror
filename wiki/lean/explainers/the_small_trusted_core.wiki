@@ -1,0 +1,119 @@
+{{DISPLAYTITLE:The small trusted core}}
+{{Technical|Lean theorem prover/System/The Lean kernel}}
+{{Lean theorem prover map}}
+
+Lean is a large program, and large programs have faults. Yet a proof Lean accepts can be
+believed without believing all of Lean. This page says why: one small part does the judging, and
+everything else only proposes. It names the principle behind that design, the part of Lean that
+does the judging, and what the rest of Lean is for.
+
+== A large program with a small judge ==
+
+A proof assistant has to do many things. It reads what a person types, fills in what the person
+left out, runs automation that searches for proofs, shows the state of an unfinished proof,
+reports errors and keeps track of thousands of definitions and theorems. Each of these is a
+place where a mistake in the program could hide.
+
+If a proof were only as reliable as all of that machinery together, nobody could say how reliable
+it was. The answer is to separate two jobs. Finding a proof is hard and needs cleverness, so it is
+left to parts of the program that may be clever and may be wrong. Checking a proof that has been
+written out in full is mechanical, so it is given to a part that is simple and is meant to be right.
+
+The second part is the only one whose mistakes would matter. If it is small, people can read it,
+others can write it again independently, and its correctness can itself become a subject of proof.
+
+== De Bruijn's criterion ==
+
+The idea is N. G. de Bruijn's, whose Automath was the pioneer among computer systems for checking
+mathematics (see [[Lean theorem prover/History/Automath|Automath]]). He stressed that checking
+formal proofs by machine brings a real gain in reliability, because the program that checks them
+can be small. Henk Barendregt and Freek Wiedijk, writing in 2005, state the principle under his
+name: a proof assistant meets the '''de Bruijn criterion''' when its proofs can be checked
+independently by a small program, one that a mathematician or logician can inspect in the usual
+way.<ref name="bw2005">Henk Barendregt and Freek Wiedijk, "The challenge of computer mathematics", ''Philosophical Transactions of the Royal Society A'' 363, no. 1835 (2005), pp. 2351–2375. [https://doi.org/10.1098/rsta.2005.1650 doi:10.1098/rsta.2005.1650]</ref>
+
+The criterion rests on a difference between proving and checking. Whether a statement has a
+proof at all cannot, in general, be settled by a machine. Whether a given text is a proof of a
+given statement can be: the checker only has to confirm that each step follows one of a small
+number of rules.<ref name="bw2005" /> A proof may run to megabytes; the program that checks it
+can still be short.
+
+Pollack made the same argument in 1998. A simple checker that only verifies explicit
+derivations, with no search and no heuristics, is a formal object much smaller and easier to
+understand than almost any substantial proof. To believe a proof it accepts, a reader has to
+understand the checker, not the proof.<ref name="pollack">R. Pollack, "How to believe a machine-checked proof", in Giovanni Sambin and Jan M. Smith (eds), ''Twenty Five Years of Constructive Type Theory'', Oxford University Press, 1998, chapter 11 (from p. 205); first issued as BRICS Report RS-97-18, Aarhus University, 1997. [https://doi.org/10.7146/brics.v4i18.18945 doi:10.7146/brics.v4i18.18945]</ref> He also recalls a remark of J Moore about
+an earlier prover, NQTHM: until one long proof was checked with it, a reader who wanted to believe
+everything it had checked would have done better to read all the proofs than its code, because
+the code was longer than all of them.<ref name="pollack" />
+
+== The Lean kernel ==
+
+In Lean the judge is the '''Lean kernel'''. Lean's own reference describes it as "a small, robust
+implementation of a type checker for the core type theory", written in C++.<ref name="refelab">''The Lean Language Reference'', version for Lean 4.34.0, section "Elaboration and Compilation". [https://lean-lang.org/doc/reference/4.34.0/Elaboration-and-Compilation/ lean-lang.org/doc/reference/4.34.0/Elaboration-and-Compilation], consulted 14 October 2026.</ref>
+Every new definition, theorem or inductive type has to pass it before it is added to Lean's
+environment, its table of definitions and theorems; the check is there to catch faults in the
+parts of Lean that produced the definition.<ref name="refelab" /> The paper that introduced
+Lean 4 describes the same design: the trusted part of Lean is relatively small, and an interface
+lets users export their work and write their own checkers.<ref name="lean4">Leonardo de Moura and Sebastian Ullrich, "The Lean 4 Theorem Prover and Programming Language (System Description)", in ''Automated Deduction – CADE 28'', Lecture Notes in Computer Science, Springer, 2021, pp. 625–635. [https://doi.org/10.1007/978-3-030-79876-5_37 doi:10.1007/978-3-030-79876-5_37]</ref>
+
+The Lean kernel is kept small partly by what it leaves to others. It does not search for proofs.
+It does not work out missing pieces of a term; that is finished before a term reaches it. It does
+not check that recursive functions finish: by the time a recursive definition reaches the Lean
+kernel, it has been rewritten into a form built from basic recursion principles, which always
+finish.<ref name="refelab" /> (See [[Lean theorem prover/Explainers/Functions that always finish|functions that always finish]].)
+
+== The untrusted helpers ==
+
+Everything else in Lean is a helper. The '''elaborator''' turns what a person writes, with its
+notation, its omitted arguments and its overloaded numerals, into a complete and explicit term.
+'''Tactics''' are small programs that construct proof terms step by step, some of them doing a great
+deal of search. Neither has to be trusted for the soundness of a proof, because neither has the
+last word: their output goes to the Lean kernel, which accepts it or refuses it.<ref name="tcl4">''Type Checking in Lean 4'', online book, chapter "Trust". [https://ammkrn.github.io/type_checking_in_lean4/trust/trust.html ammkrn.github.io/type_checking_in_lean4], consulted 14 October 2026.</ref>
+
+The difference is visible. Here a tactic, <code>rw</code>, proves that addition can be done in
+either order, and <code>#print</code> shows what was actually stored as the proof:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem swap (a b : Nat) : a + b = b + a := by
+  rw [Nat.add_comm]
+
+#print swap
+</pre>
+
+Lean 4.34.1 prints:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem swap : ∀ (a b : Nat), a + b = b + a :=
+fun a b => Eq.mpr (id (congrArg (fun _a => _a = b + a) (Nat.add_comm a b))) (Eq.refl (b + a))
+</pre>
+
+The command <code>rw</code> is gone. What remains is a term made of named facts and rules, and it
+is that term the Lean kernel checked. If the tactic had a fault and produced a term that did not
+prove the statement, the Lean kernel would refuse it, and the fault would show up as an error
+rather than as a false theorem.
+
+== What a small core does not settle ==
+
+A small judge narrows the question of trust; it does not remove it. Three things stay outside.
+The Lean kernel itself could have a fault, which is why independent re-checkers exist (see
+[[Lean theorem prover/Explainers/Checking a proof again later|checking a proof again later]]).
+Some features of Lean let results in without the Lean kernel computing them; they are listed on
+[[Lean theorem prover/Explainers/What has to be trusted|what has to be trusted]]. And the Lean
+kernel checks that a proof proves the statement as written, which may not be the statement that
+was meant (see [[Lean theorem prover/Explainers/Stating the right thing|stating the right thing]]).
+
+Barendregt and Wiedijk noted one more tension. Systems in which some equations are settled by
+computation rather than by written-out steps strain the criterion a little, since the checker
+must then also compute; they judged this acceptable because the basic steps of
+computation are themselves simple.<ref name="bw2005" /> Lean is such a system (see
+[[Lean theorem prover/Explainers/Computation inside proofs|computation inside proofs]]).
+
+== Next ==
+
+[[Lean theorem prover/Explainers/What has to be trusted|What has to be trusted]] lists everything
+a reader of a Lean proof still relies on. The technical counterpart,
+[[Lean theorem prover/System/The Lean kernel|the Lean kernel]], describes what it checks.
+
+== References ==
+
+<references />

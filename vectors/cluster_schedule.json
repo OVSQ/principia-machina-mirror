@@ -1,0 +1,1141 @@
+{
+ "cases": [
+  {
+   "name": "no page yet: the first run is due",
+   "request": {
+    "clock": 1793491200,
+    "state": null
+   },
+   "expected": {
+    "due": true,
+    "month": "2026-11"
+   }
+  },
+  {
+   "name": "the month's first run on day 1 at 00:00:00",
+   "request": {
+    "clock": 1793491200,
+    "state": {
+     "failing": [],
+     "month": "2026-10",
+     "state": "PUBLISHED"
+    }
+   },
+   "expected": {
+    "due": true,
+    "month": "2026-11"
+   }
+  },
+  {
+   "name": "a second run the same month is not due",
+   "request": {
+    "clock": 1794744000,
+    "state": {
+     "failing": [],
+     "month": "2026-11",
+     "state": "PUBLISHED"
+    }
+   },
+   "expected": {
+    "due": false,
+    "month": "2026-11"
+   }
+  },
+  {
+   "name": "the month's last second is not due",
+   "request": {
+    "clock": 1796083199,
+    "state": {
+     "failing": [],
+     "month": "2026-11",
+     "state": "PUBLISHED"
+    }
+   },
+   "expected": {
+    "due": false,
+    "month": "2026-11"
+   }
+  },
+  {
+   "name": "the next month's first second is due",
+   "request": {
+    "clock": 1796083200,
+    "state": {
+     "failing": [],
+     "month": "2026-11",
+     "state": "PUBLISHED"
+    }
+   },
+   "expected": {
+    "due": true,
+    "month": "2026-12"
+   }
+  },
+  {
+   "name": "the year's end: 23:59:59 on 31 December",
+   "request": {
+    "clock": 1798761599,
+    "state": null
+   },
+   "expected": {
+    "due": true,
+    "month": "2026-12"
+   }
+  },
+  {
+   "name": "the year's start: 00:00:00 on 1 January",
+   "request": {
+    "clock": 1798761600,
+    "state": null
+   },
+   "expected": {
+    "due": true,
+    "month": "2027-01"
+   }
+  },
+  {
+   "name": "a leap day is February's",
+   "request": {
+    "clock": 1835438400,
+    "state": {
+     "failing": [],
+     "month": "2028-02",
+     "state": "PUBLISHED"
+    }
+   },
+   "expected": {
+    "due": false,
+    "month": "2028-02"
+   }
+  },
+  {
+   "name": "the leap day's last second",
+   "request": {
+    "clock": 1835481599,
+    "state": {
+     "failing": [],
+     "month": "2028-01",
+     "state": "PUBLISHED"
+    }
+   },
+   "expected": {
+    "due": true,
+    "month": "2028-02"
+   }
+  },
+  {
+   "name": "1 March after a leap day",
+   "request": {
+    "clock": 1835481600,
+    "state": {
+     "failing": [],
+     "month": "2028-02",
+     "state": "PUBLISHED"
+    }
+   },
+   "expected": {
+    "due": true,
+    "month": "2028-03"
+   }
+  },
+  {
+   "name": "2100 is not a leap year: 28 February's last second",
+   "request": {
+    "clock": 4107542399,
+    "state": null
+   },
+   "expected": {
+    "due": true,
+    "month": "2100-02"
+   }
+  },
+  {
+   "name": "2100 is not a leap year: 1 March follows 28 February",
+   "request": {
+    "clock": 4107542400,
+    "state": null
+   },
+   "expected": {
+    "due": true,
+    "month": "2100-03"
+   }
+  },
+  {
+   "name": "2000 is a leap year: 29 February",
+   "request": {
+    "clock": 951782400,
+    "state": null
+   },
+   "expected": {
+    "due": true,
+    "month": "2000-02"
+   }
+  },
+  {
+   "name": "the clock's first second",
+   "request": {
+    "clock": 0,
+    "state": null
+   },
+   "expected": {
+    "due": true,
+    "month": "1970-01"
+   }
+  },
+  {
+   "name": "the clock's last second",
+   "request": {
+    "clock": 253402300799,
+    "state": null
+   },
+   "expected": {
+    "due": true,
+    "month": "9999-12"
+   }
+  },
+  {
+   "name": "every source served publishes the month",
+   "request": {
+    "clock": 1793512800,
+    "state": {
+     "failing": [],
+     "month": "2026-10",
+     "state": "PUBLISHED"
+    },
+    "outcomes": {
+     "B": "SERVED",
+     "A": "SERVED"
+    }
+   },
+   "expected": {
+    "due": true,
+    "month": "2026-11",
+    "named": [],
+    "publish": true,
+    "state": {
+     "failing": [],
+     "month": "2026-11",
+     "state": "PUBLISHED"
+    }
+   }
+  },
+  {
+   "name": "the first page ever, every source served",
+   "request": {
+    "clock": 1793512800,
+    "state": null,
+    "outcomes": {
+     "A": "SERVED"
+    }
+   },
+   "expected": {
+    "due": true,
+    "month": "2026-11",
+    "named": [],
+    "publish": true,
+    "state": {
+     "failing": [],
+     "month": "2026-11",
+     "state": "PUBLISHED"
+    }
+   }
+  },
+  {
+   "name": "a failure keeps the prior page in SOURCE FAILING",
+   "request": {
+    "clock": 1793512800,
+    "state": {
+     "failing": [],
+     "month": "2026-10",
+     "state": "PUBLISHED"
+    },
+    "outcomes": {
+     "A": "SERVED",
+     "B": "FAILED"
+    }
+   },
+   "expected": {
+    "due": true,
+    "month": "2026-11",
+    "named": [
+     "B"
+    ],
+    "publish": false,
+    "state": {
+     "failing": [
+      {
+       "lost": 0,
+       "since": 1793512800,
+       "source": "B"
+      }
+     ],
+     "month": "2026-10",
+     "state": "SOURCE FAILING"
+    }
+   }
+  },
+  {
+   "name": "a retry inside SOURCE RETRY keeps the failure's start",
+   "request": {
+    "clock": 1793599200,
+    "state": {
+     "failing": [
+      {
+       "lost": 0,
+       "since": 1793512800,
+       "source": "B"
+      }
+     ],
+     "month": "2026-10",
+     "state": "SOURCE FAILING"
+    },
+    "outcomes": {
+     "A": "SERVED",
+     "B": "FAILED"
+    }
+   },
+   "expected": {
+    "due": true,
+    "month": "2026-11",
+    "named": [
+     "B"
+    ],
+    "publish": false,
+    "state": {
+     "failing": [
+      {
+       "lost": 0,
+       "since": 1793512800,
+       "source": "B"
+      }
+     ],
+     "month": "2026-10",
+     "state": "SOURCE FAILING"
+    }
+   }
+  },
+  {
+   "name": "a retry one second inside SOURCE RETRY does not publish",
+   "request": {
+    "clock": 1794117599,
+    "state": {
+     "failing": [
+      {
+       "lost": 0,
+       "since": 1793512800,
+       "source": "B"
+      }
+     ],
+     "month": "2026-10",
+     "state": "SOURCE FAILING"
+    },
+    "outcomes": {
+     "A": "SERVED",
+     "B": "FAILED"
+    }
+   },
+   "expected": {
+    "due": true,
+    "month": "2026-11",
+    "named": [
+     "B"
+    ],
+    "publish": false,
+    "state": {
+     "failing": [
+      {
+       "lost": 0,
+       "since": 1793512800,
+       "source": "B"
+      }
+     ],
+     "month": "2026-10",
+     "state": "SOURCE FAILING"
+    }
+   }
+  },
+  {
+   "name": "a retry just past SOURCE RETRY publishes without the source",
+   "request": {
+    "clock": 1794117600,
+    "state": {
+     "failing": [
+      {
+       "lost": 0,
+       "since": 1793512800,
+       "source": "B"
+      }
+     ],
+     "month": "2026-10",
+     "state": "SOURCE FAILING"
+    },
+    "outcomes": {
+     "A": "SERVED",
+     "B": "FAILED"
+    }
+   },
+   "expected": {
+    "due": true,
+    "month": "2026-11",
+    "named": [
+     "B"
+    ],
+    "publish": true,
+    "state": {
+     "failing": [
+      {
+       "lost": 1,
+       "since": 1793512800,
+       "source": "B"
+      }
+     ],
+     "month": "2026-11",
+     "state": "PUBLISHED"
+    }
+   }
+  },
+  {
+   "name": "a source recovered inside SOURCE RETRY publishes in full",
+   "request": {
+    "clock": 1793685600,
+    "state": {
+     "failing": [
+      {
+       "lost": 0,
+       "since": 1793512800,
+       "source": "B"
+      }
+     ],
+     "month": "2026-10",
+     "state": "SOURCE FAILING"
+    },
+    "outcomes": {
+     "A": "SERVED",
+     "B": "SERVED"
+    }
+   },
+   "expected": {
+    "due": true,
+    "month": "2026-11",
+    "named": [],
+    "publish": true,
+    "state": {
+     "failing": [],
+     "month": "2026-11",
+     "state": "PUBLISHED"
+    }
+   }
+  },
+  {
+   "name": "the second cycle without the source is SOURCE LOST",
+   "request": {
+    "clock": 1796104800,
+    "state": {
+     "failing": [
+      {
+       "lost": 1,
+       "since": 1793512800,
+       "source": "B"
+      }
+     ],
+     "month": "2026-11",
+     "state": "PUBLISHED"
+    },
+    "outcomes": {
+     "A": "SERVED",
+     "B": "FAILED"
+    }
+   },
+   "expected": {
+    "due": true,
+    "month": "2026-12",
+    "named": [
+     "B"
+    ],
+    "publish": true,
+    "state": {
+     "failing": [
+      {
+       "lost": 2,
+       "since": 1793512800,
+       "source": "B"
+      }
+     ],
+     "month": "2026-12",
+     "state": "SOURCE LOST"
+    }
+   }
+  },
+  {
+   "name": "a lost source served again publishes in full",
+   "request": {
+    "clock": 1798783200,
+    "state": {
+     "failing": [
+      {
+       "lost": 2,
+       "since": 1793512800,
+       "source": "B"
+      }
+     ],
+     "month": "2026-12",
+     "state": "SOURCE LOST"
+    },
+    "outcomes": {
+     "A": "SERVED",
+     "B": "SERVED"
+    }
+   },
+   "expected": {
+    "due": true,
+    "month": "2027-01",
+    "named": [],
+    "publish": true,
+    "state": {
+     "failing": [],
+     "month": "2027-01",
+     "state": "PUBLISHED"
+    }
+   }
+  },
+  {
+   "name": "a third cycle stays SOURCE LOST",
+   "request": {
+    "clock": 1798783200,
+    "state": {
+     "failing": [
+      {
+       "lost": 2,
+       "since": 1793512800,
+       "source": "B"
+      }
+     ],
+     "month": "2026-12",
+     "state": "SOURCE LOST"
+    },
+    "outcomes": {
+     "A": "SERVED",
+     "B": "FAILED"
+    }
+   },
+   "expected": {
+    "due": true,
+    "month": "2027-01",
+    "named": [
+     "B"
+    ],
+    "publish": true,
+    "state": {
+     "failing": [
+      {
+       "lost": 3,
+       "since": 1793512800,
+       "source": "B"
+      }
+     ],
+     "month": "2027-01",
+     "state": "SOURCE LOST"
+    }
+   }
+  },
+  {
+   "name": "a new failure beside a lost source keeps the page",
+   "request": {
+    "clock": 1796104800,
+    "state": {
+     "failing": [
+      {
+       "lost": 1,
+       "since": 1793512800,
+       "source": "B"
+      }
+     ],
+     "month": "2026-11",
+     "state": "PUBLISHED"
+    },
+    "outcomes": {
+     "A": "FAILED",
+     "B": "FAILED"
+    }
+   },
+   "expected": {
+    "due": true,
+    "month": "2026-12",
+    "named": [
+     "A"
+    ],
+    "publish": false,
+    "state": {
+     "failing": [
+      {
+       "lost": 0,
+       "since": 1796104800,
+       "source": "A"
+      },
+      {
+       "lost": 1,
+       "since": 1793512800,
+       "source": "B"
+      }
+     ],
+     "month": "2026-11",
+     "state": "SOURCE FAILING"
+    }
+   }
+  },
+  {
+   "name": "the first run ever failing keeps no page",
+   "request": {
+    "clock": 1793512800,
+    "state": null,
+    "outcomes": {
+     "A": "FAILED"
+    }
+   },
+   "expected": {
+    "due": true,
+    "month": "2026-11",
+    "named": [
+     "A"
+    ],
+    "publish": false,
+    "state": {
+     "failing": [
+      {
+       "lost": 0,
+       "since": 1793512800,
+       "source": "A"
+      }
+     ],
+     "month": null,
+     "state": "SOURCE FAILING"
+    }
+   }
+  },
+  {
+   "name": "the first run ever, past SOURCE RETRY, publishes without the source",
+   "request": {
+    "clock": 1794117600,
+    "state": {
+     "failing": [
+      {
+       "lost": 0,
+       "since": 1793512800,
+       "source": "A"
+      }
+     ],
+     "month": null,
+     "state": "SOURCE FAILING"
+    },
+    "outcomes": {
+     "A": "FAILED",
+     "C": "SERVED"
+    }
+   },
+   "expected": {
+    "due": true,
+    "month": "2026-11",
+    "named": [
+     "A"
+    ],
+    "publish": true,
+    "state": {
+     "failing": [
+      {
+       "lost": 1,
+       "since": 1793512800,
+       "source": "A"
+      }
+     ],
+     "month": "2026-11",
+     "state": "PUBLISHED"
+    }
+   }
+  },
+  {
+   "name": "a failure carried across a month boundary keeps its start",
+   "request": {
+    "clock": 1796104800,
+    "state": {
+     "failing": [
+      {
+       "lost": 0,
+       "since": 1795845600,
+       "source": "B"
+      }
+     ],
+     "month": "2026-10",
+     "state": "SOURCE FAILING"
+    },
+    "outcomes": {
+     "B": "FAILED"
+    }
+   },
+   "expected": {
+    "due": true,
+    "month": "2026-12",
+    "named": [
+     "B"
+    ],
+    "publish": false,
+    "state": {
+     "failing": [
+      {
+       "lost": 0,
+       "since": 1795845600,
+       "source": "B"
+      }
+     ],
+     "month": "2026-10",
+     "state": "SOURCE FAILING"
+    }
+   }
+  },
+  {
+   "name": "refused: outcomes for a run not due",
+   "request": {
+    "clock": 1794700800,
+    "state": {
+     "failing": [],
+     "month": "2026-11",
+     "state": "PUBLISHED"
+    },
+    "outcomes": {
+     "A": "SERVED"
+    }
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "outcomes"
+  },
+  {
+   "name": "refused: no outcome",
+   "request": {
+    "clock": 1793491200,
+    "state": {
+     "failing": [],
+     "month": "2026-10",
+     "state": "PUBLISHED"
+    },
+    "outcomes": {}
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "outcomes"
+  },
+  {
+   "name": "refused: an outcome not SERVED or FAILED",
+   "request": {
+    "clock": 1793491200,
+    "state": {
+     "failing": [],
+     "month": "2026-10",
+     "state": "PUBLISHED"
+    },
+    "outcomes": {
+     "A": "OK"
+    }
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "outcomes"
+  },
+  {
+   "name": "refused: an outcome of an unnamed source",
+   "request": {
+    "clock": 1793491200,
+    "state": {
+     "failing": [],
+     "month": "2026-10",
+     "state": "PUBLISHED"
+    },
+    "outcomes": {
+     "": "SERVED"
+    }
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "outcomes"
+  },
+  {
+   "name": "refused: outcomes not an object",
+   "request": {
+    "clock": 1793491200,
+    "state": {
+     "failing": [],
+     "month": "2026-10",
+     "state": "PUBLISHED"
+    },
+    "outcomes": [
+     "A"
+    ]
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "outcomes"
+  },
+  {
+   "name": "refused: a negative clock",
+   "request": {
+    "clock": -1,
+    "state": null
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "clock"
+  },
+  {
+   "name": "refused: a clock with a fraction",
+   "request": {
+    "clock": 1.5,
+    "state": null
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "clock"
+  },
+  {
+   "name": "refused: a clock after 9999",
+   "request": {
+    "clock": 253402300800,
+    "state": null
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "clock"
+  },
+  {
+   "name": "refused: the clock missing",
+   "request": {
+    "state": null
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "the argument \"clock\" is missing"
+  },
+  {
+   "name": "refused: the state missing",
+   "request": {
+    "clock": 0
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "the argument \"state\" is missing"
+  },
+  {
+   "name": "refused: an argument not taken",
+   "request": {
+    "clock": 0,
+    "state": null,
+    "now": 0
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "the function takes no argument \"now\""
+  },
+  {
+   "name": "refused: a block without its state word",
+   "request": {
+    "clock": 1793491200,
+    "state": {
+     "failing": [],
+     "month": "2026-10"
+    }
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "state"
+  },
+  {
+   "name": "refused: a block with a member more",
+   "request": {
+    "clock": 1793491200,
+    "state": {
+     "failing": [],
+     "month": "2026-10",
+     "state": "PUBLISHED",
+     "note": "x"
+    }
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "state"
+  },
+  {
+   "name": "refused: an unknown state word",
+   "request": {
+    "clock": 1793491200,
+    "state": {
+     "failing": [],
+     "month": "2026-10",
+     "state": "STALE"
+    }
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "state"
+  },
+  {
+   "name": "refused: a month 13",
+   "request": {
+    "clock": 1793491200,
+    "state": {
+     "failing": [],
+     "month": "2026-13",
+     "state": "PUBLISHED"
+    }
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "month"
+  },
+  {
+   "name": "refused: a month before 1970",
+   "request": {
+    "clock": 1793491200,
+    "state": {
+     "failing": [],
+     "month": "1969-12",
+     "state": "PUBLISHED"
+    }
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "month"
+  },
+  {
+   "name": "refused: a month not YYYY-MM",
+   "request": {
+    "clock": 1793491200,
+    "state": {
+     "failing": [],
+     "month": "2026-1",
+     "state": "PUBLISHED"
+    }
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "month"
+  },
+  {
+   "name": "refused: a month after the clock's",
+   "request": {
+    "clock": 1793491200,
+    "state": {
+     "failing": [],
+     "month": "2026-12",
+     "state": "PUBLISHED"
+    }
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "month"
+  },
+  {
+   "name": "refused: failing sources out of order",
+   "request": {
+    "clock": 1796083200,
+    "state": {
+     "failing": [
+      {
+       "lost": 1,
+       "since": 1793512800,
+       "source": "B"
+      },
+      {
+       "lost": 1,
+       "since": 1793512800,
+       "source": "A"
+      }
+     ],
+     "month": "2026-11",
+     "state": "PUBLISHED"
+    }
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "failing"
+  },
+  {
+   "name": "refused: a failing source named twice",
+   "request": {
+    "clock": 1796083200,
+    "state": {
+     "failing": [
+      {
+       "lost": 1,
+       "since": 1793512800,
+       "source": "A"
+      },
+      {
+       "lost": 1,
+       "since": 1793512800,
+       "source": "A"
+      }
+     ],
+     "month": "2026-11",
+     "state": "PUBLISHED"
+    }
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "failing"
+  },
+  {
+   "name": "refused: a failing source unnamed",
+   "request": {
+    "clock": 1796083200,
+    "state": {
+     "failing": [
+      {
+       "lost": 1,
+       "since": 1793512800,
+       "source": ""
+      }
+     ],
+     "month": "2026-11",
+     "state": "PUBLISHED"
+    }
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "failing"
+  },
+  {
+   "name": "refused: a failure begun after the clock",
+   "request": {
+    "clock": 1793512800,
+    "state": {
+     "failing": [
+      {
+       "lost": 0,
+       "since": 1793512801,
+       "source": "B"
+      }
+     ],
+     "month": "2026-10",
+     "state": "SOURCE FAILING"
+    }
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "failing"
+  },
+  {
+   "name": "refused: PUBLISHED with a source never published without",
+   "request": {
+    "clock": 1796083200,
+    "state": {
+     "failing": [
+      {
+       "lost": 0,
+       "since": 1793512800,
+       "source": "B"
+      }
+     ],
+     "month": "2026-11",
+     "state": "PUBLISHED"
+    }
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "state"
+  },
+  {
+   "name": "refused: PUBLISHED with a source at SOURCE LOST cycles",
+   "request": {
+    "clock": 1798761600,
+    "state": {
+     "failing": [
+      {
+       "lost": 2,
+       "since": 1793512800,
+       "source": "B"
+      }
+     ],
+     "month": "2026-12",
+     "state": "PUBLISHED"
+    }
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "state"
+  },
+  {
+   "name": "refused: SOURCE LOST with no source at SOURCE LOST cycles",
+   "request": {
+    "clock": 1798761600,
+    "state": {
+     "failing": [
+      {
+       "lost": 1,
+       "since": 1793512800,
+       "source": "B"
+      }
+     ],
+     "month": "2026-12",
+     "state": "SOURCE LOST"
+    }
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "state"
+  },
+  {
+   "name": "refused: SOURCE FAILING with no source in its first SOURCE RETRY",
+   "request": {
+    "clock": 1796083200,
+    "state": {
+     "failing": [
+      {
+       "lost": 1,
+       "since": 1793512800,
+       "source": "B"
+      }
+     ],
+     "month": "2026-10",
+     "state": "SOURCE FAILING"
+    }
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "state"
+  },
+  {
+   "name": "refused: SOURCE FAILING of the clock's month",
+   "request": {
+    "clock": 1795132800,
+    "state": {
+     "failing": [
+      {
+       "lost": 0,
+       "since": 1793512800,
+       "source": "B"
+      }
+     ],
+     "month": "2026-11",
+     "state": "SOURCE FAILING"
+    }
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "state"
+  },
+  {
+   "name": "refused: PUBLISHED with no month",
+   "request": {
+    "clock": 1793491200,
+    "state": {
+     "failing": [],
+     "month": null,
+     "state": "PUBLISHED"
+    }
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "state"
+  },
+  {
+   "name": "refused: a state that is not an object",
+   "request": {
+    "clock": 1793491200,
+    "state": "PUBLISHED"
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "state"
+  },
+  {
+   "name": "OWED: a failing source no longer declared",
+   "request": {
+    "clock": 1793599200,
+    "state": {
+     "failing": [
+      {
+       "lost": 0,
+       "since": 1793512800,
+       "source": "B"
+      }
+     ],
+     "month": "2026-10",
+     "state": "SOURCE FAILING"
+    },
+    "outcomes": {
+     "A": "SERVED"
+    }
+   },
+   "refused": "OWED"
+  }
+ ]
+}

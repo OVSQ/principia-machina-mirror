@@ -1,0 +1,141 @@
+{{Noether's theorems map}}
+[[File:NT-F-07.png|thumb|right|360px|alt=Five symmetries in a left column, each joined by an arrow to the quantity it conserves in a right column: clock shift to energy, spatial motion to momentum, rotation to angular momentum, field rotation to electric charge, and steady-speed change to uniform centre-of-mass motion. The last arrow is dashed to mark that it needs the weaker invariance condition.|The symmetry-to-conservation map]]
+
+Emmy Noether read her results to the Göttingen Mathematical Society on 23 July
+1918. Three days later Felix Klein presented the paper, ''Invariante
+Variationsprobleme'', to the Göttingen Scientific Society, and it appeared in
+that Society's ''Nachrichten'' for the year. Noether held no post at Göttingen
+when she wrote it.
+
+The paper contains two theorems. They are not two statements of one result, and
+they do not do the same work. Most accounts of "Noether's theorem" give the
+first and pass over the second. The paper was written to prove the second.
+
+Both theorems start from the same object. Physics writes down an integral,
+called the action, built from a function of some variables and their
+derivatives. Both theorems ask what follows when a continuous group of
+transformations leaves that integral unchanged. They differ in one thing only:
+what kind of group is permitted. The difference in what comes back is large
+enough that treating the two as one result loses the paper.
+
+== The first theorem ==
+
+'''What it takes.''' A continuous group of transformations that leaves the
+action unchanged and depends on a fixed, finite number of constant parameters.
+Rotation of space is such a group, with three parameters. Shift in time is
+another, with one.
+
+'''What it returns.''' One relation for each parameter. Each relation says that
+a particular combination of the expressions on the left of the equations of
+motion is a divergence — the mathematical form of something flowing without
+accumulating anywhere.
+
+'''Where the result holds.''' The relations themselves are identities. They are
+true of the action whether or not anything obeys the equations of motion. Impose
+those equations and each relation becomes a conservation law: a quantity that
+does not change as the system evolves. The identity is unconditional; the
+conservation law is not.
+
+The theorem runs backwards as well. Noether proved the converse: the relations
+imply the invariance they came from. That direction is what makes an observed
+conservation law evidence of a symmetry, rather than a coincidence that happens
+to be consistent with one.
+
+== The second theorem ==
+
+'''What it takes.''' A continuous group that depends on arbitrary functions of
+the independent variables rather than on constants. The transformation is free
+to differ from place to place, and its derivatives up to some order may enter.
+The coordinate freedom of general relativity is such a group. So is the
+freedom in the potentials of electromagnetism.
+
+'''What it returns.''' One identity for each arbitrary function, holding among
+the expressions on the left of the field equations and their derivatives.
+
+'''Where the result holds.''' Everywhere, and unconditionally. Nothing has to
+obey a field equation for these to be true. They are not conservation laws and
+they do not become conservation laws. They are relations the field equations
+satisfy by construction, which is a stronger and stranger thing to have.
+
+This theorem also has a converse, and Noether proved it.
+
+== The distinction ==
+
+Set the two sets of slots beside each other and the difference reads off them.
+
+The first theorem is fed constants and returns quantities that are conserved
+once the physics holds. The second is fed functions and returns relations that
+hold before any physics is imposed. The first tells you what a system keeps. The
+second tells you that some of its equations were never independent.
+
+The consequence is blunt. A theory with a symmetry that varies from place to
+place has fewer independent field equations than it has fields. You cannot
+specify all of them freely, because the theory itself has already fixed some in
+terms of the rest.
+
+== What the theorems are about ==
+
+Both theorems are statements about the action. Neither is a statement about the
+equations of motion.
+
+This distinction is the most common error in accounts of the subject. A
+transformation that carries solutions to solutions need not leave the action
+unchanged, and if it does not, no conservation law follows from it. Symmetry of
+the equations and symmetry of the action are different properties, and only the
+second feeds either theorem.
+
+Noether also worked at a generality that later treatments usually drop. Her
+statement allows several independent variables, derivatives of any order, and
+transformations that mix the dependent and independent variables together. Most
+textbook versions state a special case and leave the reader to suppose it is the
+theorem.
+
+== Why it matters ==
+
+The first theorem's results are famous, and citing them proves little: energy,
+momentum and angular momentum were known to be conserved long before 1918. What
+the theorem added was the reason.
+
+The second theorem's results were not known, and without it they remain
+unexplained.
+
+The final section of the paper settles a claim of Hilbert's. Energy conservation
+in general relativity does not take the form it takes in every other field
+theory. Attempts to write a local energy density for the gravitational field
+produce quantities that depend on the choice of coordinates, and can be made to
+vanish at any chosen point. This was read for years as a defect of the
+formalism, something a better construction might repair.
+
+Noether showed it is a prediction. A theory invariant under a group of
+transformations that vary from place to place, and containing the shifts among
+that group, has energy relations of exactly this degenerate kind — and has them
+if and only if that condition is met. The property is group-theoretic. Gravity
+is one instance of it, not the cause of it. No better construction is coming,
+because there is nothing to repair.
+
+The same theorem accounts for the constraint structure of every gauge theory
+built since, and for the identity that Einstein's equations satisfy
+automatically. These are not applications discovered later and traced back. They
+are the theorem.
+
+Knowing the boundary matters too. Not every conserved quantity comes from a
+symmetry of an action, and this volume marks the cases that do not.
+
+== How to read this volume ==
+
+The volume has eight tracks. Every page carrying mathematics names a
+plain-language counterpart at the top, and each counterpart links back, so a
+reader can enter at either level and cross over at any point.
+
+* [[Noether's theorems/Explainers/Symmetry and conservation, the first theorem|Start with the plain-language primer]] if you want the argument with no mathematics at all.
+* [[Noether's theorems/History/Gottingen and the energy problem|Göttingen and the energy problem]] gives the question the paper was written to settle, and the history track follows it to [[Noether's theorems/History/What Noether's theorem now means|what the name means today]].
+* [[Noether's theorems/First theorem/The first theorem stated and proved|The first theorem]] is proved in full, with worked derivations of the standard conserved quantities.
+* [[Noether's theorems/Second theorem/The second theorem stated and proved|The second theorem]] is proved separately and at the same length, and [[Noether's theorems/Second theorem/The two theorems side by side|the two are set side by side]] on one page.
+* [[Noether's theorems/Mathematics/Lie groups and Lie algebras|The mathematics track]] carries the machinery the theorems need, from Lie groups to the quantum statement and its failure.
+* [[Noether's theorems/Applications/General relativity and the energy question|The applications track]] works the physics case by case, including [[Noether's theorems/Applications/Topological charge, which is not a Noether charge|one conserved quantity the theorems do not explain]].
+* [[Noether's theorems/Notation|Notation]], [[Noether's theorems/Glossary|glossary]], [[Noether's theorems/Chronology|chronology]], [[Noether's theorems/Index of symmetries|an index of symmetries against their conserved quantities]] and a [[Noether's theorems/Bibliography|bibliography]] weighted toward primary sources make up the reference apparatus.
+
+''Provenance: this page carries no equations and no quotation. Noether's prose is
+paraphrased throughout and no English wording of hers is transcribed anywhere in
+this volume; her equations are reproduced in her own notation, from the German
+original. See [[Noether's theorems/Sources|Sources]].''

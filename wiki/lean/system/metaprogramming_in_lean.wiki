@@ -1,0 +1,246 @@
+{{DISPLAYTITLE:Metaprogramming in Lean}}
+{{Plebeian|Lean theorem prover/Explainers/Tactics}}
+{{Lean theorem prover map}}
+
+A '''metaprogram''' is a Lean program whose data is Lean itself: syntax, terms, goals,
+Lean's environment (its table of definitions and theorems). Tactics, elaborators and
+custom commands are metaprograms. Lean 4 is written largely in Lean, and the data
+structures and functions its own elaborator and tactics use are available to any Lean source
+file that imports the library <code>Lean</code>.<ref name="cade">Leonardo de Moura and Sebastian Ullrich, "The Lean 4 Theorem Prover and Programming Language (System Description)", in ''Automated Deduction: CADE 28'', Lecture Notes in Computer Science 12699, Springer, 2021, pp. 625–635. doi:[https://doi.org/10.1007/978-3-030-79876-5_37 10.1007/978-3-030-79876-5_37]; author's copy [https://lean-lang.org/papers/lean4.pdf lean-lang.org/papers/lean4.pdf].</ref>
+This page shows the representation of terms, the monads metaprograms run in, and three small
+metaprograms compiled by Lean 4.34.1: a term elaborator, a command and a tactic. It ends with
+the point on which the whole arrangement rests. A metaprogram is not trusted. What it
+produces is checked by the Lean kernel, and a wrong result is rejected, unless that check has
+been switched off.
+
+== Terms as data ==
+
+Every term that reaches the Lean kernel is a value of the inductive type
+<code>Lean.Expr</code>. Lean prints its definition on request.
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+import Lean
+open Lean Meta Elab Term Command Tactic
+
+#print Lean.Expr
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">inductive Lean.Expr : Type
+number of parameters: 0
+constructors:
+Lean.Expr.bvar : Nat → Expr
+Lean.Expr.fvar : FVarId → Expr
+Lean.Expr.mvar : MVarId → Expr
+Lean.Expr.sort : Level → Expr
+Lean.Expr.const : Name → List Level → Expr
+Lean.Expr.app : Expr → Expr → Expr
+Lean.Expr.lam : Name → Expr → Expr → BinderInfo → Expr
+Lean.Expr.forallE : Name → Expr → Expr → BinderInfo → Expr
+Lean.Expr.letE : Name → Expr → Expr → Expr → Bool → Expr
+Lean.Expr.lit : Literal → Expr
+Lean.Expr.mdata : MData → Expr → Expr
+Lean.Expr.proj : Name → Nat → Expr → Expr</pre>
+
+The twelve constructors are the type theory's term formers with some additions for
+practical use. <code>sort</code> is a universe, <code>const</code> a reference to a named
+definition or theorem at given universe levels, <code>app</code> an application,
+<code>lam</code> a function, <code>forallE</code> a dependent function type and
+<code>letE</code> a local definition. <code>lit</code> holds a natural-number or string
+literal, <code>proj</code> a projection from a structure, and <code>mdata</code> attaches
+metadata that does not change meaning. Three constructors are variables of different
+kinds. <code>bvar</code> is a variable bound inside the term, named by a number, the
+'''de Bruijn index''', which counts binders outward; <code>fvar</code> is a free variable
+of the current local context, such as a hypothesis in a goal; <code>mvar</code> is a
+'''metavariable''', a hole still to be filled (see
+[[Lean theorem prover/System/Metavariables and unification|metavariables and unification]]).
+
+A small definition shows the encoding.
+
+<pre class="lean lean-cont" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+def k : Nat → Nat → Nat := fun a _b => a
+
+#eval show MetaM Unit from do
+  let info ← getConstInfo ``k
+  IO.println (repr info.value!)
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">Lean.Expr.lam
+  `a
+  (Lean.Expr.const `Nat [])
+  (Lean.Expr.lam `_b (Lean.Expr.const `Nat []) (Lean.Expr.bvar 1) (Lean.BinderInfo.default))
+  (Lean.BinderInfo.default)</pre>
+
+The body of the inner function is <code>bvar 1</code>: the variable bound one binder further
+out than the nearest, which is <code>a</code>. Binder names are kept only for display: two
+terms that differ only in the names of bound variables are treated as the same term.
+
+== The monads ==
+
+A metaprogram runs in a monad that gives it access to the state of Lean (see
+[[Lean theorem prover/System/Monads and do-notation|monads and do-notation]] for monads in
+general). There is a stack of four, each extending the one below it. Lean prints their
+definitions.
+
+<pre class="lean lean-cont" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+#print CoreM
+#print MetaM
+#print TermElabM
+#print TacticM
+#print CommandElabM
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">@[reducible] def Lean.Core.CoreM : Type → Type :=
+ReaderT Core.Context (StateRefT' IO.RealWorld Core.State (EIO Exception))
+@[reducible] def Lean.Meta.MetaM : Type → Type :=
+ReaderT Meta.Context (StateRefT' IO.RealWorld Meta.State CoreM)
+@[reducible] def Lean.Elab.Term.TermElabM : Type → Type :=
+ReaderT Term.Context (StateRefT' IO.RealWorld Term.State MetaM)
+@[reducible] def Lean.Elab.Tactic.TacticM : Type → Type :=
+ReaderT Tactic.Context (StateRefT' IO.RealWorld Tactic.State TermElabM)
+@[reducible] def Lean.Elab.Command.CommandElabM : Type → Type :=
+ReaderT Command.Context (StateRefT' IO.RealWorld Command.State (EIO Exception))</pre>
+
+Each layer adds a read-only context (<code>ReaderT</code>) and a mutable state
+(<code>StateRefT'</code>) on top of the layer below. At the bottom, <code>EIO
+Exception</code> is input and output that can fail with an exception, so every metaprogram
+can do input and output.
+
+* '''<code>CoreM</code>''' gives access to Lean's environment: what has been defined or imported at the current point.
+* '''<code>MetaM</code>''' adds the metavariable context, the metavariables in existence and their assignments, and with it the operations of type inference (<code>inferType</code>), reduction (<code>whnf</code>) and definitional-equality checking (<code>isDefEq</code>).
+* '''<code>TermElabM</code>''' adds the information the elaborator uses while turning syntax into terms.
+* '''<code>TacticM</code>''' adds the list of current goals.<ref name="mpb">Arthur Paulino, Damiano Testa, Edward Ayers, Evgenia Karunus, Henrik Böving, Jannis Limperg, Siddhartha Gadgil and Siddharth Bhat, ''Metaprogramming in Lean 4'', online book, chapter "MetaM". [https://leanprover-community.github.io/lean4-metaprogramming-book/main/04_metam.html leanprover-community.github.io/lean4-metaprogramming-book/main/04_metam.html]</ref>
+
+<code>CommandElabM</code>, the monad of commands, stands beside the stack and not on top of
+it; a command that needs to elaborate a term enters <code>TermElabM</code> with
+<code>liftTermElabM</code>, as in the second example below.
+
+== Elaborators ==
+
+An '''elaborator''' gives meaning to a piece of syntax by running Lean code. A term
+elaborator has type <code>Syntax → Option Expr → TermElabM Expr</code>: it receives the
+syntax and the expected type if one is known, and must return a <code>Lean.Expr</code>. A
+command elaborator has type <code>Syntax → CommandElabM Unit</code> and acts by side
+effects, such as adding constants or reporting messages.<ref name="rm-elab">"Elaborators", section 23.6 of ''The Lean Language Reference'' (edition covering Lean 4.34.0). [https://lean-lang.org/doc/reference/4.34.0/Notations-and-Macros/Elaborators/ lean-lang.org/doc/reference/4.34.0/Notations-and-Macros/Elaborators/]</ref>
+The <code>elab</code> command declares the syntax and its elaborator together.
+
+<pre class="lean lean-cont" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+elab "double! " t:term : term => do
+  let stx ← `(2 * $t)
+  elabTerm stx (some (mkConst ``Nat))
+
+#eval double! 21
+</pre>
+
+This prints <code>42</code>. The elaborator constructs syntax with a quotation,
+<code>`(2 * $t)</code>, and hands it to <code>elabTerm</code> with the expected type
+<code>Nat</code>. Quotations are available in every one of these monads; a quotation of a
+category other than terms names it, as in <code>`(tactic| intro h)</code>. Their hygiene is
+the hygiene of [[Lean theorem prover/System/Syntax extension and hygienic macros|macros]].
+Unlike a macro, which can do no more with Lean's environment than check whether a name exists
+and resolve names, an elaborator can consult types, the local context and the whole of Lean's
+environment.<ref name="rm-macros">"Macros", section 23.5 of ''The Lean Language Reference'' (edition covering Lean 4.34.0), subsection 23.5.2 "The Macro Monad". [https://lean-lang.org/doc/reference/4.34.0/Notations-and-Macros/Macros/ lean-lang.org/doc/reference/4.34.0/Notations-and-Macros/Macros/]</ref>
+
+A command that elaborates a term, puts it in weak head normal form and reports the result:
+
+<pre class="lean lean-cont" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+elab "#whnf " t:term : command => do
+  liftTermElabM do
+    let e ← elabTerm t none
+    let r ← whnf e
+    logInfo m!"{e} reduces to {r} : {← inferType e}"
+
+#whnf (fun (x : Nat) => x + 1) 41
+#whnf (fun (x : Nat) => [x, x]) 7
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">(fun x => x + 1) 41 reduces to 42 : Nat
+(fun x => [x, x]) 7 reduces to [7, 7] : List Nat</pre>
+
+== A tactic ==
+
+A tactic is an elaborator in <code>TacticM</code> (the
+[[Lean theorem prover/System/The tactic framework|tactic framework]] describes how they are
+run). This one closes the main goal with any hypothesis whose type is definitionally equal
+to it, a simple form of Lean's <code>assumption</code>.
+
+<pre class="lean lean-cont" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+elab "my_assumption" : tactic => do
+  let goal ← getMainGoal
+  let target ← goal.getType
+  for h in ← getLCtx do
+    if !h.isImplementationDetail &amp;&amp; (← isDefEq h.type target) then
+      goal.assign h.toExpr
+      replaceMainGoal []
+      return
+  throwError "my_assumption: no hypothesis has type {target}"
+
+example (p q : Prop) (hp : p) (hq : q) : p ∧ q :=
+  ⟨by my_assumption, by my_assumption⟩
+</pre>
+
+Each goal is a metavariable, and closing it means assigning it a term: here the free
+variable <code>hp</code> for the first goal and <code>hq</code> for the second. When no
+hypothesis fits, the tactic fails with its own message:
+
+<pre class="lean lean-cont lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+example (p q : Prop) (hp : p) : q := by my_assumption
+</pre>
+
+Lean reports <code>my_assumption: no hypothesis has type q</code>.
+
+== Metaprograms are not trusted ==
+
+Nothing stops a tactic from assigning a goal a term of the wrong type. The assignment
+operation does not check. This tactic claims to prove anything with <code>True.intro</code>,
+the proof of <code>True</code>.
+
+<pre class="lean lean-cont lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+elab "cheat" : tactic => do
+  let goal ← getMainGoal
+  goal.assign (mkConst ``True.intro)
+  replaceMainGoal []
+
+theorem bad : False := by cheat
+</pre>
+
+The tactic runs and reports no failure, but the theorem is refused:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">(kernel) declaration type mismatch, 'bad' has type
+  True
+but it is expected to have type
+  False</pre>
+
+The message is the Lean kernel's. When a definition or theorem is complete, the elaborator
+passes it to the Lean kernel, which checks it against the rules of the type theory before it
+enters Lean's environment. The reference manual states the purpose plainly: the elaborator's
+output must be checked by the Lean kernel "to guard against potential bugs in
+elaboration".<ref name="rm-ec">"Elaboration and Compilation", a chapter of ''The Lean Language Reference'' (edition covering Lean 4.34.0), section "The Kernel". [https://lean-lang.org/doc/reference/4.34.0/Elaboration-and-Compilation/ lean-lang.org/doc/reference/4.34.0/Elaboration-and-Compilation/]</ref>
+The elaborator, the tactic framework, the simplifier and every user's tactic are outside the
+trusted part of the system. They may be wrong, and, as long as the Lean kernel's check is not
+switched off, a wrong result costs a failed check, not a false theorem.
+
+This is why metaprogramming can be open to every user. A proof assistant whose automation
+had to be trusted would have to restrict who may write automation, or audit it. Lean instead
+lets any file define tactics and elaborators with the same access its own have, because the
+check at the end does not depend on how the term was found.
+
+The guarantee has limits, and they are worth stating. The check covers only what reaches
+the Lean kernel. The option <code>debug.skipKernelTC</code> switches it off, and code run during
+elaboration can add a constant to Lean's environment without passing it to the Lean kernel;
+the reference manual names both as ways of bypassing the check.<ref name="rm-validating" /> With
+that option set, the <code>cheat</code> tactic above yields an accepted theorem
+<code>bad : False</code>. A metaprogram runs with the full rights of input and output, and the
+reference manual's guidance on validating a proof warns that tactics and other code run at
+elaboration "can perform arbitrary actions when run", including, in the hostile case,
+interfering with the system before any check takes place.<ref name="rm-validating">"Validating a Lean Proof", a chapter of ''The Lean Language Reference'' (edition covering Lean 4.34.0). [https://lean-lang.org/doc/reference/4.34.0/ValidatingProofs/ lean-lang.org/doc/reference/4.34.0/ValidatingProofs/]</ref>
+Honest mistakes are caught by the check above. Deliberate tampering is the subject of
+[[Lean theorem prover/System/Proof export and independent checkers|proof export and independent checkers]].
+
+== Next ==
+
+[[Lean theorem prover/System/The compiler and runtime|The compiler and runtime]] explains how
+metaprograms, like all Lean programs, are compiled and run.
+
+== References ==
+
+<references />

@@ -1,0 +1,116 @@
+{{DISPLAYTITLE:Checking a proof again later}}
+{{Technical|Lean theorem prover/System/Proof export and independent checkers}}
+{{Lean theorem prover map}}
+
+A proof that Lean accepted today should still be checkable next year, by someone else, with other
+tools. This page says what Lean keeps once it has checked a file, how a kept proof can be checked
+again by Lean and by programs written independently of Lean, and why the version of Lean has to
+be fixed if a check is to be repeated exactly. It ends with the work that keeps proofs usable as
+Lean and its libraries change.
+
+== What Lean keeps ==
+
+When Lean processes a source file, it saves what the file added to Lean's environment, its table
+of definitions and theorems, in a compiled file whose name ends in <code>.olean</code>. The values
+are stored just as they lie in memory, so a later run can load the file directly instead of
+reading it piece by piece.<ref name="refelab">''The Lean Language Reference'', version for Lean 4.34.0, section "Elaboration and Compilation". [https://lean-lang.org/doc/reference/4.34.0/Elaboration-and-Compilation/ lean-lang.org/doc/reference/4.34.0/Elaboration-and-Compilation], consulted 14 October 2026.</ref>
+A file that imports another reads its compiled form; it does not check the other file's proofs
+again.
+
+That is what makes large libraries practical, and it has a consequence. A theorem imported from a
+compiled file is believed because it was checked when the compiled file was made. If something
+went wrong at that moment, nothing later in the same run will notice.
+
+== Replaying the proofs ==
+
+The first way to check again is to replay. A tool now called <code>leanchecker</code> reads the
+definitions and proofs stored in compiled files and passes them through the Lean kernel once more.
+It began as a separate program, <code>lean4checker</code>; it was merged into Lean and has shipped
+with every version of Lean since 4.28.0.<ref name="l4c">''lean4checker'' (README of the archived project; now distributed with Lean as <code>leanchecker</code>). [https://github.com/leanprover/lean4checker github.com/leanprover/lean4checker], consulted 13 October 2026.</ref>
+With the option <code>--fresh</code> it replays everything from the start, imported files
+included, which is slower.<ref name="l4c" />
+
+Lean's guide to validating proofs says what replaying catches: faults in the way Lean manages the
+Lean kernel's state, for instance when it works in parallel or handles imports, and programs that
+add theorems by going around the Lean kernel. It also says what replaying does not catch. The tool
+uses the same Lean kernel, and it assumes the compiled files themselves are well formed.<ref name="refval">''The Lean Language Reference'', version for Lean 4.34.0, section "Validating a Lean Proof". [https://lean-lang.org/doc/reference/4.34.0/ValidatingProofs/ lean-lang.org/doc/reference/4.34.0/ValidatingProofs], consulted 14 October 2026.</ref>
+
+== Exporting a proof ==
+
+The second way is to take the proofs out of Lean altogether. A program called
+<code>lean4export</code> writes chosen definitions and theorems, with everything they depend on,
+as plain text in a documented format: one record per line, each in JSON.<ref name="l4e">''lean4export'' (README). [https://github.com/leanprover/lean4export github.com/leanprover/lean4export], consulted 13 October 2026.</ref>
+A program that reads this text needs no part of Lean. It sees the proofs exactly as the Lean
+kernel would, without Lean's parser, its notation or its tactics in between.
+
+Pollack had argued for this arrangement in 1998. A proof can be checked again by a second, simple
+checker for the same logic, perhaps one whose correctness has been reviewed by experts and tested
+on earlier proofs; if a few such checkers become trusted, people can keep using whatever tools
+they like to construct proofs in the first place.<ref name="pollack">R. Pollack, "How to believe a machine-checked proof", in Giovanni Sambin and Jan M. Smith (eds), ''Twenty Five Years of Constructive Type Theory'', Oxford University Press, 1998, chapter 11 (from p. 205); first issued as BRICS Report RS-97-18, Aarhus University, 1997. [https://doi.org/10.7146/brics.v4i18.18945 doi:10.7146/brics.v4i18.18945]</ref>
+
+== Independent checkers ==
+
+Several programs check Lean proofs without using the Lean kernel.
+
+'''Lean4Lean''' is a checker written in Lean itself. Its author describes it as the first complete
+checker for Lean 4 apart from the Lean kernel, which is written in C++; it runs between 20 and 50
+per cent slower and can check the whole of Mathlib. Because it is written in a language in which
+things can be proved, properties of the checker can be proved too, and the work has already led to
+one fault in Lean's checking being found and fixed.<ref name="l4l">Mario Carneiro, "Lean4Lean: Verifying a Typechecker for Lean, in Lean", arXiv:2403.14064, version 3, 14 September 2025. [https://arxiv.org/abs/2403.14064 arxiv.org/abs/2403.14064]</ref>
+
+'''nanoda''' is a checker written in Rust that reads the files <code>lean4export</code>
+writes.<ref name="nanoda">''nanoda_lib'' (README), an external type checker for Lean 4 written in Rust. [https://github.com/ammkrn/nanoda_lib github.com/ammkrn/nanoda_lib], consulted 13 October 2026.</ref>
+Lean's guide names it as developed independently, and as one of the checkers its strictest
+procedure can use.<ref name="refval" />
+
+The '''Lean Kernel Arena''' is a site that presents, tests and compares checkers for Lean on a
+common set of tests. When it was consulted for this page, its table listed the official checker
+for Lean 4.34.1 beside Lean4Lean, nanoda and many others.<ref name="arena">''Lean Kernel Arena''. [https://arena.lean-lang.org arena.lean-lang.org], consulted 13 October 2026.</ref>
+Lean's guide points to it for anyone who wants still more confidence.<ref name="refval" />
+
+Agreement between checkers written by different people, in different languages, is evidence of a
+different kind from a single check. When every one of them must accept, a fault would have to
+be present in all of them at once to let a false proof through.<ref name="refval" />
+
+== Fixing the version ==
+
+A check can be repeated exactly only with the same version of Lean. A Lean project names the
+version it uses in a one-line text file called <code>lean-toolchain</code>, kept at the top of the
+project; the toolchain manager, elan, reads it and runs that version. Lean's reference advises
+naming an exact version rather than a channel such as <code>stable</code>, so that people working
+together use the same one and older states of a project can still be checked and
+tested.<ref name="elan">''The Lean Language Reference'', version for Lean 4.34.0, section "Managing Toolchains with Elan". [https://lean-lang.org/doc/reference/4.34.0/Build-Tools-and-Distribution/Managing-Toolchains-with-Elan/ lean-lang.org/doc/reference/4.34.0/Build-Tools-and-Distribution/Managing-Toolchains-with-Elan], consulted 14 October 2026.</ref>
+The project this wiki records fixes its version of Lean at 4.34.1
+(see [[Principia Machina/Lean transition|the move to Lean]]).
+
+== Why proofs need upkeep ==
+
+A proof, once checked, stays a proof in the logic it was checked in. What wears out is the
+ability to run the check again with current tools.
+
+New versions of Lean appear every month, and Mathlib, the main library of mathematics, moves
+with them.<ref name="growing">Anne Baanen, Matthew R. Ballard, Johan Commelin, Bryan Gin-ge Chen, Michael Rothgang and Damiano Testa, "Growing Mathlib: maintenance of a large scale mathematical library", arXiv:2508.21593, version 2, 7 October 2025; to appear at the Conference on Intelligent Computer Mathematics (CICM) 2025. [https://arxiv.org/abs/2508.21593 arxiv.org/abs/2508.21593]</ref> The authors of a 2025 paper on Mathlib's maintenance write that code written for one version of Mathlib may no longer compile
+with a newer one, and that a project which falls too far behind may find it can no longer
+contribute its results back.<ref name="growing" />
+To soften this, a theorem that is renamed keeps its old name for a grace period of several
+months, marked as out of date; anyone who uses the old name gets a warning that names the new
+one.<ref name="growing" />
+
+The move from Lean 3 to Lean 4 was a change of this kind on a large scale: it meant translating
+Mathlib into the new language. Notes left during that translation numbered well over 5,000 in the summer
+of 2023 and roughly 1,500 when that paper was written in 2025.<ref name="growing" />
+(See [[Lean theorem prover/History/Lean 1 to Lean 3|Lean 1 to Lean 3]] and
+[[Lean theorem prover/History/Lean 4|Lean 4]].)
+
+Two practices follow. Keep the exact version with the proof, so that the original check can be
+repeated. And expect to revise the proof when moving it to a newer version, so that it stays
+usable by new work.
+
+== Next ==
+
+[[Lean theorem prover/Explainers/Stating the right thing|Stating the right thing]] turns to the
+one question no re-check can answer: whether the statement says what was meant.
+
+== References ==
+
+<references />

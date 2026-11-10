@@ -1,0 +1,138 @@
+{{DISPLAYTITLE:Fixed length problems}}
+{{Technical|Hamilton's principle/Mathematics/Isoperimetric problems}}
+{{Hamilton's principle map}}
+
+This page explains problems where a total is fixed in advance. It uses no
+mathematics. The technical page it goes with is named above.
+
+== The oldest problem of this kind ==
+
+[[File:OPL-HP-F-20.png|thumb|right|400px|Fixed perimeter, varying area.]]
+
+You have a rope of a given length. Lay it on the ground in a loop. Which shape
+encloses the most land?
+
+The answer is a circle, and people have believed it for a very long time. Proving
+it took much longer than believing it.
+
+Problems of this shape have a name that records the original: '''isoperimetric''',
+from the Greek for equal perimeter.
+
+The pattern is: make one thing as large or small as possible, while some '''other'''
+total is held fixed.
+
+== How this differs from the last page ==
+
+[[File:OPL-HP-F-35.png|thumb|right|400px|A two-parameter family for an isoperimetric problem.]]
+
+[[Hamilton's principle/Explainers/Multipliers|Multipliers]] dealt with constraints that apply
+at every moment. A rod has a fixed length now, and in a second, and always.
+
+This is different. The rope has one length, for the whole loop. It is a single
+fact about the entire shape, and it says nothing about any particular point.
+
+That difference changes what the price has to be.
+
+A constraint at every moment needs a price that can vary — cheap here, expensive
+there. A constraint on a total needs a '''single fixed number''' for the whole
+problem.
+
+'''One rule per moment gives a varying price. One rule for the whole thing gives
+one price.''' That is the whole distinction, and getting it backwards is the usual
+error.
+
+== Why you need two dials ==
+
+There is a difficulty in setting these problems up, and seeing it makes the method
+make sense.
+
+Earlier pages nudged a path with one dial. Turn it and you move to a nearby path.
+
+Try that here and it fails at once. Nudge the rope's shape and you almost
+certainly change its length. The nudged shape is no longer a rope of the right
+length, so comparing it to the original is meaningless.
+
+The fix is to use '''two''' dials. One nudges the shape. The other adjusts it back
+so the length comes out right.
+
+Two dials, working together: one explores, one corrects. Now every path you
+compare is a legitimate competitor.
+
+The single price then falls out of the fact that it is one correction for the
+whole path, not one per point.
+
+== The hanging chain ==
+
+[[Hamilton's principle/Explainers/Free ends|Free ends]] met a chain hanging between two
+posts and found the curve it settles into. That account left the length out.
+
+Put it back. The chain has a definite length, fixed by how much chain you have.
+That is a single fact about the whole chain — an isoperimetric constraint.
+
+The answer is the same family of curves, moved up or down by an amount the price
+sets.
+
+And the price has a meaning again. It tells you the '''height of an imaginary
+line''' below the chain from which the tension is measured. At any point of the
+chain, the pull is the weight of a length of chain equal to the height above that
+line.
+
+That is a real and useful fact. It tells you the chain is under least strain at
+the bottom and most at the supports. Anyone hanging a cable needs to know that,
+and the version that ignored the length constraint could not supply it.
+
+== Why a slack cable and a taut one differ so much ==
+
+The same result explains something you can feel.
+
+Hang a chain loosely and it sags deeply. The tension is small.
+
+Pull the same chain nearly straight and the tension becomes enormous. Not a little
+larger — dramatically larger.
+
+The reason is that a nearly straight chain has almost no downward slope for its
+weight to press against. To hold the weight up, the sideways pull has to be huge.
+
+This is why a washing line always sags a little, and why you cannot pull one truly
+horizontal no matter how hard you haul. The tension needed goes to infinity as the
+sag goes to zero. Something breaks first — usually the post.
+
+== The case the method cannot touch ==
+
+There is one situation where the method fails outright, and it is worth knowing
+because it looks like the easiest case.
+
+Suppose the rope is '''exactly''' long enough to reach between the two posts and
+no longer. Then there is only one shape available: straight, taut, no slack.
+
+There is nothing to compare it against. Every alternative shape needs more rope
+than you have. The two dials have nothing to work with — you cannot explore, and
+you cannot correct.
+
+The method needs alternatives. If the constraint pins things down so tightly that
+only one candidate exists, there is no comparison to make, and the answer is
+whatever the constraint allows.
+
+This is not a flaw. It is the method being honest about the fact that it is a
+comparison tool, and comparison needs at least two things.
+
+== Working in reverse ==
+
+One pleasant feature of these problems: they come in pairs.
+
+Ask for the largest area with a given perimeter. Or ask for the shortest perimeter
+around a given area. Both give the circle.
+
+That is not a coincidence, and it holds generally. Swapping the quantity you
+optimise with the quantity you hold fixed gives the same answers.
+
+So a soap bubble, which minimises its surface for the air it holds, is solving the
+same problem as the rope on the ground. It arrives at a sphere for the reason the
+rope arrives at a circle.
+
+== Where to go next ==
+
+Every result so far has found paths where the total stops changing. Whether such a
+path is actually the '''best''' one is a separate question, and the answer is more
+interesting than expected. It is at
+[[Hamilton's principle/Explainers/Is it really a minimum|Is it really a minimum]].

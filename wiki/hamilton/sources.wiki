@@ -1,0 +1,323 @@
+{{DISPLAYTITLE:Hamilton's principle — Sources}}
+{{Hamilton's principle map}}
+This page states exactly which text in this volume is '''verbatim''', which is
+'''editorial''', and which is '''reconstructed''', and what would be needed to
+close each remaining gap. It is the volume's provenance record, and every page
+that carries a provenance block points here.
+
+The discipline is deliberate. A companion volume on Maxwell's ''On Physical Lines
+of Force'' found, too late, that every reachable electronic copy of that paper had
+lost its mathematics: equation numbers were attested but equation bodies had to be
+reconstructed. This volume was planned to avoid repeating that, by verifying
+source reachability '''before''' authoring rather than after.
+
+== The three classes ==
+
+[[File:OPL-HP-F-53.png|thumb|right|400px|The three provenance classes, and the empty one.]]
+
+'''Verbatim''' text is transcribed from a source this volume has opened and
+checked. It appears in quotation or is explicitly marked as verbatim in a
+footnote. Every verbatim passage in this volume comes from a source tagged
+ESTABLISHED below.
+
+'''Editorial''' text is this volume's own prose: derivations performed here,
+summaries, historical framing, and connective argument. Most of the volume is
+editorial, and editorial passages that touch on history carry a provenance block
+saying so.
+
+'''Reconstructed''' text would be a source's content restated from secondary
+literature without having opened the source. '''This volume contains no
+reconstructed equations.''' Where a source could not be verified, its content is
+paraphrased at the level of a summary, no equation is attributed to it, and the
+page says so. That is the rule the Maxwell volume could not follow.
+
+== Source survey ==
+
+[[File:OPL-HP-F-54.png|thumb|right|400px|Four states an electronic source can be in.]]
+
+Tags: ESTABLISHED, verified with the verification stated. PROVISIONAL, located
+but not probed. UNCOMPUTED, work not performed, with its kind of block named.
+
+{| class="wikitable"
+! source !! edition targeted !! status !! reproduction
+|-
+| Hamilton, ''On a General Method in Dynamics'', 1834 || Wilkins edition of Phil. Trans. 124, 247–308 || ESTABLISHED || public domain; quoted verbatim
+|-
+| Hamilton, ''Second Essay'', 1835 || Wilkins edition of Phil. Trans. 125, 95–144 || ESTABLISHED || public domain; quoted verbatim
+|-
+| Noether, ''Invariante Variationsprobleme'', 1918 || Göttinger Nachrichten, 235–257 || ESTABLISHED, via the translation below || public domain; equations reproduced
+|-
+| Tavel translation of Noether, 1971 || Transport Theory and Statistical Physics 1(3) || ESTABLISHED || '''under copyright'''; paraphrased only
+|-
+| Euler, ''Methodus inveniendi'', Additamentum II, 1744 || Latin original, pp. 311–320 || PROVISIONAL || public domain
+|-
+| Euler, Additamentum II, English || Wikisource community translation || ESTABLISHED, with a notation caveat || CC-licensed, not public domain
+|-
+| Maupertuis, ''Accord de différentes loix de la nature'' || read 15 April 1744, printed 1748, pp. 417–426 || PROVISIONAL, statement corroborated not transcribed || public domain
+|-
+| Lagrange, ''Mécanique analytique'', 1788 || first edition || PROVISIONAL || public domain
+|-
+| Lagrange, ''Mécanique analytique'', 1811–15 || second edition || PROVISIONAL || public domain
+|-
+| Jacobi, ''Vorlesungen über Dynamik'', 1866 || Clebsch edition, German || PROVISIONAL || public domain
+|-
+| Jacobi, English translation, 2009 || Balagangadharan || not consulted || '''under copyright'''
+|-
+| Fermat, ''Synthesis ad refractiones'', 1662 || Latin, in the ''Œuvres'' on French Wikisource || PROVISIONAL, text-bearing but OCR-damaged || public domain
+|-
+| Feynman, 1948 || Rev. Mod. Phys. 20, 367 || UNCOMPUTED, block: absence || under copyright
+|}
+
+Thirteen rows, where the volume's plan began with nine. Four splits were forced
+by the evidence and are described below.
+
+== Splits forced during the survey ==
+
+[[File:OPL-HP-F-55.png|thumb|right|400px|Three modernised statements attributed to their authors.]]
+
+'''Lagrange, 1788 against 1811–15.''' These are not the same book. Lagrange
+described the second edition in his own preface as, in many respects, a new work,
+more extensive than the first. Quoting the 1811 text under an 1788 attribution
+would be a provenance error of exactly the kind this page exists to prevent, so
+the two carry separate rows and separate probes.
+
+'''Euler, original against translation.''' The Latin original and the Wikisource
+English are separate rows because their reachability differs and because a
+translation is not the source.
+
+'''Noether and Jacobi, original against translation.''' In both cases the
+original is public domain and the modern translation is not. This produces a rule
+the volume follows on every affected page:
+
+<blockquote>
+Where a source's mathematics is public domain and its available English is a
+copyrighted translation, the volume reproduces the '''equations''' verbatim in
+the author's notation and '''paraphrases''' the prose, marking every paraphrase as
+such.
+</blockquote>
+
+[[Hamilton's principle/Mathematics/Noether's first theorem|Noether's first theorem]] and
+[[Hamilton's principle/Mathematics/Noether's second theorem|Noether's second theorem]] both open with a
+provenance note stating this. No English wording of Noether's is transcribed
+anywhere in the volume.
+
+== What is verbatim ==
+
+[[File:OPL-HP-F-57.png|thumb|right|400px|Transcribed against corroborated.]]
+
+All verbatim text in this volume is Hamilton's, from the two ESTABLISHED essays.
+Twenty citations are marked in footnotes. The substantial ones:
+
+{| class="wikitable"
+! passage !! where quoted
+|-
+| the law of least, or as it might be better called, of stationary action || [[Hamilton's principle/Mathematics/Functionals and the space of paths|Functionals and the space of paths]], [[Hamilton's principle/Mathematics/Action as a function of its endpoints|Action as a function of its endpoints]], [[Hamilton's principle/Mathematics/Abbreviated action: Maupertuis versus Hamilton|Abbreviated action: Maupertuis versus Hamilton]]
+|-
+| the comparison paths as geometrically imaginable, dynamically impossible motion || [[Hamilton's principle/Mathematics/The first variation|the first variation]]
+|-
+| equation (1.), the fundamental formula || [[Hamilton's principle/Mathematics/The first variation|the first variation]], [[Hamilton's principle/Mathematics/Several dependent variables|Several dependent variables]]
+|-
+| equations (A.) to (E.), the law of varying action || [[Hamilton's principle/Mathematics/Action as a function of its endpoints|Action as a function of its endpoints]]
+|-
+| equations (F.) and (G.), the partial differential pair || [[Hamilton's principle/Mathematics/The Hamilton-Jacobi equation|the Hamilton-Jacobi equation]]
+|-
+| equation (Y.), the canonical form || [[Hamilton's principle/Mathematics/Several dependent variables|Several dependent variables]]
+|-
+| the Kepler sequence (71.), (97.), (101.)–(107.), (A3.), (F3.), (S3.), (U3.) || [[Hamilton's principle/Applications/Central force and the Kepler problem|Central force and the Kepler problem]]
+|-
+| the optical origin of the method || [[Hamilton's principle/Applications/The optical-mechanical analogy|the optical-mechanical analogy]]
+|}
+
+Noether's '''equations''' — her identity (3), the divergence relations (12) and
+(13), and the dependencies (16) — are reproduced in her notation on the two
+Noether pages and on
+[[Hamilton's principle/Mathematics/Several independent variables|Several independent variables]]. Her English
+is not.
+
+== What is editorial ==
+
+Everything else. In particular, every derivation in the mathematics tracks is
+performed on the page where it appears and is not transcribed from any source.
+Pages carrying editorial historical claims with no verified source behind them
+each carry a provenance block; there are nineteen such blocks in the volume.
+
+The named cases where a historical attribution rests on no verified source:
+
+* Legendre 1786 and Jacobi 1837 on the sufficiency conditions, at [[Hamilton's principle/Mathematics/The Legendre condition|the Legendre condition]]
+* Johann Bernoulli 1696 and Huygens 1659, at [[Hamilton's principle/Applications/The brachistochrone|the brachistochrone]]
+* Galileo's parabola error and the 1691 solutions, at [[Hamilton's principle/Applications/The catenary|the catenary]]
+* Euler's and Lagrange's priority in the Euler-Lagrange equation, at [[Hamilton's principle/Mathematics/The Euler-Lagrange equation|the Euler-Lagrange equation]]
+* Schrödinger's 1926 construction, at [[Hamilton's principle/Applications/The optical-mechanical analogy|the optical-mechanical analogy]]
+* Euler's equations for the rigid body, at [[Hamilton's principle/Applications/The rigid body|the rigid body]]
+
+None of these attributions is load-bearing for any result in the volume. Each is
+context, and each is marked.
+
+== What is reconstructed ==
+
+Nothing. This is the sentence the Maxwell volume could not write.
+
+Where a source is unverified, the volume states a summary and attributes no
+equation. The clearest case is
+[[Hamilton's principle/Applications/The Feynman path integral|the Feynman path integral]]: the postulate is
+paraphrased from the paper's abstract, which is the only obtainable part, and no
+equation on that page is attributed to Feynman.
+
+== The Euler probe, and what it found ==
+
+This row was tagged '''at risk''' rather than merely unprobed, because Wikisource
+is exactly the source class that destroyed the Maxwell volume's equations: its
+retrieval layer delivered prose intact while dropping the mathematics, so the
+result read as complete and was not.
+
+'''The probe cleared that risk and raised a different one.'''
+
+The mathematics '''is''' present in the retrieved text of the Wikisource
+translation. The momentum product and the time-integral form both appear. This is
+not the Maxwell failure mode.
+
+But the translation has silently modernised Euler's variable. The Euler Archive's
+own description of E065 states his formulation with <math>v</math> defined as
+'''half the square of the velocity''', so that the minimised quantity is
+
+:<math>\int M\,ds\,\sqrt{v}</math>
+
+The Wikisource translation renders the same statement with <math>v</math> meaning
+'''the velocity''', giving <math>\int M v\,ds</math>.
+
+The two agree as physics and disagree as attribution. Quoting the second as
+Euler's formula would attribute modernised notation to him — the same class of
+provenance error this page exists to prevent, arriving through a translation
+rather than through a lossy scan.
+
+'''Rule adopted.''' Euler's action integral is written in this volume as
+<math>\int M\,ds\,\sqrt{v}</math> with his own definition of <math>v</math>
+stated alongside it, and the modernised form is given only as a gloss, marked as
+such. The Latin original at the Euler Archive remains the authority, and probing
+it would close the row completely.
+
+Two further notes. The Wikisource text is a community translation, released under
+a Creative Commons licence rather than being public domain, so it is attributed
+rather than treated as freely reproducible. And Wikisource is cache-only from this
+volume's working environment: its pages could not be fetched directly, and the
+probe was performed against indexed content. That is a limitation of the
+environment, not of the source.
+
+== Corroboration is not transcription ==
+
+One row needs a distinction the other rows do not.
+
+Maupertuis's central sentence is quoted identically by four independent sources.
+That is strong evidence about the wording, and the volume quotes it. It is not the
+same as having opened the memoir.
+
+The companion Maxwell volume hit the same situation and recorded it the same way:
+its famous velocity-of-light sentence was verified word for word against four
+sources, and whether the printing italicised it was left unverified because nobody
+had seen the page.
+
+Corroborated passages are marked as corroborated wherever they appear. There is
+one in this volume, on
+[[Hamilton's principle/History/Maupertuis and the 1744 memoir|Maupertuis and the 1744 memoir]].
+
+== A fourth source state ==
+
+The survey began with three states a source could be in: text-bearing,
+image-only, or stripped of its mathematics while its prose survived. The third is
+the one that destroyed the companion Maxwell volume.
+
+Fermat forced a fourth. His text is transcribed and retrievable, and it is
+'''OCR-damaged''': words corrupted, and a Greek phrase reduced to characters that
+are not Greek.
+
+That state is not covered by the other three. It is not stripped, and it is not a
+page image. It is legible and unreliable at the level of individual words — which
+is precisely the level at which verbatim quotation operates.
+
+Rule adopted: '''an OCR-damaged transcription supports paraphrase and does not
+support quotation.''' Nothing is quoted from Fermat in this volume.
+
+== Three notation traps found during the survey ==
+
+Both are the same error in different clothes: a later convention attributed to an
+earlier author.
+
+'''Euler.''' His <math>v</math> is half the square of the velocity, so his integral
+carries a square root. The available English translation modernises <math>v</math>
+to the velocity and the root disappears. Recorded above.
+
+'''Maupertuis.''' His 1744 action is speed times distance, with '''no mass'''. Mass
+entered in a separate Berlin memoir of 1746. Writing the 1744 quantity with a mass
+in it attributes the second memoir's definition to the first.
+
+'''Fermat.''' His postulate is that nature operates by the easiest and readiest
+ways. It names no quantity and asserts no minimum. ''Least time'' is a later gloss,
+routinely attributed to him as his statement.
+
+None of the three errors changes any physics. Both would put words in an author's mouth, which
+is what this page exists to prevent.
+
+== To close the remaining gaps ==
+
+{| class="wikitable"
+! row !! what would close it
+|-
+| Euler, Latin || open the Euler Archive scan (E065h) and confirm the <math>\sqrt{v}</math> form against the translation. The scan is a page image; expect transcription cost, not retrieval
+|-
+| Euler, English || '''resolved.''' Mathematics present; notation caveat recorded above
+|-
+| Maupertuis || '''partly resolved.''' The central sentence is corroborated identically across four independent sources but has not been read in the memoir itself. Opening the Wikisource ''Page:'' transcription would close it
+|-
+| Lagrange 1788 || open the Gallica facsimile. It is a page-image reproduction; expect no text layer
+|-
+| Lagrange 1811–15 || open the Gallica text-image volumes or the Internet Archive scans, which may carry OCR
+|-
+| Jacobi || open the German 1866 scan at Chapter 6, ''Das Princip der kleinsten Wirkung''. Three public-domain scans exist
+|-
+| Fermat || '''located.''' The transcription is OCR-damaged, so verbatim quotation needs a clean text: collate against a print edition of the ''Œuvres''
+|-
+| Feynman || institutional access to the paper, or the 1942 thesis published in 2005. This is the only row blocked by '''absence''' rather than by unperformed work
+|}
+
+Closing a row does not require rewriting the volume. Each affected page carries
+its provenance block in one place, and verifying a source means replacing that
+block with a citation, not revising a derivation.
+
+== Pages whose content depends on an unresolved row ==
+
+The history track was originally gated on this survey. It is now '''complete''',
+written under a discipline that made the gate unnecessary: where a source is
+unverified, the page attributes no equation and no wording to it, states a summary,
+and carries a provenance block naming what is missing.
+
+The pages formerly listed as blocked:
+[[Hamilton's principle/History/Least time before least action|Least time before least action]],
+[[Hamilton's principle/History/Maupertuis and the 1744 memoir|Maupertuis and the 1744 memoir]],
+[[Hamilton's principle/History/Euler and the Methodus inveniendi|Euler and the Methodus inveniendi]],
+[[Hamilton's principle/History/Lagrange and the Mecanique analytique|Lagrange and the Mecanique analytique]],
+[[Hamilton's principle/History/Jacobi|Jacobi]] and
+[[Hamilton's principle/History/Feynman 1948|Feynman 1948]].
+
+All are written. Only
+[[Hamilton's principle/History/Hamilton 1834 and 1835|Hamilton 1834 and 1835]] and
+[[Hamilton's principle/History/Noether 1918|Noether 1918]] rest on ESTABLISHED rows and carry
+quotation; the rest quote nothing.
+
+The lesson is worth recording. '''An unverified source does not block a page. It
+blocks quotation from that page.''' The distinction was not obvious when this
+survey was written and it saved the history track.
+
+== Further reading, not treated ==
+
+Named here so that no reader mistakes an omission for a claim of completeness:
+
+* the '''direct method''' and the existence of minimisers. This volume proves conditions for a minimum and never that one exists; see the closing note on [[Hamilton's principle/Mathematics/The Weierstrass excess function|the Weierstrass excess function]]
+* '''constrained Hamiltonian dynamics''' for degenerate Lagrangians, flagged at [[Hamilton's principle/Mathematics/The Legendre transform|the Legendre transform]] and realised at [[Hamilton's principle/Applications/The electromagnetic Lagrangian|the electromagnetic Lagrangian]]
+* '''non-holonomic''' dynamics, and the vakonomic-versus-dynamic distinction flagged at [[Hamilton's principle/Mathematics/Holonomic constraints|Holonomic constraints]]
+* the '''Laplace-Runge-Lenz''' symmetry of the Kepler problem, flagged at [[Hamilton's principle/Applications/Central force and the Kepler problem|Central force and the Kepler problem]]
+* rigorous construction of the '''path integral''' measure, flagged at [[Hamilton's principle/Applications/The Feynman path integral|the Feynman path integral]]
+
+== Register ==
+
+The mathematics, history and applications tracks take a technical register. The
+plain-language track takes ISO 24495-1. This page takes the technical register.

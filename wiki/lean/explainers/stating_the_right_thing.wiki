@@ -1,0 +1,142 @@
+{{DISPLAYTITLE:Stating the right thing}}
+{{Technical|Lean theorem prover/Foundations/Terms, types and judgments}}
+{{Lean theorem prover map}}
+
+Lean checks that a proof proves the statement that was written. It cannot check that the
+statement written is the one that was meant. This page shows, with lines Lean accepts, how the
+two can come apart, gives a published case in which they did, and says what therefore has to be
+read by people.
+
+== What the check covers ==
+
+Pollack divided the belief in a machine-checked proof into two questions: whether the proof is a
+correct derivation, which a machine can settle, and whether the theorem means what is claimed,
+which it cannot. For the second, nobody has to read the proof. What has to be read is the
+statement, the assumptions left standing, and every definition the statement uses, and every
+definition those use in turn.<ref name="pollack">R. Pollack, "How to believe a machine-checked proof", in Giovanni Sambin and Jan M. Smith (eds), ''Twenty Five Years of Constructive Type Theory'', Oxford University Press, 1998, chapter 11 (from p. 205); first issued as BRICS Report RS-97-18, Aarhus University, 1997. [https://doi.org/10.7146/brics.v4i18.18945 doi:10.7146/brics.v4i18.18945]</ref>
+Lean's own guide to validating proofs says the same of Lean: a statement and all the definitions it
+refers to must be examined with care, especially where custom notation or type classes are
+involved.<ref name="refval">''The Lean Language Reference'', version for Lean 4.34.0, section "Validating a Lean Proof". [https://lean-lang.org/doc/reference/4.34.0/ValidatingProofs/ lean-lang.org/doc/reference/4.34.0/ValidatingProofs], consulted 14 October 2026.</ref>
+
+That is usually a short text, even when the proof is long. It is also where much of the remaining
+risk lies.
+
+== Numbers that are not quite school numbers ==
+
+In Lean every function gives an answer for every input. Subtraction of natural numbers (0, 1, 2,
+...) therefore has to give some natural number when the result would be negative, and Lean gives
+0. Division by zero also has to give something, and for natural numbers and integers Lean gives 0:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+#eval (3 - 5 : Nat)
+#eval (7 / 0 : Nat)
+#eval (7 / 0 : Int)
+
+example : (3 : Nat) - 5 = 0 := rfl
+example : (7 : Nat) / 0 = 0 := rfl
+</pre>
+
+Lean 4.34.1 prints <code>0</code> three times and accepts both examples.
+
+These are conventions, not contradictions. A FAQ on the subject puts it this way: such a division
+is a function that agrees with ordinary division wherever the denominator is not zero, and its
+value at zero is simply defined. The theorems that make division useful, such as that a number
+divided by itself is 1, carry the hypothesis that the denominator is not zero, so an illegal
+division still fails, at the point where one of those theorems is applied.<ref name="xena">The Xena Project (blog), "Division by zero in type theory: a FAQ", 5 July 2020. [https://xenaproject.wordpress.com/2020/07/05/division-by-zero-in-type-theory-a-faq/ xenaproject.wordpress.com/2020/07/05/division-by-zero-in-type-theory-a-faq]</ref>
+
+The convention matters when a statement is written. Someone who means "subtract, then add back"
+may write this:
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem sub_then_add (a b : Nat) : a - b + b = a := by
+  omega
+</pre>
+
+Lean refuses it, and the automation it was asked to use reports where the statement breaks:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  d ≥ 0
+  c ≥ 0
+  c - d ≥ 1
+where
+ c := ↑b
+ d := ↑a
+</pre>
+
+That is, whenever <code>b</code> is larger than <code>a</code>. Here the mistake announced itself.
+The dangerous case is the reverse: a statement that is true only because of the convention, which
+Lean accepts without comment.
+
+== Hypotheses that cannot all hold ==
+
+A theorem says that if its hypotheses hold, its conclusion does. If the hypotheses can never hold
+together, the theorem is true and says nothing:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem strange (n : Nat) (h1 : n &lt; 2) (h2 : 5 &lt; n) : n = 100 := by
+  omega
+</pre>
+
+Lean accepts this. No number is both below 2 and above 5, so any conclusion follows. In a long
+statement with many hypotheses, such a clash is easy to miss, and a proof of it can look like a
+proof of something hard.
+
+A milder fault is a hypothesis that is not contradictory but is not in the original problem
+either. It makes the formal problem easier than the one it claims to state.
+
+== Definitions are part of the statement ==
+
+A statement means only what its definitions mean. Here is a definition of a prime number that
+forgets one condition, that a prime is at least 2:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+def IsPrime (n : Nat) : Prop := ∀ d, d ∣ n → d = 1 ∨ d = n
+
+theorem one_is_prime : IsPrime 1 := by
+  intro d hd
+  left
+  exact Nat.dvd_one.mp hd
+</pre>
+
+Lean accepts that 1 is prime, correctly, for this definition. Every theorem stated with
+<code>IsPrime</code> is a theorem about this definition, not about primes. Pollack's remedy is the
+one mathematics already uses: develop shared libraries of formal definitions that are checked, read
+and used by many people, so that their definitions come to be trusted as meaning what they
+claim.<ref name="pollack" /> In Lean that library is Mathlib (see
+[[Lean theorem prover/Explainers/A library of mathematics|a library of mathematics]]).
+
+Notation is part of the statement too. A Lean file can define new notation and new type class
+instances, and these change how a statement is read; Lean's guide warns that they can be used to
+change what a statement means, and notes that some independent checkers can print a statement
+plainly, unaffected by the file's notation.<ref name="refval" />
+
+== A published case ==
+
+miniF2F is a set of 488 problems from mathematics competitions, among them the IMO, AIME and AMC,
+and from some textbooks, each stated formally in Lean and used to compare automated provers. A
+review posted in 2025 found discrepancies between the formal and the informal statements in
+more than half of its problems. In one AIME problem, the formal version carried three hypotheses
+that certain expressions are not zero, which the original problem did not state and which made
+the proof easier; in another problem a missing pair of brackets made the formal statement wrong
+and unprovable. The authors corrected the statements and published a revised set.<ref name="minif2f">Azim Ospanov, Farzan Farnia and Roozbeh Yousefzadeh, "miniF2F-Lean Revisited: Reviewing Limitations and Charting a Path Forward", arXiv:2511.03108, 5 November 2025. [https://arxiv.org/abs/2511.03108 arxiv.org/abs/2511.03108]</ref>
+Every one of those statements had been checked by Lean, in the only sense Lean can check them.
+
+== Who reads the statement ==
+
+The statement is the part a person has to read, and Lean's strictest procedure is built around
+that fact: the statement to be proved is written separately, in a trusted setting, and the proof is
+accepted only if what it proves matches that text exactly. Even then, the guide lists human error
+or misleading presentation in that trusted statement among the things that remain.<ref name="refval" />
+The project this wiki records says the same in its own words: a proof checker is not a reviewer
+(see [[Principia Machina/Lean transition|the move to Lean]]).
+
+== Next ==
+
+[[Lean theorem prover/Explainers/Programs and proofs in one language|Programs and proofs in one language]]
+shows Lean as a programming language, in which the same definitions are run and reasoned about.
+
+== References ==
+
+<references />

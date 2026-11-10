@@ -1,0 +1,5 @@
+# Public strings the disclosure gate must not flag, one per line, matched without regard
+# to case (a public contact address, for one).
+# Version 1's published agent instruction set, named in its pages and in the measured hunk
+# corpus.
+PMP-TPM

@@ -1,0 +1,71 @@
+[
+	{
+		"name": "custos_budget",
+		"comment": "The budget roll-up of the governor's meter (charter 8.3, TPS 5.3.31): one row per horizon (hour, day, thirty_days), written by the job custosBudget, with the pressure level pcalc governor pressure_level answered at that roll-up.",
+		"columns": [
+			{
+				"name": "cb_horizon",
+				"comment": "hour, day or thirty_days",
+				"type": "binary",
+				"options": {
+					"notnull": true,
+					"length": 16
+				}
+			},
+			{
+				"name": "cb_use",
+				"comment": "CPU use over the horizon, thousandths of a CPU second",
+				"type": "bigint",
+				"options": {
+					"unsigned": true,
+					"notnull": true,
+					"default": 0
+				}
+			},
+			{
+				"name": "cb_requests",
+				"comment": "The governed requests over the horizon",
+				"type": "bigint",
+				"options": {
+					"unsigned": true,
+					"notnull": true,
+					"default": 0
+				}
+			},
+			{
+				"name": "cb_rolled",
+				"comment": "The server time of the roll-up, whole seconds",
+				"type": "bigint",
+				"options": {
+					"unsigned": true,
+					"notnull": true,
+					"default": 0
+				}
+			},
+			{
+				"name": "cb_level",
+				"comment": "The PRESSURE LEVEL in force at the roll-up, the Calculator's word",
+				"type": "binary",
+				"options": {
+					"notnull": true,
+					"length": 16,
+					"default": "CLEAR"
+				}
+			},
+			{
+				"name": "cb_kept",
+				"comment": "The level the hysteresis keeps, the next update's prev",
+				"type": "binary",
+				"options": {
+					"notnull": true,
+					"length": 16,
+					"default": "CLEAR"
+				}
+			}
+		],
+		"indexes": [],
+		"pk": [
+			"cb_horizon"
+		]
+	}
+]

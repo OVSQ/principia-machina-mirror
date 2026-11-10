@@ -1,0 +1,98 @@
+{{DISPLAYTITLE:Why the moment map resists plain language}}
+{{Noether's theorems map}}
+
+''Mathematical counterpart: [[Noether's theorems/Mathematics/The symplectic form of the theorem and the moment map|The symplectic form of the theorem and the moment map]].''
+
+This page is partly an explanation and partly an admission. The two cases you can
+see, you can see plainly. The general construction you cannot, and this page says
+what stands in the way rather than pretending otherwise.
+
+== What can be said plainly ==
+
+[[Noether's theorems/Explainers/The conserved thing is the thing that does the moving|The
+previous page]] set out the double life of every measurable quantity: it is a
+number, and it is also an instruction for moving things.
+
+Read that backwards. Start with a motion — sliding sideways, turning — and ask
+which quantity issues that instruction.
+
+For sliding, the answer is momentum. For turning, angular momentum.
+
+The rule that goes from a motion to the quantity issuing it is called the
+'''moment map'''. In these two cases it hands back exactly the conserved
+quantities the first theorem gives, arrived at by a different road.
+
+Both cases can be checked in a line, and the counterpart page checks them.
+
+== What cannot ==
+
+Beyond those examples the subject becomes geometry, and the geometry does not
+survive translation.
+
+The general question is whether the rule exists at all. Given a symmetry acting on
+a space of states, is there always a quantity issuing each instruction? The answer
+is: not always, and the obstruction to its existence is a genuinely geometric
+object with no everyday counterpart. It is not that it is hard to say simply. It
+is that the thing itself is a statement about the shape of a space, and there is no
+shape in ordinary experience it resembles.
+
+There is a further question about whether the rule can be chosen to respect the
+symmetry's own internal structure, and the answer there involves the way a
+symmetry acts on its own description — a construction with, again, no everyday
+analogue.
+
+'''This page could produce sentences about both. They would not transmit
+anything.''' A reader who came away from them believing they understood the moment
+map would be worse off than one who came away knowing they did not.
+
+== What the ceiling costs, which is nothing ==
+
+Worth saying plainly: nothing else in this volume depends on the general
+construction.
+
+Both of Noether's theorems are proved without it. Every conserved quantity in
+[[Noether's theorems/Explainers/Why energy and momentum are conserved|the standard
+cases]] comes out of her argument directly. The moment map is a second, more
+elegant route through territory this volume has already crossed on foot.
+
+== One thing that is not true ==
+
+You will read that the moment map is Noether's theorem in another language. It is
+not, and the difference is worth carrying even from this page.
+
+The moment map lives in a framework built out of '''states''': where the system is
+now, and how fast. Noether's theorems are about '''histories''': whole stories
+with a beginning and an end. And her results hold for configurations that are not
+solutions at all, which a framework built from actual states has no way to talk
+about.
+
+Where both apply, they agree. That is a statement about an overlap, and it is
+less than an identification.
+
+== What the general construction is for ==
+
+It is fair to ask why anyone builds the general machinery if the two cases you can
+see already give the familiar answers.
+
+Two reasons, both practical.
+
+'''Coordinates.''' Writing momentum and angular momentum down the ordinary way
+requires choosing coordinates first — which direction is sideways, which axis you
+are turning about. The general construction does not. It produces the same
+quantities as objects that do not depend on the choice, which matters as soon as
+the space of states is not a flat sheet of paper.
+
+'''Reduction.''' If a system has a symmetry, some of its description is
+redundant, and you would like to work with a smaller description that has the
+redundancy removed. The moment map is the tool that does the removing: it
+identifies precisely which part of the description the symmetry is moving around,
+so it can be quotiented away. This is how the two-body problem gets reduced to a
+one-body problem, and the general version of the same move handles far harder
+cases.
+
+Neither of these is a result about Noether's theorems. They are results about
+working with symmetric systems, and the moment map is the standard tool for the
+job. This volume names it, checks it in two cases, and stops there.
+
+''No mathematics is used on this page. The mathematical treatment is on the
+counterpart page named above.''

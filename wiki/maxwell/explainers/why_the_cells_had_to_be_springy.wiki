@@ -1,0 +1,76 @@
+{{DISPLAYTITLE:Why the cells had to be springy}}
+{{On Physical Lines of Force map}}
+''[[On Physical Lines of Force]] → [[On Physical Lines of Force/Explainers|Explainers]] → Springy cells''
+
+<blockquote>
+'''In one sentence.''' Maxwell found that his spinning cells could only work if their substance could be twisted out of shape and spring back, like a solid rather than a liquid — the same property the wave theory of light already demanded.
+</blockquote>
+
+Parts I and II treat the cells as things that spin. They never ask what the cells are made of. Part III, published in January 1862, asks that question, and the answer changes the paper. It leads directly to the displacement current and to the speed of light.
+
+== How does the middle of a cell learn to spin? ==
+
+The particles between the cells touch only the outer surface of each cell. Everything the model does, it does at those surfaces. So consider a single cell being brought up to speed. The particles rub round its skin. How does the material deep inside find out that it is supposed to turn?
+
+If the cell were made of something like a liquid, it would not find out, or not for a long time. Stir a cup of tea by dragging a spoon round the rim, and the middle stays nearly still. A liquid gives way when you change its shape. The outer layer simply slides past the layer beneath.
+
+A solid behaves differently. Twist the outside of a rubber ball and the whole ball twists with it. The material resists having its shape changed, and that resistance is what carries the twist inward. Maxwell's term for this property is '''elasticity of figure''': springiness in shape. Squeeze a liquid and it pushes back, so a liquid has springiness in ''size''. Only a solid has springiness in shape as well.
+
+[[File:OPL-fig-cell-elasticity.svg|thumb|center|620px|A cell distorted out of shape, and the elastic reaction that resists it]]
+
+So the cells must be made of a substance with elasticity of figure. This is not a decorative extra. Without it the machine of Parts I and II cannot work at all, because spin could never get from the outside of a cell to the inside. It is a purely mechanical requirement, arrived at for a purely mechanical reason.
+
+== Light had already asked for the same thing ==
+
+Here the argument takes a turn that nobody could have planned.
+
+The wave theory of light had a requirement of its own. Light waves are transverse: the wobble is sideways to the direction of travel, not back and forth along it. A medium can only carry a sideways wobble if it resists a change of shape and springs back. Springiness in size is not enough. Whatever medium carried light therefore had to have elasticity of figure — precisely the property Maxwell had just been forced to give his cells, on grounds that had nothing to do with light.
+
+He notes the coincidence without fuss.
+
+<blockquote>
+We need not then be surprised if the magneto-electric medium possesses the same property.
+</blockquote>
+
+Two separate lines of argument, one about magnets and one about light, now demand the same unusual property of the same space. Maxwell does not yet claim that light ''is'' an electromagnetic disturbance. He is a few propositions away from working out how fast a transverse wave would travel in his medium, and from noticing what the number turns out to be. But the door has been opened here, in a remark about the stiffness of a cell wall.
+
+== Two kinds of material ==
+
+Springiness also lets Maxwell say something useful about the difference between materials that conduct electricity and materials that do not. He does it with a pair of comparisons, and both are worth holding on to.
+
+{| class="wikitable"
+! Material !! Maxwell's comparison !! What the electricity does
+|-
+| A conductor || a porous membrane, which lets fluid through but resists its passage || it passes through, meeting resistance on the way
+|-
+| A dielectric, or insulator || an elastic membrane, which lets nothing through but passes on the pressure || it shifts a little within each molecule and stays there
+|}
+
+A '''dielectric''' is simply an insulator: a material such as glass or dry air that will not let electricity flow through it. Stretch a sheet of rubber across a pipe full of water and push on one side. No water crosses the sheet. But the sheet bulges, and the water on the far side feels the push at once. Pressure gets through even though nothing does.
+
+That is Maxwell's account of an insulator. Nothing passes. The effect passes. And the reason nothing passes is that the electricity inside each molecule is displaced but remains with its own molecule. It shifts; it does not travel.
+
+== What springiness buys ==
+
+Put the two halves together and a new possibility appears.
+
+* Push on the particles inside an insulator, and they cannot flow away as they would in a wire.
+* They still move a little, because the cells around them distort.
+* The distorted cells push back, harder the further they are pushed.
+* The particles stop when that elastic reaction exactly balances the push.
+
+The result is a small, settled shift, held in place by a balance of forces, like a spring compressed and left compressed. Maxwell calls this shift the '''electric displacement''', and it is the subject of the next page.
+
+Notice also what a springy medium can do that a slack one cannot. It can store energy and give it back. A pushed spring holds energy until it is released. A medium built of pushed-back springs can pass a disturbance along, one piece handing it to the next, which is what a wave is. Everything the paper achieves after this point — the extra term in the current equation, the speed of the waves, the identification with light — rests on the sentence that the cells are springy in shape.
+
+== Where this is in the paper ==
+
+* [[On Physical Lines of Force/Part III|Part III]] — statical electricity, and the elasticity of the cells
+* [[On Physical Lines of Force/Part III/Conduction and induction|Conduction and induction]] — the porous membrane and the elastic membrane
+* [[On Physical Lines of Force/Part III/Prop. XII|Prop. XII]] — the equilibrium of an elastic sphere
+* [[On Physical Lines of Force/Part III/Prop. XVI|Prop. XVI]] — the velocity of transverse waves in the medium
+* [[On Physical Lines of Force/Glossary|Glossary]] — dielectric, elasticity of figure, displacement
+
+----
+
+''Next: [[On Physical Lines of Force/Explainers/The missing term|The missing term]] · Previous: [[On Physical Lines of Force/Explainers/Why a changing magnet makes a current|Why a changing magnet makes a current]]''

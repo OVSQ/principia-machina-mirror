@@ -1,0 +1,121 @@
+{{DISPLAYTITLE:Types as specifications}}
+{{Technical|Lean theorem prover/Foundations/Dependent function types|Lean theorem prover/Foundations/Inductive types and recursors}}
+{{Lean theorem prover map}}
+
+In most programming languages a type says what kind of thing a value is: a whole
+number, a piece of text, a list. In Lean a type can say much more. It can carry a
+claim about the value, such as "this number is less than five" or "this list has
+three entries", and Lean will not accept a value until the claim is proved. A type
+then works as a '''specification''': a precise statement of what is required. This
+page explains how, with one line of Lean that is accepted and one that is
+refused.
+
+== Ordinary types say little ==
+
+Suppose a program keeps a list of five measurements and has a function that
+returns the measurement at a given position. In an ordinary language the position
+is just a whole number. Nothing stops a caller from asking for position 7. The
+mistake is found, if at all, when the program runs and fails.
+
+The type "whole number" is true of the position, but it is too weak to rule out
+the mistake. What the function needs is a number known to be less than five.
+
+== Types that depend on values ==
+
+The step that makes this possible is to let a type mention a value. A type that
+does so is called a '''dependent type'''.<ref name="tpil-dtt">Jeremy Avigad, Leonardo de Moura, Soonho Kong and Sebastian Ullrich, with contributions from the Lean Community, ''Theorem Proving in Lean 4'', chapter 2, "Dependent Type Theory", section 2.8, "What makes dependent type theory dependent?", online book for Lean 4.33.0. [https://lean-lang.org/theorem_proving_in_lean4/Dependent-Type-Theory/ lean-lang.org/theorem_proving_in_lean4/Dependent-Type-Theory/] (accessed 13 October 2026).</ref> The idea came up
+on the page on [[Lean theorem prover/Explainers/Propositions as types|propositions as types]],
+where "for every" and "there exists" needed it.
+
+Two examples show the kind of thing that becomes possible.
+
+'''A list whose type records its length.''' Instead of one type "list of numbers",
+there is a family of types: lists of numbers of length 0, of length 1, of length 2,
+and so on. A list of three numbers then has a different type from a list of four,
+and a function that needs three numbers can say so in its type.<ref name="tpil-dtt" />
+Lean's reference manual shows a small type of this kind built in a few lines, and
+how Lean rejects a value with the wrong number of entries.<ref name="ref-types">The Lean Developers, "The type system", ''The Lean Language Reference'', for Lean 4.35.0, example "Computing types". [https://lean-lang.org/doc/reference/4.35.0/The-Type-System/ lean-lang.org/doc/reference/4.35.0/The-Type-System/] (accessed 13 October 2026).</ref>
+
+'''A number known to be below a bound.''' For each whole number ''n'', Lean has a
+type written <code>Fin n</code> whose values are the whole numbers strictly less
+than ''n''. So <code>Fin 5</code> has exactly five values, 0 to 4. Each value
+consists of a number together with a proof that the number is less than ''n''.
+The reference manual notes that this is a natural type for the valid positions in
+a list or array.<ref name="ref-fin">The Lean Developers, "Finite natural numbers", ''The Lean Language Reference'', for Lean 4.35.0, section 21.3. [https://lean-lang.org/doc/reference/4.35.0/Basic-Types/Finite-Natural-Numbers/ lean-lang.org/doc/reference/4.35.0/Basic-Types/Finite-Natural-Numbers/] (accessed 14 October 2026).</ref>
+
+== Making a value means proving the claim ==
+
+To make a value of <code>Fin 5</code>, one supplies a number and a proof that it is
+less than 5. Here the number is 3, and the proof is left to <code>decide</code>, a
+command that settles a small question like this by calculation:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+def three : Fin 5 := ⟨3, by decide⟩
+</pre>
+
+Lean accepts this. The same request with 7 in place of 3 is refused:
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+def seven : Fin 5 := ⟨7, by decide⟩
+</pre>
+
+Lean 4.34.1 reports: "Tactic `decide` proved that the proposition 7 &lt; 5 is
+false". The mistake is caught when the definition is written, not when a program
+runs. A function that asks for a position of type <code>Fin 5</code> can never be
+handed position 7, because no such value can be made.
+
+== Subtypes ==
+
+A more general form of the same idea is the '''subtype'''. Given any type and any
+property of its values, the subtype contains the values that have the property.
+Lean writes it with a double slash:
+
+<code>{n : Nat // 0 &lt; n}</code>
+
+which reads "the natural numbers ''n'' such that 0 is less than ''n''", that is,
+the positive whole numbers. As with <code>Fin</code>, a value of this type is a
+number together with a proof that it has the property.<ref name="ref-subtype">The Lean Developers, "Subtypes", ''The Lean Language Reference'', for Lean 4.35.0, section 21.20. [https://lean-lang.org/doc/reference/4.35.0/Basic-Types/Subtypes/ lean-lang.org/doc/reference/4.35.0/Basic-Types/Subtypes/] (accessed 14 October 2026).</ref>
+A function that divides by its input can ask for its input from this type, and
+the question of dividing by zero is settled before the function is ever used.
+
+The reference manual's own examples include the even numbers, and arrays of
+exactly five strings.<ref name="ref-subtype" /> In mathematics, subtypes play the
+part that subsets usually play.<ref name="ref-subtype" />
+
+== The proof costs nothing at run time ==
+
+A natural worry is that carrying a proof around with every number would make
+programs slow. It does not. When Lean turns definitions into a running program, it
+drops the proofs, because nothing in the computation can depend on them. A value of
+<code>Fin n</code>, or of a subtype, is stored exactly as the value without its
+proof would be.<ref name="ref-fin" /><ref name="ref-subtype" /> The claim is checked once, when
+the code is written, and costs nothing afterwards. The page on
+[[Lean theorem prover/Explainers/Programs and proofs in one language|programs and proofs in one language]]
+says more about this.
+
+== A specification says only what it says ==
+
+A type is exactly as strong as the claim written in it, and no stronger. Two
+consequences are worth keeping in mind.
+
+First, a type can be weaker than the intention behind it. A function whose result
+type is "a list of numbers" may return any list at all; if the intention was "the
+same numbers, sorted", that has to be written into the type, or proved separately.
+
+Second, conveniences can hide what a type allows. If one writes the plain numeral
+7 where a <code>Fin 5</code> is expected, without giving a proof, Lean does not
+refuse it: by design it takes the remainder on division by 5 and gives 2.<ref name="ref-fin" />
+That is documented and often useful, but a reader who assumed otherwise would be
+wrong about what the code does.
+
+In both cases the checker does its job perfectly. The question is whether the
+statement checked is the one intended, which is the subject of
+[[Lean theorem prover/Explainers/Stating the right thing|stating the right thing]].
+
+== Next ==
+
+* [[Lean theorem prover/Explainers/Why there is no type of all types|Why there is no type of all types]]: why types, which can describe so much, cannot include a type of every type.
+
+== References ==
+
+<references />

@@ -1,0 +1,19 @@
+{{DISPLAYTITLE:Devito}}
+'''Devito: Symbolic Wave Propagation & Finite-Difference DSL'''
+[[Category:Principia Machina]] [[Category:Tools]]
+
+== Overview & Architectural Fit ==
+'''Devito''' is a Python-based domain-specific language (DSL) and compiler for solving wave equations and continuum spatial PDEs using high-order finite-difference methods. Built directly on top of SymPy, Devito translates high-level mathematical field expressions into highly optimized, parallelized C/OpenMP/CUDA code.
+
+== Mathematical Evaluation for TPM & SVD ==
+* '''Maxwell & Vacuum Wave Dynamics (9.5/10):''' Devito excels at acoustic, elastic, and electromagnetic vector wave equations. It provides automated finite-difference spatial discretization for coupled differential operators (<math>\nabla \times \mathbf{E}</math>, <math>\nabla \cdot \mathbf{B}</math>, <math>\frac{\partial^2 \phi}{\partial t^2} - c^2 \nabla^2 \phi = 0</math>).
+* '''SymPy Symbolic Definition Interface:''' Users write continuous PDE field equations using standard SymPy notation; Devito automatically manages stencil generation, boundary conditions, and memory alignment.
+* '''High-Performance GPU Compilation:''' Generates hardware-optimized CUDA/OpenACC kernels for large-scale 3D grid vacuum simulations.
+
+== Strategic Role in SVD ==
+Devito serves as the primary high-throughput wave propagation engine for simulating 3D electromagnetic displacement currents and vacuum field dynamics within the Principia Machina research registry.
+
+== References ==
+''Added on 2026-10-06 by the [[The Principia Machina/Research Toolkit|Research Toolkit]]: the tool's citations, each checked against the registry or the project's own page that day. The text above is the survey's own.''
+* '''[[The Principia Machina/Research Toolkit/Bibliography#DEVITO19|DEVITO19]]''' &ndash; Louboutin, M., Lange, M., Luporini, F., Kukreja, N., Witte, P. A., Herrmann, F. J., Velesko, P., Gorman, G. J. (2019). Devito (v3.1.0): an embedded domain-specific language for finite differences and geophysical exploration. Geoscientific Model Development 12(3), 1165–1187. [https://doi.org/10.5194/gmd-12-1165-2019 doi:10.5194/gmd-12-1165-2019].
+* '''[[The Principia Machina/Research Toolkit/Bibliography#DEVITO20|DEVITO20]]''' &ndash; Luporini, F., Louboutin, M., Lange, M., Kukreja, N., Witte, P., Hückelheim, J., Yount, C., Kelly, P. H. J., Herrmann, F. J., Gorman, G. J. (2020). Architecture and Performance of Devito, a System for Automated Stencil Computation. ACM Transactions on Mathematical Software 46(1), 1–28. [https://doi.org/10.1145/3374916 doi:10.1145/3374916].

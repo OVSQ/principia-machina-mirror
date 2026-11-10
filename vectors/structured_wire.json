@@ -1,0 +1,338 @@
+{
+ "corpus": "structured_wire",
+ "note": "Written by hand. The canonical texts were written by an independent writer of section 11.4 (keys in code point order, no white space, only the quotation mark, the reverse solidus and U+0000 to U+001F escaped, the last as \\u00xx); the texts read are JSON with white space, members out of order and \\u escapes.",
+ "cases": [
+  {
+   "id": "payload-lhs",
+   "note": "no START: the EQUATION's left side; the text's white space and member order are not the canonical ones",
+   "text": "{\n \"STEPS\": [\n  {\n   \"SITE\": \"rhs\",\n   \"LAW\": \"drag\",\n   \"FORWARD\": true,\n   \"EQUATION\": \"F = k * v + q\"\n  },\n  {\n   \"SITE\": \"rhs.r\",\n   \"ASSUMPTION\": \"A-0007\",\n   \"FORWARD\": true,\n   \"EQUATION\": \"F = k * v + 0\"\n  },\n  {\n   \"SITE\": \"rhs\",\n   \"IDENTITY\": \"addZero\",\n   \"FORWARD\": true,\n   \"EQUATION\": \"F = k * v\"\n  }\n ]\n}",
+   "canonical": "{\"STEPS\":[{\"EQUATION\":\"F = k * v + q\",\"FORWARD\":true,\"LAW\":\"drag\",\"SITE\":\"rhs\"},{\"ASSUMPTION\":\"A-0007\",\"EQUATION\":\"F = k * v + 0\",\"FORWARD\":true,\"SITE\":\"rhs.r\"},{\"EQUATION\":\"F = k * v\",\"FORWARD\":true,\"IDENTITY\":\"addZero\",\"SITE\":\"rhs\"}]}",
+   "derivation": {
+    "structured": [
+     {
+      "equation": "F = k * v + q",
+      "law": "drag",
+      "site": "rhs"
+     },
+     {
+      "equation": "F = k * v + 0",
+      "assumption": "A-0007",
+      "site": "rhs.r"
+     },
+     {
+      "equation": "F = k * v",
+      "identity": "addZero",
+      "site": "rhs"
+     }
+    ]
+   },
+   "credit": {
+    "equation": "F = k * v",
+    "laws": [
+     {
+      "cite": "law",
+      "name": "drag",
+      "equation": "F = k * v + q"
+     },
+     {
+      "cite": "assumption",
+      "name": "A-0007",
+      "equation": "q = 0"
+     }
+    ],
+    "expect": {
+     "verdict": "accepted"
+    },
+    "class": "MECHANICAL"
+   }
+  },
+  {
+   "id": "payload-start-law",
+   "note": "START from a law of the Starting Set",
+   "text": "{\n \"STEPS\": [\n  {\n   \"SITE\": \"rhs\",\n   \"IDENTITY\": \"mulComm\",\n   \"FORWARD\": true,\n   \"EQUATION\": \"F = a * m\"\n  }\n ],\n \"START\": {\n  \"LAW\": \"newton2\"\n }\n}",
+   "canonical": "{\"START\":{\"LAW\":\"newton2\"},\"STEPS\":[{\"EQUATION\":\"F = a * m\",\"FORWARD\":true,\"IDENTITY\":\"mulComm\",\"SITE\":\"rhs\"}]}",
+   "derivation": {
+    "structured": [
+     {
+      "equation": "F = a * m",
+      "identity": "mulComm",
+      "site": "rhs"
+     }
+    ],
+    "start": {
+     "law": "newton2"
+    }
+   },
+   "credit": {
+    "equation": "F = a * m",
+    "laws": [
+     {
+      "cite": "law",
+      "name": "newton2",
+      "equation": "F = m * a"
+     }
+    ],
+    "expect": {
+     "verdict": "accepted"
+    },
+    "class": "MECHANICAL"
+   }
+  },
+  {
+   "id": "payload-start-assumption",
+   "note": "START from an ASSUMPTION record; a step applied backward",
+   "text": "{\n \"STEPS\": [\n  {\n   \"SITE\": \"lhs\",\n   \"IDENTITY\": \"addZero\",\n   \"FORWARD\": false,\n   \"EQUATION\": \"q + 0 = 0\"\n  }\n ],\n \"START\": {\n  \"ASSUMPTION\": \"A-0007\"\n }\n}",
+   "canonical": "{\"START\":{\"ASSUMPTION\":\"A-0007\"},\"STEPS\":[{\"EQUATION\":\"q + 0 = 0\",\"FORWARD\":false,\"IDENTITY\":\"addZero\",\"SITE\":\"lhs\"}]}",
+   "derivation": {
+    "structured": [
+     {
+      "equation": "q + 0 = 0",
+      "identity": "addZero",
+      "site": "lhs",
+      "dir": "bwd"
+     }
+    ],
+    "start": {
+     "assumption": "A-0007"
+    }
+   },
+   "credit": {
+    "equation": "q + 0 = 0",
+    "laws": [
+     {
+      "cite": "law",
+      "name": "drag",
+      "equation": "F = k * v + q"
+     },
+     {
+      "cite": "assumption",
+      "name": "A-0007",
+      "equation": "q = 0"
+     }
+    ],
+    "expect": {
+     "verdict": "accepted"
+    },
+    "class": "MECHANICAL"
+   }
+  },
+  {
+   "id": "payload-start-expression",
+   "note": "START from e = e for an expression",
+   "text": "{\n \"STEPS\": [\n  {\n   \"SITE\": \"lhs\",\n   \"IDENTITY\": \"mulOne\",\n   \"FORWARD\": false,\n   \"EQUATION\": \"x * 1 = x\"\n  },\n  {\n   \"SITE\": \"rhs\",\n   \"IDENTITY\": \"addZero\",\n   \"FORWARD\": false,\n   \"EQUATION\": \"x * 1 = x + 0\"\n  }\n ],\n \"START\": {\n  \"EXPRESSION\": \"x\"\n }\n}",
+   "canonical": "{\"START\":{\"EXPRESSION\":\"x\"},\"STEPS\":[{\"EQUATION\":\"x * 1 = x\",\"FORWARD\":false,\"IDENTITY\":\"mulOne\",\"SITE\":\"lhs\"},{\"EQUATION\":\"x * 1 = x + 0\",\"FORWARD\":false,\"IDENTITY\":\"addZero\",\"SITE\":\"rhs\"}]}",
+   "derivation": {
+    "structured": [
+     {
+      "equation": "x * 1 = x",
+      "identity": "mulOne",
+      "site": "lhs",
+      "dir": "bwd"
+     },
+     {
+      "equation": "x * 1 = x + 0",
+      "identity": "addZero",
+      "site": "rhs",
+      "dir": "bwd"
+     }
+    ],
+    "start": {
+     "refl": "x"
+    }
+   },
+   "credit": {
+    "equation": "x * 1 = x + 0",
+    "laws": [],
+    "expect": {
+     "verdict": "accepted"
+    },
+    "class": "MECHANICAL"
+   }
+  },
+  {
+   "id": "payload-no-steps",
+   "note": "no step: the RESULT is the cited law",
+   "text": "{\n \"STEPS\": [],\n \"START\": {\n  \"LAW\": \"newton2\"\n }\n}",
+   "canonical": "{\"START\":{\"LAW\":\"newton2\"},\"STEPS\":[]}",
+   "derivation": {
+    "structured": [],
+    "start": {
+     "law": "newton2"
+    }
+   },
+   "credit": {
+    "equation": "F = m * a",
+    "laws": [
+     {
+      "cite": "law",
+      "name": "newton2",
+      "equation": "F = m * a"
+     }
+    ],
+    "expect": {
+     "verdict": "accepted"
+    },
+    "class": "MECHANICAL"
+   }
+  },
+  {
+   "id": "payload-empty-site",
+   "note": "an empty SITE is carried as written; the checker refuses it",
+   "text": "{\n \"STEPS\": [\n  {\n   \"SITE\": \"\",\n   \"LAW\": \"newton2\",\n   \"FORWARD\": true,\n   \"EQUATION\": \"F = m * a\"\n  }\n ]\n}",
+   "canonical": "{\"STEPS\":[{\"EQUATION\":\"F = m * a\",\"FORWARD\":true,\"LAW\":\"newton2\",\"SITE\":\"\"}]}",
+   "derivation": {
+    "structured": [
+     {
+      "equation": "F = m * a",
+      "law": "newton2"
+     }
+    ]
+   },
+   "credit": {
+    "equation": "F = m * a",
+    "laws": [
+     {
+      "cite": "law",
+      "name": "newton2",
+      "equation": "F = m * a"
+     }
+    ],
+    "expect": {
+     "verdict": "unreadable",
+     "step": 1,
+     "why": "no-site"
+    },
+    "class": "INSPECTION"
+   }
+  },
+  {
+   "id": "payload-escapes",
+   "note": "a quotation mark, a reverse solidus, a tab and characters beyond ASCII, each written as canonical JSON writes it; the checker reads none of them",
+   "text": "{\n \"STEPS\": [\n  {\n   \"SITE\": \"rhs\",\n   \"LAW\": \"the \\\"second\\\" \\\\ law\",\n   \"FORWARD\": true,\n   \"EQUATION\": \"F = m * a\\t\"\n  },\n  {\n   \"SITE\": \"lhs.a\",\n   \"IDENTITY\": \"n\\u00e9gation\",\n   \"FORWARD\": false,\n   \"EQUATION\": \"\\u03c9 = \\u00e9\"\n  }\n ],\n \"START\": {\n  \"ASSUMPTION\": \"A-0007 \\u2713\"\n }\n}",
+   "canonical": "{\"START\":{\"ASSUMPTION\":\"A-0007 ✓\"},\"STEPS\":[{\"EQUATION\":\"F = m * a\\u0009\",\"FORWARD\":true,\"LAW\":\"the \\\"second\\\" \\\\ law\",\"SITE\":\"rhs\"},{\"EQUATION\":\"ω = é\",\"FORWARD\":false,\"IDENTITY\":\"négation\",\"SITE\":\"lhs.a\"}]}",
+   "derivation": {
+    "structured": [
+     {
+      "equation": "F = m * a\t",
+      "law": "the \"second\" \\ law",
+      "site": "rhs"
+     },
+     {
+      "equation": "ω = é",
+      "identity": "négation",
+      "site": "lhs.a",
+      "dir": "bwd"
+     }
+    ],
+    "start": {
+     "assumption": "A-0007 ✓"
+    }
+   }
+  },
+  {
+   "id": "refused-not-an-object",
+   "text": "[]",
+   "refused": "not-an-object"
+  },
+  {
+   "id": "refused-unknown-member",
+   "text": "{\"FORM\": \"STRUCTURED\", \"STEPS\": []}",
+   "refused": "unknown-member FORM"
+  },
+  {
+   "id": "refused-missing-steps",
+   "text": "{}",
+   "refused": "missing STEPS"
+  },
+  {
+   "id": "refused-steps-not-a-list",
+   "text": "{\"STEPS\": {}}",
+   "refused": "not-a-list STEPS"
+  },
+  {
+   "id": "refused-start-empty",
+   "text": "{\"START\": {}, \"STEPS\": []}",
+   "refused": "START: no-start"
+  },
+  {
+   "id": "refused-start-several",
+   "text": "{\"START\": {\"LAW\": \"newton2\", \"EXPRESSION\": \"x\"}, \"STEPS\": []}",
+   "refused": "START: several-starts"
+  },
+  {
+   "id": "refused-start-identity",
+   "text": "{\"START\": {\"IDENTITY\": \"addComm\"}, \"STEPS\": []}",
+   "refused": "START: unknown-member IDENTITY"
+  },
+  {
+   "id": "refused-start-not-a-string",
+   "text": "{\"START\": {\"LAW\": 1}, \"STEPS\": []}",
+   "refused": "START: not-a-string LAW"
+  },
+  {
+   "id": "refused-start-not-an-object",
+   "text": "{\"START\": \"newton2\", \"STEPS\": []}",
+   "refused": "START: not-an-object"
+  },
+  {
+   "id": "refused-start-before-steps",
+   "text": "{\"START\": {}, \"STEPS\": 3}",
+   "refused": "START: no-start"
+  },
+  {
+   "id": "refused-step-not-an-object",
+   "text": "{\"STEPS\": [\"F = m * a\"]}",
+   "refused": "step 1: not-an-object"
+  },
+  {
+   "id": "refused-step-unknown-member",
+   "text": "{\"STEPS\": [{\"EQUATION\": \"F = m * a\", \"LAW\": \"newton2\", \"SITE\": \"rhs\", \"FORWARD\": true, \"DIR\": \"bwd\"}]}",
+   "refused": "step 1: unknown-member DIR"
+  },
+  {
+   "id": "refused-step-missing-equation",
+   "text": "{\"STEPS\": [{\"LAW\": \"newton2\", \"SITE\": \"rhs\", \"FORWARD\": true}]}",
+   "refused": "step 1: missing EQUATION"
+  },
+  {
+   "id": "refused-step-equation-not-a-string",
+   "text": "{\"STEPS\": [{\"EQUATION\": 3, \"LAW\": \"newton2\", \"SITE\": \"rhs\", \"FORWARD\": true}]}",
+   "refused": "step 1: not-a-string EQUATION"
+  },
+  {
+   "id": "refused-step-no-citation",
+   "text": "{\"STEPS\": [{\"EQUATION\": \"F = m * a\", \"SITE\": \"rhs\", \"FORWARD\": true}]}",
+   "refused": "step 1: no-citation"
+  },
+  {
+   "id": "refused-step-several-citations",
+   "text": "{\"STEPS\": [{\"EQUATION\": \"F = m * a\", \"LAW\": \"newton2\", \"IDENTITY\": \"addComm\", \"SITE\": \"rhs\", \"FORWARD\": true}]}",
+   "refused": "step 1: several-citations"
+  },
+  {
+   "id": "refused-step-citation-not-a-string",
+   "text": "{\"STEPS\": [{\"EQUATION\": \"F = m * a\", \"LAW\": null, \"SITE\": \"rhs\", \"FORWARD\": true}]}",
+   "refused": "step 1: not-a-string LAW"
+  },
+  {
+   "id": "refused-step-missing-site",
+   "text": "{\"STEPS\": [{\"EQUATION\": \"F = m * a\", \"LAW\": \"newton2\", \"FORWARD\": true}]}",
+   "refused": "step 1: missing SITE"
+  },
+  {
+   "id": "refused-step-missing-forward",
+   "text": "{\"STEPS\": [{\"EQUATION\": \"F = m * a\", \"LAW\": \"newton2\", \"SITE\": \"rhs\", \"FORWARD\": true}, {\"EQUATION\": \"F = a * m\", \"IDENTITY\": \"mulComm\", \"SITE\": \"rhs\"}]}",
+   "refused": "step 2: missing FORWARD"
+  },
+  {
+   "id": "refused-step-forward-not-a-boolean",
+   "text": "{\"STEPS\": [{\"EQUATION\": \"F = m * a\", \"LAW\": \"newton2\", \"SITE\": \"rhs\", \"FORWARD\": \"true\"}]}",
+   "refused": "step 1: not-a-boolean FORWARD"
+  },
+  {
+   "id": "refused-step-first-of-two",
+   "text": "{\"STEPS\": [{\"EQUATION\": \"F = m * a\", \"LAW\": \"newton2\", \"SITE\": \"rhs\"}, {\"EQUATION\": \"F = a * m\"}]}",
+   "refused": "step 1: missing FORWARD"
+  }
+ ]
+}

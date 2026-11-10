@@ -1,0 +1,107 @@
+{{DISPLAYTITLE:Nudging a path and seeing what changes}}
+{{Noether's theorems map}}
+
+''Mathematical counterpart: [[Noether's theorems/First theorem/The Lagrange expressions and the first variation|The Lagrange expressions and the first variation]].''
+
+Hang a chain between two hooks. It settles into one shape. Why that shape and not
+another?
+
+== The nudge ==
+
+Give the chain a small push somewhere in the middle and let it go. It comes back.
+Push it anywhere at all, by any small amount, and it comes back to the same
+curve.
+
+That is the test. The real shape is the one where a small nudge anywhere makes no
+difference to the score. Not a small difference — no difference at all, to first
+order. Every nearby shape scores the same, which is what it means to sit at the
+bottom of a valley rather than on a slope.
+
+Now do the accounting. When you nudge the chain at some point, the score changes
+by an amount that depends on two things: how big your nudge was, and how
+sensitive the score is at that point.
+
+Add up those contributions along the whole chain and you have the total change in
+the score. Each point contributes its own sensitivity multiplied by its own
+nudge.
+
+== The sensitivity has a name ==
+
+Those sensitivities — one number for each point, and one for each thing you could
+nudge there — are the objects Noether calls the '''Lagrange expressions'''.
+
+Write down what they are and you have written down the equation of the chain,
+because the real shape is exactly the shape where all of them are zero. No
+sensitivity anywhere means no nudge changes anything.
+
+'''Here is the step that matters, and it is easy to walk past.'''
+
+Noether does not set them to zero.
+
+She writes down the sensitivities and leaves them standing. They are quantities
+you can compute for any shape at all — the real one, a silly one, one you made
+up. For the real shape they happen to be zero. For every other shape they are
+not.
+
+== Why leaving them standing is the whole trick ==
+
+A statement about the sensitivities is a statement about every conceivable shape.
+A statement about the real shape is a statement about one.
+
+The first kind is much stronger in reach and much weaker in content. It is also
+the kind both theorems produce. Noether's results are true of chains hanging
+wrongly, of paths a ball would never take, of arrangements that violate every law
+of physics. That is not a loophole. It is where the strength comes from.
+
+The moment you set the sensitivities to zero, you have thrown away every shape but
+one, and you cannot get them back. So she does that step last, separately, and
+visibly. See
+[[Noether's theorems/Explainers/True everywhere against true for real motions|True
+everywhere against true for real motions]].
+
+== The leftovers at the ends ==
+
+One more piece of bookkeeping, and it becomes important later.
+
+The accounting above quietly assumed the nudge dies away at the two hooks. If you
+allow the chain to be nudged at the ends as well, extra terms appear, and they
+depend only on what happens at the ends.
+
+Those end terms are usually treated as a nuisance to be assumed away. In this
+subject they are not a nuisance. They are where the conserved quantities come
+from. See
+[[Noether's theorems/Explainers/What happens at the edges|What happens at the
+edges]].
+
+== Not the smallest score, the unchanging one ==
+
+A word of warning about how this is usually said.
+
+You will often read that nature picks the path with the '''smallest''' score. That
+is wrong often enough to matter.
+
+What nature picks is the path where a nudge makes no difference. Usually that is
+the smallest, in the way the bottom of a valley is the lowest point nearby. But a
+nudge also makes no difference at the top of a hill, or at a saddle where the
+ground falls away in one direction and rises in the other.
+
+All three happen in physics. Light reflecting off the inside of a curved mirror
+can take the path of '''greatest''' time among nearby paths, and it is still the
+path light takes.
+
+So the test is not "smallest". The test is "a nudge changes nothing", and that is
+a weaker and more useful condition. The chain hanging between two hooks happens to
+sit at a minimum. Do not assume the next case will.
+
+== One nudge at a time ==
+
+One more point of care. The nudges are independent: you may push the chain here
+without pushing it there, and the accounting has to hold for every such push
+separately.
+
+That is what makes the sensitivities well defined point by point, rather than a
+single overall number. It is also what forces there to be as many equations as
+there are things you could push.
+
+''No mathematics is used on this page. The mathematical treatment is on the
+counterpart page named above.''

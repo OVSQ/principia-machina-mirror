@@ -1,0 +1,162 @@
+{{DISPLAYTITLE:Type classes and instance resolution}}
+{{Plebeian|Lean theorem prover/Explainers/A library of mathematics}}
+{{Lean theorem prover map}}
+
+A '''type class''' in Lean is a structure whose values Lean finds by itself. Writing <code>a + b</code>, comparing two values, printing one, or treating a natural number as an integer all depend on such values, called '''instances''', which the elaborator supplies by a search called '''instance resolution''' or instance synthesis. This page shows what a class is, how the search runs in Lean 4.34.1, why it is tabled, how its inputs and outputs are controlled, and how a large mathematical library is organised around it.
+
+== Classes are structures ==
+
+The command <code>class</code> declares a structure and marks it for instance resolution:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+class Shape (α : Type) where
+  area : α → Nat
+
+#check @Shape.area
+#print Shape
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+@Shape.area : {α : Type} → [self : Shape α] → α → Nat
+class Shape (α : Type) : Type
+number of parameters: 1
+fields:
+  Shape.area : α → Nat
+constructor:
+  Shape.mk {α : Type} (area : α → Nat) : Shape α
+</pre>
+
+The class has one field and one constructor, like any structure. The difference is in the type of the field's accessor. Its argument <code>[self : Shape α]</code> is '''instance-implicit''': the user does not write it, and the elaborator does not find it by unification, as it would an ordinary implicit argument, but by searching the declared instances.<ref name="manual-tc">Lean Developers, ''The Lean Language Reference'', version 4.34.0, chapter "Type Classes", and its section "Instance Synthesis". https://lean-lang.org/doc/reference/4.34.0/Type-Classes/</ref> In the logic, nothing is new: an instance is an ordinary constant, and the term the search returns is an ordinary term that the Lean kernel checks like any other.
+
+== Instances and the search ==
+
+An instance supplies a value of the class, possibly depending on other instances:
+
+<pre class="lean lean-cont" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+structure Square where
+  side : Nat
+
+instance : Shape Square where
+  area s := s.side * s.side
+
+instance [Shape α] [Shape β] : Shape (α × β) where
+  area p := Shape.area p.1 + Shape.area p.2
+
+set_option pp.explicit true in
+#synth Shape (Square × (Square × Square))
+#eval Shape.area ((⟨3⟩, ⟨4⟩) : Square × Square)
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+@instShapeProd Square (Prod Square Square) instShapeSquare
+  (@instShapeProd Square Square instShapeSquare instShapeSquare)
+25
+</pre>
+
+The command <code>#synth</code> runs the search and prints its result: a term assembled from the two instances, nested to the shape of the type. An instance with instance arguments behaves like a rule of a logic program: to obtain <code>Shape (α × β)</code>, obtain <code>Shape α</code> and <code>Shape β</code>. The paper that introduced Lean 4 describes resolution as a simple λ-Prolog interpreter whose Horn clauses are the declared instances, and states that Lean 4 indexes instances with discrimination trees.<ref name="lean4-paper">Leonardo de Moura and Sebastian Ullrich, "The Lean 4 Theorem Prover and Programming Language (System Description)", in ''Automated Deduction – CADE 28'', Lecture Notes in Computer Science 12699, Springer, 2021, pp. 625–635. doi:10.1007/978-3-030-79876-5_37</ref> The reference manual calls synthesis a recursive search procedure that either finds an instance or fails, and says that candidates are tried in order of priority, the more recent instance first among those of equal priority.<ref name="manual-tc" />
+
+== Tabling ==
+
+Search of this kind has two known failures. In a hierarchy of mathematical structures there are often several paths from one class to another; such '''diamonds''', stacked in towers, make naive depth-first search take time exponential in the height of the tower when a subquery fails. And useful instances can form '''cycles''', such as coercions in both directions between two types, on which naive search may loop. Daniel Selsam, Sebastian Ullrich and Leonardo de Moura named these the diamond problem and the cycle problem, reported that increasingly sophisticated uses of type classes in Lean's mathematical library had turned them into practical obstacles, and proposed '''tabled typeclass resolution''' to solve both.<ref name="selsam">Daniel Selsam, Sebastian Ullrich and Leonardo de Moura, "Tabled Typeclass Resolution", arXiv:2001.04301 [cs.PL], 2020. https://arxiv.org/abs/2001.04301</ref>
+
+Tabling, a technique taken from logic programming, keeps a table from each subgoal met so far to the solutions already found for it, and reuses those solutions instead of searching again. The procedure keeps one search tree per distinct subgoal. '''Generator nodes''', the roots of the trees, try the instances for their subgoal one after another. '''Consumer nodes''' wait on a subgoal and are resumed whenever a new solution for it appears. The authors state that this removes the exponential blow-up from diamonds and guarantees termination under a bounded term-size assumption.<ref name="selsam" /> In Lean 4.34.1 the table's keys are subgoals in which each assignable metavariable has been replaced by a normalised name, so that <code>f ?m ?m ?n</code> becomes <code>f _tc.0 _tc.0 _tc.1</code>; the source notes that the lookup is structural, so a goal may be visited twice if two occurrences are equal only up to unfolding.<ref name="src-synth">Lean 4 source code, version 4.34.1 (2026), file <code>src/Lean/Meta/SynthInstance.lean</code>: the notes on tabled resolution and table keys, the function <code>generate</code>, and the notes on <code>outParam</code>. Apache License 2.0. https://github.com/leanprover/lean4/blob/v4.34.1/src/Lean/Meta/SynthInstance.lean</ref>
+
+A cycle shows the difference. Each of these instances needs the other:
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+class R (α : Type) where
+
+instance [R Nat] : R Int := ⟨⟩
+instance [R Int] : R Nat := ⟨⟩
+
+set_option trace.Meta.synthInstance true in
+#synth R Nat
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+error: failed to synthesize
+  R Nat
+[Meta.synthInstance] ❌️ R Nat
+  [Meta.synthInstance] ✅️ new goal R Nat
+    [Meta.synthInstance.instances] #[@instRNatOfInt]
+  [Meta.synthInstance.apply] ✅️ apply @instRNatOfInt to R Nat
+    [Meta.synthInstance.tryResolve] ✅️ R Nat ≟ R Nat
+    [Meta.synthInstance] ✅️ new goal R Int
+      [Meta.synthInstance.instances] #[@instRIntOfNat]
+  [Meta.synthInstance.apply] ✅️ apply @instRIntOfNat to R Int
+    [Meta.synthInstance.tryResolve] ✅️ R Int ≟ R Int
+  [Meta.synthInstance] result &lt;not-available&gt;
+</pre>
+
+The error message is shortened here by one line of hint. When the search for <code>R Int</code> asks again for <code>R Nat</code>, that goal is already in the table, so no new goal is opened; the request waits for an answer, none ever arrives, and the search ends with a failure. A naive depth-first search would loop forever.
+
+== Inputs and outputs ==
+
+The reference manual states that a search is attempted only when all the input parameters of the class are known. A problem with unknown inputs is '''stuck'''; it may be retried when elaboration learns more, and otherwise it fails.<ref name="manual-tc" /> A parameter marked <code>outParam</code> is not an input. It is ignored when instances are matched, and the instance found determines it.<ref name="manual-tc" /> In 4.34.1 the search replaces each output argument by a fresh metavariable before it starts and unifies the original afterwards.<ref name="src-synth" /> The arithmetic classes use this: <code>#check @HAdd</code> prints <code>HAdd : Type u_1 → Type u_2 → outParam (Type u_3) → Type (max (max u_1 u_2) u_3)</code>, so the types of the two summands select the instance and the instance fixes the type of the sum.
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+class Container (c : Type) (elem : outParam Type) where
+  first? : c → Option elem
+
+instance : Container (List α) α := ⟨List.head?⟩
+
+#check fun (xs : List Nat) => Container.first? xs
+</pre>
+
+This prints <code>fun xs => Container.first? xs : List Nat → Option Nat</code>: the element type was an output, read off the instance. Remove <code>outParam</code> and the same use is stuck, because the second argument is now an input and nothing determines it:
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+class Container' (c : Type) (elem : Type) where
+  first? : c → Option elem
+
+instance : Container' (List α) α := ⟨List.head?⟩
+
+def firstOf (xs : List Nat) := Container'.first? xs
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+error: typeclass instance problem is stuck
+  Container' (List Nat) (?m.7 xs)
+</pre>
+
+Lean's message continues with a note that the second argument contains metavariables and must be fully determined before resolution is tried. The manual also describes <code>semiOutParam</code>, a parameter that is taken into account when instances are selected but that instances must fill in.<ref name="manual-tc" />
+
+== Default instances ==
+
+When a search would otherwise fail without having selected an instance, the '''default instances''' of the class are tried, by priority, the more recent first among equals.<ref name="manual-tc" /> This is why <code>fun x => x + 1</code> elaborates to a function on <code>Nat</code>, as [[Lean theorem prover/System/Elaboration|elaboration]] traces in detail: the prelude makes <code>instHAdd</code> a default instance of <code>HAdd</code>, and <code>instOfNatNat</code> a default instance of <code>OfNat</code> with low priority.
+
+== Coercions through classes ==
+
+Coercions are instances too. When a term of one type is used where another is expected, the elaborator searches for an instance of the coercion classes, of which <code>Coe</code> is the main one, and inserts the function it finds.<ref name="manual-coe">Lean Developers, ''The Lean Language Reference'', version 4.34.0, chapter "Coercions". https://lean-lang.org/doc/reference/4.34.0/Coercions/</ref>
+
+<pre class="lean lean-cont" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+@[coe] def Square.toNat (s : Square) : Nat := s.side
+instance : Coe Square Nat := ⟨Square.toNat⟩
+
+def twice (n : Nat) : Nat := 2 * n
+
+#check twice (⟨5⟩ : Square)
+set_option pp.coercions false in
+#check twice (⟨5⟩ : Square)
+#eval twice (⟨5⟩ : Square)
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+twice ↑{ side := 5 } : Nat
+twice { side := OfNat.ofNat 5 }.toNat : Nat
+10
+</pre>
+
+The attribute <code>@[coe]</code> tells the printer to show the function as an arrow. With <code>pp.coercions</code> off, the elaborated term shows what was really inserted: a call of <code>Square.toNat</code>. The instance itself has been unfolded away, and the Lean kernel sees only the function application.
+
+== The mathematical library's hierarchy ==
+
+Lean's mathematical library, Mathlib, is organised around classes. A 2020 account of it, written for the Lean 3 version of the library, names, among the uses of type classes in Lean's core library: notation, such as the class behind <code>+</code>; mathematical structures, such as a ring structure on a type; coercions; and decidability of propositions. It explains that the library's classes are mostly '''semi-bundled''': the carrier type is a parameter of the class and the operations and axioms are fields. A type class problem should have essentially at most one solution and only parameters guide the search, so exposing the carrier lets the library register the canonical structure on a type. The same account calls the result a structure hierarchy rather than an algebraic one, because it extends far beyond groups and rings, and it records that diamonds are common in it.<ref name="mathlib-paper">The mathlib Community, "The Lean Mathematical Library", in ''Proceedings of the 9th ACM SIGPLAN International Conference on Certified Programs and Proofs (CPP 2020)'', ACM, 2020, pp. 367–381. doi:10.1145/3372885.3373824</ref> A 2022 study of the same library counted over 600 classes and over 8,000 instances as of February 2022, and analysed the design patterns, and the problems, that instance parameters bring at that scale.<ref name="baanen">Anne Baanen, "Use and Abuse of Instance Parameters in the Lean Mathematical Library", in ''13th International Conference on Interactive Theorem Proving (ITP 2022)'', Leibniz International Proceedings in Informatics 237, Schloss Dagstuhl, 2022, pp. 4:1–4:20. doi:10.4230/LIPIcs.ITP.2022.4</ref> Those are the conditions under which the diamond and cycle problems became urgent and tabled resolution was introduced.<ref name="selsam" /> In Lean 4 the mechanism is the one shown on this page. ''Mathematics in Lean'' devotes a chapter to building such hierarchies from classes that extend one another, starting from the observation that a commutative ring is in particular an additive group.<ref name="mil">Jeremy Avigad and Patrick Massot, ''Mathematics in Lean'', online book, chapter 8, "Hierarchies". https://leanprover-community.github.io/mathematics_in_lean/C08_Hierarchies.html</ref> This edition's code uses core Lean only, so the figures above are quoted from the cited papers, not measured here.
+
+== Next ==
+
+[[Lean theorem prover/System/The tactic framework|The tactic framework]] turns from the search for instances to the search for proofs.
+
+== References ==
+
+<references />

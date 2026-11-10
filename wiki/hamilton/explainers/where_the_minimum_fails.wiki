@@ -1,0 +1,142 @@
+{{DISPLAYTITLE:Where the minimum fails}}
+{{Technical|Hamilton's principle/Mathematics/The Jacobi condition and conjugate points}}
+{{Hamilton's principle map}}
+
+This page explains where a stationary path stops being the best one. It uses no
+mathematics. The technical page it goes with is named above.
+
+== Paths that meet again ==
+
+[[File:OPL-HP-F-05.png|thumb|right|400px|Geodesics from a pole refocusing at the antipode.]]
+
+Stand at the North Pole and set off south, in a straight line, along the surface.
+Have a friend do the same, in a different direction.
+
+You start together. You separate. You keep separating for a while.
+
+Then you start converging, and at the South Pole you meet again.
+
+Neither of you turned. Both of you went as straight as the surface allows. The
+curvature of the Earth brought you back together.
+
+That is the whole idea of this page. On a curved surface, paths that set off in
+slightly different directions can '''refocus'''. The place where they meet again
+has a name: a '''conjugate point'''.
+
+== What happens at the meeting point ==
+
+[[File:OPL-HP-F-14.png|thumb|right|400px|Two stationary light paths around a mass.]]
+
+Something breaks there, and it is easy to see what.
+
+From the North Pole to the South Pole, '''every''' meridian is a valid straight
+path, and they all have the same length.
+
+So there is no unique shortest route. There are infinitely many, all tied.
+
+That is not a normal situation. Usually the shortest route between two places is
+one specific route. Here the answer has become ambiguous, and the ambiguity
+arrives exactly at the refocusing point.
+
+== Past the meeting point ==
+
+Now go further. Set off from the North Pole, pass the South Pole, and keep going
+until you are nearly back where you started.
+
+This route is still perfectly straight. At every single point it obeys the same
+rule as any other straight path on the sphere. Nothing you could measure along the
+way would reveal anything unusual.
+
+And it is obviously '''not''' the shortest way to get where you ended up. The
+shortest way was to take a few steps in the other direction.
+
+'''That is a stationary path which is not a minimum, and it needs no mathematics
+to see.'''
+
+== The rule ==
+
+Putting it together:
+
+'''Before the first conjugate point''' the path is the unique shortest route.
+
+'''At the conjugate point''' the shortest route stops being unique.
+
+'''After it''' the path is still stationary and is no longer shortest.
+
+Jacobi found this in 1837, and it is the missing test that
+[[Hamilton's principle/Explainers/Is it really a minimum|Is it really a minimum]] was looking for. It is
+not a local test. It asks whether the path has run far enough for neighbouring
+paths to refocus, and that is a question about the whole journey.
+
+== Which surfaces do this ==
+
+Refocusing needs curvature of a particular sign.
+
+'''On a flat surface''' paths that diverge keep diverging. There is no conjugate
+point, and straight lines are shortest however far you extend them. A ruler on a
+table is always right.
+
+'''On a sphere''' paths converge. Conjugate points exist, at the antipode, and
+beyond them minimality fails.
+
+'''On a saddle-shaped surface''' paths diverge even faster than on a flat one.
+Again no conjugate point, and again straightest is always shortest.
+
+So refocusing is a symptom of curving '''towards''' yourself. A surface that
+curves away never does it.
+
+== The same thing in a lens ==
+
+The idea is not confined to geometry. It appears wherever paths can be bent, and
+the most familiar case is optical.
+
+A lens takes light spreading out from a point and brings it back together at
+another point. That is refocusing, and the meeting place is called a '''focus'''.
+
+A focus and a conjugate point are the same thing. The vocabulary differs because
+the subjects grew up separately.
+
+This makes the idea physical rather than abstract. A conjugate point is not a
+technical condition inside a proof. It is the place where the image forms.
+
+== Astronomers photograph it ==
+
+There is a case where the whole phenomenon has been photographed.
+
+A galaxy is massive enough to bend light passing near it. Light from a more
+distant object behind it can therefore reach us by '''more than one route''',
+bending round different sides.
+
+We see several images of the same object.
+
+Each route is a valid stationary path. Only one of them is the shortest — the
+first to arrive. The others are stationary and are not shortest, and they are
+visible in the photograph.
+
+This is the volume's central point, taken with a telescope. The extra images exist
+because light past a conjugate point still travels a legitimate path, even though
+that path is not the quickest.
+
+== What the meeting point costs you ==
+
+One more consequence, which matters for the later parts of the volume.
+
+Before the conjugate point, one path connects your start and finish. Afterwards,
+several may.
+
+Anything that assumed a single unique path stops working there. Descriptions built
+on "the" path become ambiguous, and calculations that divide by the spreading of
+nearby paths break down, because the spreading has gone to zero.
+
+In optics this is why a focus is bright — a great deal of light arrives at one
+place — and why the simple ray picture is worst exactly there.
+
+Conjugate points are therefore the trouble spots of the entire subject. They are
+where minimality fails, where uniqueness fails, where the approximations fail, and
+where the interesting physics happens.
+
+== Where to go next ==
+
+There is one more way a stationary path can fail to be the best, and it is
+different in kind from this one. It is at
+[[Hamilton's principle/Explainers/Strong and weak|Strong and weak]].

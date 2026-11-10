@@ -1,0 +1,133 @@
+{{DISPLAYTITLE:The Hamiltonian}}
+{{Technical|Hamilton's principle/Mathematics/The Hamiltonian and Hamilton's equations}}
+{{Hamilton's principle map}}
+
+This page explains a reformulation of mechanics in terms of position and
+momentum. It uses no mathematics. The technical page it goes with is named above.
+
+== A different pair of quantities ==
+
+[[File:OPL-HP-F-11.png|thumb|right|400px|Phase portrait of a pendulum.]]
+
+The usual description of a moving object tracks '''where it is''' and '''how fast
+it is going'''.
+
+Apply the swap from
+[[Hamilton's principle/Explainers/Reading a curve two ways|Reading a curve two ways]] and you get a
+description tracking '''where it is''' and '''its momentum''' instead.
+
+For a simple object momentum is just mass times speed, so this looks like a
+relabelling. It is not, and the reason is what happens to the equations.
+
+== Fewer steps, more equations ==
+
+[[File:OPL-HP-F-24.png|thumb|right|400px|Lagrangian and Hamiltonian descriptions compared.]]
+
+Newton's laws, and everything in this volume so far, involve
+'''accelerations''' — how the speed is changing. Acceleration is a rate of change
+of a rate of change. Two steps removed from position.
+
+In the new description, that never happens. You get twice as many equations, but
+each involves only '''one''' rate of change.
+
+The trade is real. Equations with two steps of change are harder to handle,
+harder to solve numerically, and harder to reason about, than twice as many with
+one step each.
+
+The two forms have the same content. Neither knows anything the other does not.
+
+== A space where a point is a whole state ==
+
+Here is the change that actually matters.
+
+In the usual description, knowing where an object is does not tell you what it
+will do. A ball at a given place might be rising or falling. Position alone is not
+the state.
+
+In the new description, position and momentum '''together''' are the state, and
+they are treated as coordinates of equal standing. Every possible state of the
+system is a single point in a space with both.
+
+That space is called '''phase space'''.
+
+The consequence is the useful one: '''a single point in phase space determines the
+entire future.''' There is no ambiguity left over, because the information that
+was missing is now part of the location.
+
+== Paths that never cross ==
+
+From that follows a fact with real force.
+
+Trajectories in phase space '''never cross'''.
+
+If two trajectories met at a point, that point would be one state with two
+futures. Impossible, because the state fixes the future completely.
+
+So the motion of a system becomes a flow, like a fluid, with streamlines that
+never meet. Every point moves, nothing collides, nothing merges.
+
+This gives you a way to reason about a system without solving anything.
+Trajectories are hemmed in by their neighbours; regions of phase space get carried
+along and deformed but cannot be torn.
+
+== Reading off the answer ==
+
+For a system where energy is conserved, the payoff is immediate.
+
+Energy has a fixed value along any trajectory. So each trajectory stays on a
+single surface of constant energy.
+
+Draw those surfaces and you have the shape of the motion, without solving
+anything.
+
+For a pendulum swinging gently, the surfaces are closed loops. A trajectory going
+round a closed loop returns to where it started: the motion repeats. That is the
+swing.
+
+For a pendulum with enough energy to go over the top, the surfaces are not closed
+loops but curves running off in one direction. The pendulum keeps rotating the same
+way and never comes back.
+
+Between the two lies a special curve separating the swinging region from the
+spinning one. On it, the pendulum takes infinitely long to creep up to the vertical
+and balance.
+
+'''All of that came from looking at the shape of the energy surfaces.''' No
+equation was solved. That is the characteristic move of this description, and it is
+why phase space is the right picture for asking what a system does in general
+rather than what it does in one particular case.
+
+== A caution about energy ==
+
+The quantity that plays the leading role here is usually the energy, and it is
+worth knowing when it is not.
+
+For ordinary systems — masses, springs, gravity, fixed constraints — it is the
+familiar energy, kinetic plus potential.
+
+For systems where the constraints themselves are moving, it can differ. Something
+is still conserved, and it is still the quantity that runs the equations, but
+calling it the energy will mislead you.
+
+'''Conserved and equal to the energy are two separate claims.''' Most treatments
+merge them because for the standard examples they coincide.
+
+== Where this leads ==
+
+Phase space is not just tidier. It is the setting for most of what came next.
+
+The idea that a region of phase space keeps its volume as it flows became the
+foundation of statistical mechanics — the physics of systems with too many parts to
+track individually.
+
+The pairing of position with momentum became, in quantum mechanics, the pairing
+that cannot be measured simultaneously to arbitrary precision.
+
+And the search for descriptions in which the flow is as simple as possible leads
+directly to the next page.
+
+== Where to go next ==
+
+Pushed to its conclusion, that search produces a single equation replacing all the
+others, and it turns out to describe waves. It is at
+[[Hamilton's principle/Explainers/Waves and rays|Waves and rays]].

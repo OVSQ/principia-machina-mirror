@@ -1,0 +1,140 @@
+{{DISPLAYTITLE:Fields}}
+{{Technical|Hamilton's principle/Applications/Classical field theory}}
+{{Hamilton's principle map}}
+
+This page explains how the method describes things that fill space. It uses no
+mathematics. The technical page it goes with is named above.
+
+== What a field is ==
+
+[[File:OPL-HP-F-29.png|thumb|right|400px|Local conservation as a flow across a boundary.]]
+
+Some things in physics are located at a point. A ball has a position.
+
+Other things are spread out. The temperature in a room has a value at every point.
+So does the air pressure. So do the electric and magnetic fields, and the
+gravitational field.
+
+Anything with a value at every point of space is called a '''field'''.
+
+Fields are not exotic. A temperature map on a weather forecast is a picture of a
+field.
+
+== The same method, more of it ==
+
+[[File:OPL-HP-F-51.png|thumb|right|400px|Locality: influence passing from neighbour to neighbour.]]
+
+[[Hamilton's principle/Explainers/More than one variable|More than one variable]] showed the method
+handling several moving parts, and then infinitely many by treating a string as a
+row of beads and using more and more of them.
+
+Fields are that idea in three dimensions. Instead of a value at each point along a
+line, a value at each point of space.
+
+The recipe is unchanged. Write down a cost rule. Ask which arrangement makes the
+total stop changing. Out come the equations.
+
+What changes is what you get: not a trajectory but a whole pattern, evolving in
+time.
+
+== One assumption doing most of the work ==
+
+Modern physics adds one requirement, and it is worth stating plainly because
+almost everything follows from it.
+
+'''The cost at a point may depend only on what is happening at that point and in
+its immediate vicinity.'''
+
+Nothing in the rule may refer to what is happening far away.
+
+This is the assumption of '''locality'''. It rules out any theory in which
+something here depends directly on something over there.
+
+Two consequences follow at once.
+
+'''Influence spreads.''' If nothing acts at a distance, disturbances must travel
+from neighbour to neighbour. That is why fields carry waves. Light is a
+disturbance of the electromagnetic field, passed from point to point.
+
+'''Conserved quantities have to travel.''' For a ball, energy conservation means a
+number stays the same. For a field it means more: energy cannot vanish here and
+appear there. It has to '''flow''' across the space between.
+
+That is why it makes sense to speak of energy travelling along a wire or arriving
+from the Sun. Conservation became local, and local conservation gives things
+routes.
+
+== Building a theory from what it must not care about ==
+
+The most striking thing about this approach is how little you have to put in.
+
+The usual procedure is:
+
+# Decide what the theory must be indifferent to. It should not matter where you are, which way you face, or how fast you are moving uniformly.
+# Write down the most general cost rule consistent with those indifferences.
+# Turn the handle.
+
+Very often step two leaves almost no freedom. The requirements are so restrictive
+that only a couple of possibilities survive, and the equations follow.
+
+'''The symmetry chose the theory.''' Nothing about the dynamics was assumed. This
+is the characteristic method of modern physics, and it is a direct consequence of
+treating the cost rule, rather than the equations, as the thing you write down
+first.
+
+== Two examples of the method working ==
+
+'''Electromagnetism''' comes out of demanding that a certain quantity can be
+adjusted independently at every point without physical effect. Make that demand and
+the electromagnetic field is forced into existence to make it possible. That is at
+[[Hamilton's principle/Explainers/Electromagnetism from an action|Electromagnetism from an action]].
+
+'''General relativity''' comes out of demanding that nothing depend on your choice
+of coordinates, anywhere. That is at
+[[Hamilton's principle/Explainers/Gravity from an action|Gravity from an action]].
+
+In both cases the requirement is about what the theory must '''ignore''', and the
+content follows from it.
+
+== Conserved quantities again ==
+
+[[Hamilton's principle/Explainers/Symmetry and conservation|Symmetry and conservation]] applies here without
+change, and produces something familiar.
+
+Indifference to time gives conservation of energy. For a field, that means an
+energy density with an accompanying flow.
+
+Indifference to position gives conservation of momentum, similarly as a density
+and a flow.
+
+There is also a kind of symmetry that has nothing to do with space or time — an
+indifference to a quantity internal to the field itself. That gives conservation of
+'''electric charge'''.
+
+Charge conservation is not an extra law. It is what a particular indifference
+produces, and there is no other reason for it.
+
+== Why energy is subtle in field theory ==
+
+One honest complication.
+
+The first expression for the energy of a field that the method produces is not
+always the right one to use. It can behave badly under changes that ought to make
+no difference.
+
+It can be repaired, by adding something whose effect on the total is nothing at
+all. The repaired version is the one that couples to gravity.
+
+This is not a defect being patched over. Noether's work classifies exactly this
+freedom, and identifies which parts of a conservation law carry information and
+which are bookkeeping. The subject of the repair and the subject of her second
+theorem are the same subject.
+
+It becomes decisive for gravity, where the ambiguity cannot be repaired away at
+all. That is at
+[[Hamilton's principle/Explainers/Gravity from an action|Gravity from an action]].
+
+== Where to go next ==
+
+The first worked example is at
+[[Hamilton's principle/Explainers/Electromagnetism from an action|Electromagnetism from an action]].

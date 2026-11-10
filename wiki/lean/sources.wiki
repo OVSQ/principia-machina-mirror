@@ -1,0 +1,154 @@
+{{DISPLAYTITLE:Sources}}
+{{Lean theorem prover map}}
+This page states what the rest of the edition rests on. It is not a bibliography; [[Lean theorem prover/Bibliography|that is separate]]. It accounts for which sources were read and which were not, what each unread source carries on its page and what carries it instead, which versions of Lean and of its documentation the pages describe, and what remains open.
+
+The short version, before the detail. '''What the pages say about Lean rests on Lean itself, run on every fragment shown, and on Lean's own documentation and source, read in the versions the citations name.''' The edition cites 277 distinct works in 501 citations. Of these works, 258 were opened and read and 19 were not. None of the 19 carries a claim about Lean: each gives a date, a title, a venue, an attribution or a classical result, and each such claim rests as well on a bibliographic record, an abstract, or a source that was read.
+
+== What the edition rests on ==
+
+Every citation falls in one of four classes. The pages add a fifth kind of evidence of their own, Lean's output.
+
+{| class="wikitable"
+! class !! works !! citations !! not read
+|-
+| Lean's output, from running Lean 4.34.1 || colspan="3" | 214 fragments of Lean on 51 pages, and 109 blocks of what Lean printed
+|-
+| Lean's documentation and source || 114 || 233 || 0
+|-
+| Papers and books || 86 || 167 || 18
+|-
+| Project pages and announcements || 64 || 86 || 0
+|-
+| Press and encyclopedias || 13 || 15 || 1, read in part
+|}
+
+'''Lean's output.''' The content pages show 214 fragments of Lean code, on 51 pages. Of these, 213 are compiled with Lean 4.34.1, each on its own or, where it continues an earlier fragment on the same page, together with the fragments before it (40 do so), and 52 of the compiled fragments are meant to be refused; their pages quote the error, save three that state it in words and one that leaves two lines of it out and says so, where Lean writes a number after a number sign. One uses Mathlib, the community's library, and is shown without being compiled; its page says so. Output that a page quotes, from <code>#eval</code>, <code>#check</code>, <code>#print axioms</code> or an error, is the output Lean 4.34.1 printed, copied and not recalled; 109 such passages are set apart in blocks of their own. On 14 October 2026 every compiled fragment behaved as its page says: those meant to be accepted were accepted, and those meant to be refused were refused. A reader with Lean 4.34.1 can repeat each check.
+
+'''Lean's documentation and source.''' There are 114 works, all read: 52 parts of ''The Lean Language Reference'', 39 files, directories and descriptions of Lean's source and of tools that work with it, and 23 other documents, among them ''Theorem Proving in Lean 4'', ''Functional Programming in Lean'' and the community's textbooks. The Foundations and System pages draw on them for what they say about how Lean works, and show much of it in Lean's output.
+
+'''Papers and books.''' There are 86 works: the papers on type theory and its history behind the Foundations and History pages, the papers that describe Lean, and the papers of the projects described under Applications. Of these, 68 were read, in whole or in the parts cited, and 18 were not; they are listed below.
+
+'''Project pages and announcements.''' There are 64 works, all read: project sites and descriptions, blog posts, lists of awards, roadmaps and announcements. Many of them change over time; see the known gaps below.
+
+'''Press and encyclopedias.''' There are 13 works: entries of the ''Stanford Encyclopedia of Philosophy'' and of the nLab, articles in ''Quanta Magazine'' and ''Nature'', and a record of the Mathematics Genealogy Project. One, the ''Nature'' article, was read in part.
+
+== Versions ==
+
+'''Lean.''' The pages describe Lean 4.34.1. Every fragment is compiled with it, and every quoted output is its output. Lean 4.34.1 was published on 24 September 2026, ten days after 4.34.0; Lean 4.35.0 followed on 12 October 2026.<ref name="relnotes">''The Lean Language Reference'', version for Lean 4.35.0, "Release Notes", list of versions with their dates. [https://lean-lang.org/doc/reference/4.35.0/releases/ lean-lang.org/doc/reference/4.35.0/releases/], consulted 14 October 2026.</ref> Citations of Lean's source name the tag v4.34.1 (33 citations do), so that what they describe is the code that was run.
+
+'''The reference manual.''' ''The Lean Language Reference'' is published in editions numbered by version. The edition for 4.34.0 states that it covers Lean version 4.34.0,<ref name="man4340">''The Lean Language Reference'', version for Lean 4.34.0, front page and table of contents. [https://lean-lang.org/doc/reference/4.34.0/ lean-lang.org/doc/reference/4.34.0/], consulted 14 October 2026.</ref> and there is no edition for 4.34.1. Most pages cite the edition for 4.34.0: 40 of its parts, in 114 citations on 45 pages. Six explainers, [[Lean theorem prover/Explainers/What a proof assistant does|What a proof assistant does]], [[Lean theorem prover/Explainers/Checking instead of convincing|Checking instead of convincing]], [[Lean theorem prover/Explainers/Types as specifications|Types as specifications]], [[Lean theorem prover/Explainers/Why there is no type of all types|Why there is no type of all types]], [[Lean theorem prover/Explainers/What the axioms are|What the axioms are]] and [[Lean theorem prover/Explainers/Two kinds of equality|Two kinds of equality]], cite the edition for 4.35.0, which was the newest when they were read.
+
+The two editions differ. To find out where, the eight chapters and sections cited in the edition for 4.35.0 were compared with their text in the edition for 4.34.0. Five read the same, apart from section numbers and the label of a marginal note: "Introduction", "The Type System", "Propositions", "Universes" and "Subtypes". "Finite Natural Numbers" differs in the signature of one library function. "Axioms" and "Validating a Lean Proof" differ in substance. Lean 4.35.0 removed the axiom <code>Lean.trustCompiler</code> and the machinery around it,<ref name="val4350">''The Lean Language Reference'', version for Lean 4.35.0, "Validating a Lean Proof". [https://lean-lang.org/doc/reference/4.35.0/ValidatingProofs/ lean-lang.org/doc/reference/4.35.0/ValidatingProofs/], consulted 14 October 2026.</ref> so the edition for 4.34.0 lists seven standard axioms, three of which record trust in Lean's compiler, and the edition for 4.35.0 lists four.<ref name="ax4340">''The Lean Language Reference'', version for Lean 4.34.0, chapter 8, "Axioms". [https://lean-lang.org/doc/reference/4.34.0/Axioms/ lean-lang.org/doc/reference/4.34.0/Axioms/], consulted 14 October 2026.</ref><ref name="ax4350">''The Lean Language Reference'', version for Lean 4.35.0, chapter 8, "Axioms". [https://lean-lang.org/doc/reference/4.35.0/Axioms/ lean-lang.org/doc/reference/4.35.0/Axioms/], consulted 14 October 2026.</ref> In Lean 4.34.1 the axiom still exists, and a proof by native evaluation already depends on an axiom of its own, whose name contains <code>_native</code>:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+#check Lean.trustCompiler
+
+theorem two_plus_two : 2 + 2 = 4 := by native_decide
+#print axioms two_plus_two
+</pre>
+
+Lean 4.34.1 prints:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+Lean.trustCompiler : True
+'two_plus_two' depends on axioms: [two_plus_two._native.native_decide.ax_1_1]
+</pre>
+
+None of the six explainers relies on the difference. What they take from the two chapters, the three axioms known to be consistent, <code>sorryAx</code>, and the axioms with <code>_native</code> in their names, holds in Lean 4.34.1 as in 4.35.0.
+
+The edition for 4.35.0 also inserts a chapter, "The vcgen tactic", as chapter 17, and adds a twenty-sixth, so its chapters from 17 on are numbered one higher than in the edition for 4.34.0.<ref name="man4340" /><ref name="man4350">''The Lean Language Reference'', version for Lean 4.35.0, front page and table of contents. [https://lean-lang.org/doc/reference/4.35.0/ lean-lang.org/doc/reference/4.35.0/], consulted 14 October 2026.</ref> A section number given on a page belongs to the edition that page cites.
+
+Some citations use an address marked "latest", which always shows the newest edition (4 citations in all): the manual's list of versions and its notes for Lean 4.22.0, on [[Lean theorem prover/History/Lean since 2023|Lean since 2023]] and in the [[Lean theorem prover/Chronology|chronology]], and the documentation of Agda, on [[Lean theorem prover/Explainers/What a proof assistant does|What a proof assistant does]]. What those addresses show will change. The same notes for Lean 4.22.0 are also cited, in the edition for 4.34.0, on [[Lean theorem prover/System/The compiler and runtime|The compiler and runtime]].
+
+'''The books.''' ''Theorem Proving in Lean 4'' states that it assumes Lean 4.33.0,<ref name="tpil">Jeremy Avigad, Leonardo de Moura, Soonho Kong and Sebastian Ullrich, ''Theorem Proving in Lean 4'', front page. [https://lean-lang.org/theorem_proving_in_lean4/ lean-lang.org/theorem_proving_in_lean4/], consulted 14 October 2026.</ref> and the code of ''Functional Programming in Lean'' is tested with Lean 4.33.0.<ref name="fpil">David Thrane Christiansen, ''Functional Programming in Lean'', front page. [https://lean-lang.org/functional_programming_in_lean/ lean-lang.org/functional_programming_in_lean/], consulted 14 October 2026.</ref> The pages cite them for explanations and definitions. Every output the pages show is that of Lean 4.34.1.
+
+== What was not read ==
+
+The 19 works below were not read, or, in one case, read only in part. For each, the table gives the pages that cite it, what they take from it, and what carries that claim instead.
+
+{| class="wikitable"
+! work !! cited on !! what the page takes from it !! what carries it
+|-
+| Bove, Dybjer and Norell, "A brief overview of Agda", 2009 || [[Lean theorem prover/History/Martin-Löf type theory|Martin-Löf type theory]] || that an overview of the new Agda appeared in 2009, beside the account of its predecessors || Norell's thesis, read, cited beside it; the bibliographic record
+|-
+| Constable and others, ''Implementing Mathematics with the Nuprl Proof Development System'', 1986 || [[Lean theorem prover/History/Martin-Löf type theory|Martin-Löf type theory]] || that Nuprl rests on an extensional theory close to Martin-Löf's of 1982 || the ''Stanford Encyclopedia'' entry on intuitionistic type theory, read, cited beside it; a library catalogue record
+|-
+| Coquand and Huet, "Constructions: a higher order proof system for mechanizing mathematics", 1985 || [[Lean theorem prover/History/The Calculus of Constructions|The Calculus of Constructions]] || that the calculus was described at EUROCAL in 1985 || the bibliographic record; the history in the Rocq reference manual, read
+|-
+| Coquand and Paulin, "Inductively defined types", 1990 || [[Lean theorem prover/History/The Calculus of Constructions|The Calculus of Constructions]] || that the paper was given at COLOG-88 and printed in 1990 || the history in the Rocq reference manual, read, cited beside it; the bibliographic record
+|-
+| Curry, "Functionality in combinatory logic", 1934 || [[Lean theorem prover/Explainers/Propositions as types|Propositions as types]] || Curry's observation of 1934 || Wadler's "Propositions as types", read, cited beside it. The journal's copies could not be fetched
+|-
+| Castelvecchi, "Mathematicians welcome computer-assisted proof in 'grand unification' theory", ''Nature'', 2021 || [[Lean theorem prover/History/The Liquid Tensor Experiment|The Liquid Tensor Experiment]] || its date, its author and its summary || the headline, the summary and the first paragraph, read; the rest is behind a paywall
+|-
+| Diaconescu, "Axiom of choice and complementation", 1975 || [[Lean theorem prover/Explainers/What the axioms are|What the axioms are]], [[Lean theorem prover/Foundations/Classical logic from choice|Classical logic from choice]] || the theorem's name and date, and the setting of the first proof || ''Theorem Proving in Lean 4'' and the ''Stanford Encyclopedia'' entry on the axiom of choice, read, cited beside it; the abstract in the publisher's record
+|-
+| Gödel, "Über formal unentscheidbare Sätze der Principia Mathematica und verwandter Systeme I", 1931 || [[Lean theorem prover/Explainers/Automation and its limits|Automation and its limits]], [[Lean theorem prover/Foundations/Consistency and the metatheory|Consistency and the metatheory]] || the incompleteness theorems, as the pages state them || the ''Stanford Encyclopedia'' entry on the incompleteness theorems, read, cited beside it; Turing's paper of 1936, read, which cites it with the same details. No open copy was found
+|-
+| Goldfarb, "The undecidability of the second-order unification problem", 1981 || [[Lean theorem prover/System/Metavariables and unification|Metavariables and unification]] || that unification is undecidable from order 2 || the introduction of Miller's paper of 1991, read, which states the result with this citation. The publisher refused access
+|-
+| Goodman and Myhill, "Choice implies excluded middle", 1978 || [[Lean theorem prover/Foundations/Classical logic from choice|Classical logic from choice]] || the note's title and date || the bibliographic record, and the ''Stanford Encyclopedia'' entry on the axiom of choice, read. No open copy was found
+|-
+| Gordon, Milner, Morris, Newey and Wadsworth, "A metalanguage for interactive proof in LCF", 1978 || [[Lean theorem prover/History/LCF and the tactic idea|LCF and the tactic idea]] || that ML was described at the 1978 Symposium on Principles of Programming Languages || the bibliographic record
+|-
+| Gordon, Milner and Wadsworth, ''Edinburgh LCF'', 1979 || [[Lean theorem prover/History/LCF and the tactic idea|LCF and the tactic idea]] || that the work was written up as a book in 1979 || the bibliographic record; Gordon's history of LCF and HOL, read
+|-
+| Hales, "A proof of the Kepler conjecture", 2005 || [[Lean theorem prover/Explainers/Checking instead of convincing|Checking instead of convincing]] || that the proof was published without complete certification || the Flyspeck paper, read, cited beside it; the journal's page for the article
+|-
+| Howard, "The formulae-as-types notion of construction", 1980 || [[Lean theorem prover/Explainers/Propositions as types|Propositions as types]] || that Howard's notes of 1969 circulated privately and were printed in 1980 || Wadler's "Propositions as types", read, cited beside it, with its list of references
+|-
+| Martin-Löf, "An intuitionistic theory of types: predicative part", 1975 || [[Lean theorem prover/History/Martin-Löf type theory|Martin-Löf type theory]] || the hierarchy of universes and the identity type of that version || the ''Stanford Encyclopedia'' entry on intuitionistic type theory, read, cited beside it; the bibliographic record
+|-
+| Martin-Löf, "Constructive mathematics and computer programming", 1982 || [[Lean theorem prover/History/Martin-Löf type theory|Martin-Löf type theory]] || the extensional form of the theory || the same entry, read, cited beside it; the bibliographic record
+|-
+| Nederpelt, Geuvers and de Vrijer (eds.), ''Selected Papers on Automath'', 1994 || [[Lean theorem prover/History/Automath|Automath]] || the collection and its contents || the publisher's page with the contents, read
+|-
+| Paulin-Mohring, "Inductive definitions in the system Coq: rules and properties", 1993 || [[Lean theorem prover/Foundations/Inductive types and recursors|Inductive types and recursors]], [[Lean theorem prover/History/The Calculus of Constructions|The Calculus of Constructions]] || why the Calculus of Constructions was extended with inductive definitions, and that the rules were set out in 1993 || the paper's abstract, read; the history in the Rocq reference manual, read. No open copy was found
+|-
+| Russell, "Mathematical logic as based on the theory of types", 1908 || [[Lean theorem prover/Explainers/Why there is no type of all types|Why there is no type of all types]] || that the ramified theory was set out in a paper of 1908 || the ''Stanford Encyclopedia'' entry on Russell's paradox, read, cited beside it
+|}
+
+Two further works were read for one page and cited from their records on another. Hurkens's "A simplification of Girard's paradox" (1995) was read, in a copy on a university site, for [[Lean theorem prover/Foundations/Universes and Prop|Universes and Prop]], and is cited on [[Lean theorem prover/History/Martin-Löf type theory|Martin-Löf type theory]] for its date. Coquand and Huet's "The calculus of constructions" (1988) was read, in a scan of the published article, for [[Lean theorem prover/Foundations/Universes and Prop|Universes and Prop]], and is cited on [[Lean theorem prover/History/The Calculus of Constructions|The Calculus of Constructions]] for its journal and year.
+
+'''What this costs.''' Eleven of the unread works are cited on the History pages, for dates, venues and attributions; the others support the history of an idea, or a classical result, on explainers and technical pages. The sharpest cost is on [[Lean theorem prover/Foundations/Inductive types and recursors|Inductive types and recursors]]: its account of why the Calculus of Constructions was extended with inductive definitions rests on the abstract of Paulin-Mohring's paper, not on the paper. The next is on [[Lean theorem prover/System/Metavariables and unification|Metavariables and unification]], where Goldfarb's result is stated as Miller reports it.
+
+== Read in part, or in another copy ==
+
+* The ''Nature'' article of 2021 was read in its headline, summary and first paragraph; the rest is behind a paywall.
+* Carneiro's paper on Lean4Lean was read in its arXiv text: version 2 for [[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]], [[Lean theorem prover/Foundations/Inductive types and recursors|Inductive types and recursors]] and [[Lean theorem prover/Foundations/Definitional equality|Definitional equality]], version 3 for the other pages that cite it. The pages that cite the version published in 2026 read the arXiv text as well.
+* Some papers were read in copies held elsewhere than their publishers: Hurkens (1995) and Coquand and Huet (1988), for [[Lean theorem prover/Foundations/Universes and Prop|Universes and Prop]], on university sites; Milner's paper of 1978 on type polymorphism, for [[Lean theorem prover/History/LCF and the tactic idea|LCF and the tactic idea]], in a course archive, in its opening pages; Abel and Coquand's paper on normalisation, for [[Lean theorem prover/Foundations/Definitional equality|Definitional equality]], in its arXiv source.
+* De Bruijn's survey of Automath, his paper of 1970 and van Benthem Jutting's book of 1979 were read in scans with machine-read text, the paper of 1970 in its opening pages; de Bruijn's paper of 1972 on nameless dummies was read in its first two pages.
+* The ACM's own pages refused automated access. The Turing Award citation on [[Lean theorem prover/History/LCF and the tactic idea|LCF and the tactic idea]] is quoted from the announcement forwarded to the TYPES mailing list, and the software award named on [[Lean theorem prover/History/The Calculus of Constructions|The Calculus of Constructions]] rests on the Rocq site and on search results that showed the ACM's announcement.
+
+== The rules the edition followed ==
+
+* '''No citation from memory.''' Every work cited was checked: by opening it, or, for the works listed above as not read, through its bibliographic record. A detail that could not be checked was left out.
+* '''Short quotations.''' Sources are paraphrased. The rule was to quote at most one short passage, of 25 words or fewer, from any one source on a page, in quotation marks and with its citation; Lean's own documentation and source, published under the Apache License, are quoted a little more freely. No quotation in the prose of the content pages is longer than 25 words.
+* '''Every Lean fragment compiled.''' Each fragment is compiled with Lean 4.34.1, and each one meant to fail is checked to fail, as described above.
+* '''Recent figures dated.''' Figures that change, such as the size of Mathlib or the state of a project, are given as of the date on which their source was read, and the citation carries that date. In all, 92 citations carry a date of reading.
+* '''Versions named.''' A citation of the manual names its edition, and a citation of Lean's source names its tag.
+
+== Known gaps ==
+
+* '''Closed or refused.''' No open copy was found of Gödel (1931), Diaconescu (1975), Goodman and Myhill (1978), Goldfarb (1981) or Paulin-Mohring (1993). The ''Nature'' article is behind a paywall. The ACM refused automated access to its award pages, and the journal's copies of Curry (1934) could not be fetched.
+* '''Undated web pages.''' Of the cited web pages, 21, among them project descriptions, README files, pages of the Lean Kernel Arena and pages of Lean's API documentation, have neither a version nor a date of reading in their citations. They describe things that change, and the citation does not say which state of the page was read.
+* '''Addresses marked "latest".''' The citations at such addresses, described under Versions, will show other text as Lean moves on.
+* '''Two editions of the manual.''' Six explainers cite the edition for 4.35.0 while the pages describe 4.34.1. The comparison above found no claim that depends on the difference, but the citations do not name the version described.
+* '''Two versions of one paper.''' Carneiro's Lean4Lean paper was read in two versions of its arXiv text, and is cited both in that form and in its published form.
+* '''Forms of citation.''' One work is sometimes cited in different forms on different pages. The [[Lean theorem prover/Bibliography|Bibliography]] gives one form for each and notes the differences that matter.
+
+== What would close the gaps ==
+
+'''For the closed papers.''' Read the five papers in a library, and the ''Nature'' article in full. Each would confirm a date or an attribution. None would change what the pages say about Lean.
+
+'''For the versions.''' Cite the edition for 4.34.0 on the six explainers, and an edition by number in place of each address marked "latest", so that every citation of the manual names the version the pages describe. Read Lean4Lean once, in one version, for every page that cites it.
+
+'''For the web pages.''' Give each undated citation of a changing page the date on which it was read, or a versioned address where one exists.
+
+== Next ==
+
+* [[Lean theorem prover/Bibliography|Bibliography]]
+
+== References ==
+
+<references />

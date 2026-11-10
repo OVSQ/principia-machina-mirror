@@ -1,0 +1,78 @@
+{{DISPLAYTITLE:Chronology}}
+{{Noether's theorems map}}
+
+[[File:NT-F-12.png|thumb|right|360px|alt=A horizontal timeline from 1891 to 2018 with nine marked events, Noether 1918 highlighted. A bracket beneath spans roughly 1921 to 1951, labelled as three decades in which the paper was little used.|A chronology from Lie to the anomaly]]
+
+Every dated entry below is established on
+[[Noether's theorems/History/Gottingen and the energy problem|the history
+track]]. Entries whose date or attribution rests on secondary literature rather
+than on a primary text are marked.
+
+'''A caution that applies to the whole of 1918.''' Neither Noether's paper nor
+Klein's second note reached its final form until September, after both had been
+presented in July. What was said at either July session is not recoverable from
+the printed papers, and this chronology dates the presentations and the
+manuscripts separately for that reason.
+
+{| class="wikitable"
+! date !! event !! source
+|-
+| 1891 || Lie, ''Grundlagen für die Theorie der unendlichen kontinuierlichen Transformationsgruppen''. Cited by Noether at three points || her footnotes
+|-
+| Nov 1915 || Einstein publishes the field equations of general relativity || secondary
+|-
+| 20 Nov 1915 || Hilbert presents ''Die Grundlagen der Physik'', first communication || secondary
+|-
+| 23 Dec 1916 || Hilbert presents the second communication || secondary
+|-
+| 25 Jan 1918 || Klein presents his first note, on Hilbert's first communication. At the same session Klein presents Noether's ''Invarianten beliebiger Differentialausdrücke'' || secondary
+|-
+| 15 Feb 1918 || Noether, in a postcard to Klein from Erlangen, sketches the second theorem in a particular case || secondary
+|-
+| 12 Mar 1918 || Noether's letter to Klein gives a preliminary formulation of its essential consequence || secondary
+|-
+| spring 1918 || Weyl, ''Gravitation und Elektrizität''. Presented to the Berlin Academy; sources disagree between April and May, and the disagreement is unresolved || secondary
+|-
+| 19 Jul 1918 || Klein presents his second note, on the differential laws for the conservation of momentum and energy || primary, his paper
+|-
+| 23 Jul 1918 || Noether presents her results to the Göttingen Mathematical Society || secondary
+|-
+| 26 Jul 1918 || Klein presents ''Invariante Variationsprobleme'' to the Göttingen Scientific Society || '''primary, printed on the paper'''
+|-
+| mid-Sep 1918 || Klein's manuscript reaches final form || primary, his footnote
+|-
+| end Sep 1918 || Noether's manuscript reaches final form || '''primary, her footnote'''
+|-
+| 1918 || ''Invariante Variationsprobleme'' published, ''Nachrichten'' pages 235 to 257 || primary
+|-
+| Sep 1921 || Bessel-Hagen, ''Über die Erhaltungssätze der Elektrodynamik''. Divergence invariance enters here || secondary; the paper was not reached
+|-
+| 1921 || Klein's collected works appear, with a footnote restating both of Noether's theorems and Hilbert's assertion || secondary
+|-
+| 1924 || Hilbert reprints both communications, crediting Klein with the general derivation of the identities and Noether with the general proof || secondary
+|-
+| 1934 || first proper citation of Bessel-Hagen's paper, on the account of a study of its reception. '''This is a fact about his paper and not about Noether's''' || secondary
+|-
+| 1939, 1940 || Belinfante and Rosenfeld, the improvement of the stress-energy tensor || secondary, unverified
+|-
+| from 1949 || Bergmann and the constrained-Hamiltonian programme || secondary, unverified
+|-
+| 1951 || Hill's review article, commonly credited with putting the theorem before physicists || secondary, unverified
+|-
+| 1954 || Yang and Mills || secondary, unverified
+|-
+| 1956, 1961 || Utiyama, then Kibble, extend the gauge idea to gravitation || secondary, unverified
+|-
+| from 1962 || Trautman on conservation laws in general relativity || secondary, unverified
+|-
+| 1971 || Tavel's English translation, in ''Transport Theory and Statistical Physics'' || primary, located; under copyright
+|-
+| 2004, 2011 || Kosmann-Schwarzbach's study of the theorems, in French and then English || secondary
+|-
+| 2018 || centenary; renewed work returning to the paper itself || secondary
+|}
+
+Entries from 1939 onward are the route the secondary literature commonly gives.
+None of the papers named there was read, and
+[[Noether's theorems/History/The recovery in field theory|the page that carries
+them]] says so.

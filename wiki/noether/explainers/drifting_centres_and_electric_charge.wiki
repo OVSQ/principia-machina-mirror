@@ -1,0 +1,115 @@
+{{DISPLAYTITLE:Drifting centres and electric charge}}
+{{Noether's theorems map}}
+
+''Mathematical counterpart: [[Noether's theorems/First theorem/Centre-of-mass motion and electric charge|Centre-of-mass motion and electric charge]].''
+
+Two more cases. The first needs a condition Noether did not use. The second
+needs nothing new and is quietly the same calculation as angular momentum.
+
+== Two skaters push apart ==
+
+Two skaters stand still on ice, facing each other, and push. They slide apart.
+
+Watch the point midway between them, weighted for their masses. Before the push
+it was still. After the push it is still still — it has not moved, and it will
+not.
+
+Now do the same on a moving train. From the platform, that midpoint was already
+travelling at the train's speed before the push, and afterwards it carries on at
+exactly that speed. Not faster, not slower, not wobbling.
+
+'''The centre of mass of an isolated system moves at a constant rate.''' That is a
+conservation law, and it is less famous than energy or momentum because it sounds
+like a restatement of them. It is not.
+
+== Where it comes from, and the catch ==
+
+The symmetry is: run the experiment from a laboratory sliding at a steady speed
+instead of a parked one. One knob — how fast you slide.
+
+Here is the catch. Under Noether's own condition, this symmetry gives '''nothing
+at all'''. The scoring rule does not survive the change unaltered.
+
+What it does is change by a term that only ever contributes at the beginning and
+the end. That is the weaker condition from
+[[Noether's theorems/Explainers/Two ways a thing can stay the same|Two ways a thing
+can stay the same]], and it is '''Bessel-Hagen's, from 1921'''.
+
+Under his condition, the calculation runs and delivers the drifting centre of
+mass.
+
+The conserved quantity is real, the derivation is standard, and the condition that
+licenses it is not in the 1918 paper. This volume says so wherever the case
+appears, because saying "by Noether's theorem" here is the single most common
+misattribution in the subject.
+
+== Charge, and a coincidence that is not one ==
+
+Now something that looks entirely different and turns out to be the same
+arithmetic.
+
+Some quantities in physics are described by a pair of numbers at every point, and
+the scoring rule only ever cares about the pair through a combination that stays
+fixed when you rotate one number into the other — the way a compass needle's
+length does not change when it swings.
+
+Rotating that pair is a symmetry. One knob: the angle.
+
+One knob, one conserved quantity. That quantity is electric charge.
+
+== Why that is worth pausing on ==
+
+Compare this with angular momentum, from
+[[Noether's theorems/Explainers/Why energy and momentum are conserved|the previous
+page]].
+
+Angular momentum came from rotating '''space''' — turning the apparatus so it
+faces a different way.
+
+Charge comes from rotating something that is not space at all. There is no
+direction you could point to. The two numbers are properties the field carries at
+each point, and the rotation happens among those properties.
+
+'''The theorem cannot tell the difference.''' The calculation is character for
+character the same. Nothing in it knows whether the things being rotated are
+directions in a room or numbers attached to a field.
+
+Physics draws the distinction afterwards and calls the second kind an
+'''internal''' symmetry. Charge is its first and simplest example, and every
+force in the Standard Model was found by taking the idea seriously.
+
+That an eighteenth-century bookkeeping trick about rotating a pendulum and a
+twentieth-century account of electric charge are the same line of algebra is not
+a coincidence. It is what a theorem is for.
+
+== What happened when people took the idea seriously ==
+
+The rotation described above is the simplest possible internal symmetry: one knob,
+one conserved quantity, electric charge.
+
+In the 1950s physicists asked an obvious follow-up question. What if the internal
+thing being rotated has more than two components, so that the rotations can be
+done in several independent ways and do not commute with one another?
+
+The answer turned out to describe the strong and weak nuclear forces. Every force
+in the Standard Model is now understood as an internal symmetry of exactly this
+kind, with a different number of knobs in each case, and the conserved quantities
+are the various charges those forces respond to.
+
+None of that was visible in 1918. What was visible was that the calculation does
+not care whether you are rotating a room or rotating a pair of numbers, and that
+turned out to be the door.
+
+== And then the same question again, locally ==
+
+There is one more step, and it is where the second theorem comes back.
+
+Ask what happens if the internal rotation may be dialled differently at every
+point rather than once for everywhere. That is the local case from
+[[Noether's theorems/Explainers/Symmetry that can differ from place to place|the
+local symmetry page]], and it is how the forces are actually built. See
+[[Noether's theorems/Explainers/The symmetry behind the strong and weak forces|The
+symmetry behind the strong and weak forces]].
+
+''No mathematics is used on this page. The mathematical treatment is on the
+counterpart page named above.''

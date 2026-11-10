@@ -1,0 +1,135 @@
+{{DISPLAYTITLE:What a proof assistant does}}
+{{Technical|Lean theorem prover/System/Elaboration|Lean theorem prover/System/The Lean kernel}}
+{{Lean theorem prover map}}
+
+A '''proof assistant''' is a program that checks proofs written in a formal
+language, step by step, while a person writes them. Lean is one. This page says
+what such a program does, how it differs from a program that looks for proofs on
+its own, which other systems do the same work, and what it means, and does not
+mean, when a proof assistant says that a proof is checked.
+
+== A language with no gaps ==
+
+A proof in a journal is written for a reader. It skips steps the reader can be
+trusted to fill in, and it relies on conventions the reader already shares. That
+is efficient, and it is also where mistakes hide: a step that looks routine may
+not be.
+
+A proof assistant has no shared conventions to fall back on. Everything is
+written in a '''formal language''', a notation with fixed rules for what counts as
+a statement and what counts as a valid step. Each step must be justified by a rule
+of the logic, by a definition, or by a theorem already proved, and each of those
+in turn rests on earlier ones, down to a short list of basic rules and
+axioms.<ref name="tpil-intro">Jeremy Avigad, Leonardo de Moura, Soonho Kong and Sebastian Ullrich, with contributions from the Lean Community, ''Theorem Proving in Lean 4'', chapter 1, "Introduction", online book for Lean 4.33.0. [https://lean-lang.org/theorem_proving_in_lean4/Introduction/ lean-lang.org/theorem_proving_in_lean4/Introduction/] (accessed 13 October 2026).</ref> Nothing is taken as obvious.
+
+This makes formal proofs much longer than written ones, and much more tedious to
+produce by hand.<ref name="geuvers2009">Herman Geuvers, "Proof assistants: history, ideas and future", ''Sādhanā'' 34 (1), 2009, pp. 3–25. [https://doi.org/10.1007/s12046-009-0001-5 doi:10.1007/s12046-009-0001-5]</ref> A proof assistant exists to make that work manageable and to
+check the result.
+
+== Interactive ==
+
+The word ''assistant'' describes how the work is done. A person states a theorem
+and starts to prove it. At each point the program shows what is still to be
+proved, called the '''goal''', and the facts available for proving it. The person
+supplies a step. The program either accepts the step and shows the new goal, or
+refuses it and says why. The work ends when no goal is left. The page on
+[[Lean theorem prover/Explainers/Holes and goals|holes and goals]] shows this
+exchange in Lean.
+
+The person does not have to write every tiny step. Most proof assistants offer
+commands, called [[Lean theorem prover/Explainers/Tactics|tactics]], that carry
+out many small steps at once: split a statement into cases, rewrite with an
+equation, try a standard argument. Whatever a tactic produces is still checked
+before it is accepted.
+
+Lean was started in 2013 by Leonardo de Moura at Microsoft Research as an
+interactive theorem prover, the technical name for a proof assistant.<ref name="tpil-intro" /> Lean 4 is a
+reimplementation of it written in Lean itself.<ref name="lean4-cade">Leonardo de Moura and Sebastian Ullrich, "The Lean 4 theorem prover and programming language", in ''Automated Deduction – CADE 28'', Lecture Notes in Computer Science 12699, Springer, 2021, pp. 625–635. [https://doi.org/10.1007/978-3-030-79876-5_37 doi:10.1007/978-3-030-79876-5_37]</ref>
+
+== Finding a proof and checking one ==
+
+A computer can help with a proof in two different ways. It can '''find''' a proof,
+or it can '''check''' one that someone has supplied.
+
+'''Automated theorem provers''' are built for finding. Given a statement in a
+restricted form, they search for a proof by themselves, using fixed procedures
+for propositional and first-order logic and for particular kinds of problem such
+as arithmetic over the integers.<ref name="tpil-intro" /> They can be very fast,
+but their range is limited: one cannot set up a whole mathematical theory inside
+them.<ref name="geuvers2009" /> The authors of ''Theorem Proving in Lean 4''
+also note that such systems often favour speed over a guarantee that their answers
+are correct, and that a fault in them can be hard to detect.<ref name="tpil-intro" />
+
+A proof assistant is built for checking. It sets a high standard, every step
+justified, and in return it asks much more of the person using
+it.<ref name="tpil-intro" /> In most cases the person supplies the ideas, and the
+machine supplies the bookkeeping and the verdict.<ref name="geuvers2009" />
+
+The line is not sharp. Lean includes automation that searches for proofs of
+particular kinds of statement, and the project's stated aim is to
+place such tools inside a system whose final product is a fully checked
+proof.<ref name="tpil-intro" /> What a search procedure finds is not trusted
+because it was found; it is accepted only after it has been checked, so an honest fault
+in the search can cost a proof but does not let a wrong one through.<ref name="ref-validating">The Lean Developers, "Validating a Lean proof", ''The Lean Language Reference'', for Lean 4.35.0. [https://lean-lang.org/doc/reference/4.35.0/ValidatingProofs/ lean-lang.org/doc/reference/4.35.0/ValidatingProofs/] (accessed 13 October 2026).</ref> The page on
+[[Lean theorem prover/Explainers/Automation and its limits|automation and its limits]]
+says more.
+
+== Other proof assistants ==
+
+Lean is one of several mature proof assistants. They differ in the logic they
+check, in how a user writes proofs, and in the libraries built for them.
+
+* '''Rocq''', called '''Coq''' until 2025, began in 1984 at INRIA-Rocquencourt in the work of Thierry Coquand and Gérard Huet. It checks proofs in a Calculus of Inductive Constructions, a type theory of the same family as Lean's.<ref name="rocq-about">The Rocq Team, "About Rocq", ''The Rocq Prover''. [https://rocq-prover.org/about rocq-prover.org/about] (accessed 13 October 2026).</ref><ref name="lean4-cade" /> The change of name was completed with version 9.0 on 12 March 2025.<ref name="rocq-9">The Rocq Team, "Rocq 9.0.0", ''The Rocq Prover'', 12 March 2025. [https://rocq-prover.org/releases/9.0.0 rocq-prover.org/releases/9.0.0] (accessed 13 October 2026).</ref> A proof of the four colour theorem was checked in it.<ref name="wadler2015">Philip Wadler, "Propositions as types", ''Communications of the ACM'' 58 (12), 2015, pp. 75–84. [https://doi.org/10.1145/2699407 doi:10.1145/2699407]</ref>
+* '''Isabelle''' describes itself as a generic proof assistant. It was originally developed at the University of Cambridge and the Technische Universität München.<ref name="isabelle">''Isabelle'', home page. [https://isabelle.in.tum.de/ isabelle.in.tum.de] (accessed 13 October 2026).</ref>
+* '''HOL Light''' was written by John Harrison. It is implemented in the programming language OCaml and has a much simpler logical core than other systems of its family.<ref name="hol-light">John Harrison, ''The HOL Light theorem prover'', home page. [https://www.cl.cam.ac.uk/~jrh13/hol-light/ www.cl.cam.ac.uk/~jrh13/hol-light/] (accessed 14 October 2026).</ref> Isabelle and HOL Light both descend from Robin Milner's LCF system of the 1970s.<ref name="geuvers2009" /> The formal proof of the Kepler conjecture was checked with the two together.<ref name="flyspeck">Thomas Hales and 21 co-authors, "A formal proof of the Kepler conjecture", ''Forum of Mathematics, Pi'' 5, e2, 2017. [https://doi.org/10.1017/fmp.2017.1 doi:10.1017/fmp.2017.1]; preprint [https://arxiv.org/abs/1501.02155 arXiv:1501.02155].</ref>
+* '''Agda''' is a dependently typed programming language, an extension of Martin-Löf's type theory, which can be used as a proof assistant.<ref name="agda">The Agda Team, "What is Agda?", ''Agda documentation''. [https://agda.readthedocs.io/en/latest/getting-started/what-is-agda.html agda.readthedocs.io] (accessed 13 October 2026).</ref>
+
+None of these is a standard that the others fall short of. The choice between
+them is a choice of logic, of style and of library.
+
+== What "checked" means ==
+
+When Lean accepts a theorem, the claim it makes is narrow and exact. The statement
+has been read according to the definitions and notation in force, and Lean's
+kernel, the small part of the program that has the last word, has accepted a proof
+of that statement from the definitions, theorems and axioms in the file and in the
+files it imports.<ref name="ref-validating" />
+
+That is a strong claim. It leaves out several things.
+
+'''It does not say the statement means what its author intended.''' Lean's
+reference manual separates two questions: whether a theorem has a valid proof, and
+what the theorem's statement means.<ref name="ref-validating" /> The checker answers
+only the first. If a definition misreads the idea it was meant to capture, the
+theorem is a true statement about the wrong thing. The team that formalised the
+Kepler conjecture listed this first among the questions an auditor must ask: did
+the right theorem get formalised?<ref name="flyspeck" /> The page on
+[[Lean theorem prover/Explainers/Stating the right thing|stating the right thing]]
+takes this up.
+
+'''It does not say the axioms are true.''' A proof is valid relative to the axioms
+it uses. Lean can list them for any theorem; see
+[[Lean theorem prover/Explainers/What the axioms are|what the axioms are]].
+
+'''It assumes the checker is correct.''' The part that must be trusted is kept
+small on purpose, and independent checkers exist, but it is still a
+program.<ref name="ref-intro">The Lean Developers, "Introduction", ''The Lean Language Reference'', for Lean 4.35.0, section 1.1, "History". [https://lean-lang.org/doc/reference/4.35.0/Introduction/ lean-lang.org/doc/reference/4.35.0/Introduction/] (accessed 14 October 2026).</ref><ref name="ref-validating" /> See
+[[Lean theorem prover/Explainers/What has to be trusted|what has to be trusted]].
+
+'''It assumes honesty in what is imported.''' A check of one file trusts the
+libraries it uses, unless those are checked again as well. Lean's manual describes
+stronger checks, step by step, for cases where a proof may have been written to
+mislead.<ref name="ref-validating" />
+
+Within these limits, "checked" means that no step was skipped and no case was
+forgotten. That is more than a careful human reader can promise, and the next page
+explains why mathematics came to want it.
+
+== Next ==
+
+* [[Lean theorem prover/Explainers/Checking instead of convincing|Checking instead of convincing]]: how mathematics has accepted proofs, and what a mechanical check adds.
+* [[Lean theorem prover/Explainers/The small trusted core|The small trusted core]]: the part of Lean that has the last word.
+
+== References ==
+
+<references />

@@ -1,0 +1,167 @@
+{{DISPLAYTITLE:Functions that always finish}}
+{{Technical|Lean theorem prover/Foundations/Structural and well-founded recursion}}
+{{Lean theorem prover map}}
+
+Every function defined inside Lean's logic must finish: given any input, it must return an
+answer after finitely many steps. This page says why that rule exists, how Lean checks it,
+and what becomes of a program that might run for ever.
+
+== Why a loop would be a proof ==
+
+In Lean a definition is more than a recipe for computing. It is also an equation the logic
+may use in proofs. Write a definition that says "the answer for n is the answer for n, plus
+one", and you have asked the logic to accept that some number equals itself plus one. No
+natural number does. If the equation were admitted, Lean could prove a false statement, and
+from one false statement every statement follows. The whole system would be worthless.
+
+So Lean refuses the definition:
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+def loop (n : Nat) : Nat := loop n + 1
+</pre>
+
+Lean 4.34.1 begins its reply with <code>fail to show termination for</code>, names
+<code>loop</code>, and gives its reason: the argument <code>n</code> "is unchanged in the
+recursive calls". Nothing gets smaller, so nothing guarantees an end. The Lean Language
+Reference states the danger directly: unrestricted recursion would make Lean's logic
+inconsistent, because it would allow a circular proof, one that says a statement holds
+because it holds.<ref name="ref-rec">''The Lean Language Reference'', version for Lean 4.34.0
+(lean-lang.org, 2026), section 7.6, "Recursive Definitions", with section 7.6.6.1, "Partial
+Functions". https://lean-lang.org/doc/reference/4.34.0/Definitions/Recursive-Definitions/</ref>
+
+== Why Lean cannot just watch for loops ==
+
+A natural idea is to let the computer inspect each definition and decide whether it always
+finishes. That cannot be done in general. In 1936 Alan Turing showed that no mechanical
+procedure can settle, for every machine, questions of this kind, such as whether a given
+machine will ever print a certain symbol.<ref name="turing">A. M. Turing, "On Computable
+Numbers, with an Application to the Entscheidungsproblem", ''Proceedings of the London
+Mathematical Society'', series 2, vol. 42 (1936–37), pp. 230–265.
+doi:10.1112/plms/s2-42.1.230</ref> The best-known form of the result, the '''halting
+problem''', asks whether a program stops; it too has no general solution.<ref name="demol">Liesbeth
+De Mol, "Turing Machines", ''The Stanford Encyclopedia of Philosophy'' (first published
+2018, substantive revision 21 May 2025), section 2.4.
+https://plato.stanford.edu/entries/turing-machine/</ref>
+
+So Lean does not try to decide termination. It asks the author for a reason it can check,
+and it accepts two kinds of reason.
+
+== Reason one: the input gets smaller ==
+
+Many functions call themselves only on a piece of their input. The factorial is the
+standard case:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+def fact : Nat → Nat
+  | 0     => 1
+  | n + 1 => (n + 1) * fact n
+
+#eval fact 20
+</pre>
+
+Lean prints <code>2432902008176640000</code>.
+
+A natural number in Lean is zero with some number of "plus ones" stacked on it (see
+[[Lean theorem prover/Explainers/Building things from constructors|building things from
+constructors]]). The second line of the definition handles a number of the form
+<code>n + 1</code> by calling <code>fact</code> on <code>n</code>, which has one layer fewer.
+Every number has finitely many layers, so the calls must reach zero. This is called
+'''structural recursion''': each call works on a strict part of the input. Lean recognises
+it without help. It translates the definition into the recursion principle that comes with
+the type of natural numbers, and the Lean kernel then needs no separate test for termination,
+only its ordinary check of types.<ref name="ref-kernel">''The Lean Language Reference'',
+version for Lean 4.34.0 (lean-lang.org, 2026), chapter 2, "Elaboration and Compilation",
+section 2.3, "The Kernel".
+https://lean-lang.org/doc/reference/4.34.0/Elaboration-and-Compilation/</ref>
+
+== Reason two: a measure goes down ==
+
+Some functions shrink their input in a way that is not "taking a piece". This one counts how
+many times a number can be halved before it falls below 2:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+def halvings (n : Nat) : Nat :=
+  if n &lt; 2 then 0 else 1 + halvings (n / 2)
+termination_by n
+decreasing_by omega
+
+#eval halvings 1000
+</pre>
+
+Lean prints <code>9</code>.
+
+Half of a number is not one of its layers, so structural recursion does not apply. The line
+<code>termination_by n</code> names a '''measure''': a quantity, here the number itself, that
+must be smaller at every recursive call. Lean then sets a small proof obligation for each
+call. Here the obligation is <code>n / 2 &lt; n</code>, to be shown knowing that
+<code>n &lt; 2</code> is false. The line <code>decreasing_by omega</code> supplies the proof,
+using an arithmetic procedure described in
+[[Lean theorem prover/Explainers/Automation and its limits|automation and its limits]]. When
+<code>decreasing_by</code> is left out, Lean tries a default procedure of its own. This is
+'''well-founded recursion''': there is no endless descending chain of natural numbers, so a
+measure that falls at every step must stop.<ref name="ref-rec" />
+
+The two kinds differ in cost. A function defined by structural recursion computes readily
+inside the logic. One defined by well-founded recursion often does not, because the checker
+must work through the proof of termination as well; the Lean Language Reference warns that
+such functions are frequently slow to compute with (see
+[[Lean theorem prover/Explainers/Computation inside proofs|computation inside
+proofs]]).<ref name="ref-rec" />
+
+== Programs that may never finish ==
+
+Some programs are useful even though nobody can prove that they stop. Start with a positive
+whole number; halve it if it is even, otherwise triple it and add one; repeat until you
+reach 1. Whether every starting number reaches 1 is the 3x+1 problem, also called the
+Collatz problem, and it is unsolved.<ref name="lagarias">Jeffrey C. Lagarias, "The 3x+1
+problem: an annotated bibliography (1963–1999) (sorted by author)", arXiv:math/0309224
+(2003, revised 2011). https://arxiv.org/abs/math/0309224</ref> A function that counts the
+steps can be written, but no proof that it always finishes is known. Lean accepts it when it
+is marked <code>partial</code>:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+partial def collatz (n : Nat) : Nat :=
+  if n ≤ 1 then 0
+  else if n % 2 == 0 then 1 + collatz (n / 2)
+  else 1 + collatz (3 * n + 1)
+
+#eval collatz 27
+#print collatz
+</pre>
+
+The program runs: <code>#eval</code> prints <code>111</code>. But <code>#print</code> shows
+what the logic sees: <code>opaque collatz : Nat → Nat</code>. To the logic, a partial
+function is a sealed box with the right type and nothing inside. Lean checks that the body
+is well typed, compiles it so that it can run, and then keeps only the sealed box for
+reasoning.<ref name="ref-rec" /> Even the obvious fact that the count for 1 is 0 cannot be
+proved by opening the box:
+
+<pre class="lean lean-cont lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+example : collatz 1 = 0 := by rfl
+</pre>
+
+Lean replies <code>Tactic `rfl` failed: The left-hand side</code>, then says that
+<code>collatz 1</code> "is not definitionally equal to the right-hand side" <code>0</code>.
+
+One condition remains. The result type of a partial function must have at least one value.
+Otherwise a partial function promising a value of an empty type could be used to prove a
+falsehood, even though it never returns anything.<ref name="ref-rec" /> A definition marked
+<code>unsafe</code> drops even that safeguard, and in return no theorem may refer to
+it.<ref name="ref-rec" />
+
+== What the rule buys ==
+
+Because of this rule, every function whose definition the logic can use is total: it has an
+answer for every input, and the logic may reason about that answer. The price is that the
+author must sometimes say why a function stops. That reason is checked like any other proof.
+A program that cannot be given one can still be written and run, as <code>partial</code>,
+but in proofs it stays a sealed box.
+
+== Next ==
+
+* [[Lean theorem prover/Explainers/Building things from constructors|Building things from constructors]]: the layered values that structural recursion takes apart.
+* [[Lean theorem prover/Foundations/Structural and well-founded recursion|Structural and well-founded recursion]]: the technical treatment of both kinds of reason.
+
+== References ==
+
+<references />

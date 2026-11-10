@@ -1,0 +1,20 @@
+{{DISPLAYTITLE:Clawpack}}
+'''Clawpack: Hyperbolic Wave Propagation & Conservation Laws'''
+[[Category:Principia Machina]] [[Category:Tools]]
+
+== Overview & Architectural Fit ==
+'''Clawpack''' (Conservation Laws Package) is a state-of-the-art software suite designed for solving linear and non-linear hyperbolic systems of partial differential equations using high-resolution Riemann solvers and adaptive mesh refinement (AMR).
+
+== Mathematical Evaluation for TPM & SVD ==
+* '''Hyperbolic Conservation Laws (9.0/10):''' Solves continuous field equations expressed in strong conservation form:
+<math display="block">\frac{\partial q}{\partial t} + \nabla \cdot f(q) = \psi(q, x, t)</math>
+* '''High-Resolution Shock Capturing:''' Accurately tracks non-linear wave steepening, shock formation, and wave-front discontinuities in vacuum energy propagation without numerical instability.
+* '''Adaptive Mesh Refinement (ForestClaw / AMRClaw):''' Automatically focuses computational resolution on sharp spatial field gradients or localized particle-like energy solitons.
+
+== Strategic Role in SVD ==
+Clawpack provides high-resolution shock and wavefront dynamics analysis for non-linear vacuum field equations derived under SVD postulates.
+
+== References ==
+''Added on 2026-10-06 by the [[The Principia Machina/Research Toolkit|Research Toolkit]]: the tool's citations, each checked against the registry or the project's own page that day. The text above is the survey's own.''
+* '''[[The Principia Machina/Research Toolkit/Bibliography#CLAW16|CLAW16]]''' &ndash; Mandli, K. T., Ahmadia, A. J., Berger, M., Calhoun, D., George, D. L., Hadjimichael, Y., Ketcheson, D. I., Lemoine, G. I., LeVeque, R. J. (2016). Clawpack: building an open source ecosystem for solving hyperbolic PDEs. PeerJ Computer Science 2, e68. [https://doi.org/10.7717/peerj-cs.68 doi:10.7717/peerj-cs.68].
+* '''[[The Principia Machina/Research Toolkit/Bibliography#LEVEQUE02|LEVEQUE02]]''' &ndash; LeVeque, R. J. (2002). Finite Volume Methods for Hyperbolic Problems. Cambridge University Press (monograph; print 26 Aug 2002, online 2012). [https://doi.org/10.1017/CBO9780511791253 doi:10.1017/CBO9780511791253].

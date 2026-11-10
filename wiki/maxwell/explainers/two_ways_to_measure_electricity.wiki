@@ -1,0 +1,64 @@
+{{DISPLAYTITLE:Two ways to measure electricity}}
+{{On Physical Lines of Force map}}
+''[[On Physical Lines of Force]] → [[On Physical Lines of Force/Explainers|Explainers]] → Units''
+
+<blockquote>
+'''In one sentence.''' There are two fair ways to define a unit of electric charge, they give units of different sizes, and the number that converts between them turns out to be a speed.
+</blockquote>
+
+This is the strangest fact in nineteenth-century electricity, and it is the one that let Maxwell calculate the speed of light without using any light. It has nothing to do with vortices or with Maxwell's model. It would still be true if he had never written the paper.
+
+== Two fair ways to define a unit ==
+
+Before you can measure a quantity you have to say how big one unit of it is. For length or weight this is a matter of picking something and agreeing to it. For electric charge in the 1850s there was no agreed standard object, so the unit was defined by an effect you could observe and measure. There were two obvious effects to choose from, and they gave two different systems.
+
+=== Start from charges standing still ===
+
+Two charged objects sitting near each other push or pull on one another. The strength of that push depends on how much charge each one carries and how far apart they are. So you can define your unit this way: one unit of charge is whatever amount produces a stated force at a stated distance from an equal charge.
+
+This is the '''electrostatic''' system. It was the natural choice for anyone working with charged spheres, Leyden jars and gold-leaf electroscopes.
+
+=== Start from currents flowing ===
+
+Two wires carrying current also push or pull on one another, and the strength of that force depends on how much current each is carrying. So you can define your unit the other way round: fix the unit of current by the force between two currents, and then say that a unit of charge is whatever amount of charge a unit of current delivers in a unit of time.
+
+This is the '''electromagnetic''' system. It was the natural choice for anyone working with batteries, coils and galvanometers.
+
+== The units come out different sizes ==
+
+Both definitions are legitimate. Both are built on a real, measurable force. Neither is a mistake. But there is no reason for them to agree, and they do not. A charge of one unit in the electrostatic system is not a charge of one unit in the electromagnetic system. They are different sizes, in the way that an inch and a centimetre are different sizes.
+
+[[File:OPL-fig-units-ratio.svg|thumb|center|620px|The same quantity of electricity, measured two ways]]
+
+So there has to be a conversion number: multiply by it and an electrostatic measurement becomes an electromagnetic one. That much is unremarkable. Any two units for the same quantity have one, and finding it is routine laboratory work.
+
+== A conversion factor that is a speed ==
+
+What is not routine is what kind of number it is.
+
+When you follow through what each definition actually involves, the conversion factor does not come out as a bare number like 2.54. It comes out carrying the units of a '''speed''': so many metres per second. It is not a ratio you can quote as a plain multiplier. It is a ratio you have to quote as a velocity.
+
+There is nothing in either definition that ought to produce this. One definition concerns charges sitting still. The other concerns a steady flow. Neither one contains a speed, and neither one says anything about how fast anything travels. The velocity appears out of the bookkeeping — out of the way the units build up when the two definitions are written out in full. Anyone meeting it for the first time is entitled to find it arbitrary. It is roughly as if the number converting inches to centimetres turned out to be measured in miles per hour.
+
+The full account of where the speed comes from belongs with the equations: see [[On Physical Lines of Force/Modern derivations/The unit ratio|units and the speed of light]] and the note on the factor 4π in [[On Physical Lines of Force/Notation and concordance|Notation and concordance]].
+
+== Weber, Kohlrausch, and what Maxwell did with the number ==
+
+Wilhelm Weber and Rudolf Kohlrausch measured the conversion factor in the 1850s. It was a careful piece of work and, on the face of it, a piece of housekeeping: two communities of experimenters used different units, and somebody had to work out the exchange rate.
+
+Their number is large. Expressed as a speed it is comparable to the speed of light, which had been measured by Fizeau in 1849. A resemblance between two numbers is not an explanation of anything, and on its own it proved nothing. Two quantities can come out close by accident, and the units of the conversion factor could be shrugged off as an artefact of how the two systems had been set up.
+
+Maxwell's contribution was to arrive at the same speed from a completely different direction. In Part III he had connected the stiffness of his elastic medium to the dielectric constant, and its density to the magnetic permeability. Those two properties fix how fast a wave travels through a material. When he put in the numbers, the Weber–Kohlrausch measurement was the only experimental input he needed, and the wave speed he calculated matched Fizeau's measured speed of light. The coincidence stopped being a coincidence. It became a reason to think that light and electromagnetism are the same thing. That calculation is set out in [[On Physical Lines of Force/Explainers/How Maxwell found the speed of light|How Maxwell found the speed of light]].
+
+One footnote is worth adding. Maxwell went on to spend years on the practical side of this problem, working on electrical standards for the British Association. Deciding how to measure electricity was no side interest for him, and it shaped how he came to think about the subject: see [[On Physical Lines of Force/Explainers/A wrong model that produced right answers|A wrong model that produced right answers]].
+
+== Where this is in the paper ==
+
+* [[On Physical Lines of Force/Part III/Prop. XV|Part III, Prop. XV]] — the force between two electrified bodies, where the two measures are compared
+* [[On Physical Lines of Force/Part III/Prop. XVI|Part III, Prop. XVI]] — where the ratio is used to get the speed of light
+* [[On Physical Lines of Force/Modern derivations/The unit ratio|Modern: units and the speed of light]]
+* [[On Physical Lines of Force/Chronology|Chronology, 1820–1873]]
+
+----
+
+''Next: [[On Physical Lines of Force/Explainers/A wrong model that produced right answers|A wrong model that produced right answers]] · Previous: [[On Physical Lines of Force/Explainers/Magnetism twists light|Magnetism twists light]]''

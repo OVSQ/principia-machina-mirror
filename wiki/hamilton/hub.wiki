@@ -1,0 +1,174 @@
+{{Hamilton's principle map}}
+Of all the ways a ball could fly from your hand to a window, it takes one. Of all
+the paths light could follow from a lamp to your eye, it takes one. For three
+centuries physics has had a single answer to why: along the true path, a quantity
+called the '''action''' is '''stationary'''.
+
+This volume is about that statement — what the quantity is, what ''stationary''
+means and why it is not the same as ''least'', how far the idea reaches, and why
+it turned out to be more fundamental than the laws it was invented to reformulate.
+
+== What is stationary ==
+
+[[File:OPL-HP-F-01.png|thumb|right|400px|A true path and several comparison paths between fixed endpoints.]]
+
+Take a system with a starting configuration and an ending configuration, and a
+fixed time to get from one to the other. For '''every''' path between them — not
+just the physical one, but every geometrically imaginable curve — compute
+
+:<math>S = \int_{t_0}^{t_1} \bigl( T - V \bigr)\, dt</math>
+
+the accumulated difference between kinetic and potential energy along that path.
+Each path gets a number. The true path is the one where that number stops
+changing to first order: nudge the path slightly and <math>S</math> does not
+change, to the accuracy of the nudge.
+
+That is '''Hamilton's principle'''. It is equivalent to Newton's laws for
+ordinary mechanical systems, and it is stated in one line rather than one line
+per particle.
+
+The one-line version conceals a real strangeness. To evaluate <math>S</math> for
+a path you need the whole path — where the ball goes at the end is part of the
+input. Newton's laws are local in time: given position and velocity now, they say
+what happens next. Hamilton's principle is a statement about a completed journey.
+The two give the same answer, and they do not sound like the same kind of claim.
+
+== Why "stationary" and not "least" ==
+
+[[File:OPL-HP-F-21.png|thumb|right|400px|Chronology of the action principle.]]
+
+The principle was born as the principle of '''least''' action, and the name has
+stuck for nearly three centuries. It is wrong, and this volume takes some care
+over how wrong.
+
+Stationary means the first variation vanishes — the same condition that a
+function's derivative is zero at a maximum, a minimum, or a saddle. It does not
+say the action is smallest. Sometimes it is. Sometimes it is a maximum, and
+sometimes it is neither.
+
+The clearest case needs no mathematics. On a sphere, the shortest route between
+two cities is the short way round the great circle through them. But the '''long'''
+way round the same great circle is also a valid stationary path: it satisfies the
+same equation, at every point, and no local test distinguishes it from the short
+one. It is stationary and it is emphatically not shortest.
+
+Optics gives a case where a real physical path is a '''maximum'''. Light
+reflecting from a suitably curved mirror takes longer than nearby paths would,
+and it goes that way regardless. Fermat's principle, stated as least time, is
+simply false there.
+
+Hamilton knew this and said so, in 1834, in a passing correction he made no fuss
+about — the law of least, or as it might be better called, of stationary
+action.<ref>Hamilton, ''On a General Method in Dynamics'' (1834), §3.
+Verbatim.</ref> The mathematics behind his correction took the rest of the
+century, and it is the subject of this volume's second mathematics track.
+
+'''Where the distinction bites.''' It is not pedantry. The point past which a
+path stops being shortest is a '''conjugate point''', and conjugate points are
+physical: they are the foci of a lens, the multiple images produced by a
+gravitational lens, and the places where the classical approximation to quantum
+mechanics breaks down. A theory that says ''least'' cannot describe any of them.
+
+== Why the idea matters ==
+
+[[File:OPL-HP-F-58.png|thumb|right|400px|The two long gaps in the subject's history.]]
+
+Four reasons, in increasing order of consequence.
+
+'''It is economical.''' One scalar function replaces a vector equation per
+particle, and coordinates can be chosen freely — angles, distances, whatever suits
+the problem — because the recipe does not care. For a constrained system the
+constraint forces, which dominate a Newtonian treatment, never appear.
+
+'''It explains conservation laws.''' Momentum, energy and angular momentum are
+conserved because the action does not change under translations, time shifts and
+rotations. That is Noether's theorem of 1918, and it converts conservation laws
+from experimental facts into consequences of symmetry. It also works in reverse:
+find a symmetry and you have found a conserved quantity.
+
+'''It builds theories.''' Write the most general action consistent with the
+symmetries you require, and the equations of motion follow. Electromagnetism comes
+out of demanding that a phase can be chosen independently at each point. General
+relativity comes out of demanding invariance under arbitrary coordinate changes.
+In both cases the symmetry chose the theory and almost nothing else had to be
+assumed.
+
+'''It is why classical mechanics is true.''' In quantum mechanics '''every''' path
+contributes, each carrying a phase equal to its action in units of
+<math>\hbar</math>. For anything larger than an atom those phases oscillate so
+violently that neighbouring paths cancel — except near a path where the action is
+stationary, where neighbours share a phase and reinforce. The classical path is
+not selected. It is the one that survives interference.
+
+That last point turns the principle inside out. The question is not why nature
+extremises the action. Nature does not extremise anything: it sums over
+everything, and stationary phase is where a sum of oscillating terms fails to
+cancel. Hamilton's principle is a theorem about interference — and it explains, as
+a bonus, why the correct word is ''stationary''. Constructive interference needs
+only stationary phase. A maximum reinforces exactly as a minimum does.
+
+== How to read this volume ==
+
+Every page carrying hard mathematics has a plain-language counterpart, named at
+the top of the page and linking back. You can read either level throughout, or
+switch between them.
+
+'''The history.''' From Fermat's least time in the 1650s to Feynman's sum over
+paths in 1948, by way of the 1744 priority dispute, Lagrange's reformulation of
+mechanics, Hamilton's two essays, Jacobi, and Noether.
+[[Hamilton's principle/History/Hamilton 1834 and 1835|Hamilton 1834 and 1835]] is the pivot;
+[[Hamilton's principle/History/Noether 1918|Noether 1918]] is where the subject stops being a
+technique and becomes an explanation.
+
+'''The mathematics''', in three tracks.
+The '''machinery''' builds the tools: functionals, the first variation, the
+fundamental lemma, and the Euler-Lagrange equation, starting at
+[[Hamilton's principle/Mathematics/Functionals and the space of paths|Functionals and the space of paths]].
+'''Constraints and sufficiency''' asks when a stationary path is actually a
+minimum, and answers with worked counterexamples rather than assertions, starting
+at [[Hamilton's principle/Mathematics/Holonomic constraints|Holonomic constraints]] and reaching the
+central case at
+[[Hamilton's principle/Mathematics/The Jacobi condition and conjugate points|the Jacobi condition and conjugate points]].
+'''Structure''' reorganises everything — as a transform, a flow in phase space, a
+wave equation, and a function of endpoints — starting at
+[[Hamilton's principle/Mathematics/The Legendre transform|the Legendre transform]].
+
+'''The applications''', from [[Hamilton's principle/Applications/The brachistochrone|the brachistochrone]] to the path integral at
+[[Hamilton's principle/Applications/The Feynman path integral|the Feynman path integral]], each worked
+rather than described.
+
+'''The apparatus.''' [[Hamilton's principle/Notation|Notation]] is worth reading before any
+primary source: three symbol collisions in this subject are severe enough to make
+Hamilton's own essays unreadable if they are not declared.
+[[Hamilton's principle/Sources|Sources]] states exactly which text in this volume is
+quoted, which is editorial, and what remains unverified.
+
+== A note on sources ==
+
+This volume quotes verbatim only from sources it has opened and checked. Where a
+source could not be verified, it says so, attributes no equation to it, and names
+what access would close the gap. No equation anywhere in this volume is a
+reconstruction.
+
+That discipline is deliberate. A companion volume on Maxwell's ''On Physical Lines
+of Force'' discovered, after it was written, that every reachable electronic copy
+of that paper had lost its mathematics — the prose survived and read as complete,
+and the equations had to be rebuilt from secondary literature. This volume checked
+its sources before it was written rather than after.
+
+== Where to start ==
+
+If you want the idea: read on at
+[[Hamilton's principle/Explainers/Comparing paths|Comparing paths]].
+
+If you want the mathematics:
+[[Hamilton's principle/Mathematics/Functionals and the space of paths|Functionals and the space of paths]].
+
+If you want the one thing this volume most wants to convince you of:
+[[Hamilton's principle/Mathematics/The Jacobi condition and conjugate points|the Jacobi condition and conjugate points]],
+where a great-circle arc is stationary and is not shortest, and the word ''least''
+stops being tenable.
+
+== References ==
+
+<references />

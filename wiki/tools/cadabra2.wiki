@@ -1,0 +1,18 @@
+{{DISPLAYTITLE:Cadabra2}}
+'''Cadabra2: Field-Theoretic Tensor Computer Algebra'''
+[[Category:Principia Machina]] [[Category:Tools]]
+
+== Overview & Architectural Fit ==
+'''Cadabra2''' is a field-theoretic computer algebra system specifically designed for tensor calculus, field theory, differential geometry, and variational action principles.
+
+== Mathematical Evaluation for TPM & SVD ==
+* '''Action Functional Variation (9.5/10):''' Natively evaluates functional action derivatives:
+<math display="block">\frac{\delta S}{\delta \phi_i} = 0</math>
+for multi-field Lagrangians containing continuous scalar, vector, and tensor quantities.
+* '''Covariant & Contravariant Tensor Algebra:''' Handles implicit index contractions, Riemann curvature tensors, Ricci scalars, Gamma matrices, and non-commuting Grassmann algebras.
+* '''Noether Symmetry Evaluation:''' Automatically verifies whether a continuous candidate Lagrangian density <math>\mathcal{L}</math> invariant under global or local gauge transformations yields conserved Noether currents.
+
+== References ==
+''Added on 2026-10-06 by the [[The Principia Machina/Research Toolkit|Research Toolkit]]: the tool's citations, each checked against the registry or the project's own page that day. The text above is the survey's own.''
+* '''[[The Principia Machina/Research Toolkit/Bibliography#CADABRA18|CADABRA18]]''' &ndash; Peeters, K. (2018). Cadabra2: computer algebra for field theory revisited. Journal of Open Source Software 3(32), 1118. [https://doi.org/10.21105/joss.01118 doi:10.21105/joss.01118].
+* '''[[The Principia Machina/Research Toolkit/Bibliography#CADABRA07|CADABRA07]]''' &ndash; Peeters, K. (2007). A field-theory motivated approach to symbolic computer algebra. Computer Physics Communications 176, 550–558. [https://doi.org/10.1016/j.cpc.2007.01.003 doi:10.1016/j.cpc.2007.01.003], [https://arxiv.org/abs/cs/0608005 arXiv:cs/0608005].

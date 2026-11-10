@@ -1,0 +1,321 @@
+{
+ "note": "Hand-made vectors for the zones' text rule (Principia.Zone.disallowed, over Principia.Unicode.generalCategory at Unicode 15.1.0): code points chosen at the boundaries of the interim tables the rule replaced, inside and outside them, and further probe points. 'category' is the general category in Python's unicodedata 15.1.0 (Python 3.13.16); 'v1' is what v1's tpc_zone._disallowed makes of the code point (category C refused except TAB and LF, U+2028 and U+2029 refused by name). Tests/Zone.lean requires the Calculator's category and verdict to be these, and a refused code point to be shown <U+XXXX> in a message.",
+ "unicode_version": "15.1.0",
+ "cases": [
+  {
+   "cp": "U+0000",
+   "category": "Cc",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+0008",
+   "category": "Cc",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+0009",
+   "category": "Cc",
+   "v1": "allows"
+  },
+  {
+   "cp": "U+000A",
+   "category": "Cc",
+   "v1": "allows"
+  },
+  {
+   "cp": "U+000B",
+   "category": "Cc",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+000D",
+   "category": "Cc",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+001F",
+   "category": "Cc",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+0020",
+   "category": "Zs",
+   "v1": "allows"
+  },
+  {
+   "cp": "U+007E",
+   "category": "Sm",
+   "v1": "allows"
+  },
+  {
+   "cp": "U+007F",
+   "category": "Cc",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+009F",
+   "category": "Cc",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+00A0",
+   "category": "Zs",
+   "v1": "allows"
+  },
+  {
+   "cp": "U+00AC",
+   "category": "Sm",
+   "v1": "allows"
+  },
+  {
+   "cp": "U+00AD",
+   "category": "Cf",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+00AE",
+   "category": "So",
+   "v1": "allows"
+  },
+  {
+   "cp": "U+00E9",
+   "category": "Ll",
+   "v1": "allows"
+  },
+  {
+   "cp": "U+00FF",
+   "category": "Ll",
+   "v1": "allows"
+  },
+  {
+   "cp": "U+0100",
+   "category": "Lu",
+   "v1": "allows"
+  },
+  {
+   "cp": "U+0301",
+   "category": "Mn",
+   "v1": "allows"
+  },
+  {
+   "cp": "U+200A",
+   "category": "Zs",
+   "v1": "allows"
+  },
+  {
+   "cp": "U+200B",
+   "category": "Cf",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+200F",
+   "category": "Cf",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+2010",
+   "category": "Pd",
+   "v1": "allows"
+  },
+  {
+   "cp": "U+2027",
+   "category": "Po",
+   "v1": "allows"
+  },
+  {
+   "cp": "U+2028",
+   "category": "Zl",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+2029",
+   "category": "Zp",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+202A",
+   "category": "Cf",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+202E",
+   "category": "Cf",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+202F",
+   "category": "Zs",
+   "v1": "allows"
+  },
+  {
+   "cp": "U+205F",
+   "category": "Zs",
+   "v1": "allows"
+  },
+  {
+   "cp": "U+2060",
+   "category": "Cf",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+2064",
+   "category": "Cf",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+2065",
+   "category": "Cn",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+212A",
+   "category": "Lu",
+   "v1": "allows"
+  },
+  {
+   "cp": "U+2FFF",
+   "category": "So",
+   "v1": "allows"
+  },
+  {
+   "cp": "U+3000",
+   "category": "Zs",
+   "v1": "allows"
+  },
+  {
+   "cp": "U+3001",
+   "category": "Po",
+   "v1": "allows"
+  },
+  {
+   "cp": "U+E000",
+   "category": "Co",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+F8FF",
+   "category": "Co",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+F900",
+   "category": "Lo",
+   "v1": "allows"
+  },
+  {
+   "cp": "U+FEFE",
+   "category": "Cn",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+FEFF",
+   "category": "Cf",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+FF00",
+   "category": "Cn",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+FFFD",
+   "category": "So",
+   "v1": "allows"
+  },
+  {
+   "cp": "U+FFFE",
+   "category": "Cn",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+FFFF",
+   "category": "Cn",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+10000",
+   "category": "Lo",
+   "v1": "allows"
+  },
+  {
+   "cp": "U+E0000",
+   "category": "Cn",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+E0001",
+   "category": "Cf",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+E0002",
+   "category": "Cn",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+E001F",
+   "category": "Cn",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+E0020",
+   "category": "Cf",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+E007F",
+   "category": "Cf",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+E0080",
+   "category": "Cn",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+EFFFF",
+   "category": "Cn",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+F0000",
+   "category": "Co",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+F1234",
+   "category": "Co",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+FFFFD",
+   "category": "Co",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+FFFFE",
+   "category": "Cn",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+FFFFF",
+   "category": "Cn",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+100000",
+   "category": "Co",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+10FFFD",
+   "category": "Co",
+   "v1": "refuses"
+  },
+  {
+   "cp": "U+10FFFE",
+   "category": "Cn",
+   "v1": "refuses"
+  }
+ ]
+}

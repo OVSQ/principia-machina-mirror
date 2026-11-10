@@ -1,0 +1,8 @@
+{
+ "corpus": "record_corpus.json",
+ "note": "Cases of record_corpus.json the Calculator does not answer yet, each with the reason; neither a pass nor a failure. Tests/Record.lean requires every owed case to be listed here for its reason, and every case listed here to come out owed for it. The corpus itself is never edited. None is owed: the verification's difference, its uncertainty and its zeta, which version 1 computed in IEEE doubles, are computed exactly and written to twelve digits (decision D6, option 1), and every case gives version 1's answer.",
+ "reasons": {
+  "number": "a number version 1 computed in IEEE doubles that the Calculator does not yet compute exactly (decision D6)."
+ },
+ "owed": []
+}

@@ -1,0 +1,52 @@
+{{DISPLAYTITLE:Lean 1 to Lean 3}}
+{{Lean theorem prover map}}
+Lean was started in 2013 by Leonardo de Moura at Microsoft Research. Its first three major versions were written in C++ and developed mainly at Microsoft Research and Carnegie Mellon University. This page covers them: the system described in 2015, the second version's mode for homotopy type theory and why it did not survive, the third version and its metaprogramming in Lean, and the community's maintenance of that version after its developers turned to [[Lean theorem prover/History/Lean 4|Lean 4]].
+
+== The start, 2013 ==
+
+The Lean 4 system description dates the project's start to 2013, as an interactive theorem prover based on the Calculus of Inductive Constructions.<ref name="lean4">Leonardo de Moura and Sebastian Ullrich, "The Lean 4 Theorem Prover and Programming Language (System Description)", in ''Automated Deduction – CADE 28'', Lecture Notes in Computer Science 12699, Springer, 2021, pp. 625–635. doi:10.1007/978-3-030-79876-5_37. Author's copy: https://lean-lang.org/papers/lean4.pdf</ref> A 2017 paper by three of its early users adds that de Moura started it, and that it was developed mainly at Microsoft Research and Carnegie Mellon University under the Apache 2.0 licence.<ref name="hott2017">Floris van Doorn, Jakob von Raumer and Ulrik Buchholtz, "Homotopy type theory in Lean", in ''Interactive Theorem Proving (ITP 2017)'', Lecture Notes in Computer Science 10499, Springer, 2017, pp. 479–495. doi:10.1007/978-3-319-66107-0_30. Preprint: https://arxiv.org/abs/1704.06781</ref>
+
+The Lean reference manual records that Lean 0.1, the first version, appeared officially on 16 June 2014. It states the project's goal as combining the trust that comes from a small logical core, the Lean kernel, which others can implement independently, with the convenience and automation of tools such as SMT solvers. The first versions were mainly C++ libraries in which client code could construct proofs that could be checked independently; the design then moved towards a conventional interactive prover, first with tactics written in the scripting language Lua and later with a syntax of its own.<ref name="refhist">''The Lean Language Reference'', section 1.1 "History", for version 4.34.0 of Lean. https://lean-lang.org/doc/reference/4.34.0/Introduction/</ref>
+
+== The 2015 system description ==
+
+The first published account is "The Lean Theorem Prover (system description)" by de Moura, Soonho Kong, Jeremy Avigad, Floris van Doorn and Jakob von Raumer, presented at the 25th Conference on Automated Deduction (CADE-25) in 2015.<ref name="lean2015">Leonardo de Moura, Soonho Kong, Jeremy Avigad, Floris van Doorn and Jakob von Raumer, "The Lean Theorem Prover (system description)", in ''Automated Deduction – CADE-25'', Lecture Notes in Computer Science 9195, Springer, 2015, pp. 378–388. doi:10.1007/978-3-319-21401-6_26. Author's copy: https://lean-lang.org/papers/system.pdf</ref> It states the aim in one line: to bridge the gap between interactive and automated theorem proving, by placing automated tools inside a framework that supports user interaction and the construction of fully specified axiomatic proofs.
+
+The paper describes Lean's small trusted kernel, written in two layers of C++: a type checker and the operations on terms in about 6,000 lines, and inductive families in about 700 more. The logic could be configured. With an impredicative sort of propositions, which could also be made proof-irrelevant, it gave a version of the Calculus of Inductive Constructions; without one, a version of Martin-Löf type theory. In both cases the universes were non-cumulative and definitions could be polymorphic in universe levels. Above the Lean kernel sat an elaborator that handled higher-order unification, coercions, overloading and type classes together. Proofs could be written as terms, in a declarative style resembling Mizar and Isabelle/Isar, or with tactics. Editing ran in Emacs with continuous checking, and JavaScript bindings let Lean run in a web browser. At Carnegie Mellon it was being used to formalise category theory, homotopy type theory and abstract algebra, and for a course in the spring of 2015.<ref name="lean2015" />
+
+The paper ends with plans: more search and decision procedures, better support for homotopy type theory, and an independent type checker, which it says Lean's small kernel makes simpler to write.<ref name="lean2015" /> Independent checkers for Lean now exist; see [[Lean theorem prover/System/Proof export and independent checkers|Proof export and independent checkers]].
+
+== The second version and homotopy type theory ==
+
+The version described in 2015 is the one now called Lean 2; its published source describes itself as a snapshot of Lean 0.2, kept separately because it has special support for homotopy type theory.<ref name="lean2readme">Lean 2 source code, README file ("This is a snapshot of the Lean 0.2 theorem prover..."). https://github.com/leanprover/lean2</ref>
+
+Lean 2's kernel had two modes. In the standard mode the lowest universe, <code>Prop</code>, was proof-irrelevant: any two proofs of a proposition were equal by definition. Proof irrelevance is incompatible with homotopy type theory, in which equality corresponds to paths in a space, so a second mode without proof irrelevance was added, and a library for homotopy type theory was written in it.<ref name="hott2017" />
+
+The third version did not keep that mode. Van Doorn, von Raumer and Buchholtz give two design decisions as reasons: Lean 3's virtual machine erases proofs, and its mechanism for defining functions by pattern matching relies on axiom K. In 2017 the library therefore remained in Lean 2, which was still maintained but no longer developed.<ref name="hott2017" /> The reason the standard mode is proof-irrelevant is set out at [[Lean theorem prover/Foundations/Proof irrelevance and subsingleton elimination|Proof irrelevance and subsingleton elimination]].
+
+== Lean 3 ==
+
+Version 3.0.0 of Lean is dated 20 January 2017, the date the reference manual also gives.<ref name="refhist" /><ref name="v300">Lean 3 source code, version tag v3.0.0, published 20 January 2017. https://github.com/leanprover/lean3/releases/tag/v3.0.0</ref> The 2017 homotopy paper places the third major version in 2016, and records that many of Lean's components were rewritten for it and that its unification was restricted, because the full higher-order unification of Lean 2 could produce timeouts and error messages unrelated to the user's mistake.<ref name="hott2017" />
+
+The change that mattered most was metaprogramming in Lean itself. Ebner, Ullrich, Roesch, Avigad and de Moura described it in 2017. Definitions marked <code>meta</code> may use an interface to Lean's internal structures and procedures, and may recurse without proof of termination. They are compiled to bytecode and run in a virtual machine. Tactics become ordinary Lean programs in a tactic monad, written in the same files and with the same library as the mathematics. The paper's examples range from small interactive tactics to a simplifier and a superposition prover.<ref name="ebner2017">Gabriel Ebner, Sebastian Ullrich, Jared Roesch, Jeremy Avigad and Leonardo de Moura, "A metaprogramming framework for formal verification", ''Proceedings of the ACM on Programming Languages'' 1 (ICFP), article 34, 2017. doi:10.1145/3110278. Author's copy: https://lean-lang.org/papers/tactic.pdf</ref> The idea is followed backwards at [[Lean theorem prover/History/LCF and the tactic idea|LCF and the tactic idea]] and forwards at [[Lean theorem prover/System/Metaprogramming in Lean|Metaprogramming in Lean]].
+
+In 2017, on Lean 3, a community of users started the mathematical library mathlib.<ref name="lean4" /> Its history is at [[Lean theorem prover/History/Mathlib and its community|Mathlib and its community]].
+
+== The community's Lean 3 ==
+
+The last official version of Lean 3 was 3.4.2, dated 18 January 2019.<ref name="lean3community" /><ref name="lean3changes">Lean 3 community edition, change log (<code>doc/changes.md</code>), entries from v3.2.0 (June 2017) to 3.51.1c (24 May 2023). https://github.com/leanprover-community/lean/blob/master/doc/changes.md</ref> The developers turned to a reimplementation, and the original Lean 3 source now carries a notice that it is frozen and that Lean 4 is the official line.<ref name="lean3frozen">Lean 3 source code, README file, notice that the code is frozen and Lean 4 is the official line. https://github.com/leanprover/lean3</ref>
+
+Mathlib's users still needed Lean 3, and they continued it themselves. Version 3.5.0c of 26 December 2019 is recorded as the first community version, and the community line ran to 3.51.1c of 24 May 2023.<ref name="lean3changes" /> The community's edition describes itself as a fork of Lean 3 maintained by the Lean community, and now warns that Lean 3 is no longer actively maintained and that Lean 4 should be used instead.<ref name="lean3community">Lean 3 community edition, README file and its earlier version. https://github.com/leanprover-community/lean</ref> Mathlib's own move to Lean 4 is told at [[Lean theorem prover/History/Lean 4|Lean 4]].
+
+The Lean 4 system description names the limits that led to the rewrite. Many parts of Lean 3 could not be changed without editing its C++ source, and proof automation written as Lean 3 metaprograms ran slowly, chiefly because of the overhead of interpreting it in the virtual machine.<ref name="lean4" />
+
+<blockquote>
+Provenance: the 2015, 2017 and 2021 papers were read, as were the README files and the community change log. The date of version 3.0.0 is the date on its tag; the 2017 homotopy paper's "2016" is reported as that paper states it. Nothing here is quoted except one line of the Lean 2 README file, in the references.
+</blockquote>
+
+== Next ==
+
+[[Lean theorem prover/History/Lean 4|Lean 4]]
+
+== References ==
+<references />

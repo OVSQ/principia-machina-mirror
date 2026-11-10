@@ -1,0 +1,140 @@
+{{DISPLAYTITLE:Free ends}}
+{{Technical|Hamilton's principle/Mathematics/Boundary terms and natural boundary conditions|Hamilton's principle/Mathematics/The Beltrami identity}}
+{{Hamilton's principle map}}
+
+This page explains what happens when a path is not pinned down at both ends. It
+uses no mathematics. The technical pages it goes with are named above.
+
+== What was assumed before ==
+
+[[File:OPL-HP-F-04.png|thumb|right|400px|A free endpoint and its natural boundary condition.]]
+
+Everything so far fixed both ends. You knew where the journey started and where it
+finished, and you compared the routes between.
+
+That assumption was used once, at a particular moment in the argument. Because the
+nudges had to be zero at both ends, a term that appears during the working dropped
+out, and the argument went through cleanly.
+
+Now suppose one end is free. A rope tied to a post at one end and hanging loose at
+the other. A slide where you know where the child gets on but not where they get
+off.
+
+The dropped term comes back.
+
+== The free end sets its own rule ==
+
+[[File:OPL-HP-F-23.png|thumb|right|400px|A catenary and the directrix from which its tension is measured.]]
+
+Here is the pleasant surprise.
+
+You might expect a free end to make the problem vaguer. Less is known, so less can
+be said.
+
+The opposite happens. The problem produces an '''extra rule''', at the free end,
+that it did not need before.
+
+The reason is that you now have more nudges available. Before, every nudge had to
+be zero at both ends. Now nudges can move the free end too. More ways to test the
+path means more conditions the path has to satisfy.
+
+The rule at the free end has a name: a '''natural''' boundary condition. Natural,
+because nobody imposed it. It came out of the problem.
+
+== What the extra rule says ==
+
+[[File:OPL-HP-F-28.png|thumb|right|400px|Fundamental modes with both ends fixed and with one end free.]]
+
+In words: '''nothing is being pushed at a free end.'''
+
+For a rope, a free end carries no sideways pull. For a beam, an unloaded end
+carries no stress. For a moving object, a free end carries no momentum transfer.
+
+These are the same statement about different things, and they all come out of the
+same piece of working.
+
+The counting works out too. Rules of this kind need two pieces of information to
+pin down an answer. Pin both ends and you have supplied two. Pin one end and the
+free end supplies the other itself. Either way you end up with two.
+
+== You can hear it ==
+
+[[File:OPL-HP-F-40.png|thumb|right|400px|The boundary term left by integration by parts.]]
+
+There is a case where this is audible.
+
+Take a guitar string, held at both ends. Pluck it and it sounds a note.
+
+Now take an organ pipe. In a pipe closed at one end and open at the other, the air
+inside is held at the closed end and free at the open one — the same situation as a
+string free at one end.
+
+The closed pipe sounds a note '''an octave lower''' than an open pipe of the same
+length. It also sounds thinner, because it produces only some of the overtones an
+open pipe produces.
+
+Both differences come from the free end and the extra rule it imposes. A
+derivation that carelessly threw that term away would predict the same note for
+both pipes, and be wrong by an octave.
+
+== Meeting a line at a right angle ==
+
+[[File:OPL-HP-F-43.png|thumb|right|400px|A quantity conserved along the whole path.]]
+
+A different case: one end is not pinned to a point but has to land somewhere on a
+line. Think of walking to a river. You must reach the river, but any spot on the
+bank will do.
+
+The problem then tells you where to meet it. For the shortest walk, you should
+cross the bank at a '''right angle'''.
+
+Nobody put that in. It came out.
+
+A word of caution: the right angle is special to distance. If you were minimising
+time rather than distance, and the ground were muddy in places, the best crossing
+angle would not be ninety degrees. The general rule is not about angles at all.
+Right angles are what it happens to say for this particular question.
+
+== A shortcut worth knowing ==
+
+The second technical page under this one is about a labour-saving device, and it
+is easy to state.
+
+'''If the cost rule does not mention time, one quantity stays the same for the
+whole journey.'''
+
+That is enormously helpful. Problems of this kind normally need you to solve a
+hard equation. If something stays constant, you get one stage of the answer free
+and the remaining work is much easier.
+
+For a moving object, the constant quantity is the '''energy'''. Energy is
+conserved because the laws of physics do not depend on what time it is.
+
+== A chain hanging between two posts ==
+
+Here is the shortcut in action.
+
+Hang a chain between two posts. It settles into a curve. Which curve?
+
+The chain settles where its energy is lowest. The rule for that energy does not
+mention sideways position — the chain does not care whereabouts along the gap you
+are. So the shortcut applies, and one quantity stays the same all along the chain.
+
+That single fact turns a hard problem into an easy one. The answer is a curve
+called a '''catenary'''.
+
+Galileo thought it was a parabola. He was wrong, but understandably so: the two
+curves look nearly identical near the bottom and only separate towards the ends.
+The correct answer was found in 1691.
+
+The constant quantity has a meaning, too. It is the sideways pull in the chain,
+and it is the same at every point — which makes sense, because nothing is pulling
+the chain sideways anywhere along its length.
+
+That is the pattern worth taking away. The shortcut is not just an algebra trick.
+The thing that stays constant is usually something you can point at.
+
+== Where to go next ==
+
+Real systems have many moving parts, not one. That is at
+[[Hamilton's principle/Explainers/More than one variable|More than one variable]].

@@ -1,0 +1,7 @@
+'''This page is retired.'''
+
+It held a working file of the project's development process. That file is not part of the public specification, and the text of its earlier revisions is no longer shown.
+
+The public material is here:
+* [[The Principia Machina/TPS|The Principia Machina Specification (TPS)]], the normative specification;
+* [[The Principia Machina/GTP|The agent contract]], the instruction set any AI agent runs.

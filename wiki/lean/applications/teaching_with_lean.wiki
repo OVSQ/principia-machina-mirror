@@ -1,0 +1,69 @@
+{{DISPLAYTITLE:Teaching with Lean}}
+{{Lean theorem prover map}}
+Lean is used to teach mathematical proof, the logic behind it, and programming. This page describes the main free materials, from a puzzle game for beginners to textbooks for undergraduates and researchers, and some university courses built on them. It also says what a proof checker adds to teaching and what it does not.
+
+== What a proof checker gives a learner ==
+
+A student writing a proof on paper waits for a teacher to mark it. A student writing a proof in Lean is answered at once: each step is accepted, or refused with the goal that is still open (see [[Lean theorem prover/Explainers/Holes and goals|Holes and goals]]). The checker never tires, and it does not accept a step because it looks plausible. It cannot tell a student whether a proof is well written or why it works; those remain the teacher's work.
+
+== The Natural Number Game ==
+
+The '''Natural Number Game''' is a browser game that teaches the first steps of proof in Lean. It starts from a definition of the natural numbers made from zero and a successor operation, and asks the player to prove facts about them in order: first that 2 + 2 = 4, then that <math>x + y = y + x</math>, and so on through a sequence of "worlds", each made of levels that are theorems.<ref name="nngsrc">Kevin Buzzard, Jon Eugster et al., ''Natural Number Game'', Lean 4 version, game text and credits. https://github.com/leanprover-community/NNG4</ref>
+
+The game was written for Lean 3 by Kevin Buzzard and Mohammad Pedramfar. Its Lean 4 version is credited to Buzzard and Jon Eugster, on a game engine by Alexander Bentkamp, Eugster and Patrick Massot.<ref name="nngsrc" /> It runs on the Lean Game Server, which also hosts games maintained by other authors, among them a set theory game (Dan Velleman), a real analysis game (Alex Kontorovich) and ''Reintroduction to Proofs'' (Emily Riehl).<ref name="gameserver">Alexander Bentkamp, Jon Eugster et al., "Lean 4 Game", the source of the Lean Game Server: project description and list of hosted games, read 14 October 2026. https://github.com/leanprover-community/lean4game</ref>
+
+A small piece in the game's style shows the idea. The natural numbers are defined from scratch, addition is defined by recursion on its second argument, and adding zero on the left then needs a proof by induction:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+inductive MyNat where
+  | zero : MyNat
+  | succ : MyNat → MyNat
+
+namespace MyNat
+
+def add : MyNat → MyNat → MyNat
+  | a, zero   => a
+  | a, succ b => succ (add a b)
+
+/-- Adding zero on the right is the definition; on the left it needs induction. -/
+theorem zero_add (n : MyNat) : add zero n = n := by
+  induction n with
+  | zero => rfl
+  | succ k ih => rw [add, ih]
+
+end MyNat
+</pre>
+
+Lean 4.34.1 accepts it. A beginner who offers <code>rfl</code> as the whole proof is refused: Lean reports that the left-hand side, <code>zero.add n</code>, is not definitionally equal to the right-hand side, <code>n</code>. The definition of addition says nothing directly about <code>add zero n</code> while <code>n</code> is unknown. That refusal is the point at which induction is learned. The explainer [[Lean theorem prover/Explainers/Induction, as the machine sees it|Induction, as the machine sees it]] says more.
+
+== Textbooks ==
+
+The standard free books are published by the Lean community and the Lean developers.
+* '''''Theorem Proving in Lean 4''''', by Jeremy Avigad, Leonardo de Moura, Soonho Kong and Sebastian Ullrich, with contributions from the community, teaches Lean's logic itself: dependent type theory, propositions and proofs, tactics, inductive types, structures, type classes and the axioms.<ref name="tpil">Jeremy Avigad, Leonardo de Moura, Soonho Kong and Sebastian Ullrich, ''Theorem Proving in Lean 4'', online book, read 14 October 2026. https://lean-lang.org/theorem_proving_in_lean4/</ref>
+* '''''Mathematics in Lean''''', by Avigad and Patrick Massot, teaches how to do mathematics with Mathlib, in chapters running from basic logic and number theory through structures, algebra and linear algebra to topology, differential calculus, and integration and measure theory.<ref name="mil">Jeremy Avigad and Patrick Massot, ''Mathematics in Lean'', online book, read 14 October 2026. https://leanprover-community.github.io/mathematics_in_lean/</ref>
+* '''''Functional Programming in Lean''''', by David Thrane Christiansen, is a free book on Lean as a programming language, from its basics through type classes, monads and dependent types to proofs about programs and performance.<ref name="fpil">David Thrane Christiansen, ''Functional Programming in Lean'', online book, read 14 October 2026. https://lean-lang.org/functional_programming_in_lean/</ref>
+* '''''Logic and Proof''''', written by Avigad, Lewis and van Doorn and adapted to Lean 4 by Hua, is an introduction to symbolic logic and mathematical proof. Its stated goals are that a reader learn to write clear proofs, to model deductive proof formally, and to use an interactive proof assistant.<ref name="lap">J. Avigad, J. Hua, R. Y. Lewis and F. van Doorn, ''Logic and Proof'', online textbook, Lean 4 edition, read 14 October 2026. https://leanprover-community.github.io/logic_and_proof/</ref>
+
+== University courses ==
+
+Two published course texts show Lean in use at different levels.
+* '''''The Mechanics of Proof''''', by Heather Macbeth, was written for the course Math 2001 at Fordham University and is aimed at the early university level. It describes itself as a book about writing careful, rigorous proofs, and it is paired with Lean code throughout, with an appendix on moving on to mainstream Lean.<ref name="mop">Heather Macbeth, ''The Mechanics of Proof'', online book for Math 2001, Fordham University, 2022–2024. https://hrmacbeth.github.io/math2001/</ref>
+* '''''Formalising Mathematics''''', by Kevin Buzzard, is the handbook for his course of that name at Imperial College London, aimed at students with some mathematical background, such as those in the final year of a mathematics degree. It teaches how to formalise mathematics in Lean using Mathlib, and includes a catalogue of basic tactics.<ref name="fm">Kevin Buzzard, ''Formalising Mathematics'', course handbook, Imperial College London, 2024 edition. https://www.ma.imperial.ac.uk/~buzzard/xena/formalising-mathematics-2024/</ref>
+
+Courses are offered elsewhere too; this page lists only those whose published materials could be checked.
+
+== How quickly mathematicians learn ==
+
+The authors of the formalisation of perfectoid spaces reported that mathematicians without training in computer science can become proficient with a proof assistant within a short time.<ref name="perfectoid">Kevin Buzzard, Johan Commelin and Patrick Massot, "Formalising perfectoid spaces", in ''CPP 2020: Proceedings of the 9th ACM SIGPLAN International Conference on Certified Programs and Proofs'', 2020, pp. 299–312. doi:10.1145/3372885.3373830. arXiv:1910.12320</ref> Buzzard hoped that his Fermat project would be a good source of smaller Lean projects for doctoral students in number theory who want to learn the language.<ref name="general">Kevin Buzzard, "A Lean formalisation of Fermat's Last Theorem" (the project's general information), written December 2023. https://github.com/ImperialCollegeLondon/FLT/blob/main/GENERAL.md</ref>
+
+== What it does not teach ==
+
+Lean checks that a proof is correct. It does not show which proof is clearest, and a proof written for Lean can be longer and harder to read than one written for people. Course texts such as Macbeth's present themselves as books about writing careful, rigorous proofs, with Lean as the companion that checks them.<ref name="mop" /> The gap between a proof that Lean accepts and a proof a reader understands is discussed in [[Lean theorem prover/Explainers/Checking instead of convincing|Checking instead of convincing]].
+
+== Next ==
+
+* [[Lean theorem prover/Applications/Machine learning and theorem proving|Machine learning and theorem proving]].
+* [[Lean theorem prover/Explainers/What a proof assistant does|What a proof assistant does]], for a reader starting from the beginning.
+
+== References ==
+<references />

@@ -1,0 +1,20 @@
+{{DISPLAYTITLE:DeepXDE}}
+'''DeepXDE: Physics-Informed & Variational Neural Networks (PINNs / VPINNs)'''
+[[Category:Principia Machina]] [[Category:Tools]]
+
+== Overview & Architectural Fit ==
+'''DeepXDE''' is a flagship library for Physics-Informed Neural Networks (PINNs) and Variational PINNs (VPINNs). Rather than relying on spatial grid meshes (like FEM or finite differences), DeepXDE represents physical fields as deep neural networks <math>\phi_\theta(x, t)</math> trained via automatic differentiation to minimize PDE residuals and variational action integrals.
+
+== Mathematical Evaluation for TPM & SVD ==
+* '''Variational Action Minimization (9.5/10):''' DeepXDE natively supports Variational PINNs (VPINNs). Instead of evaluating strong-form differential equations, VPINNs directly minimize the weak-form Action Functional:
+<math display="block">S[\phi] = \int_\Omega \mathcal{L}(\phi, \partial_\mu \phi) \, d^4x</math>
+The loss function is defined directly as the stationarity condition <math>\delta S = 0</math>, establishing a direct computational bridge to Hamilton's Principle.
+* '''Mesh-Free High-Dimensional PDEs:''' Capable of solving field dynamics across non-trivial vacuum geometries without requiring complex spatial grid generation.
+* '''Inverse Problem Solving:''' Simultaneously solves for unknown physical field parameters or coupling constants while integrating state trajectories.
+
+== Integration with TPM Framework ==
+DeepXDE provides the continuous, mesh-free numerical solver engine for validating non-linear vacuum field solutions derived under SVD postulates.
+
+== References ==
+''Added on 2026-10-06 by the [[The Principia Machina/Research Toolkit|Research Toolkit]]: the tool's citations, each checked against the registry or the project's own page that day. The text above is the survey's own.''
+* '''[[The Principia Machina/Research Toolkit/Bibliography#DEEPXDE21|DEEPXDE21]]''' &ndash; Lu, L., Meng, X., Mao, Z., Karniadakis, G. E. (2021). DeepXDE: A Deep Learning Library for Solving Differential Equations. SIAM Review 63(1), 208–228. [https://doi.org/10.1137/19M1274067 doi:10.1137/19M1274067].

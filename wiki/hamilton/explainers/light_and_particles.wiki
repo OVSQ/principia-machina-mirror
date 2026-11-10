@@ -1,0 +1,136 @@
+{{DISPLAYTITLE:Light and particles}}
+{{Technical|Hamilton's principle/Applications/The optical-mechanical analogy}}
+{{Hamilton's principle map}}
+
+This page explains why light and moving objects obey the same rule. It uses no
+mathematics. The technical page it goes with is named above.
+
+== Two subjects, one rule ==
+
+[[File:OPL-HP-F-08.png|thumb|right|400px|Snell's law from stationary time.]]
+
+Light travelling through glass and a ball rolling through a landscape look like
+different problems. They are not.
+
+Both are described by the same rule. Substitute one quantity for another and the
+equations for light become the equations for the ball.
+
+{| class="wikitable"
+! for light !! for a moving object
+|-
+| how much the material slows light || how much speed the object has to spare
+|-
+| a ray || a trajectory
+|-
+| a wavefront || a surface of constant total cost
+|-
+| bending at a boundary || a change in speed
+|-
+| a focus || a place where paths refocus
+|}
+
+This is not an analogy in the loose sense of two things that resemble each other.
+It is the same mathematics with the labels changed.
+
+== Which came first ==
+
+[[File:OPL-HP-F-38.png|thumb|right|400px|The optical-mechanical dictionary.]]
+
+Hamilton did the optics first.
+
+He built the method for optical systems, in his work on rays, and then transposed
+it to mechanics. He says so in the opening paragraph of his 1834 essay: the
+dynamical principle is another form of an idea already applied to optics.
+
+So the famous mechanics is a translation of the less famous optics, and not the
+other way round.
+
+He also wrote something that reads oddly now. The method, he suggested, is
+probably not confined to those two sciences, and might one day become a separate
+branch of analysis. He had no particular candidate in mind.
+
+== The hole in the table ==
+
+[[File:OPL-HP-F-48.png|thumb|right|400px|The empty corner of the optical-mechanical analogy.]]
+
+Look at that table again. It matches ray optics to mechanics.
+
+But rays are not all of optics. They are the '''approximation''' that works when
+the wavelength of light is tiny compared with everything else — lenses, apertures,
+the room.
+
+When the wavelength is not tiny, rays fail. Light spreads through a narrow slit.
+It bends round edges. Two beams overlap and produce a striped pattern. None of this
+is in the ray picture.
+
+So the table has an empty cell. Ray optics corresponds to mechanics. Wave optics
+corresponds to '''nothing'''.
+
+If light has a wave theory underlying its ray theory, and mechanics is the same as
+ray theory, then mechanics ought to have a wave theory underlying it too.
+
+== Ninety-two years of nothing ==
+
+Nobody filled the cell.
+
+The reason is not stupidity. There was no evidence. No experiment on moving objects
+failed. No wavelength had been observed for anything with mass. Nothing suggested
+there was anything to be waving.
+
+An empty cell in a table is only a clue if you have a reason to think something
+belongs there. From 1834 to 1926 there was none.
+
+== Filling it ==
+
+Then evidence arrived. Experiments on light and on atoms showed behaviour that ray
+thinking could not explain, and the idea that matter might have a wave aspect
+became worth taking seriously.
+
+Schrödinger took the analogy and worked backwards. Suppose the missing wave theory
+exists. Suppose ordinary mechanics is what it looks like when the wavelength is
+negligible. What equation must the wave obey?
+
+That requirement has essentially one answer, and it is the equation at the
+foundation of quantum mechanics.
+
+'''It was constructed, not guessed.''' The construction consisted of insisting that
+Hamilton's table be completed.
+
+== Why the wavelength had to be small ==
+
+The wavelength associated with an object depends on its momentum. Heavy and fast
+means short.
+
+For anything you can see, it is unimaginably smaller than the object itself —
+smaller by a factor with more zeros than are worth writing. Waves that fine are
+undetectable, and the ray picture is exact for all practical purposes.
+
+For an electron, the wavelength is comparable to the size of an atom. There the
+wave behaviour is not a correction. It is the whole story, and treating an electron
+as a small ball on a trajectory fails completely.
+
+So classical mechanics is not wrong. It is the short-wavelength limit of something
+larger, in the same way ray optics is.
+
+== Where both pictures break ==
+
+One place is worth singling out, because this volume keeps arriving at it.
+
+At a focus, rays come back together and the ray description fails. It predicts
+infinite brightness, which is not what happens.
+
+That is exactly the '''conjugate point''' of
+[[Hamilton's principle/Explainers/Where the minimum fails|Where the minimum fails]] — the place where
+neighbouring paths refocus and minimality is lost.
+
+The optical version, the geometrical version, the mechanical version and the
+quantum version are one phenomenon with four names.
+
+That is the practical value of the correspondence. Understand it once, in whichever
+subject you find easiest, and you understand it in all four. A result proved in
+optics transfers to mechanics without reproof.
+
+== Where to go next ==
+
+The volume now turns to systems where every point can move, at
+[[Hamilton's principle/Explainers/Fields|Fields]].

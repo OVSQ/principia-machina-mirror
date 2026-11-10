@@ -1,0 +1,124 @@
+{{DISPLAYTITLE:Reading a curve two ways}}
+{{Technical|Hamilton's principle/Mathematics/The Legendre transform}}
+{{Hamilton's principle map}}
+
+This page explains a change of viewpoint that reorganises the whole subject. It
+uses no mathematics. The technical page it goes with is named above.
+
+== Describing a curve without listing its points ==
+
+[[File:OPL-HP-F-10.png|thumb|right|400px|The Legendre transform as a tangent-line description.]]
+
+Draw a curve on paper. How would you describe it to someone who cannot see it?
+
+The obvious way is to list its points. At this position it is this high, and so
+on.
+
+There is a second way, and it is not obvious. Instead of listing points, list the
+'''straight lines that just touch it'''.
+
+For each possible slope, there is one line of that slope that touches the curve
+and does not cross it. Say where that line sits. Do this for every slope.
+
+A curve is completely determined by the family of lines that graze it. So the two
+descriptions carry the same information, and either can be recovered from the
+other.
+
+Swapping between them is called the '''Legendre transform'''.
+
+== Why bother ==
+
+Because sometimes the second description is the useful one.
+
+Think about what you know and what you want. Sometimes you know '''where''' you
+are and want to know how steeply things are changing. Sometimes you know how
+steeply things are changing and want to know where you are.
+
+The transform swaps which of these is the input.
+
+In mechanics the swap is between '''speed''' and '''momentum'''. The usual
+description takes speed as the basic quantity. The transform gives one where
+momentum is basic instead.
+
+That sounds like relabelling. It is not, and the next page shows what it buys.
+
+== The condition that makes it work ==
+
+There is one requirement, and it is easy to state.
+
+'''The curve must bend one way only.'''
+
+If it bends consistently — always curving upward, say — then each slope touches it
+at exactly one place, and the description by tangent lines is unambiguous.
+
+If the curve wiggles, several places have the same slope. Asked to name the point
+with that slope, you cannot answer. The second description fails.
+
+This turns out to be the '''same condition''' that appeared on
+[[Hamilton's principle/Explainers/Is it really a minimum|Is it really a minimum]] as the local test:
+wobbling must not pay. The same requirement shows up twice, in two subjects, for
+two apparently different reasons.
+
+That is worth noticing. When one condition keeps reappearing, it is usually
+telling you something structural rather than technical.
+
+== Where it fails, and why that matters ==
+
+The requirement is not always met, and the failures are not obscure corner cases.
+They are some of the most important theories in physics.
+
+Electromagnetism fails it. So does general relativity.
+
+In both cases the reason is the same, and it is respectable: the description
+contains '''more quantities than the physics needs'''. Different descriptions
+represent the same physical situation. So knowing the physics does not pin down
+the description, and the transform has nothing unique to return.
+
+That redundancy is not a defect. It is what physicists call '''gauge freedom''',
+and it is treated at
+[[Hamilton's principle/Explainers/When symmetry is local|When symmetry is local]].
+
+For now the point is that the failure of a mathematical transform and the presence
+of a physical redundancy are the same fact. Meeting the failure tells you
+something true about the theory.
+
+== The same idea in other places ==
+
+The transform is not confined to mechanics. Once you know its shape you see it in
+several subjects.
+
+'''Thermodynamics''' uses it constantly. The different energy quantities in a
+textbook — internal energy, free energy, enthalpy — are transforms of one another,
+swapping which quantity is treated as the input. An engineer working at fixed
+temperature wants a different one from an engineer working at fixed heat content,
+and the transform gets between them.
+
+'''Economics''' uses it, though rarely by name. Describing a producer by what
+they make, or by the prices they face, are two descriptions of one situation. The
+transform swaps between quantity and price.
+
+The recurring pattern is: '''when two quantities pair up so that knowing one
+determines the other, you can build your description on either.''' Which you pick
+should depend on which you actually measure.
+
+== A picture to keep ==
+
+Here is the version worth remembering.
+
+Think of a hill. You can describe it by giving the height at every location. Or
+you can describe it by giving, for each possible slope, the flattest position
+where the ground tilts that steeply.
+
+Both descriptions contain the hill. Neither is more fundamental.
+
+The first is natural if you are standing on it. The second is natural if you are
+choosing a route by how steep you are willing to walk.
+
+Physics has both descriptions of mechanics, for the same reason. Which is better
+depends on the question.
+
+== Where to go next ==
+
+Applying the swap to mechanics produces a reformulation with real advantages, and
+it is at
+[[Hamilton's principle/Explainers/The Hamiltonian|the Hamiltonian]].

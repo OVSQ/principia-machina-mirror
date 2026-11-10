@@ -1,0 +1,4595 @@
+{
+ "cases": [
+  {
+   "args": {
+    "naming": [],
+    "records": [
+     {
+      "AGAINST": [
+       "v"
+      ],
+      "CLASS": "NAMED_GAP",
+      "GRADE": "NOT GRADED",
+      "ID": "RR-2",
+      "SOURCE": "UNDER",
+      "STATE": "OPEN",
+      "STATEMENT": "The unknown DOF v is determined by no form (UNDER).",
+      "TRIGGER": "T"
+     },
+     {
+      "AGAINST": [
+       "x"
+      ],
+      "CLASS": "NAMED_GAP",
+      "GRADE": "NOT GRADED",
+      "ID": "RR-3",
+      "SOURCE": "IC2",
+      "STATE": "OPEN",
+      "STATEMENT": "The unknown DOF v is determined by no form (UNDER).",
+      "TRIGGER": "T"
+     },
+     {
+      "CLASS": "RESULT",
+      "EQUATION": "m*D(v,t) = -k_s*x",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-10",
+      "REFS": [
+       "k_s",
+       "m",
+       "t",
+       "v",
+       "x"
+      ],
+      "REGIME": "L",
+      "ROLE": "EOM(v)"
+     }
+    ],
+    "tfk": {
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     },
+     "TPK": {
+      "ASSUMPTION": [
+       {
+        "NAME": "A_kpos",
+        "PROPOSITION": "k_s is positive",
+        "REFS": [
+         "k_s"
+        ]
+       },
+       {
+        "NAME": "A_mpos",
+        "PROPOSITION": "m is positive",
+        "REFS": [
+         "m"
+        ]
+       }
+      ],
+      "BOUNDARY": [
+       {
+        "CONDITION": "abs(x) < x_max",
+        "NAME": "B_small",
+        "PREDICATE": "|x| < x_max",
+        "REFS": [
+         "x",
+         "x_max"
+        ]
+       }
+      ],
+      "CONSTANT": [
+       {
+        "DIMENSION": "M1",
+        "NAME": "m"
+       },
+       {
+        "DIMENSION": "M1 T-2",
+        "NAME": "k_s"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x_max",
+        "UNCERTAINTY": "0.001",
+        "UNIT": "m",
+        "VALUE": "0.05"
+       }
+      ],
+      "CONSTRAINT": [
+       {
+        "ACTION": "FIX",
+        "NAME": "C_NOZ",
+        "STATEMENT": "only motion on the spring axis is described: z = 0",
+        "TARGET": "z",
+        "UNIT": "m",
+        "VALUE": "0"
+       }
+      ],
+      "DOF": [
+       {
+        "DIMENSION": "T1",
+        "NAME": "t"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x"
+       },
+       {
+        "DIMENSION": "L1 T-1",
+        "NAME": "v"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "z"
+       }
+      ],
+      "LAW": [
+       {
+        "EQUATION": "D(x, t) = v",
+        "NAME": "KIN",
+        "REFS": [
+         "x",
+         "v",
+         "t"
+        ],
+        "ROLE": "EOM(x)",
+        "STATEMENT": "dx/dt = v"
+       },
+       {
+        "EQUATION": "m * D(z, t, 2) = 0",
+        "NAME": "EOM_Z",
+        "REFS": [
+         "m",
+         "z",
+         "t"
+        ],
+        "ROLE": "CONSTRAINT",
+        "STATEMENT": "m d2z/dt2 = 0"
+       }
+      ]
+     },
+     "TrM": {
+      "ENTRIES": [
+       {
+        "BEARS": [],
+        "DIMENSION": "T1",
+        "DOF": "t",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "time",
+        "FALSIFIER": "a second clock whose readings differ from t by more than a constant offset beyond the stated uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "t is the reading of a laboratory clock from an arbitrary origin",
+        "NAME": "E_t"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "x",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "position",
+        "FALSIFIER": "a measured spring force not proportional to x inside the domain",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "x is the displacement of the mass along the spring axis from the point where the spring exerts no force",
+        "NAME": "E_x"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1 T-1",
+        "DOF": "v",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "velocity",
+        "FALSIFIER": "a measured velocity that differs from the rate of change of the measured x beyond uncertainty",
+        "FALSIFIER_CLASS": "F2",
+        "IDENTIFICATION": "v is the rate of change of x with t",
+        "NAME": "E_v"
+       },
+       {
+        "BEARS": [
+         "EOM_Z",
+         "C_NOZ"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "z",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "transverse_position",
+        "FALSIFIER": "a measured z different from 0 beyond its uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "z is the displacement of the mass perpendicular to the spring axis",
+        "NAME": "E_z"
+       }
+      ],
+      "HEADER": {
+       "ENVIRONMENT_INVENTORY": [
+        {
+         "DIMENSION": "T1",
+         "ENVIRONMENT_QUANTITY": "time"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "position"
+        },
+        {
+         "DIMENSION": "L1 T-1",
+         "ENVIRONMENT_QUANTITY": "velocity"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "transverse_position"
+        }
+       ],
+       "SIGNATURE": [
+        {
+         "FORM": "D(x, t) = v",
+         "IMAGE": "d/dt maps position to velocity",
+         "IMAGE_FORM": "D(position, time) = velocity",
+         "NAME": "time_derivative",
+         "OVER": [
+          "x",
+          "v",
+          "t"
+         ]
+        }
+       ],
+       "TRANSFORMATIONS": [
+        {
+         "NAME": "time_translation",
+         "STATEMENT": "t -> t + t0"
+        }
+       ]
+      }
+     }
+    },
+    "words": {
+     "RR-10": "PROVISIONAL",
+     "RR-11": "PROVISIONAL",
+     "RR-12": "PROVISIONAL",
+     "RR-13": "PROVISIONAL",
+     "RR-14": "PROVISIONAL",
+     "RR-2": "NOT GRADED",
+     "RR-3": "NOT GRADED"
+    }
+   },
+   "expected": "[\"OK\",{\"BY_NAMING\":[],\"BY_TEST\":[\"v\"],\"OPEN\":[],\"USED\":[\"RR-10\"]}]",
+   "fn": "settlement_check",
+   "name": "ST01 settled by the form"
+  },
+  {
+   "args": {
+    "naming": [],
+    "records": [
+     {
+      "AGAINST": [
+       "v"
+      ],
+      "CLASS": "NAMED_GAP",
+      "GRADE": "NOT GRADED",
+      "ID": "RR-2",
+      "SOURCE": "UNDER",
+      "STATE": "OPEN",
+      "STATEMENT": "The unknown DOF v is determined by no form (UNDER).",
+      "TRIGGER": "T"
+     },
+     {
+      "CLASS": "ASSUMPTION",
+      "EQUATION": "m*D(v,t) = -k_s*x",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-14",
+      "PROPOSITION": "p",
+      "REFS": [
+       "k_s",
+       "m",
+       "t",
+       "v",
+       "x"
+      ],
+      "ROLE": "EOM(v)"
+     }
+    ],
+    "tfk": {
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     },
+     "TPK": {
+      "ASSUMPTION": [
+       {
+        "NAME": "A_kpos",
+        "PROPOSITION": "k_s is positive",
+        "REFS": [
+         "k_s"
+        ]
+       },
+       {
+        "NAME": "A_mpos",
+        "PROPOSITION": "m is positive",
+        "REFS": [
+         "m"
+        ]
+       }
+      ],
+      "BOUNDARY": [
+       {
+        "CONDITION": "abs(x) < x_max",
+        "NAME": "B_small",
+        "PREDICATE": "|x| < x_max",
+        "REFS": [
+         "x",
+         "x_max"
+        ]
+       }
+      ],
+      "CONSTANT": [
+       {
+        "DIMENSION": "M1",
+        "NAME": "m"
+       },
+       {
+        "DIMENSION": "M1 T-2",
+        "NAME": "k_s"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x_max",
+        "UNCERTAINTY": "0.001",
+        "UNIT": "m",
+        "VALUE": "0.05"
+       }
+      ],
+      "CONSTRAINT": [
+       {
+        "ACTION": "FIX",
+        "NAME": "C_NOZ",
+        "STATEMENT": "only motion on the spring axis is described: z = 0",
+        "TARGET": "z",
+        "UNIT": "m",
+        "VALUE": "0"
+       }
+      ],
+      "DOF": [
+       {
+        "DIMENSION": "T1",
+        "NAME": "t"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x"
+       },
+       {
+        "DIMENSION": "L1 T-1",
+        "NAME": "v"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "z"
+       }
+      ],
+      "LAW": [
+       {
+        "EQUATION": "D(x, t) = v",
+        "NAME": "KIN",
+        "REFS": [
+         "x",
+         "v",
+         "t"
+        ],
+        "ROLE": "EOM(x)",
+        "STATEMENT": "dx/dt = v"
+       },
+       {
+        "EQUATION": "m * D(z, t, 2) = 0",
+        "NAME": "EOM_Z",
+        "REFS": [
+         "m",
+         "z",
+         "t"
+        ],
+        "ROLE": "CONSTRAINT",
+        "STATEMENT": "m d2z/dt2 = 0"
+       }
+      ]
+     },
+     "TrM": {
+      "ENTRIES": [
+       {
+        "BEARS": [],
+        "DIMENSION": "T1",
+        "DOF": "t",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "time",
+        "FALSIFIER": "a second clock whose readings differ from t by more than a constant offset beyond the stated uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "t is the reading of a laboratory clock from an arbitrary origin",
+        "NAME": "E_t"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "x",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "position",
+        "FALSIFIER": "a measured spring force not proportional to x inside the domain",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "x is the displacement of the mass along the spring axis from the point where the spring exerts no force",
+        "NAME": "E_x"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1 T-1",
+        "DOF": "v",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "velocity",
+        "FALSIFIER": "a measured velocity that differs from the rate of change of the measured x beyond uncertainty",
+        "FALSIFIER_CLASS": "F2",
+        "IDENTIFICATION": "v is the rate of change of x with t",
+        "NAME": "E_v"
+       },
+       {
+        "BEARS": [
+         "EOM_Z",
+         "C_NOZ"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "z",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "transverse_position",
+        "FALSIFIER": "a measured z different from 0 beyond its uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "z is the displacement of the mass perpendicular to the spring axis",
+        "NAME": "E_z"
+       }
+      ],
+      "HEADER": {
+       "ENVIRONMENT_INVENTORY": [
+        {
+         "DIMENSION": "T1",
+         "ENVIRONMENT_QUANTITY": "time"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "position"
+        },
+        {
+         "DIMENSION": "L1 T-1",
+         "ENVIRONMENT_QUANTITY": "velocity"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "transverse_position"
+        }
+       ],
+       "SIGNATURE": [
+        {
+         "FORM": "D(x, t) = v",
+         "IMAGE": "d/dt maps position to velocity",
+         "IMAGE_FORM": "D(position, time) = velocity",
+         "NAME": "time_derivative",
+         "OVER": [
+          "x",
+          "v",
+          "t"
+         ]
+        }
+       ],
+       "TRANSFORMATIONS": [
+        {
+         "NAME": "time_translation",
+         "STATEMENT": "t -> t + t0"
+        }
+       ]
+      }
+     }
+    },
+    "words": {
+     "RR-10": "PROVISIONAL",
+     "RR-11": "PROVISIONAL",
+     "RR-12": "PROVISIONAL",
+     "RR-13": "PROVISIONAL",
+     "RR-14": "PROVISIONAL",
+     "RR-2": "NOT GRADED",
+     "RR-3": "NOT GRADED"
+    }
+   },
+   "expected": "[\"OK\",{\"BY_NAMING\":[],\"BY_TEST\":[\"v\"],\"OPEN\":[],\"USED\":[\"RR-14\"]}]",
+   "fn": "settlement_check",
+   "name": "ST02 settled by an ASSUMPTION's form"
+  },
+  {
+   "args": {
+    "naming": [
+     [
+      "v",
+      "RR-11"
+     ]
+    ],
+    "records": [
+     {
+      "AGAINST": [
+       "v"
+      ],
+      "CLASS": "NAMED_GAP",
+      "GRADE": "NOT GRADED",
+      "ID": "RR-2",
+      "SOURCE": "UNDER",
+      "STATE": "OPEN",
+      "STATEMENT": "The unknown DOF v is determined by no form (UNDER).",
+      "TRIGGER": "T"
+     },
+     {
+      "CLASS": "RESULT",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-11",
+      "REGIME": "L",
+      "STATEMENT": "m dv/dt = -k_s x, derived in prose"
+     }
+    ],
+    "tfk": {
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     },
+     "TPK": {
+      "ASSUMPTION": [
+       {
+        "NAME": "A_kpos",
+        "PROPOSITION": "k_s is positive",
+        "REFS": [
+         "k_s"
+        ]
+       },
+       {
+        "NAME": "A_mpos",
+        "PROPOSITION": "m is positive",
+        "REFS": [
+         "m"
+        ]
+       }
+      ],
+      "BOUNDARY": [
+       {
+        "CONDITION": "abs(x) < x_max",
+        "NAME": "B_small",
+        "PREDICATE": "|x| < x_max",
+        "REFS": [
+         "x",
+         "x_max"
+        ]
+       }
+      ],
+      "CONSTANT": [
+       {
+        "DIMENSION": "M1",
+        "NAME": "m"
+       },
+       {
+        "DIMENSION": "M1 T-2",
+        "NAME": "k_s"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x_max",
+        "UNCERTAINTY": "0.001",
+        "UNIT": "m",
+        "VALUE": "0.05"
+       }
+      ],
+      "CONSTRAINT": [
+       {
+        "ACTION": "FIX",
+        "NAME": "C_NOZ",
+        "STATEMENT": "only motion on the spring axis is described: z = 0",
+        "TARGET": "z",
+        "UNIT": "m",
+        "VALUE": "0"
+       }
+      ],
+      "DOF": [
+       {
+        "DIMENSION": "T1",
+        "NAME": "t"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x"
+       },
+       {
+        "DIMENSION": "L1 T-1",
+        "NAME": "v"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "z"
+       }
+      ],
+      "LAW": [
+       {
+        "EQUATION": "D(x, t) = v",
+        "NAME": "KIN",
+        "REFS": [
+         "x",
+         "v",
+         "t"
+        ],
+        "ROLE": "EOM(x)",
+        "STATEMENT": "dx/dt = v"
+       },
+       {
+        "EQUATION": "m * D(z, t, 2) = 0",
+        "NAME": "EOM_Z",
+        "REFS": [
+         "m",
+         "z",
+         "t"
+        ],
+        "ROLE": "CONSTRAINT",
+        "STATEMENT": "m d2z/dt2 = 0"
+       }
+      ]
+     },
+     "TrM": {
+      "ENTRIES": [
+       {
+        "BEARS": [],
+        "DIMENSION": "T1",
+        "DOF": "t",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "time",
+        "FALSIFIER": "a second clock whose readings differ from t by more than a constant offset beyond the stated uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "t is the reading of a laboratory clock from an arbitrary origin",
+        "NAME": "E_t"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "x",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "position",
+        "FALSIFIER": "a measured spring force not proportional to x inside the domain",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "x is the displacement of the mass along the spring axis from the point where the spring exerts no force",
+        "NAME": "E_x"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1 T-1",
+        "DOF": "v",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "velocity",
+        "FALSIFIER": "a measured velocity that differs from the rate of change of the measured x beyond uncertainty",
+        "FALSIFIER_CLASS": "F2",
+        "IDENTIFICATION": "v is the rate of change of x with t",
+        "NAME": "E_v"
+       },
+       {
+        "BEARS": [
+         "EOM_Z",
+         "C_NOZ"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "z",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "transverse_position",
+        "FALSIFIER": "a measured z different from 0 beyond its uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "z is the displacement of the mass perpendicular to the spring axis",
+        "NAME": "E_z"
+       }
+      ],
+      "HEADER": {
+       "ENVIRONMENT_INVENTORY": [
+        {
+         "DIMENSION": "T1",
+         "ENVIRONMENT_QUANTITY": "time"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "position"
+        },
+        {
+         "DIMENSION": "L1 T-1",
+         "ENVIRONMENT_QUANTITY": "velocity"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "transverse_position"
+        }
+       ],
+       "SIGNATURE": [
+        {
+         "FORM": "D(x, t) = v",
+         "IMAGE": "d/dt maps position to velocity",
+         "IMAGE_FORM": "D(position, time) = velocity",
+         "NAME": "time_derivative",
+         "OVER": [
+          "x",
+          "v",
+          "t"
+         ]
+        }
+       ],
+       "TRANSFORMATIONS": [
+        {
+         "NAME": "time_translation",
+         "STATEMENT": "t -> t + t0"
+        }
+       ]
+      }
+     }
+    },
+    "words": {
+     "RR-10": "PROVISIONAL",
+     "RR-11": "PROVISIONAL",
+     "RR-12": "PROVISIONAL",
+     "RR-13": "PROVISIONAL",
+     "RR-14": "PROVISIONAL",
+     "RR-2": "NOT GRADED",
+     "RR-3": "NOT GRADED"
+    }
+   },
+   "expected": "[\"OK\",{\"BY_NAMING\":[[\"v\",\"RR-11\"]],\"BY_TEST\":[],\"OPEN\":[],\"USED\":[]}]",
+   "fn": "settlement_check",
+   "name": "ST03 settled by the lead's naming of a prose record"
+  },
+  {
+   "args": {
+    "naming": [
+     [
+      "v",
+      "RR-12"
+     ]
+    ],
+    "records": [
+     {
+      "AGAINST": [
+       "v"
+      ],
+      "CLASS": "NAMED_GAP",
+      "GRADE": "NOT GRADED",
+      "ID": "RR-2",
+      "SOURCE": "UNDER",
+      "STATE": "OPEN",
+      "STATEMENT": "The unknown DOF v is determined by no form (UNDER).",
+      "TRIGGER": "T"
+     },
+     {
+      "CLASS": "RESULT",
+      "EQUATION": "m*v = m*v",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-12",
+      "REFS": [
+       "m",
+       "v"
+      ],
+      "REGIME": "L",
+      "ROLE": "INVARIANT"
+     }
+    ],
+    "tfk": {
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     },
+     "TPK": {
+      "ASSUMPTION": [
+       {
+        "NAME": "A_kpos",
+        "PROPOSITION": "k_s is positive",
+        "REFS": [
+         "k_s"
+        ]
+       },
+       {
+        "NAME": "A_mpos",
+        "PROPOSITION": "m is positive",
+        "REFS": [
+         "m"
+        ]
+       }
+      ],
+      "BOUNDARY": [
+       {
+        "CONDITION": "abs(x) < x_max",
+        "NAME": "B_small",
+        "PREDICATE": "|x| < x_max",
+        "REFS": [
+         "x",
+         "x_max"
+        ]
+       }
+      ],
+      "CONSTANT": [
+       {
+        "DIMENSION": "M1",
+        "NAME": "m"
+       },
+       {
+        "DIMENSION": "M1 T-2",
+        "NAME": "k_s"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x_max",
+        "UNCERTAINTY": "0.001",
+        "UNIT": "m",
+        "VALUE": "0.05"
+       }
+      ],
+      "CONSTRAINT": [
+       {
+        "ACTION": "FIX",
+        "NAME": "C_NOZ",
+        "STATEMENT": "only motion on the spring axis is described: z = 0",
+        "TARGET": "z",
+        "UNIT": "m",
+        "VALUE": "0"
+       }
+      ],
+      "DOF": [
+       {
+        "DIMENSION": "T1",
+        "NAME": "t"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x"
+       },
+       {
+        "DIMENSION": "L1 T-1",
+        "NAME": "v"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "z"
+       }
+      ],
+      "LAW": [
+       {
+        "EQUATION": "D(x, t) = v",
+        "NAME": "KIN",
+        "REFS": [
+         "x",
+         "v",
+         "t"
+        ],
+        "ROLE": "EOM(x)",
+        "STATEMENT": "dx/dt = v"
+       },
+       {
+        "EQUATION": "m * D(z, t, 2) = 0",
+        "NAME": "EOM_Z",
+        "REFS": [
+         "m",
+         "z",
+         "t"
+        ],
+        "ROLE": "CONSTRAINT",
+        "STATEMENT": "m d2z/dt2 = 0"
+       }
+      ]
+     },
+     "TrM": {
+      "ENTRIES": [
+       {
+        "BEARS": [],
+        "DIMENSION": "T1",
+        "DOF": "t",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "time",
+        "FALSIFIER": "a second clock whose readings differ from t by more than a constant offset beyond the stated uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "t is the reading of a laboratory clock from an arbitrary origin",
+        "NAME": "E_t"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "x",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "position",
+        "FALSIFIER": "a measured spring force not proportional to x inside the domain",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "x is the displacement of the mass along the spring axis from the point where the spring exerts no force",
+        "NAME": "E_x"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1 T-1",
+        "DOF": "v",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "velocity",
+        "FALSIFIER": "a measured velocity that differs from the rate of change of the measured x beyond uncertainty",
+        "FALSIFIER_CLASS": "F2",
+        "IDENTIFICATION": "v is the rate of change of x with t",
+        "NAME": "E_v"
+       },
+       {
+        "BEARS": [
+         "EOM_Z",
+         "C_NOZ"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "z",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "transverse_position",
+        "FALSIFIER": "a measured z different from 0 beyond its uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "z is the displacement of the mass perpendicular to the spring axis",
+        "NAME": "E_z"
+       }
+      ],
+      "HEADER": {
+       "ENVIRONMENT_INVENTORY": [
+        {
+         "DIMENSION": "T1",
+         "ENVIRONMENT_QUANTITY": "time"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "position"
+        },
+        {
+         "DIMENSION": "L1 T-1",
+         "ENVIRONMENT_QUANTITY": "velocity"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "transverse_position"
+        }
+       ],
+       "SIGNATURE": [
+        {
+         "FORM": "D(x, t) = v",
+         "IMAGE": "d/dt maps position to velocity",
+         "IMAGE_FORM": "D(position, time) = velocity",
+         "NAME": "time_derivative",
+         "OVER": [
+          "x",
+          "v",
+          "t"
+         ]
+        }
+       ],
+       "TRANSFORMATIONS": [
+        {
+         "NAME": "time_translation",
+         "STATEMENT": "t -> t + t0"
+        }
+       ]
+      }
+     }
+    },
+    "words": {
+     "RR-10": "PROVISIONAL",
+     "RR-11": "PROVISIONAL",
+     "RR-12": "PROVISIONAL",
+     "RR-13": "PROVISIONAL",
+     "RR-14": "PROVISIONAL",
+     "RR-2": "NOT GRADED",
+     "RR-3": "NOT GRADED"
+    }
+   },
+   "expected": "[\"REFUSED\",[[\"REC-88\",\"-\",\"RECORD_ID RR-12 carries a form; it settles by the test alone\"]]]",
+   "fn": "settlement_check",
+   "name": "ST04 REC-88 a naming of a formed record"
+  },
+  {
+   "args": {
+    "naming": [
+     [
+      "x",
+      "RR-11"
+     ]
+    ],
+    "records": [
+     {
+      "AGAINST": [
+       "v"
+      ],
+      "CLASS": "NAMED_GAP",
+      "GRADE": "NOT GRADED",
+      "ID": "RR-2",
+      "SOURCE": "UNDER",
+      "STATE": "OPEN",
+      "STATEMENT": "The unknown DOF v is determined by no form (UNDER).",
+      "TRIGGER": "T"
+     },
+     {
+      "AGAINST": [
+       "x"
+      ],
+      "CLASS": "NAMED_GAP",
+      "GRADE": "NOT GRADED",
+      "ID": "RR-3",
+      "SOURCE": "IC2",
+      "STATE": "OPEN",
+      "STATEMENT": "The unknown DOF v is determined by no form (UNDER).",
+      "TRIGGER": "T"
+     },
+     {
+      "CLASS": "RESULT",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-11",
+      "REGIME": "L",
+      "STATEMENT": "m dv/dt = -k_s x, derived in prose"
+     }
+    ],
+    "tfk": {
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     },
+     "TPK": {
+      "ASSUMPTION": [
+       {
+        "NAME": "A_kpos",
+        "PROPOSITION": "k_s is positive",
+        "REFS": [
+         "k_s"
+        ]
+       },
+       {
+        "NAME": "A_mpos",
+        "PROPOSITION": "m is positive",
+        "REFS": [
+         "m"
+        ]
+       }
+      ],
+      "BOUNDARY": [
+       {
+        "CONDITION": "abs(x) < x_max",
+        "NAME": "B_small",
+        "PREDICATE": "|x| < x_max",
+        "REFS": [
+         "x",
+         "x_max"
+        ]
+       }
+      ],
+      "CONSTANT": [
+       {
+        "DIMENSION": "M1",
+        "NAME": "m"
+       },
+       {
+        "DIMENSION": "M1 T-2",
+        "NAME": "k_s"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x_max",
+        "UNCERTAINTY": "0.001",
+        "UNIT": "m",
+        "VALUE": "0.05"
+       }
+      ],
+      "CONSTRAINT": [
+       {
+        "ACTION": "FIX",
+        "NAME": "C_NOZ",
+        "STATEMENT": "only motion on the spring axis is described: z = 0",
+        "TARGET": "z",
+        "UNIT": "m",
+        "VALUE": "0"
+       }
+      ],
+      "DOF": [
+       {
+        "DIMENSION": "T1",
+        "NAME": "t"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x"
+       },
+       {
+        "DIMENSION": "L1 T-1",
+        "NAME": "v"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "z"
+       }
+      ],
+      "LAW": [
+       {
+        "EQUATION": "D(x, t) = v",
+        "NAME": "KIN",
+        "REFS": [
+         "x",
+         "v",
+         "t"
+        ],
+        "ROLE": "EOM(x)",
+        "STATEMENT": "dx/dt = v"
+       },
+       {
+        "EQUATION": "m * D(z, t, 2) = 0",
+        "NAME": "EOM_Z",
+        "REFS": [
+         "m",
+         "z",
+         "t"
+        ],
+        "ROLE": "CONSTRAINT",
+        "STATEMENT": "m d2z/dt2 = 0"
+       }
+      ]
+     },
+     "TrM": {
+      "ENTRIES": [
+       {
+        "BEARS": [],
+        "DIMENSION": "T1",
+        "DOF": "t",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "time",
+        "FALSIFIER": "a second clock whose readings differ from t by more than a constant offset beyond the stated uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "t is the reading of a laboratory clock from an arbitrary origin",
+        "NAME": "E_t"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "x",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "position",
+        "FALSIFIER": "a measured spring force not proportional to x inside the domain",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "x is the displacement of the mass along the spring axis from the point where the spring exerts no force",
+        "NAME": "E_x"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1 T-1",
+        "DOF": "v",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "velocity",
+        "FALSIFIER": "a measured velocity that differs from the rate of change of the measured x beyond uncertainty",
+        "FALSIFIER_CLASS": "F2",
+        "IDENTIFICATION": "v is the rate of change of x with t",
+        "NAME": "E_v"
+       },
+       {
+        "BEARS": [
+         "EOM_Z",
+         "C_NOZ"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "z",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "transverse_position",
+        "FALSIFIER": "a measured z different from 0 beyond its uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "z is the displacement of the mass perpendicular to the spring axis",
+        "NAME": "E_z"
+       }
+      ],
+      "HEADER": {
+       "ENVIRONMENT_INVENTORY": [
+        {
+         "DIMENSION": "T1",
+         "ENVIRONMENT_QUANTITY": "time"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "position"
+        },
+        {
+         "DIMENSION": "L1 T-1",
+         "ENVIRONMENT_QUANTITY": "velocity"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "transverse_position"
+        }
+       ],
+       "SIGNATURE": [
+        {
+         "FORM": "D(x, t) = v",
+         "IMAGE": "d/dt maps position to velocity",
+         "IMAGE_FORM": "D(position, time) = velocity",
+         "NAME": "time_derivative",
+         "OVER": [
+          "x",
+          "v",
+          "t"
+         ]
+        }
+       ],
+       "TRANSFORMATIONS": [
+        {
+         "NAME": "time_translation",
+         "STATEMENT": "t -> t + t0"
+        }
+       ]
+      }
+     }
+    },
+    "words": {
+     "RR-10": "PROVISIONAL",
+     "RR-11": "PROVISIONAL",
+     "RR-12": "PROVISIONAL",
+     "RR-13": "PROVISIONAL",
+     "RR-14": "PROVISIONAL",
+     "RR-2": "NOT GRADED",
+     "RR-3": "NOT GRADED"
+    }
+   },
+   "expected": "[\"REFUSED\",[[\"REC-86\",\"-\",\"UNKNOWN x is not an OPEN UNDER gap's DOF left open by the test\"]]]",
+   "fn": "settlement_check",
+   "name": "ST05 REC-86 an unknown that is not an OPEN UNDER gap's DOF"
+  },
+  {
+   "args": {
+    "naming": [
+     [
+      "v",
+      "RR-11"
+     ]
+    ],
+    "records": [
+     {
+      "AGAINST": [
+       "v"
+      ],
+      "CLASS": "NAMED_GAP",
+      "GRADE": "NOT GRADED",
+      "ID": "RR-2",
+      "SOURCE": "UNDER",
+      "STATE": "OPEN",
+      "STATEMENT": "The unknown DOF v is determined by no form (UNDER).",
+      "TRIGGER": "T"
+     },
+     {
+      "CLASS": "RESULT",
+      "EQUATION": "m*D(v,t) = -k_s*x",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-10",
+      "REFS": [
+       "k_s",
+       "m",
+       "t",
+       "v",
+       "x"
+      ],
+      "REGIME": "L",
+      "ROLE": "EOM(v)"
+     },
+     {
+      "CLASS": "RESULT",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-11",
+      "REGIME": "L",
+      "STATEMENT": "m dv/dt = -k_s x, derived in prose"
+     }
+    ],
+    "tfk": {
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     },
+     "TPK": {
+      "ASSUMPTION": [
+       {
+        "NAME": "A_kpos",
+        "PROPOSITION": "k_s is positive",
+        "REFS": [
+         "k_s"
+        ]
+       },
+       {
+        "NAME": "A_mpos",
+        "PROPOSITION": "m is positive",
+        "REFS": [
+         "m"
+        ]
+       }
+      ],
+      "BOUNDARY": [
+       {
+        "CONDITION": "abs(x) < x_max",
+        "NAME": "B_small",
+        "PREDICATE": "|x| < x_max",
+        "REFS": [
+         "x",
+         "x_max"
+        ]
+       }
+      ],
+      "CONSTANT": [
+       {
+        "DIMENSION": "M1",
+        "NAME": "m"
+       },
+       {
+        "DIMENSION": "M1 T-2",
+        "NAME": "k_s"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x_max",
+        "UNCERTAINTY": "0.001",
+        "UNIT": "m",
+        "VALUE": "0.05"
+       }
+      ],
+      "CONSTRAINT": [
+       {
+        "ACTION": "FIX",
+        "NAME": "C_NOZ",
+        "STATEMENT": "only motion on the spring axis is described: z = 0",
+        "TARGET": "z",
+        "UNIT": "m",
+        "VALUE": "0"
+       }
+      ],
+      "DOF": [
+       {
+        "DIMENSION": "T1",
+        "NAME": "t"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x"
+       },
+       {
+        "DIMENSION": "L1 T-1",
+        "NAME": "v"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "z"
+       }
+      ],
+      "LAW": [
+       {
+        "EQUATION": "D(x, t) = v",
+        "NAME": "KIN",
+        "REFS": [
+         "x",
+         "v",
+         "t"
+        ],
+        "ROLE": "EOM(x)",
+        "STATEMENT": "dx/dt = v"
+       },
+       {
+        "EQUATION": "m * D(z, t, 2) = 0",
+        "NAME": "EOM_Z",
+        "REFS": [
+         "m",
+         "z",
+         "t"
+        ],
+        "ROLE": "CONSTRAINT",
+        "STATEMENT": "m d2z/dt2 = 0"
+       }
+      ]
+     },
+     "TrM": {
+      "ENTRIES": [
+       {
+        "BEARS": [],
+        "DIMENSION": "T1",
+        "DOF": "t",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "time",
+        "FALSIFIER": "a second clock whose readings differ from t by more than a constant offset beyond the stated uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "t is the reading of a laboratory clock from an arbitrary origin",
+        "NAME": "E_t"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "x",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "position",
+        "FALSIFIER": "a measured spring force not proportional to x inside the domain",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "x is the displacement of the mass along the spring axis from the point where the spring exerts no force",
+        "NAME": "E_x"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1 T-1",
+        "DOF": "v",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "velocity",
+        "FALSIFIER": "a measured velocity that differs from the rate of change of the measured x beyond uncertainty",
+        "FALSIFIER_CLASS": "F2",
+        "IDENTIFICATION": "v is the rate of change of x with t",
+        "NAME": "E_v"
+       },
+       {
+        "BEARS": [
+         "EOM_Z",
+         "C_NOZ"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "z",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "transverse_position",
+        "FALSIFIER": "a measured z different from 0 beyond its uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "z is the displacement of the mass perpendicular to the spring axis",
+        "NAME": "E_z"
+       }
+      ],
+      "HEADER": {
+       "ENVIRONMENT_INVENTORY": [
+        {
+         "DIMENSION": "T1",
+         "ENVIRONMENT_QUANTITY": "time"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "position"
+        },
+        {
+         "DIMENSION": "L1 T-1",
+         "ENVIRONMENT_QUANTITY": "velocity"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "transverse_position"
+        }
+       ],
+       "SIGNATURE": [
+        {
+         "FORM": "D(x, t) = v",
+         "IMAGE": "d/dt maps position to velocity",
+         "IMAGE_FORM": "D(position, time) = velocity",
+         "NAME": "time_derivative",
+         "OVER": [
+          "x",
+          "v",
+          "t"
+         ]
+        }
+       ],
+       "TRANSFORMATIONS": [
+        {
+         "NAME": "time_translation",
+         "STATEMENT": "t -> t + t0"
+        }
+       ]
+      }
+     }
+    },
+    "words": {
+     "RR-10": "PROVISIONAL",
+     "RR-11": "PROVISIONAL",
+     "RR-12": "PROVISIONAL",
+     "RR-13": "PROVISIONAL",
+     "RR-14": "PROVISIONAL",
+     "RR-2": "NOT GRADED",
+     "RR-3": "NOT GRADED"
+    }
+   },
+   "expected": "[\"REFUSED\",[[\"REC-86\",\"-\",\"UNKNOWN v is not an OPEN UNDER gap's DOF left open by the test\"]]]",
+   "fn": "settlement_check",
+   "name": "ST06 REC-86 an unknown the test settled"
+  },
+  {
+   "args": {
+    "naming": [],
+    "records": [
+     {
+      "AGAINST": [
+       "v"
+      ],
+      "CLASS": "NAMED_GAP",
+      "GRADE": "NOT GRADED",
+      "ID": "RR-2",
+      "SOURCE": "UNDER",
+      "STATE": "OPEN",
+      "STATEMENT": "The unknown DOF v is determined by no form (UNDER).",
+      "TRIGGER": "T"
+     },
+     {
+      "CLASS": "RESULT",
+      "EQUATION": "m*D(v,t) = -k_s*x",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-10",
+      "REFS": [
+       "k_s",
+       "m",
+       "t",
+       "v",
+       "x"
+      ],
+      "REGIME": "L",
+      "ROLE": "EOM(v)"
+     }
+    ],
+    "tfk": {
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     },
+     "TPK": {
+      "ASSUMPTION": [
+       {
+        "NAME": "A_kpos",
+        "PROPOSITION": "k_s is positive",
+        "REFS": [
+         "k_s"
+        ]
+       },
+       {
+        "NAME": "A_mpos",
+        "PROPOSITION": "m is positive",
+        "REFS": [
+         "m"
+        ]
+       }
+      ],
+      "BOUNDARY": [
+       {
+        "CONDITION": "abs(x) < x_max",
+        "NAME": "B_small",
+        "PREDICATE": "|x| < x_max",
+        "REFS": [
+         "x",
+         "x_max"
+        ]
+       }
+      ],
+      "CONSTANT": [
+       {
+        "DIMENSION": "M1",
+        "NAME": "m"
+       },
+       {
+        "DIMENSION": "M1 T-2",
+        "NAME": "k_s"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x_max",
+        "UNCERTAINTY": "0.001",
+        "UNIT": "m",
+        "VALUE": "0.05"
+       }
+      ],
+      "CONSTRAINT": [
+       {
+        "ACTION": "FIX",
+        "NAME": "C_NOZ",
+        "STATEMENT": "only motion on the spring axis is described: z = 0",
+        "TARGET": "z",
+        "UNIT": "m",
+        "VALUE": "0"
+       }
+      ],
+      "DOF": [
+       {
+        "DIMENSION": "T1",
+        "NAME": "t"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x"
+       },
+       {
+        "DIMENSION": "L1 T-1",
+        "NAME": "v"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "z"
+       }
+      ],
+      "LAW": [
+       {
+        "EQUATION": "D(x, t) = v",
+        "NAME": "KIN",
+        "REFS": [
+         "x",
+         "v",
+         "t"
+        ],
+        "ROLE": "EOM(x)",
+        "STATEMENT": "dx/dt = v"
+       },
+       {
+        "EQUATION": "m * D(z, t, 2) = 0",
+        "NAME": "EOM_Z",
+        "REFS": [
+         "m",
+         "z",
+         "t"
+        ],
+        "ROLE": "CONSTRAINT",
+        "STATEMENT": "m d2z/dt2 = 0"
+       }
+      ]
+     },
+     "TrM": {
+      "ENTRIES": [
+       {
+        "BEARS": [],
+        "DIMENSION": "T1",
+        "DOF": "t",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "time",
+        "FALSIFIER": "a second clock whose readings differ from t by more than a constant offset beyond the stated uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "t is the reading of a laboratory clock from an arbitrary origin",
+        "NAME": "E_t"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "x",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "position",
+        "FALSIFIER": "a measured spring force not proportional to x inside the domain",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "x is the displacement of the mass along the spring axis from the point where the spring exerts no force",
+        "NAME": "E_x"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1 T-1",
+        "DOF": "v",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "velocity",
+        "FALSIFIER": "a measured velocity that differs from the rate of change of the measured x beyond uncertainty",
+        "FALSIFIER_CLASS": "F2",
+        "IDENTIFICATION": "v is the rate of change of x with t",
+        "NAME": "E_v"
+       },
+       {
+        "BEARS": [
+         "EOM_Z",
+         "C_NOZ"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "z",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "transverse_position",
+        "FALSIFIER": "a measured z different from 0 beyond its uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "z is the displacement of the mass perpendicular to the spring axis",
+        "NAME": "E_z"
+       }
+      ],
+      "HEADER": {
+       "ENVIRONMENT_INVENTORY": [
+        {
+         "DIMENSION": "T1",
+         "ENVIRONMENT_QUANTITY": "time"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "position"
+        },
+        {
+         "DIMENSION": "L1 T-1",
+         "ENVIRONMENT_QUANTITY": "velocity"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "transverse_position"
+        }
+       ],
+       "SIGNATURE": [
+        {
+         "FORM": "D(x, t) = v",
+         "IMAGE": "d/dt maps position to velocity",
+         "IMAGE_FORM": "D(position, time) = velocity",
+         "NAME": "time_derivative",
+         "OVER": [
+          "x",
+          "v",
+          "t"
+         ]
+        }
+       ],
+       "TRANSFORMATIONS": [
+        {
+         "NAME": "time_translation",
+         "STATEMENT": "t -> t + t0"
+        }
+       ]
+      }
+     }
+    },
+    "words": {
+     "RR-10": "HELD",
+     "RR-11": "PROVISIONAL",
+     "RR-12": "PROVISIONAL",
+     "RR-13": "PROVISIONAL",
+     "RR-14": "PROVISIONAL",
+     "RR-2": "NOT GRADED",
+     "RR-3": "NOT GRADED"
+    }
+   },
+   "expected": "[\"OK\",{\"BY_NAMING\":[],\"BY_TEST\":[],\"OPEN\":[\"v\"],\"USED\":[]}]",
+   "fn": "settlement_check",
+   "name": "ST07 a HELD settling record: not standing, not settled"
+  },
+  {
+   "args": {
+    "naming": [],
+    "records": [
+     {
+      "AGAINST": [
+       "v"
+      ],
+      "CLASS": "NAMED_GAP",
+      "GRADE": "NOT GRADED",
+      "ID": "RR-2",
+      "SOURCE": "UNDER",
+      "STATE": "OPEN",
+      "STATEMENT": "The unknown DOF v is determined by no form (UNDER).",
+      "TRIGGER": "T"
+     },
+     {
+      "CLASS": "RESULT",
+      "EQUATION": "m*D(v,t) = -k_s*x",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-10",
+      "REFS": [
+       "k_s",
+       "m",
+       "t",
+       "v",
+       "x"
+      ],
+      "REGIME": "L",
+      "ROLE": "EOM(v)"
+     }
+    ],
+    "tfk": {
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     },
+     "TPK": {
+      "ASSUMPTION": [
+       {
+        "NAME": "A_kpos",
+        "PROPOSITION": "k_s is positive",
+        "REFS": [
+         "k_s"
+        ]
+       },
+       {
+        "NAME": "A_mpos",
+        "PROPOSITION": "m is positive",
+        "REFS": [
+         "m"
+        ]
+       }
+      ],
+      "BOUNDARY": [
+       {
+        "CONDITION": "abs(x) < x_max",
+        "NAME": "B_small",
+        "PREDICATE": "|x| < x_max",
+        "REFS": [
+         "x",
+         "x_max"
+        ]
+       }
+      ],
+      "CONSTANT": [
+       {
+        "DIMENSION": "M1",
+        "NAME": "m"
+       },
+       {
+        "DIMENSION": "M1 T-2",
+        "NAME": "k_s"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x_max",
+        "UNCERTAINTY": "0.001",
+        "UNIT": "m",
+        "VALUE": "0.05"
+       }
+      ],
+      "CONSTRAINT": [
+       {
+        "ACTION": "FIX",
+        "NAME": "C_NOZ",
+        "STATEMENT": "only motion on the spring axis is described: z = 0",
+        "TARGET": "z",
+        "UNIT": "m",
+        "VALUE": "0"
+       }
+      ],
+      "DOF": [
+       {
+        "DIMENSION": "T1",
+        "NAME": "t"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x"
+       },
+       {
+        "DIMENSION": "L1 T-1",
+        "NAME": "v"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "z"
+       }
+      ],
+      "LAW": [
+       {
+        "EQUATION": "D(x, t) = v",
+        "NAME": "KIN",
+        "REFS": [
+         "x",
+         "v",
+         "t"
+        ],
+        "ROLE": "EOM(x)",
+        "STATEMENT": "dx/dt = v"
+       },
+       {
+        "EQUATION": "m * D(z, t, 2) = 0",
+        "NAME": "EOM_Z",
+        "REFS": [
+         "m",
+         "z",
+         "t"
+        ],
+        "ROLE": "CONSTRAINT",
+        "STATEMENT": "m d2z/dt2 = 0"
+       }
+      ]
+     },
+     "TrM": {
+      "ENTRIES": [
+       {
+        "BEARS": [],
+        "DIMENSION": "T1",
+        "DOF": "t",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "time",
+        "FALSIFIER": "a second clock whose readings differ from t by more than a constant offset beyond the stated uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "t is the reading of a laboratory clock from an arbitrary origin",
+        "NAME": "E_t"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "x",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "position",
+        "FALSIFIER": "a measured spring force not proportional to x inside the domain",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "x is the displacement of the mass along the spring axis from the point where the spring exerts no force",
+        "NAME": "E_x"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1 T-1",
+        "DOF": "v",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "velocity",
+        "FALSIFIER": "a measured velocity that differs from the rate of change of the measured x beyond uncertainty",
+        "FALSIFIER_CLASS": "F2",
+        "IDENTIFICATION": "v is the rate of change of x with t",
+        "NAME": "E_v"
+       },
+       {
+        "BEARS": [
+         "EOM_Z",
+         "C_NOZ"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "z",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "transverse_position",
+        "FALSIFIER": "a measured z different from 0 beyond its uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "z is the displacement of the mass perpendicular to the spring axis",
+        "NAME": "E_z"
+       }
+      ],
+      "HEADER": {
+       "ENVIRONMENT_INVENTORY": [
+        {
+         "DIMENSION": "T1",
+         "ENVIRONMENT_QUANTITY": "time"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "position"
+        },
+        {
+         "DIMENSION": "L1 T-1",
+         "ENVIRONMENT_QUANTITY": "velocity"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "transverse_position"
+        }
+       ],
+       "SIGNATURE": [
+        {
+         "FORM": "D(x, t) = v",
+         "IMAGE": "d/dt maps position to velocity",
+         "IMAGE_FORM": "D(position, time) = velocity",
+         "NAME": "time_derivative",
+         "OVER": [
+          "x",
+          "v",
+          "t"
+         ]
+        }
+       ],
+       "TRANSFORMATIONS": [
+        {
+         "NAME": "time_translation",
+         "STATEMENT": "t -> t + t0"
+        }
+       ]
+      }
+     }
+    },
+    "words": {
+     "RR-10": "WITHDRAWN",
+     "RR-11": "PROVISIONAL",
+     "RR-12": "PROVISIONAL",
+     "RR-13": "PROVISIONAL",
+     "RR-14": "PROVISIONAL",
+     "RR-2": "NOT GRADED",
+     "RR-3": "NOT GRADED"
+    }
+   },
+   "expected": "[\"OK\",{\"BY_NAMING\":[],\"BY_TEST\":[],\"OPEN\":[\"v\"],\"USED\":[]}]",
+   "fn": "settlement_check",
+   "name": "ST08 a WITHDRAWN settling record"
+  },
+  {
+   "args": {
+    "naming": [],
+    "records": [
+     {
+      "AGAINST": [
+       "v"
+      ],
+      "CLASS": "NAMED_GAP",
+      "GRADE": "NOT GRADED",
+      "ID": "RR-2",
+      "SOURCE": "UNDER",
+      "STATE": "OPEN",
+      "STATEMENT": "The unknown DOF v is determined by no form (UNDER).",
+      "TRIGGER": "T"
+     },
+     {
+      "CLASS": "RESULT",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-11",
+      "REGIME": "L",
+      "STATEMENT": "m dv/dt = -k_s x, derived in prose"
+     }
+    ],
+    "tfk": {
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     },
+     "TPK": {
+      "ASSUMPTION": [
+       {
+        "NAME": "A_kpos",
+        "PROPOSITION": "k_s is positive",
+        "REFS": [
+         "k_s"
+        ]
+       },
+       {
+        "NAME": "A_mpos",
+        "PROPOSITION": "m is positive",
+        "REFS": [
+         "m"
+        ]
+       }
+      ],
+      "BOUNDARY": [
+       {
+        "CONDITION": "abs(x) < x_max",
+        "NAME": "B_small",
+        "PREDICATE": "|x| < x_max",
+        "REFS": [
+         "x",
+         "x_max"
+        ]
+       }
+      ],
+      "CONSTANT": [
+       {
+        "DIMENSION": "M1",
+        "NAME": "m"
+       },
+       {
+        "DIMENSION": "M1 T-2",
+        "NAME": "k_s"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x_max",
+        "UNCERTAINTY": "0.001",
+        "UNIT": "m",
+        "VALUE": "0.05"
+       }
+      ],
+      "CONSTRAINT": [
+       {
+        "ACTION": "FIX",
+        "NAME": "C_NOZ",
+        "STATEMENT": "only motion on the spring axis is described: z = 0",
+        "TARGET": "z",
+        "UNIT": "m",
+        "VALUE": "0"
+       }
+      ],
+      "DOF": [
+       {
+        "DIMENSION": "T1",
+        "NAME": "t"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x"
+       },
+       {
+        "DIMENSION": "L1 T-1",
+        "NAME": "v"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "z"
+       }
+      ],
+      "LAW": [
+       {
+        "EQUATION": "D(x, t) = v",
+        "NAME": "KIN",
+        "REFS": [
+         "x",
+         "v",
+         "t"
+        ],
+        "ROLE": "EOM(x)",
+        "STATEMENT": "dx/dt = v"
+       },
+       {
+        "EQUATION": "m * D(z, t, 2) = 0",
+        "NAME": "EOM_Z",
+        "REFS": [
+         "m",
+         "z",
+         "t"
+        ],
+        "ROLE": "CONSTRAINT",
+        "STATEMENT": "m d2z/dt2 = 0"
+       }
+      ]
+     },
+     "TrM": {
+      "ENTRIES": [
+       {
+        "BEARS": [],
+        "DIMENSION": "T1",
+        "DOF": "t",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "time",
+        "FALSIFIER": "a second clock whose readings differ from t by more than a constant offset beyond the stated uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "t is the reading of a laboratory clock from an arbitrary origin",
+        "NAME": "E_t"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "x",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "position",
+        "FALSIFIER": "a measured spring force not proportional to x inside the domain",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "x is the displacement of the mass along the spring axis from the point where the spring exerts no force",
+        "NAME": "E_x"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1 T-1",
+        "DOF": "v",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "velocity",
+        "FALSIFIER": "a measured velocity that differs from the rate of change of the measured x beyond uncertainty",
+        "FALSIFIER_CLASS": "F2",
+        "IDENTIFICATION": "v is the rate of change of x with t",
+        "NAME": "E_v"
+       },
+       {
+        "BEARS": [
+         "EOM_Z",
+         "C_NOZ"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "z",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "transverse_position",
+        "FALSIFIER": "a measured z different from 0 beyond its uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "z is the displacement of the mass perpendicular to the spring axis",
+        "NAME": "E_z"
+       }
+      ],
+      "HEADER": {
+       "ENVIRONMENT_INVENTORY": [
+        {
+         "DIMENSION": "T1",
+         "ENVIRONMENT_QUANTITY": "time"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "position"
+        },
+        {
+         "DIMENSION": "L1 T-1",
+         "ENVIRONMENT_QUANTITY": "velocity"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "transverse_position"
+        }
+       ],
+       "SIGNATURE": [
+        {
+         "FORM": "D(x, t) = v",
+         "IMAGE": "d/dt maps position to velocity",
+         "IMAGE_FORM": "D(position, time) = velocity",
+         "NAME": "time_derivative",
+         "OVER": [
+          "x",
+          "v",
+          "t"
+         ]
+        }
+       ],
+       "TRANSFORMATIONS": [
+        {
+         "NAME": "time_translation",
+         "STATEMENT": "t -> t + t0"
+        }
+       ]
+      }
+     }
+    },
+    "words": {
+     "RR-10": "PROVISIONAL",
+     "RR-11": "PROVISIONAL",
+     "RR-12": "PROVISIONAL",
+     "RR-13": "PROVISIONAL",
+     "RR-14": "PROVISIONAL",
+     "RR-2": "NOT GRADED",
+     "RR-3": "NOT GRADED"
+    }
+   },
+   "expected": "[\"OK\",{\"BY_NAMING\":[],\"BY_TEST\":[],\"OPEN\":[\"v\"],\"USED\":[]}]",
+   "fn": "settlement_check",
+   "name": "ST09 an empty naming, nothing settles"
+  },
+  {
+   "args": {
+    "naming": [
+     [
+      "x",
+      "RR-11"
+     ],
+     [
+      "v",
+      "RR-11"
+     ]
+    ],
+    "records": [
+     {
+      "AGAINST": [
+       "v"
+      ],
+      "CLASS": "NAMED_GAP",
+      "GRADE": "NOT GRADED",
+      "ID": "RR-2",
+      "SOURCE": "UNDER",
+      "STATE": "OPEN",
+      "STATEMENT": "The unknown DOF v is determined by no form (UNDER).",
+      "TRIGGER": "T"
+     },
+     {
+      "CLASS": "RESULT",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-11",
+      "REGIME": "L",
+      "STATEMENT": "m dv/dt = -k_s x, derived in prose"
+     }
+    ],
+    "tfk": {
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     },
+     "TPK": {
+      "ASSUMPTION": [
+       {
+        "NAME": "A_kpos",
+        "PROPOSITION": "k_s is positive",
+        "REFS": [
+         "k_s"
+        ]
+       },
+       {
+        "NAME": "A_mpos",
+        "PROPOSITION": "m is positive",
+        "REFS": [
+         "m"
+        ]
+       }
+      ],
+      "BOUNDARY": [
+       {
+        "CONDITION": "abs(x) < x_max",
+        "NAME": "B_small",
+        "PREDICATE": "|x| < x_max",
+        "REFS": [
+         "x",
+         "x_max"
+        ]
+       }
+      ],
+      "CONSTANT": [
+       {
+        "DIMENSION": "M1",
+        "NAME": "m"
+       },
+       {
+        "DIMENSION": "M1 T-2",
+        "NAME": "k_s"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x_max",
+        "UNCERTAINTY": "0.001",
+        "UNIT": "m",
+        "VALUE": "0.05"
+       }
+      ],
+      "CONSTRAINT": [
+       {
+        "ACTION": "FIX",
+        "NAME": "C_NOZ",
+        "STATEMENT": "only motion on the spring axis is described: z = 0",
+        "TARGET": "z",
+        "UNIT": "m",
+        "VALUE": "0"
+       }
+      ],
+      "DOF": [
+       {
+        "DIMENSION": "T1",
+        "NAME": "t"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x"
+       },
+       {
+        "DIMENSION": "L1 T-1",
+        "NAME": "v"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "z"
+       }
+      ],
+      "LAW": [
+       {
+        "EQUATION": "D(x, t) = v",
+        "NAME": "KIN",
+        "REFS": [
+         "x",
+         "v",
+         "t"
+        ],
+        "ROLE": "EOM(x)",
+        "STATEMENT": "dx/dt = v"
+       },
+       {
+        "EQUATION": "m * D(z, t, 2) = 0",
+        "NAME": "EOM_Z",
+        "REFS": [
+         "m",
+         "z",
+         "t"
+        ],
+        "ROLE": "CONSTRAINT",
+        "STATEMENT": "m d2z/dt2 = 0"
+       }
+      ]
+     },
+     "TrM": {
+      "ENTRIES": [
+       {
+        "BEARS": [],
+        "DIMENSION": "T1",
+        "DOF": "t",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "time",
+        "FALSIFIER": "a second clock whose readings differ from t by more than a constant offset beyond the stated uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "t is the reading of a laboratory clock from an arbitrary origin",
+        "NAME": "E_t"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "x",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "position",
+        "FALSIFIER": "a measured spring force not proportional to x inside the domain",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "x is the displacement of the mass along the spring axis from the point where the spring exerts no force",
+        "NAME": "E_x"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1 T-1",
+        "DOF": "v",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "velocity",
+        "FALSIFIER": "a measured velocity that differs from the rate of change of the measured x beyond uncertainty",
+        "FALSIFIER_CLASS": "F2",
+        "IDENTIFICATION": "v is the rate of change of x with t",
+        "NAME": "E_v"
+       },
+       {
+        "BEARS": [
+         "EOM_Z",
+         "C_NOZ"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "z",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "transverse_position",
+        "FALSIFIER": "a measured z different from 0 beyond its uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "z is the displacement of the mass perpendicular to the spring axis",
+        "NAME": "E_z"
+       }
+      ],
+      "HEADER": {
+       "ENVIRONMENT_INVENTORY": [
+        {
+         "DIMENSION": "T1",
+         "ENVIRONMENT_QUANTITY": "time"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "position"
+        },
+        {
+         "DIMENSION": "L1 T-1",
+         "ENVIRONMENT_QUANTITY": "velocity"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "transverse_position"
+        }
+       ],
+       "SIGNATURE": [
+        {
+         "FORM": "D(x, t) = v",
+         "IMAGE": "d/dt maps position to velocity",
+         "IMAGE_FORM": "D(position, time) = velocity",
+         "NAME": "time_derivative",
+         "OVER": [
+          "x",
+          "v",
+          "t"
+         ]
+        }
+       ],
+       "TRANSFORMATIONS": [
+        {
+         "NAME": "time_translation",
+         "STATEMENT": "t -> t + t0"
+        }
+       ]
+      }
+     }
+    },
+    "words": {
+     "RR-10": "PROVISIONAL",
+     "RR-11": "PROVISIONAL",
+     "RR-12": "PROVISIONAL",
+     "RR-13": "PROVISIONAL",
+     "RR-14": "PROVISIONAL",
+     "RR-2": "NOT GRADED",
+     "RR-3": "NOT GRADED"
+    }
+   },
+   "expected": "[\"REFUSED\",[[\"REC-84\",\"-\",\"naming is not a sorted list of [UNKNOWN, RECORD_ID] pairs\"]]]",
+   "fn": "settlement_check",
+   "name": "ST10 REC-84 a naming out of order"
+  },
+  {
+   "args": {
+    "naming": [
+     [
+      "v"
+     ]
+    ],
+    "records": [
+     {
+      "AGAINST": [
+       "v"
+      ],
+      "CLASS": "NAMED_GAP",
+      "GRADE": "NOT GRADED",
+      "ID": "RR-2",
+      "SOURCE": "UNDER",
+      "STATE": "OPEN",
+      "STATEMENT": "The unknown DOF v is determined by no form (UNDER).",
+      "TRIGGER": "T"
+     },
+     {
+      "CLASS": "RESULT",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-11",
+      "REGIME": "L",
+      "STATEMENT": "m dv/dt = -k_s x, derived in prose"
+     }
+    ],
+    "tfk": {
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     },
+     "TPK": {
+      "ASSUMPTION": [
+       {
+        "NAME": "A_kpos",
+        "PROPOSITION": "k_s is positive",
+        "REFS": [
+         "k_s"
+        ]
+       },
+       {
+        "NAME": "A_mpos",
+        "PROPOSITION": "m is positive",
+        "REFS": [
+         "m"
+        ]
+       }
+      ],
+      "BOUNDARY": [
+       {
+        "CONDITION": "abs(x) < x_max",
+        "NAME": "B_small",
+        "PREDICATE": "|x| < x_max",
+        "REFS": [
+         "x",
+         "x_max"
+        ]
+       }
+      ],
+      "CONSTANT": [
+       {
+        "DIMENSION": "M1",
+        "NAME": "m"
+       },
+       {
+        "DIMENSION": "M1 T-2",
+        "NAME": "k_s"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x_max",
+        "UNCERTAINTY": "0.001",
+        "UNIT": "m",
+        "VALUE": "0.05"
+       }
+      ],
+      "CONSTRAINT": [
+       {
+        "ACTION": "FIX",
+        "NAME": "C_NOZ",
+        "STATEMENT": "only motion on the spring axis is described: z = 0",
+        "TARGET": "z",
+        "UNIT": "m",
+        "VALUE": "0"
+       }
+      ],
+      "DOF": [
+       {
+        "DIMENSION": "T1",
+        "NAME": "t"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x"
+       },
+       {
+        "DIMENSION": "L1 T-1",
+        "NAME": "v"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "z"
+       }
+      ],
+      "LAW": [
+       {
+        "EQUATION": "D(x, t) = v",
+        "NAME": "KIN",
+        "REFS": [
+         "x",
+         "v",
+         "t"
+        ],
+        "ROLE": "EOM(x)",
+        "STATEMENT": "dx/dt = v"
+       },
+       {
+        "EQUATION": "m * D(z, t, 2) = 0",
+        "NAME": "EOM_Z",
+        "REFS": [
+         "m",
+         "z",
+         "t"
+        ],
+        "ROLE": "CONSTRAINT",
+        "STATEMENT": "m d2z/dt2 = 0"
+       }
+      ]
+     },
+     "TrM": {
+      "ENTRIES": [
+       {
+        "BEARS": [],
+        "DIMENSION": "T1",
+        "DOF": "t",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "time",
+        "FALSIFIER": "a second clock whose readings differ from t by more than a constant offset beyond the stated uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "t is the reading of a laboratory clock from an arbitrary origin",
+        "NAME": "E_t"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "x",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "position",
+        "FALSIFIER": "a measured spring force not proportional to x inside the domain",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "x is the displacement of the mass along the spring axis from the point where the spring exerts no force",
+        "NAME": "E_x"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1 T-1",
+        "DOF": "v",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "velocity",
+        "FALSIFIER": "a measured velocity that differs from the rate of change of the measured x beyond uncertainty",
+        "FALSIFIER_CLASS": "F2",
+        "IDENTIFICATION": "v is the rate of change of x with t",
+        "NAME": "E_v"
+       },
+       {
+        "BEARS": [
+         "EOM_Z",
+         "C_NOZ"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "z",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "transverse_position",
+        "FALSIFIER": "a measured z different from 0 beyond its uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "z is the displacement of the mass perpendicular to the spring axis",
+        "NAME": "E_z"
+       }
+      ],
+      "HEADER": {
+       "ENVIRONMENT_INVENTORY": [
+        {
+         "DIMENSION": "T1",
+         "ENVIRONMENT_QUANTITY": "time"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "position"
+        },
+        {
+         "DIMENSION": "L1 T-1",
+         "ENVIRONMENT_QUANTITY": "velocity"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "transverse_position"
+        }
+       ],
+       "SIGNATURE": [
+        {
+         "FORM": "D(x, t) = v",
+         "IMAGE": "d/dt maps position to velocity",
+         "IMAGE_FORM": "D(position, time) = velocity",
+         "NAME": "time_derivative",
+         "OVER": [
+          "x",
+          "v",
+          "t"
+         ]
+        }
+       ],
+       "TRANSFORMATIONS": [
+        {
+         "NAME": "time_translation",
+         "STATEMENT": "t -> t + t0"
+        }
+       ]
+      }
+     }
+    },
+    "words": {
+     "RR-10": "PROVISIONAL",
+     "RR-11": "PROVISIONAL",
+     "RR-12": "PROVISIONAL",
+     "RR-13": "PROVISIONAL",
+     "RR-14": "PROVISIONAL",
+     "RR-2": "NOT GRADED",
+     "RR-3": "NOT GRADED"
+    }
+   },
+   "expected": "[\"REFUSED\",[[\"REC-84\",\"-\",\"naming is not a sorted list of [UNKNOWN, RECORD_ID] pairs\"]]]",
+   "fn": "settlement_check",
+   "name": "ST11 REC-84 a naming not of pairs"
+  },
+  {
+   "args": {
+    "naming": [
+     [
+      "v",
+      "RR-11"
+     ]
+    ],
+    "records": [
+     {
+      "AGAINST": [
+       "v"
+      ],
+      "CLASS": "NAMED_GAP",
+      "GRADE": "NOT GRADED",
+      "ID": "RR-2",
+      "SOURCE": "UNDER",
+      "STATE": "OPEN",
+      "STATEMENT": "The unknown DOF v is determined by no form (UNDER).",
+      "TRIGGER": "T"
+     },
+     {
+      "CLASS": "RESULT",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-11",
+      "REGIME": "L",
+      "STATEMENT": "m dv/dt = -k_s x, derived in prose"
+     }
+    ],
+    "tfk": {
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     },
+     "TPK": {
+      "ASSUMPTION": [
+       {
+        "NAME": "A_kpos",
+        "PROPOSITION": "k_s is positive",
+        "REFS": [
+         "k_s"
+        ]
+       },
+       {
+        "NAME": "A_mpos",
+        "PROPOSITION": "m is positive",
+        "REFS": [
+         "m"
+        ]
+       }
+      ],
+      "BOUNDARY": [
+       {
+        "CONDITION": "abs(x) < x_max",
+        "NAME": "B_small",
+        "PREDICATE": "|x| < x_max",
+        "REFS": [
+         "x",
+         "x_max"
+        ]
+       }
+      ],
+      "CONSTANT": [
+       {
+        "DIMENSION": "M1",
+        "NAME": "m"
+       },
+       {
+        "DIMENSION": "M1 T-2",
+        "NAME": "k_s"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x_max",
+        "UNCERTAINTY": "0.001",
+        "UNIT": "m",
+        "VALUE": "0.05"
+       }
+      ],
+      "CONSTRAINT": [
+       {
+        "ACTION": "FIX",
+        "NAME": "C_NOZ",
+        "STATEMENT": "only motion on the spring axis is described: z = 0",
+        "TARGET": "z",
+        "UNIT": "m",
+        "VALUE": "0"
+       }
+      ],
+      "DOF": [
+       {
+        "DIMENSION": "T1",
+        "NAME": "t"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x"
+       },
+       {
+        "DIMENSION": "L1 T-1",
+        "NAME": "v"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "z"
+       }
+      ],
+      "LAW": [
+       {
+        "EQUATION": "D(x, t) = v",
+        "NAME": "KIN",
+        "REFS": [
+         "x",
+         "v",
+         "t"
+        ],
+        "ROLE": "EOM(x)",
+        "STATEMENT": "dx/dt = v"
+       },
+       {
+        "EQUATION": "m * D(z, t, 2) = 0",
+        "NAME": "EOM_Z",
+        "REFS": [
+         "m",
+         "z",
+         "t"
+        ],
+        "ROLE": "CONSTRAINT",
+        "STATEMENT": "m d2z/dt2 = 0"
+       }
+      ]
+     },
+     "TrM": {
+      "ENTRIES": [
+       {
+        "BEARS": [],
+        "DIMENSION": "T1",
+        "DOF": "t",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "time",
+        "FALSIFIER": "a second clock whose readings differ from t by more than a constant offset beyond the stated uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "t is the reading of a laboratory clock from an arbitrary origin",
+        "NAME": "E_t"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "x",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "position",
+        "FALSIFIER": "a measured spring force not proportional to x inside the domain",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "x is the displacement of the mass along the spring axis from the point where the spring exerts no force",
+        "NAME": "E_x"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1 T-1",
+        "DOF": "v",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "velocity",
+        "FALSIFIER": "a measured velocity that differs from the rate of change of the measured x beyond uncertainty",
+        "FALSIFIER_CLASS": "F2",
+        "IDENTIFICATION": "v is the rate of change of x with t",
+        "NAME": "E_v"
+       },
+       {
+        "BEARS": [
+         "EOM_Z",
+         "C_NOZ"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "z",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "transverse_position",
+        "FALSIFIER": "a measured z different from 0 beyond its uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "z is the displacement of the mass perpendicular to the spring axis",
+        "NAME": "E_z"
+       }
+      ],
+      "HEADER": {
+       "ENVIRONMENT_INVENTORY": [
+        {
+         "DIMENSION": "T1",
+         "ENVIRONMENT_QUANTITY": "time"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "position"
+        },
+        {
+         "DIMENSION": "L1 T-1",
+         "ENVIRONMENT_QUANTITY": "velocity"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "transverse_position"
+        }
+       ],
+       "SIGNATURE": [
+        {
+         "FORM": "D(x, t) = v",
+         "IMAGE": "d/dt maps position to velocity",
+         "IMAGE_FORM": "D(position, time) = velocity",
+         "NAME": "time_derivative",
+         "OVER": [
+          "x",
+          "v",
+          "t"
+         ]
+        }
+       ],
+       "TRANSFORMATIONS": [
+        {
+         "NAME": "time_translation",
+         "STATEMENT": "t -> t + t0"
+        }
+       ]
+      }
+     }
+    },
+    "words": {
+     "RR-10": "PROVISIONAL",
+     "RR-11": "HELD",
+     "RR-12": "PROVISIONAL",
+     "RR-13": "PROVISIONAL",
+     "RR-14": "PROVISIONAL",
+     "RR-2": "NOT GRADED",
+     "RR-3": "NOT GRADED"
+    }
+   },
+   "expected": "[\"REFUSED\",[[\"REC-87\",\"-\",\"RECORD_ID RR-11 is not a standing record of the register\"]]]",
+   "fn": "settlement_check",
+   "name": "ST12 REC-87 a naming of a record that does not stand"
+  },
+  {
+   "args": {
+    "naming": [
+     [
+      "v",
+      "RR-77"
+     ]
+    ],
+    "records": [
+     {
+      "AGAINST": [
+       "v"
+      ],
+      "CLASS": "NAMED_GAP",
+      "GRADE": "NOT GRADED",
+      "ID": "RR-2",
+      "SOURCE": "UNDER",
+      "STATE": "OPEN",
+      "STATEMENT": "The unknown DOF v is determined by no form (UNDER).",
+      "TRIGGER": "T"
+     }
+    ],
+    "tfk": {
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     },
+     "TPK": {
+      "ASSUMPTION": [
+       {
+        "NAME": "A_kpos",
+        "PROPOSITION": "k_s is positive",
+        "REFS": [
+         "k_s"
+        ]
+       },
+       {
+        "NAME": "A_mpos",
+        "PROPOSITION": "m is positive",
+        "REFS": [
+         "m"
+        ]
+       }
+      ],
+      "BOUNDARY": [
+       {
+        "CONDITION": "abs(x) < x_max",
+        "NAME": "B_small",
+        "PREDICATE": "|x| < x_max",
+        "REFS": [
+         "x",
+         "x_max"
+        ]
+       }
+      ],
+      "CONSTANT": [
+       {
+        "DIMENSION": "M1",
+        "NAME": "m"
+       },
+       {
+        "DIMENSION": "M1 T-2",
+        "NAME": "k_s"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x_max",
+        "UNCERTAINTY": "0.001",
+        "UNIT": "m",
+        "VALUE": "0.05"
+       }
+      ],
+      "CONSTRAINT": [
+       {
+        "ACTION": "FIX",
+        "NAME": "C_NOZ",
+        "STATEMENT": "only motion on the spring axis is described: z = 0",
+        "TARGET": "z",
+        "UNIT": "m",
+        "VALUE": "0"
+       }
+      ],
+      "DOF": [
+       {
+        "DIMENSION": "T1",
+        "NAME": "t"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x"
+       },
+       {
+        "DIMENSION": "L1 T-1",
+        "NAME": "v"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "z"
+       }
+      ],
+      "LAW": [
+       {
+        "EQUATION": "D(x, t) = v",
+        "NAME": "KIN",
+        "REFS": [
+         "x",
+         "v",
+         "t"
+        ],
+        "ROLE": "EOM(x)",
+        "STATEMENT": "dx/dt = v"
+       },
+       {
+        "EQUATION": "m * D(z, t, 2) = 0",
+        "NAME": "EOM_Z",
+        "REFS": [
+         "m",
+         "z",
+         "t"
+        ],
+        "ROLE": "CONSTRAINT",
+        "STATEMENT": "m d2z/dt2 = 0"
+       }
+      ]
+     },
+     "TrM": {
+      "ENTRIES": [
+       {
+        "BEARS": [],
+        "DIMENSION": "T1",
+        "DOF": "t",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "time",
+        "FALSIFIER": "a second clock whose readings differ from t by more than a constant offset beyond the stated uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "t is the reading of a laboratory clock from an arbitrary origin",
+        "NAME": "E_t"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "x",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "position",
+        "FALSIFIER": "a measured spring force not proportional to x inside the domain",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "x is the displacement of the mass along the spring axis from the point where the spring exerts no force",
+        "NAME": "E_x"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1 T-1",
+        "DOF": "v",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "velocity",
+        "FALSIFIER": "a measured velocity that differs from the rate of change of the measured x beyond uncertainty",
+        "FALSIFIER_CLASS": "F2",
+        "IDENTIFICATION": "v is the rate of change of x with t",
+        "NAME": "E_v"
+       },
+       {
+        "BEARS": [
+         "EOM_Z",
+         "C_NOZ"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "z",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "transverse_position",
+        "FALSIFIER": "a measured z different from 0 beyond its uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "z is the displacement of the mass perpendicular to the spring axis",
+        "NAME": "E_z"
+       }
+      ],
+      "HEADER": {
+       "ENVIRONMENT_INVENTORY": [
+        {
+         "DIMENSION": "T1",
+         "ENVIRONMENT_QUANTITY": "time"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "position"
+        },
+        {
+         "DIMENSION": "L1 T-1",
+         "ENVIRONMENT_QUANTITY": "velocity"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "transverse_position"
+        }
+       ],
+       "SIGNATURE": [
+        {
+         "FORM": "D(x, t) = v",
+         "IMAGE": "d/dt maps position to velocity",
+         "IMAGE_FORM": "D(position, time) = velocity",
+         "NAME": "time_derivative",
+         "OVER": [
+          "x",
+          "v",
+          "t"
+         ]
+        }
+       ],
+       "TRANSFORMATIONS": [
+        {
+         "NAME": "time_translation",
+         "STATEMENT": "t -> t + t0"
+        }
+       ]
+      }
+     }
+    },
+    "words": {
+     "RR-10": "PROVISIONAL",
+     "RR-11": "PROVISIONAL",
+     "RR-12": "PROVISIONAL",
+     "RR-13": "PROVISIONAL",
+     "RR-14": "PROVISIONAL",
+     "RR-2": "NOT GRADED",
+     "RR-3": "NOT GRADED"
+    }
+   },
+   "expected": "[\"REFUSED\",[[\"REC-87\",\"-\",\"RECORD_ID RR-77 is not a standing record of the register\"]]]",
+   "fn": "settlement_check",
+   "name": "ST13 REC-87 a naming of a record not in the register"
+  },
+  {
+   "args": {
+    "naming": [],
+    "records": [
+     {
+      "AGAINST": [
+       "v"
+      ],
+      "CLASS": "NAMED_GAP",
+      "GRADE": "NOT GRADED",
+      "ID": "RR-2",
+      "SOURCE": "UNDER",
+      "STATE": "SETTLED 2026-09-28 BY RR-10",
+      "STATEMENT": "The unknown DOF v is determined by no form (UNDER).",
+      "TRIGGER": "T"
+     },
+     {
+      "CLASS": "RESULT",
+      "EQUATION": "m*D(v,t) = -k_s*x",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-10",
+      "REFS": [
+       "k_s",
+       "m",
+       "t",
+       "v",
+       "x"
+      ],
+      "REGIME": "L",
+      "ROLE": "EOM(v)"
+     }
+    ],
+    "tfk": {
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     },
+     "TPK": {
+      "ASSUMPTION": [
+       {
+        "NAME": "A_kpos",
+        "PROPOSITION": "k_s is positive",
+        "REFS": [
+         "k_s"
+        ]
+       },
+       {
+        "NAME": "A_mpos",
+        "PROPOSITION": "m is positive",
+        "REFS": [
+         "m"
+        ]
+       }
+      ],
+      "BOUNDARY": [
+       {
+        "CONDITION": "abs(x) < x_max",
+        "NAME": "B_small",
+        "PREDICATE": "|x| < x_max",
+        "REFS": [
+         "x",
+         "x_max"
+        ]
+       }
+      ],
+      "CONSTANT": [
+       {
+        "DIMENSION": "M1",
+        "NAME": "m"
+       },
+       {
+        "DIMENSION": "M1 T-2",
+        "NAME": "k_s"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x_max",
+        "UNCERTAINTY": "0.001",
+        "UNIT": "m",
+        "VALUE": "0.05"
+       }
+      ],
+      "CONSTRAINT": [
+       {
+        "ACTION": "FIX",
+        "NAME": "C_NOZ",
+        "STATEMENT": "only motion on the spring axis is described: z = 0",
+        "TARGET": "z",
+        "UNIT": "m",
+        "VALUE": "0"
+       }
+      ],
+      "DOF": [
+       {
+        "DIMENSION": "T1",
+        "NAME": "t"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x"
+       },
+       {
+        "DIMENSION": "L1 T-1",
+        "NAME": "v"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "z"
+       }
+      ],
+      "LAW": [
+       {
+        "EQUATION": "D(x, t) = v",
+        "NAME": "KIN",
+        "REFS": [
+         "x",
+         "v",
+         "t"
+        ],
+        "ROLE": "EOM(x)",
+        "STATEMENT": "dx/dt = v"
+       },
+       {
+        "EQUATION": "m * D(z, t, 2) = 0",
+        "NAME": "EOM_Z",
+        "REFS": [
+         "m",
+         "z",
+         "t"
+        ],
+        "ROLE": "CONSTRAINT",
+        "STATEMENT": "m d2z/dt2 = 0"
+       }
+      ]
+     },
+     "TrM": {
+      "ENTRIES": [
+       {
+        "BEARS": [],
+        "DIMENSION": "T1",
+        "DOF": "t",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "time",
+        "FALSIFIER": "a second clock whose readings differ from t by more than a constant offset beyond the stated uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "t is the reading of a laboratory clock from an arbitrary origin",
+        "NAME": "E_t"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "x",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "position",
+        "FALSIFIER": "a measured spring force not proportional to x inside the domain",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "x is the displacement of the mass along the spring axis from the point where the spring exerts no force",
+        "NAME": "E_x"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1 T-1",
+        "DOF": "v",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "velocity",
+        "FALSIFIER": "a measured velocity that differs from the rate of change of the measured x beyond uncertainty",
+        "FALSIFIER_CLASS": "F2",
+        "IDENTIFICATION": "v is the rate of change of x with t",
+        "NAME": "E_v"
+       },
+       {
+        "BEARS": [
+         "EOM_Z",
+         "C_NOZ"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "z",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "transverse_position",
+        "FALSIFIER": "a measured z different from 0 beyond its uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "z is the displacement of the mass perpendicular to the spring axis",
+        "NAME": "E_z"
+       }
+      ],
+      "HEADER": {
+       "ENVIRONMENT_INVENTORY": [
+        {
+         "DIMENSION": "T1",
+         "ENVIRONMENT_QUANTITY": "time"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "position"
+        },
+        {
+         "DIMENSION": "L1 T-1",
+         "ENVIRONMENT_QUANTITY": "velocity"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "transverse_position"
+        }
+       ],
+       "SIGNATURE": [
+        {
+         "FORM": "D(x, t) = v",
+         "IMAGE": "d/dt maps position to velocity",
+         "IMAGE_FORM": "D(position, time) = velocity",
+         "NAME": "time_derivative",
+         "OVER": [
+          "x",
+          "v",
+          "t"
+         ]
+        }
+       ],
+       "TRANSFORMATIONS": [
+        {
+         "NAME": "time_translation",
+         "STATEMENT": "t -> t + t0"
+        }
+       ]
+      }
+     }
+    },
+    "words": {
+     "RR-10": "PROVISIONAL",
+     "RR-11": "PROVISIONAL",
+     "RR-12": "PROVISIONAL",
+     "RR-13": "PROVISIONAL",
+     "RR-14": "PROVISIONAL",
+     "RR-2": "NOT GRADED",
+     "RR-3": "NOT GRADED"
+    }
+   },
+   "expected": "[\"OK\",{\"BY_NAMING\":[],\"BY_TEST\":[],\"OPEN\":[],\"USED\":[\"RR-10\"]}]",
+   "fn": "settlement_check",
+   "name": "ST14 the gap already SETTLED: nothing is OPEN"
+  },
+  {
+   "args": {
+    "naming": [],
+    "records": [
+     {
+      "AGAINST": [
+       "v"
+      ],
+      "CLASS": "NAMED_GAP",
+      "GRADE": "NOT GRADED",
+      "ID": "RR-2",
+      "SOURCE": "UNDER",
+      "STATE": "OPEN",
+      "STATEMENT": "The unknown DOF v is determined by no form (UNDER).",
+      "TRIGGER": "T"
+     },
+     {
+      "CLASS": "RESULT",
+      "EQUATION": "m*D(v,t) = -k_q*x",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-13",
+      "REFS": [
+       "k_s",
+       "m",
+       "t",
+       "v",
+       "x"
+      ],
+      "REGIME": "L",
+      "ROLE": "EOM(v)"
+     }
+    ],
+    "tfk": {
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     },
+     "TPK": {
+      "ASSUMPTION": [
+       {
+        "NAME": "A_kpos",
+        "PROPOSITION": "k_s is positive",
+        "REFS": [
+         "k_s"
+        ]
+       },
+       {
+        "NAME": "A_mpos",
+        "PROPOSITION": "m is positive",
+        "REFS": [
+         "m"
+        ]
+       }
+      ],
+      "BOUNDARY": [
+       {
+        "CONDITION": "abs(x) < x_max",
+        "NAME": "B_small",
+        "PREDICATE": "|x| < x_max",
+        "REFS": [
+         "x",
+         "x_max"
+        ]
+       }
+      ],
+      "CONSTANT": [
+       {
+        "DIMENSION": "M1",
+        "NAME": "m"
+       },
+       {
+        "DIMENSION": "M1 T-2",
+        "NAME": "k_s"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x_max",
+        "UNCERTAINTY": "0.001",
+        "UNIT": "m",
+        "VALUE": "0.05"
+       }
+      ],
+      "CONSTRAINT": [
+       {
+        "ACTION": "FIX",
+        "NAME": "C_NOZ",
+        "STATEMENT": "only motion on the spring axis is described: z = 0",
+        "TARGET": "z",
+        "UNIT": "m",
+        "VALUE": "0"
+       }
+      ],
+      "DOF": [
+       {
+        "DIMENSION": "T1",
+        "NAME": "t"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x"
+       },
+       {
+        "DIMENSION": "L1 T-1",
+        "NAME": "v"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "z"
+       }
+      ],
+      "LAW": [
+       {
+        "EQUATION": "D(x, t) = v",
+        "NAME": "KIN",
+        "REFS": [
+         "x",
+         "v",
+         "t"
+        ],
+        "ROLE": "EOM(x)",
+        "STATEMENT": "dx/dt = v"
+       },
+       {
+        "EQUATION": "m * D(z, t, 2) = 0",
+        "NAME": "EOM_Z",
+        "REFS": [
+         "m",
+         "z",
+         "t"
+        ],
+        "ROLE": "CONSTRAINT",
+        "STATEMENT": "m d2z/dt2 = 0"
+       }
+      ]
+     },
+     "TrM": {
+      "ENTRIES": [
+       {
+        "BEARS": [],
+        "DIMENSION": "T1",
+        "DOF": "t",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "time",
+        "FALSIFIER": "a second clock whose readings differ from t by more than a constant offset beyond the stated uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "t is the reading of a laboratory clock from an arbitrary origin",
+        "NAME": "E_t"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "x",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "position",
+        "FALSIFIER": "a measured spring force not proportional to x inside the domain",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "x is the displacement of the mass along the spring axis from the point where the spring exerts no force",
+        "NAME": "E_x"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1 T-1",
+        "DOF": "v",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "velocity",
+        "FALSIFIER": "a measured velocity that differs from the rate of change of the measured x beyond uncertainty",
+        "FALSIFIER_CLASS": "F2",
+        "IDENTIFICATION": "v is the rate of change of x with t",
+        "NAME": "E_v"
+       },
+       {
+        "BEARS": [
+         "EOM_Z",
+         "C_NOZ"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "z",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "transverse_position",
+        "FALSIFIER": "a measured z different from 0 beyond its uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "z is the displacement of the mass perpendicular to the spring axis",
+        "NAME": "E_z"
+       }
+      ],
+      "HEADER": {
+       "ENVIRONMENT_INVENTORY": [
+        {
+         "DIMENSION": "T1",
+         "ENVIRONMENT_QUANTITY": "time"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "position"
+        },
+        {
+         "DIMENSION": "L1 T-1",
+         "ENVIRONMENT_QUANTITY": "velocity"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "transverse_position"
+        }
+       ],
+       "SIGNATURE": [
+        {
+         "FORM": "D(x, t) = v",
+         "IMAGE": "d/dt maps position to velocity",
+         "IMAGE_FORM": "D(position, time) = velocity",
+         "NAME": "time_derivative",
+         "OVER": [
+          "x",
+          "v",
+          "t"
+         ]
+        }
+       ],
+       "TRANSFORMATIONS": [
+        {
+         "NAME": "time_translation",
+         "STATEMENT": "t -> t + t0"
+        }
+       ]
+      }
+     }
+    },
+    "words": {
+     "RR-10": "PROVISIONAL",
+     "RR-11": "PROVISIONAL",
+     "RR-12": "PROVISIONAL",
+     "RR-13": "PROVISIONAL",
+     "RR-14": "PROVISIONAL",
+     "RR-2": "NOT GRADED",
+     "RR-3": "NOT GRADED"
+    }
+   },
+   "expected": "[\"REFUSED\",[[\"REC-85\",\"-\",\"the structure test refused: RECORD:RR-13: EQUATION names k_q, which is not a DOF or CONSTANT\"]]]",
+   "fn": "settlement_check",
+   "name": "ST15 REC-85 the structure test refuses"
+  },
+  {
+   "args": {
+    "naming": [],
+    "records": [
+     {
+      "AGAINST": [
+       "v"
+      ],
+      "CLASS": "NAMED_GAP",
+      "GRADE": "NOT GRADED",
+      "ID": "RR-2",
+      "SOURCE": "UNDER",
+      "STATE": "OPEN",
+      "STATEMENT": "The unknown DOF v is determined by no form (UNDER).",
+      "TRIGGER": "T"
+     },
+     {
+      "CLASS": "RESULT",
+      "EQUATION": "m*D(v,t) = -k_s*x",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-15",
+      "REFS": [
+       "k_s",
+       "m",
+       "t",
+       "v",
+       "x"
+      ],
+      "REGIME": "L"
+     }
+    ],
+    "tfk": {
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     },
+     "TPK": {
+      "ASSUMPTION": [
+       {
+        "NAME": "A_kpos",
+        "PROPOSITION": "k_s is positive",
+        "REFS": [
+         "k_s"
+        ]
+       },
+       {
+        "NAME": "A_mpos",
+        "PROPOSITION": "m is positive",
+        "REFS": [
+         "m"
+        ]
+       }
+      ],
+      "BOUNDARY": [
+       {
+        "CONDITION": "abs(x) < x_max",
+        "NAME": "B_small",
+        "PREDICATE": "|x| < x_max",
+        "REFS": [
+         "x",
+         "x_max"
+        ]
+       }
+      ],
+      "CONSTANT": [
+       {
+        "DIMENSION": "M1",
+        "NAME": "m"
+       },
+       {
+        "DIMENSION": "M1 T-2",
+        "NAME": "k_s"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x_max",
+        "UNCERTAINTY": "0.001",
+        "UNIT": "m",
+        "VALUE": "0.05"
+       }
+      ],
+      "CONSTRAINT": [
+       {
+        "ACTION": "FIX",
+        "NAME": "C_NOZ",
+        "STATEMENT": "only motion on the spring axis is described: z = 0",
+        "TARGET": "z",
+        "UNIT": "m",
+        "VALUE": "0"
+       }
+      ],
+      "DOF": [
+       {
+        "DIMENSION": "T1",
+        "NAME": "t"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x"
+       },
+       {
+        "DIMENSION": "L1 T-1",
+        "NAME": "v"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "z"
+       }
+      ],
+      "LAW": [
+       {
+        "EQUATION": "D(x, t) = v",
+        "NAME": "KIN",
+        "REFS": [
+         "x",
+         "v",
+         "t"
+        ],
+        "ROLE": "EOM(x)",
+        "STATEMENT": "dx/dt = v"
+       },
+       {
+        "EQUATION": "m * D(z, t, 2) = 0",
+        "NAME": "EOM_Z",
+        "REFS": [
+         "m",
+         "z",
+         "t"
+        ],
+        "ROLE": "CONSTRAINT",
+        "STATEMENT": "m d2z/dt2 = 0"
+       }
+      ]
+     },
+     "TrM": {
+      "ENTRIES": [
+       {
+        "BEARS": [],
+        "DIMENSION": "T1",
+        "DOF": "t",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "time",
+        "FALSIFIER": "a second clock whose readings differ from t by more than a constant offset beyond the stated uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "t is the reading of a laboratory clock from an arbitrary origin",
+        "NAME": "E_t"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "x",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "position",
+        "FALSIFIER": "a measured spring force not proportional to x inside the domain",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "x is the displacement of the mass along the spring axis from the point where the spring exerts no force",
+        "NAME": "E_x"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1 T-1",
+        "DOF": "v",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "velocity",
+        "FALSIFIER": "a measured velocity that differs from the rate of change of the measured x beyond uncertainty",
+        "FALSIFIER_CLASS": "F2",
+        "IDENTIFICATION": "v is the rate of change of x with t",
+        "NAME": "E_v"
+       },
+       {
+        "BEARS": [
+         "EOM_Z",
+         "C_NOZ"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "z",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "transverse_position",
+        "FALSIFIER": "a measured z different from 0 beyond its uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "z is the displacement of the mass perpendicular to the spring axis",
+        "NAME": "E_z"
+       }
+      ],
+      "HEADER": {
+       "ENVIRONMENT_INVENTORY": [
+        {
+         "DIMENSION": "T1",
+         "ENVIRONMENT_QUANTITY": "time"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "position"
+        },
+        {
+         "DIMENSION": "L1 T-1",
+         "ENVIRONMENT_QUANTITY": "velocity"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "transverse_position"
+        }
+       ],
+       "SIGNATURE": [
+        {
+         "FORM": "D(x, t) = v",
+         "IMAGE": "d/dt maps position to velocity",
+         "IMAGE_FORM": "D(position, time) = velocity",
+         "NAME": "time_derivative",
+         "OVER": [
+          "x",
+          "v",
+          "t"
+         ]
+        }
+       ],
+       "TRANSFORMATIONS": [
+        {
+         "NAME": "time_translation",
+         "STATEMENT": "t -> t + t0"
+        }
+       ]
+      }
+     }
+    },
+    "words": {
+     "RR-10": "PROVISIONAL",
+     "RR-11": "PROVISIONAL",
+     "RR-12": "PROVISIONAL",
+     "RR-13": "PROVISIONAL",
+     "RR-14": "PROVISIONAL",
+     "RR-15": "PROVISIONAL",
+     "RR-2": "NOT GRADED",
+     "RR-3": "NOT GRADED"
+    }
+   },
+   "expected": "[\"OK\",{\"BY_NAMING\":[],\"BY_TEST\":[],\"OPEN\":[\"v\"],\"USED\":[]}]",
+   "fn": "settlement_check",
+   "name": "ST16 an EQUATION without ROLE enters no matching"
+  },
+  {
+   "args": {
+    "naming": [
+     [
+      "v",
+      "RR-12"
+     ],
+     [
+      "w",
+      "RR-12"
+     ]
+    ],
+    "records": [
+     {
+      "AGAINST": [
+       "v"
+      ],
+      "CLASS": "NAMED_GAP",
+      "GRADE": "NOT GRADED",
+      "ID": "RR-2",
+      "SOURCE": "UNDER",
+      "STATE": "OPEN",
+      "STATEMENT": "The unknown DOF v is determined by no form (UNDER).",
+      "TRIGGER": "T"
+     },
+     {
+      "CLASS": "RESULT",
+      "EQUATION": "m*v = m*v",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-12",
+      "REFS": [
+       "m",
+       "v"
+      ],
+      "REGIME": "L",
+      "ROLE": "INVARIANT"
+     }
+    ],
+    "tfk": {
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     },
+     "TPK": {
+      "ASSUMPTION": [
+       {
+        "NAME": "A_kpos",
+        "PROPOSITION": "k_s is positive",
+        "REFS": [
+         "k_s"
+        ]
+       },
+       {
+        "NAME": "A_mpos",
+        "PROPOSITION": "m is positive",
+        "REFS": [
+         "m"
+        ]
+       }
+      ],
+      "BOUNDARY": [
+       {
+        "CONDITION": "abs(x) < x_max",
+        "NAME": "B_small",
+        "PREDICATE": "|x| < x_max",
+        "REFS": [
+         "x",
+         "x_max"
+        ]
+       }
+      ],
+      "CONSTANT": [
+       {
+        "DIMENSION": "M1",
+        "NAME": "m"
+       },
+       {
+        "DIMENSION": "M1 T-2",
+        "NAME": "k_s"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x_max",
+        "UNCERTAINTY": "0.001",
+        "UNIT": "m",
+        "VALUE": "0.05"
+       }
+      ],
+      "CONSTRAINT": [
+       {
+        "ACTION": "FIX",
+        "NAME": "C_NOZ",
+        "STATEMENT": "only motion on the spring axis is described: z = 0",
+        "TARGET": "z",
+        "UNIT": "m",
+        "VALUE": "0"
+       }
+      ],
+      "DOF": [
+       {
+        "DIMENSION": "T1",
+        "NAME": "t"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x"
+       },
+       {
+        "DIMENSION": "L1 T-1",
+        "NAME": "v"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "z"
+       }
+      ],
+      "LAW": [
+       {
+        "EQUATION": "D(x, t) = v",
+        "NAME": "KIN",
+        "REFS": [
+         "x",
+         "v",
+         "t"
+        ],
+        "ROLE": "EOM(x)",
+        "STATEMENT": "dx/dt = v"
+       },
+       {
+        "EQUATION": "m * D(z, t, 2) = 0",
+        "NAME": "EOM_Z",
+        "REFS": [
+         "m",
+         "z",
+         "t"
+        ],
+        "ROLE": "CONSTRAINT",
+        "STATEMENT": "m d2z/dt2 = 0"
+       }
+      ]
+     },
+     "TrM": {
+      "ENTRIES": [
+       {
+        "BEARS": [],
+        "DIMENSION": "T1",
+        "DOF": "t",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "time",
+        "FALSIFIER": "a second clock whose readings differ from t by more than a constant offset beyond the stated uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "t is the reading of a laboratory clock from an arbitrary origin",
+        "NAME": "E_t"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "x",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "position",
+        "FALSIFIER": "a measured spring force not proportional to x inside the domain",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "x is the displacement of the mass along the spring axis from the point where the spring exerts no force",
+        "NAME": "E_x"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1 T-1",
+        "DOF": "v",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "velocity",
+        "FALSIFIER": "a measured velocity that differs from the rate of change of the measured x beyond uncertainty",
+        "FALSIFIER_CLASS": "F2",
+        "IDENTIFICATION": "v is the rate of change of x with t",
+        "NAME": "E_v"
+       },
+       {
+        "BEARS": [
+         "EOM_Z",
+         "C_NOZ"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "z",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "transverse_position",
+        "FALSIFIER": "a measured z different from 0 beyond its uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "z is the displacement of the mass perpendicular to the spring axis",
+        "NAME": "E_z"
+       }
+      ],
+      "HEADER": {
+       "ENVIRONMENT_INVENTORY": [
+        {
+         "DIMENSION": "T1",
+         "ENVIRONMENT_QUANTITY": "time"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "position"
+        },
+        {
+         "DIMENSION": "L1 T-1",
+         "ENVIRONMENT_QUANTITY": "velocity"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "transverse_position"
+        }
+       ],
+       "SIGNATURE": [
+        {
+         "FORM": "D(x, t) = v",
+         "IMAGE": "d/dt maps position to velocity",
+         "IMAGE_FORM": "D(position, time) = velocity",
+         "NAME": "time_derivative",
+         "OVER": [
+          "x",
+          "v",
+          "t"
+         ]
+        }
+       ],
+       "TRANSFORMATIONS": [
+        {
+         "NAME": "time_translation",
+         "STATEMENT": "t -> t + t0"
+        }
+       ]
+      }
+     }
+    },
+    "words": {
+     "RR-10": "PROVISIONAL",
+     "RR-11": "PROVISIONAL",
+     "RR-12": "PROVISIONAL",
+     "RR-13": "PROVISIONAL",
+     "RR-14": "PROVISIONAL",
+     "RR-2": "NOT GRADED",
+     "RR-3": "NOT GRADED"
+    }
+   },
+   "expected": "[\"REFUSED\",[[\"REC-86\",\"-\",\"UNKNOWN w is not an OPEN UNDER gap's DOF left open by the test\"],[\"REC-88\",\"-\",\"RECORD_ID RR-12 carries a form; it settles by the test alone\"]]]",
+   "fn": "settlement_check",
+   "name": "ST17 two naming failures reported together"
+  }
+ ],
+ "corpus": "settlement",
+ "note": "vectors first: every expectation a literal of the generator; the structure test's answers pinned from the existing eom_register_test",
+ "spec": "tpm_record_functions 0.2.0 section 12 (tpc_eom 0.2.0)",
+ "version": "0.1.0"
+}

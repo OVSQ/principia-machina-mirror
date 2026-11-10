@@ -1,0 +1,52 @@
+{{DISPLAYTITLE:The polynomial Freiman-Ruzsa conjecture}}
+{{Lean theorem prover map}}
+The '''polynomial Freiman–Ruzsa conjecture''', also called '''Marton's conjecture''', is a statement in additive combinatorics about sets that are nearly closed under addition. In November 2023 W. T. Gowers, Ben Green, Freddie Manners and Terence Tao proved it in characteristic 2, and in about three weeks a group of volunteers led by Tao checked the proof in Lean. This page describes the result, how the checking was organised, and what it found.
+
+== The statement ==
+
+Take the strings of <math>n</math> bits, added place by place with 1 + 1 = 0; mathematicians write this space <math>\mathbb{F}_2^n</math>. For a set <math>A</math> of such strings, <math>A + A</math> is the set of all sums of two of its elements. If <math>A</math> is a subspace, adding gives nothing new and <math>A + A = A</math>. The conjecture says the converse holds in a robust form: if <math>A + A</math> is not much larger than <math>A</math>, then <math>A</math> is close to a subspace.
+
+In the form Tao gave on his blog: if <math>|A + A| \le K|A|</math>, then <math>A</math> can be covered by at most <math>2K^{12}</math> translates of a subspace <math>H</math> with <math>|H| \le |A|</math>.<ref name="taoblog">Terence Tao, "On a conjecture of Marton", ''What's new'' (blog), 13 November 2023. https://terrytao.wordpress.com/2023/11/13/on-a-conjecture-of-marton/</ref> What matters is that the number of translates is bounded by a power of <math>K</math>; the best earlier bound, which Tao attributes to Konyagin, grew faster than any power.<ref name="taoblog" /> The conjecture connects a simple test on sums with algebraic structure, and it has links to areas such as coding theory and cryptography; ''Quanta Magazine'' reported that Gil Kalai had called it "a holy grail" of the field.<ref name="quanta">Leila Sloman, "'A-Team' of Math Proves a Critical Link Between Addition and Sets", ''Quanta Magazine'', 6 December 2023. https://www.quantamagazine.org/a-team-of-math-proves-a-critical-link-between-addition-and-sets-20231206/</ref>
+
+== The proof ==
+
+The paper "On a conjecture of Marton" was posted on 9 November 2023 and revised on 12 December 2023.<ref name="arxiv">W. T. Gowers, Ben Green, Freddie Manners and Terence Tao, "On a conjecture of Marton", arXiv:2311.05762, 9 November 2023 (revised 12 December 2023). https://arxiv.org/abs/2311.05762</ref> Its argument works with the entropy of random variables, in Shannon's sense, rather than with Fourier analysis, and it proceeds by induction on a doubling constant defined through entropy.<ref name="taoblog" /> It was published in the ''Annals of Mathematics'' in 2025.<ref name="annals">W. T. Gowers, Ben Green, Freddie Manners and Terence Tao, "On a conjecture of Marton", ''Annals of Mathematics'' 201 (2025), no. 2, pp. 515–549. doi:10.4007/annals.2025.201.2.5</ref> In April 2024 the same four authors extended the method to abelian groups of bounded torsion.<ref name="torsion">W. T. Gowers, Ben Green, Freddie Manners and Terence Tao, "Marton's Conjecture in abelian groups with bounded torsion", arXiv:2404.02244, 2 April 2024. https://arxiv.org/abs/2404.02244</ref>
+
+== The formalisation ==
+
+In his blog post of 13 November 2023 Tao wrote that he planned to formalise the paper in Lean 4.<ref name="taoblog" /> The project was started by Tao, Yaël Dillies and Bhavik Mehta, and less than a week after its launch a significant part of the paper was already formalised in full or in part.<ref name="tour">Terence Tao, "Formalizing the proof of PFR in Lean4 using Blueprint: a short tour", ''What's new'' (blog), 18 November 2023. https://terrytao.wordpress.com/2023/11/18/formalizing-the-proof-of-pfr-in-lean4-using-blueprint-a-short-tour/</ref> About 25 volunteers took part.<ref name="quanta" />
+
+The work was organised with '''Blueprint''', a tool written by Patrick Massot. A blueprint is a human-readable LaTeX version of the proof in which each definition and lemma is linked to its Lean counterpart. From it the tool draws a dependency graph: lemmas appear as bubbles and definitions as rectangles, and the colours show progress. Green means fully formalised; blue means the statement is formalised and its proof is ready to be formalised. When a proof compiles, its author marks it done in the LaTeX by hand, since the tool does not check that mark itself.<ref name="tour" /> Tasks were handed out on the Lean community's chat forum: Tao posted threads of outstanding tasks, contributors claimed them first come, first served, and he kept the list up to date by hand.<ref name="etp">Matthew Bolan, Joachim Breitner, Jose Brox, et al. (34 authors, including Terence Tao), "The Equational Theories Project: Advancing Collaborative Mathematical Research at Scale", arXiv:2512.07087, December 2025, section 4.5. https://arxiv.org/abs/2512.07087</ref>
+
+On 5 December 2023 Tao announced that the project had succeeded after three weeks: every node of the dependency graph was green, and Lean reported that the conjecture follows from the standard axioms.<ref name="mastodon">Terence Tao, post on Mathstodon, 5 December 2023. https://mathstodon.xyz/@tao/111526765350663641</ref> The formalisation found a few minor typos in the paper.<ref name="quanta" />
+
+The final statement, as it stands in the project's Lean files, uses the Mathlib library and is shown here without its proof:<ref name="pfrsite">Terence Tao, Yaël Dillies et al., "The Polynomial Freiman-Ruzsa Conjecture" (project page, with blueprint and Lean source), read 14 October 2026. https://teorth.github.io/pfr/</ref>
+
+<pre class="lean lean-mathlib" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem PFR_conjecture {G : Type*} [AddCommGroup G] [Module (ZMod 2) G]
+    {A : Set G} {K : ℝ} (hA₀ : A.Nonempty) (Afin : A.Finite)
+    (hA : (A + A).ncard ≤ K * A.ncard) :
+    ∃ (H : Submodule (ZMod 2) G) (c : Set G), c.Finite ∧ (H : Set G).Finite ∧
+      Nat.card c &lt; 2 * K ^ 12 ∧ (H : Set G).ncard ≤ A.ncard ∧ A ⊆ c + H := by
+  -- the proof follows in the project's files
+</pre>
+
+Read in words: <code>G</code> is any space of the kind described above, a vector space over the two-element field; <code>A</code> is a finite, nonempty set in it whose sum set has at most <code>K</code> times as many elements; then there are a subspace <code>H</code>, no larger than <code>A</code>, and a finite set <code>c</code> of fewer than <math>2K^{12}</math> shifts, such that <code>A</code> lies inside <code>c + H</code>. Every hypothesis is written out. The hypothesis that <code>A</code> is nonempty is one example: it was added to the Lean statement before it appeared in the blueprint's LaTeX.<ref name="tour" />
+
+== After the main result ==
+
+When the main goal was reached, a second stage formalised several consequences of the theorem and an argument of Jyun-Jie Liao that lowers the exponent from 12 to 11; the project page records that stage as complete, and names among the theorems its Lean files prove both the extension to groups of bounded torsion and a further refinement of Liao's that lowers the exponent to 9.<ref name="pfrsite" />
+
+== What it showed ==
+
+The blueprint divided a paper of some 35 journal pages<ref name="annals" /> into small nodes, each of which a contributor could take on without mastering the whole argument, while Lean checked that the pieces fitted together. In that arrangement the organisers did not need to trust a contribution, only Lean's verdict on it. The [[Lean theorem prover/Applications/The equational theories project|equational theories project]] cites this project as its precedent and automated the claiming of tasks that had been done by hand here.<ref name="etp" />
+
+The formalisation did not change the mathematics; the errors it found were minor typos.<ref name="quanta" /> What it changed was the evidence: a reader who doubts the theorem can check the Lean proof instead of the paper.
+
+== Next ==
+
+* [[Lean theorem prover/Applications/The Fermat's Last Theorem project|The Fermat's Last Theorem project]], a far larger formalisation organised the same way.
+* [[Lean theorem prover/Applications/Research mathematics|Research mathematics]], for other formalised results.
+
+== References ==
+<references />

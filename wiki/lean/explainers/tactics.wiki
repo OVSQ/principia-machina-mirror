@@ -1,0 +1,147 @@
+{{DISPLAYTITLE:Tactics}}
+{{Technical|Lean theorem prover/System/The tactic framework|Lean theorem prover/System/Metaprogramming in Lean}}
+{{Lean theorem prover map}}
+
+A proof in Lean can be written in two ways: as a '''term''', an expression whose type is the
+statement, or as a sequence of '''tactics''', commands that tell Lean how to construct that
+expression. This page explains what a tactic is, where the idea came from, which tactics are
+met most often, and why no tactic has to be trusted.
+
+== Two ways to write the same proof ==
+
+In Lean a proof is a value, and the statement it proves is its type (see
+[[Lean theorem prover/Explainers/Propositions as types|propositions as types]]). Here is a
+proof that "p and q" gives "q and p", written both ways:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem swap_term (p q : Prop) (h : p ∧ q) : q ∧ p :=
+  ⟨h.2, h.1⟩
+
+theorem swap_tactic (p q : Prop) (h : p ∧ q) : q ∧ p := by
+  constructor
+  · exact h.2
+  · exact h.1
+
+#print swap_term
+#print swap_tactic
+</pre>
+
+The first proof is a term. The brackets make a pair, and the pair is the second part of
+<code>h</code> followed by the first. The second proof begins with <code>by</code>, which
+switches to tactics. <code>constructor</code> splits the goal "q and p" into two goals, q and
+p, and each <code>exact</code> supplies one of them.
+
+The two <code>#print</code> lines answer with the same proof, word for word:
+<code>fun p q h =&gt; ⟨h.right, h.left⟩</code>. The tactic script was a way of arriving at the
+term. The term is what Lean keeps. Theorem Proving in Lean 4 calls the two styles
+"term-style" and "tactic-style" proofs.<ref name="tpil-tac">Jeremy Avigad, Leonardo de
+Moura, Soonho Kong and Sebastian Ullrich, ''Theorem Proving in Lean 4'' (online edition for
+Lean 4.33.0, lean-lang.org), chapter 5, "Tactics".
+https://lean-lang.org/theorem_proving_in_lean4/Tactics/</ref>
+
+== What a tactic is ==
+
+A tactic is a small program that works on a '''proof state''': the list of goals still to be
+proved, each with the facts available for it. A tactic either fails, or succeeds and leaves
+some number of new goals, possibly none. When no goals remain, the proof is complete. Behind
+the scenes, each step fills in part of the proof term, and each open goal stands for a part
+not yet filled.<ref name="ref-tactics">''The Lean Language Reference'', version for Lean
+4.34.0 (lean-lang.org, 2026), chapter 14, "Tactic Proofs".
+https://lean-lang.org/doc/reference/4.34.0/Tactic-Proofs/</ref> How goals are shown and
+filled is the subject of [[Lean theorem prover/Explainers/Holes and goals|holes and goals]].
+
+Lean 4's tactics are themselves Lean programs. Lean 4 is a reimplementation of Lean written
+in Lean itself, and its users can extend it with tactics and decision procedures of their
+own; many write their proof automation in Lean.<ref name="cade">Leonardo de Moura and
+Sebastian Ullrich, "The Lean 4 Theorem Prover and Programming Language", in ''Automated
+Deduction – CADE 28'', Lecture Notes in Computer Science 12699, Springer, 2021, pp. 625–635.
+doi:10.1007/978-3-030-79876-5_37</ref> A new tactic can be an abbreviation that expands into
+existing tactics, or a program that acts on the proof state directly.<ref name="ref-custom">''The
+Lean Language Reference'', version for Lean 4.34.0 (lean-lang.org, 2026), section 14.8,
+"Custom Tactics". https://lean-lang.org/doc/reference/4.34.0/Tactic-Proofs/Custom-Tactics/</ref>
+
+== Where the idea came from ==
+
+Tactics come from LCF, a proof-checking program begun by Robin Milner at Stanford in 1972 and
+developed further at Edinburgh. In Edinburgh LCF the logic was set up as a protected type in
+the programming language ML, so that theorems could be produced only by the rules of
+inference. Strategies for breaking a goal into subgoals were ordinary ML functions, which
+Milner called tactics, and functions that combine strategies were called
+tacticals.<ref name="gordon">Michael J. C. Gordon, "From LCF to HOL: a short history", in
+Gordon Plotkin, Colin Stirling and Mads Tofte (eds), ''Proof, Language, and Interaction:
+Essays in Honour of Robin Milner'', MIT Press, 2000.
+https://www.cl.cam.ac.uk/~mjcg/papers/HolHistory.html</ref> Lean keeps the first idea, that
+proof strategies are ordinary programs, and secures the second in its own way, by checking
+the finished term, as described below. The history is told in
+[[Lean theorem prover/History/LCF and the tactic idea|LCF and the tactic idea]].
+
+== The tactics met most often ==
+
+* <code>intro</code>: to prove "if A then B", assume A, give it a name, and prove B.
+* <code>apply</code>: to prove a goal with a fact of the form "if A then the goal", switch to proving A.
+* <code>exact</code>: finish the goal by giving a proof of exactly that statement.
+* <code>rw</code>: rewrite the goal with an equation, replacing one side by the other.
+* <code>simp</code>: simplify with a large stock of known equations.
+* <code>induction</code>: split a goal about every value of a type into one goal for each way a value can be made, with induction hypotheses (see [[Lean theorem prover/Explainers/Induction, as the machine sees it|induction, as the machine sees it]]).
+* <code>cases</code>: split by how a value was made, without induction hypotheses. A proof of "p or q", for instance, was made either from a proof of p or from a proof of q.
+* <code>omega</code>: settle a problem of linear arithmetic over whole numbers.
+* <code>decide</code>: settle a statement by computing whether it is true.
+
+The last two, with <code>simp</code>, are automation, treated in
+[[Lean theorem prover/Explainers/Automation and its limits|automation and its limits]] and
+[[Lean theorem prover/Explainers/Computation inside proofs|computation inside
+proofs]].<ref name="ref-tacref">''The Lean Language Reference'', version for Lean 4.34.0
+(lean-lang.org, 2026), section 14.5, "Tactic Reference".
+https://lean-lang.org/doc/reference/4.34.0/Tactic-Proofs/Tactic-Reference/</ref> The first
+three are enough for a short chain of reasoning:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+theorem chain (p q r : Prop) : (p → q) → (q → r) → p → r := by
+  intro hpq hqr hp
+  apply hqr
+  exact hpq hp
+
+#print chain
+</pre>
+
+The statement says: if p gives q, and q gives r, then p gives r. <code>intro</code> names
+the three assumptions, and the goal becomes r. <code>apply hqr</code> uses the fact that q
+gives r, so it is enough to prove q. <code>exact hpq hp</code> finishes: applying "p gives
+q" to the proof of p yields a proof of q. Lean prints the term that the script produced:
+<code>fun p q r hpq hqr hp =&gt; hqr (hpq hp)</code>. It is the same argument, read from the
+inside out.
+
+== Why a tactic need not be trusted ==
+
+Whatever a tactic does, its product is a term, and the term goes to the Lean kernel to be
+checked like any other. A tactic with a bug can fail, or produce a term that the Lean kernel
+rejects. It cannot make Lean accept a false theorem. The Lean Language Reference puts it this
+way: the worst a bug in a tactic can cause is a confusing error message, not an incorrect
+proof.<ref name="ref-tactics" />
+
+That is why tactics may be large, clever and written by anyone, including programs that
+search for proofs on their own, while the part that must be trusted stays small (see
+[[Lean theorem prover/Explainers/The small trusted core|the small trusted core]]). The
+exceptions are visible. A tactic that rests on an extra axiom, such as
+<code>native_decide</code> or the placeholder <code>sorry</code>, leaves that axiom's name in
+the list that <code>#print axioms</code> shows for the theorem.<ref name="ref-validating">''The
+Lean Language Reference'', version for Lean 4.34.0 (lean-lang.org, 2026), "Validating a Lean
+Proof". https://lean-lang.org/doc/reference/4.34.0/ValidatingProofs/</ref>
+
+== Terms or tactics? ==
+
+Neither style is more rigorous than the other; both end in the same kind of term. Tactic
+proofs are often shorter and easier to write, and they open the way to automation, since the
+automatic procedures are tactics too. They can be harder to read, because the reader has to
+picture the goal after every step.<ref name="tpil-tac" /> A term shows the whole argument at
+once but can be laborious to write by hand. In practice the two are mixed: a term may contain
+a <code>by</code> block, and a tactic such as <code>exact</code> takes a term.
+
+== Next ==
+
+* [[Lean theorem prover/Explainers/Holes and goals|Holes and goals]]: the proof state, and the parts of a proof still missing.
+* [[Lean theorem prover/System/The tactic framework|The tactic framework]]: the technical treatment.
+
+== References ==
+
+<references />

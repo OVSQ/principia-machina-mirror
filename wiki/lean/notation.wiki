@@ -1,0 +1,235 @@
+{{DISPLAYTITLE:Notation}}
+{{Lean theorem prover map}}
+This page fixes the notation used across the edition. The Foundations pages write the rules
+of Lean's type theory in the notation of the type-theory literature, inside formulas. Lean
+writes many of the same things in its own syntax, inside code. The tables set the two side by
+side, with a one-line meaning and the page on which each first appears in the reading order;
+where the formula and the Lean syntax first appear on different pages, both are named. A dash
+means that the notation has no counterpart on that side.
+
+The formulas follow Carneiro's presentation of Lean's type theory, as
+[[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]]
+explains; the Lean syntax is that of Lean 4.34.1.
+
+== Judgments and rules ==
+
+A '''judgment''' is a statement about the theory, made by its rules; it is not a proposition
+inside Lean, and Lean has no syntax for asserting one. Lean shows judgments in what it prints:
+<code>#check</code> prints <code>e : A</code>, and the display of a goal lists a context above
+<code>⊢</code>.
+
+{| class="wikitable"
+! in formulas !! in Lean !! meaning !! first used
+|-
+| <math>\Gamma</math> || the lines above <code>⊢</code> in a goal || a '''context''': variables with their types, <math>x_1 : A_1, \ldots, x_n : A_n</math>, each type may mention the variables before it || [[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]]
+|-
+| <math>\vdash</math> || <code>⊢</code> || in a formula, "derives"; in a goal, it separates what may be used, above, from what must be shown, after it || formula: [[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]]; goal: [[Lean theorem prover/Explainers/Induction, as the machine sees it|Induction, as the machine sees it]]
+|-
+| <math>\Gamma \vdash e : A</math> || <code>e : A</code>, as <code>#check e</code> prints it || the '''typing judgment''': in the context <math>\Gamma</math>, the term <math>e</math> has type <math>A</math> || [[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]]
+|-
+| <math>\Gamma \vdash e \equiv e'</math> || – || '''definitional equality''': <math>e</math> and <math>e'</math> are equal by computation and unfolding, with no proof; Lean tests it when it checks <code>rfl</code> || [[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]]
+|-
+| <math>e \Leftrightarrow e'</math> || – || Carneiro's '''algorithmic definitional equality''', the relation the Lean kernel's test decides; it implies <math>e \equiv e'</math> || [[Lean theorem prover/Foundations/Definitional equality|Definitional equality]]
+|-
+| <math>\Gamma\ \mathrm{ok}</math>, <math>\cdot</math> || – || the context is well formed; the empty context || [[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]]
+|-
+| <math>\frac{J_1 \qquad J_2}{J}</math> || – || an '''inference rule''': from the judgments above the line, the one below || [[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]]
+|-
+| <math>B[a/x]</math> || – || <math>B</math> with <math>a</math> put in place of the variable <math>x</math> || [[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]]
+|}
+
+== Functions, types and universes ==
+
+{| class="wikitable"
+! in formulas !! in Lean !! meaning !! first used
+|-
+| <math>(x : A) \to B</math>, <math>\Pi x : A.\, B</math>, <math>\prod_{a \in A} B(a)</math> || <code>(x : A) → B</code>, <code>∀ x : A, B</code> || '''dependent function type''': functions whose result type <math>B</math> may mention the argument <math>x</math>; Lean prints it with <code>∀</code> when <math>B</math> is a proposition || formula: [[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]], <math>\Pi</math> at [[Lean theorem prover/Foundations/Dependent function types|Dependent function types]]; Lean: [[Lean theorem prover/Foundations/Dependent function types|Dependent function types]]
+|-
+| <math>A \to B</math> || <code>A → B</code> || function type, when <math>B</math> does not mention the argument; implication, when <math>A</math> and <math>B</math> are propositions || [[Lean theorem prover/Explainers/Propositions as types|Propositions as types]]
+|-
+| <math>\lambda x : A.\, e</math> || <code>fun (x : A) => e</code>, also written <code>fun x ↦ e</code> or <code>λ x => e</code> || '''function abstraction''': the function sending <math>x</math> to <math>e</math> || formula: [[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]]; Lean: [[Lean theorem prover/Explainers/What the axioms are|What the axioms are]]
+|-
+| <math>f\,a</math> || <code>f a</code> || application of <math>f</math> to <math>a</math> || [[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]]
+|-
+| <math>\mathrm{let}\ x : A := v;\ e</math> || <code>let x : A := v; e</code> || a local definition || [[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]]
+|-
+| <math>\mathrm{Sort}\,u</math> || <code>Sort u</code> || the '''universe''' at level <math>u</math>, the type of the types at that level || formula: [[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]]; Lean: [[Lean theorem prover/Explainers/Building things from constructors|Building things from constructors]]
+|-
+| <math>\mathrm{Sort}\,0</math> || <code>Prop</code> || the universe of propositions || [[Lean theorem prover/Explainers/Propositions as types|Propositions as types]]
+|-
+| <math>\mathrm{Sort}\,(u+1)</math> || <code>Type u</code>; <code>Type</code> is <code>Type 0</code> || the universes of data || [[Lean theorem prover/Explainers/Why there is no type of all types|Why there is no type of all types]]
+|-
+| <math>\mathrm{U}_u</math> || – || Carneiro's name for the universe written <math>\mathrm{Sort}\,u</math> in this edition || [[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]]
+|-
+| <math>\mathrm{imax}\,u\,v</math> || <code>imax u v</code> || the level of a function type: <math>0</math> if <math>v = 0</math>, otherwise <math>\max(u, v)</math> || formula: [[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]]; Lean: [[Lean theorem prover/Foundations/Universes and Prop|Universes and Prop]]
+|-
+| <math>c.\{\bar u\}</math> || <code>c.{u}</code> || the constant <math>c</math> used at the universe levels <math>\bar u</math> || formula: [[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]]; Lean: [[Lean theorem prover/Explainers/Building things from constructors|Building things from constructors]]
+|-
+| – || <code>{x : A}</code>, <code>[C A]</code> || an '''implicit''' argument, filled in by unification; an '''instance-implicit''' argument, filled in by instance resolution || [[Lean theorem prover/Explainers/Building things from constructors|Building things from constructors]]; explained at [[Lean theorem prover/Foundations/Dependent function types|Dependent function types]]
+|-
+| – || <code>⟨a, b⟩</code> || the '''anonymous constructor''': a value of a type with one constructor, such as a pair or a proof of <code>p ∧ q</code> || [[Lean theorem prover/Explainers/Propositions as types|Propositions as types]]
+|-
+| – || <code>A × B</code> || the type of pairs || [[Lean theorem prover/Foundations/Definitional equality|Definitional equality]]
+|-
+| <math>\Sigma x : A.\, B</math> || <code>(x : A) × B</code>, <code>Σ x : A, B</code> || '''dependent pair''': pairs whose second part has a type that depends on the first || named at [[Lean theorem prover/Foundations/Structural and well-founded recursion|Structural and well-founded recursion]]; no page writes the symbol
+|-
+| <math>\mathrm{Nat.rec}</math> || <code>Nat.rec</code> || the '''recursor''' of the natural numbers, at once induction and primitive recursion || formula: [[Lean theorem prover/Foundations/Inductive types and recursors|Inductive types and recursors]]; Lean: [[Lean theorem prover/Explainers/Building things from constructors|Building things from constructors]]
+|-
+| <math>\prec</math>, <math>\mathrm{Acc}\;x</math> || <code>WellFounded</code>, <code>Acc</code> || a well-founded relation; the proposition that <math>x</math> is accessible, the basis of well-founded recursion || [[Lean theorem prover/Foundations/Structural and well-founded recursion|Structural and well-founded recursion]]
+|}
+
+In Lean the dependent function type, function abstraction and the dependent pair are written
+as in the second column; the reference manual gives the full syntax, including <code>↦</code>
+in place of <code>=></code>.<ref name="rm-fun-terms">''The Lean Language Reference'', for Lean
+4.34.0, lean-lang.org, 2026, section 13.3, "Functions". https://lean-lang.org/doc/reference/4.34.0/Terms/Functions/</ref><ref name="rm-fun-types">''The
+Lean Language Reference'', for Lean 4.34.0, lean-lang.org, 2026, section 4.1, "Functions".
+https://lean-lang.org/doc/reference/4.34.0/The-Type-System/Functions/</ref> Each line below
+is accepted by Lean 4.34.1:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+example : Sort 0 = Prop := rfl
+example : Sort 1 = Type := rfl
+example : Type 1 = Sort 2 := rfl
+example : (fun (x : Nat) => x + 1) 2 = 3 := rfl
+example : (fun (x : Nat) ↦ x + 1) 2 = 3 := rfl
+example : (λ (x : Nat) => x + 1) 2 = 3 := rfl
+def pair : (n : Nat) × Fin (n + 1) := ⟨2, 0⟩
+def pair' : Σ n : Nat, Fin (n + 1) := ⟨2, 0⟩
+
+#check ∀ x : Nat, x = x
+#check (x : Nat) → Fin (x + 1)
+#check Nat → Nat
+#check fun (x : Nat) => x + 1
+#check (Σ n : Nat, Fin (n + 1))
+</pre>
+
+The five <code>#check</code> lines print:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+∀ (x : Nat), x = x : Prop
+(x : Nat) → Fin (x + 1) : Type
+Nat → Nat : Type
+fun x => x + 1 : Nat → Nat
+(n : Nat) × Fin (n + 1) : Type
+</pre>
+
+The same dependent function type is printed with <code>∀</code> when its result is a
+proposition and with <code>→</code> otherwise, and Lean prints a dependent pair written with
+<code>Σ</code> in the form <code>(n : Nat) × …</code>.
+
+== Logic ==
+
+{| class="wikitable"
+! in formulas !! in Lean !! meaning !! first used
+|-
+| <math>\forall x\, \phi</math> || <code>∀ x : A, P x</code> || for every <math>x</math>; a dependent function type into <code>Prop</code> || formula: [[Lean theorem prover/Foundations/Classical logic from choice|Classical logic from choice]]; Lean: [[Lean theorem prover/Explainers/Induction, as the machine sees it|Induction, as the machine sees it]]
+|-
+| <math>\exists x\, \phi</math> || <code>∃ x : A, P x</code>, the type <code>Exists</code> || there is an <math>x</math>; proved by a witness and a proof, <code>⟨w, h⟩</code> || formula: [[Lean theorem prover/Foundations/Classical logic from choice|Classical logic from choice]]; Lean: [[Lean theorem prover/Explainers/Automation and its limits|Automation and its limits]]
+|-
+| – || <code>p ∧ q</code>, the type <code>And</code> || and || [[Lean theorem prover/Explainers/Propositions as types|Propositions as types]]
+|-
+| <math>p \lor q</math> || <code>p ∨ q</code>, the type <code>Or</code> || or || formula: [[Lean theorem prover/Foundations/Classical logic from choice|Classical logic from choice]]; Lean: [[Lean theorem prover/Explainers/Propositions as types|Propositions as types]]
+|-
+| <math>\neg p</math> || <code>¬p</code>, defined as <code>p → False</code> || not || formula: [[Lean theorem prover/Foundations/Classical logic from choice|Classical logic from choice]]; Lean: [[Lean theorem prover/Explainers/What the axioms are|What the axioms are]]
+|-
+| <math>a \leftrightarrow b</math> || <code>p ↔ q</code>, the type <code>Iff</code> || if and only if || [[Lean theorem prover/Foundations/The three axioms|The three axioms]]
+|-
+| <math>\mathrm{True}</math>, <math>\mathrm{False}</math> || <code>True</code>, <code>False</code> || the proposition with one proof, and the one with none || formula: [[Lean theorem prover/Foundations/Classical logic from choice|Classical logic from choice]]; Lean: <code>True</code> at [[Lean theorem prover/Explainers/What the axioms are|What the axioms are]], <code>False</code> at [[Lean theorem prover/Explainers/What has to be trusted|What has to be trusted]]
+|-
+| <math>\neq</math> || <code>a ≠ b</code>, meaning <code>¬(a = b)</code> || not equal || formula: [[Lean theorem prover/Foundations/Classical logic from choice|Classical logic from choice]]; Lean: [[Lean theorem prover/Explainers/Automation and its limits|Automation and its limits]]
+|}
+
+Each of these proofs is accepted by Lean 4.34.1; the last shows that <code>¬p</code> is
+<code>p → False</code> by definition:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+example (p q : Prop) (hp : p) (hq : q) : p ∧ q := ⟨hp, hq⟩
+example (p q : Prop) (hp : p) : p ∨ q := Or.inl hp
+example (p q : Prop) (h : p → q) (hp : p) : q := h hp
+example (p q : Prop) : p ∧ q ↔ q ∧ p := ⟨fun ⟨a, b⟩ => ⟨b, a⟩, fun ⟨a, b⟩ => ⟨b, a⟩⟩
+example : ∀ n : Nat, n + 0 = n := fun _ => rfl
+example : ∃ n : Nat, n + 2 = 5 := ⟨3, rfl⟩
+example : (2 : Nat) ≠ 3 := by decide
+example (p : Prop) : (¬p) = (p → False) := rfl
+</pre>
+
+== Equality ==
+
+{| class="wikitable"
+! in formulas !! in Lean !! meaning !! first used
+|-
+| <math>a = b</math> || <code>a = b</code>, the type <code>Eq a b</code> || '''propositional equality''': a proposition, whose proofs are terms || formula: [[Lean theorem prover/Foundations/Propositional equality|Propositional equality]]; Lean: [[Lean theorem prover/Explainers/What the axioms are|What the axioms are]]
+|-
+| <math>e \equiv e'</math> || – || definitional equality, the judgment above || [[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]]
+|-
+| <math>\mathrm{Eq.refl}\,a</math> || <code>rfl</code>, <code>Eq.refl a</code> || the one constructor of equality: a proof of <math>a = a</math> || formula: [[Lean theorem prover/Foundations/Propositional equality|Propositional equality]]; Lean: [[Lean theorem prover/Explainers/Two kinds of equality|Two kinds of equality]]
+|-
+| <math>\mathrm{Eq.rec}</math> || <code>Eq.rec</code> || the eliminator of equality: what holds of <math>a</math> holds of <math>b</math> when <math>a = b</math> || [[Lean theorem prover/Foundations/Propositional equality|Propositional equality]]
+|-
+| – || <code>h ▸ e</code> || '''substitution''': <math>e</math> carried along a proof <code>h : a = b</code> || [[Lean theorem prover/Foundations/Propositional equality|Propositional equality]]
+|-
+| – || <code>a ≍ b</code>, the type <code>HEq a b</code> || '''heterogeneous equality''', between terms whose types may differ || [[Lean theorem prover/Foundations/Propositional equality|Propositional equality]]
+|-
+| <math>\mathrm{Quot}\,r</math>, <math>\mathrm{Quot.mk}\,r\,a</math> || <code>Quot r</code>, <code>Quot.mk r a</code> || the quotient of a type by a relation <math>r</math>, and the element of it that <math>a</math> gives || formula: [[Lean theorem prover/Foundations/Quotient types|Quotient types]]; Lean: [[Lean theorem prover/Foundations/Propositional equality|Propositional equality]]
+|}
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+example (a b : Nat) (h : a = b) (P : Nat → Prop) (hp : P a) : P b := h ▸ hp
+example (n : Nat) (x : Fin n) : x ≍ x := HEq.rfl
+#check @HEq
+</pre>
+
+Lean 4.34.1 accepts both and prints <code>@HEq : {α : Sort u_1} → α → {β : Sort u_1} → β → Prop</code>:
+the two sides of <code>≍</code> may have different types.
+
+== Holes and unification ==
+
+{| class="wikitable"
+! in formulas !! in Lean !! meaning !! first used
+|-
+| <math>?m</math> || <code>?m.12</code> || a '''metavariable''', a hole the elaborator has yet to fill || formula: [[Lean theorem prover/System/Metavariables and unification|Metavariables and unification]]; Lean: [[Lean theorem prover/Explainers/Holes and goals|Holes and goals]]
+|-
+| <math>s =^{?} t</math> || <code>s =?= t</code> || a '''unification problem''': find values of the metavariables that make the two sides definitionally equal || [[Lean theorem prover/System/Metavariables and unification|Metavariables and unification]]
+|}
+
+== Metatheory ==
+
+{| class="wikitable"
+! in formulas !! in Lean !! meaning !! first used
+|-
+| <math>T \vdash \mathrm{Con}(S)</math> || – || the theory <math>T</math> proves that the theory <math>S</math> is consistent || [[Lean theorem prover/Foundations/Consistency and the metatheory|Consistency and the metatheory]]
+|-
+| <math>\mathrm{ZFC}_n</math> || – || Zermelo–Fraenkel set theory with choice and <math>n</math> inaccessible cardinals || [[Lean theorem prover/Foundations/Consistency and the metatheory|Consistency and the metatheory]]
+|-
+| <math>\mathrm{CIC}_n</math>, <math>\mathrm{Lean}_n</math> || – || the Calculus of Inductive Constructions, or Lean's type theory, with <math>n</math> universes || [[Lean theorem prover/Foundations/Consistency and the metatheory|Consistency and the metatheory]]
+|}
+
+== Commands and keywords ==
+
+{| class="wikitable"
+! in Lean !! meaning !! first used
+|-
+| <code>example : A := e</code>, <code>theorem c : A := e</code>, <code>def c : A := e</code> || a term <code>e</code> of type <code>A</code>, unnamed, as a named theorem, or as a named definition || [[Lean theorem prover/Explainers/Propositions as types|Propositions as types]]
+|-
+| <code>by</code> || the term that follows is to be built by tactics || [[Lean theorem prover/Explainers/Types as specifications|Types as specifications]]
+|-
+| <code>rfl</code> || the proof of <code>a = a</code>; it closes a goal whose two sides are definitionally equal || [[Lean theorem prover/Explainers/Two kinds of equality|Two kinds of equality]]
+|-
+| <code>sorry</code> || a placeholder for a missing proof, recorded as the axiom <code>sorryAx</code> || [[Lean theorem prover/Explainers/What the axioms are|What the axioms are]]
+|-
+| <code>#check e</code> || print the type of <code>e</code> || [[Lean theorem prover/Explainers/Why there is no type of all types|Why there is no type of all types]]
+|-
+| <code>#print c</code> || print the definition of <code>c</code> || [[Lean theorem prover/Explainers/What the axioms are|What the axioms are]]
+|-
+| <code>#print axioms c</code> || list the axioms that <code>c</code> depends on || [[Lean theorem prover/Explainers/What the axioms are|What the axioms are]]
+|-
+| <code>#eval e</code> || compute <code>e</code> and print the result || [[Lean theorem prover/Explainers/Functions that always finish|Functions that always finish]]
+|}
+
+== Next ==
+
+[[Lean theorem prover/Sources|Sources]], what was read for the edition.
+
+== References ==
+
+<references />

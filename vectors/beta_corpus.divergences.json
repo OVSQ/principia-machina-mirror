@@ -1,0 +1,20 @@
+{
+ "corpus": "beta_corpus.json",
+ "about": "Where the Calculator's answer departs from v1's on a case of beta_corpus.json, and why. v1 computed in IEEE doubles by the methods it took by delegation (BT-1 the Lanczos approximation of ln Gamma, BT-2 Numerical Recipes' continued fraction, BT-3 100 halvings) and printed twelve significant digits; the Calculator computes the exact value the text names (the Declarer's choice of exact values: rationals exactly, ln Gamma, I_x(a, b) and its quantile between bounds narrowed until both round alike) and rounds it once to twelve digits. Each entry gives the case, v1's expectation as the corpus has it, the Calculator's answer in the same form, the cause and the reason. Every exact value here was also computed independently with mpmath at 80 digits. The vector runner checks both strings for every entry, so an entry that stops applying fails.",
+ "divergences": [
+  {
+   "name": "L01 lgamma(1) = 0 (to the approximation's error)",
+   "v1": "-8.881784197e-16",
+   "v2": "0",
+   "cause": "double artefact",
+   "reason": "Gamma(1) is exactly 1, so ln Gamma(1) is exactly 0. v1's Lanczos sum in doubles (BT-1, relative error about 1e-15) gave -8.881784197001252e-16, which it printed; the case's own name says the value is 0 to the approximation's error."
+  },
+  {
+   "name": "B11 (1000, 1000) at 0.51",
+   "v1": "0.814447340569",
+   "v2": "0.814447340568",
+   "cause": "double artefact",
+   "reason": "I_0.51(1000, 1000) is 0.81444734056848834 (mpmath, 80 digits), whose twelve digits are 0.814447340568. v1 computed the prefactor as exp(lgamma(2000) - 2 lgamma(1000) + ...) in doubles; its Lanczos lgamma(2000) is about 1.03e-12 below the true value, and with the other roundings v1's double came to 0.8144473405685393, which rounds up in the twelfth digit."
+  }
+ ]
+}

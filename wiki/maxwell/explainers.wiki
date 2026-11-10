@@ -1,0 +1,46 @@
+{{DISPLAYTITLE:On Physical Lines of Force — Explainers}}
+{{On Physical Lines of Force map}}
+''[[On Physical Lines of Force]] → Explainers''
+
+Thirteen short pages covering each major idea in the paper, written for a general reader. No equations. Each answers one question and can be read on its own, though they follow a natural order.
+
+If you read them straight through you will have the whole argument of the paper without meeting a single formula.
+
+== The problem ==
+
+* '''[[On Physical Lines of Force/Explainers/What is a line of force|What is a line of force?]]''' — the iron filings, and why Faraday thought they meant something
+* '''[[On Physical Lines of Force/Explainers/Why Maxwell wanted a mechanism|Why Maxwell wanted a mechanism]]''' — what was unsatisfying about action at a distance, and why he chose stress over waves
+
+== The machine ==
+
+* '''[[On Physical Lines of Force/Explainers/The sea of spinning cells|The sea of spinning cells]]''' — what Maxwell put in empty space, and why spinning things
+* '''[[On Physical Lines of Force/Explainers/Why spinning makes a pull|Why spinning makes a pull]]''' — how centrifugal force becomes magnetic attraction
+* '''[[On Physical Lines of Force/Explainers/What is an electric current|What is an electric current?]]''' — the gear-train problem, and the particles that solve it
+* '''[[On Physical Lines of Force/Explainers/Why a changing magnet makes a current|Why a changing magnet makes a current]]''' — induction as the inertia of flywheels
+
+== The two discoveries ==
+
+* '''[[On Physical Lines of Force/Explainers/Why the cells had to be springy|Why the cells had to be springy]]''' — a repair made for an unrelated reason
+* '''[[On Physical Lines of Force/Explainers/The missing term|The missing term]]''' — the addition that made radio possible
+* '''[[On Physical Lines of Force/Explainers/Two ways to measure electricity|Two ways to measure electricity]]''' — and why their ratio is a speed
+* '''[[On Physical Lines of Force/Explainers/How Maxwell found the speed of light|How Maxwell found the speed of light]]''' — two electrical measurements, one optical answer
+
+== The last part, and after ==
+
+* '''[[On Physical Lines of Force/Explainers/Magnetism twists light|Magnetism twists light]]''' — Faraday's discovery, and why it convinced Maxwell that magnetism is rotation
+* '''[[On Physical Lines of Force/Explainers/A wrong model that produced right answers|A wrong model that produced right answers]]''' — what to make of a theory whose mechanism was abandoned
+* '''[[On Physical Lines of Force/Explainers/What came after|What came after]]''' — 1865, 1873, and the verdict
+
+== If you only read one ==
+
+[[On Physical Lines of Force/Explainers/The missing term|The missing term]]. It is the shortest path to understanding why this paper matters, and it contains the single strangest fact in the history of physics: the term that makes wireless communication possible was added to fix a difficulty about imaginary spinning cells.
+
+== Where to go next ==
+
+* The [[On Physical Lines of Force/Introduction|Introduction]] gives the same story at more length, with a little mathematics.
+* The four '''Part''' sections — [[On Physical Lines of Force/Part I|I]], [[On Physical Lines of Force/Part II|II]], [[On Physical Lines of Force/Part III|III]], [[On Physical Lines of Force/Part IV|IV]] — follow Maxwell's own argument and quote him at length.
+* The [[On Physical Lines of Force/Modern derivations|modern derivations]] take each result through to the equations as they are written today.
+
+----
+
+''[[On Physical Lines of Force|Back to the contents]]''

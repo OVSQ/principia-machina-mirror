@@ -1,0 +1,11 @@
+* text=auto eol=lf
+*.png binary
+*.zip binary
+# Kept byte for byte: no line-ending conversion on any platform. The vector corpora are
+# checked by SHA-256 and some end without a final newline; NIST's SHA-256 response files
+# keep their CRLF line ends (vectors/sha256.json).
+vectors/*.json -text
+vectors/*.rsp -text
+# Unicode's own files, kept byte for byte on every platform: the generator
+# scripts/gen_unicode_tables.py refuses each unless its SHA-256 is Unicode 15.1.0's.
+vectors/unicode/** -text

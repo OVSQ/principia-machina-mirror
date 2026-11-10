@@ -1,0 +1,16 @@
+{{DISPLAYTITLE:Modelica}}
+'''Modelica: Acausal DAE Domain Survey'''
+[[Category:Principia Machina]] [[Category:Tools]]
+
+== Overview & Architectural Fit ==
+'''Modelica''' is an acausal, object-oriented equation-based language engineered to compile and solve Differential-Algebraic Equations (DAEs) with respect to time <math>t</math>.
+
+== Mathematical Evaluation for TPM & SVD ==
+* '''Lumped Classical Mechanics (8.0/10):''' Native gold standard for multi-body mechanical kinematics and continuous time-dependent DAE integration.
+* '''Field Theory & Relativity Limitations (2.0/10):''' Unsuited for continuous spatial PDEs, tensor algebra, or quantum operator manifolds without prior spatial discretization.
+
+== References ==
+''Added on 2026-10-06 by the [[The Principia Machina/Research Toolkit|Research Toolkit]]: the tool's citations, each checked against the registry or the project's own page that day. The text above is the survey's own.''
+The Modelica Language Specification is at version 3.7, May 2026.
+* '''[[The Principia Machina/Research Toolkit/Bibliography#MODELICA-SPEC|MODELICA-SPEC]]''' &ndash; Modelica Association (2026). Modelica Language Specification, Version 3.7 (May 2026). The previous release was 3.6 (2023), and 3.8-dev is in development. No DOI.
+* '''[[The Principia Machina/Research Toolkit/Bibliography#FRITZSON14|FRITZSON14]]''' &ndash; Fritzson, P. (2014). Principles of Object Oriented Modeling and Simulation with Modelica 3.3: A Cyber-Physical Approach. Wiley (print 12 Nov 2014; ISBN 9781118859124). [https://doi.org/10.1002/9781118989166 doi:10.1002/9781118989166].

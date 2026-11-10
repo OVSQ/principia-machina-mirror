@@ -1,0 +1,32 @@
+{{DISPLAYTITLE:Acceptance}}
+{{Principia Machina map}}
+'''Acceptance''' is how a result of Principia Machina is judged: by a command and the output it must print, never by a claim. This page gives the checks every change passes, and the ladder of prototype versions that measures how far the whole program has come. The parts are on [[Principia Machina/Development|Development]]; the units a Contributor takes are on [[Principia Machina/Development/Work units|Work units]].
+
+== The checks every change passes ==
+Every change, whoever writes it, runs the same checks:
+* <code>lake build</code> completes with no error and no warning in the changed files, on Linux and on Windows.
+* <code>lake test</code> runs every case of every vector corpus and passes all of them.
+* <code>lake env lean scripts/axiom_audit.lean</code> reports no axiom beyond Lean's three standard ones (<code>propext</code>, <code>Classical.choice</code>, <code>Quot.sound</code>).
+* <code>lake env leanchecker --fresh Principia</code> replays every Lean definition through the Lean kernel with no error.
+* The names check: the project's words are used and a person is named by role.
+* The disclosure check: a public page carries public text only.
+
+A Contributor runs the four commands on its own machine, on Linux, and pastes their output whole into its hand-back. The channel runs the same commands again on both systems and runs the names check and the disclosure check on the hand-back itself; their results come back in the channel's answer, so a Contributor need run neither and cannot: their word lists are not public.
+
+The Lean rules behind them: no <code>sorry</code>, no <code>native_decide</code>, no new axiom, no <code>unsafe</code>, no <code>Float</code>; the Lean toolchain is pinned; every executable function has vectors. A result is reported only after its command has been run and its output read.
+
+== The ladder ==
+The ladder measures the program as a whole. It is made of '''prototype versions'''.
+* A '''feature''' is one capability with one acceptance test: a command and the result it must print.
+* A '''version''' is a named set of features. It '''passes''' when every one of its features passes on the head of the main line and every earlier version still passes (nothing already done is lost).
+* Versions are small and frequent, and each is sized to be finished in a short round of work:
+** '''0.1''', the live exercise built: Custos takes a petition, a poll, a push, a read-back and a release; the page writer, the lock and the landing of records work; the Research Client is minimal. Its last test is the live exercise itself: a petition, a push of two records and a read-back of their digests against a test wiki, ending in a line that begins <code>PASS</code>.
+** '''0.2''', the same path made rigorous: the real residence of the Calculator, refusals that say a fixed word, among others the derivation class inside each record's digest, the client checking every landed digest, the sweep of lost tickets.
+** '''0.3''' and after, the first corners, component by component, built out from a path that holds.
+* The objectives of each round of work are the features of the next version that do not yet pass.
+
+== Where the result is read ==
+No result on the ladder is typed by a person. The checks run each feature's command on the head of the main line after every landing, and the ladder's page marks each row PASS, FAIL or "not yet" (no test exists yet), with the date of the run. The page is [[Principia Machina/Progress/Prototype|the prototype page of the Progress section]].
+
+== Judging a hand-back ==
+A Contributor's hand-back passes the same checks as any other change, plus the commands its [[Principia Machina/Development/Work units|unit]] names. Where no check answers a question the unit raises, a reviewer reads the change, and only the change. The answer is accepted, returned or refused, as the Work units page says.

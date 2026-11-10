@@ -1,0 +1,6568 @@
+{
+ "corpus": "reaudit_corpus",
+ "version": "0.1.0",
+ "spec": "Principia/Record/Reaudit.lean: reaudit_batch, the successor's re-audit in one call (TPS 4.1.9)",
+ "note": "hand-written from the repromote_batch case RB01 and the reaudit_scope cases RA01 and RA04 of record_corpus, each RESULT given DERIVATION_CLASS INSPECTION so that it passes record_check at LANDED, and a failed re-check made by removing it (REC-43); expectations written from the Calculator and checked against the functions the batch composes, each called alone: reaudit_scope, record_check, status_next on HOLD, gap_records, repromote_batch over the words with the changes applied and the gap IDs as open audits, promotion_record",
+ "cases": [
+  {
+   "name": "RX01 the scope names no check: nothing re-checked, the inherited ESTABLISHED re-promoted",
+   "fn": "reaudit_batch",
+   "args": {
+    "src": {
+     "D_TPK": "ad9d20d633d374edf7f7a2ddfefa6e886e67132a6e8a7cd42edd0237d3927088",
+     "D_TRM": "f767f3635d0cbc54473b6f889c20a94d8d37f95d627d2c856516bac9c7d37de9",
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     }
+    },
+    "dst": {
+     "D_TPK": "ad9d20d633d374edf7f7a2ddfefa6e886e67132a6e8a7cd42edd0237d3927088",
+     "D_TRM": "f767f3635d0cbc54473b6f889c20a94d8d37f95d627d2c856516bac9c7d37de9",
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     }
+    },
+    "src_records": [
+     {
+      "ASSUMPTIONS": [],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "ASSUMPTION",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-2",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "PROPOSITION": "The pivot does not move.",
+      "REFS": [],
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "RR-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-30",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "RR-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [
+       "RR-30"
+      ],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-31",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     }
+    ],
+    "src_words": {
+     "RR-2": "PROVISIONAL",
+     "RR-30": "ESTABLISHED",
+     "RR-31": "ESTABLISHED"
+    },
+    "dst_records": [
+     {
+      "ASSUMPTIONS": [],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "ASSUMPTION",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-2",
+      "INHERITS": "RR-2",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "PROPOSITION": "The pivot does not move.",
+      "REFS": [],
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "QQ-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-30",
+      "INHERITS": "RR-30",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0",
+      "DERIVATION_CLASS": "INSPECTION"
+     },
+     {
+      "ASSUMPTIONS": [
+       "QQ-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [
+       "QQ-30"
+      ],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-31",
+      "INHERITS": "RR-31",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0",
+      "DERIVATION_CLASS": "INSPECTION"
+     }
+    ],
+    "dst_words": {
+     "QQ-2": "PROVISIONAL",
+     "QQ-30": "PROVISIONAL",
+     "QQ-31": "PROVISIONAL"
+    },
+    "tfk": {
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     },
+     "TPK": {
+      "ASSUMPTION": [
+       {
+        "NAME": "A_kpos",
+        "PROPOSITION": "k_s is positive",
+        "REFS": [
+         "k_s"
+        ]
+       },
+       {
+        "NAME": "A_mpos",
+        "PROPOSITION": "m is positive",
+        "REFS": [
+         "m"
+        ]
+       }
+      ],
+      "BOUNDARY": [
+       {
+        "CONDITION": "abs(x) < x_max",
+        "NAME": "B_small",
+        "PREDICATE": "|x| < x_max",
+        "REFS": [
+         "x",
+         "x_max"
+        ]
+       }
+      ],
+      "CONSTANT": [
+       {
+        "DIMENSION": "M1",
+        "NAME": "m"
+       },
+       {
+        "DIMENSION": "M1 T-2",
+        "NAME": "k_s"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x_max",
+        "UNCERTAINTY": "0.001",
+        "UNIT": "m",
+        "VALUE": "0.05"
+       }
+      ],
+      "CONSTRAINT": [
+       {
+        "ACTION": "FIX",
+        "NAME": "C_NOZ",
+        "STATEMENT": "only motion on the spring axis is described: z = 0",
+        "TARGET": "z",
+        "UNIT": "m",
+        "VALUE": "0"
+       }
+      ],
+      "DOF": [
+       {
+        "DIMENSION": "T1",
+        "NAME": "t"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x"
+       },
+       {
+        "DIMENSION": "L1 T-1",
+        "NAME": "v"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "z"
+       }
+      ],
+      "LAW": [
+       {
+        "EQUATION": "m * D(v, t) = -k_s * x",
+        "NAME": "EOM_X",
+        "REFS": [
+         "m",
+         "v",
+         "k_s",
+         "x",
+         "t"
+        ],
+        "ROLE": "EOM(v)",
+        "STATEMENT": "m dv/dt = -k_s x"
+       },
+       {
+        "EQUATION": "D(x, t) = v",
+        "NAME": "KIN",
+        "REFS": [
+         "x",
+         "v",
+         "t"
+        ],
+        "ROLE": "EOM(x)",
+        "STATEMENT": "dx/dt = v"
+       },
+       {
+        "EQUATION": "m * D(z, t, 2) = 0",
+        "NAME": "EOM_Z",
+        "REFS": [
+         "m",
+         "z",
+         "t"
+        ],
+        "ROLE": "CONSTRAINT",
+        "STATEMENT": "m d2z/dt2 = 0"
+       }
+      ]
+     },
+     "TrM": {
+      "ENTRIES": [
+       {
+        "BEARS": [],
+        "DIMENSION": "T1",
+        "DOF": "t",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "time",
+        "FALSIFIER": "a second clock whose readings differ from t by more than a constant offset beyond the stated uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "t is the reading of a laboratory clock from an arbitrary origin",
+        "NAME": "E_t"
+       },
+       {
+        "BEARS": [
+         "EOM_X",
+         "KIN"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "x",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "position",
+        "FALSIFIER": "a measured spring force not proportional to x inside the domain",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "x is the displacement of the mass along the spring axis from the point where the spring exerts no force",
+        "NAME": "E_x"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1 T-1",
+        "DOF": "v",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "velocity",
+        "FALSIFIER": "a measured velocity that differs from the rate of change of the measured x beyond uncertainty",
+        "FALSIFIER_CLASS": "F2",
+        "IDENTIFICATION": "v is the rate of change of x with t",
+        "NAME": "E_v"
+       },
+       {
+        "BEARS": [
+         "EOM_Z",
+         "C_NOZ"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "z",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "transverse_position",
+        "FALSIFIER": "a measured z different from 0 beyond its uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "z is the displacement of the mass perpendicular to the spring axis",
+        "NAME": "E_z"
+       }
+      ],
+      "HEADER": {
+       "ENVIRONMENT_INVENTORY": [
+        {
+         "DIMENSION": "T1",
+         "ENVIRONMENT_QUANTITY": "time"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "position"
+        },
+        {
+         "DIMENSION": "L1 T-1",
+         "ENVIRONMENT_QUANTITY": "velocity"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "transverse_position"
+        }
+       ],
+       "SIGNATURE": [
+        {
+         "FORM": "D(x, t) = v",
+         "IMAGE": "d/dt maps position to velocity",
+         "IMAGE_FORM": "D(position, time) = velocity",
+         "NAME": "time_derivative",
+         "OVER": [
+          "x",
+          "v",
+          "t"
+         ]
+        }
+       ],
+       "TRANSFORMATIONS": [
+        {
+         "NAME": "time_translation",
+         "STATEMENT": "t -> t + t0"
+        }
+       ]
+      }
+     }
+    },
+    "setting": null,
+    "promotion_id": "QQ-90",
+    "landing_block": "reaudit-1",
+    "prefix": "QG",
+    "ic2": [],
+    "under": [
+     "x"
+    ],
+    "trigger": "the re-audit of QQ under RR",
+    "landed": "2026-10-30T12:00:00Z",
+    "tps": "0.4.0"
+   },
+   "expected": "[\"OK\",{\"CHECKS\":[],\"GAPS\":[],\"PROMOTED\":[[\"QQ-30\",\"F3\",\"F2\"],[\"QQ-31\",\"F3\",\"F2\"]],\"PROMOTION\":[\"QQ-90\",\"PROMOTION\",\"reaudit-1\",[[\"QQ-30\",\"F3\",\"F2\"],[\"QQ-31\",\"F3\",\"F2\"]],\"935fb2f8f6481b0867aa078c15a1519d9482f02902908e4a8408a6b4ea72782e\"],\"STATUS\":[]}]"
+  },
+  {
+   "name": "RX02 a changed Criteria Set (K): every inherited record re-checked and passes, re-promoted",
+   "fn": "reaudit_batch",
+   "args": {
+    "src": {
+     "D_TPK": "ad9d20d633d374edf7f7a2ddfefa6e886e67132a6e8a7cd42edd0237d3927088",
+     "D_TRM": "f767f3635d0cbc54473b6f889c20a94d8d37f95d627d2c856516bac9c7d37de9",
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     }
+    },
+    "dst": {
+     "D_TPK": "ad9d20d633d374edf7f7a2ddfefa6e886e67132a6e8a7cd42edd0237d3927088",
+     "D_TRM": "f767f3635d0cbc54473b6f889c20a94d8d37f95d627d2c856516bac9c7d37de9",
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "3",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     }
+    },
+    "src_records": [
+     {
+      "ASSUMPTIONS": [],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "ASSUMPTION",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-2",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "PROPOSITION": "The pivot does not move.",
+      "REFS": [],
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "RR-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-30",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "RR-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [
+       "RR-30"
+      ],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-31",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     }
+    ],
+    "src_words": {
+     "RR-2": "PROVISIONAL",
+     "RR-30": "ESTABLISHED",
+     "RR-31": "ESTABLISHED"
+    },
+    "dst_records": [
+     {
+      "ASSUMPTIONS": [],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "ASSUMPTION",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-2",
+      "INHERITS": "RR-2",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "PROPOSITION": "The pivot does not move.",
+      "REFS": [],
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "QQ-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-30",
+      "INHERITS": "RR-30",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0",
+      "DERIVATION_CLASS": "INSPECTION"
+     },
+     {
+      "ASSUMPTIONS": [
+       "QQ-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [
+       "QQ-30"
+      ],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-31",
+      "INHERITS": "RR-31",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0",
+      "DERIVATION_CLASS": "INSPECTION"
+     }
+    ],
+    "dst_words": {
+     "QQ-2": "PROVISIONAL",
+     "QQ-30": "PROVISIONAL",
+     "QQ-31": "PROVISIONAL"
+    },
+    "tfk": {
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     },
+     "TPK": {
+      "ASSUMPTION": [
+       {
+        "NAME": "A_kpos",
+        "PROPOSITION": "k_s is positive",
+        "REFS": [
+         "k_s"
+        ]
+       },
+       {
+        "NAME": "A_mpos",
+        "PROPOSITION": "m is positive",
+        "REFS": [
+         "m"
+        ]
+       }
+      ],
+      "BOUNDARY": [
+       {
+        "CONDITION": "abs(x) < x_max",
+        "NAME": "B_small",
+        "PREDICATE": "|x| < x_max",
+        "REFS": [
+         "x",
+         "x_max"
+        ]
+       }
+      ],
+      "CONSTANT": [
+       {
+        "DIMENSION": "M1",
+        "NAME": "m"
+       },
+       {
+        "DIMENSION": "M1 T-2",
+        "NAME": "k_s"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x_max",
+        "UNCERTAINTY": "0.001",
+        "UNIT": "m",
+        "VALUE": "0.05"
+       }
+      ],
+      "CONSTRAINT": [
+       {
+        "ACTION": "FIX",
+        "NAME": "C_NOZ",
+        "STATEMENT": "only motion on the spring axis is described: z = 0",
+        "TARGET": "z",
+        "UNIT": "m",
+        "VALUE": "0"
+       }
+      ],
+      "DOF": [
+       {
+        "DIMENSION": "T1",
+        "NAME": "t"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x"
+       },
+       {
+        "DIMENSION": "L1 T-1",
+        "NAME": "v"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "z"
+       }
+      ],
+      "LAW": [
+       {
+        "EQUATION": "m * D(v, t) = -k_s * x",
+        "NAME": "EOM_X",
+        "REFS": [
+         "m",
+         "v",
+         "k_s",
+         "x",
+         "t"
+        ],
+        "ROLE": "EOM(v)",
+        "STATEMENT": "m dv/dt = -k_s x"
+       },
+       {
+        "EQUATION": "D(x, t) = v",
+        "NAME": "KIN",
+        "REFS": [
+         "x",
+         "v",
+         "t"
+        ],
+        "ROLE": "EOM(x)",
+        "STATEMENT": "dx/dt = v"
+       },
+       {
+        "EQUATION": "m * D(z, t, 2) = 0",
+        "NAME": "EOM_Z",
+        "REFS": [
+         "m",
+         "z",
+         "t"
+        ],
+        "ROLE": "CONSTRAINT",
+        "STATEMENT": "m d2z/dt2 = 0"
+       }
+      ]
+     },
+     "TrM": {
+      "ENTRIES": [
+       {
+        "BEARS": [],
+        "DIMENSION": "T1",
+        "DOF": "t",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "time",
+        "FALSIFIER": "a second clock whose readings differ from t by more than a constant offset beyond the stated uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "t is the reading of a laboratory clock from an arbitrary origin",
+        "NAME": "E_t"
+       },
+       {
+        "BEARS": [
+         "EOM_X",
+         "KIN"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "x",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "position",
+        "FALSIFIER": "a measured spring force not proportional to x inside the domain",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "x is the displacement of the mass along the spring axis from the point where the spring exerts no force",
+        "NAME": "E_x"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1 T-1",
+        "DOF": "v",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "velocity",
+        "FALSIFIER": "a measured velocity that differs from the rate of change of the measured x beyond uncertainty",
+        "FALSIFIER_CLASS": "F2",
+        "IDENTIFICATION": "v is the rate of change of x with t",
+        "NAME": "E_v"
+       },
+       {
+        "BEARS": [
+         "EOM_Z",
+         "C_NOZ"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "z",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "transverse_position",
+        "FALSIFIER": "a measured z different from 0 beyond its uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "z is the displacement of the mass perpendicular to the spring axis",
+        "NAME": "E_z"
+       }
+      ],
+      "HEADER": {
+       "ENVIRONMENT_INVENTORY": [
+        {
+         "DIMENSION": "T1",
+         "ENVIRONMENT_QUANTITY": "time"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "position"
+        },
+        {
+         "DIMENSION": "L1 T-1",
+         "ENVIRONMENT_QUANTITY": "velocity"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "transverse_position"
+        }
+       ],
+       "SIGNATURE": [
+        {
+         "FORM": "D(x, t) = v",
+         "IMAGE": "d/dt maps position to velocity",
+         "IMAGE_FORM": "D(position, time) = velocity",
+         "NAME": "time_derivative",
+         "OVER": [
+          "x",
+          "v",
+          "t"
+         ]
+        }
+       ],
+       "TRANSFORMATIONS": [
+        {
+         "NAME": "time_translation",
+         "STATEMENT": "t -> t + t0"
+        }
+       ]
+      }
+     }
+    },
+    "setting": null,
+    "promotion_id": "QQ-90",
+    "landing_block": "reaudit-1",
+    "prefix": "QG",
+    "ic2": [],
+    "under": [
+     "x"
+    ],
+    "trigger": "the re-audit of QQ under RR",
+    "landed": "2026-10-30T12:00:00Z",
+    "tps": "0.4.0"
+   },
+   "expected": "[\"OK\",{\"CHECKS\":[\"SR3\",\"SR8\"],\"GAPS\":[],\"PROMOTED\":[[\"QQ-30\",\"F3\",\"F2\"],[\"QQ-31\",\"F3\",\"F2\"]],\"PROMOTION\":[\"QQ-90\",\"PROMOTION\",\"reaudit-1\",[[\"QQ-30\",\"F3\",\"F2\"],[\"QQ-31\",\"F3\",\"F2\"]],\"935fb2f8f6481b0867aa078c15a1519d9482f02902908e4a8408a6b4ea72782e\"],\"STATUS\":[]}]"
+  },
+  {
+   "name": "RX03 a failed re-check: the record HELD by status_next on HOLD, a gap record opened, its dependent not re-promoted",
+   "fn": "reaudit_batch",
+   "args": {
+    "src": {
+     "D_TPK": "ad9d20d633d374edf7f7a2ddfefa6e886e67132a6e8a7cd42edd0237d3927088",
+     "D_TRM": "f767f3635d0cbc54473b6f889c20a94d8d37f95d627d2c856516bac9c7d37de9",
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     }
+    },
+    "dst": {
+     "D_TPK": "ad9d20d633d374edf7f7a2ddfefa6e886e67132a6e8a7cd42edd0237d3927088",
+     "D_TRM": "f767f3635d0cbc54473b6f889c20a94d8d37f95d627d2c856516bac9c7d37de9",
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "3",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     }
+    },
+    "src_records": [
+     {
+      "ASSUMPTIONS": [],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "ASSUMPTION",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-2",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "PROPOSITION": "The pivot does not move.",
+      "REFS": [],
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "RR-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-30",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "RR-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [
+       "RR-30"
+      ],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-31",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     }
+    ],
+    "src_words": {
+     "RR-2": "PROVISIONAL",
+     "RR-30": "ESTABLISHED",
+     "RR-31": "ESTABLISHED"
+    },
+    "dst_records": [
+     {
+      "ASSUMPTIONS": [],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "ASSUMPTION",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-2",
+      "INHERITS": "RR-2",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "PROPOSITION": "The pivot does not move.",
+      "REFS": [],
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "QQ-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-30",
+      "INHERITS": "RR-30",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "QQ-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [
+       "QQ-30"
+      ],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-31",
+      "INHERITS": "RR-31",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0",
+      "DERIVATION_CLASS": "INSPECTION"
+     }
+    ],
+    "dst_words": {
+     "QQ-2": "PROVISIONAL",
+     "QQ-30": "PROVISIONAL",
+     "QQ-31": "PROVISIONAL"
+    },
+    "tfk": {
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     },
+     "TPK": {
+      "ASSUMPTION": [
+       {
+        "NAME": "A_kpos",
+        "PROPOSITION": "k_s is positive",
+        "REFS": [
+         "k_s"
+        ]
+       },
+       {
+        "NAME": "A_mpos",
+        "PROPOSITION": "m is positive",
+        "REFS": [
+         "m"
+        ]
+       }
+      ],
+      "BOUNDARY": [
+       {
+        "CONDITION": "abs(x) < x_max",
+        "NAME": "B_small",
+        "PREDICATE": "|x| < x_max",
+        "REFS": [
+         "x",
+         "x_max"
+        ]
+       }
+      ],
+      "CONSTANT": [
+       {
+        "DIMENSION": "M1",
+        "NAME": "m"
+       },
+       {
+        "DIMENSION": "M1 T-2",
+        "NAME": "k_s"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x_max",
+        "UNCERTAINTY": "0.001",
+        "UNIT": "m",
+        "VALUE": "0.05"
+       }
+      ],
+      "CONSTRAINT": [
+       {
+        "ACTION": "FIX",
+        "NAME": "C_NOZ",
+        "STATEMENT": "only motion on the spring axis is described: z = 0",
+        "TARGET": "z",
+        "UNIT": "m",
+        "VALUE": "0"
+       }
+      ],
+      "DOF": [
+       {
+        "DIMENSION": "T1",
+        "NAME": "t"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x"
+       },
+       {
+        "DIMENSION": "L1 T-1",
+        "NAME": "v"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "z"
+       }
+      ],
+      "LAW": [
+       {
+        "EQUATION": "m * D(v, t) = -k_s * x",
+        "NAME": "EOM_X",
+        "REFS": [
+         "m",
+         "v",
+         "k_s",
+         "x",
+         "t"
+        ],
+        "ROLE": "EOM(v)",
+        "STATEMENT": "m dv/dt = -k_s x"
+       },
+       {
+        "EQUATION": "D(x, t) = v",
+        "NAME": "KIN",
+        "REFS": [
+         "x",
+         "v",
+         "t"
+        ],
+        "ROLE": "EOM(x)",
+        "STATEMENT": "dx/dt = v"
+       },
+       {
+        "EQUATION": "m * D(z, t, 2) = 0",
+        "NAME": "EOM_Z",
+        "REFS": [
+         "m",
+         "z",
+         "t"
+        ],
+        "ROLE": "CONSTRAINT",
+        "STATEMENT": "m d2z/dt2 = 0"
+       }
+      ]
+     },
+     "TrM": {
+      "ENTRIES": [
+       {
+        "BEARS": [],
+        "DIMENSION": "T1",
+        "DOF": "t",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "time",
+        "FALSIFIER": "a second clock whose readings differ from t by more than a constant offset beyond the stated uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "t is the reading of a laboratory clock from an arbitrary origin",
+        "NAME": "E_t"
+       },
+       {
+        "BEARS": [
+         "EOM_X",
+         "KIN"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "x",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "position",
+        "FALSIFIER": "a measured spring force not proportional to x inside the domain",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "x is the displacement of the mass along the spring axis from the point where the spring exerts no force",
+        "NAME": "E_x"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1 T-1",
+        "DOF": "v",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "velocity",
+        "FALSIFIER": "a measured velocity that differs from the rate of change of the measured x beyond uncertainty",
+        "FALSIFIER_CLASS": "F2",
+        "IDENTIFICATION": "v is the rate of change of x with t",
+        "NAME": "E_v"
+       },
+       {
+        "BEARS": [
+         "EOM_Z",
+         "C_NOZ"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "z",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "transverse_position",
+        "FALSIFIER": "a measured z different from 0 beyond its uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "z is the displacement of the mass perpendicular to the spring axis",
+        "NAME": "E_z"
+       }
+      ],
+      "HEADER": {
+       "ENVIRONMENT_INVENTORY": [
+        {
+         "DIMENSION": "T1",
+         "ENVIRONMENT_QUANTITY": "time"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "position"
+        },
+        {
+         "DIMENSION": "L1 T-1",
+         "ENVIRONMENT_QUANTITY": "velocity"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "transverse_position"
+        }
+       ],
+       "SIGNATURE": [
+        {
+         "FORM": "D(x, t) = v",
+         "IMAGE": "d/dt maps position to velocity",
+         "IMAGE_FORM": "D(position, time) = velocity",
+         "NAME": "time_derivative",
+         "OVER": [
+          "x",
+          "v",
+          "t"
+         ]
+        }
+       ],
+       "TRANSFORMATIONS": [
+        {
+         "NAME": "time_translation",
+         "STATEMENT": "t -> t + t0"
+        }
+       ]
+      }
+     }
+    },
+    "setting": null,
+    "promotion_id": "QQ-90",
+    "landing_block": "reaudit-1",
+    "prefix": "QG",
+    "ic2": [],
+    "under": [
+     "x"
+    ],
+    "trigger": "the re-audit of QQ under RR",
+    "landed": "2026-10-30T12:00:00Z",
+    "tps": "0.4.0"
+   },
+   "expected": "[\"OK\",{\"CHECKS\":[\"SR3\",\"SR8\"],\"GAPS\":[{\"AGAINST\":[\"x\"],\"CLASS\":\"NAMED_GAP\",\"DIGEST\":\"2b16e2351709d839a97cc8ef4bc20c25fc5576a3956bcab679d908e860e4cb8b\",\"GRADE\":\"NOT GRADED\",\"ID\":\"QG-2\",\"LANDED\":\"2026-10-30T12:00:00Z\",\"LANDED_BY\":\"TPX\",\"SOURCE\":\"UNDER\",\"STATE\":\"OPEN\",\"STATEMENT\":\"The unknown DOF x is determined by no form (UNDER).\",\"TPS\":\"0.4.0\",\"TRIGGER\":\"the re-audit of QQ under RR\"}],\"PROMOTED\":[],\"PROMOTION\":null,\"STATUS\":[[\"QQ-30\",\"HELD\"]]}]"
+  },
+  {
+   "name": "RX04 a failed re-check of the dependent: it is HELD, a gap opened, its premise re-promoted",
+   "fn": "reaudit_batch",
+   "args": {
+    "src": {
+     "D_TPK": "ad9d20d633d374edf7f7a2ddfefa6e886e67132a6e8a7cd42edd0237d3927088",
+     "D_TRM": "f767f3635d0cbc54473b6f889c20a94d8d37f95d627d2c856516bac9c7d37de9",
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     }
+    },
+    "dst": {
+     "D_TPK": "ad9d20d633d374edf7f7a2ddfefa6e886e67132a6e8a7cd42edd0237d3927088",
+     "D_TRM": "f767f3635d0cbc54473b6f889c20a94d8d37f95d627d2c856516bac9c7d37de9",
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "3",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     }
+    },
+    "src_records": [
+     {
+      "ASSUMPTIONS": [],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "ASSUMPTION",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-2",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "PROPOSITION": "The pivot does not move.",
+      "REFS": [],
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "RR-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-30",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "RR-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [
+       "RR-30"
+      ],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-31",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     }
+    ],
+    "src_words": {
+     "RR-2": "PROVISIONAL",
+     "RR-30": "ESTABLISHED",
+     "RR-31": "ESTABLISHED"
+    },
+    "dst_records": [
+     {
+      "ASSUMPTIONS": [],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "ASSUMPTION",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-2",
+      "INHERITS": "RR-2",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "PROPOSITION": "The pivot does not move.",
+      "REFS": [],
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "QQ-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-30",
+      "INHERITS": "RR-30",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0",
+      "DERIVATION_CLASS": "INSPECTION"
+     },
+     {
+      "ASSUMPTIONS": [
+       "QQ-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [
+       "QQ-30"
+      ],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-31",
+      "INHERITS": "RR-31",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     }
+    ],
+    "dst_words": {
+     "QQ-2": "PROVISIONAL",
+     "QQ-30": "PROVISIONAL",
+     "QQ-31": "PROVISIONAL"
+    },
+    "tfk": {
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     },
+     "TPK": {
+      "ASSUMPTION": [
+       {
+        "NAME": "A_kpos",
+        "PROPOSITION": "k_s is positive",
+        "REFS": [
+         "k_s"
+        ]
+       },
+       {
+        "NAME": "A_mpos",
+        "PROPOSITION": "m is positive",
+        "REFS": [
+         "m"
+        ]
+       }
+      ],
+      "BOUNDARY": [
+       {
+        "CONDITION": "abs(x) < x_max",
+        "NAME": "B_small",
+        "PREDICATE": "|x| < x_max",
+        "REFS": [
+         "x",
+         "x_max"
+        ]
+       }
+      ],
+      "CONSTANT": [
+       {
+        "DIMENSION": "M1",
+        "NAME": "m"
+       },
+       {
+        "DIMENSION": "M1 T-2",
+        "NAME": "k_s"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x_max",
+        "UNCERTAINTY": "0.001",
+        "UNIT": "m",
+        "VALUE": "0.05"
+       }
+      ],
+      "CONSTRAINT": [
+       {
+        "ACTION": "FIX",
+        "NAME": "C_NOZ",
+        "STATEMENT": "only motion on the spring axis is described: z = 0",
+        "TARGET": "z",
+        "UNIT": "m",
+        "VALUE": "0"
+       }
+      ],
+      "DOF": [
+       {
+        "DIMENSION": "T1",
+        "NAME": "t"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x"
+       },
+       {
+        "DIMENSION": "L1 T-1",
+        "NAME": "v"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "z"
+       }
+      ],
+      "LAW": [
+       {
+        "EQUATION": "m * D(v, t) = -k_s * x",
+        "NAME": "EOM_X",
+        "REFS": [
+         "m",
+         "v",
+         "k_s",
+         "x",
+         "t"
+        ],
+        "ROLE": "EOM(v)",
+        "STATEMENT": "m dv/dt = -k_s x"
+       },
+       {
+        "EQUATION": "D(x, t) = v",
+        "NAME": "KIN",
+        "REFS": [
+         "x",
+         "v",
+         "t"
+        ],
+        "ROLE": "EOM(x)",
+        "STATEMENT": "dx/dt = v"
+       },
+       {
+        "EQUATION": "m * D(z, t, 2) = 0",
+        "NAME": "EOM_Z",
+        "REFS": [
+         "m",
+         "z",
+         "t"
+        ],
+        "ROLE": "CONSTRAINT",
+        "STATEMENT": "m d2z/dt2 = 0"
+       }
+      ]
+     },
+     "TrM": {
+      "ENTRIES": [
+       {
+        "BEARS": [],
+        "DIMENSION": "T1",
+        "DOF": "t",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "time",
+        "FALSIFIER": "a second clock whose readings differ from t by more than a constant offset beyond the stated uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "t is the reading of a laboratory clock from an arbitrary origin",
+        "NAME": "E_t"
+       },
+       {
+        "BEARS": [
+         "EOM_X",
+         "KIN"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "x",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "position",
+        "FALSIFIER": "a measured spring force not proportional to x inside the domain",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "x is the displacement of the mass along the spring axis from the point where the spring exerts no force",
+        "NAME": "E_x"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1 T-1",
+        "DOF": "v",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "velocity",
+        "FALSIFIER": "a measured velocity that differs from the rate of change of the measured x beyond uncertainty",
+        "FALSIFIER_CLASS": "F2",
+        "IDENTIFICATION": "v is the rate of change of x with t",
+        "NAME": "E_v"
+       },
+       {
+        "BEARS": [
+         "EOM_Z",
+         "C_NOZ"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "z",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "transverse_position",
+        "FALSIFIER": "a measured z different from 0 beyond its uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "z is the displacement of the mass perpendicular to the spring axis",
+        "NAME": "E_z"
+       }
+      ],
+      "HEADER": {
+       "ENVIRONMENT_INVENTORY": [
+        {
+         "DIMENSION": "T1",
+         "ENVIRONMENT_QUANTITY": "time"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "position"
+        },
+        {
+         "DIMENSION": "L1 T-1",
+         "ENVIRONMENT_QUANTITY": "velocity"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "transverse_position"
+        }
+       ],
+       "SIGNATURE": [
+        {
+         "FORM": "D(x, t) = v",
+         "IMAGE": "d/dt maps position to velocity",
+         "IMAGE_FORM": "D(position, time) = velocity",
+         "NAME": "time_derivative",
+         "OVER": [
+          "x",
+          "v",
+          "t"
+         ]
+        }
+       ],
+       "TRANSFORMATIONS": [
+        {
+         "NAME": "time_translation",
+         "STATEMENT": "t -> t + t0"
+        }
+       ]
+      }
+     }
+    },
+    "setting": null,
+    "promotion_id": "QQ-90",
+    "landing_block": "reaudit-1",
+    "prefix": "QG",
+    "ic2": [],
+    "under": [
+     "x"
+    ],
+    "trigger": "the re-audit of QQ under RR",
+    "landed": "2026-10-30T12:00:00Z",
+    "tps": "0.4.0"
+   },
+   "expected": "[\"OK\",{\"CHECKS\":[\"SR3\",\"SR8\"],\"GAPS\":[{\"AGAINST\":[\"x\"],\"CLASS\":\"NAMED_GAP\",\"DIGEST\":\"2b16e2351709d839a97cc8ef4bc20c25fc5576a3956bcab679d908e860e4cb8b\",\"GRADE\":\"NOT GRADED\",\"ID\":\"QG-2\",\"LANDED\":\"2026-10-30T12:00:00Z\",\"LANDED_BY\":\"TPX\",\"SOURCE\":\"UNDER\",\"STATE\":\"OPEN\",\"STATEMENT\":\"The unknown DOF x is determined by no form (UNDER).\",\"TPS\":\"0.4.0\",\"TRIGGER\":\"the re-audit of QQ under RR\"}],\"PROMOTED\":[[\"QQ-30\",\"F3\",\"F2\"]],\"PROMOTION\":[\"QQ-90\",\"PROMOTION\",\"reaudit-1\",[[\"QQ-30\",\"F3\",\"F2\"]],\"a3422b85a9e5690349ba6dfdc2cb35d19a90fbc2b30079216de3fb509b0837ab\"],\"STATUS\":[[\"QQ-31\",\"HELD\"]]}]"
+  },
+  {
+   "name": "RX05 the scope names no check: a record that would fail is not re-checked",
+   "fn": "reaudit_batch",
+   "args": {
+    "src": {
+     "D_TPK": "ad9d20d633d374edf7f7a2ddfefa6e886e67132a6e8a7cd42edd0237d3927088",
+     "D_TRM": "f767f3635d0cbc54473b6f889c20a94d8d37f95d627d2c856516bac9c7d37de9",
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     }
+    },
+    "dst": {
+     "D_TPK": "ad9d20d633d374edf7f7a2ddfefa6e886e67132a6e8a7cd42edd0237d3927088",
+     "D_TRM": "f767f3635d0cbc54473b6f889c20a94d8d37f95d627d2c856516bac9c7d37de9",
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     }
+    },
+    "src_records": [
+     {
+      "ASSUMPTIONS": [],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "ASSUMPTION",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-2",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "PROPOSITION": "The pivot does not move.",
+      "REFS": [],
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "RR-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-30",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "RR-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [
+       "RR-30"
+      ],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-31",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     }
+    ],
+    "src_words": {
+     "RR-2": "PROVISIONAL",
+     "RR-30": "ESTABLISHED",
+     "RR-31": "ESTABLISHED"
+    },
+    "dst_records": [
+     {
+      "ASSUMPTIONS": [],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "ASSUMPTION",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-2",
+      "INHERITS": "RR-2",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "PROPOSITION": "The pivot does not move.",
+      "REFS": [],
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "QQ-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-30",
+      "INHERITS": "RR-30",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0",
+      "DERIVATION_CLASS": "INSPECTION"
+     },
+     {
+      "ASSUMPTIONS": [
+       "QQ-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [
+       "QQ-30"
+      ],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-31",
+      "INHERITS": "RR-31",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     }
+    ],
+    "dst_words": {
+     "QQ-2": "PROVISIONAL",
+     "QQ-30": "PROVISIONAL",
+     "QQ-31": "PROVISIONAL"
+    },
+    "tfk": {
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     },
+     "TPK": {
+      "ASSUMPTION": [
+       {
+        "NAME": "A_kpos",
+        "PROPOSITION": "k_s is positive",
+        "REFS": [
+         "k_s"
+        ]
+       },
+       {
+        "NAME": "A_mpos",
+        "PROPOSITION": "m is positive",
+        "REFS": [
+         "m"
+        ]
+       }
+      ],
+      "BOUNDARY": [
+       {
+        "CONDITION": "abs(x) < x_max",
+        "NAME": "B_small",
+        "PREDICATE": "|x| < x_max",
+        "REFS": [
+         "x",
+         "x_max"
+        ]
+       }
+      ],
+      "CONSTANT": [
+       {
+        "DIMENSION": "M1",
+        "NAME": "m"
+       },
+       {
+        "DIMENSION": "M1 T-2",
+        "NAME": "k_s"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x_max",
+        "UNCERTAINTY": "0.001",
+        "UNIT": "m",
+        "VALUE": "0.05"
+       }
+      ],
+      "CONSTRAINT": [
+       {
+        "ACTION": "FIX",
+        "NAME": "C_NOZ",
+        "STATEMENT": "only motion on the spring axis is described: z = 0",
+        "TARGET": "z",
+        "UNIT": "m",
+        "VALUE": "0"
+       }
+      ],
+      "DOF": [
+       {
+        "DIMENSION": "T1",
+        "NAME": "t"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x"
+       },
+       {
+        "DIMENSION": "L1 T-1",
+        "NAME": "v"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "z"
+       }
+      ],
+      "LAW": [
+       {
+        "EQUATION": "m * D(v, t) = -k_s * x",
+        "NAME": "EOM_X",
+        "REFS": [
+         "m",
+         "v",
+         "k_s",
+         "x",
+         "t"
+        ],
+        "ROLE": "EOM(v)",
+        "STATEMENT": "m dv/dt = -k_s x"
+       },
+       {
+        "EQUATION": "D(x, t) = v",
+        "NAME": "KIN",
+        "REFS": [
+         "x",
+         "v",
+         "t"
+        ],
+        "ROLE": "EOM(x)",
+        "STATEMENT": "dx/dt = v"
+       },
+       {
+        "EQUATION": "m * D(z, t, 2) = 0",
+        "NAME": "EOM_Z",
+        "REFS": [
+         "m",
+         "z",
+         "t"
+        ],
+        "ROLE": "CONSTRAINT",
+        "STATEMENT": "m d2z/dt2 = 0"
+       }
+      ]
+     },
+     "TrM": {
+      "ENTRIES": [
+       {
+        "BEARS": [],
+        "DIMENSION": "T1",
+        "DOF": "t",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "time",
+        "FALSIFIER": "a second clock whose readings differ from t by more than a constant offset beyond the stated uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "t is the reading of a laboratory clock from an arbitrary origin",
+        "NAME": "E_t"
+       },
+       {
+        "BEARS": [
+         "EOM_X",
+         "KIN"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "x",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "position",
+        "FALSIFIER": "a measured spring force not proportional to x inside the domain",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "x is the displacement of the mass along the spring axis from the point where the spring exerts no force",
+        "NAME": "E_x"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1 T-1",
+        "DOF": "v",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "velocity",
+        "FALSIFIER": "a measured velocity that differs from the rate of change of the measured x beyond uncertainty",
+        "FALSIFIER_CLASS": "F2",
+        "IDENTIFICATION": "v is the rate of change of x with t",
+        "NAME": "E_v"
+       },
+       {
+        "BEARS": [
+         "EOM_Z",
+         "C_NOZ"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "z",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "transverse_position",
+        "FALSIFIER": "a measured z different from 0 beyond its uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "z is the displacement of the mass perpendicular to the spring axis",
+        "NAME": "E_z"
+       }
+      ],
+      "HEADER": {
+       "ENVIRONMENT_INVENTORY": [
+        {
+         "DIMENSION": "T1",
+         "ENVIRONMENT_QUANTITY": "time"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "position"
+        },
+        {
+         "DIMENSION": "L1 T-1",
+         "ENVIRONMENT_QUANTITY": "velocity"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "transverse_position"
+        }
+       ],
+       "SIGNATURE": [
+        {
+         "FORM": "D(x, t) = v",
+         "IMAGE": "d/dt maps position to velocity",
+         "IMAGE_FORM": "D(position, time) = velocity",
+         "NAME": "time_derivative",
+         "OVER": [
+          "x",
+          "v",
+          "t"
+         ]
+        }
+       ],
+       "TRANSFORMATIONS": [
+        {
+         "NAME": "time_translation",
+         "STATEMENT": "t -> t + t0"
+        }
+       ]
+      }
+     }
+    },
+    "setting": null,
+    "promotion_id": "QQ-90",
+    "landing_block": "reaudit-1",
+    "prefix": "QG",
+    "ic2": [],
+    "under": [
+     "x"
+    ],
+    "trigger": "the re-audit of QQ under RR",
+    "landed": "2026-10-30T12:00:00Z",
+    "tps": "0.4.0"
+   },
+   "expected": "[\"OK\",{\"CHECKS\":[],\"GAPS\":[],\"PROMOTED\":[[\"QQ-30\",\"F3\",\"F2\"],[\"QQ-31\",\"F3\",\"F2\"]],\"PROMOTION\":[\"QQ-90\",\"PROMOTION\",\"reaudit-1\",[[\"QQ-30\",\"F3\",\"F2\"],[\"QQ-31\",\"F3\",\"F2\"]],\"935fb2f8f6481b0867aa078c15a1519d9482f02902908e4a8408a6b4ea72782e\"],\"STATUS\":[]}]"
+  },
+  {
+   "name": "RX06 a REFUTED inherited record stays as the copy set it: not re-checked, no gap",
+   "fn": "reaudit_batch",
+   "args": {
+    "src": {
+     "D_TPK": "ad9d20d633d374edf7f7a2ddfefa6e886e67132a6e8a7cd42edd0237d3927088",
+     "D_TRM": "f767f3635d0cbc54473b6f889c20a94d8d37f95d627d2c856516bac9c7d37de9",
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     }
+    },
+    "dst": {
+     "D_TPK": "ad9d20d633d374edf7f7a2ddfefa6e886e67132a6e8a7cd42edd0237d3927088",
+     "D_TRM": "f767f3635d0cbc54473b6f889c20a94d8d37f95d627d2c856516bac9c7d37de9",
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "3",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     }
+    },
+    "src_records": [
+     {
+      "ASSUMPTIONS": [],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "ASSUMPTION",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-2",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "PROPOSITION": "The pivot does not move.",
+      "REFS": [],
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "RR-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-30",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "RR-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [
+       "RR-30"
+      ],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-31",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     }
+    ],
+    "src_words": {
+     "RR-2": "PROVISIONAL",
+     "RR-30": "ESTABLISHED",
+     "RR-31": "ESTABLISHED"
+    },
+    "dst_records": [
+     {
+      "ASSUMPTIONS": [],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "ASSUMPTION",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-2",
+      "INHERITS": "RR-2",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "PROPOSITION": "The pivot does not move.",
+      "REFS": [],
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "QQ-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-30",
+      "INHERITS": "RR-30",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0",
+      "DERIVATION_CLASS": "INSPECTION"
+     },
+     {
+      "ASSUMPTIONS": [
+       "QQ-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [
+       "QQ-30"
+      ],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-31",
+      "INHERITS": "RR-31",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     }
+    ],
+    "dst_words": {
+     "QQ-2": "PROVISIONAL",
+     "QQ-30": "PROVISIONAL",
+     "QQ-31": "REFUTED"
+    },
+    "tfk": {
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     },
+     "TPK": {
+      "ASSUMPTION": [
+       {
+        "NAME": "A_kpos",
+        "PROPOSITION": "k_s is positive",
+        "REFS": [
+         "k_s"
+        ]
+       },
+       {
+        "NAME": "A_mpos",
+        "PROPOSITION": "m is positive",
+        "REFS": [
+         "m"
+        ]
+       }
+      ],
+      "BOUNDARY": [
+       {
+        "CONDITION": "abs(x) < x_max",
+        "NAME": "B_small",
+        "PREDICATE": "|x| < x_max",
+        "REFS": [
+         "x",
+         "x_max"
+        ]
+       }
+      ],
+      "CONSTANT": [
+       {
+        "DIMENSION": "M1",
+        "NAME": "m"
+       },
+       {
+        "DIMENSION": "M1 T-2",
+        "NAME": "k_s"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x_max",
+        "UNCERTAINTY": "0.001",
+        "UNIT": "m",
+        "VALUE": "0.05"
+       }
+      ],
+      "CONSTRAINT": [
+       {
+        "ACTION": "FIX",
+        "NAME": "C_NOZ",
+        "STATEMENT": "only motion on the spring axis is described: z = 0",
+        "TARGET": "z",
+        "UNIT": "m",
+        "VALUE": "0"
+       }
+      ],
+      "DOF": [
+       {
+        "DIMENSION": "T1",
+        "NAME": "t"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x"
+       },
+       {
+        "DIMENSION": "L1 T-1",
+        "NAME": "v"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "z"
+       }
+      ],
+      "LAW": [
+       {
+        "EQUATION": "m * D(v, t) = -k_s * x",
+        "NAME": "EOM_X",
+        "REFS": [
+         "m",
+         "v",
+         "k_s",
+         "x",
+         "t"
+        ],
+        "ROLE": "EOM(v)",
+        "STATEMENT": "m dv/dt = -k_s x"
+       },
+       {
+        "EQUATION": "D(x, t) = v",
+        "NAME": "KIN",
+        "REFS": [
+         "x",
+         "v",
+         "t"
+        ],
+        "ROLE": "EOM(x)",
+        "STATEMENT": "dx/dt = v"
+       },
+       {
+        "EQUATION": "m * D(z, t, 2) = 0",
+        "NAME": "EOM_Z",
+        "REFS": [
+         "m",
+         "z",
+         "t"
+        ],
+        "ROLE": "CONSTRAINT",
+        "STATEMENT": "m d2z/dt2 = 0"
+       }
+      ]
+     },
+     "TrM": {
+      "ENTRIES": [
+       {
+        "BEARS": [],
+        "DIMENSION": "T1",
+        "DOF": "t",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "time",
+        "FALSIFIER": "a second clock whose readings differ from t by more than a constant offset beyond the stated uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "t is the reading of a laboratory clock from an arbitrary origin",
+        "NAME": "E_t"
+       },
+       {
+        "BEARS": [
+         "EOM_X",
+         "KIN"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "x",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "position",
+        "FALSIFIER": "a measured spring force not proportional to x inside the domain",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "x is the displacement of the mass along the spring axis from the point where the spring exerts no force",
+        "NAME": "E_x"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1 T-1",
+        "DOF": "v",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "velocity",
+        "FALSIFIER": "a measured velocity that differs from the rate of change of the measured x beyond uncertainty",
+        "FALSIFIER_CLASS": "F2",
+        "IDENTIFICATION": "v is the rate of change of x with t",
+        "NAME": "E_v"
+       },
+       {
+        "BEARS": [
+         "EOM_Z",
+         "C_NOZ"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "z",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "transverse_position",
+        "FALSIFIER": "a measured z different from 0 beyond its uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "z is the displacement of the mass perpendicular to the spring axis",
+        "NAME": "E_z"
+       }
+      ],
+      "HEADER": {
+       "ENVIRONMENT_INVENTORY": [
+        {
+         "DIMENSION": "T1",
+         "ENVIRONMENT_QUANTITY": "time"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "position"
+        },
+        {
+         "DIMENSION": "L1 T-1",
+         "ENVIRONMENT_QUANTITY": "velocity"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "transverse_position"
+        }
+       ],
+       "SIGNATURE": [
+        {
+         "FORM": "D(x, t) = v",
+         "IMAGE": "d/dt maps position to velocity",
+         "IMAGE_FORM": "D(position, time) = velocity",
+         "NAME": "time_derivative",
+         "OVER": [
+          "x",
+          "v",
+          "t"
+         ]
+        }
+       ],
+       "TRANSFORMATIONS": [
+        {
+         "NAME": "time_translation",
+         "STATEMENT": "t -> t + t0"
+        }
+       ]
+      }
+     }
+    },
+    "setting": null,
+    "promotion_id": "QQ-90",
+    "landing_block": "reaudit-1",
+    "prefix": "QG",
+    "ic2": [],
+    "under": [
+     "x"
+    ],
+    "trigger": "the re-audit of QQ under RR",
+    "landed": "2026-10-30T12:00:00Z",
+    "tps": "0.4.0"
+   },
+   "expected": "[\"OK\",{\"CHECKS\":[\"SR3\",\"SR8\"],\"GAPS\":[],\"PROMOTED\":[[\"QQ-30\",\"F3\",\"F2\"]],\"PROMOTION\":[\"QQ-90\",\"PROMOTION\",\"reaudit-1\",[[\"QQ-30\",\"F3\",\"F2\"]],\"a3422b85a9e5690349ba6dfdc2cb35d19a90fbc2b30079216de3fb509b0837ab\"],\"STATUS\":[]}]"
+  },
+  {
+   "name": "RX07 a HELD inherited record that fails stays HELD, a gap opened",
+   "fn": "reaudit_batch",
+   "args": {
+    "src": {
+     "D_TPK": "ad9d20d633d374edf7f7a2ddfefa6e886e67132a6e8a7cd42edd0237d3927088",
+     "D_TRM": "f767f3635d0cbc54473b6f889c20a94d8d37f95d627d2c856516bac9c7d37de9",
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     }
+    },
+    "dst": {
+     "D_TPK": "ad9d20d633d374edf7f7a2ddfefa6e886e67132a6e8a7cd42edd0237d3927088",
+     "D_TRM": "f767f3635d0cbc54473b6f889c20a94d8d37f95d627d2c856516bac9c7d37de9",
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "3",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     }
+    },
+    "src_records": [
+     {
+      "ASSUMPTIONS": [],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "ASSUMPTION",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-2",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "PROPOSITION": "The pivot does not move.",
+      "REFS": [],
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "RR-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-30",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "RR-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [
+       "RR-30"
+      ],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-31",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     }
+    ],
+    "src_words": {
+     "RR-2": "PROVISIONAL",
+     "RR-30": "ESTABLISHED",
+     "RR-31": "ESTABLISHED"
+    },
+    "dst_records": [
+     {
+      "ASSUMPTIONS": [],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "ASSUMPTION",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-2",
+      "INHERITS": "RR-2",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "PROPOSITION": "The pivot does not move.",
+      "REFS": [],
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "QQ-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-30",
+      "INHERITS": "RR-30",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0",
+      "DERIVATION_CLASS": "INSPECTION"
+     },
+     {
+      "ASSUMPTIONS": [
+       "QQ-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [
+       "QQ-30"
+      ],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-31",
+      "INHERITS": "RR-31",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "HELD",
+      "TPS": "0.4.0"
+     }
+    ],
+    "dst_words": {
+     "QQ-2": "PROVISIONAL",
+     "QQ-30": "PROVISIONAL",
+     "QQ-31": "HELD"
+    },
+    "tfk": {
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     },
+     "TPK": {
+      "ASSUMPTION": [
+       {
+        "NAME": "A_kpos",
+        "PROPOSITION": "k_s is positive",
+        "REFS": [
+         "k_s"
+        ]
+       },
+       {
+        "NAME": "A_mpos",
+        "PROPOSITION": "m is positive",
+        "REFS": [
+         "m"
+        ]
+       }
+      ],
+      "BOUNDARY": [
+       {
+        "CONDITION": "abs(x) < x_max",
+        "NAME": "B_small",
+        "PREDICATE": "|x| < x_max",
+        "REFS": [
+         "x",
+         "x_max"
+        ]
+       }
+      ],
+      "CONSTANT": [
+       {
+        "DIMENSION": "M1",
+        "NAME": "m"
+       },
+       {
+        "DIMENSION": "M1 T-2",
+        "NAME": "k_s"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x_max",
+        "UNCERTAINTY": "0.001",
+        "UNIT": "m",
+        "VALUE": "0.05"
+       }
+      ],
+      "CONSTRAINT": [
+       {
+        "ACTION": "FIX",
+        "NAME": "C_NOZ",
+        "STATEMENT": "only motion on the spring axis is described: z = 0",
+        "TARGET": "z",
+        "UNIT": "m",
+        "VALUE": "0"
+       }
+      ],
+      "DOF": [
+       {
+        "DIMENSION": "T1",
+        "NAME": "t"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x"
+       },
+       {
+        "DIMENSION": "L1 T-1",
+        "NAME": "v"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "z"
+       }
+      ],
+      "LAW": [
+       {
+        "EQUATION": "m * D(v, t) = -k_s * x",
+        "NAME": "EOM_X",
+        "REFS": [
+         "m",
+         "v",
+         "k_s",
+         "x",
+         "t"
+        ],
+        "ROLE": "EOM(v)",
+        "STATEMENT": "m dv/dt = -k_s x"
+       },
+       {
+        "EQUATION": "D(x, t) = v",
+        "NAME": "KIN",
+        "REFS": [
+         "x",
+         "v",
+         "t"
+        ],
+        "ROLE": "EOM(x)",
+        "STATEMENT": "dx/dt = v"
+       },
+       {
+        "EQUATION": "m * D(z, t, 2) = 0",
+        "NAME": "EOM_Z",
+        "REFS": [
+         "m",
+         "z",
+         "t"
+        ],
+        "ROLE": "CONSTRAINT",
+        "STATEMENT": "m d2z/dt2 = 0"
+       }
+      ]
+     },
+     "TrM": {
+      "ENTRIES": [
+       {
+        "BEARS": [],
+        "DIMENSION": "T1",
+        "DOF": "t",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "time",
+        "FALSIFIER": "a second clock whose readings differ from t by more than a constant offset beyond the stated uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "t is the reading of a laboratory clock from an arbitrary origin",
+        "NAME": "E_t"
+       },
+       {
+        "BEARS": [
+         "EOM_X",
+         "KIN"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "x",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "position",
+        "FALSIFIER": "a measured spring force not proportional to x inside the domain",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "x is the displacement of the mass along the spring axis from the point where the spring exerts no force",
+        "NAME": "E_x"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1 T-1",
+        "DOF": "v",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "velocity",
+        "FALSIFIER": "a measured velocity that differs from the rate of change of the measured x beyond uncertainty",
+        "FALSIFIER_CLASS": "F2",
+        "IDENTIFICATION": "v is the rate of change of x with t",
+        "NAME": "E_v"
+       },
+       {
+        "BEARS": [
+         "EOM_Z",
+         "C_NOZ"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "z",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "transverse_position",
+        "FALSIFIER": "a measured z different from 0 beyond its uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "z is the displacement of the mass perpendicular to the spring axis",
+        "NAME": "E_z"
+       }
+      ],
+      "HEADER": {
+       "ENVIRONMENT_INVENTORY": [
+        {
+         "DIMENSION": "T1",
+         "ENVIRONMENT_QUANTITY": "time"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "position"
+        },
+        {
+         "DIMENSION": "L1 T-1",
+         "ENVIRONMENT_QUANTITY": "velocity"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "transverse_position"
+        }
+       ],
+       "SIGNATURE": [
+        {
+         "FORM": "D(x, t) = v",
+         "IMAGE": "d/dt maps position to velocity",
+         "IMAGE_FORM": "D(position, time) = velocity",
+         "NAME": "time_derivative",
+         "OVER": [
+          "x",
+          "v",
+          "t"
+         ]
+        }
+       ],
+       "TRANSFORMATIONS": [
+        {
+         "NAME": "time_translation",
+         "STATEMENT": "t -> t + t0"
+        }
+       ]
+      }
+     }
+    },
+    "setting": null,
+    "promotion_id": "QQ-90",
+    "landing_block": "reaudit-1",
+    "prefix": "QG",
+    "ic2": [],
+    "under": [
+     "x"
+    ],
+    "trigger": "the re-audit of QQ under RR",
+    "landed": "2026-10-30T12:00:00Z",
+    "tps": "0.4.0"
+   },
+   "expected": "[\"OK\",{\"CHECKS\":[\"SR3\",\"SR8\"],\"GAPS\":[{\"AGAINST\":[\"x\"],\"CLASS\":\"NAMED_GAP\",\"DIGEST\":\"2b16e2351709d839a97cc8ef4bc20c25fc5576a3956bcab679d908e860e4cb8b\",\"GRADE\":\"NOT GRADED\",\"ID\":\"QG-2\",\"LANDED\":\"2026-10-30T12:00:00Z\",\"LANDED_BY\":\"TPX\",\"SOURCE\":\"UNDER\",\"STATE\":\"OPEN\",\"STATEMENT\":\"The unknown DOF x is determined by no form (UNDER).\",\"TPS\":\"0.4.0\",\"TRIGGER\":\"the re-audit of QQ under RR\"}],\"PROMOTED\":[[\"QQ-30\",\"F3\",\"F2\"]],\"PROMOTION\":[\"QQ-90\",\"PROMOTION\",\"reaudit-1\",[[\"QQ-30\",\"F3\",\"F2\"]],\"a3422b85a9e5690349ba6dfdc2cb35d19a90fbc2b30079216de3fb509b0837ab\"],\"STATUS\":[[\"QQ-31\",\"HELD\"]]}]"
+  },
+  {
+   "name": "RX08 REFUSED: dst not an assembly (reaudit_scope REC-50), nothing written",
+   "fn": "reaudit_batch",
+   "args": {
+    "src": {
+     "D_TPK": "ad9d20d633d374edf7f7a2ddfefa6e886e67132a6e8a7cd42edd0237d3927088",
+     "D_TRM": "f767f3635d0cbc54473b6f889c20a94d8d37f95d627d2c856516bac9c7d37de9",
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     }
+    },
+    "dst": [],
+    "src_records": [
+     {
+      "ASSUMPTIONS": [],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "ASSUMPTION",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-2",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "PROPOSITION": "The pivot does not move.",
+      "REFS": [],
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "RR-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-30",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "RR-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [
+       "RR-30"
+      ],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-31",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     }
+    ],
+    "src_words": {
+     "RR-2": "PROVISIONAL",
+     "RR-30": "ESTABLISHED",
+     "RR-31": "ESTABLISHED"
+    },
+    "dst_records": [
+     {
+      "ASSUMPTIONS": [],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "ASSUMPTION",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-2",
+      "INHERITS": "RR-2",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "PROPOSITION": "The pivot does not move.",
+      "REFS": [],
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "QQ-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-30",
+      "INHERITS": "RR-30",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0",
+      "DERIVATION_CLASS": "INSPECTION"
+     },
+     {
+      "ASSUMPTIONS": [
+       "QQ-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [
+       "QQ-30"
+      ],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-31",
+      "INHERITS": "RR-31",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0",
+      "DERIVATION_CLASS": "INSPECTION"
+     }
+    ],
+    "dst_words": {
+     "QQ-2": "PROVISIONAL",
+     "QQ-30": "PROVISIONAL",
+     "QQ-31": "PROVISIONAL"
+    },
+    "tfk": {
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     },
+     "TPK": {
+      "ASSUMPTION": [
+       {
+        "NAME": "A_kpos",
+        "PROPOSITION": "k_s is positive",
+        "REFS": [
+         "k_s"
+        ]
+       },
+       {
+        "NAME": "A_mpos",
+        "PROPOSITION": "m is positive",
+        "REFS": [
+         "m"
+        ]
+       }
+      ],
+      "BOUNDARY": [
+       {
+        "CONDITION": "abs(x) < x_max",
+        "NAME": "B_small",
+        "PREDICATE": "|x| < x_max",
+        "REFS": [
+         "x",
+         "x_max"
+        ]
+       }
+      ],
+      "CONSTANT": [
+       {
+        "DIMENSION": "M1",
+        "NAME": "m"
+       },
+       {
+        "DIMENSION": "M1 T-2",
+        "NAME": "k_s"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x_max",
+        "UNCERTAINTY": "0.001",
+        "UNIT": "m",
+        "VALUE": "0.05"
+       }
+      ],
+      "CONSTRAINT": [
+       {
+        "ACTION": "FIX",
+        "NAME": "C_NOZ",
+        "STATEMENT": "only motion on the spring axis is described: z = 0",
+        "TARGET": "z",
+        "UNIT": "m",
+        "VALUE": "0"
+       }
+      ],
+      "DOF": [
+       {
+        "DIMENSION": "T1",
+        "NAME": "t"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x"
+       },
+       {
+        "DIMENSION": "L1 T-1",
+        "NAME": "v"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "z"
+       }
+      ],
+      "LAW": [
+       {
+        "EQUATION": "m * D(v, t) = -k_s * x",
+        "NAME": "EOM_X",
+        "REFS": [
+         "m",
+         "v",
+         "k_s",
+         "x",
+         "t"
+        ],
+        "ROLE": "EOM(v)",
+        "STATEMENT": "m dv/dt = -k_s x"
+       },
+       {
+        "EQUATION": "D(x, t) = v",
+        "NAME": "KIN",
+        "REFS": [
+         "x",
+         "v",
+         "t"
+        ],
+        "ROLE": "EOM(x)",
+        "STATEMENT": "dx/dt = v"
+       },
+       {
+        "EQUATION": "m * D(z, t, 2) = 0",
+        "NAME": "EOM_Z",
+        "REFS": [
+         "m",
+         "z",
+         "t"
+        ],
+        "ROLE": "CONSTRAINT",
+        "STATEMENT": "m d2z/dt2 = 0"
+       }
+      ]
+     },
+     "TrM": {
+      "ENTRIES": [
+       {
+        "BEARS": [],
+        "DIMENSION": "T1",
+        "DOF": "t",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "time",
+        "FALSIFIER": "a second clock whose readings differ from t by more than a constant offset beyond the stated uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "t is the reading of a laboratory clock from an arbitrary origin",
+        "NAME": "E_t"
+       },
+       {
+        "BEARS": [
+         "EOM_X",
+         "KIN"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "x",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "position",
+        "FALSIFIER": "a measured spring force not proportional to x inside the domain",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "x is the displacement of the mass along the spring axis from the point where the spring exerts no force",
+        "NAME": "E_x"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1 T-1",
+        "DOF": "v",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "velocity",
+        "FALSIFIER": "a measured velocity that differs from the rate of change of the measured x beyond uncertainty",
+        "FALSIFIER_CLASS": "F2",
+        "IDENTIFICATION": "v is the rate of change of x with t",
+        "NAME": "E_v"
+       },
+       {
+        "BEARS": [
+         "EOM_Z",
+         "C_NOZ"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "z",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "transverse_position",
+        "FALSIFIER": "a measured z different from 0 beyond its uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "z is the displacement of the mass perpendicular to the spring axis",
+        "NAME": "E_z"
+       }
+      ],
+      "HEADER": {
+       "ENVIRONMENT_INVENTORY": [
+        {
+         "DIMENSION": "T1",
+         "ENVIRONMENT_QUANTITY": "time"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "position"
+        },
+        {
+         "DIMENSION": "L1 T-1",
+         "ENVIRONMENT_QUANTITY": "velocity"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "transverse_position"
+        }
+       ],
+       "SIGNATURE": [
+        {
+         "FORM": "D(x, t) = v",
+         "IMAGE": "d/dt maps position to velocity",
+         "IMAGE_FORM": "D(position, time) = velocity",
+         "NAME": "time_derivative",
+         "OVER": [
+          "x",
+          "v",
+          "t"
+         ]
+        }
+       ],
+       "TRANSFORMATIONS": [
+        {
+         "NAME": "time_translation",
+         "STATEMENT": "t -> t + t0"
+        }
+       ]
+      }
+     }
+    },
+    "setting": null,
+    "promotion_id": "QQ-90",
+    "landing_block": "reaudit-1",
+    "prefix": "QG",
+    "ic2": [],
+    "under": [
+     "x"
+    ],
+    "trigger": "the re-audit of QQ under RR",
+    "landed": "2026-10-30T12:00:00Z",
+    "tps": "0.4.0"
+   },
+   "expected": "[\"REFUSED\",[[\"REC-50\",\"-\",\"dst [] is not an object with D_TPK, D_TRM and TMS\"]]]"
+  },
+  {
+   "name": "RX09 REFUSED: the gap records refused (landed not a UTC time), nothing written",
+   "fn": "reaudit_batch",
+   "args": {
+    "src": {
+     "D_TPK": "ad9d20d633d374edf7f7a2ddfefa6e886e67132a6e8a7cd42edd0237d3927088",
+     "D_TRM": "f767f3635d0cbc54473b6f889c20a94d8d37f95d627d2c856516bac9c7d37de9",
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     }
+    },
+    "dst": {
+     "D_TPK": "ad9d20d633d374edf7f7a2ddfefa6e886e67132a6e8a7cd42edd0237d3927088",
+     "D_TRM": "f767f3635d0cbc54473b6f889c20a94d8d37f95d627d2c856516bac9c7d37de9",
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "3",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     }
+    },
+    "src_records": [
+     {
+      "ASSUMPTIONS": [],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "ASSUMPTION",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-2",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "PROPOSITION": "The pivot does not move.",
+      "REFS": [],
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "RR-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-30",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "RR-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [
+       "RR-30"
+      ],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-31",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     }
+    ],
+    "src_words": {
+     "RR-2": "PROVISIONAL",
+     "RR-30": "ESTABLISHED",
+     "RR-31": "ESTABLISHED"
+    },
+    "dst_records": [
+     {
+      "ASSUMPTIONS": [],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "ASSUMPTION",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-2",
+      "INHERITS": "RR-2",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "PROPOSITION": "The pivot does not move.",
+      "REFS": [],
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "QQ-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-30",
+      "INHERITS": "RR-30",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0",
+      "DERIVATION_CLASS": "INSPECTION"
+     },
+     {
+      "ASSUMPTIONS": [
+       "QQ-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [
+       "QQ-30"
+      ],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-31",
+      "INHERITS": "RR-31",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     }
+    ],
+    "dst_words": {
+     "QQ-2": "PROVISIONAL",
+     "QQ-30": "PROVISIONAL",
+     "QQ-31": "PROVISIONAL"
+    },
+    "tfk": {
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     },
+     "TPK": {
+      "ASSUMPTION": [
+       {
+        "NAME": "A_kpos",
+        "PROPOSITION": "k_s is positive",
+        "REFS": [
+         "k_s"
+        ]
+       },
+       {
+        "NAME": "A_mpos",
+        "PROPOSITION": "m is positive",
+        "REFS": [
+         "m"
+        ]
+       }
+      ],
+      "BOUNDARY": [
+       {
+        "CONDITION": "abs(x) < x_max",
+        "NAME": "B_small",
+        "PREDICATE": "|x| < x_max",
+        "REFS": [
+         "x",
+         "x_max"
+        ]
+       }
+      ],
+      "CONSTANT": [
+       {
+        "DIMENSION": "M1",
+        "NAME": "m"
+       },
+       {
+        "DIMENSION": "M1 T-2",
+        "NAME": "k_s"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x_max",
+        "UNCERTAINTY": "0.001",
+        "UNIT": "m",
+        "VALUE": "0.05"
+       }
+      ],
+      "CONSTRAINT": [
+       {
+        "ACTION": "FIX",
+        "NAME": "C_NOZ",
+        "STATEMENT": "only motion on the spring axis is described: z = 0",
+        "TARGET": "z",
+        "UNIT": "m",
+        "VALUE": "0"
+       }
+      ],
+      "DOF": [
+       {
+        "DIMENSION": "T1",
+        "NAME": "t"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x"
+       },
+       {
+        "DIMENSION": "L1 T-1",
+        "NAME": "v"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "z"
+       }
+      ],
+      "LAW": [
+       {
+        "EQUATION": "m * D(v, t) = -k_s * x",
+        "NAME": "EOM_X",
+        "REFS": [
+         "m",
+         "v",
+         "k_s",
+         "x",
+         "t"
+        ],
+        "ROLE": "EOM(v)",
+        "STATEMENT": "m dv/dt = -k_s x"
+       },
+       {
+        "EQUATION": "D(x, t) = v",
+        "NAME": "KIN",
+        "REFS": [
+         "x",
+         "v",
+         "t"
+        ],
+        "ROLE": "EOM(x)",
+        "STATEMENT": "dx/dt = v"
+       },
+       {
+        "EQUATION": "m * D(z, t, 2) = 0",
+        "NAME": "EOM_Z",
+        "REFS": [
+         "m",
+         "z",
+         "t"
+        ],
+        "ROLE": "CONSTRAINT",
+        "STATEMENT": "m d2z/dt2 = 0"
+       }
+      ]
+     },
+     "TrM": {
+      "ENTRIES": [
+       {
+        "BEARS": [],
+        "DIMENSION": "T1",
+        "DOF": "t",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "time",
+        "FALSIFIER": "a second clock whose readings differ from t by more than a constant offset beyond the stated uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "t is the reading of a laboratory clock from an arbitrary origin",
+        "NAME": "E_t"
+       },
+       {
+        "BEARS": [
+         "EOM_X",
+         "KIN"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "x",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "position",
+        "FALSIFIER": "a measured spring force not proportional to x inside the domain",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "x is the displacement of the mass along the spring axis from the point where the spring exerts no force",
+        "NAME": "E_x"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1 T-1",
+        "DOF": "v",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "velocity",
+        "FALSIFIER": "a measured velocity that differs from the rate of change of the measured x beyond uncertainty",
+        "FALSIFIER_CLASS": "F2",
+        "IDENTIFICATION": "v is the rate of change of x with t",
+        "NAME": "E_v"
+       },
+       {
+        "BEARS": [
+         "EOM_Z",
+         "C_NOZ"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "z",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "transverse_position",
+        "FALSIFIER": "a measured z different from 0 beyond its uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "z is the displacement of the mass perpendicular to the spring axis",
+        "NAME": "E_z"
+       }
+      ],
+      "HEADER": {
+       "ENVIRONMENT_INVENTORY": [
+        {
+         "DIMENSION": "T1",
+         "ENVIRONMENT_QUANTITY": "time"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "position"
+        },
+        {
+         "DIMENSION": "L1 T-1",
+         "ENVIRONMENT_QUANTITY": "velocity"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "transverse_position"
+        }
+       ],
+       "SIGNATURE": [
+        {
+         "FORM": "D(x, t) = v",
+         "IMAGE": "d/dt maps position to velocity",
+         "IMAGE_FORM": "D(position, time) = velocity",
+         "NAME": "time_derivative",
+         "OVER": [
+          "x",
+          "v",
+          "t"
+         ]
+        }
+       ],
+       "TRANSFORMATIONS": [
+        {
+         "NAME": "time_translation",
+         "STATEMENT": "t -> t + t0"
+        }
+       ]
+      }
+     }
+    },
+    "setting": null,
+    "promotion_id": "QQ-90",
+    "landing_block": "reaudit-1",
+    "prefix": "QG",
+    "ic2": [],
+    "under": [
+     "x"
+    ],
+    "trigger": "the re-audit of QQ under RR",
+    "landed": "yesterday",
+    "tps": "0.4.0"
+   },
+   "expected": "[\"REFUSED\",[[\"REC-50\",\"-\",\"landed \\\"yesterday\\\" is not a UTC time\"]]]"
+  },
+  {
+   "name": "RX10 REFUSED: a gap ID already in the register (REC-57), nothing written",
+   "fn": "reaudit_batch",
+   "args": {
+    "src": {
+     "D_TPK": "ad9d20d633d374edf7f7a2ddfefa6e886e67132a6e8a7cd42edd0237d3927088",
+     "D_TRM": "f767f3635d0cbc54473b6f889c20a94d8d37f95d627d2c856516bac9c7d37de9",
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     }
+    },
+    "dst": {
+     "D_TPK": "ad9d20d633d374edf7f7a2ddfefa6e886e67132a6e8a7cd42edd0237d3927088",
+     "D_TRM": "f767f3635d0cbc54473b6f889c20a94d8d37f95d627d2c856516bac9c7d37de9",
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "3",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     }
+    },
+    "src_records": [
+     {
+      "ASSUMPTIONS": [],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "ASSUMPTION",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-2",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "PROPOSITION": "The pivot does not move.",
+      "REFS": [],
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "RR-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-30",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "RR-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [
+       "RR-30"
+      ],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-31",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     }
+    ],
+    "src_words": {
+     "RR-2": "PROVISIONAL",
+     "RR-30": "ESTABLISHED",
+     "RR-31": "ESTABLISHED"
+    },
+    "dst_records": [
+     {
+      "ASSUMPTIONS": [],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "ASSUMPTION",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-2",
+      "INHERITS": "RR-2",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "PROPOSITION": "The pivot does not move.",
+      "REFS": [],
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "QQ-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-30",
+      "INHERITS": "RR-30",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0",
+      "DERIVATION_CLASS": "INSPECTION"
+     },
+     {
+      "ASSUMPTIONS": [
+       "QQ-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [
+       "QQ-30"
+      ],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-31",
+      "INHERITS": "RR-31",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     }
+    ],
+    "dst_words": {
+     "QQ-2": "PROVISIONAL",
+     "QQ-30": "PROVISIONAL",
+     "QQ-31": "PROVISIONAL"
+    },
+    "tfk": {
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     },
+     "TPK": {
+      "ASSUMPTION": [
+       {
+        "NAME": "A_kpos",
+        "PROPOSITION": "k_s is positive",
+        "REFS": [
+         "k_s"
+        ]
+       },
+       {
+        "NAME": "A_mpos",
+        "PROPOSITION": "m is positive",
+        "REFS": [
+         "m"
+        ]
+       }
+      ],
+      "BOUNDARY": [
+       {
+        "CONDITION": "abs(x) < x_max",
+        "NAME": "B_small",
+        "PREDICATE": "|x| < x_max",
+        "REFS": [
+         "x",
+         "x_max"
+        ]
+       }
+      ],
+      "CONSTANT": [
+       {
+        "DIMENSION": "M1",
+        "NAME": "m"
+       },
+       {
+        "DIMENSION": "M1 T-2",
+        "NAME": "k_s"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x_max",
+        "UNCERTAINTY": "0.001",
+        "UNIT": "m",
+        "VALUE": "0.05"
+       }
+      ],
+      "CONSTRAINT": [
+       {
+        "ACTION": "FIX",
+        "NAME": "C_NOZ",
+        "STATEMENT": "only motion on the spring axis is described: z = 0",
+        "TARGET": "z",
+        "UNIT": "m",
+        "VALUE": "0"
+       }
+      ],
+      "DOF": [
+       {
+        "DIMENSION": "T1",
+        "NAME": "t"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x"
+       },
+       {
+        "DIMENSION": "L1 T-1",
+        "NAME": "v"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "z"
+       }
+      ],
+      "LAW": [
+       {
+        "EQUATION": "m * D(v, t) = -k_s * x",
+        "NAME": "EOM_X",
+        "REFS": [
+         "m",
+         "v",
+         "k_s",
+         "x",
+         "t"
+        ],
+        "ROLE": "EOM(v)",
+        "STATEMENT": "m dv/dt = -k_s x"
+       },
+       {
+        "EQUATION": "D(x, t) = v",
+        "NAME": "KIN",
+        "REFS": [
+         "x",
+         "v",
+         "t"
+        ],
+        "ROLE": "EOM(x)",
+        "STATEMENT": "dx/dt = v"
+       },
+       {
+        "EQUATION": "m * D(z, t, 2) = 0",
+        "NAME": "EOM_Z",
+        "REFS": [
+         "m",
+         "z",
+         "t"
+        ],
+        "ROLE": "CONSTRAINT",
+        "STATEMENT": "m d2z/dt2 = 0"
+       }
+      ]
+     },
+     "TrM": {
+      "ENTRIES": [
+       {
+        "BEARS": [],
+        "DIMENSION": "T1",
+        "DOF": "t",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "time",
+        "FALSIFIER": "a second clock whose readings differ from t by more than a constant offset beyond the stated uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "t is the reading of a laboratory clock from an arbitrary origin",
+        "NAME": "E_t"
+       },
+       {
+        "BEARS": [
+         "EOM_X",
+         "KIN"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "x",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "position",
+        "FALSIFIER": "a measured spring force not proportional to x inside the domain",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "x is the displacement of the mass along the spring axis from the point where the spring exerts no force",
+        "NAME": "E_x"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1 T-1",
+        "DOF": "v",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "velocity",
+        "FALSIFIER": "a measured velocity that differs from the rate of change of the measured x beyond uncertainty",
+        "FALSIFIER_CLASS": "F2",
+        "IDENTIFICATION": "v is the rate of change of x with t",
+        "NAME": "E_v"
+       },
+       {
+        "BEARS": [
+         "EOM_Z",
+         "C_NOZ"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "z",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "transverse_position",
+        "FALSIFIER": "a measured z different from 0 beyond its uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "z is the displacement of the mass perpendicular to the spring axis",
+        "NAME": "E_z"
+       }
+      ],
+      "HEADER": {
+       "ENVIRONMENT_INVENTORY": [
+        {
+         "DIMENSION": "T1",
+         "ENVIRONMENT_QUANTITY": "time"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "position"
+        },
+        {
+         "DIMENSION": "L1 T-1",
+         "ENVIRONMENT_QUANTITY": "velocity"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "transverse_position"
+        }
+       ],
+       "SIGNATURE": [
+        {
+         "FORM": "D(x, t) = v",
+         "IMAGE": "d/dt maps position to velocity",
+         "IMAGE_FORM": "D(position, time) = velocity",
+         "NAME": "time_derivative",
+         "OVER": [
+          "x",
+          "v",
+          "t"
+         ]
+        }
+       ],
+       "TRANSFORMATIONS": [
+        {
+         "NAME": "time_translation",
+         "STATEMENT": "t -> t + t0"
+        }
+       ]
+      }
+     }
+    },
+    "setting": null,
+    "promotion_id": "QQ-90",
+    "landing_block": "reaudit-1",
+    "prefix": "QQ",
+    "ic2": [],
+    "under": [
+     "x"
+    ],
+    "trigger": "the re-audit of QQ under RR",
+    "landed": "2026-10-30T12:00:00Z",
+    "tps": "0.4.0"
+   },
+   "expected": "[\"REFUSED\",[[\"REC-57\",\"prefix\",\"gap ID QQ-2 is already in the register\"]]]"
+  },
+  {
+   "name": "RX11 REFUSED: the PROMOTION record refused (promotion_id), nothing written",
+   "fn": "reaudit_batch",
+   "args": {
+    "src": {
+     "D_TPK": "ad9d20d633d374edf7f7a2ddfefa6e886e67132a6e8a7cd42edd0237d3927088",
+     "D_TRM": "f767f3635d0cbc54473b6f889c20a94d8d37f95d627d2c856516bac9c7d37de9",
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     }
+    },
+    "dst": {
+     "D_TPK": "ad9d20d633d374edf7f7a2ddfefa6e886e67132a6e8a7cd42edd0237d3927088",
+     "D_TRM": "f767f3635d0cbc54473b6f889c20a94d8d37f95d627d2c856516bac9c7d37de9",
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "3",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     }
+    },
+    "src_records": [
+     {
+      "ASSUMPTIONS": [],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "ASSUMPTION",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-2",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "PROPOSITION": "The pivot does not move.",
+      "REFS": [],
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "RR-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-30",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "RR-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [
+       "RR-30"
+      ],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-31",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     }
+    ],
+    "src_words": {
+     "RR-2": "PROVISIONAL",
+     "RR-30": "ESTABLISHED",
+     "RR-31": "ESTABLISHED"
+    },
+    "dst_records": [
+     {
+      "ASSUMPTIONS": [],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "ASSUMPTION",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-2",
+      "INHERITS": "RR-2",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "PROPOSITION": "The pivot does not move.",
+      "REFS": [],
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "QQ-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-30",
+      "INHERITS": "RR-30",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0",
+      "DERIVATION_CLASS": "INSPECTION"
+     },
+     {
+      "ASSUMPTIONS": [
+       "QQ-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [
+       "QQ-30"
+      ],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-31",
+      "INHERITS": "RR-31",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0",
+      "DERIVATION_CLASS": "INSPECTION"
+     }
+    ],
+    "dst_words": {
+     "QQ-2": "PROVISIONAL",
+     "QQ-30": "PROVISIONAL",
+     "QQ-31": "PROVISIONAL"
+    },
+    "tfk": {
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     },
+     "TPK": {
+      "ASSUMPTION": [
+       {
+        "NAME": "A_kpos",
+        "PROPOSITION": "k_s is positive",
+        "REFS": [
+         "k_s"
+        ]
+       },
+       {
+        "NAME": "A_mpos",
+        "PROPOSITION": "m is positive",
+        "REFS": [
+         "m"
+        ]
+       }
+      ],
+      "BOUNDARY": [
+       {
+        "CONDITION": "abs(x) < x_max",
+        "NAME": "B_small",
+        "PREDICATE": "|x| < x_max",
+        "REFS": [
+         "x",
+         "x_max"
+        ]
+       }
+      ],
+      "CONSTANT": [
+       {
+        "DIMENSION": "M1",
+        "NAME": "m"
+       },
+       {
+        "DIMENSION": "M1 T-2",
+        "NAME": "k_s"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x_max",
+        "UNCERTAINTY": "0.001",
+        "UNIT": "m",
+        "VALUE": "0.05"
+       }
+      ],
+      "CONSTRAINT": [
+       {
+        "ACTION": "FIX",
+        "NAME": "C_NOZ",
+        "STATEMENT": "only motion on the spring axis is described: z = 0",
+        "TARGET": "z",
+        "UNIT": "m",
+        "VALUE": "0"
+       }
+      ],
+      "DOF": [
+       {
+        "DIMENSION": "T1",
+        "NAME": "t"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x"
+       },
+       {
+        "DIMENSION": "L1 T-1",
+        "NAME": "v"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "z"
+       }
+      ],
+      "LAW": [
+       {
+        "EQUATION": "m * D(v, t) = -k_s * x",
+        "NAME": "EOM_X",
+        "REFS": [
+         "m",
+         "v",
+         "k_s",
+         "x",
+         "t"
+        ],
+        "ROLE": "EOM(v)",
+        "STATEMENT": "m dv/dt = -k_s x"
+       },
+       {
+        "EQUATION": "D(x, t) = v",
+        "NAME": "KIN",
+        "REFS": [
+         "x",
+         "v",
+         "t"
+        ],
+        "ROLE": "EOM(x)",
+        "STATEMENT": "dx/dt = v"
+       },
+       {
+        "EQUATION": "m * D(z, t, 2) = 0",
+        "NAME": "EOM_Z",
+        "REFS": [
+         "m",
+         "z",
+         "t"
+        ],
+        "ROLE": "CONSTRAINT",
+        "STATEMENT": "m d2z/dt2 = 0"
+       }
+      ]
+     },
+     "TrM": {
+      "ENTRIES": [
+       {
+        "BEARS": [],
+        "DIMENSION": "T1",
+        "DOF": "t",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "time",
+        "FALSIFIER": "a second clock whose readings differ from t by more than a constant offset beyond the stated uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "t is the reading of a laboratory clock from an arbitrary origin",
+        "NAME": "E_t"
+       },
+       {
+        "BEARS": [
+         "EOM_X",
+         "KIN"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "x",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "position",
+        "FALSIFIER": "a measured spring force not proportional to x inside the domain",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "x is the displacement of the mass along the spring axis from the point where the spring exerts no force",
+        "NAME": "E_x"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1 T-1",
+        "DOF": "v",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "velocity",
+        "FALSIFIER": "a measured velocity that differs from the rate of change of the measured x beyond uncertainty",
+        "FALSIFIER_CLASS": "F2",
+        "IDENTIFICATION": "v is the rate of change of x with t",
+        "NAME": "E_v"
+       },
+       {
+        "BEARS": [
+         "EOM_Z",
+         "C_NOZ"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "z",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "transverse_position",
+        "FALSIFIER": "a measured z different from 0 beyond its uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "z is the displacement of the mass perpendicular to the spring axis",
+        "NAME": "E_z"
+       }
+      ],
+      "HEADER": {
+       "ENVIRONMENT_INVENTORY": [
+        {
+         "DIMENSION": "T1",
+         "ENVIRONMENT_QUANTITY": "time"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "position"
+        },
+        {
+         "DIMENSION": "L1 T-1",
+         "ENVIRONMENT_QUANTITY": "velocity"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "transverse_position"
+        }
+       ],
+       "SIGNATURE": [
+        {
+         "FORM": "D(x, t) = v",
+         "IMAGE": "d/dt maps position to velocity",
+         "IMAGE_FORM": "D(position, time) = velocity",
+         "NAME": "time_derivative",
+         "OVER": [
+          "x",
+          "v",
+          "t"
+         ]
+        }
+       ],
+       "TRANSFORMATIONS": [
+        {
+         "NAME": "time_translation",
+         "STATEMENT": "t -> t + t0"
+        }
+       ]
+      }
+     }
+    },
+    "setting": null,
+    "promotion_id": "not an id",
+    "landing_block": "reaudit-1",
+    "prefix": "QG",
+    "ic2": [],
+    "under": [
+     "x"
+    ],
+    "trigger": "the re-audit of QQ under RR",
+    "landed": "2026-10-30T12:00:00Z",
+    "tps": "0.4.0"
+   },
+   "expected": "[\"REFUSED\",[[\"REC-50\",\"-\",\"promotion_id \\\"not an id\\\" is not a record identifier\"]]]"
+  },
+  {
+   "name": "RX12 REFUSED: dst_words not a map (REC-50)",
+   "fn": "reaudit_batch",
+   "args": {
+    "src": {
+     "D_TPK": "ad9d20d633d374edf7f7a2ddfefa6e886e67132a6e8a7cd42edd0237d3927088",
+     "D_TRM": "f767f3635d0cbc54473b6f889c20a94d8d37f95d627d2c856516bac9c7d37de9",
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     }
+    },
+    "dst": {
+     "D_TPK": "ad9d20d633d374edf7f7a2ddfefa6e886e67132a6e8a7cd42edd0237d3927088",
+     "D_TRM": "f767f3635d0cbc54473b6f889c20a94d8d37f95d627d2c856516bac9c7d37de9",
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "3",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     }
+    },
+    "src_records": [
+     {
+      "ASSUMPTIONS": [],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "ASSUMPTION",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-2",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "PROPOSITION": "The pivot does not move.",
+      "REFS": [],
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "RR-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-30",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "RR-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [
+       "RR-30"
+      ],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-31",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     }
+    ],
+    "src_words": {
+     "RR-2": "PROVISIONAL",
+     "RR-30": "ESTABLISHED",
+     "RR-31": "ESTABLISHED"
+    },
+    "dst_records": [
+     {
+      "ASSUMPTIONS": [],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "ASSUMPTION",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-2",
+      "INHERITS": "RR-2",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "PROPOSITION": "The pivot does not move.",
+      "REFS": [],
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "QQ-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-30",
+      "INHERITS": "RR-30",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0",
+      "DERIVATION_CLASS": "INSPECTION"
+     },
+     {
+      "ASSUMPTIONS": [
+       "QQ-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [
+       "QQ-30"
+      ],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-31",
+      "INHERITS": "RR-31",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0",
+      "DERIVATION_CLASS": "INSPECTION"
+     }
+    ],
+    "dst_words": [],
+    "tfk": {
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     },
+     "TPK": {
+      "ASSUMPTION": [
+       {
+        "NAME": "A_kpos",
+        "PROPOSITION": "k_s is positive",
+        "REFS": [
+         "k_s"
+        ]
+       },
+       {
+        "NAME": "A_mpos",
+        "PROPOSITION": "m is positive",
+        "REFS": [
+         "m"
+        ]
+       }
+      ],
+      "BOUNDARY": [
+       {
+        "CONDITION": "abs(x) < x_max",
+        "NAME": "B_small",
+        "PREDICATE": "|x| < x_max",
+        "REFS": [
+         "x",
+         "x_max"
+        ]
+       }
+      ],
+      "CONSTANT": [
+       {
+        "DIMENSION": "M1",
+        "NAME": "m"
+       },
+       {
+        "DIMENSION": "M1 T-2",
+        "NAME": "k_s"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x_max",
+        "UNCERTAINTY": "0.001",
+        "UNIT": "m",
+        "VALUE": "0.05"
+       }
+      ],
+      "CONSTRAINT": [
+       {
+        "ACTION": "FIX",
+        "NAME": "C_NOZ",
+        "STATEMENT": "only motion on the spring axis is described: z = 0",
+        "TARGET": "z",
+        "UNIT": "m",
+        "VALUE": "0"
+       }
+      ],
+      "DOF": [
+       {
+        "DIMENSION": "T1",
+        "NAME": "t"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x"
+       },
+       {
+        "DIMENSION": "L1 T-1",
+        "NAME": "v"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "z"
+       }
+      ],
+      "LAW": [
+       {
+        "EQUATION": "m * D(v, t) = -k_s * x",
+        "NAME": "EOM_X",
+        "REFS": [
+         "m",
+         "v",
+         "k_s",
+         "x",
+         "t"
+        ],
+        "ROLE": "EOM(v)",
+        "STATEMENT": "m dv/dt = -k_s x"
+       },
+       {
+        "EQUATION": "D(x, t) = v",
+        "NAME": "KIN",
+        "REFS": [
+         "x",
+         "v",
+         "t"
+        ],
+        "ROLE": "EOM(x)",
+        "STATEMENT": "dx/dt = v"
+       },
+       {
+        "EQUATION": "m * D(z, t, 2) = 0",
+        "NAME": "EOM_Z",
+        "REFS": [
+         "m",
+         "z",
+         "t"
+        ],
+        "ROLE": "CONSTRAINT",
+        "STATEMENT": "m d2z/dt2 = 0"
+       }
+      ]
+     },
+     "TrM": {
+      "ENTRIES": [
+       {
+        "BEARS": [],
+        "DIMENSION": "T1",
+        "DOF": "t",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "time",
+        "FALSIFIER": "a second clock whose readings differ from t by more than a constant offset beyond the stated uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "t is the reading of a laboratory clock from an arbitrary origin",
+        "NAME": "E_t"
+       },
+       {
+        "BEARS": [
+         "EOM_X",
+         "KIN"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "x",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "position",
+        "FALSIFIER": "a measured spring force not proportional to x inside the domain",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "x is the displacement of the mass along the spring axis from the point where the spring exerts no force",
+        "NAME": "E_x"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1 T-1",
+        "DOF": "v",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "velocity",
+        "FALSIFIER": "a measured velocity that differs from the rate of change of the measured x beyond uncertainty",
+        "FALSIFIER_CLASS": "F2",
+        "IDENTIFICATION": "v is the rate of change of x with t",
+        "NAME": "E_v"
+       },
+       {
+        "BEARS": [
+         "EOM_Z",
+         "C_NOZ"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "z",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "transverse_position",
+        "FALSIFIER": "a measured z different from 0 beyond its uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "z is the displacement of the mass perpendicular to the spring axis",
+        "NAME": "E_z"
+       }
+      ],
+      "HEADER": {
+       "ENVIRONMENT_INVENTORY": [
+        {
+         "DIMENSION": "T1",
+         "ENVIRONMENT_QUANTITY": "time"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "position"
+        },
+        {
+         "DIMENSION": "L1 T-1",
+         "ENVIRONMENT_QUANTITY": "velocity"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "transverse_position"
+        }
+       ],
+       "SIGNATURE": [
+        {
+         "FORM": "D(x, t) = v",
+         "IMAGE": "d/dt maps position to velocity",
+         "IMAGE_FORM": "D(position, time) = velocity",
+         "NAME": "time_derivative",
+         "OVER": [
+          "x",
+          "v",
+          "t"
+         ]
+        }
+       ],
+       "TRANSFORMATIONS": [
+        {
+         "NAME": "time_translation",
+         "STATEMENT": "t -> t + t0"
+        }
+       ]
+      }
+     }
+    },
+    "setting": null,
+    "promotion_id": "QQ-90",
+    "landing_block": "reaudit-1",
+    "prefix": "QG",
+    "ic2": [],
+    "under": [
+     "x"
+    ],
+    "trigger": "the re-audit of QQ under RR",
+    "landed": "2026-10-30T12:00:00Z",
+    "tps": "0.4.0"
+   },
+   "expected": "[\"REFUSED\",[[\"REC-50\",\"-\",\"dst_words [] is not a map of status words\"]]]"
+  },
+  {
+   "name": "RX13 a failed re-check with an IC2 DOF: the gap is IC2",
+   "fn": "reaudit_batch",
+   "args": {
+    "src": {
+     "D_TPK": "ad9d20d633d374edf7f7a2ddfefa6e886e67132a6e8a7cd42edd0237d3927088",
+     "D_TRM": "f767f3635d0cbc54473b6f889c20a94d8d37f95d627d2c856516bac9c7d37de9",
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     }
+    },
+    "dst": {
+     "D_TPK": "ad9d20d633d374edf7f7a2ddfefa6e886e67132a6e8a7cd42edd0237d3927088",
+     "D_TRM": "f767f3635d0cbc54473b6f889c20a94d8d37f95d627d2c856516bac9c7d37de9",
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "3",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     }
+    },
+    "src_records": [
+     {
+      "ASSUMPTIONS": [],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "ASSUMPTION",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-2",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "PROPOSITION": "The pivot does not move.",
+      "REFS": [],
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "RR-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-30",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "RR-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [
+       "RR-30"
+      ],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "RR-31",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     }
+    ],
+    "src_words": {
+     "RR-2": "PROVISIONAL",
+     "RR-30": "ESTABLISHED",
+     "RR-31": "ESTABLISHED"
+    },
+    "dst_records": [
+     {
+      "ASSUMPTIONS": [],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "ASSUMPTION",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-2",
+      "INHERITS": "RR-2",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "PROPOSITION": "The pivot does not move.",
+      "REFS": [],
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     },
+     {
+      "ASSUMPTIONS": [
+       "QQ-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-30",
+      "INHERITS": "RR-30",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0",
+      "DERIVATION_CLASS": "INSPECTION"
+     },
+     {
+      "ASSUMPTIONS": [
+       "QQ-2"
+      ],
+      "AUTHOR": "agent-a",
+      "BLOCK": "B-1",
+      "CITES": [
+       "QQ-30"
+      ],
+      "CLASS": "RESULT",
+      "DERIVATION": {
+       "STEPS": 2,
+       "TEXT": "t"
+      },
+      "DOMAIN": "small x",
+      "DOMAIN_CONDITION": "abs(x) < x_max",
+      "D_IS": "7f1e6c0d2b9a4e3f8c5d1a0b6e2f4c9d3a8b7e1f0c6d5a4b3e2f1d0c9b8a7e6f",
+      "ENTRIES": [
+       "E_x"
+      ],
+      "FALSIFIER": "f",
+      "FALSIFIER_CLASS": "F3",
+      "GRADE": "PROVISIONAL",
+      "ID": "QQ-31",
+      "INHERITS": "RR-31",
+      "LANDED": "2026-09-28T12:00:00Z",
+      "LANDED_BY": "agent-a",
+      "REFS": [
+       "x",
+       "x_max"
+      ],
+      "REGIME": "L",
+      "STATEMENT": "The amplitude stays below x_max.",
+      "STATUS": "UNMARKED",
+      "TPS": "0.4.0"
+     }
+    ],
+    "dst_words": {
+     "QQ-2": "PROVISIONAL",
+     "QQ-30": "PROVISIONAL",
+     "QQ-31": "PROVISIONAL"
+    },
+    "tfk": {
+     "TMS": {
+      "CONSTANTS": [
+       {
+        "NAME": "w_a",
+        "VALUE": "1"
+       },
+       {
+        "NAME": "w_s",
+        "VALUE": "0.5"
+       }
+      ],
+      "PARAMETERS": {
+       "K": "2",
+       "N_X": 2,
+       "STEP_CONVENTION": "one application of an inference rule or algebraic identity is one step",
+       "S_MAX": 10
+      },
+      "YARDSTICKS": [
+       {
+        "KEY": [
+         "SR1",
+         "WSUM:w_a*A;w_s*S",
+         "S"
+        ],
+        "LIMITING": [],
+        "NAME": "combined_distance"
+       }
+      ]
+     },
+     "TPK": {
+      "ASSUMPTION": [
+       {
+        "NAME": "A_kpos",
+        "PROPOSITION": "k_s is positive",
+        "REFS": [
+         "k_s"
+        ]
+       },
+       {
+        "NAME": "A_mpos",
+        "PROPOSITION": "m is positive",
+        "REFS": [
+         "m"
+        ]
+       }
+      ],
+      "BOUNDARY": [
+       {
+        "CONDITION": "abs(x) < x_max",
+        "NAME": "B_small",
+        "PREDICATE": "|x| < x_max",
+        "REFS": [
+         "x",
+         "x_max"
+        ]
+       }
+      ],
+      "CONSTANT": [
+       {
+        "DIMENSION": "M1",
+        "NAME": "m"
+       },
+       {
+        "DIMENSION": "M1 T-2",
+        "NAME": "k_s"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x_max",
+        "UNCERTAINTY": "0.001",
+        "UNIT": "m",
+        "VALUE": "0.05"
+       }
+      ],
+      "CONSTRAINT": [
+       {
+        "ACTION": "FIX",
+        "NAME": "C_NOZ",
+        "STATEMENT": "only motion on the spring axis is described: z = 0",
+        "TARGET": "z",
+        "UNIT": "m",
+        "VALUE": "0"
+       }
+      ],
+      "DOF": [
+       {
+        "DIMENSION": "T1",
+        "NAME": "t"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "x"
+       },
+       {
+        "DIMENSION": "L1 T-1",
+        "NAME": "v"
+       },
+       {
+        "DIMENSION": "L1",
+        "NAME": "z"
+       }
+      ],
+      "LAW": [
+       {
+        "EQUATION": "m * D(v, t) = -k_s * x",
+        "NAME": "EOM_X",
+        "REFS": [
+         "m",
+         "v",
+         "k_s",
+         "x",
+         "t"
+        ],
+        "ROLE": "EOM(v)",
+        "STATEMENT": "m dv/dt = -k_s x"
+       },
+       {
+        "EQUATION": "D(x, t) = v",
+        "NAME": "KIN",
+        "REFS": [
+         "x",
+         "v",
+         "t"
+        ],
+        "ROLE": "EOM(x)",
+        "STATEMENT": "dx/dt = v"
+       },
+       {
+        "EQUATION": "m * D(z, t, 2) = 0",
+        "NAME": "EOM_Z",
+        "REFS": [
+         "m",
+         "z",
+         "t"
+        ],
+        "ROLE": "CONSTRAINT",
+        "STATEMENT": "m d2z/dt2 = 0"
+       }
+      ]
+     },
+     "TrM": {
+      "ENTRIES": [
+       {
+        "BEARS": [],
+        "DIMENSION": "T1",
+        "DOF": "t",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "time",
+        "FALSIFIER": "a second clock whose readings differ from t by more than a constant offset beyond the stated uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "t is the reading of a laboratory clock from an arbitrary origin",
+        "NAME": "E_t"
+       },
+       {
+        "BEARS": [
+         "EOM_X",
+         "KIN"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "x",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "position",
+        "FALSIFIER": "a measured spring force not proportional to x inside the domain",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "x is the displacement of the mass along the spring axis from the point where the spring exerts no force",
+        "NAME": "E_x"
+       },
+       {
+        "BEARS": [
+         "KIN"
+        ],
+        "DIMENSION": "L1 T-1",
+        "DOF": "v",
+        "DOMAIN": "|x| < x_max",
+        "ENVIRONMENT_QUANTITY": "velocity",
+        "FALSIFIER": "a measured velocity that differs from the rate of change of the measured x beyond uncertainty",
+        "FALSIFIER_CLASS": "F2",
+        "IDENTIFICATION": "v is the rate of change of x with t",
+        "NAME": "E_v"
+       },
+       {
+        "BEARS": [
+         "EOM_Z",
+         "C_NOZ"
+        ],
+        "DIMENSION": "L1",
+        "DOF": "z",
+        "DOMAIN": "always",
+        "ENVIRONMENT_QUANTITY": "transverse_position",
+        "FALSIFIER": "a measured z different from 0 beyond its uncertainty",
+        "FALSIFIER_CLASS": "F3",
+        "IDENTIFICATION": "z is the displacement of the mass perpendicular to the spring axis",
+        "NAME": "E_z"
+       }
+      ],
+      "HEADER": {
+       "ENVIRONMENT_INVENTORY": [
+        {
+         "DIMENSION": "T1",
+         "ENVIRONMENT_QUANTITY": "time"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "position"
+        },
+        {
+         "DIMENSION": "L1 T-1",
+         "ENVIRONMENT_QUANTITY": "velocity"
+        },
+        {
+         "DIMENSION": "L1",
+         "ENVIRONMENT_QUANTITY": "transverse_position"
+        }
+       ],
+       "SIGNATURE": [
+        {
+         "FORM": "D(x, t) = v",
+         "IMAGE": "d/dt maps position to velocity",
+         "IMAGE_FORM": "D(position, time) = velocity",
+         "NAME": "time_derivative",
+         "OVER": [
+          "x",
+          "v",
+          "t"
+         ]
+        }
+       ],
+       "TRANSFORMATIONS": [
+        {
+         "NAME": "time_translation",
+         "STATEMENT": "t -> t + t0"
+        }
+       ]
+      }
+     }
+    },
+    "setting": null,
+    "promotion_id": "QQ-90",
+    "landing_block": "reaudit-1",
+    "prefix": "QG",
+    "ic2": [
+     "theta"
+    ],
+    "under": [],
+    "trigger": "the re-audit of QQ under RR",
+    "landed": "2026-10-30T12:00:00Z",
+    "tps": "0.4.0"
+   },
+   "expected": "[\"OK\",{\"CHECKS\":[\"SR3\",\"SR8\"],\"GAPS\":[{\"AGAINST\":[\"theta\"],\"CLASS\":\"NAMED_GAP\",\"DIGEST\":\"865f8aa04345008df8c27294c496d684639ab12762c74fa2afdd4e1fbc339236\",\"GRADE\":\"NOT GRADED\",\"ID\":\"QG-2\",\"LANDED\":\"2026-10-30T12:00:00Z\",\"LANDED_BY\":\"TPX\",\"SOURCE\":\"IC2\",\"STATE\":\"OPEN\",\"STATEMENT\":\"The DOF theta is tied by no TrM entry (IC2).\",\"TPS\":\"0.4.0\",\"TRIGGER\":\"the re-audit of QQ under RR\"}],\"PROMOTED\":[[\"QQ-30\",\"F3\",\"F2\"]],\"PROMOTION\":[\"QQ-90\",\"PROMOTION\",\"reaudit-1\",[[\"QQ-30\",\"F3\",\"F2\"]],\"a3422b85a9e5690349ba6dfdc2cb35d19a90fbc2b30079216de3fb509b0837ab\"],\"STATUS\":[[\"QQ-31\",\"HELD\"]]}]"
+  }
+ ]
+}

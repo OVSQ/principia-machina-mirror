@@ -1,0 +1,8 @@
+{
+ "corpus": "canon_corpus.json",
+ "note": "v2 divergences of canon_corpus.json (SC4). v1 read each input as the nearest IEEE double and wrote that double's twelve significant digits; the Calculator keeps the exact value of the literal and rounds it once, ties to even (case float/08 shows v1 rounding an exact double's tie to even too). Each entry names the case, v1's text (the corpus's expect), the Calculator's text and the cause; the runner checks both texts, so an entry that stops applying fails. Exact values are the standing default while the Declarer's decision on exact values or a software IEEE double is open.",
+ "divergences": [
+  {"id": "float/11", "v1": "4.94065645841e-324", "v2": "5e-324", "cause": "v1 read 5e-324 as the smallest subnormal double, 4.9406564584124654...e-324, and wrote its digits; the exact value of the literal is 5e-324."},
+  {"id": "float/15", "v1": "9.99999999999", "v2": "10", "cause": "v1 read 9.999999999995 as the double 9.99999999999499955549708829..., just below the halfway point, and rounded down; the exact value lies halfway between 9.99999999999 and 10.0000000000, and the tie goes to the even digit, 10."}
+ ]
+}

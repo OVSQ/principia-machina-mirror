@@ -1,0 +1,202 @@
+{{DISPLAYTITLE:Chronology}}
+{{Lean theorem prover map}}
+A timeline of Lean and of the work it grew from, from Automath to October 2026.
+
+Every entry is stated, with its source, on the page named in its last column, and this page
+adds nothing to those pages. Dates are of first statement, first publication or first
+version, as the entry says. The dates of Lean's versions are those of its version
+notes.<ref name="relnotes">''The Lean Language Reference'', "Release Notes", list of versions
+with their dates (read 14 October 2026). https://lean-lang.org/doc/reference/latest/releases/</ref>
+Where a page gives two dates for one event, both are given here.
+
+== Before Lean: 1966 to 2012 ==
+
+{| class="wikitable"
+! date !! event !! page
+|-
+| 1966 or 1967 || '''Automath''' conceived by N. G. de Bruijn at Eindhoven; his own accounts give 1966 and early 1967 || [[Lean theorem prover/History/Automath|Automath]]
+|-
+| Dec 1968 || De Bruijn presents the Automath language at the Symposium on Automatic Demonstration, Versailles; printed 1970 || [[Lean theorem prover/History/Automath|Automath]]
+|-
+| 1969 || Dana Scott devises the logic for computable functions that LCF is named after; his manuscript is published in 1993 || [[Lean theorem prover/History/LCF and the tactic idea|LCF and the tactic idea]]
+|-
+| 1971 || Per Martin-Löf's first type theory, an unpublished preprint, with a type of all types || [[Lean theorem prover/History/Martin-Löf type theory|Martin-Löf type theory]]
+|-
+| 1971 to 1976 || I. Zandleven writes most of Automath's checking programs || [[Lean theorem prover/History/Automath|Automath]]
+|-
+| 1972 || Jean-Yves Girard's thesis shows a type of all types contradictory; Martin-Löf replaces it by a universe of small types (paper published 1998) || [[Lean theorem prover/History/Martin-Löf type theory|Martin-Löf type theory]]
+|-
+| 1972 || De Bruijn proposes writing bound variables as numbers, the '''de Bruijn indices''' Lean's terms still use || [[Lean theorem prover/History/Automath|Automath]]
+|-
+| May 1972 || Robin Milner's report on '''Stanford LCF''' || [[Lean theorem prover/History/LCF and the tactic idea|LCF and the tactic idea]]
+|-
+| c. 1973 || Milner begins Edinburgh LCF: a protected type of theorems, and tactics || [[Lean theorem prover/History/LCF and the tactic idea|LCF and the tactic idea]]
+|-
+| Jul 1973 || Martin-Löf at the Logic Colloquium, Bristol: a hierarchy of universes and an identity type; printed 1975 || [[Lean theorem prover/History/Martin-Löf type theory|Martin-Löf type theory]]
+|-
+| 1974 || The name '''proof irrelevance''' appears in an Automath report || [[Lean theorem prover/History/Automath|Automath]]
+|-
+| 1976 || L. S. van Benthem Jutting's translation of Landau's ''Grundlagen der Analysis'' into Automath, in a five-volume report; his thesis 1977, published 1979 || [[Lean theorem prover/History/Automath|Automath]]
+|-
+| 1978 || ML, the metalanguage of LCF, described at the Symposium on Principles of Programming Languages; Milner's paper on polymorphic type inference || [[Lean theorem prover/History/LCF and the tactic idea|LCF and the tactic idea]]
+|-
+| 1979 || ''Edinburgh LCF'', by Gordon, Milner and Wadsworth || [[Lean theorem prover/History/LCF and the tactic idea|LCF and the tactic idea]]
+|-
+| 1979 || Martin-Löf, "Constructive mathematics and computer programming", Hannover; the extensional theory; published 1982 || [[Lean theorem prover/History/Martin-Löf type theory|Martin-Löf type theory]]
+|-
+| 1980 || De Bruijn's survey of the Automath project || [[Lean theorem prover/History/Automath|Automath]]
+|-
+| Jun 1980 || Martin-Löf's Padua lectures, published in 1984 as ''Intuitionistic Type Theory'' || [[Lean theorem prover/History/Martin-Löf type theory|Martin-Löf type theory]]
+|-
+| 1983 to 1985 || The first type checker for the Theory of Constructions, mostly Gérard Huet's work || [[Lean theorem prover/History/The Calculus of Constructions|The Calculus of Constructions]]
+|-
+| Jun 1984 || Coquand and Huet present a preliminary version of the calculus at Sophia-Antipolis || [[Lean theorem prover/History/The Calculus of Constructions|The Calculus of Constructions]]
+|-
+| 31 Jan 1985 || Thierry Coquand defends his thesis on the Theory of Constructions || [[Lean theorem prover/History/The Calculus of Constructions|The Calculus of Constructions]]
+|-
+| c. 1985 || Cambridge LCF, by Lawrence Paulson; described in his book of 1987 || [[Lean theorem prover/History/LCF and the tactic idea|LCF and the tactic idea]]
+|-
+| 1986 || Nuprl, a proof assistant for an extensional type theory, described in a book; Martin-Löf recasts his theory in a logical framework || [[Lean theorem prover/History/Martin-Löf type theory|Martin-Löf type theory]]
+|-
+| May 1986 || '''The Calculus of Constructions''', under that name, in an INRIA report; in ''Information and Computation'' 1988 || [[Lean theorem prover/History/The Calculus of Constructions|The Calculus of Constructions]]
+|-
+| 1988 || Version 4.7 of the system later named Coq keeps its proof checker, the Constructive Engine, apart as a trusted core; HOL88 appears about the same year || [[Lean theorem prover/History/The Calculus of Constructions|The Calculus of Constructions]], [[Lean theorem prover/History/LCF and the tactic idea|LCF and the tactic idea]]
+|-
+| 1989 || Inductive types added as primitives: the '''Calculus of Inductive Constructions''', by the Coq manual's date; the paper, presented at COLOG-88, is published in 1990 || [[Lean theorem prover/History/The Calculus of Constructions|The Calculus of Constructions]]
+|-
+| end of 1989 || The system is named Coq, with version 5.1 || [[Lean theorem prover/History/The Calculus of Constructions|The Calculus of Constructions]]
+|-
+| 1991 || Milner receives the ACM Turing Award; the citation names LCF and ML || [[Lean theorem prover/History/LCF and the tactic idea|LCF and the tactic idea]]
+|-
+| 1993 || Christine Paulin-Mohring sets out the rules of the Calculus of Inductive Constructions || [[Lean theorem prover/History/The Calculus of Constructions|The Calculus of Constructions]]
+|-
+| 1994 || ''Selected Papers on Automath''; the ALF proof editor || [[Lean theorem prover/History/Automath|Automath]], [[Lean theorem prover/History/Martin-Löf type theory|Martin-Löf type theory]]
+|-
+| 1995 || Antonius Hurkens publishes a simplified form of Girard's paradox || [[Lean theorem prover/History/Martin-Löf type theory|Martin-Löf type theory]]
+|-
+| 2002 || Freek Wiedijk's new Automath checker checks the ''Grundlagen'' translation in 0.6 seconds || [[Lean theorem prover/History/Automath|Automath]]
+|-
+| 2007 || Ulf Norell's thesis designs and implements a new Agda || [[Lean theorem prover/History/Martin-Löf type theory|Martin-Löf type theory]]
+|}
+
+== Lean 1 to Lean 3: 2013 to 2022 ==
+
+{| class="wikitable"
+! date !! event !! page
+|-
+| 2013 || '''Lean''' begun by Leonardo de Moura at Microsoft Research || [[Lean theorem prover/History/Lean 1 to Lean 3|Lean 1 to Lean 3]]
+|-
+| 2013 || The ACM Software System Award goes to the team that first developed Coq || [[Lean theorem prover/History/The Calculus of Constructions|The Calculus of Constructions]]
+|-
+| 16 Jun 2014 || Lean 0.1, the first version || [[Lean theorem prover/History/Lean 1 to Lean 3|Lean 1 to Lean 3]]
+|-
+| 2015 || '''"The Lean Theorem Prover (system description)"''', CADE-25, describing the version now called Lean 2 || [[Lean theorem prover/History/Lean 1 to Lean 3|Lean 1 to Lean 3]]
+|-
+| 2016 || Maryna Viazovska proves that the <math>E_8</math> lattice gives the densest sphere packing in eight dimensions || [[Lean theorem prover/Applications/Research mathematics|Research mathematics]]
+|-
+| 20 Jan 2017 || Lean 3.0.0 || [[Lean theorem prover/History/Lean 1 to Lean 3|Lean 1 to Lean 3]]
+|-
+| 2017 || Metaprogramming in Lean 3: tactics written in Lean itself || [[Lean theorem prover/History/Lean 1 to Lean 3|Lean 1 to Lean 3]]
+|-
+| summer 2017 || '''mathlib''' begins, from the core library of Lean 3 || [[Lean theorem prover/History/Mathlib and its community|Mathlib and its community]]
+|-
+| 2018 || Work on Lean 4 begins || [[Lean theorem prover/History/Lean 4|Lean 4]]
+|-
+| 18 Jan 2019 || Lean 3.4.2, the last official version of Lean 3 || [[Lean theorem prover/History/Lean 1 to Lean 3|Lean 1 to Lean 3]]
+|-
+| 2019 || Mario Carneiro's account of Lean's type theory || [[Lean theorem prover/History/The Calculus of Constructions|The Calculus of Constructions]]
+|-
+| 26 Dec 2019 || Lean 3.5.0c, the first version maintained by the community || [[Lean theorem prover/History/Lean 1 to Lean 3|Lean 1 to Lean 3]]
+|-
+| Jan 2020 || "The Lean Mathematical Library", by the mathlib Community, at CPP in New Orleans || [[Lean theorem prover/History/Mathlib and its community|Mathlib and its community]]
+|-
+| 5 Dec 2020 || Peter Scholze sets the '''Liquid Tensor Experiment''' challenge || [[Lean theorem prover/History/The Liquid Tensor Experiment|The Liquid Tensor Experiment]]
+|-
+| early 2021 || Lean 4 made public || [[Lean theorem prover/History/Lean 4|Lean 4]]
+|-
+| 2021 || '''"The Lean 4 Theorem Prover and Programming Language"''', CADE-28 || [[Lean theorem prover/History/Lean 4|Lean 4]]
+|-
+| 2021 || The miniF2F benchmark of formal competition problems || [[Lean theorem prover/Applications/Machine learning and theorem proving|Machine learning and theorem proving]]
+|-
+| 28 May 2021 || The proof of Theorem 9.4, the one result Scholze had been worried about, is formalised || [[Lean theorem prover/History/The Liquid Tensor Experiment|The Liquid Tensor Experiment]]
+|-
+| Dec 2021 || Plan for porting mathlib, then over 700,000 lines, to Lean 4 with Mathport || [[Lean theorem prover/History/Lean 4|Lean 4]]
+|-
+| 14 Jul 2022 || The Liquid Tensor Experiment completed || [[Lean theorem prover/History/The Liquid Tensor Experiment|The Liquid Tensor Experiment]]
+|}
+
+== Lean 4: 2023 to October 2026 ==
+
+{| class="wikitable"
+! date !! event !! page
+|-
+| 24 May 2023 || Lean 3.51.1c, the last community version of Lean 3 || [[Lean theorem prover/History/Lean 1 to Lean 3|Lean 1 to Lean 3]]
+|-
+| Jul 2023 || De Moura and Sebastian Ullrich found the '''Lean Focused Research Organization''' || [[Lean theorem prover/History/Lean since 2023|Lean since 2023]]
+|-
+| 16 Jul 2023 || The port of mathlib to Lean 4 declared complete || [[Lean theorem prover/History/Lean 4|Lean 4]]
+|-
+| 8 Sep 2023 || '''Lean 4.0.0''', the first stable version; a new version about every month follows || [[Lean theorem prover/History/Lean 4|Lean 4]]
+|-
+| 9 Nov 2023 || Gowers, Green, Manners and Tao post their proof of the polynomial Freiman–Ruzsa conjecture in characteristic 2 || [[Lean theorem prover/Applications/The polynomial Freiman-Ruzsa conjecture|The polynomial Freiman-Ruzsa conjecture]]
+|-
+| 5 Dec 2023 || The formalisation of that proof is complete, three weeks after it began || [[Lean theorem prover/Applications/The polynomial Freiman-Ruzsa conjecture|The polynomial Freiman-Ruzsa conjecture]]
+|-
+| Dec 2023 || Start of the Fermat's Last Theorem project, by the Lean FRO's timeline; announced April 2024 || [[Lean theorem prover/History/Lean since 2023|Lean since 2023]], [[Lean theorem prover/Applications/The Fermat's Last Theorem project|The Fermat's Last Theorem project]]
+|-
+| Mar 2024 || Sidharth Hariharan and Viazovska begin formalising the eight-dimensional sphere packing || [[Lean theorem prover/Applications/Research mathematics|Research mathematics]]
+|-
+| 2024 || HepLean, later part of Physlib, begins || [[Lean theorem prover/Applications/Physics in Lean|Physics in Lean]]
+|-
+| Jul 2024 || Google DeepMind reports that AlphaProof, with a second system for geometry, reached silver-medal standard at the International Mathematical Olympiad || [[Lean theorem prover/Applications/Machine learning and theorem proving|Machine learning and theorem proving]]
+|-
+| 25 Sep 2024 || Terence Tao proposes the '''equational theories project''' || [[Lean theorem prover/Applications/The equational theories project|The equational theories project]]
+|-
+| Oct 2024 || The Fermat project's research council fellowship begins, to run until September 2029 || [[Lean theorem prover/Applications/The Fermat's Last Theorem project|The Fermat's Last Theorem project]]
+|-
+| Dec 2024 || Kevin Buzzard reports the problem met in a 1965 paper on divided powers sorted out, and the Fermat project back on track || [[Lean theorem prover/Applications/The Fermat's Last Theorem project|The Fermat's Last Theorem project]]
+|-
+| 12 Mar 2025 || Version 9.0 of the Rocq Prover completes the renaming of Coq || [[Lean theorem prover/History/The Calculus of Constructions|The Calculus of Constructions]]
+|-
+| 14 Apr 2025 || The equational theories project reaches its primary goal: all 22,028,942 implications decided || [[Lean theorem prover/Applications/The equational theories project|The equational theories project]]
+|-
+| 2025 || Lean receives the ACM SIGPLAN Programming Languages Software Award; the 2015 system description receives the CADE Skolem Award || [[Lean theorem prover/History/Lean since 2023|Lean since 2023]]
+|-
+| Jul 2025 || Gifts of $5 million each to the Lean FRO and to Mathlib announced, with a Mathlib Initiative to be set up || [[Lean theorem prover/History/Mathlib and its community|Mathlib and its community]]
+|-
+| 14 Aug 2025 || Lean 4.22.0: a new compiler, and the <code>grind</code> tactic || [[Lean theorem prover/History/Lean since 2023|Lean since 2023]]
+|-
+| Nov 2025 || AlphaProof's method published in ''Nature'' || [[Lean theorem prover/Applications/Machine learning and theorem proving|Machine learning and theorem proving]]
+|-
+| Dec 2025 || The equational theories project's paper, with 34 authors || [[Lean theorem prover/Applications/The equational theories project|The equational theories project]]
+|-
+| Feb 2026 || The formal proof of sphere packing in dimension 8 completed, its final stages by an autoformalisation model || [[Lean theorem prover/Applications/Research mathematics|Research mathematics]]
+|-
+| Jul 2026 || Microsoft's SymCrypt code verified in Lean is in preview versions of Windows || [[Lean theorem prover/Applications/Software verification|Software verification]]
+|-
+| 22 Jul 2026 || Lean 4.32.1 fixes a soundness bug in the Lean kernel open to malicious metaprograms || [[Lean theorem prover/History/Lean since 2023|Lean since 2023]]
+|-
+| 25 Jul 2026 || A false "disproof" of the Collatz conjecture, exploiting a bug in the Lean kernel, is published || [[Lean theorem prover/History/Lean since 2023|Lean since 2023]]
+|-
+| 28 Jul 2026 || The exploit reduced to a short proof of <code>False</code> and reported; Lean 4.32.2 fixes it || [[Lean theorem prover/History/Lean since 2023|Lean since 2023]]
+|-
+| Aug 2026 || A dataset of Lean statements of 50 theorems from the ''Annals of Mathematics'' announced || [[Lean theorem prover/Applications/Research mathematics|Research mathematics]]
+|-
+| 4 Sep 2026 || Anthropic announces a machine-written formal proof of Fermat's Last Theorem || [[Lean theorem prover/Applications/The Fermat's Last Theorem project|The Fermat's Last Theorem project]]
+|-
+| Sep 2026 || The Lean FRO moves to six-month roadmaps, with independent checking planned as a routine step || [[Lean theorem prover/History/Lean since 2023|Lean since 2023]]
+|-
+| 24 Sep 2026 || '''Lean 4.34.1''', the version with which this edition's code is checked || [[Lean theorem prover/History/Lean since 2023|Lean since 2023]]
+|-
+| 12 Oct 2026 || Lean 4.35.0 || [[Lean theorem prover/History/Lean since 2023|Lean since 2023]]
+|-
+| Oct 2026 || This wiki's framework for testing physical hypotheses is being restated in Lean, with Lean 4.34.1 pinned || [[Lean theorem prover/Applications/Principia Machina|Principia Machina]]
+|}
+
+== Next ==
+
+[[Lean theorem prover/Glossary|Glossary]], the edition's terms.
+
+== References ==
+
+<references />

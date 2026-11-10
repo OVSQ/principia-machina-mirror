@@ -1,0 +1,34 @@
+[
+	{
+		"name": "custos_nonce",
+		"comment": "The execution challenge's nonces (TPS 5.3.19): one outstanding per account and UWC prefix, issued at PETITION and on every PUSH's answer, taken (deleted) by the PUSH that answers it.",
+		"columns": [
+			{
+				"name": "cn_account",
+				"comment": "The account's user name",
+				"type": "binary",
+				"options": { "notnull": true, "length": 255 }
+			},
+			{
+				"name": "cn_prefix",
+				"comment": "The UWC's prefix",
+				"type": "binary",
+				"options": { "notnull": true, "length": 255 }
+			},
+			{
+				"name": "cn_nonce",
+				"comment": "The nonce, 32 lowercase hexadecimal characters (random_bytes(16))",
+				"type": "binary",
+				"options": { "notnull": true, "length": 32 }
+			},
+			{
+				"name": "cn_issued",
+				"comment": "The server time, whole seconds, the nonce was issued",
+				"type": "bigint",
+				"options": { "unsigned": true, "notnull": true, "default": 0 }
+			}
+		],
+		"indexes": [],
+		"pk": [ "cn_account", "cn_prefix" ]
+	}
+]

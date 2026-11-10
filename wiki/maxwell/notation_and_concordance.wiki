@@ -1,0 +1,88 @@
+{{DISPLAYTITLE:On Physical Lines of Force — Notation and concordance}}
+{{On Physical Lines of Force map}}
+''[[On Physical Lines of Force]] → Notation''
+
+Maxwell wrote in 1861. Vector notation did not yet exist — Heaviside and Gibbs produced it in the 1880s — so every relation on these pages is written three times, once for each coordinate. Reading the paper is much easier once you can see the vector hiding behind each triple.
+
+[[File:OPL-fig-notation-map.svg|thumb|center|620px|A concordance of notation]]
+
+== The main symbols ==
+
+{| class="wikitable"
+! Maxwell !! Meaning in his words !! Modern !! Notes
+|-
+| <code>α, β, γ</code> || the components of the magnetic force; in Part I, the circumferential velocity of a vortex times the direction-cosines of its axis || <math>\mathbf{H}</math> || the ''speed'' of the spin is the strength of the field
+|-
+| <code>μ</code> || the "capacity for magnetic induction"; also the density of the substance of the vortices || <math>\mu</math> || equal to 1 in air; greater in paramagnetic, less in diamagnetic media
+|-
+| <code>μα, μβ, μγ</code> || — || <math>\mathbf{B}=\mu\mathbf{H}</math> || the magnetic induction
+|-
+| <code>p, q, r</code> || the quantity of electric current per unit of area perpendicular to the axes of ''x'', ''y'', ''z'' || <math>\mathbf{J}</math> || in Part III these acquire the displacement term
+|-
+| <code>P, Q, R</code> || the components of electromotive force || <math>\mathbf{E}</math> || force on unit of the particles, not force per unit charge in the modern sense
+|-
+| <code>F, G, H</code> || the components of the "electrotonic state", or electromagnetic momentum || <math>\mathbf{A}</math> || Maxwell's name for Faraday's electrotonic state
+|-
+| <code>ψ</code> || the electric tension, or potential || <math>\varphi</math> || &nbsp;
+|-
+| <code>h</code> || the electric displacement || <math>\mathbf{D}/4\pi</math> || see the note on 4π below
+|-
+| <code>E</code> || a coefficient depending on the nature of the dielectric — the elasticity of the cells || <math>\sqrt{1/\varepsilon}</math> || not the modern electric field
+|-
+| <code>e</code> || the quantity of free electricity || <math>\rho</math> || &nbsp;
+|-
+| <code>m</code> || the coefficient of transverse elasticity of the cell substance || — || &nbsp;
+|-
+| <code>ρ</code> || the density of the cell substance || — || in Part I; do not confuse with modern charge density
+|-
+| <code>V</code> || the velocity of transverse undulations || <math>c</math> || &nbsp;
+|}
+
+<blockquote>
+'''Two collisions to watch for.''' Maxwell's <code>E</code> is a dielectric coefficient, ''not'' the electric field — the electric field is his <code>P, Q, R</code>. And his <code>H</code> is the third component of the vector potential, ''not'' the magnetic force — the magnetic force is his <code>α, β, γ</code>. Both letters mean something else today.
+</blockquote>
+
+== Derivatives ==
+
+Maxwell writes total-derivative notation throughout, where a modern author would use partial derivatives:
+
+* He writes <math>\dfrac{d\gamma}{dy}</math>; we write <math>\dfrac{\partial \gamma}{\partial y}</math>.
+* He writes <math>\dfrac{d}{dt}</math> both for a rate of change at a fixed point and, in [[On Physical Lines of Force/Part II/Prop. XI|Prop. XI]], for a rate of change following a moving element. The distinction is carried by the prose, not the symbol. Prop. XI is precisely where it matters.
+
+On this wiki, quotations and reconstructed 1861 equations keep Maxwell's <code>d</code>; the [[On Physical Lines of Force/Modern derivations|modern derivation]] pages use <code>∂</code>.
+
+== The factor 4π ==
+
+Maxwell works in a Gaussian-style system where 4π appears explicitly in the field equations rather than being absorbed into the constants. So where a modern SI textbook has
+
+<math display="block">\nabla\times\mathbf{H} = \mathbf{J}</math>
+
+Maxwell has
+
+<math display="block">4\pi p = \frac{d\gamma}{dy}-\frac{d\beta}{dz}, \qquad 4\pi q = \frac{d\alpha}{dz}-\frac{d\gamma}{dx}, \qquad 4\pi r = \frac{d\beta}{dx}-\frac{d\alpha}{dy} \qquad\qquad\mathrm{(9)}</math>
+
+The 4π is not decoration. It is the surface area of a unit sphere, and it is there because his unit of current is defined by the magnetic effect of a closed circuit. When you convert his results to modern form, tracking the 4π is most of the work.
+
+== Sign conventions ==
+
+Maxwell's sign for the electromotive force in [[On Physical Lines of Force/Part II/Prop. VIII|Prop. VIII]] follows from the direction he chose, "perfectly arbitrarily", for the rotation of the vortices:
+
+<blockquote>
+We also assumed, perfectly arbitrarily, that the direction of these vortices is such that, on looking along a line of force from south to north, we should see the vortices revolving in the direction of the hands of a watch.
+</blockquote>
+
+Everything downstream — which way the idle wheels turn, which way an induced current runs — is fixed by that one choice. It happens to agree with the modern convention.
+
+== Vocabulary ==
+
+Several of Maxwell's terms have drifted. See the [[On Physical Lines of Force/Glossary|glossary]] for the full list; the ones that trip readers most often:
+
+* '''electromotive force''' — for Maxwell this is a force acting on the particles at every point of the medium, not a voltage round a circuit
+* '''electric tension''' — potential
+* '''quantity''' vs. '''intensity''' — quantity is what flows, intensity is what drives it
+* '''capacity for magnetic induction''' — permeability
+* '''electrotonic state''' — Faraday's name for a condition of the medium under induction; Maxwell gives it the components <code>F, G, H</code> and it becomes the vector potential
+
+----
+
+''See also: [[On Physical Lines of Force/Index of numbered equations|Index of numbered equations]] · [[On Physical Lines of Force/Modern derivations/From components to vectors|From components to vectors]]''

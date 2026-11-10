@@ -1,0 +1,101 @@
+{{DISPLAYTITLE:Reading the theorem backwards}}
+{{Noether's theorems map}}
+
+''Mathematical counterpart: [[Noether's theorems/First theorem/The converse of the first theorem|The converse of the first theorem]].''
+
+Noether proved the theorem in both directions. Textbooks give one. This page is
+about the other one.
+
+== The forward and the reverse ==
+
+Forward: there is a symmetry, therefore there is a conserved quantity.
+
+Reverse: there is a conserved quantity, therefore there is a symmetry.
+
+Both are in the 1918 paper. The forward direction gets a few lines; the reverse
+gets a whole section, because it is harder.
+
+== Why the reverse is the useful one ==
+
+Footprints in snow.
+
+The forward statement is: a person walked here, so there are footprints. True,
+and not much use — you already knew about the person.
+
+The reverse is: there are footprints, so a person walked here. That is the one you
+use, because footprints are what you actually find.
+
+Physics is in the same position. Conserved quantities are what turns up. Something
+holds steady when you expected it to drift, and you want to know why.
+
+The reverse direction says: there is a symmetry, it is not a coincidence, and here
+is how to find it. Without the reverse, a conserved quantity is consistent with a
+symmetry and evidence of nothing.
+
+== How the proof goes ==
+
+Backwards, and that is not a joke — it is the actual structure.
+
+Noether takes the forward argument and runs each step in reverse. The conserved
+flows come first, they are combined back into the single relation the forward
+proof had produced, and from that relation the transformation is reconstructed
+explicitly. Not shown to exist. Written down.
+
+Then one more thing has to be checked, and it is not automatic: that the
+transformations you have recovered form a proper family — that doing two of them
+in a row lands you inside the family rather than outside it. Noether checks it.
+
+== Where she stops ==
+
+There is a case she cannot settle, and she says so.
+
+When the transformation depends on speeds as well as positions — the situation on
+[[Noether's theorems/Explainers/Why speed has to come along for the ride|the
+prolongation page]] — one possibility remains that her argument does not
+eliminate. Her text says the matter must remain undecided.
+
+'''This volume reports that rather than smoothing it over.''' The reverse
+direction is not unconditional, its author knew it, and a modern account that
+states it flatly has added a certainty she declined to claim.
+
+== One thing the reverse direction settles for free ==
+
+Early in the paper Noether makes an assumption to keep things manageable: that
+turning a knob twice as far does twice as much, at least for the smallest steps.
+It looks like a real restriction.
+
+The reverse direction shows it is not. If the knobs behaved otherwise, you would
+get relations of the same kind, just more of them — and feeding those back through
+the reverse direction returns you to a symmetry whose knobs behave simply after
+all. Nothing was lost by assuming it.
+
+This is a small point and a good example of what the reverse direction is for.
+It answers a question about the setup that the forward direction cannot reach.
+
+== A conserved quantity nobody had a reason for ==
+
+The best illustration of why the reverse direction earns its keep is a planet.
+
+A planet orbiting the sun conserves energy, because time is uniform. It conserves
+angular momentum, because space has no preferred direction. Both of those were
+understood.
+
+It also conserves a third thing — a quantity that points along the long axis of the
+ellipse and keeps the orbit from slowly rotating. This was noticed in the
+eighteenth century and had no explanation for a very long time. There was no
+obvious symmetry to blame. Rotations were already used up on angular momentum.
+
+The reverse direction says there must be one anyway. And there is: a symmetry that
+does not move the planet around in space at all, but mixes together the different
+ways of describing where it is and how fast it is going. It is invisible if you
+only look for symmetries that move things about a room.
+
+'''That is the reverse direction doing exactly what it is for.''' Somebody found a
+conserved quantity, could not account for it, and the theorem said: there is an
+account, keep looking. There was.
+
+The full story is on
+[[Noether's theorems/Applications/The Runge-Lenz vector|the Runge-Lenz page]].
+
+''No mathematics is used on this page. The mathematical treatment is on the
+counterpart page named above.''

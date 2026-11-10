@@ -1,0 +1,132 @@
+{{DISPLAYTITLE:Two different actions}}
+{{Technical|Hamilton's principle/Mathematics/Abbreviated action: Maupertuis versus Hamilton}}
+{{Hamilton's principle map}}
+
+This page separates two things that are both called the action. It uses no
+mathematics. The technical page it goes with is named above.
+
+== A confusion worth clearing up ==
+
+[[File:OPL-HP-F-36.png|thumb|right|400px|What each action principle holds fixed.]]
+
+There are two different quantities in this subject.
+
+Both are called '''the action'''. Both have a principle built on them. Both
+principles are called '''the principle of least action'''.
+
+They are not the same, and treating them as one is the most common error in the
+whole area. This page keeps them apart.
+
+== What each one holds fixed ==
+
+The difference is not in the formulas. It is in what you are allowed to vary when
+you compare paths.
+
+'''Hamilton's version.''' Fix where the journey starts, where it ends, and '''how
+long it takes'''. Compare all paths that get from one to the other in that
+time. Their energies may differ.
+
+'''Maupertuis' version.''' Fix where the journey starts, where it ends, and the
+'''energy'''. Compare all paths with that energy. How long they take may differ.
+
+One holds the clock and lets the energy float. The other holds the energy and lets
+the clock float.
+
+These are different competitions over the same set of curves. The winner turns out
+to be the same curve, which is why the two get confused, but the questions being
+asked are not the same question.
+
+== What each one is good for ==
+
+'''Hamilton's version is the general one.'''
+
+It needs no conservation of energy. It works for systems where the energy changes,
+where things are pushed and driven. It extends to fields, and hence to
+electromagnetism and gravity. Everything later in this volume uses it.
+
+'''Maupertuis' version is the specialised one.'''
+
+It requires energy to be conserved, so it applies to a narrower class of problems.
+In exchange, it removes time from the question entirely.
+
+That trade is sometimes exactly what you want. If you care about the '''shape''' of
+a planet's orbit and not about where it will be next Tuesday, the version without
+time in it is simpler. You get the ellipse and you never mention the clock.
+
+Recovering the timing afterwards is possible, and is extra work.
+
+== Turning motion into geometry ==
+
+The specialised version has a consequence worth stating on its own.
+
+With time removed, the problem becomes purely about shape. And it turns out to be
+exactly the problem of finding the '''shortest path''' — not in ordinary space, but
+in a space that has been stretched and distorted by the forces acting.
+
+So a particle moving through a landscape of hills and valleys is travelling as
+straight as it can, in a warped space whose warping the landscape supplies.
+
+That is a genuine reformulation, not a metaphor. And it is the same statement as
+the optical one on
+[[Hamilton's principle/Explainers/Light and particles|Light and particles]]: light bends in glass
+because glass warps the effective geometry, and a particle bends near a mass for
+the same kind of reason.
+
+The idea that gravity '''is''' geometry, rather than being a force acting within
+it, has this as its ancestor.
+
+== Which one Hamilton used ==
+
+Here is the trap for anyone reading the original sources.
+
+Hamilton's famous 1834 essay uses the '''specialised''' quantity — the one usually
+attributed to Maupertuis — throughout. His central function is that one.
+
+The quantity that modern textbooks call Hamilton's action appears in his
+'''second''' essay, a year later, introduced as a technical convenience for
+avoiding awkward steps.
+
+So the thing named after Hamilton is not the thing he built his first paper on.
+
+Anyone who opens the 1834 essay carrying the modern definition will misread every
+equation in it. This volume flags the point at each place a reader could trip over
+it, and the symbols are tabulated at
+[[Hamilton's principle/Notation|Notation]].
+
+== Neither is "least" ==
+
+The word ''least'' is wrong for both, and this volume has now shown that several
+times over.
+
+Maupertuis in 1744 meant ''least'' seriously. His argument for the principle was
+that nature is economical, and economy was the point of it.
+
+Hamilton corrected the name in 1834, calling it the law of least, or as it might
+be better called, of stationary action. He did it in passing, without emphasis.
+
+The mathematical justification for his correction took the rest of the century,
+and this volume works through it in the pages from
+[[Hamilton's principle/Explainers/Is it really a minimum|Is it really a minimum]] onwards.
+
+The quantum picture at
+[[Hamilton's principle/Explainers/Sum over histories|Sum over histories]] then supplies an
+independent reason: what matters is that the quantity barely changes, and a
+maximum does that just as well as a minimum.
+
+== How to keep them apart ==
+
+Three habits to hold on to, and they cover almost every case.
+
+'''Ask what is held fixed.''' Time fixed means Hamilton's. Energy fixed means
+Maupertuis'.
+
+'''Ask whether time appears in the answer.''' If the result is a shape with no
+schedule, it is the specialised version.
+
+'''Distrust the word "action" without qualification.''' Especially in older
+sources, and especially in Hamilton's own.
+
+== Where to go next ==
+
+The optical version of the same correspondence, and what came of it, is at
+[[Hamilton's principle/Explainers/Light and particles|Light and particles]].

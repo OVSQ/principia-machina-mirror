@@ -1,0 +1,288 @@
+{{DISPLAYTITLE:Terminology}}
+{{Principia Machina map}}
+<noinclude><!-- Principia Machina: terminology, the naming registry. Generated from the terminology map in the Principia Machina source; the whole page is replaced at each publish. Box styles inline, as on the Main Page. --></noinclude>
+
+<div id="tm-topbanner" style="border: 1px solid #a2a9b1; margin-bottom: 15px; background: #f8f9fa; color:#202122; padding: 10px; text-align: center;">
+<div id="tm-welcome" style="font-size: 1.8em; line-height: 1.3; padding: 0.1em;">PRINCIPIA MACHINA: terminology</div>
+<div style="font-size: 0.95em;">Every version 1 term beside its version 2 word, its three-letter code, its Lean namespace, and the collision and rule behind the choice.</div>
+<div style="font-size: 0.85em; margin-top: 0.3em;">Terminology map as of 29 October 2026 &middot; 33 rows &middot; the three-letter codes are approved &middot; version 1, [[The Principia Machina]], keeps its own words</div>
+</div>
+
+<div style="border: 1px solid #a2a9b1; background: #ffffff; color:#202122; padding: 6px 10px; margin-bottom: 15px; font-size: 0.95em;">'''On this page:''' [[#tm-what-box|What this registry is]] &middot; [[#tm-codes-box|The codes are approved]] &middot; [[#tm-table-box|The registry]] &middot; [[#tm-rules-box|The naming rules]] &middot; [[#tm-new-box|How a new term gets a row]] &middot; [[#tm-more-box|Read further]]</div>
+
+<div id="tm-what-box" style="border: 1px solid #a2a9b1; margin-bottom: 15px; background: #ffffff; color:#202122;">
+<h2 id="tm-what-h2" style="margin: 0; padding: 8px 10px; background-color: #cef2e0; border-bottom: 1px solid #a2a9b1; font-size: 1.2em; font-weight: bold;">What this registry is</h2>
+<div id="tm-what" style="padding: 10px;">
+Version 2 of the Principia Machina restates the framework in '''Lean 4''', a language in which proofs are checked by machine. Lean, its build tool Lake and its mathematics library Mathlib already use many of the words version 1 used every day. In Lean the ''kernel'' is the proof checker, an ''environment'' is everything defined so far, and a ''module'' is a source file; Mathlib has ''measures'' and ''manifolds''. A version 2 text that used those words bare would mean two things at once.
+
+This registry records how each version 1 term carries over. A row gives the version 1 term; the version 2 word that replaces it, or "unchanged"; its three-letter code, where it has one; the Lean namespace where it lives in the Lean sources; and the collision the new word avoids, or the rule that settles it. Every term of version 1's framework that has no row here is carried into version 2 unchanged.
+
+The move is declared, term by term; it is not a search and replace. Version 1's records, digests and version numbers are not changed, and version 1's pages keep version 1's words. In version 2, '''words are the names''', in prose and in the Lean sources alike. A three-letter code is an abbreviation for tables, digest labels and page titles, and is used nowhere a word fits.
+</div>
+</div>
+
+<div id="tm-codes-box" style="border: 1px solid #a2a9b1; margin-bottom: 15px; background: #ffffff; color:#202122;">
+<h2 id="tm-codes-h2" style="margin: 0; padding: 8px 10px; background-color: #ffedad; border-bottom: 1px solid #a2a9b1; font-size: 1.2em; font-weight: bold;">The codes are approved</h2>
+<div id="tm-codes" style="padding: 10px;">
+'''The three-letter codes on this page are approved.''' The Declarer approved the code table on 15 October 2026, once and as a whole, as it had been proposed. A code added to the table later is proposed until the Declarer approves it.
+
+The codes were drawn up under rule R8 below: any two differ in at least two letters and none is a Lean core type, and a code that is also a known acronym elsewhere is flagged in its row. A note such as "not PRS (one letter from PFS)" records a candidate code that failed the rule.
+</div>
+</div>
+
+<div id="tm-table-box" style="border: 1px solid #a2a9b1; margin-bottom: 15px; background: #ffffff; color:#202122;">
+<h2 id="tm-table-h2" style="margin: 0; padding: 8px 10px; background-color: #cedff2; border-bottom: 1px solid #a2a9b1; font-size: 1.2em; font-weight: bold;">The registry</h2>
+<div id="tm-table" style="padding: 10px;">
+One row per term, in the order of the terminology map this page is generated from. A blank cell means the map gives nothing there: the term has no code, or no Lean namespace of its own. "none" in the code column means the word deliberately has no code and is always written in full. Rules are cited by number (R1 to R9, [[#tm-rules-box|below]]); a row that avoids a Mathlib word binds only under rule R7.
+
+<div style="overflow-x: auto;">
+{| id="pma-terminology" class="wikitable" style="width: 100%; font-size: 0.9em;"
+! Version 1 term !! Version 2 word !! Code !! Lean namespace !! Collision or rule
+|-
+| The Principia Machina, TPM
+| Principia Machina
+| PMA
+| <code>Principia</code>
+| the name is the Declarer's selection
+|-
+| TPS, The Principia Machina Specification
+| Principia Framework Specification
+| PFS
+| generated docs
+| also "perfect forward secrecy", flagged
+|-
+| TPK, The Prime Kernel
+| Starting Set
+| SST
+| <code>Principia.StartingSet</code>
+| "kernel" is Lean's checker; R2
+|-
+| TrM, The Translation Manifold
+| Correspondence Table
+| COR
+| <code>Principia.Correspondence</code>
+| Mathlib manifolds
+|-
+| TMS, The Measure Set
+| Criteria Set
+| CRI
+| <code>Principia.Criteria</code>
+| Mathlib Measure, MeasurableSet
+|-
+| TFK, The Full Kernel
+| Research Assembly
+| RAS
+| <code>Principia.ResearchAssembly</code>
+| "sealed" stays the adjective
+|-
+| ENVIRONMENT; ENVIRONMENT INVENTORY; ENVIRONMENT_QUANTITY
+| Physical Referent; REFERENT INVENTORY; REFERENT_QUANTITY
+| none
+| <code>Principia.Referent</code>
+| <code>Lean.Environment</code>; R5
+|-
+| ENVIRONMENT MODULE and its declarations
+| Provision, kinds Interaction and Convention
+| PRV
+| <code>Principia.Provision</code>
+| Lean and Lake modules; not INT (<code>Int</code>)
+|-
+| RR, Research Register
+| Research Record Register
+| RRG
+| <code>Principia.Register</code>
+|
+|-
+| Congruence Protocol; CAC
+| Audit and Congruence Protocol; CAC
+| ACP; CAC
+| <code>Principia.Congruence</code>
+| Mathlib <code>Con</code>; compound
+|-
+| Public Recorder; PLATFORM
+| Recorder; Platform
+| REC
+| <code>Principia.Recorder</code>
+| not PRS (one letter from PFS)
+|-
+| TPX
+| Custos
+| CUS
+| PHP extension; <code>Principia.Governor</code> for its pure decisions
+| the name is the Declarer's selection
+|-
+| TPC, TPC-PHP, TPC-PY
+| Calculator, one residence; binary <code>pcalc</code>
+| PCC
+| <code>Principia</code>, <code>Main</code>
+| not <code>calc</code>, a Lean keyword
+|-
+| PRB
+| Research Client
+| RCL
+| Python
+| not RAC (one letter from RAS)
+|-
+| GTP
+| Agent Contract
+| AGC
+| spec part
+| not GAC (one letter from CAC)
+|-
+| CA-GTP
+| Certified Agent
+| CTA
+|
+| not CRA (one from CRI), not CAG (one from CAC)
+|-
+| (no v1 term)
+| Agent Implementation Profile: the vendor-neutral generic prompt any agent may load, published with its digest
+| AIP
+|
+| the term is the Declarer's selection
+|-
+| PACKAGE (probe)
+| Probe Pack
+| none
+| <code>Principia.ProbePack</code>
+| <code>Lake.Package</code>
+|-
+| MANIFEST page, tree, revision
+| Index page, Index tree, INDEX REVISION
+| none
+| <code>Principia.Index</code>
+| <code>lake-manifest.json</code>
+|-
+| LIBRARY PAGE
+| Reading page
+| none
+|
+| <code>lean_lib</code>
+|-
+| kernel tests T1-T6
+| fundamental tests T1-T6
+|
+| <code>Principia.StartingSet.Tests</code>
+|
+|-
+| H-DECL, H-OP, H-OWN, H-SPON, ANY; no v1 term for the sixth
+| Declarer, Operator, Initiator, Sponsor, Public, Contributor (an outside builder, an agent or a person, admitted by the Declarer after a probe unit; it holds work units on the public channel and nothing on the wiki beyond its account)
+|
+| <code>Principia.Role</code>
+| groups <code>pma-declarer</code>, <code>pma-operator</code>, <code>pma-initiator</code>, <code>pma-sponsor</code>, <code>pma-contributor</code>; Public is <code>*</code>
+|-
+| AI-LEAD, AI-CO
+| Holder, Coworker (lock states)
+|
+| <code>Principia.LockState</code>
+| not "position" (<code>Lean.Position</code>)
+|-
+| USER, AGENT
+| unchanged
+|
+| <code>Principia.AccountClass</code>
+| group <code>pma-agent</code>
+|-
+| D(TPK), D(TrM), D(TMS), D(TFK), D(TPS), D(IS)
+| D(SST), D(COR), D(CRI), D(RAS), D(PFS), D(IS)
+|
+|
+|
+|-
+| content hash, page hash
+| digest; page digest
+|
+|
+| R4
+|-
+| UWC, DOF, DOMAIN, UNIT, REGIME, GRADE, STATUS, STRIKE, HOLD, RELEASE, falcon, canary, parrot, sponsor, fingerprint, governor, lane, seat
+| unchanged
+|
+|
+| checked, no collision
+|-
+| register record; CLASS, GRADE, STATUS, the envelope
+| unchanged
+|
+| <code>Principia.Record</code>
+| the record table's types
+|-
+| envelope field TPS (the specification version a push conformed to)
+| PFS
+|
+| <code>EnvelopeField.pfsVersion</code>
+| follows the TPS row; the code is approved with the code table; v1 records keep TPS
+|-
+| record-table writers LEAD; TPX
+| HOLDER; CUSTOS
+|
+| <code>FieldWriter.holder</code>, <code>.custos</code>
+| follow the AI-LEAD and TPX rows
+|-
+| type class (the record table's RID, IDSET, ... OBJECT)
+| value type
+|
+| <code>Principia.Record.ValueType</code>
+| a type class is a Lean mechanism; R2
+|-
+| DERIVATION {STEPS, TEXT}
+| DERIVATION, forms PROSE, STRUCTURED, KERNEL
+|
+| <code>Principia.Record.Derivation</code>, <code>DerivationForm</code>
+| wire word KERNEL kept; Lean name <code>kernelProof</code> (R2); PROSE may carry an unchecked attachment
+|-
+| (no v1 term)
+| DERIVATION_CLASS: INSPECTION, MECHANICAL, PROVED
+|
+| <code>Principia.Record.DerivationClass</code>
+| the check classes, with PROSE credited INSPECTION, STRUCTURED MECHANICAL, KERNEL PROVED
+|}
+</div>
+</div>
+</div>
+
+<div id="tm-rules-box" style="border: 1px solid #a2a9b1; margin-bottom: 15px; background: #ffffff; color:#202122;">
+<h2 id="tm-rules-h2" style="margin: 0; padding: 8px 10px; background-color: #cef2e0; border-bottom: 1px solid #a2a9b1; font-size: 1.2em; font-weight: bold;">The naming rules</h2>
+<div id="tm-rules" style="padding: 10px;">
+Nine rules govern every version 2 name. The registry's last column cites them by number.
+
+# '''R1. Wire names and Lean names.''' A record field, state or code keeps its capital spelling on pages, in records and in prose (<code>UNIT</code>, <code>AT</code>, <code>MATCH</code>). In Lean the same thing is a lowerCamel word that is not a Lean keyword (<code>unit</code>, <code>atPoint</code>, <code>outcome</code>). One table maps each wire name to its Lean name; no name is escaped to get past a keyword.
+# '''R2. No bare colliding word.''' A word that clashes seriously with a meaning in Lean, Lake or Mathlib is never used alone. It is written as a two-word compound, in prose and in code, and Lean's own sense is always qualified: "the Lean kernel" when Lean's proof checker is meant.
+# '''R3. Every layer and zone is a namespace.''' Each layer and zone of the framework is a namespace under <code>Principia</code>, such as <code>Principia.StartingSet</code>. No single-word framework type sits at the root, and nothing shadows a Lean, Lake or Mathlib type.
+# '''R4. Digest, not hash.''' Every SHA-256 value is a digest. "Hash" is left to Lean's own 64-bit <code>hash</code> and to MediaWiki's SHA-1 of a page, which version 2 text calls the page digest.
+# '''R5. No type named like a Lean type.''' No framework type is named Name, Option, Unit, Level, Position, Format, Json, Declaration, Module, Environment, Kernel, Task, Job, Package, Workspace, Manifest, Target, Script, Cache, Env or Int.
+# '''R6. A registry.''' This page: every version 1 term with its version 2 word, code, Lean name, collision and rule. The move is declared, term by term, not done by search and replace, and version 1's records, digests and version numbers are not changed.
+# '''R7. Mathlib rows are conditional.''' A row that avoids a Mathlib word binds only if version 2 adopts Mathlib, Lean's mathematics library. Version 2 is written in core Lean for now, by the Declarer's choice; a later move to Mathlib would be a change of its own, and the rows are recorded now so that it is made with them in view.
+# '''R8. Codes.''' Any two codes differ in at least two letters, so a one-letter slip cannot turn one into another. No code is a Lean core type, and none is a well-known acronym in computing, cryptography or physics; where an overlap remains, the row says so.
+# '''R9. The size test.''' A name must read right for a spring on a track: nothing may sound too big for the smallest system the framework is used on.
+</div>
+</div>
+
+<div id="tm-new-box" style="border: 1px solid #a2a9b1; margin-bottom: 15px; background: #ffffff; color:#202122;">
+<h2 id="tm-new-h2" style="margin: 0; padding: 8px 10px; background-color: #cedff2; border-bottom: 1px solid #a2a9b1; font-size: 1.2em; font-weight: bold;">How a new term gets a row</h2>
+<div id="tm-new" style="padding: 10px;">
+Every term of version 1's framework that is not listed here is carried into version 2 unchanged until a row says otherwise. Nothing is renamed silently.
+
+When the work meets a term that needs a new word, most often because Lean, Lake or Mathlib already uses it, a row is added to the terminology map with all five columns:
+# the version 1 term, as version 1 wrote it;
+# the version 2 word, checked against Lean, Lake and Mathlib (R2, R3, R5) and against the size test (R9);
+# a code, only if the word needs one, checked under R8 against every code already in the table; a new code is proposed until the Declarer approves it;
+# the Lean namespace, under <code>Principia</code> (R3);
+# the collision the word avoids, or the rule applied.
+This page is then generated again from the map and checked against it row by row, so the page and the map cannot differ. Like every framework page, it reaches this wiki only after the Declarer approves the change.
+</div>
+</div>
+
+<div id="tm-more-box" style="border: 1px solid #a2a9b1; margin-bottom: 15px; background: #ffffff; color:#202122;">
+<h2 id="tm-more-h2" style="margin: 0; padding: 8px 10px; background-color: #eaecf0; border-bottom: 1px solid #a2a9b1; font-size: 1.2em; font-weight: bold;">Read further</h2>
+<div id="tm-more" style="padding: 10px;">
+* [[Principia Machina/Lean transition|The move to Lean]]: why version 2 is written in Lean, with the new words in context.
+* [[The Principia Machina/TPS|The Principia Machina Specification]]: version 1's normative text, where the terms in the left-hand column are defined.
+* [[The Principia Machina]]: version 1, its home page; it stays as history.
+
+<small>This page is generated from the terminology map in the Principia Machina source and replaced whole at each publish; an edit made here is overwritten. Terminology map as of 29 October 2026.</small>
+</div>
+</div>
+
+
+__NOTOC__ __NOEDITSECTION__

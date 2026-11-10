@@ -1,0 +1,111 @@
+{{DISPLAYTITLE:Why gravity has no local energy}}
+{{Noether's theorems map}}
+
+''Mathematical counterpart: [[Noether's theorems/Applications/General relativity and the energy question|General relativity and the energy question]].''
+
+This is the question Noether's paper was written to answer. The answer is not that
+gravitational energy is hard to define. It is that the thing being looked for does
+not exist, and there is a rule saying exactly when it will not.
+
+== The problem as it stood in 1918 ==
+
+Every other field theory says how much energy sits in each small region. Gravity
+does not.
+
+The quantity general relativity offers for the job behaves badly. Change your
+coordinate labels and it changes. Pick any point you like and there are labels
+making it zero there. A quantity you can make vanish by relabelling is not telling
+you how much of anything is present.
+
+For three years this was read as unfinished business. The theory was young, the
+formalism unsettled, and somebody would eventually write down the right
+expression.
+
+== The rule ==
+
+Noether's answer is a rule with two sides, and both sides are needed.
+
+'''A conservation law is empty exactly when the symmetry it came from sits inside
+a symmetry you can dial differently at every point.'''
+
+Empty here means the sense on
+[[Noether's theorems/Explainers/A conservation law that is only wearing the costume|the
+costume page]]: the conserved quantity is assembled out of the equations of motion,
+so saying it is conserved reports nothing the equations had not already said.
+
+Now apply it. Energy conservation comes from the symmetry "shift everything in
+time". General relativity lets you relabel spacetime however you like, differently
+here than there — and shifting everything in time is one such relabelling.
+
+So the symmetry sits inside a local one. The rule fires. The energy relations are
+empty, and no better expression is coming, because there is nothing to find.
+
+== The other side of the rule, which is the important half ==
+
+A rule that always said "empty" would explain nothing.
+
+Noether checks the other direction herself, in a footnote. Ordinary mechanics, and
+special relativity: their energy theorems are '''genuine'''. Neither theory has a
+local symmetry, so there is nothing for the global one to hide inside, and the
+condition fails.
+
+'''That is what makes this an explanation rather than a restatement of the
+difficulty.''' The rule separates the cases, and it puts gravity on one side and
+everything else on the other for a stated reason.
+
+== Two misreadings ==
+
+'''"Gravity is the reason."''' It is not. The rule is about symmetries, and any
+theory meeting the condition behaves this way. Noether proves the point by
+building a local symmetry out of a logarithm — a construction with no physics in it
+whatsoever — and showing the empty energy relations appear exactly as the rule
+requires. Gravity satisfies a condition; it does not cause one.
+
+'''"General relativity has no energy."''' Also not. For an isolated system — a
+star with empty space stretching away in all directions — a total energy can be
+defined by watching how spacetime behaves far away, and it is meaningful and
+measurable. What is unavailable is the local statement: this much here, that much
+there.
+
+The distinction is the one from
+[[Noether's theorems/Explainers/A flowing quantity and a standing total|the flow
+and total page]]. Usually the total follows from the local statement. Here the
+local statement fails and a total survives by a different route entirely.
+
+== And a second, unrelated problem ==
+
+Even where a spacetime does have a symmetry, most spacetimes have very few, and a
+realistic one has none at all. That is the situation on
+[[Noether's theorems/Explainers/Symmetries of a curved space|the curved space
+page]].
+
+Keep the two apart. No symmetry is a shortage. A symmetry swallowed by a local one
+is a surplus. General relativity manages both, and describing either as "energy is
+a problem in general relativity" flattens two different facts into one vague one.
+
+== What the offending quantity actually is ==
+
+It has a name — a pseudotensor — and the name records the complaint rather than
+explaining it.
+
+A proper physical quantity in general relativity has to behave in a definite way
+when you change coordinate labels. Everybody must agree about it, even while
+describing it in different words. That is what being a tensor means, and the
+matter side of Einstein's equations satisfies it.
+
+The gravitational energy expression does not. Relabel and it changes, and not in
+the disciplined way a real quantity changes. Two observers using different labels
+will not merely describe the same energy differently; they will disagree about
+whether there is any.
+
+For a while this looked like a construction that had come out slightly wrong.
+Several people proposed alternatives — Einstein, Lorentz, Weyl and Hilbert each
+had one — and Klein's 1918 paper showed that all of them followed from a single
+identity and differed only in which term had been absorbed where.
+
+'''That was the clue.''' A quantity that can be shuffled about that freely, with
+no principle selecting one version, is not a quantity that has a value. It took
+the criterion on this page to turn that suspicion into a proof.
+
+''No mathematics is used on this page. The mathematical treatment is on the
+counterpart page named above.''

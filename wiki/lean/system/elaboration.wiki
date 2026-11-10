@@ -1,0 +1,118 @@
+{{DISPLAYTITLE:Elaboration}}
+{{Plebeian|Lean theorem prover/Explainers/What a proof assistant does|Lean theorem prover/Explainers/When Lean says no}}
+{{Lean theorem prover map}}
+
+'''Elaboration''' is the step that turns what a person types into a term of Lean's core type theory. The typed text leaves out a great deal: the types of arguments, the instances behind notation such as <code>+</code>, conversions between number types, universe levels. The '''elaborator''' supplies all of it and produces a fully explicit term. That term then goes to the Lean kernel, which checks it. The elaborator's own reasoning is not trusted. This page follows a term from text to the Lean kernel and shows, with Lean 4.34.1's own output, what the elaborator adds.
+
+== From text to the Lean kernel ==
+
+Lean processes a source file one command at a time. Each command is parsed, then elaborated, and a new definition or theorem is checked by the Lean kernel and recorded in Lean's environment, its table of definitions and theorems. Each command can change how later commands are read, since a command may add new syntax.<ref name="manual-elab">Lean Developers, ''The Lean Language Reference'', version 4.34.0, chapter "Elaboration and Compilation". https://lean-lang.org/doc/reference/4.34.0/Elaboration-and-Compilation/</ref>
+
+The '''parser''' turns characters into a syntax tree of type <code>Syntax</code>. The reference manual describes it as a recursive-descent parser that uses dynamic tables based on Pratt parsing, and its tables can be extended by any command.<ref name="manual-elab" /> A syntax tree records what was written, not what it means: <code>x + 1</code> parses the same whether <code>x</code> is a natural number, an integer or a matrix.
+
+The '''elaborator''' gives the tree its meaning. Term elaborators, in the manual's words, map syntax and an optional expected type to a core language expression, and they work in a setting that provides unification, type class instance synthesis and type checking.<ref name="manual-elab" /> The result is an <code>Expr</code>, the same data type the Lean kernel checks.
+
+== Macro expansion ==
+
+Much of Lean's notation is defined by '''macros''': rules that rewrite one piece of syntax into another before it is given meaning. Macro expansion is not a separate pass. It is interleaved with elaboration.<ref name="manual-elab" /> In Lean 4.34.1 the main elaboration loop first asks whether a macro applies to the syntax at hand; if one does, it elaborates the expansion instead, and only otherwise does it call an elaboration function registered for that kind of syntax.<ref name="src-termelab">Lean 4 source code, version 4.34.1 (2026), file <code>src/Lean/Elab/Term/TermElabM.lean</code>: the function <code>elabTermAux</code> and the type <code>SyntheticMVarKind</code>. Apache License 2.0. https://github.com/leanprover/lean4/blob/v4.34.1/src/Lean/Elab/Term/TermElabM.lean</ref> The trace option <code>trace.Elab.step</code> prints each step together with the expected type at that point:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+set_option trace.Elab.step true in
+#check (3 : Nat) ≠ 4
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+3 ≠ 4 : Prop
+[Elab.step] ✅️ expected type: &lt;not-available&gt;, term
+    (3 : Nat) ≠ 4
+  [Elab.step] ✅️ expected type: &lt;not-available&gt;, term
+      binrel% Ne✝ (3 : Nat) 4
+    [Elab.step] ✅️ expected type: &lt;not-available&gt;, term
+        (3 : Nat)
+      [Elab.step] ✅️ expected type: Type, term
+          Nat
+        [Elab.step.result] Nat
+      [Elab.step] ✅️ expected type: Nat, term
+          3
+        [Elab.step.result] 3
+      [Elab.step.result] 3
+    [Elab.step] ✅️ expected type: &lt;not-available&gt;, term
+        4
+      [Elab.step.result] 4
+    [Elab.step.result] 3 ≠ 4
+  [Elab.step.result] 3 ≠ 4
+</pre>
+
+The symbol <code>≠</code> is a macro. Its expansion, <code>binrel% Ne✝ (3 : Nat) 4</code>, hands the two sides to <code>binrel%</code>, an elaborator for binary relations. The dagger after <code>Ne</code> marks a name introduced by the macro, which text written by the user cannot capture; [[Lean theorem prover/System/Syntax extension and hygienic macros|syntax extension and hygienic macros]] explains this hygiene, which the paper introducing Lean 4 describes as capture-avoiding.<ref name="lean4-paper" /> The ascription <code>(3 : Nat)</code> passes the expected type <code>Nat</code> down to the numeral <code>3</code>.
+
+== Expected types ==
+
+The expected type is the elaborator's main source of information. Some notation cannot be read at all without it. The anonymous constructor <code>⟨1, 2⟩</code> names no type, so on its own it fails:
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+#check ⟨1, 2⟩
+</pre>
+
+Lean answers <code>Invalid `⟨...⟩` notation: The expected type of this term could not be determined</code>. With an ascription, <code>#check (⟨1, 2⟩ : Nat × Nat)</code> prints <code>(1, 2) : Nat × Nat</code>: knowing the type, the elaborator finds the structure's one constructor and applies it.
+
+== What the elaborator fills in ==
+
+The option <code>pp.all</code> prints a term with nothing hidden: every implicit argument, every instance, every universe level. It is the way to see what the elaborator actually produced.
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+#check @id
+set_option pp.all true in
+#check id 5
+set_option pp.all true in
+#check (2 : Int) + (3 : Nat)
+</pre>
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+@id : {α : Sort u_1} → α → α
+@id.{1} Nat (@OfNat.ofNat.{0} Nat (nat_lit 5) (instOfNatNat (nat_lit 5))) : Nat
+@HAdd.hAdd.{0, 0, 0} Int Int Int (@instHAdd.{0} Int Int.instAdd)
+  (@OfNat.ofNat.{0} Int (nat_lit 2) (@instOfNat (nat_lit 2)))
+  (@Nat.cast.{0} Int instNatCastInt (@OfNat.ofNat.{0} Nat (nat_lit 3) (instOfNatNat (nat_lit 3)))) : Int
+</pre>
+
+Four kinds of filling are visible.
+
+'''Implicit arguments.''' The braces in <code>{α : Sort u_1}</code> mark an argument the user does not write. For <code>id 5</code> the elaborator creates a placeholder for <code>α</code>, a ''metavariable'', and unifies it with the type of the argument <code>5</code>, which is itself still open; it becomes <code>Nat</code> when the default instance for numerals is applied, as described under postponement below. [[Lean theorem prover/System/Metavariables and unification|Metavariables and unification]] treats this machinery.
+
+'''Universe levels.''' The universe parameter <code>u_1</code> of <code>id</code> is instantiated to <code>1</code>, since <code>Nat : Type</code> and <code>Type</code> is <code>Sort 1</code>.
+
+'''Instances.''' A numeral is not a primitive: <code>5</code> becomes <code>OfNat.ofNat Nat 5 (instOfNatNat 5)</code>, and <code>+</code> becomes the method <code>HAdd.hAdd</code> of a type class with the instance <code>instHAdd</code> built on <code>Int.instAdd</code>. The instances are found by search; [[Lean theorem prover/System/Type classes and instance resolution|type classes and instance resolution]] describes it.
+
+'''Coercions.''' The second summand was written as a natural number but is used where an integer is expected. The elaborator inserts <code>Nat.cast</code>, which the ordinary printer shows as <code>↑</code>. The reference manual states that a coercion is used when a term of one type appears where another is expected, and that coercions are found by type class instance synthesis.<ref name="manual-coe">Lean Developers, ''The Lean Language Reference'', version 4.34.0, chapter "Coercions". https://lean-lang.org/doc/reference/4.34.0/Coercions/</ref>
+
+== Postponement ==
+
+The elaborator works through a term roughly from left to right, but information often arrives late. A subterm may need a type that a later argument determines, or an instance problem may still contain unknowns. In such cases the elaborator does not fail. It puts a '''synthetic metavariable''' in place of the unfinished work and comes back to it. In Lean 4.34.1 such a placeholder has one of four kinds: an instance to be synthesised, a coercion to be inserted, a tactic block to be run, or a term whose elaboration was postponed.<ref name="src-termelab" />
+
+The pending placeholders are resumed in a fixed order. Lean retries them while progress is being made. When none progresses, it retries without allowing further postponement, then applies '''default instances''' to instance problems still unsolved, then forces the remaining problems to succeed or report an error. Tactic blocks run last, when the rest of the term is as complete as it will get.<ref name="src-synth">Lean 4 source code, version 4.34.1 (2026), file <code>src/Lean/Elab/SyntheticMVars.lean</code>: the function <code>synthesizeSyntheticMVars</code>. Apache License 2.0. https://github.com/leanprover/lean4/blob/v4.34.1/src/Lean/Elab/SyntheticMVars.lean</ref>
+
+Default instances explain a small puzzle:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+#check fun x => x + 1
+</pre>
+
+Lean prints <code>fun x => x + 1 : Nat → Nat</code>, although nothing in the text says <code>Nat</code>. The type of <code>x</code> is unknown, so the instance problem for <code>+</code> stays stuck through every round. At the default step, Lean's prelude marks <code>instHAdd</code> as a default instance, which makes both summands and the result share one type, and marks <code>instOfNatNat</code> as a low-priority default instance for numerals, which makes that type <code>Nat</code>.<ref name="src-prelude">Lean 4 source code, version 4.34.1 (2026), file <code>src/Init/Prelude.lean</code>: the attributes <code>@[default_instance]</code> on <code>instHAdd</code> and <code>@[default_instance 100]</code> on <code>instOfNatNat</code>. Apache License 2.0. https://github.com/leanprover/lean4/blob/v4.34.1/src/Init/Prelude.lean</ref> Where no default applies, the elaborator reports the gap. Writing <code>def g := fun x => x</code> gives <code>Failed to infer type of binder `x`</code>.
+
+== Why the elaborator is not trusted ==
+
+The elaborator is large, it is written in Lean, and users extend it: every new macro, elaborator or tactic becomes part of it.<ref name="lean4-paper" /> The design does not ask anyone to trust it. Its output is checked by the Lean kernel, and the reference manual gives the reason: to guard against potential bugs in elaboration.<ref name="manual-elab" /> The Lean kernel does no unification of its own and no termination checking; it expects the elaborator to have done that work, and checks the explicit result.<ref name="manual-elab" /> As long as its output goes through the Lean kernel, a faulty elaborator can therefore cause a rejection, or a slow check, but not the acceptance of a false theorem. [[Lean theorem prover/System/The Lean kernel|The Lean kernel]] describes the checker.
+
+One thing the Lean kernel cannot protect is meaning. The elaborator decides what a statement says: which instance <code>+</code> refers to, which coercion was inserted, which type a numeral was given. The Lean kernel then checks a proof of ''that'' statement. The reference manual's guidance on validating proofs makes the same separation: where there is doubt that a theorem means what it appears to mean, its statement and every definition it refers to must be examined, particularly where custom notation or type classes are involved.<ref name="manual-validating">Lean Developers, ''The Lean Language Reference'', version 4.34.0, "Validating a Lean Proof". https://lean-lang.org/doc/reference/4.34.0/ValidatingProofs/</ref> <code>pp.all</code> and <code>#print</code> are the tools for that reading.
+
+== Beyond terms ==
+
+Elaboration also records what it did. Info trees relate the elaborated terms to the user's original syntax, and an editor uses them to show types on hover and goals in a proof.<ref name="manual-elab" /> Commands are elaborated too. A command elaborator may add definitions, open namespaces or declare new syntax, and these are changes to Lean's state, not terms. This extensibility, a parser, elaborator and tactic framework that users can extend from Lean itself, is a design aim stated in the abstract and the conclusion of the paper that introduced Lean 4.<ref name="lean4-paper">Leonardo de Moura and Sebastian Ullrich, "The Lean 4 Theorem Prover and Programming Language (System Description)", in ''Automated Deduction – CADE 28'', Lecture Notes in Computer Science 12699, Springer, 2021, pp. 625–635. doi:10.1007/978-3-030-79876-5_37</ref>
+
+== Next ==
+
+[[Lean theorem prover/System/The Lean kernel|The Lean kernel]] describes what happens to the elaborated term. [[Lean theorem prover/System/Metavariables and unification|Metavariables and unification]] opens up the placeholders used above.
+
+== References ==
+
+<references />

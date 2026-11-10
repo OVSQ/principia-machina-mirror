@@ -1,0 +1,289 @@
+{{DISPLAYTITLE:Terms, types and judgments}}
+{{Plebeian|Lean theorem prover/Explainers/Checking instead of convincing|Lean theorem prover/Explainers/Propositions as types}}
+{{Lean theorem prover map}}
+
+Lean's logic is a dependent type theory. Everything in it, a number, a function, a type, a
+proposition, a proof, is a '''term''', and the theory consists of rules that say which terms
+have which types. This page sets out the basic statement the rules are about, the typing
+judgment; the contexts it is made in; the small term language that Lean's kernel actually
+receives; the way that language writes bound variables; and the difference between checking
+a type and inferring one. The later Foundations pages add one feature at a time to what is
+set out here.
+
+== The typing judgment ==
+
+The basic statement of the theory is the '''typing judgment'''
+
+:<math>\Gamma \vdash e : A</math>
+
+read "in the context <math>\Gamma</math>, the term <math>e</math> has type <math>A</math>".
+A '''context''' is a list of variables with their types,
+<math>x_1 : A_1, \ldots, x_n : A_n</math>, in which each type may mention the variables
+before it. A term is '''well-typed''' when some judgment of this form can be derived for it,
+and only well-typed terms have a meaning.<ref name="refman-ts">''The Lean Language
+Reference'', for Lean 4.34.0, lean-lang.org, 2026, chapter 4, "The Type System".
+https://lean-lang.org/doc/reference/4.34.0/The-Type-System/</ref>
+
+A judgment is not a proposition inside the theory. It is a statement about the theory, made
+by its rules. A '''derivation''' is a finite tree of rule applications whose root is the
+judgment in question. Lean does not store derivations. Its terms carry enough information,
+binder types included, for a derivation to be reconstructed from the term alone, so the term
+itself is the evidence; this is what makes a proof term something an independent program can
+check.<ref name="refman-ts" />
+
+Two further judgments travel with the first. <math>\Gamma \vdash e \equiv e'</math> says that
+two terms are '''definitionally equal''': equal by computation, without proof. And
+<math>\Gamma\ \mathrm{ok}</math> says that a context is well formed. A precise presentation
+of all three for Lean, with every rule written out, is Carneiro's thesis ''The Type Theory of
+Lean''.<ref name="carneiro2019">Mario Carneiro, ''The Type Theory of Lean'', MSc thesis,
+Carnegie Mellon University, 2019. https://github.com/digama0/lean-type-theory/releases/tag/v1.0</ref>
+The thesis describes Lean 3. The Lean 4 kernel extends that theory with natural-number
+literals, nested inductive types, primitive projections and eta for structures. Carneiro
+notes that two of these, nested inductive types and eta for structures, change the theory
+enough that the 2019 soundness proof does not apply to Lean 4 directly.<ref name="lean4lean">Mario Carneiro, "Lean4Lean: Verifying a Typechecker for Lean,
+in Lean", in ''31st International Conference on Types for Proofs and Programs (TYPES 2025)'',
+LIPIcs vol. 384, pp. 2:1–2:23, 2026. https://doi.org/10.4230/LIPIcs.TYPES.2025.2 (read in
+the version arXiv:2403.14064v2)</ref>
+
+== Contexts ==
+
+A context is built one variable at a time, and each new variable must be given a type:
+
+:<math>\frac{}{\cdot\ \mathrm{ok}} \qquad \frac{\Gamma\ \mathrm{ok} \qquad \Gamma \vdash A : \mathrm{Sort}\,u}{\Gamma, x : A\ \mathrm{ok}}</math>
+
+The empty context is well formed, and a well-formed context may be extended by <math>x : A</math> when
+<math>A</math> is itself a well-typed term whose type is a universe,
+<math>\mathrm{Sort}\,u</math>. Universes are the subject of
+[[Lean theorem prover/Foundations/Universes and Prop|Universes and Prop]]; here it is enough
+that "<math>A</math> has type <math>\mathrm{Sort}\,u</math> for some <math>u</math>" is what
+"<math>A</math> is a type" means. A variable then has the type the context gives it:
+
+:<math>\frac{(x : A) \in \Gamma}{\Gamma \vdash x : A}</math>
+
+This is the form of the variable rule that Carneiro shows can take the place of a separate
+weakening rule.<ref name="carneiro2019" />
+
+== The core term language ==
+
+Lean's surface syntax, with its notation, implicit arguments, pattern matching and tactics,
+is not what the Lean kernel checks. The elaborator translates it into a much smaller language,
+and that smaller language is the data type <code>Lean.Expr</code>. Lean can print its own
+definition:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+import Lean
+#print Lean.Expr
+</pre>
+
+Lean 4.34.1 prints twelve constructors:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+inductive Lean.Expr : Type
+number of parameters: 0
+constructors:
+Lean.Expr.bvar : Nat → Lean.Expr
+Lean.Expr.fvar : Lean.FVarId → Lean.Expr
+Lean.Expr.mvar : Lean.MVarId → Lean.Expr
+Lean.Expr.sort : Lean.Level → Lean.Expr
+Lean.Expr.const : Lean.Name → List Lean.Level → Lean.Expr
+Lean.Expr.app : Lean.Expr → Lean.Expr → Lean.Expr
+Lean.Expr.lam : Lean.Name → Lean.Expr → Lean.Expr → Lean.BinderInfo → Lean.Expr
+Lean.Expr.forallE : Lean.Name → Lean.Expr → Lean.Expr → Lean.BinderInfo → Lean.Expr
+Lean.Expr.letE : Lean.Name → Lean.Expr → Lean.Expr → Lean.Expr → Bool → Lean.Expr
+Lean.Expr.lit : Lean.Literal → Lean.Expr
+Lean.Expr.mdata : Lean.MData → Lean.Expr → Lean.Expr
+Lean.Expr.proj : Lean.Name → Nat → Lean.Expr → Lean.Expr
+</pre>
+
+Read as a grammar, they are:
+
+* '''<code>bvar</code>''': a bound variable, written as a number (next section).
+* '''<code>fvar</code>''': a free variable, named by a unique identifier. The Lean kernel creates these itself when it works under a binder; they do not occur in terms submitted to it.<ref name="lean4lean" />
+* '''<code>mvar</code>''': a metavariable, a hole the elaborator has yet to fill. Terms sent to the Lean kernel contain none.<ref name="lean4lean" /> Metavariables belong to [[Lean theorem prover/System/Metavariables and unification|metavariables and unification]].
+* '''<code>sort</code>''': a universe <math>\mathrm{Sort}\,u</math>, for a universe level <math>u</math>.
+* '''<code>const</code>''': a constant, that is, a definition, theorem, axiom, inductive type, constructor or recursor in Lean's environment, its table of definitions and theorems, together with the universe levels at which it is used.
+* '''<code>app</code>''': application of a function to one argument. A function of several arguments is applied one argument at a time.
+* '''<code>lam</code>''': a function abstraction, <math>\lambda x : A.\, e</math>, with the binder's name, its type and its body.
+* '''<code>forallE</code>''': a dependent function type, <math>(x : A) \to B</math>. Implication, universal quantification and ordinary function types are all this one constructor ([[Lean theorem prover/Foundations/Dependent function types|Dependent function types]]).
+* '''<code>letE</code>''': a local definition, <math>\mathrm{let}\ x : A := v;\ e</math>.
+* '''<code>lit</code>''': a natural-number literal or a string literal, stored directly rather than as a chain of constructors.
+* '''<code>mdata</code>''': annotations for the elaborator and printer, which the Lean kernel ignores.
+* '''<code>proj</code>''': the <math>i</math>-th field of a value of a structure type.
+
+The names stored in <code>lam</code>, <code>forallE</code> and <code>letE</code>, and the
+<code>BinderInfo</code> that marks an argument implicit or explicit, matter only to the
+elaborator and the printer; they play no part in type checking.<ref name="lean4lean" />
+
+== Bound variables and de Bruijn indices ==
+
+The Lean kernel does not identify a bound variable by its name. It uses a '''de Bruijn index''':
+the number of binders between the variable's occurrence and the binder that introduces
+it, so that the nearest binder has index 0; de Bruijn's own numbering also counted the
+introducing binder, and so started at 1.<ref name="debruijn1972">N. G. de Bruijn, "Lambda calculus notation with nameless
+dummies, a tool for automatic formula manipulation, with application to the Church-Rosser
+theorem", ''Indagationes Mathematicae (Proceedings)'' 75(5), 1972, pp. 381–392.
+https://doi.org/10.1016/1385-7258(72)90034-0</ref> Lean can show the term it stores for a
+small definition:
+
+<pre class="lean lean-cont" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+open Lean Meta
+
+def apply1 (x : Nat) (f : Nat → Nat) : Nat := f x
+
+#eval show MetaM Unit from do
+  let some e := (← getEnv).find? ``apply1 |>.bind (·.value?) | throwError "no value"
+  IO.println (repr e)
+</pre>
+
+The output is
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+Lean.Expr.lam
+  `x
+  (Lean.Expr.const `Nat [])
+  (Lean.Expr.lam
+    `f
+    (Lean.Expr.forallE
+      (Lean.Name.mkNum `a._@._internal._hyg 0)
+      (Lean.Expr.const `Nat [])
+      (Lean.Expr.const `Nat [])
+      (Lean.BinderInfo.default))
+    (Lean.Expr.app (Lean.Expr.bvar 0) (Lean.Expr.bvar 1))
+    (Lean.BinderInfo.default))
+  (Lean.BinderInfo.default)
+</pre>
+
+The body <code>f x</code> has become <code>app (bvar 0) (bvar 1)</code>: index 0 is the
+nearest enclosing binder, <code>f</code>, and index 1 the next one out, <code>x</code>. The
+names <code>x</code> and <code>f</code> survive only as labels on the binders. The type
+<code>Nat → Nat</code> appears as a <code>forallE</code> whose bound variable has an internal
+name and is never used: an ordinary function type is a dependent function type that does not
+depend.
+
+Indices make two terms that differ only in the names of bound variables the same data apart
+from those labels, which comparison ignores, so renaming never has to be checked, and substitution cannot capture a variable by
+accident. When the Lean kernel needs to work under a binder it replaces the bound variable by a
+fresh free variable carrying the binder's type, does its work, and abstracts the free
+variable back into an index afterwards. This mixture of indices for bound variables and
+names for free ones is called the '''locally nameless''' representation.<ref name="lean4lean" /><ref name="bailey">Christopher
+A. Bailey, with contributions from the Lean community, ''Type Checking in Lean 4'' (online
+book), chapters "Type Inference" and "Declarations".
+https://ammkrn.github.io/type_checking_in_lean4/</ref>
+
+== The rules ==
+
+With contexts and terms in place, the typing rules for the base language are short. Each is
+written with its premises above the line and its conclusion below. They follow the variant
+of Carneiro's presentation that has no weakening rule, with <math>\mathrm{Sort}\,u</math> for
+his <math>\mathrm{U}_u</math>. In that variant the variable and universe rules apply in any
+context, and the constant rule is written here in the same way; that the context is well
+formed is checked separately, by the two rules above, and a typing judgment counts only when
+its context is well formed.<ref name="carneiro2019" /> Without
+weakening, a well-typed body no longer shows that the type of its binder is a type, so the
+abstraction rule here also requires <math>A : \mathrm{Sort}\,u</math>, as Lean's kernel
+does.<ref name="lean4lean" />
+
+:<math>\frac{}{\Gamma \vdash \mathrm{Sort}\,u : \mathrm{Sort}\,(u+1)} \qquad \frac{c.\{\bar u\} : A \text{ is in Lean's environment}}{\Gamma \vdash c.\{\bar \ell\} : A[\bar\ell/\bar u]}</math>
+
+:<math>\frac{\Gamma \vdash A : \mathrm{Sort}\,u \qquad \Gamma, x : A \vdash B : \mathrm{Sort}\,v}{\Gamma \vdash (x : A) \to B : \mathrm{Sort}\,(\mathrm{imax}\,u\,v)}</math>
+
+:<math>\frac{\Gamma \vdash A : \mathrm{Sort}\,u \qquad \Gamma, x : A \vdash e : B}{\Gamma \vdash \lambda x : A.\, e : (x : A) \to B} \qquad \frac{\Gamma \vdash f : (x : A) \to B \qquad \Gamma \vdash a : A}{\Gamma \vdash f\,a : B[a/x]}</math>
+
+:<math>\frac{\Gamma \vdash v : A \qquad \Gamma \vdash e[v/x] : B}{\Gamma \vdash (\mathrm{let}\ x : A := v;\ e) : B} \qquad \frac{\Gamma \vdash e : A \qquad \Gamma \vdash A \equiv B}{\Gamma \vdash e : B}</math>
+
+The first says each universe lives in the next. The second lets a constant be used at any
+instance <math>\bar\ell</math> of its universe parameters <math>\bar u</math>. The next three
+are the formation, introduction and elimination rules of the dependent function type, taken
+up in [[Lean theorem prover/Foundations/Dependent function types|Dependent function types]].
+The let rule types the body with the value substituted for the variable, so the body may
+rely on what the variable stands for. The last, the '''conversion rule''', says that a term
+of type <math>A</math> also has every type definitionally equal to <math>A</math>. Conversion
+is where computation enters typing, and it is the subject of
+[[Lean theorem prover/Foundations/Definitional equality|Definitional equality]].
+
+Literals and projections add rules of the same kind: a natural-number literal has
+type <code>Nat</code>, a string literal has type <code>String</code>, and a projection has
+the type of the field it selects. Inductive types add their type formers, constructors and
+recursors as constants, each with its own type
+([[Lean theorem prover/Foundations/Inductive types and recursors|Inductive types and recursors]]).
+
+== Checking against inference ==
+
+There are two ways to use the rules. '''Type inference''' takes a context and a term and
+computes a type for it. '''Type checking''' takes a context, a term and a proposed type, and
+decides whether the term has that type.
+
+Lean's kernel is built around inference. For an application <code>f a</code> it infers the
+type of <code>f</code>, reduces that type until a function type <math>(x : A) \to B</math>
+appears, infers the type of <code>a</code>, asks whether that type is definitionally equal to
+<math>A</math>, and returns <math>B[a/x]</math>. Checking a definition or theorem with stated
+type <math>T</math> and value <math>v</math> is done the same way: the Lean kernel infers the type
+of <math>v</math> and asks whether it is definitionally equal to <math>T</math>. For a theorem
+this comparison is the heart of proof checking: the inferred type is what the proof actually proves, and
+the comparison confirms that it is what was claimed.<ref name="bailey" /> The Lean kernel's
+inference function also has a mode that skips the checks and only computes a type, for terms
+already known to be well typed.<ref name="lean4lean" />
+
+The elaborator uses both directions. <code>#check</code> asks it to infer:
+
+<pre class="lean" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+#check fun (n : Nat) => n + 1
+#check (fun n => n + 1 : Int → Int)
+#check let x := 2; x * x
+#check (Prod.mk 1 true).2
+</pre>
+
+Lean prints <code>fun n => n + 1 : Nat → Nat</code>, then <code>fun n => n + 1 : Int → Int</code>,
+then <code>let x := 2; x * x : Nat</code> (over two lines) and <code>(1, true).snd : Bool</code>.
+The second term is the same text as the first, but the ascription <code>(… : Int → Int)</code>
+gives the elaborator an '''expected type''' to check against, and it uses that type to decide
+what <code>n</code> and <code>+</code> mean.<ref name="tpil">Jeremy Avigad, Leonardo de Moura,
+Soonho Kong and Sebastian Ullrich, ''Theorem Proving in Lean 4'', lean-lang.org (version for
+Lean 4.33.0), chapter 2, "Dependent Type Theory".
+https://lean-lang.org/theorem_proving_in_lean4/Dependent-Type-Theory/</ref> When an expected
+type and an inferred type disagree, elaboration fails:
+
+<pre class="lean lean-fails" style="background: #f8f9fa; border: 1px solid #c8ccd1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+example : Bool := (3 : Nat)
+</pre>
+
+Lean reports:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">
+Type mismatch
+  3
+has type
+  Nat
+but is expected to have type
+  Bool
+</pre>
+
+The message names both sides of the comparison: the type inferred for the term and the type
+it was checked against.
+
+== What the judgment leaves out ==
+
+The core language has no implicit arguments, no type classes, no pattern matching, no
+recursive definitions and no tactics. All of these are features of the elaborator, which
+translates them into the terms above before the Lean kernel sees anything; a recursive function,
+for instance, usually reaches the Lean kernel as an application of a recursor or of a well-founded
+fixed-point combinator.<ref name="refman-elab">''The Lean Language Reference'', for Lean
+4.34.0, lean-lang.org, 2026, sections 2.3, "The Kernel", and 2.4, "Elaboration Results".
+https://lean-lang.org/doc/reference/4.34.0/Elaboration-and-Compilation/</ref> The division
+of labour is described on [[Lean theorem prover/System/Elaboration|Elaboration]] and
+[[Lean theorem prover/System/The Lean kernel|The Lean kernel]].
+
+The rules also leave open how <math>\Gamma \vdash A \equiv B</math> is decided. In Lean's full
+theory that relation is undecidable, so the Lean kernel decides a slightly smaller relation;
+[[Lean theorem prover/Foundations/Definitional equality|Definitional equality]] gives the
+details and the sources.<ref name="carneiro2019" />
+
+== Next ==
+
+[[Lean theorem prover/Foundations/Dependent function types|Dependent function types]] takes
+the three function rules above and shows what they give: implication, universal
+quantification and polymorphism, all as one construction.
+
+== References ==
+
+<references />

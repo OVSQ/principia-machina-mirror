@@ -1,0 +1,12 @@
+{
+  "owed": [
+    {
+      "name": "FIXED-SET",
+      "reason": "the SE under FIXED-SET is marked VERIFY by the sources"
+    },
+    {
+      "name": "an item count in place of an SE",
+      "reason": "the binomial SE's scale is not fixed by the sources"
+    }
+  ]
+}

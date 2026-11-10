@@ -1,0 +1,138 @@
+{{DISPLAYTITLE:Waves and rays}}
+{{Technical|Hamilton's principle/Mathematics/The Hamilton-Jacobi equation}}
+{{Hamilton's principle map}}
+
+This page explains how mechanics turned into a wave theory. It uses no
+mathematics. The technical page it goes with is named above.
+
+== Looking for the easiest description ==
+
+[[File:OPL-HP-F-12.png|thumb|right|400px|Wavefronts and the rays orthogonal to them.]]
+
+[[Hamilton's principle/Explainers/The Hamiltonian|the Hamiltonian]] described motion as a flow in
+a space of positions and momenta.
+
+Some descriptions make that flow simple and others make it complicated. So it is
+natural to ask for the best one — a description in which nothing appears to move
+at all, and every quantity stays put.
+
+Such a description exists. All the difficulty moves into '''finding''' it, and the
+finding is a single equation.
+
+That equation replaces every other equation of motion for the system. Solve it
+and the entire problem is done, by differentiating rather than by integrating.
+
+This is Hamilton's method, refined by Jacobi in the 1840s. It is not usually the
+quickest way to solve a particular problem. Its importance is what it revealed.
+
+== Fronts and paths ==
+
+[[File:OPL-HP-F-32.png|thumb|right|400px|From n second-order equations to one partial differential equation.]]
+
+The equation has a picture attached, and the picture is the point.
+
+Drop a stone in a pond. Ripples spread out in rings. The rings are '''wavefronts'''.
+
+Now draw arrows pointing outward, at right angles to the rings, showing the
+direction the disturbance travels. Those are '''rays'''.
+
+Fronts and rays are two descriptions of one thing. Give the fronts and the rays
+follow, since rays cross fronts at right angles. Give the rays and the fronts
+follow.
+
+'''Hamilton's equation is the equation for the fronts.''' The trajectories of
+mechanics are the rays.
+
+So a moving particle can be described either as a thing following a path, or as
+one ray of a family of surfaces sweeping through space.
+
+== The same equation twice ==
+
+[[File:OPL-HP-F-50.png|thumb|right|400px|Rays crossing a focus.]]
+
+Here is what makes this more than a picture.
+
+Optics already had an equation for wavefronts of light travelling through material
+that bends it.
+
+Hamilton's equation for mechanical motion is the '''same equation'''. Not similar.
+The same, with one substitution: whatever plays the role of the bending power of
+the material corresponds to the energy available to the particle.
+
+A particle rolling through a landscape of hills and valleys behaves exactly like
+light through glass of varying density.
+
+Hamilton knew this because he did the optics first. His mechanics is a
+transcription of it.
+
+== The gap ==
+
+Now the observation that matters, and it went unexploited for ninety-two years.
+
+Fronts and rays are not the whole of optics. They are the '''approximation''' that
+works when the wavelength is very small compared with everything else. Rays are
+what waves look like when the waves are fine enough that you cannot see them
+waving.
+
+When the wavelength is not small, rays fail. Light bends round corners, spreads
+through small openings, and produces interference patterns. None of that is in the
+ray picture.
+
+So: if mechanics is the same as ray optics, and ray optics is an approximation to
+wave optics, then '''mechanics ought to be an approximation to a wave mechanics
+too'''.
+
+The logic is not subtle. It is available to anyone who notices the two equations
+are identical.
+
+== Why nobody took it up ==
+
+Nothing suggested it was worth pursuing.
+
+To have waves you need a wavelength, and nobody had seen the slightest hint of a
+wavelength for a moving object. There was no experiment that ray mechanics failed
+to explain. There was nothing to be waving.
+
+The analogy sat complete and idle from 1834 to 1926.
+
+== Filling it in ==
+
+Schrödinger took it up in 1926, and worked backwards.
+
+Suppose the wave exists. Suppose classical mechanics is what it looks like when
+the wavelength is negligible. What equation must the wave obey?
+
+Running that requirement through the mathematics produces one answer, and it is
+the equation at the foundation of quantum mechanics.
+
+It was not guessed. It was constructed, by taking Hamilton's analogy seriously and
+insisting that the missing corner of the table be filled in.
+
+The wavelength turns out to be tiny for anything you can see, and comparable to
+the size of an atom for an electron. That is why the ray picture works so well for
+cricket balls and fails completely for electrons.
+
+== A place where both pictures fail ==
+
+One more thing, and it connects back to earlier pages.
+
+Where rays come back together — at a focus — the front folds over on itself and the
+description breaks down. Several rays arrive at one place, and the simple picture
+of one front passing through cannot hold.
+
+Those are the '''conjugate points''' of
+[[Hamilton's principle/Explainers/Where the minimum fails|Where the minimum fails]], seen from the wave
+side.
+
+The ray picture predicts infinite brightness at a focus, which is wrong. The wave
+picture gives a finite, bright, structured spot. The ray description is worst
+exactly where the interesting thing happens.
+
+That pattern is general. The approximation fails precisely at the places the full
+theory finds most significant.
+
+== Where to go next ==
+
+Hamilton's own route to all of this started from a different idea: treat the total
+cost as a function of where the journey starts and ends. It is at
+[[Hamilton's principle/Explainers/Action from the endpoints|Action from the endpoints]].

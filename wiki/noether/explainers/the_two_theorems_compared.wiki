@@ -1,0 +1,127 @@
+{{DISPLAYTITLE:The two theorems compared}}
+{{Noether's theorems map}}
+
+''Mathematical counterpart: [[Noether's theorems/Second theorem/The two theorems side by side|The two theorems side by side]].''
+
+[[File:NT-F-06.png|thumb|right|360px|alt=A three-column comparison table. Rows: what each theorem takes, what it returns, where it holds, what happens when the field equations are imposed, whether a conserved quantity results, and whether the converse is proved. Theorem II's conserved-quantity row reads none.|The first and second theorems side by side]]
+
+Two theorems, one paper, one page to keep them apart.
+
+== Side by side ==
+
+{| class="wikitable"
+! !! First theorem !! Second theorem
+|-
+! What you feed it
+| a symmetry with a fixed number of knobs, each one number for everywhere
+| a symmetry you can dial differently at every point
+|-
+! What comes back
+| one flowing quantity per knob
+| one relation among the equations of motion, per free shape
+|-
+! Is there something conserved?
+| yes, once the laws of physics are imposed
+| no. Nothing flows and there is nothing to measure
+|-
+! When is it true?
+| always, of every conceivable configuration
+| always, of every conceivable configuration
+|-
+! What happens when you impose the laws of physics?
+| the flow balances: a conservation law
+| some of the laws turn out to follow from the others
+|-
+! Does it work backwards?
+| yes, with one case its author left undecided
+| yes
+|}
+
+== Nine tenths shared, then one step ==
+
+Both proofs are the same proof until near the end. The setup, the nudge, the care
+about which comparison you are making, the loss of the integral sign — all common.
+
+Then one step, and it is forced by the input.
+
+A fixed number of knobs can be separated from each other, because each one is
+independent. The relation falls apart into one piece per knob, and each piece says
+something flows.
+
+A free shape cannot be separated, because the shape and how fast it varies from
+place to place are not independent of each other. Instead, the varying is traded
+away, and then the freedom to draw a shape that fades out near the edges kills
+everything that is left except a plain zero.
+
+'''One theorem ends with something flowing. The other ends with zero.''' Every
+other difference in the table follows from that.
+
+== Three things people say that are not right ==
+
+'''"The second theorem is the local version of the first."''' It is not a version
+of the first. Different input, different output, and a different thing happens
+when you impose the laws of physics. Rows two, three and five of the table are the
+check.
+
+'''"The second theorem gives conservation laws for local symmetries."''' It gives
+relations among equations. When a theory with a local symmetry does produce
+something shaped like a conservation law, that law is
+[[Noether's theorems/Explainers/A conservation law that is only wearing the costume|empty]]
+— its conserved quantity is built out of the equations of motion and reports
+nothing they did not already say.
+
+'''"General relativity is why energy conservation goes strange."''' The rule is
+about symmetries, and it works in both directions. General relativity meets its
+condition. So does a symmetry Noether builds out of a logarithm with no physics in
+it at all, which is exactly why she built it.
+
+== Which one is the paper about ==
+
+Both, and not equally.
+
+The first theorem is stated first, and it is the one that reached physics
+textbooks. It explains why energy, momentum and angular momentum are conserved,
+and it is genuinely famous.
+
+The second theorem is the one the paper was written to prove. It occupies the
+final section, it answers the question that Göttingen had been arguing about since
+1915, and it turned out fifty years later to describe the structure of every
+theory of every fundamental force.
+
+'''This volume's own view, offered as a view: quoting only the first theorem gives
+you the corollary without the argument.''' You are free to disagree, and
+[[Noether's theorems/History/What Noether's theorem now means|the history track]]
+explains how the other reading came to be the standard one.
+
+== How to tell which one you are reading ==
+
+A short test, for anybody else's account of this subject.
+
+'''Ask what the symmetry is.''' One choice for everywhere, or a choice at every
+point? That alone settles it.
+
+'''Ask what came out.''' Something that flows and can be totalled up, or a
+statement that a combination equals zero?
+
+'''Ask what happens when the laws of physics are imposed.''' Does something become
+conserved, or do some of the laws turn out to be consequences of the others?
+
+If an account never poses any of these questions, it is almost certainly giving
+the first theorem and calling it "Noether's theorem", which is the ordinary usage
+and is not wrong so much as incomplete.
+
+== Where the second theorem shows up under other names ==
+
+Part of why the second theorem seems obscure is that physics met it repeatedly
+without recognising it, and gave it a new name each time.
+
+Constraints, in the study of how to put general relativity into a form suitable for
+computation. Identities among the field equations, in general relativity itself.
+Gauge redundancy, in the theories of the fundamental forces. Ghosts and gauge
+fixing, in the quantum versions of those theories.
+
+All of these are the same theorem, met from different directions by people solving
+different problems. The connection back to a 1918 paper was often not made at all.
+
+''No mathematics is used on this page. The mathematical treatment is on the
+counterpart page named above.''

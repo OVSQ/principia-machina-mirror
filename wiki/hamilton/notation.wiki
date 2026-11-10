@@ -1,0 +1,178 @@
+{{DISPLAYTITLE:Hamilton's principle — Notation}}
+{{Hamilton's principle map}}
+This page fixes the symbols used across the volume and records where they collide
+with the notation of the primary sources. It exists because three collisions in
+this subject are severe enough to make a source unreadable if they are not
+declared, and because a reader moving between this volume and Hamilton's essays
+will meet all three within a page.
+
+== Conventions of this volume ==
+
+{| class="wikitable"
+! symbol !! meaning !! introduced at
+|-
+| <math>L</math> || integrand of a functional; Lagrangian || [[Hamilton's principle/Mathematics/Functionals and the space of paths|Functionals and the space of paths]]
+|-
+| <math>\mathcal{L}</math> || Lagrangian density, per unit volume || [[Hamilton's principle/Applications/Classical field theory|Classical field theory]]
+|-
+| <math>J[y]</math> || a general functional || [[Hamilton's principle/Mathematics/Functionals and the space of paths|Functionals and the space of paths]]
+|-
+| <math>S</math> || Hamilton's action, <math>\int L\,dt</math> || [[Hamilton's principle/Mathematics/Abbreviated action: Maupertuis versus Hamilton|Abbreviated action: Maupertuis versus Hamilton]]
+|-
+| <math>W</math> || abbreviated action, <math>\int \sum p\,dq</math> || [[Hamilton's principle/Mathematics/Abbreviated action: Maupertuis versus Hamilton|Abbreviated action: Maupertuis versus Hamilton]]
+|-
+| <math>\eta</math> || a variation direction, vanishing at fixed endpoints || [[Hamilton's principle/Mathematics/The first variation|the first variation]]
+|-
+| <math>\varepsilon</math> || the family parameter in <math>y + \varepsilon\eta</math> || [[Hamilton's principle/Mathematics/The first variation|the first variation]]
+|-
+| <math>\delta J</math> || first variation || [[Hamilton's principle/Mathematics/The first variation|the first variation]]
+|-
+| <math>\delta^2 J</math> || second variation || [[Hamilton's principle/Mathematics/The second variation|the second variation]]
+|-
+| <math>P</math>, <math>Q</math> || coefficients of the second variation in Legendre form || [[Hamilton's principle/Mathematics/The second variation|the second variation]]
+|-
+| <math>p_i</math> || conjugate momentum, <math>\partial L/\partial \dot q_i</math> || [[Hamilton's principle/Mathematics/The Euler-Lagrange equation|the Euler-Lagrange equation]]
+|-
+| <math>H</math> || Hamiltonian, <math>\sum p\dot q - L</math> || [[Hamilton's principle/Mathematics/The Hamiltonian and Hamilton's equations|the Hamiltonian and Hamilton's equations]]
+|-
+| <math>\lambda_\beta(x)</math> || multiplier '''function''', pointwise constraint || [[Hamilton's principle/Mathematics/Lagrange multipliers|Lagrange multipliers]]
+|-
+| <math>\mu_\gamma</math> || multiplier '''constant''', isoperimetric constraint || [[Hamilton's principle/Mathematics/Isoperimetric problems|Isoperimetric problems]]
+|-
+| <math>E(x,y,p,q)</math> || Weierstrass excess function || [[Hamilton's principle/Mathematics/The Weierstrass excess function|the Weierstrass excess function]]
+|-
+| <math>\psi_i</math> || Lagrange expression, in Noether's sense || [[Hamilton's principle/Mathematics/Noether's first theorem|Noether's first theorem]]
+|-
+| <math>\Gamma^m_{ik}</math> || Christoffel symbols || [[Hamilton's principle/Applications/Geodesics|Geodesics]]
+|-
+| <math>\nu</math> || Maslov index, count of conjugate points || [[Hamilton's principle/Applications/The Feynman path integral|the Feynman path integral]]
+|}
+
+Independent variables are <math>x</math> in the mathematics tracks and
+<math>t</math> where the subject is mechanics. Greek indices run over spacetime
+coordinates; Latin indices over coordinates or fields.
+
+== Collision 1: <math>V</math> ==
+
+'''This is the collision that matters most, and it is the one that makes
+Hamilton's essays unreadable if it is missed.'''
+
+{| class="wikitable"
+! symbol !! in this volume !! in Hamilton 1834
+|-
+| <math>V</math> || potential energy || the '''characteristic function''', <math>\int_0^t 2T\,dt</math>
+|-
+| <math>U</math> || not used || the '''force-function''', with sign opposite to potential energy
+|-
+| <math>T</math> || kinetic energy || half the living force; same quantity
+|}
+
+Hamilton's <math>V</math> is not a potential. It is the accumulated action, and
+his law of living force reads <math>T = U + H</math> rather than
+<math>T + V = E</math> because his <math>U</math> is minus the potential.
+
+A reader who carries this volume's <math>V</math> into Hamilton's equation (A.)
+will read it as nonsense. The quotations on
+[[Hamilton's principle/Mathematics/Action as a function of its endpoints|Action as a function of its endpoints]] are
+footnoted with this warning at each occurrence.
+
+== Collision 2: the action itself ==
+
+{| class="wikitable"
+! quantity !! this volume !! Hamilton 1834 !! Hamilton 1835 !! common modern usage
+|-
+| <math>\int L\,dt</math> || <math>S</math> || — || <math>S</math> || <math>S</math>
+|-
+| <math>\int 2T\,dt = \int\sum p\,dq</math> || <math>W</math> || <math>V</math> || <math>V</math> || <math>S_0</math> or <math>W</math>
+|}
+
+Hamilton's first essay works entirely with the abbreviated action. The function
+modern texts call the action enters only in the second essay, as a part of
+<math>V</math> into which the time enters explicitly.
+
+Both quantities are routinely called "the action" and both principles are
+routinely called "the principle of least action". This volume writes
+<math>S</math> and <math>W</math>, names the principles separately, and uses
+''stationary'' rather than ''least'' for both. The distinction is the subject of
+[[Hamilton's principle/Mathematics/Abbreviated action: Maupertuis versus Hamilton|Abbreviated action: Maupertuis versus Hamilton]].
+
+== Collision 3: <math>\delta</math> ==
+
+<math>\delta</math> carries three distinct meanings in the sources, and Hamilton
+uses two of them on the same page.
+
+{| class="wikitable"
+! usage !! meaning !! where
+|-
+| <math>\delta J</math> || first variation of a functional || this volume, and Hamilton
+|-
+| <math>\delta y</math> || an infinitesimal change of path, this volume's <math>\varepsilon\eta</math> || classical literature, and Hamilton
+|-
+| <math>\delta V/\delta x</math> || '''partial derivative''' || Hamilton throughout, where a modern text writes <math>\partial V/\partial x</math>
+|}
+
+The third is the trap. In Hamilton's equations (C.), (D.), (E.), (F.) and (G.),
+quoted on
+[[Hamilton's principle/Mathematics/Action as a function of its endpoints|Action as a function of its endpoints]] and
+[[Hamilton's principle/Mathematics/The Hamilton-Jacobi equation|the Hamilton-Jacobi equation]], every
+<math>\delta</math> in a quotient is an ordinary partial derivative. Read as
+variations they are meaningless.
+
+This volume writes <math>\partial</math> for partial derivatives everywhere in
+its own text and preserves Hamilton's <math>\delta</math> inside quotations, with
+a footnote at each occurrence.
+
+== Noether's notation ==
+
+Her symbols are preserved where her equations are reproduced, on
+[[Hamilton's principle/Mathematics/Noether's first theorem|Noether's first theorem]],
+[[Hamilton's principle/Mathematics/Noether's second theorem|Noether's second theorem]] and
+[[Hamilton's principle/Mathematics/Several independent variables|Several independent variables]].
+
+{| class="wikitable"
+! Noether !! meaning !! this volume's equivalent
+|-
+| <math>f</math> || the integrand || <math>\mathcal{L}</math>
+|-
+| <math>I</math> || the integral || <math>S</math>
+|-
+| <math>u_i</math> || dependent variables || fields <math>\phi_i</math>
+|-
+| <math>x_\lambda</math> || independent variables || <math>x^\alpha</math>
+|-
+| <math>\psi_i</math> || Lagrange expressions || left side of the Euler-Lagrange equation
+|-
+| <math>\mathrm{Div}\,A</math> || divergence || <math>\partial_\alpha A^\alpha</math>
+|-
+| <math>G_\rho</math> || finite continuous group, <math>\rho</math> parameters || global symmetry
+|-
+| <math>G_{\infty\rho}</math> || infinite continuous group, <math>\rho</math> arbitrary functions || gauge symmetry
+|-
+| <math>\Delta u</math> against <math>\delta u</math> || total change against change at fixed argument || see her equation (9)
+|}
+
+The last row is not a notational nicety. The two differ by
+<math>\sum (\partial u/\partial x_\lambda)\Delta x_\lambda</math>, and compressing
+them is where sign errors in derivations of Noether's theorem come from.
+
+== Signs and units ==
+
+Metric signature, where it appears, is <math>(+,-,-,-)</math>. Gravitational
+acceleration is written <math>g_0</math> to avoid collision with the metric
+determinant <math>g</math> and the metric components <math>g_{ik}</math>; the
+collision is real and appears on
+[[Hamilton's principle/Applications/The catenary|the catenary]] and
+[[Hamilton's principle/Applications/The Einstein-Hilbert action|the Einstein-Hilbert action]] within the same
+volume.
+
+Equation numbers restart at (1) on each page and are written inside the
+mathematics as <math>\qquad\qquad\mathrm{(n)}</math>, because MediaWiki's TeX
+checker rejects the usual tagging command. The cross-page index is
+[[Hamilton's principle/Equation index|Equation index]].
+
+== A note on <math>\vert\;\vert</math> ==
+
+Absolute values and norms are written with <math>\vert</math> rather than the
+usual paired delimiters, throughout, for the same reason: the checker rejects the
+paired forms. This is a constraint of the platform, not a convention of the
+subject.

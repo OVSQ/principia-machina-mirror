@@ -1,0 +1,82 @@
+{{DISPLAYTITLE:What is an electric current}}
+{{On Physical Lines of Force map}}
+''[[On Physical Lines of Force]] → [[On Physical Lines of Force/Explainers|Explainers]] → Electric current''
+
+<blockquote>
+'''In one sentence.''' In Maxwell's machine an electric current is a crowd of tiny particles moving through the narrow spaces between the spinning cells that fill all of space.
+</blockquote>
+
+Maxwell did not set out to explain what an electric current is. He set out to repair a fault in his own model. The repair turned out to behave exactly like a current, and he said so.
+
+== The fault in the machine ==
+
+Part I fills space with spinning cells whose axes lie along the magnetic lines of force. Where the field is strong the cells spin fast. Where it is weak they spin slowly. Neighbouring cells all turn the same way — and that is where the trouble starts. Put two wheels side by side and turn them both clockwise. Where they touch, one rim moves up and the other moves down. They rub.
+
+<blockquote>
+I have found great difficulty in conceiving of the existence of vortices in a medium, side by side, revolving in the same direction about parallel axes. The contiguous portions of consecutive vortices must be moving in opposite directions; and it is difficult to understand how the motion of one part of the medium can coexist with, and even produce, an opposite motion of a part in contact with it.
+</blockquote>
+
+A model that grinds itself to a halt everywhere is no model at all.
+
+== A part borrowed from the gear shop ==
+
+Engineers had solved this long before. Two gears meshed together turn opposite ways. Put a third between them, meshed with both, and the outer two turn the same way. The middle gear drives nothing itself. It only passes the motion along. Its trade name is an '''idle wheel'''.
+
+<blockquote>
+In mechanism, when two wheels are intended to revolve in the same direction, a wheel is placed between them so as to be in gear with both, and this wheel is called an "idle wheel." The hypothesis about the vortices which I have to suggest is that a layer of particles, acting as idle wheels, is interposed between each vortex and the next, so that each vortex has a tendency to make the neighbouring vortices revolve in the same direction with itself.
+</blockquote>
+
+[[File:OPL-fig-idle-wheel-gearing.svg|thumb|center|620px|Two wheels turn the same way when an idle wheel sits between them]]
+
+A layer of these particles sits between every pair of cells. Each particle rolls against the two surfaces it touches, turning the opposite way to both, so each surface moves with the particle instead of against its neighbour. Nothing rubs.
+
+In a gearbox the idle wheel is pinned in place. Maxwell's are not. He points to machines in which an idle wheel is free to travel — epicyclic gear trains, and Siemens's governor for steam-engines — and takes their rule: "the motion of the centre is the half sum of the motions of the circumferences of the wheels between which it is placed." A particle travels at the average of the two surface motions it touches.
+
+That rule is the hinge of the argument. When the cells on either side spin at the same rate, those motions are equal and opposite. They cancel, and the particle spins on the spot without going anywhere. When the cells on one side spin faster, they no longer cancel, and the whole layer drifts.
+
+== The drift is the current ==
+
+[[File:OPL-fig-plate-fig2.svg|thumb|center|620px|Maxwell's Figure 2: rows of particles between the cells]]
+
+<blockquote>
+It appears therefore that, according to our hypothesis, an electric current is represented by the transference of the moveable particles interposed between the neighbouring vortices.
+</blockquote>
+
+The particles were not invented to be electricity. They were invented to stop the cells grinding. Once in place, they move only where the spin rate changes from one part of space to another — which is exactly where a current has to be. The model was not tuned to give that result.
+
+The word '''transference''' carries weight here. A particle turning on the spot is not a current. A general shift of particles in one direction is.
+
+== Where resistance and heat come from ==
+
+The same picture explains why wires get warm.
+
+<blockquote>
+The particles must be conceived to roll without sliding between the vortices which they separate, and not to touch each other, so that, as long as they remain within the same complete molecule, there is no loss of energy by resistance. When, however, there is a general transference of particles in one direction, they must pass from one molecule to another, and in doing so, may experience resistance, so as to waste electrical energy and generate heat.
+</blockquote>
+
+Inside one molecule the particles roll cleanly and nothing is lost. A steady flow cannot stay inside one molecule. The particles must hop from one to the next, and those hops can meet resistance. Electrical resistance and the warmth of a loaded wire come out of the model as a consequence, not as an assumption.
+
+== Maxwell's own verdict ==
+
+It would be easy to read all this as a claim about what space really contains. Maxwell blocks that reading himself.
+
+<blockquote>
+The conception of a particle having its motion connected with that of a vortex by perfect rolling contact may appear somewhat awkward. I do not bring it forward as a mode of connexion existing in nature, or even as that which I would willingly assent to as an electrical hypothesis.
+</blockquote>
+
+<blockquote>
+It is, however, a mode of connexion which is mechanically conceivable, and easily investigated, and it serves to bring out the actual mechanical connexions between the known electro-magnetic phenomena; so that I venture to say that any one who understands the provisional and temporary character of this hypothesis, will find himself rather helped than hindered by it in his search after the true interpretation of the phenomena.
+</blockquote>
+
+The gears are scaffolding. Anyone who keeps that in mind, he says, will be helped rather than misled. The warning holds for every page that follows.
+
+== Where this is in the paper ==
+
+* [[On Physical Lines of Force/Part II/The mechanism of idle wheels|Part II — The mechanism]] — the difficulty and the idle wheel
+* [[On Physical Lines of Force/Part II/Prop. IV|Prop. IV]] — the motion of the layer between two cells
+* [[On Physical Lines of Force/Part II/Prop. V|Prop. V]] — the transference of particles is the current
+* [[On Physical Lines of Force/Modern derivations/Ampere's law and its correction|The current equation today]] — the same result in modern form
+
+----
+
+''Next: [[On Physical Lines of Force/Explainers/Why a changing magnet makes a current|Why a changing magnet makes a current]] · Previous: [[On Physical Lines of Force/Explainers/Why spinning makes a pull|How a magnet pulls]]''

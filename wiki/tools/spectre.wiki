@@ -1,0 +1,32 @@
+{{DISPLAYTITLE:SpECTRE}}
+'''SpECTRE: Discontinuous Galerkin Numerical Relativity'''
+[[Category:Principia Machina]] [[Category:Tools]]
+
+''Added to the survey on 2026-10-06 by the [[The Principia Machina/Research Toolkit|Research Toolkit]]'s research pass. The scores below are that pass's assessment from the evidence cited under References, on the survey's four axes and scale; they are not the original survey's (2026-09-26), and no rule of the Principia Machina reads them. See [[The Principia Machina/Tools#The additions of 2026-10-06|the additions]] on the front page.''
+
+== Overview & Architectural Fit ==
+'''SpECTRE''' evolves the equations of relativistic astrophysics (mergers of black holes and neutron stars, supernovae) with a task-based discontinuous Galerkin and spectral-element method, written in C++ on Charm++. It solves systems in the conservation form <math>\partial_t u + \partial_i F^i(u) = S(u)</math> to high order on many processors.
+
+== Mathematical Evaluation for TPM ==
+* '''Lagrangian / Action (1.5/10):''' Evolves fixed formulations and takes no action as input.
+* '''Field / PDE (8.5/10):''' High-order and massively parallel.
+* '''Relativity (9/10):''' A strong-field relativity code.
+* '''Quantum / Data (1.5/10):''' Little quantum or data focus.
+
+== Integration Pipeline ==
+# '''Reduce''' the container's action-derived gravity to general relativity in the limit of interest.
+# '''Take''' SpECTRE's (and the [[The Principia Machina/Tools/EinsteinToolkit|Einstein Toolkit]]'s) solutions and waveforms as the trusted benchmark for that limit, compared only after the derivation (quarantine).
+# '''For a new theory''', a well-posed hyperbolic formulation must exist first, then be implemented in C++.
+
+== Status, Licence and Limits ==
+* '''Status:''' Very active, releases about monthly; the latest, v2026.09.05 of 6 September 2026, has a Zenodo DOI.
+* '''Licence:''' MIT.
+* '''Home:''' https://spectre-code.org
+* '''Limits:''' The Charm++ build and its high-performance computing needs are heavy. It consumes action-derived equations; it never produces them.
+
+== On the Principia Machina ==
+A tool runs only where the sponsor installed and bound it, and what it returns is untrusted input, vetted before use; its numbers are never values of the site's calculator, TPC. A value it computes lands as a RESULT with QUANTITY, VALUE, UNIT and AT, its initial and boundary values as SITUATION records; the regime of a numerical result, and whether such a value may be presented, are open questions of the specification. See [[The Principia Machina/Agent/Tools|Agent/Tools]] and [[The Principia Machina/Tools/Operator's guide|the operator's guide]].
+
+== References ==
+* '''[[The Principia Machina/Research Toolkit/Bibliography#SPECTRE2017|SPECTRE2017]]''' &ndash; Kidder L.E., Field S.E., Foucart F., Schnetter E., Teukolsky S.A., Bohn A., Deppe N., Diener P., Hébert F., Lippuner J., Miller J., Ott C.D., Scheel M.A., Vincent T. (2017). SpECTRE: A task-based discontinuous Galerkin code for relativistic astrophysics. J. Comput. Phys. 335, 84–114. [https://doi.org/10.1016/j.jcp.2016.12.059 doi:10.1016/j.jcp.2016.12.059].
+* '''[[The Principia Machina/Research Toolkit/Bibliography#SPECTRE-SITE|SPECTRE-SITE]]''' &ndash; SXS Collaboration / SpECTRE developers (2026). SpECTRE v2026.09.05. Zenodo. [https://doi.org/10.5281/zenodo.22433001 doi:10.5281/zenodo.22433001].

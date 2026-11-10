@@ -1,0 +1,97 @@
+{{DISPLAYTITLE:On Physical Lines of Force — Introduction}}
+{{On Physical Lines of Force map}}
+''[[On Physical Lines of Force]] → Introduction''
+
+== The question nobody had asked ==
+
+By 1860 electromagnetism worked. Coulomb's law, Ampère's law of force between currents, Faraday's law of induction — all of it could be calculated, and the calculations agreed with the laboratory. What the subject had was a set of rules relating things at a distance: put a charge here, and a force appears there, instantaneously, across empty space, with nothing in between.
+
+Faraday could not accept the nothing in between. He had spent thirty years watching iron filings arrange themselves into curves around a magnet, and those curves did not look to him like a bookkeeping device. They looked like something present in the space. He called them '''lines of force''' and treated them as physically real, but he had no mathematics to make the claim precise, and most mathematical physicists of the day regarded the whole notion as a picturesque crutch.
+
+Maxwell was twenty-nine, newly a professor at King's College London, and had already given the lines of force a mathematical meaning in an earlier paper of 1855–56, ''On Faraday's Lines of Force''. But that paper had been explicitly an ''analogy'': he modelled the lines on the flow of an imaginary incompressible fluid, and said plainly that the fluid was a device for the imagination, not a claim about nature.
+
+''On Physical Lines of Force'' is where he stops hedging. The word in the title that matters is '''physical'''. He is going to propose that something is actually there, and work out what it must be doing.
+
+[[File:OPL-fig-timeline.svg|thumb|center|600px|Chronology, 1820 to 1873]]
+
+== The strategy ==
+
+The argument runs in a single direction, and each part depends on the one before.
+
+{| class="wikitable"
+! Part !! The question it answers !! The answer
+|-
+| I || What state of a medium would produce the observed magnetic forces? || A stress: tension along the lines of force, pressure across them — which the centrifugal force of spinning vortices supplies.
+|-
+| II || How can neighbouring vortices all turn the same way, and what is an electric current? || A layer of particles rolling between them like idle wheels. Their transference is the current.
+|-
+| III || What happens when the particles are pushed but cannot flow? || The cells distort elastically. The shift is electric displacement; its variation is a current; and the medium can carry transverse waves.
+|-
+| IV || Does the model say anything about light in a magnetic field? || Yes — the plane of polarization should rotate, by an amount depending on six named quantities.
+|}
+
+Read that table again and notice what happens between Part II and Part III. Parts I and II reproduce results that were already known. Part III produces two that were not: '''the displacement current''', and '''the identification of light with an electromagnetic wave'''. Both fall out of one assumption — that the substance of the cells is springy — made for an entirely different reason, namely to explain how rotation gets communicated from the outside of a cell to its inside.
+
+== The machine ==
+
+[[File:OPL-fig-plate-fig2.svg|thumb|center|680px|Vortex cells and the particles between them]]
+
+It is worth being blunt about how strange the model is. Maxwell fills all of space — including the space inside a piece of glass, and the space between the earth and the sun — with cells of a fluid substance, each spinning about an axis. The axis of each cell points along the local magnetic line of force. The speed of the spin is the strength of the magnetic force; the density of the stuff in the cell is the magnetic permeability.
+
+Spinning cells packed side by side have a problem: where two neighbours touch, their surfaces move in opposite directions. Maxwell's fix is to wedge a layer of small particles between every pair of cells, rolling without sliding, exactly as a gear train uses an intermediate "idle wheel" to make two gears turn the same way. And then he identifies those particles with electricity. A current is the particles moving from cell-boundary to cell-boundary through the medium.
+
+He knew how this looked. His own assessment, in Part II:
+
+<blockquote>
+The conception of a particle having its motion connected with that of a vortex by perfect rolling contact may appear somewhat awkward. I do not bring it forward as a mode of connexion existing in nature, or even as that which I would willingly assent to as an electrical hypothesis.
+</blockquote>
+
+And immediately, the defence:
+
+<blockquote>
+It is, however, a mode of connexion which is mechanically conceivable, and easily investigated, and it serves to bring out the actual mechanical connexions between the known electro-magnetic phenomena; so that I venture to say that any one who understands the provisional and temporary character of this hypothesis, will find himself rather helped than hindered by it in his search after the true interpretation of the phenomena.
+</blockquote>
+
+That is the intellectual posture of the whole paper: build the machine, take it seriously enough to compute with, and do not mistake it for the world.
+
+== The two results that survived ==
+
+=== The displacement current ===
+
+In a dielectric — glass, air, empty space — no charge flows. But on Maxwell's model, force applied to the particles still ''distorts the cells'', and the particles shift a little before the elastic reaction stops them. That shift is the '''electric displacement'''. It is not a current; it settles to a constant value. But while it is changing, particles are in motion, and motion of the particles is exactly what a current is.
+
+So Maxwell adds a term to the equations of electric currents: the rate of change of displacement counts alongside the conduction current. This is [[On Physical Lines of Force/Part III/Prop. XIV|Prop. XIV]], equation (112). It is the single most consequential term in nineteenth-century physics, and it entered the subject as a repair to a mechanical model that nobody now believes.
+
+[[File:OPL-fig-displacement-current.svg|thumb|center|620px|The variation of displacement is itself a current]]
+
+=== Light ===
+
+An elastic medium carries transverse waves, at a speed set by its elasticity and its density. Maxwell's cells are elastic, and he has already fixed both quantities in electrical terms — the elasticity by the dielectric constant, the density by the magnetic permeability. So he can compute the speed. The computation needs one number from experiment: the ratio between the electrostatic and the electromagnetic measure of a quantity of electricity, which Weber and Kohlrausch had measured in 1856.
+
+Out comes 310,740,000,000 millimetres per second. Fizeau's measured velocity of light was 314,858,000,000 millimetres per second. Maxwell's conclusion:
+
+<blockquote>
+The velocity of transverse undulations in our hypothetical medium, calculated from the electro-magnetic experiments of MM. Kohlrausch and Weber, agrees so exactly with the velocity of light calculated from the optical experiments of M. Fizeau, that we can scarcely avoid the inference that light consists in the transverse undulations of the same medium which is the cause of electric and magnetic phenomena.
+</blockquote>
+
+Two laboratory measurements, neither having anything to do with optics — a torsion balance and a current balance — had between them produced the speed of light. Optics became a branch of electromagnetism in that sentence.
+
+[[File:OPL-fig-units-ratio.svg|thumb|center|620px|The coincidence that settled it]]
+
+== What happened next ==
+
+Maxwell dismantled the machine himself. In ''A Dynamical Theory of the Electromagnetic Field'' (read to the Royal Society in December 1864, published 1865) the cells and the idle wheels are gone. What remains is a set of equations for a field, justified by general dynamical reasoning rather than by any picture of what the field is made of. In the ''Treatise'' of 1873 he still describes the vortex theory, and still labels it "of a provisional kind, resting as it does on unproved hypotheses."
+
+The historian Bruce Hunt has argued that the usual telling overstates the retreat: Maxwell reserved words like ''provisional'' and ''awkward'' for the idle-wheel particles specifically, not for the vortices, which he seems to have thought were probably real. What certainly changed was his method — after working on electrical standards for the British Association in 1863, he grew more interested in relations between measurable quantities than in mechanisms behind them.
+
+Either way, the pattern is one worth noticing, because it recurs: '''a model can be false and still be productive.''' The vortices were a scaffold. Two of the things built on the scaffold — the displacement current and the electromagnetic theory of light — are still standing after the scaffold came down.
+
+== How to use this wiki ==
+
+* The four '''Part''' sections follow Maxwell's own order and keep his register. Verbatim quotations from the paper are set as indented quotations; everything else is editorial. See [[On Physical Lines of Force/Sources and editorial method|Sources and editorial method]].
+* The '''[[On Physical Lines of Force/Modern derivations|modern derivation]]''' pages take each of his results and carry it through to the equation you would meet in a textbook today, with the changes of convention made explicit.
+* The '''[[On Physical Lines of Force/Explainers|explainers]]''' cover each major idea with no mathematics, for a general science audience. They can be read on their own.
+
+----
+
+''Next: [[On Physical Lines of Force/Part I|Part I — The Theory of Molecular Vortices applied to Magnetic Phenomena]]''

@@ -1,0 +1,67 @@
+{{DISPLAYTITLE:A wrong model that produced right answers}}
+{{On Physical Lines of Force map}}
+''[[On Physical Lines of Force]] → [[On Physical Lines of Force/Explainers|Explainers]] → Model and equations''
+
+<blockquote>
+'''In one sentence.''' Space is not filled with spinning cells separated by rolling particles, and yet reasoning as though it were led Maxwell to two results that are still correct.
+</blockquote>
+
+It is worth saying without softening: the machine described in this paper does not exist. There are no cells, and no little particles running in the gaps between them like the idle wheels of a gear train. Nobody has ever found one, and nobody expects to.
+
+[[File:OPL-fig-plate-fig2.svg|thumb|center|620px|The machine: vortices with rolling particles between them]]
+
+That makes the paper an awkward object. It is one of the most important pieces of physics ever published, and its central claim is false. This page is about how both of those can be true at once.
+
+== What was taken down ==
+
+Maxwell dismantled the machine himself, and he did it quickly.
+
+His next major paper, "A Dynamical Theory of the Electromagnetic Field", was read to the Royal Society on 8 December 1864 and published in the ''Philosophical Transactions'' in 1865. The cells are gone from it, and so are the rolling particles. What remains is a set of equations describing a field, justified by general reasoning about how any mechanical system must behave rather than by a picture of what the field is made of.
+
+That is a real change of method. The 1861 argument runs from a machine, to what it must do, to the experiments it matches. The 1864 argument runs from the relations the experiments require to their consistency with the general laws of dynamics. The second makes weaker assumptions and is harder to overturn, but gives up what made the first so useful: a picture you can think with.
+
+The vortices did not vanish entirely. In the ''Treatise on Electricity and Magnetism'' of 1873, Maxwell is still discussing a vortex theory in Part IV, Chapter XXI. Article 831 says of it:
+
+<blockquote>
+The theory proposed in the preceding pages is evidently of a provisional kind, resting as it does on unproved hypotheses relating to the nature of molecular vortices, and the mode in which they are affected by the displacement of the medium.
+</blockquote>
+
+That is Maxwell, twelve years on, labelling his own work provisional in print.
+
+== What stayed standing ==
+
+Two things built on the scaffolding are still there after the scaffolding came down.
+
+* '''The displacement current.''' In an insulating material, force applied to the medium shifts something a little way and is resisted. A change in that shift behaves like a current and belongs in the equations of currents. The cells were how Maxwell arrived at this; the result does not depend on them, and it is in every modern treatment. See [[On Physical Lines of Force/Explainers/The missing term|The missing term]].
+* '''Light as an electromagnetic wave.''' Maxwell calculated the speed of a wave in his medium from purely electrical measurements and got the speed of light. The calculation used the model, but its inputs were laboratory numbers and its conclusion outlived the model completely. See [[On Physical Lines of Force/Explainers/How Maxwell found the speed of light|How Maxwell found the speed of light]].
+
+Neither is a lucky guess. Both were reached by taking the mechanical picture seriously enough to follow it into detail, and both connect quantities that can be measured — which is what let them stand once the picture was removed.
+
+== A historian's caution ==
+
+The story usually gets told as a clean retreat: Maxwell built a mechanism, extracted what he needed, then disowned it. The historian Bruce J. Hunt argued in 2015 that this overstates the case.
+
+Hunt's point is about which parts Maxwell actually hedged over. The dismissive language — words like "awkward", and the description of a device as provisional and temporary — was aimed at the '''idle-wheel particles''', the rolling layer between the cells, not at the vortices themselves, which Maxwell seems to have thought were probably real. On Hunt's reading he did not abandon the belief that something spins in a magnetic field; he abandoned one piece of gearing he had never much liked.
+
+Hunt also gives a different reason for the change of approach after 1863. Rather than a loss of faith in mechanisms, he points to Maxwell's work on electrical standards for the British Association: years spent on relations between quantities you can actually measure pushed his thinking that way and away from machinery.
+
+Set against the Treatise passage above, which does speak of unproved hypotheses about the vortices, the honest summary is that Maxwell's own position was more mixed than the tidy version suggests. See [[On Physical Lines of Force/Part IV/What became of the vortices|What became of the vortices]].
+
+== What makes a wrong model useful ==
+
+The lesson is not that being wrong is somehow good. Most wrong models produce nothing and are forgotten, which is the correct outcome for them. Other cases readers may know are not all alike. Some pictures were dropped but left something behind: caloric was abandoned while the careful measurement of heat done under it was not, and Bohr's atom lost its orbits but kept its energy levels. Others left almost nothing — the "plum pudding" atom is remembered mainly as the thing that got replaced. The medium Maxwell's own waves were supposed to travel through was given up too.
+
+What distinguishes the productive cases is not the model but the discipline of the person using it. A mechanical picture is a way of generating relations between measurable quantities. Those relations can be tested independently of the picture that suggested them, and if they hold, they survive it. The requirement is that the author keeps track of which parts are secure and which are provisional, and does not let the vividness of the picture do work the evidence has not done.
+
+Maxwell did this explicitly. He says which steps are demonstrated and which are provisional, and tells the reader when a piece of the mechanism is a convenience rather than a claim. He put the crucial calculation in terms of quantities others had measured in their own laboratories, so it could be checked without reference to a single cell. The machine was scaffolding, and he treated it as scaffolding while standing on it.
+
+== Where this is in the paper ==
+
+* [[On Physical Lines of Force/Part II/The mechanism of idle wheels|Part II — The mechanism]], where the idle wheels are introduced and hedged
+* [[On Physical Lines of Force/Part III/Prop. XIV|Part III, Prop. XIV]] — the displacement current
+* [[On Physical Lines of Force/Part IV/What became of the vortices|Part IV — What became of the vortices]]
+* [[On Physical Lines of Force/Introduction|Introduction]] and [[On Physical Lines of Force/Sources and editorial method|Sources and editorial method]]
+
+----
+
+''Next: [[On Physical Lines of Force/Explainers/What came after|What came after]] · Previous: [[On Physical Lines of Force/Explainers/Two ways to measure electricity|Two ways to measure electricity]]''
