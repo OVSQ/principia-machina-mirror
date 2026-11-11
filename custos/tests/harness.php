@@ -4740,6 +4740,18 @@ G::ok( $methods === $wantMethods && count( $methods ) === 19 && ( $ej['HookHandl
 
 // ---- R: the built pcalc, when it exists -----------------------------------------------------
 
+// The scenarios' wiki tracing checked on its own (no wiki; the built pcalc writes S5's and S7's held locks): scenarios.php --self-test.
+$stOut = [];
+$stExit = 1;
+exec( escapeshellarg( PHP_BINARY ) . ' ' . escapeshellarg( __DIR__ . '/scenarios.php' ) . ' --self-test 2>&1', $stOut, $stExit );
+// Each check judged by its own line, so a failing check fails its own R-line and no other; R15 the whole run.
+foreach ( [ 'R9' => 'S1 ', 'R10' => 'S2 ', 'R11' => 'S3 ', 'R12' => 'S5 ', 'R13' => 'S4 ', 'R14' => 'S6 ', 'R16' => 'S7 ' ] as $rid => $sid ) {
+	$stLine = (string)( array_values( array_filter( $stOut, static fn ( string $l ): bool => str_contains( $l, "self-test $sid" ) ) )[0] ?? "no line for $sid" );
+	G::ok( str_starts_with( $stLine, 'PASS' ), "$rid the scenarios' wiki tracing: " . trim( substr( $stLine, 4 ) ), implode( "\n", $stOut ) );
+}
+$stSum = (string)( array_values( array_filter( $stOut, static fn ( string $l ): bool => str_starts_with( $l, 'scenarios-self-test: ' ) ) )[0] ?? 'no summary line' );
+G::ok( $stExit === 0 && str_starts_with( $stSum, 'scenarios-self-test: ALL PASS' ), "R15 the scenarios' self-test as a whole: $stSum", implode( "\n", $stOut ) );
+
 $built = "$root/.lake/build/bin/pcalc";
 if ( is_file( $built ) && is_executable( $built ) ) {
 	$basic = (string)file_get_contents( "$root/Principia/Basic.lean" );

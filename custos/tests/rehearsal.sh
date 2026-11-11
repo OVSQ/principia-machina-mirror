@@ -52,6 +52,10 @@
 # POLLed over HTTP, the job runner run, and POLL answering it ("sweep: a QUEUED ticket without its job, re-enqueued
 # on POLL, answered"); after the sweep, the batch jobs' frame: Custos:Job --job for each of the three, runJobs, Custos:Job --last ("job: reaudit NOTHING DUE", cluster, recheck), then $wgCustosBatch pressure STRAINED and the re-audit ending DEFERRED ("job: refused DEFERRED"); and in the tampered pass a landing run by Custos:Land with the tampered binary, which must halt
 # (DIGEST MISMATCH, the ticket answered INTEGRITY HALT) and leave the register page unchanged.
+# With the built pcalc, after the sweep and the batch jobs' frame: version 1's gates replayed on this wiki, scenarios.php under
+# maintenance/run.php over MwStore, DbTicketStore, DbSeatStore and DbNonceStore with real jobs (the job runner,
+# type custosLand), each UWC under a title root of its own ("rehearsal: scenarios ALL PASS <p>/<n>, <d> divergent
+# (<w> wiki-only)"; a scenario the wiki cannot run, as one that steps the clock, counted wiki-divergent with its cause).
 #
 # The residence (no override of the check): the wiki's side runs the live check, under /opt and
 # /usr with every property, here as on the host; nothing switches it. So the binary is placed
@@ -1042,6 +1046,32 @@ print(r[1] if r[0] == "OK" else "")' "$root/client" "$res/pcalc" "$1"
 		[ "$(batch reaudit custosReaudit)" = DEFERRED ] || fail_api "the job reaudit was not DEFERRED at the level STRAINED"
 		settings "$res/pcalc"
 		say "job: refused DEFERRED"
+
+		# The scenarios on the wiki: scenarios.php under maintenance/run.php replays version 1's seven gates over
+		# this wiki's MwStore, DbTicketStore, DbSeatStore and DbNonceStore, each op's ticket enqueued as the API
+		# enqueues it and run by the job runner (type custosLand), each UWC under a title root of its own. A
+		# scenario that steps the clock (LandJob reads the wall clock), rebuilds the landing job, reads or edits a
+		# store's inside or forks a UWC is not run on the wiki: each of its assertions is counted divergent with
+		# that cause, as DIVERGENCES.md's wiki-only rows list them. Every line in scenarios-wiki.log in the scratch folder.
+		# CUSTOS_SCENARIOS=skip leaves them out (a caller that needs the rehearsal's wiki alone), saying so.
+		if [ "${CUSTOS_SCENARIOS:-}" = skip ]; then
+			say "rehearsal: scenarios skipped (CUSTOS_SCENARIOS=skip)"
+		else
+			scode=0
+			(cd "$mw" && php maintenance/run.php "$here/scenarios.php") > "$work/scenarios-wiki.log" 2>&1 || scode=$?
+			grep -E '^(a1|a2|b1|b1-fault|b1-range|b1-inc4|b1-repro): ' "$work/scenarios-wiki.log" || true
+			sline=$(grep -E '^scenarios-wiki: (ALL PASS|FAIL|cannot run|skipped)' "$work/scenarios-wiki.log" | tail -n 1 || true)
+			if [ "$scode" -ne 0 ] || ! grep -qE '^scenarios-wiki: ALL PASS [0-9]+/[0-9]+, [0-9]+ divergent \([0-9]+ wiki-only\)$' <<<"$sline"; then
+				# the failures with their detail, the rows that differ, and the log's end when there is no result line
+				awk '/^(FAIL|DEFECT) /{p=1; print; next} /^ {10}/{if (p) print; next} {p=0} /^(DIVERGENCES|traced here|divergent here)/{print}' \
+					"$work/scenarios-wiki.log" | head -n 80 || true
+				[ -n "$sline" ] || tail -n 20 "$work/scenarios-wiki.log"
+				say "${sline:-scenarios-wiki: no result line (exit $scode)}"
+				say "rehearsal: FAIL (scenarios)"
+				exit 1
+			fi
+			say "rehearsal: scenarios ${sline#scenarios-wiki: }"
+		fi
 	else
 		say "land: not run (the stand-in fake_pcalc.sh answers no record function)"
 	fi

@@ -22,6 +22,23 @@
  * Prints each gate's line "<gate>: <p>/<n>, <d> divergent[, <x> defects]" and
  * "scenarios: ALL PASS <p>/<n>, <d> divergent" (or FAIL), the divergent count compared row for row
  * with DIVERGENCES.md. Skipped with its reason when the clone has no built pcalc.
+ *
+ *   php custos/tests/scenarios.php --wiki-plan [<gate> ...]
+ *   php maintenance/run.php <clone>/custos/tests/scenarios.php     (the rehearsal wiki: rehearsal.sh)
+ *
+ * The wiki run (scenario_lib.php, SCW) replays the same gates over the wiki's stores with real jobs and
+ * prints "scenarios-wiki: ALL PASS <p>/<n>, <d> divergent (<w> wiki-only)": a PASS or a DIVERGENT
+ * assertion made on a UWC traced off the wiki (its landing job rebuilt, its nonce store set or read
+ * earlier in the case, the UWC forked; a step of its clock moves its stored times back instead,
+ * ScWikiLanding::shift), the cause recorded at the assertion from the
+ * UWCs it reads, is WIKI-DIV, counted in d and in w, its case a wiki-only row of DIVERGENCES.md with
+ * its count; a FAIL or a DEFECT is never relabelled, and a ticket the wiki's job runner leaves
+ * unanswered is a FAIL. The plan run (--wiki-plan) traces the same causes over the file-backed
+ * stores and prints the wiki-only rows, "scenarios-plan: ...".
+ *
+ *   php custos/tests/scenarios.php --self-test
+ *
+ * The tracing's own checks, no wiki needed (the built pcalc writes S5's and S7's held locks): "scenarios-self-test: ALL PASS <p>/<n>".
  */
 
 declare( strict_types=1 );
@@ -35,6 +52,12 @@ use Custos\PageWriter;
 
 /** The gates replayed, in order. */
 const SC_GATES = [ 'a1', 'a2', 'b1', 'b1-fault', 'b1-range', 'b1-inc4', 'b1-repro' ];
+/**
+ * Each gate's number of assertions, the same in every run (file-backed, plan and wiki): a gate whose run counts
+ * another number made an assertion that never ran (a conditional path, a return inside a gate) or one not
+ * recorded here, and fails the report whatever its PASS and DIVERGENT counts. A changed gate updates its line.
+ */
+const SC_COUNTS = [ 'a1' => 30, 'a2' => 123, 'b1' => 69, 'b1-fault' => 63, 'b1-range' => 28, 'b1-inc4' => 54, 'b1-repro' => 104 ];
 
 /** The scenarios' tally: per gate, passes, divergences, defects, failures. */
 final class SC {
@@ -45,6 +68,10 @@ final class SC {
 	public static array $log = [];
 	/** @var string[] the divergent assertions, "<gate> <id>" */
 	public static array $divs = [];
+	/** The gates a run was asked for (sc_run), so a gate that never registered is counted, not lost. */
+	public static array $asked = [];
+	/** @var array<int, array{0:string, 1:string, 2:string, 3:int, 4:string, 5:?string}> the wiki run's and the plan run's assertions: gate, id, kind, log line, what, the cause recorded at it */
+	public static array $rec = [];
 
 	public static function gate( string $g ): void {
 		self::$gate = $g;
@@ -53,6 +80,51 @@ final class SC {
 
 	private static function line( string $kind, string $id, string $what, string $detail = '' ): void {
 		self::$log[] = sprintf( '%-9s %s %s %s', $kind, self::$gate, $id, $what ) . ( $detail !== '' ? "\n          $detail" : '' );
+		if ( SCW::on() ) {
+			// the cause of the UWCs this assertion reads, recorded now, never later
+			self::$rec[] = [ self::$gate, $id, $kind, count( self::$log ) - 1, $what, SCW::cause( self::$gate, $id ) ];
+		}
+	}
+
+	/** How an assertion of $kind with the cause $cause recorded at it is shown: a PASS or a DIVERGENT traced off the wiki is WIKI-DIV; a FAIL or a DEFECT never. */
+	public static function shown( string $kind, ?string $cause ): string {
+		return $cause !== null && ( $kind === 'PASS' || $kind === 'DIVERGENT' ) ? 'WIKI-DIV' : $kind;
+	}
+
+	/**
+	 * The wiki run's and the plan run's tally from SC::$rec: each gate's counts (SC::$n) with its
+	 * wiki-only count, each WIKI-DIV line relabelled with its cause. Returns the wiki-only cases,
+	 * "<gate> <case>" => [n, cause], and the assertions shown WIKI-DIV, "<gate> <id>" => true.
+	 */
+	public static function tally(): array {
+		$kinds = [ 'PASS' => 'pass', 'DIVERGENT' => 'div', 'DEFECT' => 'defect', 'FAIL' => 'fail' ];
+		foreach ( self::$n as $g => $_ ) {
+			self::$n[$g] = [ 'pass' => 0, 'div' => 0, 'defect' => 0, 'fail' => 0, 'wiki' => 0 ];
+		}
+		$wcases = $off = [];
+		foreach ( self::$rec as [ $g, $id, $kind, $li, $what, $cause ] ) {
+			if ( self::shown( $kind, $cause ) !== 'WIKI-DIV' ) {
+				self::$n[$g][$kinds[$kind]]++;
+				continue;
+			}
+			$case = self::caseOf( $id );
+			self::$n[$g]['wiki']++;
+			$wcases["$g $case"] = [ 'n' => ( $wcases["$g $case"]['n'] ?? 0 ) + 1, 'cause' => $wcases["$g $case"]['cause'] ?? $cause ];
+			$off["$g $id"] = true;
+			self::$log[$li] = sprintf( '%-9s %s %s %s', 'WIKI-DIV', $g, $id, $what ) . "\n          cause: not run on the wiki: $cause";
+		}
+		return [ $wcases, $off ];
+	}
+
+	/** An assertion's case: its number up to the last dot (L3.4 -> L3, FS-4.2 -> FS-4, 3.2m -> 3). */
+	public static function caseOf( string $id ): string {
+		$i = strrpos( $id, '.' );
+		return $i === false ? $id : substr( $id, 0, $i );
+	}
+
+	/** A gate stopped by a throw (the wiki run goes on with the next gate). */
+	public static function thrown( Throwable $e ): void {
+		self::ok( 'THROWN', false, 'the gate stopped', get_class( $e ) . ': ' . $e->getMessage() . ' at ' . basename( $e->getFile() ) . ':' . $e->getLine() );
 	}
 
 	/** Version 1's expectation, met. */
@@ -93,20 +165,63 @@ final class SC {
 		self::ok( $id, isset( $a['refused'] ) && $before === $after, $what . ' [Custos: ' . ( $a['refused'] ?? '?' ) . ']', json_encode( $a ) );
 	}
 
-	public static function report( array $rows ): int {
+	/**
+	 * The lines, each gate's count and the result. $rows: DIVERGENCES.md's rows "<gate> <id>"; $wikiRows:
+	 * its wiki-only rows "<gate> <case> <count>", checked in the wiki run and the plan run, where a PASS
+	 * or a DIVERGENT assertion traced off the wiki when it was made counts divergent (wiki-only) and a
+	 * FAIL or a DEFECT counts as itself (SC::tally).
+	 */
+	/**
+	 * The gates whose count of assertions differs from SC_COUNTS, each "<gate> <counted> of <recorded>";
+	 * a gate SC_COUNTS does not name (the self-test's) is not checked.
+	 */
+	public static function countsOff( array $n, array $want = SC_COUNTS, array $asked = [] ): array {
+		$off = [];
+		foreach ( $asked as $g ) {
+			if ( !isset( $n[$g] ) && isset( $want[$g] ) ) {
+				$off[] = "$g 0 of {$want[$g]}";
+			}
+		}
+		foreach ( $n as $g => $c ) {
+			$gn = $c['pass'] + $c['div'] + $c['defect'] + $c['fail'] + ( $c['wiki'] ?? 0 );
+			if ( isset( $want[$g] ) && $gn !== $want[$g] ) {
+				$off[] = "$g $gn of {$want[$g]}";
+			}
+		}
+		return $off;
+	}
+
+	public static function report( array $rows, array $wikiRows = [] ): int {
+		$on = SCW::on();
+		$label = SCW::$wiki ? 'scenarios-wiki' : ( SCW::$plan ? 'scenarios-plan' : 'scenarios' );
+		$wcases = [];
+		if ( $on ) {
+			[ $wcases, $offs ] = self::tally();
+			$off = static fn ( string $r ): bool => !isset( $offs[$r] );
+			self::$divs = array_values( array_filter( self::$divs, $off ) );
+			$rows = array_values( array_filter( $rows, $off ) );
+		}
 		foreach ( self::$log as $l ) {
 			echo $l, "\n";
 		}
-		$p = $n = $d = $x = 0;
+		$p = $n = $d = $x = $w = 0;
 		$parts = [];
 		foreach ( self::$n as $g => $c ) {
-			$gn = $c['pass'] + $c['div'] + $c['defect'] + $c['fail'];
-			echo "$g: {$c['pass']}/$gn, {$c['div']} divergent", $c['defect'] > 0 ? ", {$c['defect']} defects" : '', $c['fail'] > 0 ? ", {$c['fail']} failed" : '', "\n";
+			$cw = $c['wiki'] ?? 0;
+			$gn = $c['pass'] + $c['div'] + $c['defect'] + $c['fail'] + $cw;
+			echo "$g: {$c['pass']}/$gn, ", $c['div'] + $cw, ' divergent', $on ? " ($cw wiki-only)" : '', $c['defect'] > 0 ? ", {$c['defect']} defects" : '',
+				$c['fail'] > 0 ? ", {$c['fail']} failed" : '', "\n";
 			$parts[] = "$g {$c['pass']}/$gn";
 			$p += $c['pass'];
 			$n += $gn;
-			$d += $c['div'];
+			$d += $c['div'] + $cw;
+			$w += $cw;
 			$x += $c['defect'] + $c['fail'];
+		}
+		// Each gate's count of assertions as recorded (SC_COUNTS): an assertion that never ran lowers n and p together.
+		$short = self::countsOff( self::$n, SC_COUNTS, self::$asked );
+		if ( $short !== [] ) {
+			echo 'assertions counted other than recorded (SC_COUNTS): ', implode( '; ', $short ), "\n";
 		}
 		// DIVERGENCES.md: one row per divergent assertion of the gates run, and no other.
 		$want = array_values( array_filter( $rows, static fn ( string $r ): bool => isset( self::$n[explode( ' ', $r )[0]] ) ) );
@@ -118,9 +233,30 @@ final class SC {
 			echo 'DIVERGENCES.md rows not divergent here: ', implode( '; ', array_diff( $want, $have ) ) ?: 'none', "\n";
 			echo 'divergent here, no row in DIVERGENCES.md: ', implode( '; ', array_diff( $have, $want ) ) ?: 'none', "\n";
 		}
-		echo 'scenarios: ', implode( ' ', $parts ), ", $d divergent\n";
-		$all = $x === 0 && $rowsOk;
-		echo 'scenarios: ', $all ? 'ALL PASS' : 'FAIL', " $p/$n, $d divergent", $all ? '' : ", $x defects or failures", $rowsOk ? '' : ', DIVERGENCES.md rows differ', "\n";
+		if ( $on ) {
+			// the wiki-only rows: one per case traced off the wiki, with its count of assertions
+			ksort( $wcases );
+			$haveW = [];
+			foreach ( $wcases as $k => $c ) {
+				$haveW[] = "$k {$c['n']}";
+				if ( SCW::$plan ) {
+					[ $g, $case ] = explode( ' ', $k, 2 );
+					echo "| wiki | $g | $case | {$c['n']} | {$c['cause']} |\n";
+				}
+			}
+			$wantW = array_values( array_filter( $wikiRows, static fn ( string $r ): bool => isset( self::$n[explode( ' ', $r )[0]] ) ) );
+			sort( $wantW );
+			sort( $haveW );
+			if ( $wantW !== $haveW ) {
+				$rowsOk = false;
+				echo 'DIVERGENCES.md wiki-only rows not traced here: ', implode( '; ', array_diff( $wantW, $haveW ) ) ?: 'none', "\n";
+				echo 'traced here, no wiki-only row in DIVERGENCES.md: ', implode( '; ', array_diff( $haveW, $wantW ) ) ?: 'none', "\n";
+			}
+		}
+		echo "$label: ", implode( ' ', $parts ), ", $d divergent\n";
+		$all = $x === 0 && $rowsOk && $short === [];
+		echo "$label: ", $all ? 'ALL PASS' : 'FAIL', " $p/$n, $d divergent", $on ? " ($w wiki-only)" : '', $all ? '' : ", $x defects or failures",
+			$rowsOk ? '' : ', DIVERGENCES.md rows differ', $short === [] ? '' : ', assertions not run as recorded', "\n";
 		return $all ? 0 : 1;
 	}
 }
@@ -130,6 +266,13 @@ function sc_rows(): array {
 	$t = (string)@file_get_contents( __DIR__ . '/DIVERGENCES.md' );
 	preg_match_all( '/^\| (a1|a2|b1|b1-fault|b1-range|b1-inc4|b1-repro) \| ([A-Za-z0-9.-]+) \|/m', $t, $m, PREG_SET_ORDER );
 	return array_map( static fn ( array $x ): string => $x[1] . ' ' . $x[2], $m );
+}
+
+/** DIVERGENCES.md's wiki-only rows, "<gate> <case> <count>", from its table of the wiki run. */
+function sc_wiki_rows(): array {
+	$t = (string)@file_get_contents( __DIR__ . '/DIVERGENCES.md' );
+	preg_match_all( '/^\| wiki \| (a1|a2|b1|b1-fault|b1-range|b1-inc4|b1-repro) \| ([A-Za-z0-9.-]+) \| ([0-9]+) \|/m', $t, $m, PREG_SET_ORDER );
+	return array_map( static fn ( array $x ): string => $x[1] . ' ' . $x[2] . ' ' . $x[3], $m );
 }
 
 /**
@@ -357,7 +500,7 @@ function fresh( string $case ): stdClass {
 		$tpl = sc_uwc( 'a2-push1' );
 		sc_push( $tpl, sc_push1(), 'Agent A' );
 	}
-	return sc_fork( $tpl, "a2-$case" );
+	return sc_fork( $tpl, "a2-$case", true );
 }
 
 /** A VERIFICATION of $target (the corner: its DIFFERENCE left as presented). */
@@ -624,7 +767,7 @@ function gate_b1(): void {
 	}
 	$pe = sc_op( $u, 'PETITION', 'Agent A', [ 'block' => 'B1' ] );
 	SC::div( 'L1.' . ++$k, isset( $pe['grant'] ) && $hex( $pe['challenge'] ?? null ), 'a petition queues at position 1 and carries a challenge nonce', CORNER_QUEUE, json_encode( $pe ) );
-	SC::div( 'L1.' . ++$k, end( $u->store->revisions[$lockTitle( $u )] )['actor'] === 'Custos', 'the queue edit is the petitioner\'s own revision of the lock page', CORNER_ACTOR );
+	SC::div( 'L1.' . ++$k, ( array_slice( $u->store->revisions[$lockTitle( $u )], -1 )[0] ?? [] )['actor'] === 'Custos', 'the queue edit is the petitioner\'s own revision of the lock page', CORNER_ACTOR );
 	SC::div( 'L1.' . ++$k, true, 'the PETITION row is the petitioner\'s own revision of the collaboration page', CORNER_COLLAB );
 	SC::div( 'L1.' . ++$k, true, 'one WAITING petition per account per UWC', CORNER_QUEUE );
 
@@ -636,7 +779,9 @@ function gate_b1(): void {
 	SC::div( 'L2.4', true, 'the acquisition is the holder\'s own revision; the row reads ASSIGNED', CORNER_ACTOR );
 	SC::div( 'L2.5', true, 'the badge carries the holder, the grant and the expiry', CORNER_BADGE_HOLDER );
 	$a = sc_op( $u, 'PETITION', 'Agent A', [ 'block' => 'B1' ] );
-	SC::div( 'L2.6', isset( $a['grant'] ) && $a['grant'] !== $pe['grant'], 'a holder does not acquire again', CORNER_REGRANT, json_encode( $a ) );
+	// The renewal itself, not a changed second: a grant time is written to the second, and the wiki run's two calls can share one.
+	SC::div( 'L2.6', isset( $a['grant'] ) && ( $a['challenge'] ?? null ) !== ( $pe['challenge'] ?? null ) && $a['grant'] >= $pe['grant'],
+		'a holder does not acquire again', CORNER_REGRANT, json_encode( $a ) );
 	SC::ok( 'L2.7', isset( $a['grant'] ) && $hex( $a['challenge'] ?? null ) && $a['challenge'] !== $pe['challenge'],
 		'a petition by the holder answers it as the holder, with a fresh nonce [Custos: its grant renewed]', json_encode( $a ) );
 	$pe = $a;
@@ -786,7 +931,7 @@ final class ScRacingStore implements \Custos\PageStore {
 	public ?string $raceText = null;
 	public int $raced = 0;
 
-	public function __construct( public \Custos\Tests\FileStore $inner ) {
+	public function __construct( public \Custos\PageStore $inner ) {
 	}
 
 	public function get( string $title ): ?string {
@@ -885,8 +1030,34 @@ function gate_b1_fault(): void {
 	$u0 = sc_uwc( 'bf-FS1-clean' );
 	$g0 = sc_op( $u0, 'PETITION', 'Agent A', [ 'block' => 'B1' ] );
 	sc_pushn( $u0, 'Agent A', [ sc_arec( 'SPR-2', 'First.' ) ], (string)$g0['challenge'], 'B1' );
-	SC::ok( 'FS-1.8', $pick( $u, 'SPR-2' ) !== [] && $pick( $u, 'SPR-2' ) === $pick( $u0, 'SPR-2' ),
-		'I3 the record\'s identity and digest after the lost answer equal a clean push\'s', json_encode( [ $pick( $u, 'SPR-2' ), $pick( $u0, 'SPR-2' ) ] ) );
+	// The two landings' LANDED stamps are their clocks' (on the wiki LandJob's wall clock, a second apart or
+	// more), and record_digest covers LANDED: the clean record is compared field by field but LANDED and
+	// DIGEST, and digested again with the lost answer's stamp, which must give the lost answer's DIGEST.
+	$lost = sc_by( $u )['SPR-2'] ?? [];
+	$clean = sc_by( $u0 )['SPR-2'] ?? [];
+	$sorted = static function ( array $r ) use ( &$sorted ): array {
+		ksort( $r );
+		foreach ( $r as $k => $v ) {
+			$r[$k] = is_array( $v ) ? $sorted( $v ) : $v;
+		}
+		return $r;
+	};
+	$bare = static function ( array $r ) use ( $sorted ): array {
+		unset( $r['LANDED'], $r['DIGEST'] );
+		return $sorted( $r );
+	};
+	$at = $clean;
+	unset( $at['DIGEST'] );
+	$at['LANDED'] = $lost['LANDED'] ?? null;
+	$redigest = $clean !== [] ? ( sc_calc()->call( 'record', 'record_digest', json_encode( [ 'record' => $at ], SC_JSON ) )['value'][1] ?? null ) : null;
+	// Off the wiki both clocks are the scenario's, so the whole record must match, LANDED and DIGEST included,
+	// as before the wiki run; on the wiki the stamp is LandJob's wall clock and only the digest is recomputed.
+	$stamped = is_string( $lost['LANDED'] ?? null ) && ( $lost['LANDED'] ?? '' ) !== '';
+	$same = SCW::$wiki || $sorted( $lost ) === $sorted( $clean );
+	SC::ok( 'FS-1.8', $pick( $u, 'SPR-2' ) !== [] && $stamped && $same && $bare( $lost ) === $bare( $clean )
+		&& is_string( $redigest ) && preg_match( '/\A[0-9a-f]{64}\z/', $redigest ) === 1 && $redigest === ( $lost['DIGEST'] ?? null ),
+		'I3 the record\'s identity and digest after the lost answer equal a clean push\'s [Custos: the record but its LANDED stamp, the digest over the lost answer\'s stamp]',
+		json_encode( [ $pick( $u, 'SPR-2' ), $pick( $u0, 'SPR-2' ), $lost['LANDED'] ?? null, $clean['LANDED'] ?? null, $redigest ] ) );
 
 	// FS-2 a repeated RELEASE (I4, I5).
 	$u = sc_uwc( 'bf-FS2' );
@@ -911,14 +1082,21 @@ function gate_b1_fault(): void {
 	sc_reland( $u, $race );
 	$lt = sc_titles()->lock( $u->px );
 	$race->raceTitle = $lt;
-	// A benign concurrent write of the lock page (the free lock, its text touched).
-	$race->raceText = (string)$u->store->get( $lt ) . "\n";
+	// A benign concurrent write of the lock page (the free lock, a line of prose added below its block): a
+	// change of text MediaWiki keeps (a trailing newline alone is trimmed on save, a null edit that moves no base).
+	$race->raceText = (string)$u->store->get( $lt ) . "\nTouched by another request.\n";
+	// The nonce known for Agent A on this UWC just before the losing request: none over the files; on the
+	// wiki the fork bf-FS3-queue's grant left one in the custos_nonce row it shares with its source.
+	// Read from the store itself, so on the wiki a losing PETITION that wrote a nonce row is seen (ScNonces::stored
+	// reads custos_nonce there); over the files the store's own peek is that read.
+	$stored = static fn ( stdClass $u ): ?string => $u->nonces instanceof ScNonces ? $u->nonces->stored( 'Agent A', $u->px ) : $u->nonces->peek( 'Agent A', $u->px );
+	$before = $stored( $u );
 	$e = sc_op( $u, 'PETITION', 'Agent A', [ 'block' => 'B1' ] );
 	SC::ok( 'FS-3.2', ( $e['refused'] ?? '' ) === 'PAGE FAULT' && str_contains( (string)( $e['detail'] ?? '' ), 'base moved' ) && $race->raced === 1,
 		'the acquisition whose base moved under it loses the compare and set: refused, retry [Custos: PAGE FAULT, base moved]', json_encode( $e ) );
 	$lk = sc_lock( $u );
-	SC::ok( 'FS-3.3', array_key_exists( 'holder', $lk ) && $lk['holder'] === null && !isset( $e['grant'] ) && $u->nonces->peek( 'Agent A', $u->px ) === null,
-		'I1 no holder and no grant issued by the losing request', json_encode( $lk ) );
+	SC::ok( 'FS-3.3', array_key_exists( 'holder', $lk ) && $lk['holder'] === null && !isset( $e['grant'] ) && $stored( $u ) === $before,
+		'I1 no holder and no grant issued by the losing request [Custos: the nonce as it stood before the request]', json_encode( [ $lk, $before, $u->nonces->peek( 'Agent A', $u->px ) ] ) );
 	$race->raceTitle = null;
 	$a = sc_op( $u, 'PETITION', 'Agent A', [ 'block' => 'B1' ] );
 	SC::ok( 'FS-3.4', isset( $a['grant'] ) && ( sc_lock( $u )['holder'] ?? '' ) === 'Agent A', 'the retry acquires the lock [Custos: its grant a time]', json_encode( $a ) );
@@ -1089,8 +1267,11 @@ function gate_b1_fault(): void {
 	$p = sc_push( $u, [ mrec( 'SPR-3', '0', '0.001', [] ), mrec( 'SPR-4', '0.002', '0.001', [ 'SPR-2' ] ) ], 'Agent A' );
 	$pairLanded = sc_ids( $p ) === [ 'SPR-3', 'SPR-4' ];
 	$f = sc_fork( $u, 'bf-FS12-cite' );
-	$t = sc_titles()->registerVolume( $u->px, 1 );
-	$setIn = static function ( stdClass $x, string $id, string $field, string $to ) use ( $t ): void {
+	// The register's title is $x's own: on the wiki each UWC has its title root, and sc_titles() names the
+	// pages of the UWC last read, so $x is read (its prefix) before its title is taken.
+	$setIn = static function ( stdClass $x, string $id, string $field, string $to ): void {
+		$px = $x->px;
+		$t = sc_titles()->registerVolume( $px, 1 );
 		$reg = sc_register( $x );
 		foreach ( $reg as &$r ) {
 			if ( $r['ID'] === $id ) {
@@ -1272,12 +1453,12 @@ function ic_tampered(): \Custos\Calculator {
 
 /** sc_op, a fault the landing job rethrows read back from the ticket's answer ("thrown": its class). */
 function ic_op( stdClass $u, string $op, string $account, array $params = [] ): array {
-	$nonce = $u->nonces->peek( $account, $u->px );
+	$nonce = sc_nonce( $u, $account );
 	if ( $op === 'PUSH' && !array_key_exists( 'challenge_response', $params ) && $nonce !== null ) {
 		$params['challenge_response'] = sc_answer( $nonce );
 	}
 	$id = $u->ops->run( $op, $u->px, $account, $params )['ticket'];
-	$u->now++;
+	sc_tick( $u );
 	try {
 		return $u->landing->run( $id );
 	} catch ( \Throwable $e ) {
@@ -1780,18 +1961,320 @@ function gate_b1_repro(): void {
 
 // ================================ main ========================================================
 
+/** The gates $want, in order; in the wiki run and the plan run a throw stops its gate alone. */
+function sc_run( array $want ): void {
+	SC::$asked = $want;
+	foreach ( $want as $g ) {
+		if ( !SCW::on() ) {
+			( 'gate_' . str_replace( '-', '_', $g ) )();
+			continue;
+		}
+		try {
+			( 'gate_' . str_replace( '-', '_', $g ) )();
+		} catch ( Throwable $e ) {
+			SC::thrown( $e );
+		}
+		SCW::reset();
+	}
+}
+
+/**
+ * The wiki run, under maintenance/run.php on the rehearsal wiki (rehearsal.sh): the landing job's
+ * configuration as the file-backed run's (the governor off, its D_IS) and each UWC's title root set
+ * for its jobs; checked first that the configuration MediaWiki reads follows those settings.
+ */
+function sc_wiki_main(): int {
+	SCW::$wiki = true;
+	SCW::$run = 'R' . gmdate( 'YmdHis' ) . getmypid();
+	$GLOBALS['wgCustosGovernorOff'] = true;
+	$GLOBALS['wgCustosDIs'] = str_repeat( 'd', 64 );
+	$GLOBALS['wgCustosTps'] = '0.4.0';
+	$GLOBALS['wgCustosPollAfter'] = 30;
+	$config = \MediaWiki\MediaWikiServices::getInstance()->getMainConfig();
+	$probe = SCW::root( sc_scratch() . '/probe' );
+	$GLOBALS['wgCustosUwcRoot'] = $probe;
+	if ( $config->get( 'CustosUwcRoot' ) !== $probe || $config->get( 'CustosGovernorOff' ) !== true ) {
+		echo "scenarios-wiki: cannot run: the configuration MediaWiki reads does not follow \$GLOBALS (CustosUwcRoot, CustosGovernorOff)\n";
+		return 2;
+	}
+	if ( \Custos\Calculator::digestOf( sc_built() ) !== \Custos\Landing::confFrom( $config )['digest'] ) {
+		echo "scenarios-wiki: cannot run: the wiki's \$wgCustosBuild digest is not the built pcalc's\n";
+		return 2;
+	}
+	sc_run( SC_GATES );
+	return SC::report( sc_rows(), sc_wiki_rows() );
+}
+
+if ( defined( 'RUN_MAINTENANCE_IF_MAIN' ) ) {
+	if ( !class_exists( 'CustosScenarios', false ) ) {
+		/** The maintenance script maintenance/run.php runs: the wiki run. */
+		final class CustosScenarios extends \MediaWiki\Maintenance\Maintenance {
+			public function __construct() {
+				parent::__construct();
+				$this->addDescription( 'Version 1\'s landing gates replayed as Custos scenarios over this wiki\'s stores and job runner' );
+			}
+
+			public function execute() {
+				if ( !is_file( sc_built() ) || !is_executable( sc_built() ) ) {
+					echo "scenarios-wiki: skipped: no built pcalc in this clone (.lake/build/bin/pcalc)\n";
+					exit( 0 );
+				}
+				exit( sc_wiki_main() );
+			}
+		}
+	}
+	return CustosScenarios::class;
+}
+
+/**
+ * The tracing's own checks over the plan run's UWCs, no wiki (the built pcalc writes the held locks of S5 and S7): S1 a ticket the job
+ * runner leaves unanswered, or a land job it fails, is a FAIL and never a refusal; S2 a FAIL is never
+ * relabelled, before or after its case is traced, and only an assertion made after the cause may be
+ * WIKI-DIV; S3 an assertion on a clean UWC made right after one on a traced UWC, in the same case, is
+ * counted as it came out; S4 a wiki run's nonce set and take go through the table; S5 a wiki run's
+ * clock step moves back its UWC's stored times alone and traces no cause. Prints each check and "scenarios-self-test: ALL PASS <p>/<n>" (or FAIL).
+ */
+function sc_self_test(): int {
+	SCW::$plan = true;
+	$dir = sc_scratch() . '/self-test';
+	$uwc = static function ( string $tag ) use ( $dir ): ScUwc {
+		$u = new ScUwc( [ 'dir' => "$dir/$tag", 'px' => 'SPR', 'now' => SCW::START ] );
+		@mkdir( "$dir/$tag", 0777, true );
+		$u->init( [ 'store' => new ScStore( new \Custos\Tests\FileStore( "$dir/$tag/pages" ) ), 'nonces' => new ScNonces( new \Custos\Tests\FileNonceStore( "$dir/$tag/nonces.json" ) ) ] );
+		return $u;
+	};
+	$shown = static fn ( string $g ): array => array_column( array_map( static fn ( array $r ): array => [ $r[1], SC::shown( $r[2], $r[5] ) ],
+		array_values( array_filter( SC::$rec, static fn ( array $r ): bool => $r[0] === $g ) ) ), 1, 0 );
+	$checks = [];
+
+	// S1: an unanswered ticket, then an answered ticket whose land job failed (JOB CONTEXT answers and fails the job).
+	SC::gate( 'self-1' );
+	$a = SCW::answer( 7, [ 'id' => 7, 'account' => 'Agent A', 'prefix' => 'SPR', 'answer' => null ], [ 'jobs' => [] ] );
+	SC::refused( 'S1.1', $a, [], [], 'an unanswered ticket is not Custos refusing' );
+	$b = SCW::answer( 8, [ 'id' => 8, 'account' => 'Agent A', 'prefix' => 'SPR', 'answer' => json_encode( [ 'refused' => 'JOB CONTEXT', 'detail' => 'x' ] ) ],
+		[ 'jobs' => [ [ 'type' => 'custosLand', 'status' => 'failed', 'error' => 'thrown inside LandJob' ] ] ] );
+	SC::refused( 'S1.2', $b, [], [], 'a failed land job is not Custos refusing' );
+	$c = SCW::answer( 9, [ 'id' => 9, 'account' => 'Agent A', 'prefix' => 'SPR', 'answer' => json_encode( [ 'refused' => 'LOCK HELD' ] ) ],
+		[ 'jobs' => [ [ 'type' => 'custosLand', 'status' => 'ok', 'error' => null ] ] ] );
+	$checks['S1 a ticket the job runner leaves unanswered, or a land job it fails, is a FAIL, never a refusal'] =
+		$shown( 'self-1' ) === [ 'NOT-RUN.t7' => 'FAIL', 'S1.1' => 'FAIL', 'NOT-RUN.t8' => 'FAIL', 'S1.2' => 'FAIL' ]
+		&& !isset( $a['refused'] ) && !isset( $b['refused'] ) && $c === [ 'refused' => 'LOCK HELD' ];
+
+	// S2: a FAIL before its case is traced (by a read of the nonce store), a PASS after it, a FAIL after the clock is stepped (no cause).
+	SC::gate( 'self-2' );
+	$t = $uwc( 'S2' );
+	SC::ok( 'S2.1', $t->px === 'x', 'a FAIL before the case is traced' );
+	$t->nonces->peek( 'Agent A', $t->px );
+	SC::ok( 'S2.2', $t->px === 'SPR', 'a PASS after the nonce store is read' );
+	$t->now = SCW::START + 3600;
+	SC::ok( 'S2.3', $t->px === 'x', 'a FAIL after the clock is stepped' );
+	SC::defect( 'S2.4', $t->px . ' landed', 'a DEFECT after the clock is stepped' );
+	SC::tally();
+	$checks['S2 a FAIL or a DEFECT is never relabelled; only an assertion made after its cause is WIKI-DIV'] =
+		$shown( 'self-2' ) === [ 'S2.1' => 'FAIL', 'S2.2' => 'WIKI-DIV', 'S2.3' => 'FAIL', 'S2.4' => 'DEFECT' ]
+		&& SC::$n['self-2'] === [ 'pass' => 0, 'div' => 0, 'defect' => 1, 'fail' => 2, 'wiki' => 1 ];
+
+	// S3: a traced UWC's assertion, then a clean UWC's in the same case, then one reading no UWC (it stands on the clean one).
+	SC::gate( 'self-3' );
+	$tr = $uwc( 'S3t' );
+	$cl = $uwc( 'S3c' );
+	$tr->taint( SCW::LANDING );
+	SC::ok( 'S3.1', $tr->px === 'SPR', 'a PASS on the traced UWC' );
+	SC::ok( 'S3.2', $cl->store->get( 'Nothing' ) === null, 'a PASS on the clean UWC right after' );
+	SC::ok( 'S3.3', $cl->px === 'x', 'a FAIL on the clean UWC' );
+	SC::div( 'S3.4', true, 'a DIVERGENT reading no UWC after the clean one', 'self-test' );
+	SC::tally();
+	$checks['S3 an assertion on a clean UWC after one on a traced UWC is counted as it came out'] =
+		$shown( 'self-3' ) === [ 'S3.1' => 'WIKI-DIV', 'S3.2' => 'PASS', 'S3.3' => 'FAIL', 'S3.4' => 'DIVERGENT' ]
+		&& SC::$n['self-3'] === [ 'pass' => 1, 'div' => 1, 'defect' => 0, 'fail' => 1, 'wiki' => 1 ];
+
+	// S4: a wiki run's UWC (no file store, the wiki's table stood in for by MemNonceStore): a landing job the
+	// scenario rebuilt sets and takes its nonce through the table, the UWC taints with the nonce cause, nothing thrown.
+	SC::gate( 'self-4' );
+	$w = new ScUwc( [ 'dir' => "$dir/S4", 'px' => 'SPR', 'now' => SCW::START ] );
+	$table = new \Custos\MemNonceStore();
+	$w->init( [ 'store' => new ScStore( new \Custos\Tests\FileStore( "$dir/S4/pages" ) ), 'nonces' => new ScNonces( null, $table ) ] );
+	$nonce = str_repeat( 'ab', 16 );
+	$thrown = null;
+	$taken = null;
+	try {
+		$w->nonces->put( 'Agent A', 'SPR', $nonce, SCW::START );
+		$tainted = $w->taint;
+		$known = $w->nonces->known( 'Agent A', 'SPR' );
+		$taken = $w->nonces->take( 'Agent A', 'SPR' );
+	} catch ( \Throwable $e ) {
+		$thrown = $e::class;
+	}
+	SC::ok( 'S4.1', $w->px === 'SPR', 'a PASS on the UWC after its nonce was set' );
+	SC::tally();
+	$checks['S4 a wiki run\'s nonce set and take go through the table, taint the UWC with the nonce cause and throw nothing'] =
+		$thrown === null && ( $tainted ?? null ) === SCW::NONCE && ( $known ?? null ) === $nonce && $taken === $nonce
+		&& $w->nonces->known( 'Agent A', 'SPR' ) === null && $table->take( 'Agent A', 'SPR' ) === null
+		&& $shown( 'self-4' ) === [ 'S4.1' => 'WIKI-DIV' ];
+
+	// S5: a wiki run's clock step: two UWCs side by side, their pages in files and the wiki's tables stood in for
+	// by SQLite tables made from sql/sqlite/; a step of the first moves back its lock's stamps and its rows of
+	// custos_ticket, custos_nonce and custos_seat by the step, nothing of the second, and traces no cause.
+	SCW::reset();
+	SC::gate( 'self-5' );
+	$pdo = new PDO( 'sqlite::memory:' );
+	$pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+	foreach ( [ 'custos_ticket', 'custos_nonce', 'custos_seat' ] as $tb ) {
+		$pdo->exec( str_replace( '/*_*/', '', (string)file_get_contents( dirname( __DIR__ ) . "/sql/sqlite/$tb.sql" ) ) );
+	}
+	$g0 = '2026-10-05T00:00:00Z';
+	$e0 = '2026-10-05T01:00:00Z';
+	$ts0 = '20261005000000';
+	$side = [];
+	foreach ( [ 'A' => 'Agent A', 'B' => 'Agent B' ] as $k => $acct ) {
+		$v = new ScUwc( [ 'dir' => "$dir/S5$k", 'px' => 'SPR', 'now' => SCW::START, 'root' => "Principia Machina/Scenarios/S5/$k" ] );
+		@mkdir( "$dir/S5$k", 0777, true );
+		$land = new ScWikiLanding( $v, ScWikiLanding::pdo( $pdo ) );
+		$v->init( [ 'store' => new ScStore( new \Custos\Tests\FileStore( "$dir/S5$k/pages" ) ), 'landing' => $land, 'wiki' => $land ] );
+		$v->store->put( SCW::titles( $v->root() )->lock( 'SPR' ), PageTexts::lock( 'SPR', $acct, $g0, $e0, 'B1', sc_canon() ), 'seed' );
+		$pdo->prepare( 'INSERT INTO custos_ticket (ct_op, ct_account, ct_prefix, ct_request, ct_state, ct_answer, ct_created, ct_done) VALUES (?, ?, ?, ?, ?, ?, ?, ?)' )
+			->execute( [ 'PUSH', $acct, 'SPR', '{}', 'DONE', '{}', $ts0, $ts0 ] );
+		$land->saw( (int)$pdo->lastInsertId(), $acct );
+		$pdo->prepare( 'INSERT INTO custos_ticket (ct_op, ct_account, ct_prefix, ct_request, ct_state, ct_answer, ct_created, ct_done) VALUES (?, ?, ?, ?, ?, ?, ?, NULL)' )
+			->execute( [ 'PETITION', $acct, 'SPR', '{}', 'QUEUED', null, $ts0 ] );
+		$land->saw( (int)$pdo->lastInsertId(), $acct );
+		$pdo->prepare( 'INSERT INTO custos_nonce (cn_account, cn_prefix, cn_nonce, cn_issued) VALUES (?, ?, ?, ?)' )->execute( [ $acct, 'SPR', str_repeat( 'ab', 16 ), SCW::START ] );
+		$pdo->prepare( 'INSERT INTO custos_seat (cs_account, cs_kind, cs_level, cs_since) VALUES (?, ?, ?, ?)' )->execute( [ $acct, 'agent', 3, SCW::START ] );
+		$side[$k] = $v;
+	}
+	$read = static function ( ScUwc $v, string $acct ) use ( $pdo ): array {
+		$lk = (array)json_decode( (string)PageTexts::readLock( (string)$v->store->get( SCW::titles( $v->root() )->lock( 'SPR' ) ) ), true );
+		$q = static fn ( string $sql ): array => array_map( 'array_values', $pdo->query( $sql )->fetchAll( PDO::FETCH_ASSOC ) );
+		$a = $pdo->quote( $acct );
+		return [ 'lock' => [ $lk['holder'] ?? null, $lk['granted_at'] ?? null, $lk['expires_at'] ?? null, $lk['block'] ?? null ],
+			'tickets' => $q( "SELECT ct_created, ct_done FROM custos_ticket WHERE ct_account = $a ORDER BY ct_id" ),
+			'nonce' => $q( "SELECT cn_nonce, cn_issued FROM custos_nonce WHERE cn_account = $a" ),
+			'seat' => $q( "SELECT cs_level, cs_since FROM custos_seat WHERE cs_account = $a" ) ];
+	};
+	$beforeB = $read( $side['B'], 'Agent B' );
+	$thrown = null;
+	try {
+		$side['A']->now += Landing::LEASE + 1;
+	} catch ( \Throwable $e ) {
+		$thrown = $e::class . ': ' . $e->getMessage();
+	}
+	SC::ok( 'S5.1', $side['A']->px === 'SPR', 'a PASS on the UWC after its clock was stepped' );
+	SC::tally();
+	$st = Landing::LEASE + 1;
+	$movedA = [ 'lock' => [ 'Agent A', gmdate( 'Y-m-d\TH:i:s\Z', (int)strtotime( $g0 ) - $st ), gmdate( 'Y-m-d\TH:i:s\Z', (int)strtotime( $e0 ) - $st ), 'B1' ],
+		'tickets' => [ [ gmdate( 'YmdHis', SCW::START - $st ), gmdate( 'YmdHis', SCW::START - $st ) ], [ gmdate( 'YmdHis', SCW::START - $st ), null ] ],
+		'nonce' => [ [ str_repeat( 'ab', 16 ), SCW::START - $st ] ], 'seat' => [ [ 3, SCW::START - $st ] ] ];
+	$afterA = $read( $side['A'], 'Agent A' );
+	// a landing job the scenario rebuilt reads the scenario's clock: a step under it moves nothing
+	$side['B']->landing = 'rebuilt';
+	$side['B']->now += Landing::LEASE + 1;
+	$checks['S5 a wiki run\'s clock step moves back exactly its UWC\'s lock stamps and its rows of custos_ticket, custos_nonce and custos_seat, nothing of a second UWC, and traces no cause'] =
+		$thrown === null && $afterA === $movedA && $read( $side['B'], 'Agent B' ) === $beforeB
+		&& $side['A']->taint === null && $side['A']->clock() === SCW::START + $st && $shown( 'self-5' ) === [ 'S5.1' => 'PASS' ];
+	if ( $thrown !== null || $afterA !== $movedA ) {
+		fwrite( STDERR, 'S5: ' . ( $thrown ?? json_encode( [ 'after' => $afterA, 'want' => $movedA ] ) ) . "\n" );
+	}
+
+	// S7: the shift's edges, over its own SQLite tables and a recording statement runner: no step changes nothing and
+	// runs no statement; a negative step is refused; a free lock, a missing lock page and a UWC with no tickets write
+	// nothing to the lock and run no statement; a nonce row issued before the step and a seat row with no time
+	// (cs_since 0) or one before the step are left as they are, while the rows at or after the step move back.
+	$pdo7 = new PDO( 'sqlite::memory:' );
+	$pdo7->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+	foreach ( [ 'custos_ticket', 'custos_nonce', 'custos_seat' ] as $tb ) {
+		$pdo7->exec( str_replace( '/*_*/', '', (string)file_get_contents( dirname( __DIR__ ) . "/sql/sqlite/$tb.sql" ) ) );
+	}
+	$ran = 0;
+	$run7 = ScWikiLanding::pdo( $pdo7 );
+	$count7 = static function ( string $sql, array $params ) use ( $run7, &$ran ): int {
+		$ran++;
+		return $run7( $sql, $params );
+	};
+	$mk7 = static function ( string $tag, ?string $lockText ) use ( $dir, $count7 ): array {
+		$v = new ScUwc( [ 'dir' => "$dir/S7$tag", 'px' => 'SPR', 'now' => SCW::START, 'root' => "Principia Machina/Scenarios/S7/$tag" ] );
+		@mkdir( "$dir/S7$tag", 0777, true );
+		$land = new ScWikiLanding( $v, $count7 );
+		$v->init( [ 'store' => new ScStore( new \Custos\Tests\FileStore( "$dir/S7$tag/pages" ) ), 'landing' => $land, 'wiki' => $land ] );
+		if ( $lockText !== null ) {
+			$v->store->put( SCW::titles( $v->root() )->lock( 'SPR' ), $lockText, 'seed' );
+		}
+		return [ $v, $land ];
+	};
+	$lockOf = static fn ( ScUwc $v ): ?string => $v->store->get( SCW::titles( $v->root() )->lock( 'SPR' ) );
+	$held7 = PageTexts::lock( 'SPR', 'Agent A', '2026-10-05T00:00:00Z', '2026-10-05T01:00:00Z', 'B1', sc_canon() );
+	[ $z, $zl ] = $mk7( 'zero', $held7 );
+	$zl->saw( 1, 'Agent A' );
+	$zl->shift( 0 );
+	$zeroOk = $ran === 0 && $lockOf( $z ) === $held7;
+	$negOk = false;
+	try {
+		$zl->shift( -5 );
+	} catch ( LogicException $e ) {
+		$negOk = str_contains( $e->getMessage(), 'forward only' ) && $lockOf( $z ) === $held7;
+	}
+	$free7 = PageTexts::lock( 'SPR', null, null, null, null );
+	[ $f, $fl ] = $mk7( 'free', $free7 );
+	$fl->shift( 60 );
+	[ $m, $ml ] = $mk7( 'none', null );
+	$ml->shift( 60 );
+	$quietOk = $ran === 0 && $lockOf( $f ) === $free7 && $lockOf( $m ) === null;
+	$pdo7->exec( "INSERT INTO custos_nonce (cn_account, cn_prefix, cn_nonce, cn_issued) VALUES ('Agent A', 'SPR', 'n1', 1000), ('Agent A', 'XYZ', 'n2', 1000), ('Agent B', 'SPR', 'n3', 30)" );
+	$pdo7->exec( "INSERT INTO custos_seat (cs_account, cs_kind, cs_level, cs_since) VALUES ('Agent A', 'agent', 1, 0), ('Agent B', 'agent', 1, 30), ('Agent C', 'agent', 1, 1000)" );
+	[ $g, $gl ] = $mk7( 'guards', $free7 );
+	$gl->saw( 1, 'Agent A' );
+	$gl->saw( 2, 'Agent B' );
+	$gl->saw( 3, 'Agent C' );
+	$gl->shift( 60 );
+	$rows7 = static fn ( string $sql ): array => array_map( 'array_values', $pdo7->query( $sql )->fetchAll( PDO::FETCH_ASSOC ) );
+	$guardOk = $rows7( "SELECT cn_account, cn_prefix, cn_issued FROM custos_nonce ORDER BY cn_account, cn_prefix" ) === [ [ 'Agent A', 'SPR', 940 ], [ 'Agent A', 'XYZ', 1000 ], [ 'Agent B', 'SPR', 30 ] ]
+		&& $rows7( "SELECT cs_account, cs_since FROM custos_seat ORDER BY cs_account" ) === [ [ 'Agent A', 0 ], [ 'Agent B', 30 ], [ 'Agent C', 940 ] ];
+	$checks['S7 the clock\'s shift: no step changes nothing; a negative step is refused; a free or missing lock and no tickets run nothing; a row before the step or with no time stays'] =
+		$zeroOk && $negOk && $quietOk && $guardOk;
+	if ( !( $zeroOk && $negOk && $quietOk && $guardOk ) ) {
+		fwrite( STDERR, 'S7: ' . json_encode( [ 'zero' => $zeroOk, 'negative' => $negOk, 'quiet' => $quietOk, 'guards' => $guardOk, 'ran' => $ran,
+			'nonce' => $rows7( 'SELECT cn_prefix, cn_issued FROM custos_nonce' ), 'seat' => $rows7( 'SELECT cs_account, cs_since FROM custos_seat' ) ] ) . "\n" );
+	}
+
+	// S6: a gate whose count of assertions differs from the recorded one is named, either way; a gate not recorded is not.
+	$cnt = static fn ( int $pass, int $div, int $wiki = 0 ): array => [ 'pass' => $pass, 'div' => $div, 'defect' => 0, 'fail' => 0, 'wiki' => $wiki ];
+	$checks['S6 a gate whose count of assertions differs from SC_COUNTS fails the report, short or long, or asked and never registered; an unrecorded gate is not checked'] =
+		SC::countsOff( [ 'a1' => $cnt( 10, 15, 5 ), 'self-1' => $cnt( 1, 0 ) ] ) === []
+		&& SC::countsOff( [ 'a1' => $cnt( 10, 15, 4 ) ] ) === [ 'a1 29 of 30' ]
+		&& SC::countsOff( [ 'b1-repro' => $cnt( 3, 102 ) ] ) === [ 'b1-repro 105 of 104' ]
+		&& SC::countsOff( [ 'a1' => $cnt( 10, 15, 5 ) ], SC_COUNTS, [ 'a1', 'b1' ] ) === [ 'b1 0 of 69' ]
+		&& array_sum( SC_COUNTS ) === 471 && array_keys( SC_COUNTS ) === SC_GATES;
+
+	$p = 0;
+	foreach ( $checks as $what => $ok ) {
+		echo $ok ? 'PASS' : 'FAIL', "      self-test $what\n";
+		$p += $ok ? 1 : 0;
+	}
+	$n = count( $checks );
+	echo 'scenarios-self-test: ', $p === $n ? 'ALL PASS' : 'FAIL', " $p/$n\n";
+	return $p === $n ? 0 : 1;
+}
+
 if ( realpath( $_SERVER['SCRIPT_FILENAME'] ?? '' ) === realpath( __FILE__ ) ) {
+	if ( ( $argv[1] ?? '' ) === '--self-test' ) {
+		exit( sc_self_test() );
+	}
 	if ( !is_file( sc_built() ) || !is_executable( sc_built() ) ) {
 		echo "scenarios: skipped: no built pcalc in this clone (.lake/build/bin/pcalc)\n";
 		exit( 0 );
 	}
-	$want = array_slice( $argv, 1 ) ?: SC_GATES;
+	$want = array_slice( $argv, 1 );
+	if ( ( $want[0] ?? '' ) === '--wiki-plan' ) {
+		// the wiki run's causes traced over the file-backed stores: its counts and its wiki-only rows
+		SCW::$plan = true;
+		array_shift( $want );
+	}
+	$want = $want ?: SC_GATES;
 	foreach ( $want as $g ) {
 		if ( !in_array( $g, SC_GATES, true ) ) {
 			fwrite( STDERR, "scenarios: not a gate: $g\n" );
 			exit( 2 );
 		}
-		( 'gate_' . str_replace( '-', '_', $g ) )();
 	}
-	exit( SC::report( sc_rows() ) );
+	sc_run( $want );
+	exit( SC::report( sc_rows(), sc_wiki_rows() ) );
 }

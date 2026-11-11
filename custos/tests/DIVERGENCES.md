@@ -378,4 +378,68 @@ clock starts; the register counts version 1 asserts include it, as they included
 | b1-repro | R7.3 | step 23: CH7 AZ's REPRODUCTION under its grant, answering the challenge, is answered | corner | the named reproduction is not built (a PUSH of kind REPRODUCTION with its derivation, the CORROBORATION record, the reproduction log, NON-CORROBORATION with its PENDING pairs, INDEPENDENCE, SAME-MODEL and SAME-SPONSOR): GA1 refuses the parameters kind, derivation and capability (custos-unknown-param), and CORROBORATION is not a class Custos lands (RECORD CHECK, LANDS); nothing is written |
 | b1-repro | R7.4 | CH7 AZ petitions, acquires, answers the challenge and lands its CORROBORATION (attested EXECUTED) | corner | the named reproduction is not built (a PUSH of kind REPRODUCTION with its derivation, the CORROBORATION record, the reproduction log, NON-CORROBORATION with its PENDING pairs, INDEPENDENCE, SAME-MODEL and SAME-SPONSOR): GA1 refuses the parameters kind, derivation and capability (custos-unknown-param), and CORROBORATION is not a class Custos lands (RECORD CHECK, LANDS); nothing is written |
 
+## The wiki run: the wiki-only rows
+
+`bash custos/tests/rehearsal.sh` replays the same seven gates on its rehearsal wiki: `scenarios.php`
+under `maintenance/run.php`, over the wiki's own stores (`MwStore`, `DbTicketStore`, `DbSeatStore`,
+`DbNonceStore`), each op's ticket enqueued as the API enqueues it (a `LandJob`) and run by the job
+runner (type `custosLand`, in that process as `runJobs` runs it), each UWC under a title root of its
+own (`$wgCustosUwcRoot` set for its jobs), the governor off and the D_IS fixed as over the files. It
+prints `scenarios-wiki: ALL PASS <p>/<n>, <d> divergent (<w> wiki-only)`, and the rehearsal
+`rehearsal: scenarios ...` with the same counts.
+
+A scenario the wiki cannot run is still run there, but its assertions do not count as the wiki's: a
+PASS or a DIVERGENT assertion made on a UWC that carries one of the causes below counts divergent,
+wiki-only, by that cause. The cause is recorded when the assertion is made, from the UWCs it reads
+(those read since the assertion before it; with none, the ones that assertion read, when it is of
+the same case) and the cause each carried when read; an assertion made before its UWC was traced, or
+on a clean UWC, counts as it came out. A FAIL or a DEFECT is never counted wiki-only: a scenario
+that fails on the wiki's stores is a failure of the run, whatever was traced. A ticket the wiki's
+job runner leaves unanswered, or a land job it fails, is a failure too, never a refusal by Custos.
+The rows are one per case (the assertion's number up to its last dot: L4.3 is case L4, 3.2m is case
+3), with its count of wiki-only assertions; the wiki run compares them with the assertions it
+traced, and `php custos/tests/scenarios.php --wiki-plan` traces the same causes over the file-backed
+stores and prints them. `php custos/tests/scenarios.php --self-test` checks the tracing itself.
+
+- A step of the scenario's clock is not among them: the landing job reads the wall clock (`LandJob`,
+  `time()`), and on the wiki run a step of a UWC's clock (`$u->now` set, version 1's gpush fixture
+  among them: `sc_grant` lets a lock held by another account run past its lease before the next
+  account petitions) moves that UWC's stored times back by the step instead (`ScWikiLanding::shift`):
+  the lock page's grant and expiry stamps, rewritten through the page store with the same holder and
+  block, and its rows of `custos_ticket` (`ct_created`, `ct_done` where set), `custos_nonce`
+  (`cn_issued`) and `custos_seat` (`cs_since` where set), one statement per table, restricted to its
+  tickets and their accounts on its prefix. The production code reads the wall clock, untouched; the
+  assertions after the step run on the wiki. Not taken: a clock seam in `LandJob` (a production switch
+  over lease, lock and nonce timing). `php custos/tests/scenarios.php --self-test` checks the shift
+  (S5).
+- `rebuilds the landing job`: the scenario runs its landing over another Calculator (the tampered
+  binary), another page store (the racing store) or another lease; the wiki's job builds its own from
+  the configuration.
+- `forks a UWC`: the pages are copied to the fork's title root, but `custos_nonce`, `custos_seat` and
+  `custos_ticket` are the wiki's tables, keyed by account and prefix, one for the fork and its source.
+  The forks of the template a2's cases start from are not traced (the template is never asserted on
+  after a fork, and a fork's copy of it is not an assertion's read).
+- `reads or sets the nonce store`: `DbNonceStore` has take and no peek; an agent knows its nonce from
+  the answers, which the wiki run follows (the grant's and every later answer's challenge). A read
+  takes only the case it serves off the wiki; a set takes the UWC.
+
+Every other assertion runs on the wiki as it runs over the files, and the count check against the
+rows above holds there too. One that passes over the files and fails on the wiki's stores is a seam
+defect, never a row, traced or not. The tables `custos_nonce` and `custos_seat` are shared by every UWC of the run
+(the prefixes and accounts are the scenarios' own, SPR and Agent A among them); each UWC's first PUSH
+follows its own grant, so the nonce the answers carried is the table's.
+
+| Run | Gate | Case | Assertions | Cause |
+|---|---|---|---|---|
+| wiki | b1 | L3 | 13 | reads or sets the nonce store; DbNonceStore has take, no peek, and an agent knows its nonce from the answers |
+| wiki | b1-fault | FS-12 | 5 | forks a UWC; custos_nonce, custos_seat and custos_ticket are the wiki's tables, one for the fork and its source |
+| wiki | b1-fault | FS-3 | 6 | forks a UWC; custos_nonce, custos_seat and custos_ticket are the wiki's tables, one for the fork and its source |
+| wiki | b1-fault | FS-4 | 2 | reads or sets the nonce store; DbNonceStore has take, no peek, and an agent knows its nonce from the answers |
+| wiki | b1-fault | FS-7 | 4 | rebuilds the landing job (another Calculator, page store or lease); LandJob builds its own from the configuration |
+| wiki | b1-fault | FS-8 | 11 | rebuilds the landing job (another Calculator, page store or lease); LandJob builds its own from the configuration |
+| wiki | b1-inc4 | I3 | 12 | rebuilds the landing job (another Calculator, page store or lease); LandJob builds its own from the configuration |
+| wiki | b1-inc4 | I6 | 8 | rebuilds the landing job (another Calculator, page store or lease); LandJob builds its own from the configuration |
+| wiki | b1-inc4 | I7 | 4 | rebuilds the landing job (another Calculator, page store or lease); LandJob builds its own from the configuration |
+| wiki | b1-repro | R5 | 1 | reads or sets the nonce store; DbNonceStore has take, no peek, and an agent knows its nonce from the answers |
+
 END OF ARTIFACT --- DIVERGENCES
