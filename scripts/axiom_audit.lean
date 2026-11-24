@@ -92,16 +92,25 @@ It judges what Lean elaborated, never what the source text spells.
     the prefixes `pp.`, `linter.`, `trace.`, save `trace.profiler.serve`,
     which makes Lean's frontend serve the profile over HTTP, start a browser
     and block, and `trace.profiler.output`, which makes it write a file, each
-    with the names below it; the init scan's list, the two
-    changing together) is refused, placed at the option's identifier:
-    `... set_option <name> not admitted` (so `debug.skipKernelTC`, which adds
-    a definition the kernel never checked and leaves no axiom, every
-    `debug.*`, `compiler.*` and `Elab.*`); an option name the parser's tree
-    does not give is `... set_option <unread> not admitted` (fail closed).
+    with the names below it; the same names, prefixes and refused prefixes
+    as `admittedOptions` in `scripts/init_scan.lean`, the two changing
+    together; the init scan has no `selfTestOptions`) is refused, placed at
+    the option's identifier: `... set_option <name> not admitted` (so
+    `debug.skipKernelTC`, which adds a definition Lean's checker never checked
+    and leaves no axiom, every `debug.*`, `compiler.*` and `Elab.*`); an
+    option name the parser's tree does not give is `... set_option <unread>
+    not admitted` (fail closed). On the pinned toolchain the option's value
+    is the node's fourth argument in all four forms, and the lexer reads a
+    dotted name as one identifier, so the optional `.<ident>` part of each of
+    the four forms is met only in a tree a parse error left, its identifier
+    missing (`optionNameTest` builds each branch by hand).
     The self-test's own sources may also set `Elab.async` (`selfTestOptions`,
     admitted only in a child the self-test starts, `PMA_FLOAT_SELFTEST` set by
     the parent and unset for every scope file's child), to exercise the
-    asynchronous proofs below.
+    asynchronous proofs below. The pass over the scope carries a canary in
+    its own call (`scopeCanary`, a file outside the scope setting
+    `Elab.async`): that call started with self-test children admits it, and
+    the audit fails `... the scope pass's canary ...`.
     A tactic `decide` whose configuration may turn `native` on (`+native`,
     `(native := ...)`, `(config := ...)`, which may name a structure setting
     it) is refused: `... tactic decide +native not admitted`. Each is placed at
@@ -129,8 +138,10 @@ It judges what Lean elaborated, never what the source text spells.
   frontend pass's cases (`frontTest`, each a file in a temporary directory
   run through the same child, giving the failure lines it names and, but for
   lines of a constant with `Float` met, no other), and
-  `decideNative` on configurations built by hand (`decideTest`); a case that
-  answers wrong fails the audit.
+  `decideNative` on configurations built by hand (`decideTest`), and the
+  rule naming a case's failure lines on lines written by hand
+  (`wantNamesTest`); a case that answers wrong fails the audit. The count of
+  self-test cases takes in the scope pass's canary only once it has run.
 -/
 
 open Lean
@@ -484,9 +495,10 @@ def admittedOptions (extra : List Name) (n : Name) : Bool :=
       (admittedOptionRoots.contains n.getRoot && n != n.getRoot))
 
 /-- The option a `set_option` node names, with the identifier holding it: its second
-argument, an identifier, read whole when the third argument is empty (the command, term
-and tactic forms; grind's without its optional `.<ident>`), and with grind's `.<ident>`
-appended when that is present; none for any other shape (fail closed). -/
+argument, an identifier, read whole when the third (the optional `.<ident>` each of the four
+forms carries) is empty, and with grind's `.<ident>` appended when that is present; none for
+any other shape, the command, term and tactic forms with a `.<ident>` among them (fail
+closed). -/
 def optionName (stx : Syntax) : Option (Syntax × Name) :=
   let o := stx[1]
   let rest := stx[2]
@@ -710,9 +722,19 @@ def runChildren (self cwd : System.FilePath) (self? : Bool) (files : Array Strin
       | .error e => out := out.push s!"FLOAT AUDIT FAIL: the frontend pass: {e}"
   return out
 
+/-- The canary the audit's pass over the scope carries in its own call, written to a
+temporary directory outside the scope: its source, and the end of the one failure line a
+scope file's child gives for it. A self-test child admits `Elab.async` (`selfTestOptions`)
+and gives none, so that call started with `self? = true` fails the audit. -/
+def scopeCanary : String × String :=
+  ("set_option Elab.async true in theorem probeCanary : True := trivial\n",
+   ":1: set_option Elab.async not admitted")
+
 /-- The frontend pass's self-test: each case's source and the ends of the failure lines it
 must give (none: the case must pass, with no failure line). A line it does not name fails the
-case unless it is a line of a constant with `Float` met (`... elaborated (Float)`). -/
+case unless it is a line of a constant with `Float` met (`... elaborated (Float)`). An end
+written with a final `*` names every line that begins with the rest of it after the case's
+file name (an error whose words are the toolchain's). -/
 def frontTest : List (String × List String) := [
   ("example := OfScientific.ofScientific 25 true 1\n",
     [":1: instOfScientificFloat elaborated (Float)"]),
@@ -835,6 +857,20 @@ def frontTest : List (String × List String) := [
      s!":2: syntax kind {``Parser.Tactic.Grind.bvTrace} not admitted",
      s!":3: syntax kind {``Parser.Tactic.Grind.bvCheck} not admitted",
      ":5: set_option debug.skipKernelTC not admitted"]),
+  -- an admitted option with a numeric value, in grind's form and the term form (the value is
+  -- the node's fourth argument; read as the third, a numeral would be refused `<unread>`)
+  ("theorem probeGn : True := by\n  grind => set_option maxRecDepth 1000 in done\n" ++
+    "def probeTn : Nat := set_option maxRecDepth 1000 in 1\n", []),
+  -- a name the parse left without its identifier after the dot: refused `<unread>`, beside
+  -- the parser's error on line 1 in whatever words the toolchain gives it
+  ("set_option pp. true\n",
+    [":1: elaboration error: *", ":1: set_option <unread> not admitted"]),
+  -- the same in grind's form (its `.<ident>` part present, the identifier missing: the
+  -- branch that reads grind's dotted part) and in the tactic form
+  ("theorem probeGd : True := by\n  grind => set_option pp. true in finish\n",
+    [":2: elaboration error: *", ":2: set_option <unread> not admitted"]),
+  ("theorem probeTd : True := by\n  set_option pp. true in trivial\n",
+    [":2: elaboration error: *", ":2: set_option <unread> not admitted"]),
   -- `trace.profiler.serve` and `trace.profiler.output` (and below it), under the admitted
   -- `trace.`: the command, the `in` form, the term and the tactic; the other `trace.`
   -- options stay admitted
@@ -857,9 +893,12 @@ def frontTest : List (String × List String) := [
     "set_option trace.profiler.useHeartbeats true in theorem probePb : True := trivial\n", [])]
 
 /-- The frontend cases run in a scope file's child, `selfTestVar` unset (as `frontTest`'s
-otherwise): `Elab.async`, admitted in a self-test child, is refused here. -/
+otherwise): `Elab.async`, admitted in a self-test child, is refused here, the `in` form and
+the command. The audit's own call over the scope is guarded by `scopeCanary`. -/
 def scopeFrontTest : List (String × List String) := [
   ("set_option Elab.async true in theorem probeSa : True := trivial\n",
+    [":1: set_option Elab.async not admitted"]),
+  ("set_option Elab.async true\ntheorem probeSc : True := trivial\n",
     [":1: set_option Elab.async not admitted"])]
 
 /-- `admittedOptions` on names, with no extra and with `selfTestOptions`: the extras,
@@ -873,6 +912,26 @@ def optionTest : List (List Name × Name × Bool) := [
   ([], `trace.profiler.serve, false), (selfTestOptions, `trace.profiler.serve, false),
   ([], `trace.profiler.output, false), ([], `trace.profiler.output.pp, false),
   ([], `trace.profiler, true), ([], `trace.profiler.threshold, true)]
+
+/-- `optionName`, through `innerRefusals` with no extra, on `set_option` nodes built by
+hand, one per branch (the `.<ident>` part with an identifier is a layout the parser of the
+pinned toolchain does not give from source): the node and the refusals it must give. -/
+def optionNameTest : List (Syntax × List String) :=
+  let node (k : SyntaxNodeKind) (o rest : Syntax) :=
+    mkNode k #[mkAtom "set_option", o, rest, mkAtom "true"]
+  let dot (i : Syntax) := mkNullNode #[mkAtom ".", i]
+  let grind := ``Parser.Tactic.Grind.setOption
+  [(node grind (mkIdent `pp) (dot (mkIdent `all)), []),
+   (node grind (mkIdent `debug) (dot (mkIdent `skipKernelTC)),
+     ["set_option debug.skipKernelTC not admitted"]),
+   (node grind (mkIdent `pp) (dot .missing), ["set_option <unread> not admitted"]),
+   (node grind (mkIdent `pp) (mkNullNode #[mkAtom "."]), ["set_option <unread> not admitted"]),
+   (node ``Parser.Command.set_option (mkIdent `pp) (dot (mkIdent `all)),
+     ["set_option <unread> not admitted"]),
+   (node ``Parser.Tactic.set_option (mkIdent `pp) (dot (mkIdent `all)),
+     ["set_option <unread> not admitted"]),
+   (node ``Parser.Tactic.set_option .missing (mkNullNode), ["set_option <unread> not admitted"]),
+   (node ``Parser.Term.set_option (mkIdent `maxRecDepth) (mkNullNode), [])]
 
 /-- `decideNative` on configurations built by hand, one per branch, the three fail-closed
 branches among them (a layout the parser of the pinned toolchain does not give): the syntax
@@ -891,6 +950,37 @@ def decideTest : List (Syntax × Bool) :=
    (dec (opt #[neg `native]), false),
    (dec (opt #[pos `kernel, pos `native]), true)]
 
+/-- Whether the end `w` of a `frontTest` case named `n` names the failure line `l`: an end
+with a final `*` names every line that begins with `FLOAT AUDIT FAIL: <n><w's rest>` (the
+case's own file, line and kind, the words the toolchain's); any other end, the line that ends
+with `<n><w>`. -/
+def wantNames (n w l : String) : Bool :=
+  if w.endsWith "*" then l.startsWith s!"FLOAT AUDIT FAIL: {n}{(w.splitOn "*").headD ""}"
+  else l.endsWith s!"{n}{w}"
+
+/-- `wantNames` on lines written by hand: the case's name, the end, the line and whether it
+is named. The wildcard names its own file's line of its line number and kind, in any words,
+and no other file's, line's or kind's. -/
+def wantNamesTest : List (String × String × String × Bool) := [
+  ("Case1.lean", ":1: elaboration error: *",
+    "FLOAT AUDIT FAIL: Case1.lean:1: elaboration error: unexpected token", true),
+  ("Case1.lean", ":1: elaboration error: *",
+    "FLOAT AUDIT FAIL: Case1.lean:1: elaboration error: ", true),
+  ("Case1.lean", ":1: elaboration error: *",
+    "FLOAT AUDIT FAIL: Case1.lean:12: elaboration error: unexpected token", false),
+  ("Case1.lean", ":1: elaboration error: *",
+    "FLOAT AUDIT FAIL: Case1.lean:2: elaboration error: unexpected token", false),
+  ("Case1.lean", ":1: elaboration error: *",
+    "FLOAT AUDIT FAIL: Case12.lean:1: elaboration error: unexpected token", false),
+  ("Case1.lean", ":1: elaboration error: *",
+    "FLOAT AUDIT FAIL: Case1.lean:1: set_option pp not admitted", false),
+  ("Case1.lean", ":1: elaboration error: *",
+    "FLOAT AUDIT FAIL: x/Case1.lean:1: elaboration error: unexpected token", false),
+  ("Case1.lean", ":1: set_option <unread> not admitted",
+    "FLOAT AUDIT FAIL: Case1.lean:1: set_option <unread> not admitted", true),
+  ("Case1.lean", ":1: set_option <unread> not admitted",
+    "FLOAT AUDIT FAIL: Case1.lean:1: set_option <unread> not admitted here", false)]
+
 /-- Run `frontTest` (in self-test children) and `scopeFrontTest` (in children started as a
 scope file's, `selfTestVar` unset) in a temporary directory. Returns the wrong answers. -/
 def selfTest (self : System.FilePath) (jobs : Nat) : IO (Array String) := do
@@ -908,8 +998,9 @@ def selfTest (self : System.FilePath) (jobs : Nat) : IO (Array String) := do
       let mine := got.filter (·.startsWith s!"FLOAT AUDIT FAIL: {n}:")
       -- a Float case gives a line per constant met, named in part; every other line, a
       -- refusal or an error, must be named, so a refused case gives exactly its lines
-      let named (l : String) := want.any (fun w => l.endsWith s!"{n}{w}")
-      let ok := want.all (fun w => mine.any (·.endsWith s!"{n}{w}")) &&
+      let names (w l : String) := wantNames n w l
+      let named (l : String) := want.any (fun w => names w l)
+      let ok := want.all (fun w => mine.any (names w ·)) &&
         mine.all (fun l => named l || l.endsWith " elaborated (Float)") &&
         (!want.isEmpty || mine.isEmpty) && (want.isEmpty || !mine.isEmpty)
       unless ok do wrong := wrong.push s!"{n} gave {mine}, wants {want}"
@@ -1023,9 +1114,18 @@ def floatConstantFindings (env : Environment) (group : Array Name) : Array Strin
   for ((extra, n, want), k) in FloatFront.optionTest.zipIdx do
     if FloatFront.admittedOptions extra n != want then
       fails := fails.push s!"FLOAT AUDIT FAIL: self-test option case {k + 1} ({n}) gave {!want}, wants {want}"
-  let cases := FloatAudit.scopeTest.length + FloatAudit.usesTest.length + 1 +
+  for ((stx, want), k) in FloatFront.optionNameTest.zipIdx do
+    let got := (FloatFront.innerRefusals [] stx #[]).toList.map (·.2)
+    if got != want then
+      fails := fails.push s!"FLOAT AUDIT FAIL: self-test option name case {k + 1} gave {got}, wants {want}"
+  for ((n, w, l, want), k) in FloatFront.wantNamesTest.zipIdx do
+    if FloatFront.wantNames n w l != want then
+      fails := fails.push s!"FLOAT AUDIT FAIL: self-test wildcard case {k + 1} gave {!want}, wants {want}"
+  -- the cases run so far; the scope pass's canary is counted below, once it has run
+  let mut cases := FloatAudit.scopeTest.length + FloatAudit.usesTest.length + 1 +
     FloatFront.frontTest.length + FloatFront.scopeFrontTest.length +
-    FloatFront.decideTest.length + FloatFront.optionTest.length
+    FloatFront.decideTest.length + FloatFront.optionTest.length +
+    FloatFront.optionNameTest.length + FloatFront.wantNamesTest.length
   let mut files : Array System.FilePath := #[]
   try
     files ← floatScanFiles "."
@@ -1077,7 +1177,20 @@ def floatConstantFindings (env : Environment) (group : Array Name) : Array Strin
     axiomFails := axiomFails.push "AXIOM AUDIT FAIL: no declaration checked"
   -- the frontend pass runs each file's imports' initializers: only once none is in scope
   if initFails.isEmpty then
-    fails := fails ++ (← FloatFront.runChildren self "." false (files.map (·.toString)) jobs)
+    -- the canary rides in this call, so this call started with self-test children fails here
+    let t ← IO.FS.createTempDir
+    try
+      let canary := (t / "ScopeCanary.lean").toString
+      IO.FS.writeFile canary FloatFront.scopeCanary.1
+      let got ← FloatFront.runChildren self "." false ((files.map (·.toString)).push canary) jobs
+      cases := cases + 1
+      let mine := got.filter (·.startsWith s!"FLOAT AUDIT FAIL: {canary}:")
+      fails := fails ++ got.filter (!·.startsWith s!"FLOAT AUDIT FAIL: {canary}:")
+      unless mine == #[s!"FLOAT AUDIT FAIL: {canary}{FloatFront.scopeCanary.2}"] do
+        fails := fails.push s!"FLOAT AUDIT FAIL: the scope pass's canary gave {mine}, wants \
+          {FloatFront.scopeCanary.2}: its children did not run as a scope file's"
+    finally
+      IO.FS.removeDirAll t
   else
     fails := fails.push "FLOAT AUDIT FAIL: the frontend pass not run: the initializer audit failed"
   for f in axiomFails do
