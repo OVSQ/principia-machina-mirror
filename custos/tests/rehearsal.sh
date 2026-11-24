@@ -54,7 +54,7 @@
 # the release, a scratch agent account whose name has a space, an apostrophe and a letter outside ASCII petitions,
 # is granted and releases, the LOCK PAGE read back through pcalc naming it exactly ("lock: holder carried exactly"); then the sweep: a ticket written QUEUED with no job by Custos:Ticket --new, with $wgCustosSweepAfter = 0
 # POLLed over HTTP, the job runner run, and POLL answering it ("sweep: a QUEUED ticket without its job, re-enqueued
-# on POLL, answered"); after the sweep, the batch jobs' frame: Custos:Job --job for each of the three, runJobs, Custos:Job --last ("job: reaudit NOTHING DUE", cluster, recheck), then $wgCustosBatch pressure STRAINED and the re-audit ending DEFERRED ("job: refused DEFERRED"); and in the tampered pass a landing run by Custos:Land with the tampered binary, which must halt
+# on POLL, answered"); after the sweep, the batch jobs' frame: Custos:Job --job for each of the three, runJobs, Custos:Job --last ("job: reaudit NOTHING DUE", cluster, recheck), then the recheck over canned registry payloads served locally ("job: recheck DONE", its volume rewritten), then $wgCustosBatch pressure STRAINED and the re-audit ending DEFERRED ("job: refused DEFERRED"); and in the tampered pass a landing run by Custos:Land with the tampered binary, which must halt
 # (DIGEST MISMATCH, the ticket answered INTEGRITY HALT) and leave the register page unchanged.
 # With the built pcalc, after the sweep and the batch jobs' frame: version 1's gates replayed on this wiki, scenarios.php under
 # maintenance/run.php over MwStore, DbTicketStore, DbSeatStore and DbNonceStore with real jobs (the job runner,
@@ -1052,8 +1052,11 @@ print(r[1] if r[0] == "OK" else "")' "$root/client" "$res/pcalc" "$1"
 		say "sweep: a QUEUED ticket without its job, re-enqueued on POLL, answered"
 
 		# The batch jobs' frame: each of the three enqueued by Custos:Job, run by the job runner, its last run read back
-		# (the bodies answer NOT BUILT until their units); then lane 5 refused at the level STRAINED ($wgCustosBatch), the
-		# run ending DEFERRED with the job's body not run.
+		# (the re-audit's and the cluster's bodies answer NOT BUILT until their units; the recheck's, with no REGISTRY
+		# DECLARATIONS on this wiki yet, NO DECLARATION); then the recheck run over canned registry payloads served locally
+		# (recheck_rehearsal.php: a UWC seeded, its bibliography volume and the declarations written, the job's body run through
+		# the frame over this wiki's page store and run table, ending DONE with the volume rewritten); then lane 5 refused at the
+		# level STRAINED ($wgCustosBatch), the run ending DEFERRED with the job's body not run.
 		batch() { # batch <name> <type>: enqueue, run, print the last run's outcome (its first line)
 			(cd "$mw" && php maintenance/run.php Custos:Job --job "$1") > "$work/batch.log" 2>&1 || { cat "$work/batch.log"; fail_api "Custos:Job --job $1 failed"; }
 			(cd "$mw" && php maintenance/run.php runJobs --type "$2") > "$work/batch.log" 2>&1 || { cat "$work/batch.log"; fail_api "runJobs of $2 failed"; }
@@ -1061,9 +1064,20 @@ print(r[1] if r[0] == "OK" else "")' "$root/client" "$res/pcalc" "$1"
 		}
 		for pair in "reaudit custosReaudit" "cluster custosCluster" "recheck custosRecheck"; do
 			read -r jn jt <<<"$pair"
-			[ "$(batch "$jn" "$jt")" = "NOTHING DUE" ] || fail_api "the job $jn did not end NOTHING DUE (NOT BUILT)"
+			[ "$(batch "$jn" "$jt")" = "NOTHING DUE" ] || fail_api "the job $jn did not end NOTHING DUE (NOT BUILT; the recheck, NO DECLARATION)"
 			say "job: $jn NOTHING DUE"
 		done
+		[ "$(cd "$mw" && php maintenance/run.php Custos:Job --last recheck | sed -n 2p)" = "NO DECLARATION" ] \
+			|| fail_api "the job recheck, with no declaration on the wiki, did not say NO DECLARATION"
+		recheckprefix="Recheck$(date +%s)"
+		seedout=$( (cd "$mw" && php maintenance/run.php Custos:SeedUwc --prefix "$recheckprefix" \
+			--draft "$root/docs/v1/tpx/TPX/examples/spring_draft.json") 2>&1) || { printf '%s\n' "$seedout"; fail_api "the seed of the recheck's UWC failed"; }
+		(cd "$mw" && php maintenance/run.php "$here/recheck_rehearsal.php" --prefix "$recheckprefix") > "$work/recheck.log" 2>&1 \
+			|| { cat "$work/recheck.log"; fail_api "the recheck run over canned registry payloads failed"; }
+		grep -qx "recheck: volume rewritten" "$work/recheck.log" || { cat "$work/recheck.log"; fail_api "the recheck did not rewrite the volume"; }
+		[ "$(cd "$mw" && php maintenance/run.php Custos:Job --last recheck | head -n 1)" = DONE ] \
+			|| fail_api "the last run of the job recheck did not end DONE"
+		say "job: recheck DONE"
 		printf '$wgCustosBatch = [ "pressure" => "STRAINED" ];\n' >> "$mw/LocalSettings.custos.php"
 		[ "$(batch reaudit custosReaudit)" = DEFERRED ] || fail_api "the job reaudit was not DEFERRED at the level STRAINED"
 		settings "$res/pcalc"

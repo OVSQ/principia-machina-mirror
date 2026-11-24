@@ -26,7 +26,7 @@ abstract class BatchJobBase extends Job implements GenericParameterJob {
 
 	public function run() {
 		try {
-			$answer = self::runNamed( MediaWikiServices::getInstance()->getMainConfig(), static::jobName() );
+			$answer = static::runNamed( MediaWikiServices::getInstance()->getMainConfig(), static::jobName() );
 		} catch ( Throwable $e ) {
 			$this->setLastError( Refusal::faultClass( $e ) );
 			return false;
@@ -40,8 +40,16 @@ abstract class BatchJobBase extends Job implements GenericParameterJob {
 
 	/** One run of the job $name as the job runner runs it: the job and the maintenance script share it. */
 	public static function runNamed( Config $config, string $name ): array {
-		$frame = new BatchJob( Calculator::fromConfig( $config ), new DbJobRunStore(), BatchJob::confFrom( $config ) );
+		$runs = new DbJobRunStore();
+		$body = static::body( $config, $runs );
+		$frame = new BatchJob( Calculator::fromConfig( $config ), $runs, BatchJob::confFrom( $config ),
+			$body === null ? [] : [ $name => $body ] );
 		return $frame->run( $name );
+	}
+
+	/** The job's body as the frame runs it, wired to the wiki; null: the job is not built (NOT BUILT). */
+	protected static function body( Config $config, JobRunStore $runs ): ?callable {
+		return null;
 	}
 
 	public function allowRetries() {

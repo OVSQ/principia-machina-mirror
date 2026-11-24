@@ -114,6 +114,15 @@
  *    answering defer_wait; JOB CONTEXT with the binary never started; a digest mismatch INTEGRITY HALT; a fault FAULT with no path, host
  *    name or stderr text in the record; a body's outcome and counts recorded, an outcome outside the closed set a FAULT, an unknown job
  *    refused; no fetch and no timer; the job classes and CustosBatch registered.
+ * BR: the bibliography recheck job (RecheckRun) on the built pcalc over FileStore, FakeFetcher, FileJobRunStore (a LiveFetcher over a canned
+ *    transport in BR10), the registries' payloads canned and served locally, no request leaving the machine: BR1 nothing due (and no
+ *    declaration), nothing fetched or saved; BR2 one entry due and changed, the volume page saved and the badge asked last as the commit
+ *    marker; BR3 an entry whose lines are unchanged writes nothing; BR4 the 50 oldest of 52 due entries taken (the batch size); BR5 the
+ *    day's cap binding, the two oldest taken, the count carried to the next run and started again the next day; BR6 the lookup time
+ *    binding (a clock spending 50 s a reading), the entries not looked up keeping their lines; BR7 a failed lookup keeping the prior
+ *    lines, counted by its word; BR8 a payload failing its schema refused whole for its identifier; BR9 the declared pacing (arXiv, 3 s)
+ *    on the fetcher's clock; BR10 the contact value in the request alone, in no page, run record, answer or fault. Skipped with its
+ *    reason without a built pcalc.
  * Z: the structure test with register (TPS 5.3.47): the op STRUCTURE_TEST's GA1 refusals and its ticket and
  *    job; the STRUCTURE TEST LINE's form, and its composition from the Calculator's answer alone (findings in
  *    its order, USED in its order, "-" when none, a REFUSED answer refused STRUCTURE TEST); on the built pcalc,
@@ -158,7 +167,14 @@ use Custos\SeatStore;
 use Custos\ShellRunner;
 use Custos\TicketStore;
 use Custos\UnsafeResidence;
+use Custos\FetchFault;
+use Custos\FetchGuard;
+use Custos\Fetcher;
+use Custos\JobRunStore;
+use Custos\LiveFetcher;
+use Custos\RecheckRun;
 use Custos\Tests\AnyResidence;
+use Custos\Tests\FakeFetcher;
 use Custos\Tests\FileCertificateStore;
 use Custos\Tests\FileJobRunStore;
 use Custos\Tests\FileNonceStore;
@@ -4700,6 +4716,324 @@ G::ok( $r['outcome'] === 'DONE' && $jbRuns->get( $r['id'] )['counts'] === '{"pag
 	&& ( $ext['config']['CustosBatch']['value'] ?? null ) === BatchJob::DEFAULTS,
 	'JB8 a body\'s outcome, detail and counts recorded; an outcome outside the closed set a FAULT; the frame fetches nothing and sets no timer; the three job classes and CustosBatch registered',
 	json_encode( [ $r, $bad ] ) );
+
+// ---- BR: the bibliography recheck job (RecheckRun) over FileStore, FakeFetcher, FileJobRunStore and the built pcalc ----
+
+$brBuilt = "$root/.lake/build/bin/pcalc";
+if ( !is_file( $brBuilt ) || !is_executable( $brBuilt ) ) {
+	G::skip( 'BR the bibliography recheck job', 'no built pcalc in this clone (.lake/build/bin/pcalc); section BR needs the Calculator itself' );
+} else {
+	echo "BR: on .lake/build/bin/pcalc\n";
+	$brBasic = (string)file_get_contents( "$root/Principia/Basic.lean" );
+	$brVersion = preg_match( '/^def version : String := "([^"]+)"$/m', $brBasic, $m ) ? $m[1] : '';
+	$brDigest = Calculator::digestOf( $brBuilt );
+	// The Calculator's runner: the built pcalc, and for the case BR3 the chooser of the entries made to
+	// take every entry (no CHECK line in `recheck_urls`' request), so the Calculator's own answer UNCHANGED can be reached.
+	$brRunner = new class implements ShellRunner {
+		public bool $forceDue = false;
+		private ProcRunner $proc;
+		public function __construct() {
+			$this->proc = new ProcRunner();
+		}
+		public function run( array $argv, string $stdin ): array {
+			if ( $this->forceDue && ( $argv[1] ?? '' ) === 'biblio' && ( $argv[2] ?? '' ) === 'recheck_urls' ) {
+				$req = json_decode( $stdin, true );
+				foreach ( $req['entries'] as $i => $e ) {
+					unset( $req['entries'][$i]['check_line'] );
+				}
+				$stdin = json_encode( $req, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
+			}
+			return $this->proc->run( $argv, $stdin );
+		}
+	};
+	$brCalc = new Calculator( $brBuilt, [ 'version' => $brVersion, 'digest' => $brDigest ], $brRunner, 'cli', new AnyResidence() );
+	$brPt = new PageTitles( 'Principia Machina/UWC', 'Principia Machina' );
+	$brJson = JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE;
+	$brNow = (int)gmmktime( 12, 0, 0, 11, 15, 2026 );
+	$brDate = '2026-11-15';
+	$brCanon = static fn ( mixed $v ): string => (string)$brCalc->call( 'canonical', 'canonical_json', '{"value":' . json_encode( $v, $brJson ) . '}' )['value'];
+	$brDecls = [ [ 'kind' => 'ARXIV', 'name' => 'arXiv API', 'template' => 'https://export.arxiv.org/api/query?id_list={ID}' ] ];
+	$brUrl = static fn ( string $id ): string => 'https://export.arxiv.org/api/query?id_list=' . $id;
+	$brAtom = static fn ( string $id ): string => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<feed xmlns=\"http://www.w3.org/2005/Atom\">\n  <id>https://arxiv.org/api/x</id>\n"
+		. "  <title>arXiv Query</title>\n  <entry>\n    <id>http://arxiv.org/abs/{$id}v2</id>\n    <updated>2022-06-01T10:00:00Z</updated>\n"
+		. "    <published>2022-02-02T18:00:00Z</published>\n    <title>Notes on a\n      falling sphere</title>\n    <summary>We drop a sphere.</summary>\n"
+		. "    <author>\n      <name>Ada Lovelace</name>\n    </author>\n  </entry>\n</feed>\n";
+	/** An entry of the volume: its CHECK line dated $on, or none. */
+	$brEntry = static fn ( string $bib, string $id, ?string $on ): array => [ 'bib_id' => $bib, 'identifiers' => [ 'ARXIV' => $id ],
+		'item' => [ 'author' => [ [ 'family' => 'Lovelace', 'given' => 'Ada' ] ], 'issued' => [ 'date-parts' => [ [ 2022 ] ] ],
+			'title' => 'Notes on a falling sphere', 'type' => 'article' ] ]
+		+ ( $on === null ? [] : [ 'check_line' => "CHECK $on CONFIRMED ; ARXIV $id CONFIRMED" ] );
+	$brLog = static fn ( PageStore $inner ): PageStore => new class( $inner ) implements PageStore {
+		public array $saves = [];
+		/** @var string[] every compare-and-save asked, whether or not it made a revision */
+		public array $cas = [];
+		public function __construct( public PageStore $inner ) {
+		}
+		public function get( string $title ): ?string {
+			return $this->inner->get( $title );
+		}
+		public function exists( string $title ): bool {
+			return $this->inner->exists( $title );
+		}
+		public function put( string $title, string $text, string $summary ): void {
+			$this->saves[] = $title;
+			$this->inner->put( $title, $text, $summary );
+		}
+		public function casPut( string $title, ?string $expected, string $text, string $summary, string $actor ): bool {
+			$this->cas[] = $title;
+			if ( $this->inner->get( $title ) !== $text ) {
+				$this->saves[] = $title;
+			}
+			return $this->inner->casPut( $title, $expected, $text, $summary, $actor );
+		}
+		public function appendAs( string $title, string $line, string $summary, string $actor ): string {
+			$this->saves[] = $title;
+			return $this->inner->appendAs( $title, $line, $summary, $actor );
+		}
+	};
+	$brN = 0;
+	/**
+	 * A wiki of $uwcs (prefix => its volume 1's entries), the DECLARATIONS volume 1 carrying $decls (none: no volume), each UWC LIVE
+	 * with its BIBLIOGRAPHY SETTING ON; the saves of the seed are not counted.
+	 */
+	$brWorld = static function ( array $uwcs, ?array $decls ) use ( &$brN, $scratch, $brLog, $brPt, $brCanon, $brVersion, $brDigest ): PageStore {
+		$store = $brLog( new FileStore( "$scratch/br-" . ++$brN ) );
+		$seed = new PageWriter( $store, $brPt );
+		foreach ( $uwcs as $p => $entries ) {
+			$seed->begin( (string)$p, 'seed', [], [ PageClass::BIBLIOGRAPHY_OPEN ], 1 );
+			$seed->put( $brPt->draft( (string)$p ), Blocks::render( Landing::SETTING, 'ON' ) . "\n" );
+			$seed->put( $brPt->bibliographyVolume( (string)$p, 1 ), PageTexts::bibliography( (string)$p, 1, $brCanon( $entries ) ) );
+			$seed->put( $brPt->index( (string)$p ), PageTexts::badge( (string)$p, [ 'last_push' => null, 'last_release' => null,
+				'calculator_version' => $brVersion, 'calculator_digest' => $brDigest, 'record_count' => 0, 'research_assembly' => str_repeat( 'b', 64 ) ], false, 1 ) );
+			$seed->commit();
+		}
+		if ( $decls !== null ) {
+			$store->put( $brPt->declarationsVolume( 1 ), Blocks::render( PageTexts::REGISTRIES, $brCanon( $decls ) ) . "\n", 'seed' );
+		}
+		$store->saves = [];
+		$store->cas = [];
+		return $store;
+	};
+	/** One run of the body over $store; the answer, its counts decoded. */
+	$brRun = static function ( PageStore $store, Fetcher $fetcher, JobRunStore $runs, array $prefixes, ?callable $clock = null ) use ( $brCalc, $brPt, $brNow ): array {
+		$body = RecheckRun::bodyOf( $store, $brPt, $fetcher, $runs, static fn (): array => $prefixes, $clock ?? static fn (): int => $brNow );
+		return $body( $brCalc );
+	};
+	/** A volume's entries as stored, by bib_id; of every UWC named when $p is a list. */
+	$brRead = static function ( PageStore $store, string|array $p ) use ( $brPt ): array {
+		$out = [];
+		foreach ( (array)$p as $q ) {
+			foreach ( json_decode( (string)PageTexts::readBibliography( $store->get( $brPt->bibliographyVolume( $q, 1 ) ) ), true ) as $e ) {
+				$out[$e['bib_id']] = $e;
+			}
+		}
+		return $out;
+	};
+	$brIdx = static fn ( string $p ): string => $brPt->index( $p );
+	$brVol = static fn ( string $p ): string => $brPt->bibliographyVolume( $p, 1 );
+	$brRuns = static function () use ( &$brN, $scratch ): FileJobRunStore {
+		return new FileJobRunStore( "$scratch/brruns-" . ++$brN );
+	};
+	$brOld = static fn ( string $bib, string $id ): array => $brEntry( $bib, $id, '2026-09-01' );
+	$brGood = static function ( array $ids ) use ( $brUrl, $brAtom ): array {
+		$c = [];
+		foreach ( $ids as $id ) {
+			$c[$brUrl( $id )] = $brAtom( $id );
+		}
+		return $c;
+	};
+
+	// BR1: nothing due: every CHECK date inside the period (and no declaration at all): NOTHING DUE, nothing fetched, nothing saved.
+	$fresh = [ $brEntry( 'A1', '2202.00001', '2026-11-10' ), $brEntry( 'A2', '2202.00002', '2026-11-01' ) ];
+	$st = $brWorld( [ 'RC' => $fresh ], $brDecls );
+	$f = new FakeFetcher( [] );
+	$a = $brRun( $st, $f, $brRuns(), [ 'RC' ] );
+	$st0 = $brWorld( [ 'RC' => [ $brOld( 'A1', '2202.00001' ) ] ], null );
+	$f0 = new FakeFetcher( [] );
+	$a0 = $brRun( $st0, $f0, $brRuns(), [ 'RC' ] );
+	G::ok( $a['outcome'] === 'NOTHING DUE' && $a['detail'] === 'none due' && $a['counts']['due'] === 0 && $f->calls === [] && $st->saves === []
+		&& $a0['outcome'] === 'NOTHING DUE' && $a0['detail'] === 'NO DECLARATION' && $f0->calls === [] && $st0->saves === [],
+		'BR1 nothing due (every CHECK date inside the period): NOTHING DUE, nothing fetched, nothing saved; with no declaration NOTHING DUE, NO DECLARATION', json_encode( [ $a, $a0 ] ) );
+
+	// BR2: one entry due and changed: one lookup, the volume page saved, then the badge; the other entry is carried as read.
+	$due = $brOld( 'A1', '2202.00001' );
+	$keep = $brEntry( 'A2', '2202.00002', '2026-11-10' );
+	$st = $brWorld( [ 'RC' => [ $due, $keep ] ], $brDecls );
+	$before = $brRead( $st, 'RC' );
+	$f = new FakeFetcher( $brGood( [ '2202.00001' ] ) );
+	$a = $brRun( $st, $f, $brRuns(), [ 'RC' ] );
+	$after = $brRead( $st, 'RC' );
+	G::ok( $a['outcome'] === 'DONE' && $a['counts']['due'] === 1 && $a['counts']['lookups'] === 1 && $a['counts']['changed'] === 1 && $a['counts']['pages'] === 2
+		&& count( $f->calls ) === 1 && $f->calls[0][1] === $brUrl( '2202.00001' )
+		&& $st->cas === [ $brVol( 'RC' ), $brIdx( 'RC' ) ] && $st->saves === [ $brVol( 'RC' ) ]
+		&& $after['A1']['check_line'] === "CHECK $brDate CONFIRMED ; ARXIV 2202.00001 CONFIRMED" && !isset( $after['A1']['notices_line'] )
+		&& $after['A2'] === $before['A2'] && $after['A1']['item'] === $before['A1']['item'],
+		'BR2 one entry due and changed: one lookup, the volume page saved, then the badge asked last as the commit marker (carried as read, no revision), the new CHECK line written, the other entry as read', json_encode( [ $a, $st->saves, $after ] ) );
+
+	// BR3: UNCHANGED writes nothing: the entry's lines are those of the run's date (the Calculator is made to take it).
+	$same = $brEntry( 'A1', '2202.00001', $brDate );
+	$st = $brWorld( [ 'RC' => [ $same ] ], $brDecls );
+	$text = $st->get( $brVol( 'RC' ) );
+	$f = new FakeFetcher( $brGood( [ '2202.00001' ] ) );
+	$brRunner->forceDue = true;
+	$a = $brRun( $st, $f, $brRuns(), [ 'RC' ] );
+	$brRunner->forceDue = false;
+	G::ok( $a['outcome'] === 'DONE' && $a['counts']['unchanged'] === 1 && $a['counts']['changed'] === 0 && $a['counts']['pages'] === 0 && count( $f->calls ) === 1
+		&& $st->saves === [] && $st->cas === [] && $st->get( $brVol( 'RC' ) ) === $text,
+		'BR3 an entry whose lines are unchanged writes nothing: no landing, no page saved, the volume byte for byte', json_encode( [ $a, $st->saves ] ) );
+
+	// BR4: oldest first under the batch size: 52 due entries, the 50 oldest taken (BIBLIO RECHECK BATCH), the two newest keep their lines.
+	// A bibliography volume holds at most BIBLIO VOLUME SIZE (5) entries and only the open one is rechecked, so the 52 lie four to an
+	// open volume over 13 UWCs.
+	$many = [];
+	$ids = [];
+	for ( $i = 0; $i < 52; $i++ ) {
+		$day = gmdate( 'Y-m-d', (int)gmmktime( 0, 0, 0, 1, 1, 2026 ) + $i * 86400 );
+		$id = sprintf( '2202.%05d', $i + 1 );
+		$ids[] = $id;
+		// listed newest first, so the order of the volume is not the order of the choice
+		array_unshift( $many, $brEntry( sprintf( 'E%02d', $i ), $id, $day ) );
+	}
+	$brMany = [];
+	foreach ( array_chunk( $many, 4 ) as $k => $chunk ) {
+		$brMany[sprintf( 'R%02d', $k )] = $chunk;
+	}
+	$st = $brWorld( $brMany, $brDecls );
+	$before = $brRead( $st, array_keys( $brMany ) );
+	$f = new FakeFetcher( $brGood( $ids ) );
+	$a = $brRun( $st, $f, $brRuns(), array_keys( $brMany ) );
+	$after = $brRead( $st, array_keys( $brMany ) );
+	$taken = array_values( array_filter( array_keys( $after ), static fn ( string $k ): bool => $after[$k] !== $before[$k] ) );
+	sort( $taken );
+	G::ok( $a['outcome'] === 'DONE' && $a['counts']['due'] === 52 && $a['counts']['taken'] === 50 && $a['counts']['backlog'] === 2 && $a['counts']['lookups'] === 50
+		&& count( $f->calls ) === 50 && $taken === array_map( static fn ( int $i ): string => sprintf( 'E%02d', $i ), range( 0, 49 ) )
+		&& $after['E50'] === $before['E50'] && $after['E51'] === $before['E51'],
+		'BR4 oldest first under the batch size: of 52 due entries the 50 with the oldest CHECK dates looked up and rewritten, the two newest left as they were', json_encode( $a['counts'] ) );
+
+	// BR5: the day's cap binds: 1998 lookups made earlier today leave two; the two oldest of five due are taken, the others stay due.
+	$five = [];
+	foreach ( [ 4 => '2026-08-01', 1 => '2026-05-01', 3 => '2026-07-01', 0 => '2026-04-01', 2 => '2026-06-01' ] as $i => $day ) {
+		$five[] = $brEntry( "C$i", sprintf( '2203.%05d', $i ), $day );
+	}
+	// five entries: four in RC's open volume, the fifth in RD's (a volume of five is full, FROZEN)
+	$st = $brWorld( [ 'RC' => array_slice( $five, 0, 4 ), 'RD' => array_slice( $five, 4 ) ], $brDecls );
+	$before = $brRead( $st, [ 'RC', 'RD' ] );
+	$runs = $brRuns();
+	$pid = $runs->start( 'recheck', gmdate( 'YmdHis', $brNow - 3600 ) );
+	$runs->finish( $pid, 'DONE', '', '{"lookups_today":1998}', gmdate( 'YmdHis', $brNow - 3500 ) );
+	$f = new FakeFetcher( $brGood( array_map( static fn ( int $i ): string => sprintf( '2203.%05d', $i ), range( 0, 4 ) ) ) );
+	$a = $brRun( $st, $f, $runs, [ 'RC', 'RD' ] );
+	$after = $brRead( $st, [ 'RC', 'RD' ] );
+	// the next day the count starts again: the three entries still due are all taken (none served: LOOKUP FAILED, prior lines kept)
+	$a2 = $brRun( $st, new FakeFetcher( [] ), $runs, [ 'RC', 'RD' ], static fn (): int => $brNow + 86400 );
+	G::ok( $a['outcome'] === 'DONE' && $a['counts']['due'] === 5 && $a['counts']['taken'] === 2 && $a['counts']['backlog'] === 3 && $a['counts']['lookups'] === 2
+		&& $a['counts']['lookups_today'] === 2000 && count( $f->calls ) === 2
+		&& $a2['counts']['due'] === 3 && $a2['counts']['taken'] === 3 && $a2['counts']['backlog'] === 0 && $a2['counts']['lookups_today'] === 3
+		&& $after['C0'] !== $before['C0'] && $after['C1'] !== $before['C1'] && $after['C2'] === $before['C2'] && $after['C3'] === $before['C3'] && $after['C4'] === $before['C4'],
+		'BR5 BIBLIO LOOKUP CAP binds: with 1998 lookups made today two are made, the two oldest entries, the day\'s count 2000; the next day\'s run starts the count again', json_encode( $a['counts'] ) );
+
+	// BR6: BIBLIO LOOKUP TIME binds: a clock that spends 50 s a reading; the third lookup is not made, its entry keeps its lines and stays due.
+	$four = [];
+	$fids = [];
+	foreach ( [ 0 => '2026-01-01', 1 => '2026-02-01', 2 => '2026-03-01', 3 => '2026-04-01' ] as $i => $day ) {
+		$fids[] = sprintf( '2204.%05d', $i );
+		$four[] = $brEntry( "T$i", sprintf( '2204.%05d', $i ), $day );
+	}
+	$st = $brWorld( [ 'RC' => $four ], $brDecls );
+	$before = $brRead( $st, 'RC' );
+	$f = new FakeFetcher( $brGood( $fids ) );
+	$tick = $brNow;
+	$a = $brRun( $st, $f, $brRuns(), [ 'RC' ], static function () use ( &$tick ): int {
+		$t = $tick;
+		$tick += 50;
+		return $t;
+	} );
+	$after = $brRead( $st, 'RC' );
+	G::ok( $a['outcome'] === 'DONE' && $a['counts']['lookups'] === 2 && $a['counts']['not_made'] === 2 && count( $f->calls ) === 2 && $a['counts']['changed'] === 2
+		&& $after['T0'] !== $before['T0'] && $after['T1'] !== $before['T1'] && $after['T2'] === $before['T2'] && $after['T3'] === $before['T3'],
+		'BR6 BIBLIO LOOKUP TIME binds: past the 120 s the lookups are not made, their entries keep the prior lines (still due), the others are written', json_encode( $a['counts'] ) );
+
+	// BR7: a failed lookup keeps the prior lines; the failure is counted by its word; the other entry lands.
+	$st = $brWorld( [ 'RC' => [ $brOld( 'F1', '2205.00001' ), $brOld( 'F2', '2205.00002' ) ] ], $brDecls );
+	$before = $brRead( $st, 'RC' );
+	$f = new FakeFetcher( [ $brUrl( '2205.00001' ) => new FetchFault( FetchFault::TRANSPORT, 'arXiv API' ) ] + $brGood( [ '2205.00002' ] ) );
+	$a = $brRun( $st, $f, $brRuns(), [ 'RC' ] );
+	$after = $brRead( $st, 'RC' );
+	G::ok( $a['outcome'] === 'DONE' && $a['counts']['failed'] === 1 && ( $a['counts']['fetch_words'] ?? [] ) === [ 'TRANSPORT' => 1 ] && $a['counts']['entries_failed'] === 1
+		&& $a['counts']['changed'] === 1 && $after['F1'] === $before['F1'] && $after['F2']['check_line'] === "CHECK $brDate CONFIRMED ; ARXIV 2205.00002 CONFIRMED"
+		&& $st->saves === [ $brVol( 'RC' ) ],
+		'BR7 a failed lookup keeps the entry\'s prior lines and is counted by its word; the entry whose lookup answered is written', json_encode( $a['counts'] ) );
+
+	// BR8: a payload that fails its registry's schema is refused whole for its identifier: the prior lines kept, the others written.
+	$st = $brWorld( [ 'RC' => [ $brOld( 'S1', '2206.00001' ), $brOld( 'S2', '2206.00002' ), $brOld( 'S3', '2206.00003' ) ] ], $brDecls );
+	$before = $brRead( $st, 'RC' );
+	$f = new FakeFetcher( [ $brUrl( '2206.00001' ) => 'this is not an Atom feed', $brUrl( '2206.00003' ) => $brAtom( '2206.99999' ) ] + $brGood( [ '2206.00002' ] ) );
+	$a = $brRun( $st, $f, $brRuns(), [ 'RC' ] );
+	$after = $brRead( $st, 'RC' );
+	G::ok( $a['outcome'] === 'DONE' && $a['counts']['entries_failed'] === 2 && $a['counts']['changed'] === 1 && $a['counts']['pages'] === 2
+		&& $after['S1'] === $before['S1'] && $after['S3'] === $before['S3'] && $after['S2']['check_line'] === "CHECK $brDate CONFIRMED ; ARXIV 2206.00002 CONFIRMED",
+		'BR8 a payload that fails its schema (no feed; an entry of another identifier) is refused whole for its identifier, the prior lines kept, the third entry written', json_encode( $a['counts'] ) );
+
+	// BR9: the declared PACING obeyed: arXiv, one request in 3 s: the second lookup waits on the fetcher's clock, the first does not.
+	$clk = new class {
+		public float $now = 1000.0;
+		public array $slept = [];
+		public function sleep( float $s ): void {
+			$this->slept[] = $s;
+			$this->now += $s;
+		}
+	};
+	$st = $brWorld( [ 'RC' => [ $brOld( 'P1', '2207.00001' ), $brOld( 'P2', '2207.00002' ), $brOld( 'P3', '2207.00003' ) ] ], $brDecls );
+	$guard = new FetchGuard( static fn (): float => $clk->now, [ $clk, 'sleep' ] );
+	$f = new FakeFetcher( $brGood( [ '2207.00001', '2207.00002', '2207.00003' ] ), $guard );
+	$a = $brRun( $st, $f, $brRuns(), [ 'RC' ] );
+	G::ok( $a['outcome'] === 'DONE' && $a['counts']['lookups'] === 3 && $a['counts']['changed'] === 3 && $clk->slept === [ 3.0, 3.0 ] && $clk->now === 1006.0,
+		'BR9 the declared PACING obeyed: three arXiv lookups wait 3 s twice on the fetcher\'s clock (the first none), 6 s in all', json_encode( [ $a['counts'], $clk->slept ] ) );
+
+	// BR10: the contact value goes into the request alone (the agent string of the DOI registries): no page, run record, answer or fault shows it.
+	$vec = json_decode( (string)file_get_contents( "$root/vectors/biblio_recheck_batch.json" ), true )['cases'];
+	$case = array_values( array_filter( $vec, static fn ( array $c ): bool => $c['name'] === 'Crossref: a changed CHECK date rewrites the lines' ) )[0];
+	$texts = [];
+	foreach ( $case['request']['lookups'] as $l ) {
+		$texts[$l['registry']] = $l['text'];
+	}
+	$secret = 'contact-value-7f3a91c2';
+	$sent = [];
+	$transport = static function ( string $url, string $host, string $ip, array $headers, float $timeout, int $max ) use ( &$sent, $texts ): array {
+		$sent[] = [ $url, $headers ];
+		return [ 'status' => 200, 'location' => null, 'ip' => $ip,
+			'body' => str_contains( $url, 'doi.org/ra/' ) ? $texts['DOI-RA'] : ( str_contains( $url, 'api.crossref.org' ) ? $texts['DOI-CROSSREF'] : '' ) ];
+	};
+	$clk2 = new class {
+		public float $now = 5000.0;
+	};
+	$live = new LiveFetcher( [ 'DOI agency lookup' => $secret, 'Crossref works' => $secret ], new FetchGuard( static fn (): float => $clk2->now, static function ( float $s ) use ( $clk2 ): void {
+		$clk2->now += $s;
+	} ), static fn ( string $h ): array => [ '93.184.216.34' ], $transport, static fn (): float => $clk2->now );
+	$st = $brWorld( [ 'RC' => [ $case['request']['entries'][0] ] ], $case['request']['declarations'] );
+	$runs = $brRuns();
+	$a = $brRun( $st, $live, $runs, [ 'RC' ] );
+	$headers = implode( "\n", array_merge( ...array_column( $sent, 1 ) ) );
+	$pages = '';
+	foreach ( [ $brVol( 'RC' ), $brIdx( 'RC' ) ] as $t ) {
+		$pages .= (string)$st->get( $t );
+	}
+	// a refused lookup: the same fetcher, a transport that fails with a text carrying the value
+	$sent = [];
+	$bad = new LiveFetcher( [ 'DOI agency lookup' => $secret ], new FetchGuard( static fn (): float => $clk2->now, static function ( float $s ) use ( $clk2 ): void {
+		$clk2->now += $s;
+	} ), static fn ( string $h ): array => [ '93.184.216.34' ], static function ( string $url, string $host, string $ip, array $h ) use ( $secret ): array {
+		throw new RuntimeException( "curl failed with $secret for " . implode( ' ', $h ) );
+	}, static fn (): float => $clk2->now );
+	$st2 = $brWorld( [ 'RC' => [ $case['request']['entries'][0] ] ], $case['request']['declarations'] );
+	$runs2 = $brRuns();
+	$a2 = $brRun( $st2, $bad, $runs2, [ 'RC' ] );
+	$shown = json_encode( [ $a, $a2, $runs->last( 'recheck' ), $runs2->last( 'recheck' ), $pages, $st2->get( $brVol( 'RC' ) ) ], $brJson );
+	G::ok( $a['outcome'] === 'DONE' && $a['counts']['changed'] === 1 && count( $sent ) === 0 && str_contains( $headers, "(mailto:$secret)" )
+		&& !str_contains( $shown, $secret ) && !str_contains( implode( "\n", G::$log ), $secret )
+		&& $a2['outcome'] === 'DONE' && ( $a2['counts']['fetch_words'] ?? [] ) === [ 'TRANSPORT' => 1 ],
+		'BR10 the contact value reaches the request (the agent string) and no page, run record, answer or fault: not after a landing, not after a lookup that failed carrying it', json_encode( [ $a['counts'], $a2['counts'] ] ) );
+}
 
 // ---- Z: the structure test with register (TPS 5.3.47): the op STRUCTURE_TEST, its job, the line --------
 

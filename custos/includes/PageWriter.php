@@ -17,7 +17,8 @@
  * (PageTitles::classify) as a page Custos writes under the landing's own UWC prefix (FENCED: the
  * DRAFT UWC page, a RESEARCH ASSEMBLY page, a register volume, the LOCK PAGE, the INDEX AND
  * BADGE page, a STAGING page: RETURN's, Custos its one writer), or, where begin() names its class, a page beyond the UWC (BEYOND: the fleet's
- * index, the Declarer's root's chain heads and volumes). Any other title (another UWC's, a
+ * index, the Declarer's root's chain heads and volumes) or a page of the UWC only a named job
+ * writes (WITHIN: the open bibliography volume, the bibliography recheck's). Any other title (another UWC's, a
  * governed title of no class, a class Custos does not write, an ordinary page) refuses the whole
  * landing before anything is saved, as BASE MOVED does: the landing is closed unsaved and the
  * refusal names the title and the class it read.
@@ -36,9 +37,16 @@ final class PageWriter {
 	/** The classes beyond the UWC an op may name at begin(): the fleet's index and the chain pages. */
 	public const BEYOND = [ PageClass::INDEX_AND_BADGE, PageClass::CHAIN_HEAD, PageClass::DECLARATIONS_VOLUME,
 		PageClass::BUILD_CHAIN_VOLUME ];
+	/** The classes under the UWC only a landing that names them at begin() writes: the bibliography recheck's volumes. */
+	public const WITHIN = [ PageClass::BIBLIOGRAPHY_OPEN ];
 	/**
 	 * The facts the fence classifies with: the writer does not judge a UWC's state (the landing
-	 * reads it from the badge first), and a volume it writes is the open one.
+	 * reads it from the badge first), and a register volume it writes is the open one. A
+	 * bibliography volume is OPEN to the fence only when it is the volume begin() was given as the
+	 * open one, whose successor begin() read absent (and commit() reads absent again): the open
+	 * volume is the last, and the caller has counted it short of BIBLIO VOLUME SIZE. Every other
+	 * bibliography volume reads FROZEN and is refused, as Permissions gives a FROZEN bibliography
+	 * volume no write.
 	 */
 	private const FACTS = [ 'retired' => false, 'open' => true ];
 
@@ -47,6 +55,12 @@ final class PageWriter {
 	private ?string $badge = null;
 	/** @var string[] the classes beyond the UWC this landing may write (BEYOND) */
 	private array $beyond = [];
+	/** @var string[] the classes of WITHIN this landing may write under its UWC */
+	private array $within = [];
+	/** The one bibliography volume this landing may write (BIBLIOGRAPHY OPEN in WITHIN); null: none. */
+	private ?int $bibliographyOpen = null;
+	/** @var string[] titles read absent in this landing that must still be absent at commit */
+	private array $absent = [];
 	/** @var array<string, ?string> each title's text as read in this landing (null: no page) */
 	private array $base = [];
 	/** @var array<string, string> each collected title's new text, in the order first put */
@@ -62,11 +76,15 @@ final class PageWriter {
 	/**
 	 * Open the landing of $block on the UWC $prefix; any landing still open is dropped unsaved.
 	 * $beyond: the classes beyond the UWC this landing writes, each one of BEYOND (none: the
-	 * landing writes its UWC's pages alone).
+	 * landing writes its UWC's pages alone). $within: the classes of WITHIN this landing writes under
+	 * its UWC beside FENCED (none: FENCED alone). $bibliographyOpen: with BIBLIOGRAPHY OPEN in
+	 * $within, the number of the UWC's open bibliography volume, the one bibliography volume the
+	 * landing may write; its successor's page must be absent now and at commit.
 	 *
-	 * @throws PageFault a prefix the titles refuse, a block not in its form, a class not of BEYOND
+	 * @throws PageFault a prefix the titles refuse, a block not in its form, a class not of BEYOND or
+	 *   WITHIN, BIBLIOGRAPHY OPEN without its volume, or a volume whose successor exists (BASE MOVED)
 	 */
-	public function begin( string $prefix, string $block, array $beyond = [] ): void {
+	public function begin( string $prefix, string $block, array $beyond = [], array $within = [], ?int $bibliographyOpen = null ): void {
 		if ( preg_match( self::BLOCK, $block ) !== 1 ) {
 			throw new PageFault( 'not a work block\'s name: ' . PageTitles::show( $block ) );
 		}
@@ -75,14 +93,35 @@ final class PageWriter {
 				throw new PageFault( 'not a class a landing writes beyond its UWC: ' . ( is_string( $class ) ? PageTitles::show( $class ) : gettype( $class ) ) );
 			}
 		}
+		foreach ( $within as $class ) {
+			if ( !is_string( $class ) || !in_array( $class, self::WITHIN, true ) ) {
+				throw new PageFault( 'not a class a named landing writes under its UWC: ' . ( is_string( $class ) ? PageTitles::show( $class ) : gettype( $class ) ) );
+			}
+		}
 		$badge = $this->titles->index( $prefix );
 		$this->prefix = $prefix;
 		$this->block = $block;
 		$this->badge = $badge;
 		$this->beyond = array_values( $beyond );
+		$this->within = array_values( $within );
+		$this->bibliographyOpen = null;
 		$this->base = [];
 		$this->pending = [];
+		$this->absent = [];
 		$this->read( $badge );
+		if ( in_array( PageClass::BIBLIOGRAPHY_OPEN, $this->within, true ) ) {
+			if ( $bibliographyOpen === null ) {
+				$this->close();
+				throw new PageFault( 'a landing that writes BIBLIOGRAPHY OPEN names the open volume; nothing saved' );
+			}
+			$next = $this->titles->bibliographyVolume( $prefix, $bibliographyOpen + 1 );
+			if ( $this->read( $next ) !== null ) {
+				$this->close();
+				throw new PageFault( "BASE MOVED: bibliography volume $bibliographyOpen is not the last; nothing saved" );
+			}
+			$this->absent[] = $next;
+			$this->bibliographyOpen = $bibliographyOpen;
+		}
 	}
 
 	/**
@@ -134,7 +173,7 @@ final class PageWriter {
 				throw new PageFault( 'a landing writes its INDEX AND BADGE page, the commit marker; nothing saved' );
 			}
 			$order = $this->order();
-			foreach ( $order as $t ) {
+			foreach ( array_merge( $this->absent, $order ) as $t ) {
 				if ( $this->store->get( $t ) !== $this->base[$t] ) {
 					throw new PageFault( "BASE MOVED: the page \"$t\" changed since this landing read it; nothing saved" );
 				}
@@ -175,8 +214,10 @@ final class PageWriter {
 			if ( $t === $this->badge ) {
 				throw new PageFault( 'a one-page landing does not write the INDEX AND BADGE page, the commit marker; nothing saved' );
 			}
-			if ( $this->store->get( $t ) !== $this->base[$t] ) {
-				throw new PageFault( "BASE MOVED: the page \"$t\" changed since this landing read it; nothing saved" );
+			foreach ( array_merge( $this->absent, [ $t ] ) as $u ) {
+				if ( $this->store->get( $u ) !== $this->base[$u] ) {
+					throw new PageFault( "BASE MOVED: the page \"$u\" changed since this landing read it; nothing saved" );
+				}
 			}
 			$summary = sprintf( self::SUMMARY, $this->block, $this->prefix );
 			if ( !$this->store->casPut( $t, $this->base[$t], $this->pending[$t], $summary, $this->actor ) ) {
@@ -191,10 +232,14 @@ final class PageWriter {
 	/** Whether $title lies inside this landing's fence; else the landing is closed and refused. */
 	private function fence( string $title ): void {
 		$ref = $this->titles->classify( $title, self::FACTS );
+		if ( $ref->class === PageClass::BIBLIOGRAPHY_OPEN && ( $this->bibliographyOpen === null || $ref->volume !== $this->bibliographyOpen ) ) {
+			$ref = $this->titles->classify( $title, [ 'open' => false ] + self::FACTS );
+		}
 		$c = PageTitles::canon( $title );
 		$canonical = $c !== null && $c[0] === null && $c[1] === $title;
 		$inside = $canonical && $ref->class !== null && (
-			( $ref->prefix !== null && $ref->prefix === $this->prefix && in_array( $ref->class, self::FENCED, true ) )
+			( $ref->prefix !== null && $ref->prefix === $this->prefix
+				&& ( in_array( $ref->class, self::FENCED, true ) || in_array( $ref->class, $this->within, true ) ) )
 			|| ( $ref->prefix === null && in_array( $ref->class, $this->beyond, true ) ) );
 		if ( $inside ) {
 			return;
@@ -214,6 +259,9 @@ final class PageWriter {
 	private function close(): void {
 		$this->prefix = $this->block = $this->badge = null;
 		$this->beyond = [];
+		$this->within = [];
+		$this->bibliographyOpen = null;
+		$this->absent = [];
 		$this->base = [];
 		$this->pending = [];
 	}

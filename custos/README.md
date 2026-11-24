@@ -56,14 +56,15 @@ MediaWiki 1.46 or later; PHP 8.3 or later (the host runs 8.4) with the `posix` e
 | `includes/Landing.php`, `LandRefused.php` | the landing job's work on one ticket, plain PHP without MediaWiki (below); a refusal's word and the members its answer adds |
 | `includes/LandJob.php`, `JobContext.php` | the job class `custosLand`, enqueued with each ticket's id: the job's context checked, then `Landing` over the ticket; not retried |
 | `includes/CertificateStore.php`, `DbCertificateStore.php`, `sql/custos_certificate.json`, `sql/custos_prompt_mark.json`, their SQL under `sql/sqlite/` and `sql/mysql/` | the certificate seam (`get` of an agent's row, `agentsOf` a Sponsor, `put` of one row, which clears the agent's refused-PROMPT mark first; `promptMarked` and `markPrompt`, the mark) and the live store over the tables `custos_certificate` and `custos_prompt_mark` (below), their schemas and generated SQL |
-| `includes/BatchJob.php`, `BatchJobBase.php`, `ReauditJob.php`, `ClusterJob.php`, `RecheckJob.php`, `JobRunStore.php`, `DbJobRunStore.php`, `sql/custos_job_run.json`, `sql/sqlite/custos_job_run.sql`, `sql/mysql/custos_job_run.sql` | the frame of the batch jobs (below): the run store and the table `custos_job_run`, the frame that checks the context, asks the governor in lane 5 and writes the run record, and the three job classes registered (each answering `NOT BUILT` until its unit) |
+| `includes/BatchJob.php`, `BatchJobBase.php`, `ReauditJob.php`, `ClusterJob.php`, `RecheckJob.php`, `JobRunStore.php`, `DbJobRunStore.php`, `sql/custos_job_run.json`, `sql/sqlite/custos_job_run.sql`, `sql/mysql/custos_job_run.sql` | the frame of the batch jobs (below): the run store and the table `custos_job_run`, the frame that checks the context, asks the governor in lane 5 and writes the run record, and the three job classes registered (the re-audit and the cluster month answering `NOT BUILT` until their units) |
+| `includes/RecheckRun.php` | the bibliography recheck's run, `RecheckJob`'s body (below): the REGISTRY DECLARATIONS, the entries, `biblio recheck_urls`, the guarded fetch, `biblio recheck_batch`, one landing per UWC touched |
 | `maintenance/Job.php` | `php maintenance/run.php Custos:Job --job <reaudit\|cluster\|recheck>` enqueues a batch job; `--last <name>` prints its last run |
 | `maintenance/Certify.php` | `php maintenance/run.php Custos:Certify --agent <a> --sponsor <s> --d-is <hex> --d-prompt <hex> --family <f> --model <m> [--state <s>]`: one agent's certificate written, the Operator's act at a declared admission |
 | `maintenance/Land.php` | `php maintenance/run.php Custos:Land --ticket <id>`: one ticket run as the job runs it, its answer printed |
 | `maintenance/Ticket.php` | `php maintenance/run.php Custos:Ticket --new <op> --account <name> --prefix <px> --request <json>`, `--answer <id>` or `--count <state>`: a ticket written QUEUED (its number printed, no job enqueued), a ticket's answer printed, or the tickets in a state counted, all through the ticket store |
 | `tests/harness.php` | the tests without MediaWiki: the store seam on `FileStore`, the Calculator over the stand-in binary `fake_pcalc.sh` and, where it exists, the built `pcalc`, the residence check (H1-H16; `residence_probe.php` runs it as another user when the harness runs as root), the page classes and their titles (P1-P32), the blocks (B1-B23), the review's refusals (Q1-Q65), the ticket store on `FileTicketStore` (T1-T19), the ops and their refusals (O), the identity values (I1-I24), the landing job on the built `pcalc` (L1-L104, the seat races with `seat_race.php` as the second job's process; skipped with its reason when no `pcalc` is built), the execution challenge (N0-N41: the 21 cases of `vectors/challenge_corpus.json` through `pcalc digest` from PHP; the form; EXECUTED, REASONED, a nonce used twice, none outstanding), the governor's meter (G1-G75: the lane table against the built `pcalc`, the meter's rows, the roll-up and its level, the PRE-GATE's list written whole and read, each of GA2-GA6's refusals with its HTTP status and Retry-After through POLL, STATUS, INQUIRE, HEARTBEAT; the roll-up racing a landing step on one record, through `RacingMeterStore.php`, the stage's compare and set, the pruning, the step with the seat lock timing out after admission, the 400 refusals stepped SHAPE, a step never counted twice across a timeout and the next job overtaken between its read and its write (G70-G73), an unchanged step writing nothing and a changed one writing its three columns, on the store without the Calculator (G74, G75), the list's mode and a crashed run's leftover, a stale line, a spoofed User-Agent, the missing list), the structure test with register (Z1-Z36: the op's GA1 refusals and its ticket, the line's form and its composition from the Calculator's answer alone, NOT HOLDER with nothing written, the holder's line equal to the line of `pcalc`'s own answer, the line unchanged leaving the page unsaved, the job refused in lane 5 under pressure, one job pushed per landing, the line carried through a PUSH and a RELEASE) |
 | `tests/wiring.php` | W1-W17 (the files) and, under `maintenance/run.php`, M1-M15 (the wiki that loaded Custos) |
-| `tests/rehearsal.sh`, `tests/rehearsal.json`, `tests/schema_tools.php` | a throwaway MediaWiki 1.46.2 on SQLite, from the pinned Git sources or a cached tarball, with Custos loaded; it runs `update.php`, checks that `generateSchemaSql` reproduces each table's SQL (its libraries, MediaWiki's require-dev, cloned at pinned commits) and that a second scratch wiki installed with `custos_ticket` alone gains `custos_seat` by `update.php`, runs `wiring.php` there, asks the ops over HTTP as an agent account, seeds a UWC and runs the landing job's path (PETITION, PUSH, RELEASE, each through `runJobs` and POLL, the register read back), then repeats the wiring with a tampered binary (and a landing with it, which must halt and leave the register unchanged) and with a group-writable one, each of which must be refused |
+| `tests/rehearsal.sh`, `tests/rehearsal.json`, `tests/schema_tools.php`, `tests/recheck_rehearsal.php` | a throwaway MediaWiki 1.46.2 on SQLite, from the pinned Git sources or a cached tarball, with Custos loaded; it runs `update.php`, checks that `generateSchemaSql` reproduces each table's SQL (its libraries, MediaWiki's require-dev, cloned at pinned commits) and that a second scratch wiki installed with `custos_ticket` alone gains `custos_seat` by `update.php`, runs `wiring.php` there, asks the ops over HTTP as an agent account, seeds a UWC and runs the landing job's path (PETITION, PUSH, RELEASE, each through `runJobs` and POLL, the register read back), then repeats the wiring with a tampered binary (and a landing with it, which must halt and leave the register unchanged) and with a group-writable one, each of which must be refused |
 
 ## The ops of action=pma
 
@@ -231,13 +232,68 @@ the landing that makes a successor is to enqueue it. A run:
    is metered). Lane 5 is admitted at `CLEAR` and `BUSY`; at `STRAINED` and `OVERLOADED` the run ends
    `DEFERRED`, its detail naming the governor's retry-after (else `CustosBatch["defer_wait"]`), and
    nothing is written but the run record;
-4. runs the job's body; the three answer `NOTHING DUE` with the detail `NOT BUILT` until their units;
+4. runs the job's body; the re-audit and the cluster month answer `NOTHING DUE` with the detail
+   `NOT BUILT` until their units; the recheck's body is below;
 5. finishes the record once. A digest mismatch ends `INTEGRITY HALT`; any other fault ends `FAULT`
    with the words `Refusal::detail` allows (no path, query or server name), the message going to the
    error channel; a job that ends `FAULT`, `INTEGRITY HALT` or `JOB CONTEXT` fails with `setLastError`.
 
 The outcomes are `DONE`, `NOTHING DUE`, `DEFERRED`, `JOB CONTEXT`, `SOURCE FAILING`, `REFUSED`, `FAULT`
-and `INTEGRITY HALT`. The frame fetches nothing (the fetch layer is a later unit).
+and `INTEGRITY HALT`. The frame fetches nothing: a job's body fetches through the fetch layer.
+
+## The bibliography recheck
+
+`RecheckJob`'s body, `RecheckRun` (`docs/design/pma_custos_jobs.md`, "Bibliography recheck"), runs
+after the frame's admission:
+
+1. the REGISTRY DECLARATIONS: the block `pma-registries` of the DECLARATIONS volumes under the
+   Declarer's root (`Declarations/Volume 1` upward to the first absent page; the latest volume that
+   carries the block holds them), a JSON list in the form `biblio recheck_urls` reads (each
+   declaration `{"kind", "name", "template"}`), read through `canonical canonical_json`. None, or an
+   empty list: `NOTHING DUE`, detail `NO DECLARATION` (the Declarer owes the declarations);
+2. the entries: of every UWC whose INDEX AND BADGE page states `LIVE` and whose DRAFT UWC page states
+   the BIBLIOGRAPHY SETTING `ON` or `CLOSED`, each bibliography volume
+   (`<p>/Bibliography/Volume <v>`, Volume 1 upward to the first absent page), its block
+   `pma-bibliography`: a JSON list of entries, each with `bib_id`, `item` and `identifiers` as
+   `biblio compare` reads them and, once checked, `check_line` and `notices_line`. A volume that does
+   not read, or an entry without those members, is passed over and counted `unread`. The live job
+   finds the UWCs as the titles `<UWC root>/<p>/Index` in the page table. Only the OPEN volume's
+   entries go on: the last volume (its successor absent) holding fewer than BIBLIO VOLUME SIZE (5)
+   entries; a UWC whose last volume is full or does not read has none. A FROZEN volume's entries are
+   counted `frozen`, those due `frozen_due` (`biblio recheck_urls` over them with the day's cap given
+   as spent), named in the detail, and never looked up or written;
+3. `biblio recheck_urls` with the day's lookups so far (over every recheck run begun this UTC day but
+   this one: an ended run by its count `lookups`, a run not ended, running or killed, at
+   `RecheckRun::RUN_ALLOWANCE` (150, the most a run makes), or the greatest `lookups_today` where
+   that is more; read first, so every row the run ends carries `lookups_today`; `RecheckJob` runs
+   outside the job runner's transaction round, so each run's row is seen by the runs beside it): the entries taken, oldest CHECK date first within BIBLIO RECHECK BATCH and BIBLIO
+   LOOKUP CAP, and their first-round URLs;
+4. each URL fetched through the Fetcher (`LiveFetcher` behind `FetchGuard`), then `biblio recheck_batch`
+   with every lookup of the run; a second-round lookup it names is fetched and the call made again, at
+   most three calls. A lookup past BIBLIO LOOKUP TIME (120 s), the day's cap or the run's allowance
+   is not made, and a
+   fetch refused or failed is no answer (status and text `null`), so the Calculator keeps the prior
+   lines;
+5. for each UWC with an entry `CHANGED`, one landing, block `recheck-<date>`: its open volume,
+   rewritten whole as `canonical canonical_json` writes the entries with the two
+   lines the Calculator answered, then its INDEX AND BADGE page last, carried as read (the commit
+   marker). A volume, or the INDEX AND BADGE page, whose text at landing is not the text step 2 read
+   (a UWC retired between the read and the landing) refuses that UWC's landing, BASE MOVED (`moved`);
+   the others land. Only this landing writes a bibliography volume: `PageWriter::begin` names the
+   class in its `within` argument (`PageWriter::WITHIN`) and the open volume's number after it; the
+   fence reads that volume OPEN and every other bibliography volume FROZEN, refused, and the
+   successor's page must be absent at `begin` and at commit (BASE MOVED otherwise).
+
+The fetch's declared values beside the template are `RecheckRun`'s table by registry kind: the host
+the template's own, TIMEOUT 30 s, PACING 3 s for `ARXIV` and 1 s for the others, the contact value
+(`CustosRegistryContact[<declaration's name>]`) in the agent string for the DOI registries and in the
+query parameter `email` for `PMID` and `PMCID`. Only a fault's word is read, so no contact value
+reaches a page, the run record or an answer. The run record's counts: `uwcs`, `volumes`, `unread`,
+`frozen`, `frozen_due`, `due`, `taken`, `backlog`, `lookups`, `not_made`, `failed` (with `fetch_words`), `changed`,
+`unchanged`, `pending`, `refused`, `entries_failed`, `pages`, `moved`, `lookups_today` and `digests`
+(each raw download's SHA-256; the download is neither stored nor published). A fault after a lookup
+was made ends the run `FAULT` (or `INTEGRITY HALT`) in `RecheckRun` itself, with these counts, so its
+lookups count for the day; a fault before any lookup goes to the frame as before.
 
 ## The table custos_job_run
 
@@ -674,6 +730,8 @@ run, and the wiki runs jobs only from its job runner (`$wgJobRunRate = 0`).
                                                  # re-enqueued on POLL, answered",
                                                  # "land: LOCK HELD poll_after jittered",
                                                  # "job: reaudit NOTHING DUE" (cluster, recheck),
+                                                 # "job: recheck DONE" (canned registry payloads
+                                                 # served locally, the volume rewritten),
                                                  # "job: refused DEFERRED",
                                                  # then the tampered landing halted and the
                                                  # tampered and the group-writable binaries refused

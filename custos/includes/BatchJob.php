@@ -85,14 +85,15 @@ final class BatchJob {
 			throw new \InvalidArgumentException( 'not a batch job' );
 		}
 		$id = $this->runs->start( $job, $this->stamp() );
-		$answer = $this->frame( $job );
+		$answer = $this->frame( $job, $id );
 		$answer += [ 'detail' => '', 'counts' => [] ];
 		$counts = json_encode( (object)$answer['counts'], JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR );
 		$this->runs->finish( $id, $answer['outcome'], $answer['detail'], $counts, $this->stamp() );
 		return [ 'id' => $id, 'job' => $job, 'counts' => $counts ] + $answer;
 	}
 
-	private function frame( string $job ): array {
+	/** $id: the run's row, passed to the body as its second argument (a body that takes one ignores it). */
+	private function frame( string $job, int $id ): array {
 		try {
 			$refusal = JobContext::refusal( (int)$this->conf['min_address_space'], $this->conf['limits'] ?? null );
 			if ( $refusal !== null ) {
@@ -106,7 +107,7 @@ final class BatchJob {
 						. ' (retry after ' . $after . ' seconds)' ];
 			}
 			$body = $this->bodies[$job] ?? static fn ( Calculator $c ): array => [ 'outcome' => 'NOTHING DUE', 'detail' => self::NOT_BUILT ];
-			$r = $body( $this->calc );
+			$r = $body( $this->calc, $id );
 			if ( !in_array( $r['outcome'] ?? null, self::OUTCOMES, true ) ) {
 				throw new CalculatorFault( 'the job body answered an outcome outside the closed set', CalculatorFault::ANSWER_FORM );
 			}

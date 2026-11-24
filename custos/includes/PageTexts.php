@@ -1,6 +1,6 @@
 <?php
 /**
- * PageTexts: the three page texts of the live path, in the block form (Blocks).
+ * PageTexts: the page texts Custos writes and reads, in the block form (Blocks).
  *
  *   LOCK PAGE        one block pma-lock: {"block","expires_at","granted_at","holder"}, all null
  *                    when the lock is free
@@ -14,6 +14,14 @@
  *                    <identifiers>" as Landing composes it from the Calculator's answer; a landing
  *                    that rewrites the badge carries the line through whole
  *
+ *   BIBLIOGRAPHY     (a UWC's `<p>/Bibliography/Volume <v>`) one block pma-bibliography: the volume's
+ *                    entries as the Calculator wrote them (its canonical JSON of a list of objects, each
+ *                    carrying bib_id, item and identifiers as `biblio compare` reads them and, once
+ *                    checked, the CHECK and NOTICES lines as check_line and notices_line), carried
+ *                    through whole; the bibliography recheck rewrites the block whole
+ *   DECLARATIONS     (a volume `Declarations/Volume <v>` under the Declarer's root, written by the
+ *                    Declarer) the REGISTRY DECLARATIONS are the block pma-registries: the JSON list
+ *                    `biblio recheck_urls` reads as its declarations; Custos reads it, never writes it
  *   STAGING          (RETURN's numbered staging page `<UWC>/Collaboration/Staging/<block>/<n>`, written by
  *                    Custos alone, one page per return) the block pma-return: the returned records as the
  *                    Calculator wrote them (its canonical JSON), carried through whole; then
@@ -51,6 +59,9 @@ final class PageTexts {
 	public const STRUCTURE = 'structure';
 	public const MONTH = 'month';
 	public const PERFORMERS = 'performers';
+	/** A bibliography volume's block (its entries) and the DECLARATIONS volume's block of the REGISTRY DECLARATIONS. */
+	public const BIBLIOGRAPHY = 'bibliography';
+	public const REGISTRIES = 'registries';
 	/** The staging page's blocks (RETURN): the returned records, and what the return says of itself. */
 	public const RETURN = 'return';
 	public const RETURN_META = 'returnmeta';
@@ -135,6 +146,32 @@ final class PageTexts {
 			throw new PageFault( "not a volume number: $volume" );
 		}
 		return self::head( $prefix, "Volume $volume of the register of the UWC" ) . Blocks::render( self::REGISTER, $records ) . "\n";
+	}
+
+	/**
+	 * A bibliography volume's text: $entries the Calculator's canonical JSON of the volume's entries,
+	 * carried through whole, one line as the Calculator writes it.
+	 *
+	 * @throws PageFault a prefix or volume out of form, or the entries empty or not one line
+	 */
+	public static function bibliography( string $prefix, int $volume, string $entries ): string {
+		if ( $volume < 1 ) {
+			throw new PageFault( "not a volume number: $volume" );
+		}
+		if ( $entries === '' || preg_match( '/[\r\n]/', $entries ) === 1 ) {
+			throw new PageFault( 'a bibliography volume\'s entries are the Calculator\'s canonical JSON, one line' );
+		}
+		return self::head( $prefix, "Volume $volume of the bibliography of the UWC" ) . Blocks::render( self::BIBLIOGRAPHY, $entries ) . "\n";
+	}
+
+	/** A bibliography volume's entries, whole; null when the page has none. @throws PageFault */
+	public static function readBibliography( ?string $text ): ?string {
+		return Blocks::one( $text, self::BIBLIOGRAPHY );
+	}
+
+	/** A DECLARATIONS volume's REGISTRY DECLARATIONS, whole; null when the page has none. @throws PageFault */
+	public static function readRegistries( ?string $text ): ?string {
+		return Blocks::one( $text, self::REGISTRIES );
 	}
 
 	/**
