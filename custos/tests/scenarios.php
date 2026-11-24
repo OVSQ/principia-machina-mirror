@@ -1423,7 +1423,7 @@ const CORNER_STATUS = 'corner: STATUS carries the Calculator\'s version and dige
 const DESIGN_TREE = 'Custos\'s design: the integrity check digests the Calculator\'s binary (Calculator::digestOf, its SHA-256, pinned by $wgCustosBuild) before every start, not the extension\'s deployed tree; no BUILD.json is read';
 const DESIGN_HALT = 'Custos\'s design: the INTEGRITY HALT answers the words "digest mismatch" alone (Refusal::TABLE), the digests going to the error channel only; it digests the Calculator\'s binary, not the extension\'s tree';
 const DESIGN_ALWAYS = 'Custos\'s design: the digest check always runs; a Calculator with no pinned digest makes no call (CALCULATOR FAULT), so there is no landing without the check';
-const CORNER_OPS = 'corner: action=pma\'s ops are PETITION, POLL, PUSH, RELEASE, HEARTBEAT, STATUS, INQUIRE and STRUCTURE_TEST: no NEWUWC (the seeding is the Operator\'s SeedUwc), ACQUIRE or RETURN, and STATUS is the site\'s part, taking no prefix';
+const CORNER_OPS = 'corner: action=pma\'s ops are PETITION, POLL, PUSH, RELEASE, HEARTBEAT, STATUS, INQUIRE and STRUCTURE_TEST, and RETURN where it is built: no NEWUWC (the seeding is the Operator\'s SeedUwc) or ACQUIRE, and STATUS is the site\'s part, taking no prefix';
 const CORNER_TPCRUN = 'corner: the Calculator is not an op of action=pma (no TPCRUN): it is called by the landing job alone; GA1 refuses the op (custos-op)';
 const DESIGN_SCRUB = 'Custos\'s design: a fault\'s answer carries a fixed word and a detail from a closed set (Refusal::TABLE), never the message, so there is nothing to scrub and no words of the error are kept';
 const CORNER_PREFIX_LONG = 'corner: a prefix is bounded at 255 bytes (the column ct_prefix), not 64 characters, so a prefix of 65 letters is taken; SP-R, 1SPR, "SPR R" and ../x are refused custos-prefix';
@@ -1598,7 +1598,7 @@ function gate_b1_inc4(): void {
 	}
 	SC::div( 'I6.2', $bad === [ str_repeat( 'S', 65 ) ], 'a malformed prefix is a problem', CORNER_PREFIX_LONG, 'not refused custos-prefix: ' . json_encode( $bad ) );
 	SC::div( 'I6.3', \Custos\PageTitles::isBuildablePrefix( 'SPR' ) && !\Custos\PageTitles::isBuildablePrefix( '_a9' ), 'an identifier passes (SPR, _a9)', CORNER_PREFIX_EDGE );
-	SC::div( 'I6.4', \Custos\Ops::OPS === [ 'PETITION', 'POLL', 'PUSH', 'RELEASE', 'HEARTBEAT', 'STATUS', 'INQUIRE', 'STRUCTURE_TEST' ],
+	SC::div( 'I6.4', array_values( array_diff( \Custos\Ops::OPS, [ 'RETURN' ] ) ) === [ 'PETITION', 'POLL', 'PUSH', 'RELEASE', 'HEARTBEAT', 'STATUS', 'INQUIRE', 'STRUCTURE_TEST' ],
 		'every op that takes a prefix is listed (STATUS among them)', CORNER_OPS );
 	$t = ic_ops( static fn () => $ops->run( 'TPCRUN', 'SPR', 'Agent A', [ 'fn' => 'record_digest' ] ) );
 	SC::div( 'I6.5', !in_array( 'TPCRUN', \Custos\Ops::OPS, true ) && $t !== null, 'TPCRUN\'s function table is tpc_record\'s', CORNER_TPCRUN, $t ? $t->what : 'not refused' );

@@ -101,4 +101,26 @@ def calls : Family := [
         s.assembly table)),
 ]
 
+/-- An object's member is found by its key. -/
+theorem memberOf_obj (ms : List (String × Value)) (k : String) :
+    memberOf (.obj ms) k = ms.lookup k := rfl
+
+/-- An array has no member. -/
+theorem memberOf_arr (xs : List Value) (k : String) : memberOf (.arr xs) k = none := rfl
+
+/-- An array holds no field table. -/
+theorem fieldTable_arr (xs : List Value) : fieldTable (.arr xs) = [] := rfl
+
+/-- A computed result answers `OK` followed by its items. -/
+theorem answer_ok {α : Type} (f : α → List Value) (a : α) :
+    answer f (.ok (some (.ok a))) = .ok (.arr (.str "OK" :: f a)) := rfl
+
+/-- A version-1 refusal answers `REFUSED` with its reason. -/
+theorem answer_refused {α : Type} (f : α → List Value) (r : String) :
+    answer f (.ok (some (.refused r))) = .ok (.arr [.str "REFUSED", .str r]) := rfl
+
+/-- A request on which version 1 raised is refused as a bad argument with that reason. -/
+theorem answer_raised {α : Type} (f : α → List Value) :
+    answer f (.ok none) = badArgument "version 1 raised on this request" := rfl
+
 end Principia.Calculator.Yardstick

@@ -8,9 +8,17 @@
  * id; it answers the ticket, QUEUED, and when to poll. Its work is the job's: no Calculator is
  * called here and `records` is never parsed, only its bytes counted. The identity values
  * (`prompt_digest`, `stated_model`, `relayed_model`, optional) are shape-checked here and ride on the
- * ticket's request as received; nothing compares or rewrites them (the refusals FAMILY, MODEL and
- * PROMPT are owed to the unit that enforces them). POLL reads a
+ * ticket's request as received; nothing here compares or rewrites them: the landing job compares a
+ * presented `prompt_digest` with the certificate's D(PROMPT) (the refusal PROMPT, Landing); the
+ * refusals FAMILY and MODEL are owed (the MODEL MAP has no store). A PUSH's `log_head` (optional),
+ * the session log's head, is shape-checked as `prompt_digest` is and rides on the ticket the same
+ * way; nothing of the log is read. POLL reads a
  * ticket of the account's own.
+ *
+ * RETURN (docs/design/pma_custos_ops.md 4.2): a Coworker's return of its assigned block's records,
+ * `block` and `records` required, both shape-checked as PUSH's are; a ticket and its job as the other
+ * write ops. The parameters `entries`, `difference` and `idempotency_key` are not taken yet (each refused
+ * `custos-unknown-param`): the proposed entries, the reported difference and a falcon's RETURN are later units.
  *
  * The sweep: a ticket whose job was lost (its enqueue failed after the row was written, or the job
  * runner dropped it) would stay QUEUED for ever. POLL of the account's own ticket that is QUEUED and
@@ -36,27 +44,46 @@ namespace Custos;
 use MediaWiki\Config\Config;
 
 final class Ops {
-	public const OPS = [ 'PETITION', 'POLL', 'PUSH', 'RELEASE', 'HEARTBEAT', 'STATUS', 'INQUIRE', 'STRUCTURE_TEST' ];
-	public const WRITE_OPS = [ 'PETITION', 'PUSH', 'RELEASE', 'HEARTBEAT', 'STRUCTURE_TEST' ];
+	public const OPS = [ 'PETITION', 'POLL', 'PUSH', 'RELEASE', 'HEARTBEAT', 'STATUS', 'INQUIRE', 'STRUCTURE_TEST', 'RETURN' ];
+	public const WRITE_OPS = [ 'PETITION', 'PUSH', 'RELEASE', 'HEARTBEAT', 'STRUCTURE_TEST', 'RETURN' ];
 	public const READ_OPS = [ 'POLL', 'STATUS', 'INQUIRE' ];
 	/** The HTTP statuses a governor's refusal carries (TPS 5.3.35): a switch, an account cause, a fleet cause. */
 	public const REFUSAL_STATUSES = [ 403, 429, 503 ];
 
 	/**
-	 * The parameters each op takes beside op and prefix; POLL takes no prefix. A PUSH's
-	 * challenge_response is its answer to the execution challenge, checked by the job (Landing).
+	 * The one table every op's shape is read from: per op word, `params` (the parameters it takes beside
+	 * op and prefix; a PUSH's challenge_response is its answer to the execution challenge, checked by
+	 * the job), `required` (the parameters that must be present and not empty) and `prefix` (whether the
+	 * op takes a prefix: a write op that takes none is not asked for one, and a read op that takes none
+	 * refuses one). PARAMS and REQUIRED are read from it; OPS, WRITE_OPS and READ_OPS list its words by kind.
 	 */
-	public const PARAMS = [
-		'PETITION' => [ 'block', 'prompt_digest', 'stated_model', 'relayed_model' ],
-		'PUSH' => [ 'records', 'block', 'prompt_digest', 'relayed_model', 'challenge_response' ],
-		'RELEASE' => [ 'block' ],
-		'HEARTBEAT' => [ 'block' ],
-		'STRUCTURE_TEST' => [],
-		'POLL' => [ 'ticket' ],
-		'STATUS' => [],
-		'INQUIRE' => [],
+	public const SHAPES = [
+		'PETITION' => [ 'params' => [ 'block', 'prompt_digest', 'stated_model', 'relayed_model' ], 'required' => [], 'prefix' => true ],
+		'PUSH' => [ 'params' => [ 'records', 'block', 'prompt_digest', 'relayed_model', 'challenge_response', 'log_head' ],
+			'required' => [ 'records' ], 'prefix' => true ],
+		'RELEASE' => [ 'params' => [ 'block' ], 'required' => [], 'prefix' => true ],
+		'HEARTBEAT' => [ 'params' => [ 'block' ], 'required' => [], 'prefix' => true ],
+		'STRUCTURE_TEST' => [ 'params' => [], 'required' => [], 'prefix' => true ],
+		'RETURN' => [ 'params' => [ 'block', 'records' ], 'required' => [ 'block', 'records' ], 'prefix' => true ],
+		'POLL' => [ 'params' => [ 'ticket' ], 'required' => [ 'ticket' ], 'prefix' => false ],
+		'STATUS' => [ 'params' => [], 'required' => [], 'prefix' => false ],
+		'INQUIRE' => [ 'params' => [], 'required' => [], 'prefix' => false ],
 	];
-	public const REQUIRED = [ 'PUSH' => [ 'records' ], 'POLL' => [ 'ticket' ] ];
+	/** The parameters each op takes beside op and prefix: SHAPES' `params`. */
+	public const PARAMS = [
+		'PETITION' => self::SHAPES['PETITION']['params'],
+		'PUSH' => self::SHAPES['PUSH']['params'],
+		'RELEASE' => self::SHAPES['RELEASE']['params'],
+		'HEARTBEAT' => self::SHAPES['HEARTBEAT']['params'],
+		'STRUCTURE_TEST' => self::SHAPES['STRUCTURE_TEST']['params'],
+		'RETURN' => self::SHAPES['RETURN']['params'],
+		'POLL' => self::SHAPES['POLL']['params'],
+		'STATUS' => self::SHAPES['STATUS']['params'],
+		'INQUIRE' => self::SHAPES['INQUIRE']['params'],
+	];
+	/** The parameters each op needs, for the ops that need any: SHAPES' `required`. */
+	public const REQUIRED = [ 'PUSH' => self::SHAPES['PUSH']['required'], 'RETURN' => self::SHAPES['RETURN']['required'],
+		'POLL' => self::SHAPES['POLL']['required'] ];
 
 	/** `records` at most this many bytes by default: the Calculator's reader bound. */
 	public const MAX_REQUEST_BYTES = 1048576;
@@ -70,7 +97,7 @@ final class Ops {
 
 	/** A work block's name: a letter or digit, then at most 63 of letters, digits, "_", ".", ":", "-". */
 	private const BLOCK = '/\A[A-Za-z0-9][A-Za-z0-9_.:-]{0,63}\z/';
-	/** The identity values' prompt digest: 64 lowercase hexadecimal (a digest the client computed; Custos recomputes nothing). */
+	/** The identity values' prompt digest, and a PUSH's log_head: 64 lowercase hexadecimal (a digest the client computed; Custos recomputes nothing). */
 	private const PROMPT_DIGEST = '/\A[0-9a-f]{64}\z/';
 	private const TICKET = '/\A[1-9][0-9]{0,17}\z/';
 
@@ -175,6 +202,11 @@ final class Ops {
 		return $this->write( 'RELEASE', $prefix, $account, $params );
 	}
 
+	/** RETURN: a Coworker's records of its assigned block, a ticket and its job; the checks and the staging page are the job's. */
+	public function returnRecords( mixed $prefix, string $account, array $params ): array {
+		return $this->write( 'RETURN', $prefix, $account, $params );
+	}
+
 	/** The ticket's state; when DONE, the job's answer text as `answer`, else when to poll again. */
 	public function poll( array $params, string $account ): array {
 		$p = $this->shape( 'POLL', $params );
@@ -219,46 +251,43 @@ final class Ops {
 		return ( $this->clock )() - $t->getTimestamp() >= $this->sweepAfter;
 	}
 
-	/** One op by its wire word: the dispatch ApiPma makes. */
+	/** One op by its wire word: the dispatch ApiPma makes, the shape table's `prefix` deciding what a read op refuses. */
 	public function run( string $op, mixed $prefix, string $account, array $params ): array {
-		switch ( $op ) {
-			case 'PETITION':
-				return $this->petition( $prefix, $account, $params );
-			case 'PUSH':
-				return $this->push( $prefix, $account, $params );
-			case 'RELEASE':
-				return $this->release( $prefix, $account, $params );
-			case 'HEARTBEAT':
-				return $this->heartbeat( $prefix, $account, $params );
-			case 'STRUCTURE_TEST':
-				return $this->structureTest( $prefix, $account, $params );
-			case 'STATUS':
-			case 'INQUIRE':
-				if ( $prefix !== null ) {
-					throw new Refusal( 'custos-unknown-param', "$op takes no prefix" );
-				}
-				return $op === 'STATUS' ? $this->status( $params, $account ) : $this->inquire( $params, $account );
-			case 'POLL':
-				if ( $prefix !== null ) {
-					throw new Refusal( 'custos-unknown-param', 'POLL takes no prefix' );
-				}
-				return $this->poll( $params, $account );
+		if ( !isset( self::SHAPES[$op] ) ) {
+			throw new Refusal( 'custos-op', 'not an op of action=pma: ' . self::show( $op ) );
 		}
-		throw new Refusal( 'custos-op', 'not an op of action=pma: ' . self::show( $op ) );
+		if ( in_array( $op, self::WRITE_OPS, true ) ) {
+			return $this->write( $op, $prefix, $account, $params );
+		}
+		if ( !self::SHAPES[$op]['prefix'] && $prefix !== null ) {
+			throw new Refusal( 'custos-unknown-param', "$op takes no prefix" );
+		}
+		return match ( $op ) {
+			'STATUS' => $this->status( $params, $account ),
+			'INQUIRE' => $this->inquire( $params, $account ),
+			default => $this->poll( $params, $account ),
+		};
 	}
 
 	private function write( string $op, mixed $prefix, string $account, array $params ): array {
-		if ( $prefix === null || $prefix === '' ) {
+		$takes = self::SHAPES[$op]['prefix'];
+		if ( !$takes ) {
+			// An op that takes no prefix (the shape table): none is read, and the ticket's prefix is empty.
+			if ( $prefix !== null && $prefix !== '' ) {
+				throw new Refusal( 'custos-unknown-param', "$op takes no prefix" );
+			}
+			$prefix = '';
+		} elseif ( $prefix === null || $prefix === '' ) {
 			throw new Refusal( 'custos-prefix', "$op needs a prefix" );
 		}
 		if ( !is_string( $prefix ) ) {
 			throw new Refusal( 'custos-shape', 'the parameter prefix is not one string' );
 		}
-		if ( strlen( $prefix ) > self::MAX_PREFIX_BYTES ) {
+		if ( $takes && strlen( $prefix ) > self::MAX_PREFIX_BYTES ) {
 			throw new Refusal( 'custos-prefix', 'the prefix is ' . strlen( $prefix ) . ' bytes, past the bound of '
 				. self::MAX_PREFIX_BYTES . ' (the column ct_prefix)' );
 		}
-		if ( !PageTitles::isBuildablePrefix( $prefix ) ) {
+		if ( $takes && !PageTitles::isBuildablePrefix( $prefix ) ) {
 			throw new Refusal( 'custos-prefix', 'not a record prefix: ' . self::show( $prefix ) );
 		}
 		if ( $account === '' ) {
@@ -278,7 +307,7 @@ final class Ops {
 		if ( array_key_exists( 'account', $params ) ) {
 			throw new Refusal( 'custos-account', 'the account is the authenticated one; a parameter account is refused' );
 		}
-		$allowed = self::PARAMS[$op];
+		$allowed = self::SHAPES[$op]['params'];
 		$out = [];
 		foreach ( $params as $k => $v ) {
 			$k = (string)$k;
@@ -300,6 +329,8 @@ final class Ops {
 				throw new Refusal( 'custos-shape', 'not a work block\'s name: ' . self::show( $v ) );
 			} elseif ( $k === 'prompt_digest' && preg_match( self::PROMPT_DIGEST, $v ) !== 1 ) {
 				throw new Refusal( 'custos-shape', 'not a prompt digest (64 lowercase hexadecimal): ' . self::show( $v ) );
+			} elseif ( $k === 'log_head' && preg_match( self::PROMPT_DIGEST, $v ) !== 1 ) {
+				throw new Refusal( 'custos-shape', 'not a session log\'s head (64 lowercase hexadecimal): ' . self::show( $v ) );
 			} elseif ( ( $k === 'stated_model' || $k === 'relayed_model' ) && !self::modelShape( $v ) ) {
 				throw new Refusal( 'custos-shape', "the parameter $k is not a model name (1 to " . self::MAX_MODEL_BYTES
 					. ' bytes of printable UTF-8): ' . self::show( $v ) );
@@ -308,7 +339,7 @@ final class Ops {
 			}
 			$out[$k] = $v;
 		}
-		foreach ( self::REQUIRED[$op] ?? [] as $k ) {
+		foreach ( self::SHAPES[$op]['required'] as $k ) {
 			if ( !isset( $out[$k] ) || $out[$k] === '' ) {
 				throw new Refusal( 'custos-missing-param', "$op needs the parameter $k" );
 			}

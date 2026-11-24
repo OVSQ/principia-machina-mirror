@@ -97,4 +97,48 @@ def fmt : Option Surd → String
   | none => "-"
   | some x => x.fixed6
 
+/-- The rational sign is `1` exactly for a positive rational. -/
+theorem ratSign_eq_one_iff (q : Rat) : ratSign q = 1 ↔ 0 < q := by
+  unfold ratSign
+  by_cases h : 0 < q
+  · simp [h]
+  · by_cases h' : q < 0 <;> simp [h, h']
+
+/-- The rational sign is `-1` exactly for a negative rational. -/
+theorem ratSign_eq_neg_one_iff (q : Rat) : ratSign q = -1 ↔ q < 0 := by
+  unfold ratSign
+  by_cases h : 0 < q
+  · have h' : ¬ q < 0 := Rat.not_lt.mpr (Rat.le_of_lt h)
+    simp [h, h']
+  · by_cases h' : q < 0 <;> simp [h, h']
+
+/-- The rational sign is `0` exactly for zero. -/
+theorem ratSign_eq_zero_iff (q : Rat) : ratSign q = 0 ↔ q = 0 := by
+  unfold ratSign
+  by_cases h : 0 < q
+  · have h' : q ≠ 0 := fun e => Rat.lt_irrefl (e ▸ h)
+    simp [h, h']
+  · by_cases h' : q < 0
+    · have h'' : q ≠ 0 := fun e => Rat.lt_irrefl (e ▸ h')
+      simp [h, h', h'']
+    · have e : q = 0 := Rat.le_antisymm (Rat.not_lt.mp h) (Rat.not_lt.mp h')
+      simp [e]
+
+namespace Surd
+
+/-- A rational taken as a `Surd` has the rational's sign. -/
+theorem sign_ofRat (q : Rat) : (ofRat q).sign = ratSign q := by
+  simp [sign, ofRat]
+
+/-- The root of a positive rational has sign `1`. -/
+theorem sign_sqrt {b : Rat} (h : 0 < b) : (sqrt b).sign = 1 := by
+  have hb : b ≠ 0 := fun e => Rat.lt_irrefl (e ▸ h)
+  have h1 : (0 : Rat) < 1 := by decide
+  simp [sign, sqrt, hb, ratSign, h1]
+
+end Surd
+
+/-- An absent value prints as `-`. -/
+theorem fmt_none : fmt none = "-" := rfl
+
 end Principia.Cluster

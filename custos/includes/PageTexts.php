@@ -14,6 +14,17 @@
  *                    <identifiers>" as Landing composes it from the Calculator's answer; a landing
  *                    that rewrites the badge carries the line through whole
  *
+ *   STAGING          (RETURN's numbered staging page `<UWC>/Collaboration/Staging/<block>/<n>`, written by
+ *                    Custos alone, one page per return) the block pma-return: the returned records as the
+ *                    Calculator wrote them (its canonical JSON), carried through whole; then
+ *                    pma-returnmeta (a block's name is a to z alone): the Calculator's canonical JSON of
+ *                    {"account","block","digest","returned","staging","vetted_in"}, carried through whole
+ *
+ *   TOP PERFORMERS  (the fleet's page `D/Top performers` and its snapshot `D/Top performers/<YYYY-MM>`)
+ *                    the block pma-month (YYYY-MM); the page alone also pma-state (the cluster month's
+ *                    state word and, for a failing or lost source, the source named); then
+ *                    pma-performers, the Calculator's text of the month's result carried whole
+ *
  * Each written by Blocks::render and read by Blocks::one. PHP reads no field of a payload: a
  * reader answers the payload whole (the Calculator's `canonical` family is the one parser). A
  * held lock's payload is written by the Calculator: lock() checks the members' forms and hands
@@ -38,6 +49,16 @@ final class PageTexts {
 	public const LIVE = 'LIVE';
 	public const RETIRED = 'RETIRED';
 	public const STRUCTURE = 'structure';
+	public const MONTH = 'month';
+	public const PERFORMERS = 'performers';
+	/** The staging page's blocks (RETURN): the returned records, and what the return says of itself. */
+	public const RETURN = 'return';
+	public const RETURN_META = 'returnmeta';
+	/**
+	 * The state of the top performer page (the cluster month's, TPS 5.19.4): PUBLISHED, SOURCE FAILING or
+	 * SOURCE LOST, the last two and PUBLISHED with a source named, on one line without a tag character.
+	 */
+	private const TOP_STATE = '/\A(?:PUBLISHED|SOURCE FAILING|SOURCE LOST)(?: [^\x00-\x1f\x7f<>]{1,200})?\z/u';
 	/** The STRUCTURE TEST LINE until the first run (TPS 5.3.47), written by the seed. */
 	public const STRUCTURE_NONE = 'STRUCTURE TEST none';
 	/**
@@ -117,6 +138,39 @@ final class PageTexts {
 	}
 
 	/**
+	 * RETURN's numbered staging page's text: the return $n of $block on the UWC $prefix. $records is the
+	 * Calculator's canonical JSON of the returned records and $meta its canonical JSON of the return's
+	 * members, each carried through whole (Blocks refuses a payload that could open or close a block);
+	 * neither is parsed here. Each must be one line, as the Calculator writes it.
+	 *
+	 * @throws PageFault a prefix, block or number out of form, or a payload empty or not one line
+	 */
+	public static function staging( string $prefix, string $block, int $n, string $records, string $meta ): string {
+		self::form( $block, self::BLOCK, 'a work block\'s name' );
+		if ( $n < 1 ) {
+			throw new PageFault( "not a return number: $n" );
+		}
+		foreach ( [ 'records' => $records, 'meta' => $meta ] as $what => $payload ) {
+			if ( $payload === '' || preg_match( '/[\r\n]/', $payload ) === 1 ) {
+				throw new PageFault( "the return's $what is the Calculator's canonical JSON, one line" );
+			}
+		}
+		return self::head( $prefix, "Return $n of the block $block of the UWC" )
+			. Blocks::render( self::RETURN, $records ) . "\n"
+			. Blocks::render( self::RETURN_META, $meta ) . "\n";
+	}
+
+	/** A staging page's returned records, whole; null when the page has none. @throws PageFault */
+	public static function readReturn( ?string $text ): ?string {
+		return Blocks::one( $text, self::RETURN );
+	}
+
+	/** A staging page's return members, whole; null when the page has none. @throws PageFault */
+	public static function readReturnMeta( ?string $text ): ?string {
+		return Blocks::one( $text, self::RETURN_META );
+	}
+
+	/**
 	 * The INDEX AND BADGE page's text. $badge: last_push, last_release (a time or null),
 	 * calculator_version, calculator_digest (CustosBuild's), record_count (the Calculator's count
 	 * of the register's records), research_assembly (the Research Assembly's digest). $structure:
@@ -151,6 +205,52 @@ final class PageTexts {
 			. Blocks::render( self::STATE, $retired ? self::RETIRED : self::LIVE ) . "\n"
 			. Blocks::render( self::OPEN, (string)$openVolume ) . "\n"
 			. ( $structure === null ? '' : Blocks::render( self::STRUCTURE, $structure ) . "\n" );
+	}
+
+	/**
+	 * The text of the top performer page ($state given) or of its snapshot ($state null) of $month.
+	 * $performers is the Calculator's text of the month's result, carried whole (Blocks refuses a
+	 * payload that could open or close a block); the state word is the Calculator's, form checked.
+	 */
+	public static function topPerformers( string $month, string $performers, ?string $state = null ): string {
+		if ( !PageTitles::isMonth( $month ) ) {
+			throw new PageFault( 'not a month (YYYY-MM): ' . PageTitles::show( $month ) );
+		}
+		if ( $performers === '' ) {
+			throw new PageFault( 'the top performers\' text is the Calculator\'s answer; none given' );
+		}
+		$what = $state === null ? "The top performers of $month, a snapshot" : 'The top performers';
+		return "$what, written by Custos; it is changed only by the cluster month.\n\n"
+			. Blocks::render( self::MONTH, $month ) . "\n"
+			. ( $state === null ? '' : Blocks::render( self::STATE, self::topState( $state ) ) . "\n" )
+			. Blocks::render( self::PERFORMERS, $performers ) . "\n";
+	}
+
+	/**
+	 * The top performer page $prior with only its state block changed to $state (a source failing:
+	 * the month and the performers stay as written). A page without both blocks is refused.
+	 *
+	 * @throws PageFault
+	 */
+	public static function topPerformersState( ?string $prior, string $state ): string {
+		$month = Blocks::one( $prior, self::MONTH );
+		$performers = Blocks::one( $prior, self::PERFORMERS );
+		if ( $month === null || $performers === null ) {
+			throw new PageFault( 'the prior top performer page carries no month or no performers; no state change is written' );
+		}
+		return self::topPerformers( $month, $performers, $state );
+	}
+
+	/** The state block's word, whole; null when the page has none. @throws PageFault */
+	public static function readTopState( ?string $text ): ?string {
+		return Blocks::one( $text, self::STATE );
+	}
+
+	private static function topState( string $state ): string {
+		if ( preg_match( self::TOP_STATE, $state ) !== 1 ) {
+			throw new PageFault( 'not a top performer state: ' . PageTitles::show( $state ) );
+		}
+		return $state;
 	}
 
 	/** Whether $line is STRUCTURE_NONE or a STRUCTURE TEST LINE in its form. */

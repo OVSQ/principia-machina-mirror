@@ -1,6 +1,6 @@
 {
 	"name": "Custos",
-	"version": "0.3.0",
+	"version": "0.4.0",
 	"author": [ "Principia Machina" ],
 	"descriptionmsg": "custos-desc",
 	"type": "other",
@@ -196,6 +196,11 @@
 		"CustosMeterSample": {
 			"value": 10,
 			"description": "The governor's meter samples anonymous reads 1 in this many, each kept row weighted by it; an account's governed request is always metered (custos_meter)."
+		},
+		"CustosRegistryContact": {
+			"value": {},
+			"merge_strategy": "provide_default",
+			"description": "The contact value of each registry the bibliography recheck asks, one per registry name as its declaration names it (the Crossref pool address, the DataCite and NCBI parameters), set by the Operator in LocalSettings.php. The fetch layer sends it in the request where the declaration says and never writes it to a page, a log, a ticket answer or the run record. Empty: none is sent."
 		},
 		"CustosPreGateFile": {
 			"value": "",

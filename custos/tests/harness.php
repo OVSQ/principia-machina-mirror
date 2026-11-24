@@ -14,7 +14,8 @@
  *    API's namespace parameters refused and its query result scrubbed; the lists' query conditions (fail
  *    closed); the link tables; the routes core closes by its read check; every handler wired.
  * R: the same calls on the built pcalc, when .lake/build/bin/pcalc exists in the clone; its
- *    version must be the one Principia/Basic.lean defines.
+ *    version must be the one Principia/Basic.lean defines. Version 1's landing gates replayed as
+ *    scenarios (once R8) are not run here: run php custos/tests/scenarios.php on its own.
  * C and R run the Calculator with AnyResidence, so its binary may sit in the scratch folder.
  * H: the residence check (ResidenceCheck, D10), before the digest check: a residence outside
  *    /opt and /usr, a writable binary, a writable folder, a symbolic link in the chain, a
@@ -90,6 +91,22 @@
  *    The Sponsor's seat lock held by another job: the agent's lock released, ADMISSION naming "the account's
  *    sponsor's seat lock", nothing charged; a certificate store whose get() throws: the job faulted, no lock, no
  *    charge; two agents of one Sponsor racing in two processes for its last seat: exactly one admitted.
+ *    LP, D(PROMPT) and the session log's head: a PETITION or PUSH presenting a D(PROMPT) unequal to the
+ *    certificate's refused PROMPT with `recertify`, before the governor is asked, writing nothing (no page,
+ *    charge, nonce, traffic step or certificate change); equal ones admitted with prompt_check MATCHED; a
+ *    certificate with an empty d_prompt refusing nothing, UNBOUND; a PUSH's log_head recorded on the
+ *    ticket and echoed in the landed answer; neither presented, the answer as before; a ticket written
+ *    another way with a malformed digest refused REQUEST by the job.
+ *    LM, the refused-PROMPT mark: a PROMPT refusal under certificate M sets M's mark (STANDING, stored
+ *    beside the certificate, its row unchanged); while it stands every PETITION, PUSH, RELEASE,
+ *    HEARTBEAT and STRUCTURE_TEST under M is refused PROMPT with the fixed detail PROMPT_MARKED,
+ *    M's own D(PROMPT) or none presented, nothing asked, charged or written; certificate N untouched;
+ *    the mark read by a new process; no API request clears it; Custos:Certify's write (put) clears
+ *    it, a matching D(PROMPT) then MATCHED; a later refusal marks again, a standing mark keeps its time;
+ *    a put() whose certificate write fails leaves the mark STANDING (the file store, and DbCertificateStore
+ *    over a recording database: the clear and the row in one atomic section, cancelled on the failure);
+ *    admission reads the mark before the certificate (a mark read STANDING, then the certificate
+ *    written again, refuses PROMPT).
  *    Skipped with its reason without a built pcalc.
  * JB: the batch jobs' frame (BatchJob) over FileJobRunStore and a scripted governor: the run store's contract; each job answering
  *    NOT BUILT after one `governor admit` of its kind (DEFERRABLE JOB, the recheck BIBLIOGRAPHY RECHECK JOB) at the level CLEAR; lane 5
@@ -1086,7 +1103,7 @@ G::ok( o_code( static fn () => $ops->poll( [ 'ticket' => (string)$q['ticket'], '
 	'O POLL with an unknown parameter is refused (custos-unknown-param)' );
 G::ok( o_code( static fn () => $ops->run( 'POLL', 'QED', 'Agent A', [ 'ticket' => (string)$q['ticket'] ] ) ) === 'custos-unknown-param',
 	'O POLL with a prefix is refused (custos-unknown-param)' );
-G::ok( o_code( static fn () => $ops->run( 'RETURN', 'QED', 'Agent A', [] ) ) === 'custos-op', 'O an op outside the seven is refused (custos-op)' );
+G::ok( o_code( static fn () => $ops->run( 'NO SUCH OP', 'QED', 'Agent A', [] ) ) === 'custos-op', 'O a word outside the op table is refused (custos-op)' );
 G::ok( $ops->run( 'RELEASE', 'QED', 'Agent A', [] )['state'] === 'QUEUED', 'O run dispatches by the wire word' );
 G::ok( Refusal::scrub( 'Error: failed in /var/www/w/extensions/Custos/includes/Ops.php on line 42' ) === 'Error: failed in Ops.php',
 	'O scrub strips every path and line number from a message', Refusal::scrub( 'Error: failed in /var/www/w/extensions/Custos/includes/Ops.php on line 42' ) );
@@ -3432,6 +3449,12 @@ if ( !is_file( $lBuilt ) || !is_executable( $lBuilt ) ) {
 		public function put( array $row ): void {
 			throw new RuntimeException( 'the certificate store faulted (the test\'s fault)' );
 		}
+		public function promptMarked( string $agent ): bool {
+			throw new RuntimeException( 'the certificate store faulted (the test\'s fault)' );
+		}
+		public function markPrompt( string $agent, int $at ): void {
+			throw new RuntimeException( 'the certificate store faulted (the test\'s fault)' );
+		}
 	};
 	$xSunk = [];
 	$cLocked = [];
@@ -3587,6 +3610,383 @@ if ( !is_file( $lBuilt ) || !is_executable( $lBuilt ) ) {
 	G::ok( substr_count( $nLand, 'bin2hex( random_bytes( 16 ) )' ) === 1 && preg_match( '/\b(mt_rand|rand|uniqid|lcg_value)\s*\(/', $nLand ) !== 1
 		&& preg_match( '/\b(hash|sha1|md5|hash_hmac|crc32)\s*\(/', $nChal . $nLand ) !== 1 && str_contains( $nChal, "'digest', \$fn" ),
 		'N41 the nonce drawn by random_bytes(16) alone; no digest computed in Challenge.php or Landing.php but by pcalc digest' );
+
+	// ---- LP: D(PROMPT) against the certificate at PETITION and PUSH, and a PUSH's log_head, on the built pcalc -----
+	// The Calculator that logs every call (section LC's), so "the governor not asked" is read from the log; certificates,
+	// tickets, seats, nonces and a meter of their own; UWCs RP and RQ seeded as L1 seeds RR.
+	echo "LP: D(PROMPT) and the session log's head\n";
+	foreach ( [ 'RP', 'RQ' ] as $px ) {
+		$seed = new PageWriter( $lStore, $pt );
+		$seed->begin( $px, 'seed' );
+		$seed->put( $pt->draft( $px ), Blocks::render( 'draft', $lCanon ) . "\n" );
+		foreach ( PageTitles::ZONES as $zone ) {
+			$seed->put( $pt->researchAssembly( $px, $zone ), Blocks::render( 'assembly', $lCanon ) . "\n" );
+		}
+		$seed->put( $pt->registerVolume( $px, 1 ), PageTexts::register( $px, 1, '[]' ) );
+		$seed->put( $pt->lock( $px ), PageTexts::lock( $px, null, null, null, null ) );
+		$seed->put( $pt->index( $px ), PageTexts::badge( $px, [ 'last_push' => null, 'last_release' => null,
+			'calculator_version' => $lVersion, 'calculator_digest' => $lDigest, 'record_count' => 0, 'research_assembly' => $lRaDigest ], false, 1 ) );
+		$seed->commit();
+	}
+	$pBound = str_repeat( '5a', 32 );
+	$pOther = str_repeat( 'a5', 32 );
+	$pHead = str_repeat( '0f', 32 );
+	$pCerts = new FileCertificateStore( "$scratch/p-certs.json" );
+	foreach ( [ 'Agent P' => $pBound, 'Agent U' => '' ] as $agent => $dp ) {
+		$pCerts->put( [ 'agent' => $agent, 'sponsor' => 'Sponsor ' . substr( $agent, 6 ), 'd_is' => str_repeat( 'd', 64 ), 'd_prompt' => $dp,
+			'family' => 'test family', 'model' => 'test model', 'state' => CertificateStore::ACTIVE ] );
+	}
+	$pCertsAt = (string)file_get_contents( "$scratch/p-certs.json" );
+	$pNow = $lNow + 2 * 86400;
+	$pTickets = new FileTicketStore( "$scratch/p-tickets" );
+	$pSeats = new FileSeatStore( "$scratch/p-seats.json" );
+	$pNonces = new FileNonceStore( "$scratch/p-nonces.json" );
+	$pMeter = new MemMeterStore();
+	$pLanding = new Landing( $cCalc, $lStore, $pt, $pTickets, $pSeats, $pCerts, $lConf, static function () use ( &$pNow ): int {
+		return $pNow += 60;
+	}, static fn (): array => [ 0, 1 ], nonces: $pNonces, meter: $pMeter );
+	$pOps = new Ops( $pTickets, static function ( int $id ): void {
+	} );
+	$pRun = static function ( string $px, string $op, string $account, array $params ) use ( $pOps, $pLanding, $cLog ): array {
+		@unlink( $cLog );
+		return $pLanding->run( $pOps->run( $op, $px, $account, $params )['ticket'] );
+	};
+	$pRight = static fn ( string $px, string $account ): string => Challenge::response( $lCalc, (string)$pNonces->peek( $account, $px ) )[1];
+	$pRefusal = [ 'refused' => 'PROMPT', 'detail' => Landing::PROMPT_MISMATCH, 'recertify' => true ];
+	$pSeatsOf = static fn ( string $agent ): array => [ $pSeats->get( $agent, 'agent' ), $pSeats->get( 'Sponsor ' . substr( $agent, 6 ), 'sponsor' ) ];
+
+	// PETITION, unequal: refused before the governor, nothing written, charged, issued or stepped.
+	$before = $lSnap();
+	$a = $pRun( 'RP', 'PETITION', 'Agent P', [ 'block' => 'p1', 'prompt_digest' => $pOther ] );
+	G::ok( $a === $pRefusal, 'LP1 a PETITION presenting a D(PROMPT) unequal to the certificate\'s is refused PROMPT, the account marked for re-certification (recertify)', json_encode( $a ) );
+	G::ok( !$cGoverned() && $lSnap() === $before && $pSeatsOf( 'Agent P' ) === [ [ 0, 0 ], [ 0, 0 ] ] && $pNonces->peek( 'Agent P', 'RP' ) === null
+		&& $pMeter->traffic( 'Agent P' ) === null && (string)file_get_contents( "$scratch/p-certs.json" ) === $pCertsAt,
+		'LP2 the PROMPT refusal writes nothing: the governor not asked, no page, no charge, no nonce, no traffic step, the certificate unchanged',
+		is_file( $cLog ) ? (string)file_get_contents( $cLog ) : '' );
+
+	// The refusal set the certificate's refused-PROMPT mark (section LM); Custos:Certify's write clears it.
+	$pRecertify = static function ( string $agent ) use ( $pCerts ): void {
+		$pCerts->put( (array)$pCerts->get( $agent ) );
+	};
+	$pRecertify( 'Agent P' );
+
+	// PETITION, equal: granted, the answer says MATCHED.
+	$a = $pRun( 'RP', 'PETITION', 'Agent P', [ 'block' => 'p1', 'prompt_digest' => $pBound ] );
+	G::ok( isset( $a['grant'] ) && ( $a['prompt_check'] ?? '' ) === 'MATCHED' && $cGoverned(),
+		'LP3 a PETITION presenting the certificate\'s D(PROMPT) is admitted and granted, prompt_check MATCHED', json_encode( $a ) );
+	$pCharged = $pSeatsOf( 'Agent P' );
+
+	// PUSH, unequal: refused before the challenge, the nonce not consumed, nothing landed.
+	$pNonce = $pNonces->peek( 'Agent P', 'RP' );
+	$before = $lSnap();
+	$a = $pRun( 'RP', 'PUSH', 'Agent P', [ 'records' => '[' . str_replace( 'RR-2', 'RP-1', $assumption ) . ']', 'prompt_digest' => $pOther,
+		'log_head' => $pHead, 'challenge_response' => $pRight( 'RP', 'Agent P' ) ] );
+	G::ok( $a === $pRefusal, 'LP4 a PUSH presenting a D(PROMPT) unequal to the certificate\'s is refused PROMPT, no execution or challenge member', json_encode( $a ) );
+	G::ok( !$cGoverned() && $lSnap() === $before && $pSeatsOf( 'Agent P' ) === $pCharged && $pNonces->peek( 'Agent P', 'RP' ) === $pNonce,
+		'LP5 the refused PUSH writes nothing: the governor not asked, no page, no charge, the outstanding nonce not consumed' );
+
+	$pRecertify( 'Agent P' );
+
+	// PUSH, equal, with log_head: landed, the head echoed, recorded on the ticket.
+	$q = $pOps->run( 'PUSH', 'RP', 'Agent P', [ 'records' => '[' . str_replace( 'RR-2', 'RP-1', $assumption ) . ']', 'prompt_digest' => $pBound,
+		'log_head' => $pHead, 'challenge_response' => $pRight( 'RP', 'Agent P' ) ] )['ticket'];
+	$req = json_decode( (string)( $pTickets->get( $q )['request'] ?? '' ), true );
+	G::ok( is_array( $req ) && ( $req['log_head'] ?? '' ) === $pHead && ( $req['prompt_digest'] ?? '' ) === $pBound,
+		'LP6 the PUSH\'s log_head and prompt_digest are recorded on the ticket as received' );
+	$a = $pLanding->run( $q );
+	G::ok( array_column( $a['landed'] ?? [], 'id' ) === [ 'RP-1' ] && ( $a['execution'] ?? '' ) === 'EXECUTED' && ( $a['prompt_check'] ?? '' ) === 'MATCHED'
+		&& ( $a['log_head'] ?? '' ) === $pHead, 'LP7 a PUSH presenting the certificate\'s D(PROMPT) lands; its answer echoes log_head and says MATCHED', json_encode( $a ) );
+	G::ok( json_decode( (string)( $pTickets->get( $q )['answer'] ?? '' ), true ) === $a, 'LP8 the ticket\'s answer carries log_head for POLL' );
+
+	// PUSH with neither value: answered as before.
+	$a = $pRun( 'RP', 'PUSH', 'Agent P', [ 'records' => '[' . str_replace( 'RR-2', 'RP-2', $assumption ) . ']', 'challenge_response' => $pRight( 'RP', 'Agent P' ) ] );
+	G::ok( array_column( $a['landed'] ?? [], 'id' ) === [ 'RP-2' ] && !array_key_exists( 'log_head', $a ) && !array_key_exists( 'prompt_check', $a ),
+		'LP9 a PUSH without log_head or prompt_digest lands, its answer as before (no log_head, no prompt_check)', json_encode( $a ) );
+
+	// A certificate binding no D(PROMPT): nothing refused, the answer says UNBOUND.
+	$a = $pRun( 'RQ', 'PETITION', 'Agent U', [ 'block' => 'u1', 'prompt_digest' => $pOther ] );
+	G::ok( isset( $a['grant'] ) && ( $a['prompt_check'] ?? '' ) === 'UNBOUND', 'LP10 against a certificate whose d_prompt is empty, a PETITION\'s digest refuses nothing; prompt_check UNBOUND', json_encode( $a ) );
+	$a = $pRun( 'RQ', 'PUSH', 'Agent U', [ 'records' => '[' . str_replace( 'RR-2', 'RQ-1', $assumption ) . ']', 'prompt_digest' => $pBound,
+		'log_head' => $pHead, 'challenge_response' => $pRight( 'RQ', 'Agent U' ) ] );
+	G::ok( array_column( $a['landed'] ?? [], 'id' ) === [ 'RQ-1' ] && ( $a['prompt_check'] ?? '' ) === 'UNBOUND' && ( $a['log_head'] ?? '' ) === $pHead,
+		'LP11 and its PUSH lands, prompt_check UNBOUND, log_head echoed', json_encode( $a ) );
+	$a = $pRun( 'RQ', 'RELEASE', 'Agent U', [] );
+	G::ok( isset( $a['released'] ) && !array_key_exists( 'prompt_check', $a ), 'LP12 RELEASE compares no D(PROMPT) and answers no prompt_check', json_encode( $a ) );
+
+	// A ticket written another way (Custos:Ticket): the job reads the digests' form again.
+	foreach ( [ 'log_head' => 'LP13', 'prompt_digest' => 'LP14' ] as $k => $n ) {
+		$before = $lSnap();
+		$t = $pTickets->create( 'PUSH', 'Agent P', 'RP', json_encode( [ 'prefix' => 'RP', 'records' => '[' . str_replace( 'RR-2', 'RP-3', $assumption ) . ']',
+			$k => strtoupper( $pBound ) ] ) );
+		@unlink( $cLog );
+		$a = $pLanding->run( $t );
+		$pAsked = is_file( $cLog ) ? (string)file_get_contents( $cLog ) : '';
+		// A REQUEST refusal is GA1's (a 400): no admission asked, stepped SHAPE at the job's end as every shape refusal is.
+		G::ok( ( $a['refused'] ?? '' ) === 'REQUEST' && str_contains( (string)( $a['detail'] ?? '' ), $k ) && !str_contains( $pAsked, 'governor admit' )
+			&& !str_contains( $pAsked, 'governor seat_cost' ) && $lSnap() === $before,
+			"$n a ticket whose $k is not 64 lowercase hexadecimal is refused REQUEST by the job, before admission, nothing written", json_encode( [ $a, $pAsked ] ) );
+	}
+
+	// ---- LM: the refused-PROMPT mark, per certificate, until Custos:Certify writes the certificate again -----
+	// LP's landing job, Calculator and stores; Agent M and Agent N certified with LP's D(PROMPT), UWCs RM and RN seeded
+	// as LP's. A PROMPT refusal under M sets M's mark; every op under M is then refused PROMPT (PROMPT_MARKED),
+	// whatever it presents, until put() (Custos:Certify's write) clears it; N is never touched.
+	echo "LM: the refused-PROMPT mark\n";
+	foreach ( [ 'RM', 'RN' ] as $px ) {
+		$seed = new PageWriter( $lStore, $pt );
+		$seed->begin( $px, 'seed' );
+		$seed->put( $pt->draft( $px ), Blocks::render( 'draft', $lCanon ) . "\n" );
+		foreach ( PageTitles::ZONES as $zone ) {
+			$seed->put( $pt->researchAssembly( $px, $zone ), Blocks::render( 'assembly', $lCanon ) . "\n" );
+		}
+		$seed->put( $pt->registerVolume( $px, 1 ), PageTexts::register( $px, 1, '[]' ) );
+		$seed->put( $pt->lock( $px ), PageTexts::lock( $px, null, null, null, null ) );
+		$seed->put( $pt->index( $px ), PageTexts::badge( $px, [ 'last_push' => null, 'last_release' => null,
+			'calculator_version' => $lVersion, 'calculator_digest' => $lDigest, 'record_count' => 0, 'research_assembly' => $lRaDigest ], false, 1 ) );
+		$seed->commit();
+	}
+	foreach ( [ 'Agent M', 'Agent N' ] as $agent ) {
+		$pCerts->put( [ 'agent' => $agent, 'sponsor' => 'Sponsor ' . substr( $agent, 6 ), 'd_is' => str_repeat( 'd', 64 ), 'd_prompt' => $pBound,
+			'family' => 'test family', 'model' => 'test model', 'state' => CertificateStore::ACTIVE ] );
+	}
+	$mMarked = [ 'refused' => 'PROMPT', 'detail' => Landing::PROMPT_MARKED, 'recertify' => true ];
+	$mCertsAt = (string)file_get_contents( "$scratch/p-certs.json" );
+
+	// The refusal sets the mark, stored beside the certificate, the certificate's row unchanged.
+	$a = $pRun( 'RM', 'PETITION', 'Agent M', [ 'block' => 'm1', 'prompt_digest' => $pOther ] );
+	$mRow = $pCerts->marks()['Agent M'] ?? null;
+	G::ok( $a === $pRefusal && $pCerts->promptMarked( 'Agent M' ) && is_array( $mRow ) && $mRow['state'] === CertificateStore::MARK_STANDING
+		&& is_int( $mRow['marked'] ) && $mRow['marked'] > 0 && $mRow['cleared'] === 0 && (string)file_get_contents( "$scratch/p-certs.json" ) === $mCertsAt,
+		'LM1 a PROMPT refusal under certificate M sets M\'s refused-PROMPT mark (STANDING, its time), the certificate\'s row unchanged',
+		json_encode( [ $a, $mRow ] ) );
+
+	// While it stands: every op under M refused PROMPT with the fixed detail, M's own D(PROMPT) included, nothing asked or written.
+	$mCases = [
+		'LM2 a PETITION presenting M\'s own D(PROMPT)' => [ 'PETITION', [ 'block' => 'm1', 'prompt_digest' => $pBound ] ],
+		'LM3 a PETITION presenting no D(PROMPT)' => [ 'PETITION', [ 'block' => 'm1' ] ],
+		'LM4 a PUSH presenting M\'s own D(PROMPT)' => [ 'PUSH', [ 'records' => '[' . str_replace( 'RR-2', 'RM-1', $assumption ) . ']', 'prompt_digest' => $pBound,
+			'log_head' => $pHead, 'challenge_response' => str_repeat( '0', 64 ) ] ],
+		'LM5 a RELEASE' => [ 'RELEASE', [ 'block' => 'm1' ] ],
+		'LM6 a HEARTBEAT' => [ 'HEARTBEAT', [ 'block' => 'm1' ] ],
+		'LM7 a STRUCTURE_TEST' => [ 'STRUCTURE_TEST', [] ],
+	];
+	$mTickets = [];
+	foreach ( $mCases as $what => [ $op, $params ] ) {
+		$before = $lSnap();
+		@unlink( $cLog );
+		$q = $pOps->run( $op, 'RM', 'Agent M', $params )['ticket'];
+		$mTickets[] = $q;
+		$a = $pLanding->run( $q );
+		$asked = is_file( $cLog ) ? (string)file_get_contents( $cLog ) : '';
+		G::ok( $a === $mMarked && !$cGoverned() && $lSnap() === $before && $pSeatsOf( 'Agent M' ) === [ [ 0, 0 ], [ 0, 0 ] ]
+			&& $pNonces->peek( 'Agent M', 'RM' ) === null && $pMeter->traffic( 'Agent M' ) === null
+			&& json_decode( (string)( $pTickets->get( $q )['answer'] ?? '' ), true ) === $mMarked,
+			"$what under M while its mark stands is refused PROMPT, detail PROMPT_MARKED, recertify; the governor not asked, nothing charged, written, issued or stepped",
+			json_encode( [ $a, $asked ] ) );
+	}
+
+	// Another certificate is unaffected.
+	$a = $pRun( 'RN', 'PETITION', 'Agent N', [ 'block' => 'n1', 'prompt_digest' => $pBound ] );
+	G::ok( isset( $a['grant'] ) && ( $a['prompt_check'] ?? '' ) === 'MATCHED' && !$pCerts->promptMarked( 'Agent N' ),
+		'LM8 certificate N, beside M\'s standing mark, presenting its D(PROMPT) is granted, prompt_check MATCHED, and carries no mark', json_encode( $a ) );
+
+	// Stored: a new process reads the mark from the store.
+	$mProbe = sprintf( 'require %s; echo ( new \\Custos\\Tests\\FileCertificateStore( %s ) )->promptMarked( "Agent M" ) ? "STANDING" : "NONE";',
+		var_export( "$root/custos/tests/bootstrap.php", true ), var_export( "$scratch/p-certs.json", true ) );
+	$mOut = [];
+	exec( escapeshellarg( PHP_BINARY ) . ' -r ' . escapeshellarg( $mProbe ) . ' 2>&1', $mOut, $mCode );
+	G::ok( $mCode === 0 && implode( "\n", $mOut ) === 'STANDING', 'LM9 the mark is stored: a new process reads it standing', implode( "\n", $mOut ) );
+
+	// No API request clears it: the web request's ops (POLL of M's tickets) leave it standing, and only put() clears it.
+	foreach ( $mTickets as $q ) {
+		$pOps->run( 'POLL', null, 'Agent M', [ 'ticket' => (string)$q ] );
+	}
+	$mWeb = '';
+	foreach ( [ 'ApiPma.php', 'Ops.php', 'PermissionHook.php', 'Landing.php', 'LandJob.php', 'StructureTestJob.php' ] as $f ) {
+		$mWeb .= (string)file_get_contents( "$root/custos/includes/$f" );
+	}
+	$mPuts = [];
+	foreach ( array_merge( glob( "$root/custos/includes/*.php" ) ?: [], glob( "$root/custos/maintenance/*.php" ) ?: [] ) as $f ) {
+		if ( str_contains( (string)file_get_contents( $f ), 'DbCertificateStore()' ) && preg_match( '/DbCertificateStore\(\s*\)\s*\)->put\(/', (string)file_get_contents( $f ) ) ) {
+			$mPuts[] = basename( $f );
+		}
+	}
+	G::ok( $pCerts->promptMarked( 'Agent M' ) && !str_contains( $mWeb, 'certs->put(' )
+		&& !preg_match( '/CertificateStore/', (string)file_get_contents( "$root/custos/includes/ApiPma.php" ) . (string)file_get_contents( "$root/custos/includes/Ops.php" ) )
+		&& $mPuts === [ 'Certify.php' ],
+		'LM10 no API request clears the mark: after POLL of M\'s tickets it stands; the web request (ApiPma, Ops) reads no certificate store, the jobs never put() one, and Custos:Certify is the one put()',
+		json_encode( $mPuts ) );
+
+	// Custos:Certify's write of M (the store's put()) clears the mark: a matching D(PROMPT) answers MATCHED again.
+	$t0 = time();
+	$pCerts->put( (array)$pCerts->get( 'Agent M' ) );
+	$mRow = $pCerts->marks()['Agent M'] ?? [];
+	$a = $pRun( 'RM', 'PETITION', 'Agent M', [ 'block' => 'm1', 'prompt_digest' => $pBound ] );
+	G::ok( !$pCerts->promptMarked( 'Agent M' ) && ( $mRow['state'] ?? '' ) === CertificateStore::MARK_CLEARED && ( $mRow['cleared'] ?? 0 ) >= $t0
+		&& isset( $a['grant'] ) && ( $a['prompt_check'] ?? '' ) === 'MATCHED',
+		'LM11 after Custos:Certify writes certificate M again the mark is CLEARED (its row kept, the time written) and a matching D(PROMPT) is granted, prompt_check MATCHED',
+		json_encode( [ $mRow, $a ] ) );
+
+	// A mark standing keeps its first time; a later refusal under the new certificate marks it again.
+	$a = $pRun( 'RM', 'PUSH', 'Agent M', [ 'records' => '[' . str_replace( 'RR-2', 'RM-1', $assumption ) . ']', 'prompt_digest' => $pOther,
+		'log_head' => $pHead, 'challenge_response' => str_repeat( '0', 64 ) ] );
+	$mFirst = $pCerts->marks()['Agent M']['marked'] ?? null;
+	$pCerts->markPrompt( 'Agent M', (int)$mFirst + 1000 );
+	G::ok( $a === $pRefusal && $pCerts->promptMarked( 'Agent M' ) && ( $pCerts->marks()['Agent M']['marked'] ?? null ) === $mFirst,
+		'LM12 a PUSH refused PROMPT after the re-certification sets the mark again; a mark standing keeps its first time', json_encode( [ $a, $pCerts->marks() ] ) );
+
+	// A put() whose certificate write fails leaves the mark standing: the file store writes the row before the clear.
+	$fFile = "$scratch/lm-fail-certs.json";
+	$fCerts = new FileCertificateStore( $fFile );
+	$fCerts->markPrompt( 'Agent F', 100 );
+	@mkdir( $fFile );
+	$fThrown = '';
+	try {
+		$fCerts->put( [ 'agent' => 'Agent F', 'sponsor' => 'Sponsor F', 'd_is' => str_repeat( 'd', 64 ), 'd_prompt' => $pBound,
+			'family' => 'test family', 'model' => 'test model', 'state' => CertificateStore::ACTIVE ] );
+	} catch ( RuntimeException $e ) {
+		$fThrown = $e->getMessage();
+	}
+	G::ok( str_contains( $fThrown, 'was not written' ) && $fCerts->promptMarked( 'Agent F' )
+		&& ( $fCerts->marks()['Agent F'] ?? null ) === [ 'state' => CertificateStore::MARK_STANDING, 'marked' => 100, 'cleared' => 0 ],
+		'LM13 a put() whose certificate write fails throws and leaves the agent\'s mark STANDING, its time kept (the file store)',
+		json_encode( [ $fThrown, $fCerts->marks() ] ) );
+
+	// DbCertificateStore over a recording database: the clear and the row's write in one atomic section,
+	// cancelled when the row's write fails (so the database rolls the clear back), the failure rethrown.
+	$dbProbe = "$scratch/lm-db-probe.php";
+	file_put_contents( $dbProbe, sprintf( <<<'PHP'
+<?php
+namespace Wikimedia\Rdbms {
+	interface ILoadBalancer {
+		public const DB_PRIMARY = -2;
+		public const CONN_TRX_AUTOCOMMIT = 4;
+	}
+	interface IDatabase {
+		public const ATOMIC_CANCELABLE = 'cancelable';
+	}
+}
+namespace {
+	require %s;
+	final class LmRec {
+		public static array $log = [];
+		public static ?string $failOn = null;
+	}
+	final class LmQb {
+		public function __construct( private string $kind ) {
+		}
+		public function __call( string $n, array $a ): self {
+			return $this;
+		}
+		public function execute(): void {
+			LmRec::$log[] = $this->kind;
+			if ( LmRec::$failOn === $this->kind ) {
+				throw new RuntimeException( 'the row write failed (the test\'s fault)' );
+			}
+		}
+	}
+	final class LmDb implements Wikimedia\Rdbms\IDatabase {
+		public function startAtomic( string $f, $c = null ): void {
+			LmRec::$log[] = "start $c";
+		}
+		public function endAtomic( string $f ): void {
+			LmRec::$log[] = 'end';
+		}
+		public function cancelAtomic( string $f ): void {
+			LmRec::$log[] = 'cancel';
+		}
+		public function newUpdateQueryBuilder(): LmQb {
+			return new LmQb( 'update' );
+		}
+		public function newReplaceQueryBuilder(): LmQb {
+			return new LmQb( 'replace' );
+		}
+	}
+	final class LmLb implements Wikimedia\Rdbms\ILoadBalancer {
+		public function getConnection( ...$a ): LmDb {
+			return new LmDb();
+		}
+	}
+	$s = new Custos\DbCertificateStore( new LmLb() );
+	$row = [ 'agent' => 'Agent D', 'sponsor' => 'Sponsor D', 'd_is' => str_repeat( 'd', 64 ), 'd_prompt' => str_repeat( 'e', 64 ),
+		'family' => 'f', 'model' => 'm', 'state' => 'ACTIVE' ];
+	$s->put( $row );
+	$ok = LmRec::$log;
+	LmRec::$log = [];
+	LmRec::$failOn = 'replace';
+	$thrown = 'none';
+	try {
+		$s->put( $row );
+	} catch ( RuntimeException $e ) {
+		$thrown = $e->getMessage();
+	}
+	echo json_encode( [ $ok, LmRec::$log, $thrown ] );
+}
+PHP, var_export( "$root/custos/tests/bootstrap.php", true ) ) );
+	$dbOut = [];
+	exec( escapeshellarg( PHP_BINARY ) . ' ' . escapeshellarg( $dbProbe ) . ' 2>&1', $dbOut, $dbCode );
+	G::ok( $dbCode === 0 && json_decode( implode( "\n", $dbOut ), true ) === [ [ 'start cancelable', 'update', 'replace', 'end' ],
+		[ 'start cancelable', 'update', 'replace', 'cancel' ], 'the row write failed (the test\'s fault)' ],
+		'LM14 DbCertificateStore::put clears the mark and writes the row in one cancelable atomic section; a row write that fails cancels it (the clear rolled back) and is rethrown',
+		implode( "\n", $dbOut ) );
+
+	// Admission reads the mark before the certificate: a store whose first read is followed by Custos:Certify's write
+	// of M (a new D(PROMPT), the mark cleared) still refuses a request presenting the old row's D(PROMPT).
+	$mRace = new class( $pCerts ) implements CertificateStore {
+		public $hook = null;
+		public array $reads = [];
+
+		public function __construct( private CertificateStore $inner ) {
+		}
+
+		private function fire(): void {
+			if ( $this->hook !== null ) {
+				$h = $this->hook;
+				$this->hook = null;
+				$h( $this->inner );
+			}
+		}
+
+		public function get( string $agent ): ?array {
+			$r = $this->inner->get( $agent );
+			$this->reads[] = 'certificate';
+			$this->fire();
+			return $r;
+		}
+
+		public function agentsOf( string $sponsor ): array {
+			return $this->inner->agentsOf( $sponsor );
+		}
+
+		public function put( array $row ): void {
+			$this->inner->put( $row );
+		}
+
+		public function promptMarked( string $agent ): bool {
+			$r = $this->inner->promptMarked( $agent );
+			$this->reads[] = 'mark';
+			$this->fire();
+			return $r;
+		}
+
+		public function markPrompt( string $agent, int $at ): void {
+			$this->inner->markPrompt( $agent, $at );
+		}
+	};
+	$mRaceLanding = new Landing( $cCalc, $lStore, $pt, $pTickets, $pSeats, $mRace, $lConf, static function () use ( &$pNow ): int {
+		return $pNow += 60;
+	}, static fn (): array => [ 0, 1 ], nonces: $pNonces, meter: $pMeter );
+	$mRace->hook = static function ( CertificateStore $inner ) use ( $pOther ): void {
+		$inner->put( array_merge( (array)$inner->get( 'Agent M' ), [ 'd_prompt' => $pOther ] ) );
+	};
+	$mWasMarked = $pCerts->promptMarked( 'Agent M' );
+	$before = $lSnap();
+	@unlink( $cLog );
+	$a = $mRaceLanding->run( $pOps->run( 'PETITION', 'RM', 'Agent M', [ 'block' => 'm3', 'prompt_digest' => $pBound ] )['ticket'] );
+	G::ok( $mWasMarked && $a === $mMarked && $mRace->reads === [ 'mark', 'certificate' ] && !$cGoverned() && $lSnap() === $before
+		&& ( $pCerts->get( 'Agent M' )['d_prompt'] ?? '' ) === $pOther && !$pCerts->promptMarked( 'Agent M' ),
+		'LM15 the mark read STANDING, then certificate M written again (a new D(PROMPT), the mark cleared) before the certificate\'s read: the request presenting the old row\'s D(PROMPT) is refused PROMPT_MARKED, nothing asked or written',
+		json_encode( [ $a, $mRace->reads ] ) );
 }
 
 // ---- G: the governor's meter, the budget roll-up, the PRE-GATE, STATUS, INQUIRE, HEARTBEAT --------
@@ -3805,6 +4205,14 @@ if ( !isset( $lCalc ) ) {
 		}
 
 		public function put( array $row ): void {
+			throw new LogicException( 'the section\'s certificates are fixed' );
+		}
+
+		public function promptMarked( string $agent ): bool {
+			return false;
+		}
+
+		public function markPrompt( string $agent, int $at ): void {
 			throw new LogicException( 'the section\'s certificates are fixed' );
 		}
 	};
@@ -4052,7 +4460,7 @@ if ( !isset( $lCalc ) ) {
 		'G73 the record\'s compare and set: written only on the text read, a first record only where none is; a second write on one read never lands' );
 }
 
-// ---- I: the identity values at PETITION and PUSH, shape-checked and recorded, nothing enforced -----
+// ---- I: the identity values at PETITION and PUSH and a PUSH's log_head, shape-checked and recorded -----
 // prompt_digest (PETITION, PUSH), stated_model (PETITION), relayed_model (PETITION, PUSH): each optional;
 // a presented value rides on the ticket's request as received; no comparison or enforcement here.
 
@@ -4125,6 +4533,32 @@ G::ok( ( $its->get( $n1['ticket'] )['request'] ?? '' ) === '{"block":"b1","prefi
 $api = (string)file_get_contents( __DIR__ . '/../includes/ApiPma.php' );
 G::ok( strpos( $api, "'prompt_digest' =>" ) !== false && strpos( $api, "'stated_model' =>" ) !== false && strpos( $api, "'relayed_model' =>" ) !== false,
 	'I24 ApiPma declares the three parameters' );
+
+// log_head (PUSH only, optional): the session log's head, 64 lowercase hexadecimal, shape-checked as prompt_digest.
+$iHead = str_repeat( 'c3', 32 );
+$b = $iops->push( 'QED', 'Agent A', $iPush + [ 'log_head' => $iHead ] );
+$req = json_decode( (string)( $its->get( $b['ticket'] )['request'] ?? '' ), true );
+G::ok( is_array( $req ) && ( $req['log_head'] ?? '' ) === $iHead && $req['records'] === '[{"a":1}]' && array_keys( $b ) === [ 'ticket', 'state', 'poll_after' ],
+	'I25 PUSH takes log_head and records it unchanged on the ticket; the 202 keeps its form' );
+$b = $iops->push( 'QED', 'Agent A', $iPush + [ 'log_head' => $iHead, 'prompt_digest' => $iDigest ] );
+$req = json_decode( (string)( $its->get( $b['ticket'] )['request'] ?? '' ), true );
+G::ok( is_array( $req ) && $req['log_head'] === $iHead && $req['prompt_digest'] === $iDigest, 'I26 PUSH takes log_head beside prompt_digest, both recorded' );
+$before = count( $ienq );
+foreach ( [
+	'I27 log_head with an upper-case letter' => strtoupper( $iHead ),
+	'I28 log_head of 63 characters' => substr( $iHead, 1 ),
+	'I29 log_head of 65 characters' => $iHead . '0',
+	'I30 log_head with a non-hexadecimal character' => substr( $iHead, 1 ) . 'z',
+	'I31 log_head empty' => '',
+	'I32 log_head sent as an array' => [ $iHead ],
+] as $what => $v ) {
+	G::ok( o_code( static fn () => $iops->push( 'QED', 'Agent A', $iPush + [ 'log_head' => $v ] ) ) === 'custos-shape', "$what is refused at PUSH (custos-shape)" );
+}
+G::ok( o_code( static fn () => $iops->petition( 'QED', 'Agent A', [ 'log_head' => $iHead ] ) ) === 'custos-unknown-param'
+	&& o_code( static fn () => $iops->release( 'QED', 'Agent A', [ 'log_head' => $iHead ] ) ) === 'custos-unknown-param',
+	'I33 log_head on PETITION or RELEASE is refused (custos-unknown-param)' );
+G::ok( count( $ienq ) === $before, 'I34 no log_head refusal wrote a ticket or enqueued a job' );
+G::ok( strpos( $api, "'log_head' =>" ) !== false, 'I35 ApiPma declares log_head' );
 
 // ---- JB: the batch jobs' frame over FileJobRunStore and a scripted governor --------------------
 
@@ -4762,14 +5196,8 @@ if ( is_file( $built ) && is_executable( $built ) ) {
 	$r = $c->call( 'canonical', 'canonical_json', '{"value":1' );
 	G::ok( $r['exit'] === 1 && $r['refused'] === 'UNEXPECTED_END', 'R7 pcalc\'s refusal of a request is read', json_encode( $r ) );
 	echo "calculator: the built pcalc, version $version, digest ", Calculator::digestOf( $built ), "\n";
-	// Version 1's landing gates a1, a2, b1, b1-fault, b1-range, b1-inc4 and b1-repro replayed as scenarios, in their own process.
-	$sOut = [];
-	$sExit = 1;
-	exec( escapeshellarg( PHP_BINARY ) . ' ' . escapeshellarg( __DIR__ . '/scenarios.php' ) . ' 2>&1', $sOut, $sExit );
-	$sLine = (string)( end( $sOut ) ?: '' );
-	G::ok( $sExit === 0 && str_starts_with( $sLine, 'scenarios: ALL PASS ' ), "R8 version 1's landing gates a1, a2, b1, b1-fault, b1-range, b1-inc4 and b1-repro replayed as scenarios: $sLine",
-		implode( "\n", array_slice( $sOut, -12 ) ) );
-	echo "$sLine\n";
+	// R8 is retired here: version 1's landing gates replayed as scenarios run on their own
+	// (php custos/tests/scenarios.php).
 } else {
 	echo "calculator: no built pcalc in this clone (.lake/build/bin/pcalc); R not run\n";
 }

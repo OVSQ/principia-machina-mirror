@@ -18,6 +18,11 @@ A HOLD and a RELEASE end with their digests, SHA-256 (`Principia.Sha256`; decisi
 option 1), compared with v1's as every other field is; a RELEASE compares its HOLD's digest
 with the digest of the HOLD's fields as v1 did. An owed case would be listed with its reason
 in `vectors/hold_corpus.owed.json` (the list must be exactly the owed cases); none is.
+
+The runner also reads `vectors/assignments.json`, the cases of the assignment block's reader
+(`Principia.Hold.Assignments`) through the Calculator's function `hold assignments`. A case
+is `{"id", "note", "input", "expect"}`, `expect` the canonical JSON of the answer, or
+`{"id", "note", "input", "refusal"}`, `refusal` the word of the Calculator's refusal.
 -/
 
 namespace Tests.Hold
@@ -213,6 +218,36 @@ def runCase (fn : String) (input : Json) (e : String) (want : Except String (Lis
         (← a "tier"))
   | other => throw (IO.userError s!"unknown function {other}")
 
+/-- The cases of the assignment block's reader: passes and failures. -/
+def runAssignments : IO (Nat × Nat) := do
+  let json ← IO.ofExcept (Json.parse (← IO.FS.readFile "vectors/assignments.json"))
+  let cases ← IO.ofExcept json.getArr?
+  let mut pass := 0
+  let mut fail := 0
+  for c in cases do
+    let id ← IO.ofExcept (c.getObjValAs? String "id")
+    let input ← IO.ofExcept (c.getObjVal? "input")
+    let request ← match Canonical.readString input.compress with
+      | .ok v => pure v
+      | .error _ => throw (IO.userError s!"assignments {id}: the input does not read")
+    let got := Principia.Calculator.respondTo "hold" "assignments" request
+    let gotText := match got with
+      | .ok v => v.canonicalJson.getD "(no canonical text)"
+      | .error r => s!"refused {r.code.word}"
+    let want ← match c.getObjValAs? String "expect", c.getObjValAs? String "refusal" with
+      | .ok e, .error _ => pure e
+      | .error _, .ok w => pure s!"refused {w}"
+      | _, _ => throw (IO.userError s!"assignments {id}: neither expect nor refusal")
+    if gotText == want then pass := pass + 1
+    else
+      IO.eprintln s!"FAIL hold assignments {id}:\n  expected {want}\n  got {gotText}"
+      fail := fail + 1
+  if pass + fail == 0 then
+    IO.eprintln "FAIL hold assignments: the corpus checked nothing"
+    fail := fail + 1
+  IO.println s!"hold: assignments.json {pass + fail} cases, {fail} failing"
+  return (pass, fail)
+
 /-- Run the corpus: passes and failures; owed cases are counted, printed, and checked
 against the owed list. -/
 def runHold : IO (Nat × Nat) := do
@@ -249,6 +284,7 @@ def runHold : IO (Nat × Nat) := do
       fail := fail + 1
   let per (f : String) := (owed.filter (·.2.1 == f)).length
   IO.println s!"hold: {owed.length} owed (hold_record {per "hold_record"}, release_record {per "release_record"}); every HOLD and RELEASE digest SHA-256, compared with v1's"
-  return (pass, fail)
+  let (ap, af) ← runAssignments
+  return (pass + ap, fail + af)
 
 end Tests.Hold

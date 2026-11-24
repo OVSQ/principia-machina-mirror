@@ -24,11 +24,15 @@ lowercase hexadecimal characters.
 * `digest_instruction_set {"version": v, "specification": d, "members": [[title, h], ...]}`:
   D(IS) (v1 `d_is`, its `d_tps` named by what it digests); `preimage_instruction_set` answers
   its preimage.
+* `instruction_set_members {"titles": [t, ...], "pages": [[title, wikitext], ...]}`: D(IS)'s
+  members, `[[title, h], ...]` ordered by title, each `h` formed as `specification_pages`
+  forms a kept page's (not in v1; its refusals are v1's words).
 
-The last six answer as v1 answered, `["OK", answer]` or `["REFUSED", reason]`, and take any
-JSON value where v1 took one, refusing as v1 refused for its type
-(`Principia.Digest.Specification`). Their family bound: at most 1000 pages and 1000 members,
-each a list v1 checks for repeats pair by pair.
+The last seven answer `["OK", answer]` or `["REFUSED", reason]`: the six of v1 as v1
+answered, taking any JSON value where v1 took one and refusing as v1 refused for its type,
+and `instruction_set_members`, not in v1, in the same form with v1's reason words
+(`Principia.Digest.Specification`). Their family bound: at most 1000 pages, 1000 members and
+1000 titles, each a list checked for repeats pair by pair.
 -/
 
 namespace Principia.Calculator.Digest
@@ -96,6 +100,10 @@ def calls : Family := [
   ("digest_specification", fun v => do
     let (version, pages) ← argument2 "version" "pages" v
     pure (textAnswer (Specification.digestSpecificationOf version (← bounded "pages" pages)))),
+  ("instruction_set_members", fun v => do
+    let (titles, pages) ← argument2 "titles" "pages" v
+    pure (Specification.answer Specification.pairsValue
+      (Specification.memberPagesOf (← bounded "titles" titles) (← bounded "pages" pages)))),
   ("pre_texts", fun v => do
     let w ← argument1 "wikitext" v
     pure (Specification.answer (fun bs => .arr (bs.map .str)) (Specification.preTextsOf w))),

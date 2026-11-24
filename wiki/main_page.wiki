@@ -28,7 +28,7 @@
       <div id="mp-lean-edition" style="padding: 10px;">
 '''Lean''' is a proof assistant and a programming language. A person writes definitions, statements and proofs in Lean's formal language, and Lean checks each proof against the rules of its logic before it accepts the statement as a theorem. A small part of the program, the Lean kernel, makes that check; everything else only proposes.
 
-A 71-page reading edition: what Lean checks and how, the type theory behind it, how the program works, where it came from and what it is used for, written for a reader with no logic or programming and for one who wants the rules, with a plain-language counterpart for every technical page.
+A 72-page reading edition: what Lean checks and how, the type theory behind it, how the program works, where it came from and what it is used for, written for a reader with no logic or programming and for one who wants the rules, with a plain-language counterpart for every technical page.
 
 * [[Lean theorem prover/Explainers/What a proof assistant does|What a proof assistant does]] — plain language, the place to start
 * [[Lean theorem prover/Foundations/Terms, types and judgments|Terms, types and judgments]] — the rules Lean checks against

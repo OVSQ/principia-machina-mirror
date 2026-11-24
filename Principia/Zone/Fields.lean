@@ -289,4 +289,105 @@ def dupes (names : List String) : List String :=
 /-- The NAME-like field of each entry that holds a string. -/
 def names (es : List Entry) (f : String := "NAME") : List String := es.filterMap (getStr? · f)
 
+/-! ## Proved properties of the zone values, the fields and the verdict -/
+
+mutual
+/-- Every object key of a value, at any depth, is among its strings. -/
+theorem Value.keys_subset_strings : ∀ (v : Value) {s : String}, s ∈ v.keys → s ∈ v.strings
+  | .null, _, h => by simp [Value.keys] at h
+  | .bool _, _, h => by simp [Value.keys] at h
+  | .int _, _, h => by simp [Value.keys] at h
+  | .real, _, h => by simp [Value.keys] at h
+  | .str _, _, h => by simp [Value.keys] at h
+  | .arr xs, _, h => by
+      simp only [Value.keys, Value.strings] at h ⊢
+      exact Value.keysOfList_subset_stringsOfList xs h
+  | .obj kvs, _, h => by
+      simp only [Value.keys, Value.strings] at h ⊢
+      exact Value.keysOfObj_subset_stringsOfObj kvs h
+/-- Every object key in a list of values, at any depth, is among the list's strings. -/
+theorem Value.keysOfList_subset_stringsOfList :
+    ∀ (xs : List Value) {s : String}, s ∈ Value.keysOfList xs → s ∈ Value.stringsOfList xs
+  | [], _, h => by simp [Value.keysOfList] at h
+  | x :: xs, _, h => by
+      simp only [Value.keysOfList, Value.stringsOfList, List.mem_append] at h ⊢
+      rcases h with h | h
+      · exact .inl (Value.keys_subset_strings x h)
+      · exact .inr (Value.keysOfList_subset_stringsOfList xs h)
+/-- Every key of an object, at any depth, is among the object's keys and strings. -/
+theorem Value.keysOfObj_subset_stringsOfObj :
+    ∀ (kvs : List (String × Value)) {s : String},
+      s ∈ Value.keysOfObj kvs → s ∈ Value.stringsOfObj kvs
+  | [], _, h => by simp [Value.keysOfObj] at h
+  | (k, v) :: kvs, _, h => by
+      simp only [Value.keysOfObj, Value.stringsOfObj, List.mem_cons, List.mem_append] at h ⊢
+      rcases h with (h | h) | h
+      · exact .inl (.inl h)
+      · exact .inl (.inr (Value.keys_subset_strings v h))
+      · exact .inr (Value.keysOfObj_subset_stringsOfObj kvs h)
+end
+
+mutual
+/-- Every string field of a value, at any depth, has its key and its string among the
+value's strings. -/
+theorem Value.fieldStrings_subset_strings :
+    ∀ (v : Value) {k s : String}, (k, s) ∈ v.fieldStrings → k ∈ v.strings ∧ s ∈ v.strings
+  | .null, _, _, h => by simp [Value.fieldStrings] at h
+  | .bool _, _, _, h => by simp [Value.fieldStrings] at h
+  | .int _, _, _, h => by simp [Value.fieldStrings] at h
+  | .real, _, _, h => by simp [Value.fieldStrings] at h
+  | .str _, _, _, h => by simp [Value.fieldStrings] at h
+  | .arr xs, _, _, h => by
+      simp only [Value.fieldStrings, Value.strings] at h ⊢
+      exact Value.fieldStringsOfList_subset_stringsOfList xs h
+  | .obj kvs, _, _, h => by
+      simp only [Value.fieldStrings, Value.strings] at h ⊢
+      exact Value.fieldStringsOfObj_subset_stringsOfObj kvs h
+/-- Every string field in a list of values, at any depth, has its key and its string among
+the list's strings. -/
+theorem Value.fieldStringsOfList_subset_stringsOfList :
+    ∀ (xs : List Value) {k s : String}, (k, s) ∈ Value.fieldStringsOfList xs →
+      k ∈ Value.stringsOfList xs ∧ s ∈ Value.stringsOfList xs
+  | [], _, _, h => by simp [Value.fieldStringsOfList] at h
+  | x :: xs, _, _, h => by
+      simp only [Value.fieldStringsOfList, Value.stringsOfList, List.mem_append] at h ⊢
+      rcases h with h | h
+      · have ⟨hk, hs⟩ := Value.fieldStrings_subset_strings x h
+        exact ⟨.inl hk, .inl hs⟩
+      · have ⟨hk, hs⟩ := Value.fieldStringsOfList_subset_stringsOfList xs h
+        exact ⟨.inr hk, .inr hs⟩
+/-- Every string field of an object, at any depth, has its key and its string among the
+object's keys and strings. -/
+theorem Value.fieldStringsOfObj_subset_stringsOfObj :
+    ∀ (kvs : List (String × Value)) {k s : String}, (k, s) ∈ Value.fieldStringsOfObj kvs →
+      k ∈ Value.stringsOfObj kvs ∧ s ∈ Value.stringsOfObj kvs
+  | [], _, _, h => by simp [Value.fieldStringsOfObj] at h
+  | (k', v) :: kvs, _, _, h => by
+      simp only [Value.fieldStringsOfObj, Value.stringsOfObj, List.mem_cons,
+        List.mem_append] at h ⊢
+      rcases h with (h | h) | h
+      · revert h
+        cases v <;> simp [Value.strings] <;> intro hk hs <;> simp [hk, hs]
+      · have ⟨hk, hs⟩ := Value.fieldStrings_subset_strings v h
+        exact ⟨.inl (.inr hk), .inl (.inr hs)⟩
+      · have ⟨hk, hs⟩ := Value.fieldStringsOfObj_subset_stringsOfObj kvs h
+        exact ⟨.inr hk, .inr hs⟩
+end
+
+/-- A field is present exactly when it is found. -/
+theorem has_iff (e : Entry) (f : String) : has e f = true ↔ (get? e f).isSome := Iff.rfl
+
+/-- A field holding a string gives that string. -/
+theorem getStr?_of_get? {e : Entry} {f s : String} (h : get? e f = some (.str s)) :
+    getStr? e f = some s := by
+  unfold getStr?
+  rw [h]
+
+/-- A judged verdict passes exactly when it has no problem. -/
+theorem Verdict.passes_checked (ps : List String) : (Verdict.checked ps).passes = ps.isEmpty :=
+  rfl
+
+/-- An owed verdict never passes. -/
+theorem Verdict.passes_owed (o : Owed) : (Verdict.owed o).passes = false := rfl
+
 end Principia.Zone

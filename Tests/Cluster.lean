@@ -245,30 +245,139 @@ def mutationChecks : List (String × Bool) :=
    ("ids holding | print alike", lineText ambA == lineText ambB),
    ("an id holding | is refused", !lineMatches (lineText ambA) ambA && !lineMatches (lineText ambA) ambB)]
 
-/-! ## The run -/
+/-! ## `vectors/cluster_squares.json`: the rule over squared SEs
 
-/-- Run the corpus: the counts of cases passed and failed, each failure reported
-on stderr with what disagreed. The mutation checks run first; one that fails is a
-failure of the runner and counts as a failed case. -/
-def runCluster : IO (Nat × Nat) := do
+Each case is a cluster case whose rows give each SE as its square, `[model, config, score,
+se2]`, run through `clusterSq` and compared with `renderSq`'s text whole (or, refused, with
+`ERROR:<word>`). The corpus holds every cluster case of `cluster_corpus.json` again with each
+SE given as its square, so the two rules' texts are compared on them, and cases of its own
+whose `se2` is not a rational square, each worked by hand in its `note`. -/
+
+/-- A row `[model, config, score, se2]`; `none` when an id is not a string. -/
+def rowSq? (j : Json) : Except String (Option RowSq) := do
+  let arr ← j.getArr?
+  unless arr.size == 4 do defect s!"a row of {arr.size} fields"
+  let some score := rat? arr[2]! | defect "a score that is not a number"
+  let some se2 := rat? arr[3]! | defect "an se2 that is not a number"
+  match arr[0]!, arr[1]! with
+  | .str m, .str c => pure (some ⟨m, c, score, se2⟩)
+  | _, _ => pure none
+
+/-- One case of `cluster_squares.json`, run through `clusterSq`. -/
+def runSquaresCase (c : Json) : Except String (Except ClusterError ResultSq) := do
+  let p ← c.getObjVal? "params"
+  let t ← thresholds p
+  let floor ← num p "spacing_floor"
+  let rowsJ ← (← c.getObjVal? "rows").getArr?
+  let rows? ← rowsJ.toList.mapM rowSq?
+  let some rows := rows?.mapM id | return .error .ids
+  let paired? : Option (Option (List PairedSe)) :=
+    match optList c "paired" with
+    | some none => some none
+    | some (some a) => (a.toList.mapM pairedSe?).map some
+    | none => none
+  match paired? with
+  | some paired => pure (clusterSq rows t floor paired)
+  -- A malformed paired entry: the rows and thresholds are checked first, as in `cluster`.
+  | none => pure (match checkInputSq rows t floor with
+    | .error e => .error e
+    | .ok _ => .error .paired)
+
+/-- The text a case gives: `renderSq`'s, or `ERROR:<word>`. -/
+def squaresText : Except ClusterError ResultSq → String
+  | .error e => "ERROR:" ++ e.message
+  | .ok r => renderSq r
+
+/-- Run `cluster_squares.json`: the counts of cases passed and failed. A case without a
+`note` fails: each holds its working or its source. -/
+def runSquares : IO (Nat × Nat) := do
+  let json ← IO.ofExcept (Json.parse (← IO.FS.readFile "vectors/cluster_squares.json"))
+  let cases ← IO.ofExcept ((← IO.ofExcept (json.getObjVal? "cases")).getArr?)
   let mut pass := 0
   let mut fail := 0
-  for (what, ok) in mutationChecks do
-    unless ok do
-      IO.eprintln s!"FAIL cluster runner mutation check: {what}"
-      fail := fail + 1
-  let json ← IO.ofExcept (Json.parse (← IO.FS.readFile "vectors/cluster_corpus.json"))
-  let cases ← IO.ofExcept ((← IO.ofExcept (json.getObjVal? "cases")).getArr?)
   for c in cases do
     let name ← IO.ofExcept (c.getObjValAs? String "name")
     let expected ← IO.ofExcept (c.getObjValAs? String "expected")
-    let got ← IO.ofExcept (runCase c)
-    match mismatches expected got with
-    | [] => pass := pass + 1
-    | ms =>
-      IO.eprintln s!"FAIL cluster {name}: expected {repr expected}\n  {"\n  ".intercalate ms}"
+    let note := (c.getObjValAs? String "note").toOption.getD ""
+    let got := squaresText (← IO.ofExcept (runSquaresCase c))
+    if got == expected && !note.isEmpty then pass := pass + 1
+    else
+      IO.eprintln s!"FAIL cluster_squares {name}: expected {repr expected}\n  got {repr got}"
       fail := fail + 1
+  if cases.isEmpty then
+    IO.eprintln "FAIL cluster_squares: the corpus checked nothing"
+    fail := fail + 1
   return (pass, fail)
+
+/-! ## `vectors/cluster_two_roots.json`: the resolving step over the spacing's square
+
+A case `fn` `resolving` gives `spacing_sq` (`u²`), `ses2` (each SE's square) and `paired` (the
+paired SEs, as `resolving` takes them), run through `resolvingStepSq` and compared with
+`renderResolvingSq`'s text whole (or, refused, with `ERROR:<word>`); a value that is not a
+number is refused as `runResolvingCase` refuses it. A case `fn` `fixed6` gives a `Surd2`'s five
+rationals `[a, c, b, d, e]` and is compared with its `fixed6`. The corpus holds every resolving
+case of `cluster_corpus.json` again with the spacing and each SE given as squares, so the two
+steps' texts are compared on them, and cases of its own whose spacing and sds are roots, each
+worked by hand in its `note`. -/
+
+/-- One `resolving` case of `cluster_two_roots.json`, run through `resolvingStepSq`. -/
+def runTwoRootsCase (c : Json) : Except String (Except ClusterError (Option ResolvingStepSq)) := do
+  let p ← c.getObjVal? "params"
+  let t ← thresholds p
+  let some u2 := rat? (← c.getObjVal? "spacing_sq") | return .error .spacing
+  let ses2? : Option (List Rat) :=
+    match c.getObjVal? "ses2" with
+    | .ok (.arr a) => a.toList.mapM rat?
+    | _ => none
+  let some ses2 := ses2? | return .error (if u2 < 0 then .spacing else .ses)
+  let paired? : Option (Option (List Rat)) :=
+    match optList c "paired" with
+    | some none => some none
+    | some (some a) => (a.toList.mapM rat?).map some
+    | none => none
+  match paired? with
+  | some paired => pure (resolvingStepSq u2 ses2 t paired)
+  | none => pure (match resolvingStepSq u2 ses2 t none with
+    | .error e => .error e
+    | .ok _ => .error .paired)
+
+/-- The text a case of `cluster_two_roots.json` gives. -/
+def twoRootsText (c : Json) : Except String String := do
+  match c.getObjValAs? String "fn" with
+  | .ok "fixed6" =>
+    let arr ← (← c.getObjVal? "surd2").getArr?
+    match arr.toList.mapM rat? with
+    | some [a, c', b, d, e] => pure (Surd2.fixed6 ⟨a, c', b, d, e⟩)
+    | _ => defect "a surd2 that is not five numbers"
+  | .ok "resolving" =>
+    match ← runTwoRootsCase c with
+    | .error e => pure ("ERROR:" ++ e.message)
+    | .ok r => pure (renderResolvingSq r)
+  | _ => defect "an fn that is neither resolving nor fixed6"
+
+/-- Run `cluster_two_roots.json`: the counts of cases passed and failed. A case without a
+`note` fails: each holds its working or its source. -/
+def runTwoRoots : IO (Nat × Nat) := do
+  let json ← IO.ofExcept (Json.parse (← IO.FS.readFile "vectors/cluster_two_roots.json"))
+  let cases ← IO.ofExcept ((← IO.ofExcept (json.getObjVal? "cases")).getArr?)
+  let mut pass := 0
+  let mut fail := 0
+  for c in cases do
+    let name ← IO.ofExcept (c.getObjValAs? String "name")
+    let expected ← IO.ofExcept (c.getObjValAs? String "expected")
+    let note := (c.getObjValAs? String "note").toOption.getD ""
+    let got ← IO.ofExcept (twoRootsText c)
+    if got == expected && !note.isEmpty then pass := pass + 1
+    else
+      IO.eprintln s!"FAIL cluster_two_roots {name}: expected {repr expected}\n  got {repr got}"
+      fail := fail + 1
+  if cases.isEmpty then
+    IO.eprintln "FAIL cluster_two_roots: the corpus checked nothing"
+    fail := fail + 1
+  return (pass, fail)
+
+/-! ## The run -/
+
 
 /-! ## `vectors/cluster_rows.json`: the ROW's measure
 
@@ -390,5 +499,63 @@ def runSchedule : IO (Nat × Nat) := do
     IO.eprintln "FAIL cluster_schedule: the corpus checked nothing"
     fail := fail + 1
   return (pass, fail)
+
+/-! ## `vectors/cluster_month.json`: the cluster month in one call
+
+Each case's `request` goes through `cluster cluster_month`, read with the Calculator's own
+reader. An `expected` answer is compared as canonical JSON; a `refused` case must be refused
+with that code (`BAD_ARGUMENT` or `OWED`) and that detail, which names the part that refused.
+The runner `cluster` counts these cases. -/
+
+/-- Run `cluster_month.json`: the counts of cases passed and failed. -/
+def runMonth : IO (Nat × Nat) := do
+  let cases ← match rowsMember (← readValue "vectors/cluster_month.json") "cases" with
+    | some (.arr cs) => pure cs
+    | _ => throw (IO.userError "cluster_month.json: no cases")
+  let mut pass := 0
+  let mut fail := 0
+  for c in cases do
+    let some (.str name) := rowsMember c "name" | throw (IO.userError "a case without a name")
+    let some request := rowsMember c "request" | throw (IO.userError s!"{name}: no request")
+    let got := Calculator.respondTo "cluster" "cluster_month" request
+    let ok : Bool := match got, rowsMember c "expected", rowsMember c "refused" with
+      | .ok v, some e, none => v.canonicalJson.isSome && v.canonicalJson == e.canonicalJson
+      | .error r, none, some (.str w) =>
+        r.code.word == w && (match rowsMember c "detail" with | some (.str d) => d == r.detail | _ => false)
+      | _, _, _ => false
+    if ok then pass := pass + 1
+    else
+      IO.eprintln s!"FAIL cluster_month {name}: got {repr (match got with | .ok v => v.canonicalJson | .error r => some r.detail)}"
+      fail := fail + 1
+  if cases.isEmpty then
+    IO.eprintln "FAIL cluster_month: the corpus checked nothing"
+    fail := fail + 1
+  return (pass, fail)
+
+/-- Run the corpus, then `cluster_squares.json` (`runSquares`), `cluster_two_roots.json`
+(`runTwoRoots`) and `cluster_month.json` (`runMonth`): the counts of cases passed and failed, each failure reported on stderr with what disagreed. The mutation
+checks run first; one that fails is a failure of the runner and counts as a failed case. -/
+def runCluster : IO (Nat × Nat) := do
+  let mut pass := 0
+  let mut fail := 0
+  for (what, ok) in mutationChecks do
+    unless ok do
+      IO.eprintln s!"FAIL cluster runner mutation check: {what}"
+      fail := fail + 1
+  let json ← IO.ofExcept (Json.parse (← IO.FS.readFile "vectors/cluster_corpus.json"))
+  let cases ← IO.ofExcept ((← IO.ofExcept (json.getObjVal? "cases")).getArr?)
+  for c in cases do
+    let name ← IO.ofExcept (c.getObjValAs? String "name")
+    let expected ← IO.ofExcept (c.getObjValAs? String "expected")
+    let got ← IO.ofExcept (runCase c)
+    match mismatches expected got with
+    | [] => pass := pass + 1
+    | ms =>
+      IO.eprintln s!"FAIL cluster {name}: expected {repr expected}\n  {"\n  ".intercalate ms}"
+      fail := fail + 1
+  let (sp, sf) ← runSquares
+  let (tp, tf) ← runTwoRoots
+  let (mp, mf) ← runMonth
+  return (pass + sp + tp + mp, fail + sf + tf + mf)
 
 end Tests.Cluster

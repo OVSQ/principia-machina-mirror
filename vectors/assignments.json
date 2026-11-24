@@ -1,0 +1,361 @@
+[
+ {
+  "id": "A-01",
+  "note": "an empty block: no rows",
+  "input": {
+   "text": "[]",
+   "holder": "Lead agent",
+   "now": "2026-11-15T12:00:00Z"
+  },
+  "expect": "[\"OK\",[]]"
+ },
+ {
+  "id": "A-02",
+  "note": "one live row",
+  "input": {
+   "text": "[{\"block\": \"B-1\", \"assignee\": \"Coworker one\", \"grant\": 3, \"kind\": \"RESULT\", \"ends\": \"2026-11-16T00:00:00Z\", \"range\": null}]",
+   "holder": "Lead agent",
+   "now": "2026-11-15T12:00:00Z"
+  },
+  "expect": "[\"OK\",[{\"account\":\"Coworker one\",\"block\":\"B-1\",\"ends\":\"2026-11-16T00:00:00Z\",\"kind\":\"RESULT\",\"state\":\"LIVE\"}]]"
+ },
+ {
+  "id": "A-03",
+  "note": "one expired row: the server time has passed its end",
+  "input": {
+   "text": "[{\"block\": \"B-1\", \"assignee\": \"Coworker one\", \"grant\": 3, \"kind\": \"RESULT\", \"ends\": \"2026-11-15T11:59:59Z\", \"range\": null}]",
+   "holder": "Lead agent",
+   "now": "2026-11-15T12:00:00Z"
+  },
+  "expect": "[\"OK\",[{\"account\":\"Coworker one\",\"block\":\"B-1\",\"ends\":\"2026-11-15T11:59:59Z\",\"kind\":\"RESULT\",\"state\":\"EXPIRED\"}]]"
+ },
+ {
+  "id": "A-04",
+  "note": "a row ending exactly at the server time is live: a row is EXPIRED once the time passes its end",
+  "input": {
+   "text": "[{\"block\": \"B-1\", \"assignee\": \"Coworker one\", \"grant\": 3, \"kind\": \"RESULT\", \"ends\": \"2026-11-15T12:00:00Z\", \"range\": null}]",
+   "holder": "Lead agent",
+   "now": "2026-11-15T12:00:00Z"
+  },
+  "expect": "[\"OK\",[{\"account\":\"Coworker one\",\"block\":\"B-1\",\"ends\":\"2026-11-15T12:00:00Z\",\"kind\":\"RESULT\",\"state\":\"LIVE\"}]]"
+ },
+ {
+  "id": "A-05",
+  "note": "two rows for one account, two blocks, answered in the block's order",
+  "input": {
+   "text": "[{\"block\": \"B-2\", \"assignee\": \"Coworker one\", \"grant\": 3, \"kind\": \"REPRODUCTION\", \"ends\": \"2026-11-16T00:00:00Z\", \"range\": null}, {\"block\": \"B-1\", \"assignee\": \"Coworker one\", \"grant\": 3, \"kind\": \"EOM-0\", \"ends\": \"2026-11-01T00:00:00Z\", \"range\": null}]",
+   "holder": "Lead agent",
+   "now": "2026-11-15T12:00:00Z"
+  },
+  "expect": "[\"OK\",[{\"account\":\"Coworker one\",\"block\":\"B-2\",\"ends\":\"2026-11-16T00:00:00Z\",\"kind\":\"REPRODUCTION\",\"state\":\"LIVE\"},{\"account\":\"Coworker one\",\"block\":\"B-1\",\"ends\":\"2026-11-01T00:00:00Z\",\"kind\":\"EOM-0\",\"state\":\"EXPIRED\"}]]"
+ },
+ {
+  "id": "A-06",
+  "note": "a leased range in its form",
+  "input": {
+   "text": "[{\"block\": \"B-1\", \"assignee\": \"Coworker one\", \"grant\": 3, \"kind\": \"RESULT\", \"ends\": \"2026-11-16T00:00:00Z\", \"range\": {\"prefix\": \"RR\", \"low\": 900001, \"high\": 999999, \"next\": 900001}}]",
+   "holder": "Lead agent",
+   "now": "2026-11-15T12:00:00Z"
+  },
+  "expect": "[\"OK\",[{\"account\":\"Coworker one\",\"block\":\"B-1\",\"ends\":\"2026-11-16T00:00:00Z\",\"kind\":\"RESULT\",\"state\":\"LIVE\"}]]"
+ },
+ {
+  "id": "A-07",
+  "note": "white space around the text",
+  "input": {
+   "text": " \n [{\"block\": \"B-1\", \"assignee\": \"Coworker one\", \"grant\": 3, \"kind\": \"RESULT\", \"ends\": \"2026-11-16T00:00:00Z\", \"range\": null}] \n ",
+   "holder": "Lead agent",
+   "now": "2026-11-15T12:00:00Z"
+  },
+  "expect": "[\"OK\",[{\"account\":\"Coworker one\",\"block\":\"B-1\",\"ends\":\"2026-11-16T00:00:00Z\",\"kind\":\"RESULT\",\"state\":\"LIVE\"}]]"
+ },
+ {
+  "id": "A-08",
+  "note": "a duplicate block name: the second row",
+  "input": {
+   "text": "[{\"block\": \"B-1\", \"assignee\": \"Coworker one\", \"grant\": 3, \"kind\": \"RESULT\", \"ends\": \"2026-11-16T00:00:00Z\", \"range\": null}, {\"block\": \"B-1\", \"assignee\": \"Coworker two\", \"grant\": 3, \"kind\": \"RESULT\", \"ends\": \"2026-11-16T00:00:00Z\", \"range\": null}]",
+   "holder": "Lead agent",
+   "now": "2026-11-15T12:00:00Z"
+  },
+  "expect": "[\"REFUSED\",\"DUPLICATE\",1]"
+ },
+ {
+  "id": "A-09",
+  "note": "the Holder's own account",
+  "input": {
+   "text": "[{\"block\": \"B-1\", \"assignee\": \"Lead agent\", \"grant\": 3, \"kind\": \"RESULT\", \"ends\": \"2026-11-16T00:00:00Z\", \"range\": null}]",
+   "holder": "Lead agent",
+   "now": "2026-11-15T12:00:00Z"
+  },
+  "expect": "[\"REFUSED\",\"HOLDER\",0]"
+ },
+ {
+  "id": "A-10",
+  "note": "an end time with a space for the T",
+  "input": {
+   "text": "[{\"block\": \"B-1\", \"assignee\": \"Coworker one\", \"grant\": 3, \"kind\": \"RESULT\", \"ends\": \"2026-11-16 00:00:00Z\", \"range\": null}]",
+   "holder": "Lead agent",
+   "now": "2026-11-15T12:00:00Z"
+  },
+  "expect": "[\"REFUSED\",\"TIME\",0]"
+ },
+ {
+  "id": "A-11",
+  "note": "an end time on a day that does not exist",
+  "input": {
+   "text": "[{\"block\": \"B-1\", \"assignee\": \"Coworker one\", \"grant\": 3, \"kind\": \"RESULT\", \"ends\": \"2026-02-30T00:00:00Z\", \"range\": null}]",
+   "holder": "Lead agent",
+   "now": "2026-11-15T12:00:00Z"
+  },
+  "expect": "[\"REFUSED\",\"TIME\",0]"
+ },
+ {
+  "id": "A-12",
+  "note": "an end time given as a number",
+  "input": {
+   "text": "[{\"block\": \"B-1\", \"assignee\": \"Coworker one\", \"grant\": 3, \"kind\": \"RESULT\", \"ends\": 1763251200, \"range\": null}]",
+   "holder": "Lead agent",
+   "now": "2026-11-15T12:00:00Z"
+  },
+  "expect": "[\"REFUSED\",\"TIME\",0]"
+ },
+ {
+  "id": "A-13",
+  "note": "an end time with an offset, not Z",
+  "input": {
+   "text": "[{\"block\": \"B-1\", \"assignee\": \"Coworker one\", \"grant\": 3, \"kind\": \"RESULT\", \"ends\": \"2026-11-16T00:00:00+00:00\", \"range\": null}]",
+   "holder": "Lead agent",
+   "now": "2026-11-15T12:00:00Z"
+  },
+  "expect": "[\"REFUSED\",\"TIME\",0]"
+ },
+ {
+  "id": "A-14",
+  "note": "the text is not JSON",
+  "input": {
+   "text": "[{\"block\": ",
+   "holder": "Lead agent",
+   "now": "2026-11-15T12:00:00Z"
+  },
+  "expect": "[\"REFUSED\",\"MALFORMED\",null]"
+ },
+ {
+  "id": "A-15",
+  "note": "the text is an object, not a list",
+  "input": {
+   "text": "{\"block\": \"B-1\", \"assignee\": \"Coworker one\", \"grant\": 3, \"kind\": \"RESULT\", \"ends\": \"2026-11-16T00:00:00Z\", \"range\": null}",
+   "holder": "Lead agent",
+   "now": "2026-11-15T12:00:00Z"
+  },
+  "expect": "[\"REFUSED\",\"MALFORMED\",null]"
+ },
+ {
+  "id": "A-16",
+  "note": "a row holding a member twice: the text does not read",
+  "input": {
+   "text": "[{\"block\":\"B-1\",\"block\":\"B-2\",\"assignee\":\"Coworker one\",\"grant\":3,\"kind\":\"RESULT\",\"ends\":\"2026-11-16T00:00:00Z\",\"range\":null}]",
+   "holder": "Lead agent",
+   "now": "2026-11-15T12:00:00Z"
+  },
+  "expect": "[\"REFUSED\",\"MALFORMED\",null]"
+ },
+ {
+  "id": "A-17",
+  "note": "a row that is not an object",
+  "input": {
+   "text": "[\"B-1\"]",
+   "holder": "Lead agent",
+   "now": "2026-11-15T12:00:00Z"
+  },
+  "expect": "[\"REFUSED\",\"MALFORMED\",0]"
+ },
+ {
+  "id": "A-18",
+  "note": "a row without its range",
+  "input": {
+   "text": "[{\"block\": \"B-1\", \"assignee\": \"Coworker one\", \"grant\": 3, \"kind\": \"RESULT\", \"ends\": \"2026-11-16T00:00:00Z\"}]",
+   "holder": "Lead agent",
+   "now": "2026-11-15T12:00:00Z"
+  },
+  "expect": "[\"REFUSED\",\"MALFORMED\",0]"
+ },
+ {
+  "id": "A-19",
+  "note": "a row with a seventh member",
+  "input": {
+   "text": "[{\"block\": \"B-1\", \"assignee\": \"Coworker one\", \"grant\": 3, \"kind\": \"RESULT\", \"ends\": \"2026-11-16T00:00:00Z\", \"range\": null, \"note\": \"x\"}]",
+   "holder": "Lead agent",
+   "now": "2026-11-15T12:00:00Z"
+  },
+  "expect": "[\"REFUSED\",\"MALFORMED\",0]"
+ },
+ {
+  "id": "A-20",
+  "note": "a block name opening with a hyphen",
+  "input": {
+   "text": "[{\"block\": \"-B1\", \"assignee\": \"Coworker one\", \"grant\": 3, \"kind\": \"RESULT\", \"ends\": \"2026-11-16T00:00:00Z\", \"range\": null}]",
+   "holder": "Lead agent",
+   "now": "2026-11-15T12:00:00Z"
+  },
+  "expect": "[\"REFUSED\",\"MALFORMED\",0]"
+ },
+ {
+  "id": "A-21",
+  "note": "an account holding an underscore",
+  "input": {
+   "text": "[{\"block\": \"B-1\", \"assignee\": \"Coworker_one\", \"grant\": 3, \"kind\": \"RESULT\", \"ends\": \"2026-11-16T00:00:00Z\", \"range\": null}]",
+   "holder": "Lead agent",
+   "now": "2026-11-15T12:00:00Z"
+  },
+  "expect": "[\"REFUSED\",\"MALFORMED\",0]"
+ },
+ {
+  "id": "A-22",
+  "note": "an account ending in a space",
+  "input": {
+   "text": "[{\"block\": \"B-1\", \"assignee\": \"Coworker \", \"grant\": 3, \"kind\": \"RESULT\", \"ends\": \"2026-11-16T00:00:00Z\", \"range\": null}]",
+   "holder": "Lead agent",
+   "now": "2026-11-15T12:00:00Z"
+  },
+  "expect": "[\"REFUSED\",\"MALFORMED\",0]"
+ },
+ {
+  "id": "A-23",
+  "note": "a kind in lower case",
+  "input": {
+   "text": "[{\"block\": \"B-1\", \"assignee\": \"Coworker one\", \"grant\": 3, \"kind\": \"result\", \"ends\": \"2026-11-16T00:00:00Z\", \"range\": null}]",
+   "holder": "Lead agent",
+   "now": "2026-11-15T12:00:00Z"
+  },
+  "expect": "[\"REFUSED\",\"MALFORMED\",0]"
+ },
+ {
+  "id": "A-24",
+  "note": "a negative grant",
+  "input": {
+   "text": "[{\"block\": \"B-1\", \"assignee\": \"Coworker one\", \"grant\": -1, \"kind\": \"RESULT\", \"ends\": \"2026-11-16T00:00:00Z\", \"range\": null}]",
+   "holder": "Lead agent",
+   "now": "2026-11-15T12:00:00Z"
+  },
+  "expect": "[\"REFUSED\",\"MALFORMED\",0]"
+ },
+ {
+  "id": "A-25",
+  "note": "a grant written with a fraction",
+  "input": {
+   "text": "[{\"block\": \"B-1\", \"assignee\": \"Coworker one\", \"grant\": 3.5, \"kind\": \"RESULT\", \"ends\": \"2026-11-16T00:00:00Z\", \"range\": null}]",
+   "holder": "Lead agent",
+   "now": "2026-11-15T12:00:00Z"
+  },
+  "expect": "[\"REFUSED\",\"MALFORMED\",0]"
+ },
+ {
+  "id": "A-26",
+  "note": "a range whose next is past high plus one",
+  "input": {
+   "text": "[{\"block\": \"B-1\", \"assignee\": \"Coworker one\", \"grant\": 3, \"kind\": \"RESULT\", \"ends\": \"2026-11-16T00:00:00Z\", \"range\": {\"prefix\": \"RR\", \"low\": 1, \"high\": 5, \"next\": 7}}]",
+   "holder": "Lead agent",
+   "now": "2026-11-15T12:00:00Z"
+  },
+  "expect": "[\"REFUSED\",\"MALFORMED\",0]"
+ },
+ {
+  "id": "A-27",
+  "note": "a range of the word NONE, not null",
+  "input": {
+   "text": "[{\"block\": \"B-1\", \"assignee\": \"Coworker one\", \"grant\": 3, \"kind\": \"RESULT\", \"ends\": \"2026-11-16T00:00:00Z\", \"range\": \"NONE\"}]",
+   "holder": "Lead agent",
+   "now": "2026-11-15T12:00:00Z"
+  },
+  "expect": "[\"REFUSED\",\"MALFORMED\",0]"
+ },
+ {
+  "id": "A-28",
+  "note": "the first bad row is named: row 1 the Holder's, row 2 a duplicate",
+  "input": {
+   "text": "[{\"block\": \"B-1\", \"assignee\": \"Coworker one\", \"grant\": 3, \"kind\": \"RESULT\", \"ends\": \"2026-11-16T00:00:00Z\", \"range\": null}, {\"block\": \"B-2\", \"assignee\": \"Lead agent\", \"grant\": 3, \"kind\": \"RESULT\", \"ends\": \"2026-11-16T00:00:00Z\", \"range\": null}, {\"block\": \"B-1\", \"assignee\": \"Coworker one\", \"grant\": 3, \"kind\": \"RESULT\", \"ends\": \"2026-11-16T00:00:00Z\", \"range\": null}]",
+   "holder": "Lead agent",
+   "now": "2026-11-15T12:00:00Z"
+  },
+  "expect": "[\"REFUSED\",\"HOLDER\",1]"
+ },
+ {
+  "id": "A-29",
+  "note": "a row's faults in order: a bad end time before the Holder's account",
+  "input": {
+   "text": "[{\"block\": \"B-1\", \"assignee\": \"Lead agent\", \"grant\": 3, \"kind\": \"RESULT\", \"ends\": \"soon\", \"range\": null}]",
+   "holder": "Lead agent",
+   "now": "2026-11-15T12:00:00Z"
+  },
+  "expect": "[\"REFUSED\",\"TIME\",0]"
+ },
+ {
+  "id": "A-30",
+  "note": "a row's faults in order: a bad block name before a bad end time",
+  "input": {
+   "text": "[{\"block\": \"\", \"assignee\": \"Coworker one\", \"grant\": 3, \"kind\": \"RESULT\", \"ends\": \"soon\", \"range\": null}]",
+   "holder": "Lead agent",
+   "now": "2026-11-15T12:00:00Z"
+  },
+  "expect": "[\"REFUSED\",\"MALFORMED\",0]"
+ },
+ {
+  "id": "A-31",
+  "note": "a block name in the lock's longest form, 64 characters",
+  "input": {
+   "text": "[{\"block\": \"Bxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\", \"assignee\": \"Coworker one\", \"grant\": 3, \"kind\": \"RESULT\", \"ends\": \"2026-11-16T00:00:00Z\", \"range\": null}]",
+   "holder": "Lead agent",
+   "now": "2026-11-15T12:00:00Z"
+  },
+  "expect": "[\"OK\",[{\"account\":\"Coworker one\",\"block\":\"Bxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\"ends\":\"2026-11-16T00:00:00Z\",\"kind\":\"RESULT\",\"state\":\"LIVE\"}]]"
+ },
+ {
+  "id": "A-32",
+  "note": "a block name past it, 65 characters",
+  "input": {
+   "text": "[{\"block\": \"Bxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\", \"assignee\": \"Coworker one\", \"grant\": 3, \"kind\": \"RESULT\", \"ends\": \"2026-11-16T00:00:00Z\", \"range\": null}]",
+   "holder": "Lead agent",
+   "now": "2026-11-15T12:00:00Z"
+  },
+  "expect": "[\"REFUSED\",\"MALFORMED\",0]"
+ },
+ {
+  "id": "A-33",
+  "note": "the Holder not an account name",
+  "input": {
+   "text": "[{\"block\": \"B-1\", \"assignee\": \"Coworker one\", \"grant\": 3, \"kind\": \"RESULT\", \"ends\": \"2026-11-16T00:00:00Z\", \"range\": null}]",
+   "holder": "Lead_agent",
+   "now": "2026-11-15T12:00:00Z"
+  },
+  "refusal": "BAD_ARGUMENT"
+ },
+ {
+  "id": "A-34",
+  "note": "the server time not in the record's time form",
+  "input": {
+   "text": "[{\"block\": \"B-1\", \"assignee\": \"Coworker one\", \"grant\": 3, \"kind\": \"RESULT\", \"ends\": \"2026-11-16T00:00:00Z\", \"range\": null}]",
+   "holder": "Lead agent",
+   "now": "2026-11-15"
+  },
+  "refusal": "BAD_ARGUMENT"
+ },
+ {
+  "id": "A-35",
+  "note": "an argument missing",
+  "input": {
+   "text": "[]",
+   "holder": "Lead agent"
+  },
+  "refusal": "BAD_ARGUMENT"
+ },
+ {
+  "id": "A-36",
+  "note": "the text not a string",
+  "input": {
+   "text": [],
+   "holder": "Lead agent",
+   "now": "2026-11-15T12:00:00Z"
+  },
+  "refusal": "BAD_ARGUMENT"
+ }
+]

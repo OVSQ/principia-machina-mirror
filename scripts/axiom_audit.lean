@@ -62,7 +62,8 @@ It judges what Lean elaborated, never what the source text spells.
   - Command kinds, by the syntax node the parser produced, never by
     spelling: only `def`, `theorem`, `abbrev`, `structure`, `inductive`,
     `instance`, `example`, `namespace`, `section`, `end`, `open`,
-    `variable`, `set_option`, `universe`, a module docstring and
+    `variable`, `set_option` (for an option of `admittedOptions` alone,
+    below), `universe`, a module docstring and
     `attribute [...]` are admitted (`admittedCommands`, `admittedDecls`);
     `mutual` and `in` are structural, judged by their children: each member
     of a `mutual` block and both sides of `in` face the same rules.
@@ -77,8 +78,34 @@ It judges what Lean elaborated, never what the source text spells.
     `... attribute <name> not admitted`.
   - Inside an admitted command, the syntax kinds that run code written in
     the file while it is elaborated are refused (`refusedInner`: `run_tac`,
-    `by_elab`, and the term `unsafe`, through which a configuration term
-    could reach unsafe code): `... syntax kind <kind> not admitted`.
+    `by_elab`, the term `unsafe`, through which a configuration term
+    could reach unsafe code, `native_decide`, which compiles and runs the
+    file's `Decidable` instance, and `include_str`, which compiles and runs
+    its path term and leaves no axiom the walk would find; `bv_decide`,
+    `bv_decide?`, `bv_check` and grind's forms of the three, which evaluate
+    the toolchain's checker natively, refused here before the walk meets the
+    `_native` axiom they leave): `... syntax kind <kind> not admitted`.
+    A `set_option` (the command, its `... in` form, and the term, tactic and
+    grind forms inside an admitted command) whose option is off
+    `admittedOptions` (the exact names `maxHeartbeats`, `maxRecDepth`,
+    `synthInstance.maxHeartbeats`, `autoImplicit`, `relaxedAutoImplicit`, and
+    the prefixes `pp.`, `linter.`, `trace.`, save `trace.profiler.serve`,
+    which makes Lean's frontend serve the profile over HTTP, start a browser
+    and block, and `trace.profiler.output`, which makes it write a file, each
+    with the names below it; the init scan's list, the two
+    changing together) is refused, placed at the option's identifier:
+    `... set_option <name> not admitted` (so `debug.skipKernelTC`, which adds
+    a definition the kernel never checked and leaves no axiom, every
+    `debug.*`, `compiler.*` and `Elab.*`); an option name the parser's tree
+    does not give is `... set_option <unread> not admitted` (fail closed).
+    The self-test's own sources may also set `Elab.async` (`selfTestOptions`,
+    admitted only in a child the self-test starts, `PMA_FLOAT_SELFTEST` set by
+    the parent and unset for every scope file's child), to exercise the
+    asynchronous proofs below.
+    A tactic `decide` whose configuration may turn `native` on (`+native`,
+    `(native := ...)`, `(config := ...)`, which may name a structure setting
+    it) is refused: `... tactic decide +native not admitted`. Each is placed at
+    its syntax, before the axiom walk would meet the axiom it leaves.
   - Every term in the info trees (macro expansions included; a term's
     metavariables instantiated, each outermost tactic block's goal
     instantiated with its final assignment, and each hole an asynchronous
@@ -100,7 +127,10 @@ It judges what Lean elaborated, never what the source text spells.
 - The self-test runs first: the constant check's cases (`scopeTest`,
   `usesTest`), the file walk (`walkTest`, in a temporary directory), and the
   frontend pass's cases (`frontTest`, each a file in a temporary directory
-  run through the same child); a case that answers wrong fails the audit.
+  run through the same child, giving the failure lines it names and, but for
+  lines of a constant with `Float` met, no other), and
+  `decideNative` on configurations built by hand (`decideTest`); a case that
+  answers wrong fails the audit.
 -/
 
 open Lean
@@ -410,9 +440,62 @@ def admittedDecls : List SyntaxNodeKind := [
 /-- The attribute names admitted in `@[...]` and `attribute [...]`. -/
 def admittedAttrs : List Name := [`simp, `inline, `reducible, `instance, `ext]
 
-/-- Syntax kinds that run code written in the file while it is elaborated. -/
+/-- Syntax kinds that run code written in the file while it is elaborated
+(`native_decide` compiles and runs the file's `Decidable` instance; `include_str` compiles
+and runs its path term, and leaves no axiom). -/
 def refusedInner : List SyntaxNodeKind := [
-  ``Parser.Tactic.runTac, ``Lean.byElab, ``Parser.Term.unsafe]
+  ``Parser.Tactic.runTac, ``Lean.byElab, ``Parser.Term.unsafe, ``Parser.Tactic.nativeDecide,
+  ``Lean.includeStr, ``Parser.Tactic.bvDecide, ``Parser.Tactic.bvTrace,
+  ``Parser.Tactic.bvCheck, ``Parser.Tactic.Grind.bvDecide, ``Parser.Tactic.Grind.bvTrace,
+  ``Parser.Tactic.Grind.bvCheck]
+
+/-- The `set_option` kinds: the command (its `... in` form is `Parser.Command.in` with
+the command on its left), the term, the tactic and grind's. -/
+def setOptionKinds : List SyntaxNodeKind := [
+  ``Parser.Command.set_option, ``Parser.Term.set_option, ``Parser.Tactic.set_option,
+  ``Parser.Tactic.Grind.setOption]
+
+/-- The options a `set_option` may set by exact name (the init scan's list). -/
+def admittedOptionNames : List Name := [
+  `maxHeartbeats, `maxRecDepth, `synthInstance.maxHeartbeats, `autoImplicit,
+  `relaxedAutoImplicit]
+
+/-- The first components (`pp.`, `linter.`, `trace.`) of the options a `set_option` may
+set by prefix (the init scan's list). -/
+def admittedOptionRoots : List Name := [`pp, `linter, `trace]
+
+/-- The options the self-test's own sources may also set, in a child the self-test
+starts and in no other: `Elab.async`, for its asynchronous-proof cases. -/
+def selfTestOptions : List Name := [`Elab.async]
+
+/-- The options refused under an admitted prefix, each with every name below it (the init
+scan's list): the frontend reads `trace.profiler.serve` from a file's final options and then
+opens an HTTP server, starts a browser and blocks until interrupted, and
+`trace.profiler.output` names a file the profile is written to (`Lean.Elab.runFrontend`;
+`trace.profiler.output.pp` is below it). -/
+def refusedOptionRoots : List Name := [`trace.profiler.serve, `trace.profiler.output]
+
+/-- Whether an option is admitted: an exact name of `admittedOptionNames` or of `extra`, or
+a name of two or more components whose first is in `admittedOptionRoots`; never one equal
+to or below a name of `refusedOptionRoots`, whatever `extra` holds. -/
+def admittedOptions (extra : List Name) (n : Name) : Bool :=
+  !refusedOptionRoots.any (·.isPrefixOf n) &&
+    (admittedOptionNames.contains n || extra.contains n ||
+      (admittedOptionRoots.contains n.getRoot && n != n.getRoot))
+
+/-- The option a `set_option` node names, with the identifier holding it: its second
+argument, an identifier, read whole when the third argument is empty (the command, term
+and tactic forms; grind's without its optional `.<ident>`), and with grind's `.<ident>`
+appended when that is present; none for any other shape (fail closed). -/
+def optionName (stx : Syntax) : Option (Syntax × Name) :=
+  let o := stx[1]
+  let rest := stx[2]
+  if !o.isIdent then none
+  else if rest.getNumArgs == 0 then some (o, o.getId.eraseMacroScopes)
+  else if stx.getKind == ``Parser.Tactic.Grind.setOption && rest.getNumArgs == 2 &&
+      rest[1].isIdent then
+    some (o, o.getId.eraseMacroScopes ++ rest[1].getId.eraseMacroScopes)
+  else none
 
 /-- An attribute's name as Lean's elaborator reads it: the identifier of a simple
 attribute, else the last component of its syntax kind. -/
@@ -422,9 +505,28 @@ def attrName (attr : Syntax) : Name :=
     | .str _ s => .mkSimple s
     | k => k
 
-/-- The refusals inside a command: attributes off the list and refused inner kinds,
-each with the syntax it was found at. -/
-partial def innerRefusals (stx : Syntax) (acc : Array (Syntax × String)) :
+/-- Whether a tactic `decide`'s configuration may turn `native` on: any item but `+<name>`,
+`-<name>` and `(<name> := ...)`, `<name>` neither `native` nor `config`, may. A
+configuration of a shape not read here may too (fail closed): `(native := false)` and any
+`(config := ...)` are refused, since their values are terms not read before elaboration. The
+init scan is to refuse by the same rule; the two change together. -/
+def decideNative (stx : Syntax) : Bool :=
+  let cfg := stx[1]
+  if cfg.getKind != ``Parser.Tactic.optConfig then true
+  else cfg[0].getArgs.any fun item =>
+    let it := item[0]
+    let k := it.getKind
+    if item.getKind != ``Parser.Tactic.configItem then true
+    else if k == ``Parser.Tactic.negConfigItem then false
+    else if k == ``Parser.Tactic.posConfigItem then it[1].getId == `native
+    else if k == ``Parser.Tactic.valConfigItem then
+      it[1].getId == `native || it[1].getId == `config
+    else true
+
+/-- The refusals inside a command: attributes off the list, refused inner kinds, a
+`set_option` off `admittedOptions` (with `extra`) and a native `decide`, each with the
+syntax it was found at. -/
+partial def innerRefusals (extra : List Name) (stx : Syntax) (acc : Array (Syntax × String)) :
     Array (Syntax × String) :=
   let k := stx.getKind
   let acc :=
@@ -432,21 +534,29 @@ partial def innerRefusals (stx : Syntax) (acc : Array (Syntax × String)) :
       let n := attrName stx[1]
       if admittedAttrs.contains n then acc else acc.push (stx, s!"attribute {n} not admitted")
     else if refusedInner.contains k then acc.push (stx, s!"syntax kind {k} not admitted")
+    else if setOptionKinds.contains k then
+      match optionName stx with
+      | some (o, n) =>
+        if admittedOptions extra n then acc else acc.push (o, s!"set_option {n} not admitted")
+      | none => acc.push (stx, "set_option <unread> not admitted")
+    else if k == ``Parser.Tactic.decide && decideNative stx then
+      acc.push (stx, "tactic decide +native not admitted")
     else acc
-  stx.getArgs.foldl (fun acc s => innerRefusals s acc) acc
+  stx.getArgs.foldl (fun acc s => innerRefusals extra s acc) acc
 
 /-- Why a command is refused, with the syntax to place it; none when it is admitted.
 `mutual` and `in` are structural, judged by their children: each member of a `mutual` block,
-and both sides of `in`, face the same rules. -/
-partial def refusals (cmd : Syntax) : Array (Syntax × String) :=
+and both sides of `in`, face the same rules. `extra`: the options admitted beside
+`admittedOptions`'s (`selfTestOptions` in a self-test child, else none). -/
+partial def refusals (extra : List Name) (cmd : Syntax) : Array (Syntax × String) :=
   let k := cmd.getKind
   if k == ``Parser.Command.mutual then
-    cmd[1].getArgs.foldl (fun acc c => acc ++ refusals c) #[]
-  else if k == ``Parser.Command.in then refusals cmd[0] ++ refusals cmd[2]
+    cmd[1].getArgs.foldl (fun acc c => acc ++ refusals extra c) #[]
+  else if k == ``Parser.Command.in then refusals extra cmd[0] ++ refusals extra cmd[2]
   else if !admittedCommands.contains k then #[(cmd, s!"command kind {k} not admitted")]
   else if k == ``Parser.Command.declaration && !admittedDecls.contains cmd[1].getKind then
     #[(cmd, s!"command kind {cmd[1].getKind} not admitted")]
-  else innerRefusals cmd #[]
+  else innerRefusals extra cmd #[]
 
 /-- The constants of `e` that fail: a name containing `Float`, or one of `bad`. -/
 def floatConsts (bad : List Name) (e : Expr) : Array Name :=
@@ -487,9 +597,14 @@ def moduleOf (rel : System.FilePath) : Name :=
 /-- The line done by a child that finished. -/
 def doneLine (rel : String) : String := s!"float front done: {rel}"
 
+/-- The variable a self-test child is started with, `1`; every scope file's child is
+started with it unset. -/
+def selfTestVar : String := "PMA_FLOAT_SELFTEST"
+
 /-- The frontend pass over one file (relative to the working directory): its failure
 lines. Commands refused are not elaborated. -/
 def frontFile (rel : System.FilePath) : IO (Array String) := do
+  let extra := if (← IO.getEnv selfTestVar) == some "1" then selfTestOptions else []
   let src ← IO.FS.readFile rel
   let inputCtx := Parser.mkInputContext src rel.toString
   let lineOf (stx : Syntax) (dflt : Nat) : Nat :=
@@ -530,7 +645,7 @@ def frontFile (rel : System.FilePath) : IO (Array String) := do
     out := out ++ (← errors msgs)
     st := { st with messages := {} }
     let cmdLine := lineOf cmd (inputCtx.fileMap.toPosition pos).line
-    let refused := refusals cmd
+    let refused := refusals extra cmd
     if refused.isEmpty then
       let ctx : Command.Context :=
         { fileName := rel.toString, fileMap := inputCtx.fileMap, cmdPos := pos, snap? := none,
@@ -564,12 +679,14 @@ def frontFile (rel : System.FilePath) : IO (Array String) := do
   return lines
 
 /-- Run the frontend pass of `rel` in a child process (working directory `cwd`):
-its failure lines, and a failure line of its own when the child did not finish. -/
-def runChild (self : System.FilePath) (cwd : System.FilePath) (rel : String) :
+its failure lines, and a failure line of its own when the child did not finish. `self?`:
+whether the child is the self-test's (`selfTestVar` set to `1`; else unset). -/
+def runChild (self : System.FilePath) (cwd : System.FilePath) (self? : Bool) (rel : String) :
     IO (Array String) := do
   let lean := (← IO.appPath).toString
   let r ← IO.Process.output
-    { cmd := lean, args := #[self.toString], cwd := cwd, env := #[("PMA_FLOAT_FRONT", some rel)] }
+    { cmd := lean, args := #[self.toString], cwd := cwd,
+      env := #[("PMA_FLOAT_FRONT", some rel), (selfTestVar, if self? then some "1" else none)] }
   let lines := (r.stdout.splitOn "\n").filter (· ≠ "")
   let fails := lines.filter (·.startsWith "FLOAT AUDIT FAIL: ")
   if r.exitCode == 0 && lines.getLast? == some (doneLine rel) then return fails.toArray
@@ -577,23 +694,25 @@ def runChild (self : System.FilePath) (cwd : System.FilePath) (rel : String) :
   return fails.toArray.push
     s!"FLOAT AUDIT FAIL: {rel}: the frontend pass did not finish (exit {r.exitCode}): {tail}"
 
-/-- The frontend pass over `files` (relative to `cwd`), `jobs` children at a time. -/
-def runChildren (self cwd : System.FilePath) (files : Array String) (jobs : Nat) :
+/-- The frontend pass over `files` (relative to `cwd`), `jobs` children at a time;
+`self?` as `runChild`'s. -/
+def runChildren (self cwd : System.FilePath) (self? : Bool) (files : Array String) (jobs : Nat) :
     IO (Array String) := do
   let mut out := #[]
   let mut rest := files.toList
   while !rest.isEmpty do
     let batch := rest.take (max jobs 1)
     rest := rest.drop (max jobs 1)
-    let tasks ← batch.mapM (fun f => IO.asTask (runChild self cwd f))
+    let tasks ← batch.mapM (fun f => IO.asTask (runChild self cwd self? f))
     for t in tasks do
       match t.get with
       | .ok ls => out := out ++ ls
       | .error e => out := out.push s!"FLOAT AUDIT FAIL: the frontend pass: {e}"
   return out
 
-/-- The frontend pass's self-test: each case's source and the ends of failure lines it
-must give (none: the case must pass, with no failure line). -/
+/-- The frontend pass's self-test: each case's source and the ends of the failure lines it
+must give (none: the case must pass, with no failure line). A line it does not name fails the
+case unless it is a line of a constant with `Float` met (`... elaborated (Float)`). -/
 def frontTest : List (String × List String) := [
   ("example := OfScientific.ofScientific 25 true 1\n",
     [":1: instOfScientificFloat elaborated (Float)"]),
@@ -649,21 +768,149 @@ def frontTest : List (String × List String) := [
     "  have := OfScientific.ofScientific 25 true 1\n  trivial\n",
     [":2: instOfScientificFloat elaborated (Float)"]),
   ("set_option Elab.async true in theorem q : 1 = 2 := by\n  exact rfl\n",
-    [":2: elaboration error: Type mismatch"])]
+    [":2: elaboration error: Type mismatch"]),
+  -- `native_decide` and a native `decide`, refused by their syntax; the kind read from
+  -- the parser's own name
+  ("theorem a : 2 + 2 = 4 := by native_decide\n",
+    [s!":1: syntax kind {``Parser.Tactic.nativeDecide} not admitted"]),
+  ("theorem b : 2 + 2 = 4 := by decide +native\n", [":1: tactic decide +native not admitted"]),
+  ("theorem c : 2 + 2 = 4 := by decide (config := { native := true })\n",
+    [":1: tactic decide +native not admitted"]),
+  ("theorem c2 : 2 + 2 = 4 := by decide (native := true)\n",
+    [":1: tactic decide +native not admitted"]),
+  ("def cfg : Lean.Parser.Tactic.DecideConfig := {}\n" ++
+    "theorem c3 : 2 + 2 = 4 := by decide +kernel (config := cfg)\n",
+    [":2: tactic decide +native not admitted"]),
+  ("theorem d : 2 + 2 = 4 := by decide\n", []),
+  ("theorem e : 2 + 2 = 4 := by decide +kernel\n", []),
+  ("theorem f : 2 + 2 = 4 := by decide -native\n", []),
+  ("theorem g : 2 + 2 = 4 := by\n  decide (kernel := true)\n", []),
+  -- `native` in a later item, a value not read and a `config` not read refused (fail
+  -- closed); `native_decide` nested in another tactic; a `DecideConfig` definition alone
+  -- admitted; two refusals in one file, each at its own line
+  ("theorem h : 2 + 2 = 4 := by decide +kernel +native\n",
+    [":1: tactic decide +native not admitted"]),
+  ("theorem i : 2 + 2 = 4 := by decide (native := false)\n",
+    [":1: tactic decide +native not admitted"]),
+  ("theorem j : 2 + 2 = 4 := by decide (config := { kernel := true })\n",
+    [":1: tactic decide +native not admitted"]),
+  ("theorem k : 2 + 2 = 4 := by first | native_decide | decide\n",
+    [s!":1: syntax kind {``Parser.Tactic.nativeDecide} not admitted"]),
+  ("def cfg : Lean.Parser.Tactic.DecideConfig := {}\n", []),
+  ("theorem l : 2 + 2 = 4 := by native_decide\ntheorem m : 2 + 2 = 4 := by decide +native\n",
+    [s!":1: syntax kind {``Parser.Tactic.nativeDecide} not admitted",
+     ":2: tactic decide +native not admitted"]),
+  -- `include_str`, a computed path and a literal one, refused by its syntax
+  ("partial def probePick (n : Nat) : String := if n > 2 then \"c.lean\" else probePick (n + 1)\n" ++
+    "def probeIs : String := include_str (probePick 0 : System.FilePath)\n",
+    [s!":2: syntax kind {``Lean.includeStr} not admitted"]),
+  ("def probeIl : String := include_str \"c.lean\"\n",
+    [s!":1: syntax kind {``Lean.includeStr} not admitted"]),
+  -- `set_option` off `admittedOptions`: the `in` form, the command, the tactic, the term;
+  -- `Elab.async` is admitted here only as a self-test child's (`selfTestOptions`)
+  ("set_option debug.skipKernelTC true in theorem probeSk : True := trivial\n",
+    [":1: set_option debug.skipKernelTC not admitted"]),
+  ("set_option debug.skipKernelTC true\n", [":1: set_option debug.skipKernelTC not admitted"]),
+  ("theorem probeSt : True := by\n  set_option debug.skipKernelTC true in trivial\n",
+    [":2: set_option debug.skipKernelTC not admitted"]),
+  ("def probeSm : Nat := set_option debug.skipKernelTC true in 1\n",
+    [":1: set_option debug.skipKernelTC not admitted"]),
+  ("set_option maxHeartbeats 400000 in theorem probeSh : True := trivial\n" ++
+    "set_option pp.all true in\ntheorem probeSp : True := trivial\n" ++
+    "theorem probeSq : True := by\n  set_option maxRecDepth 1000 in trivial\n", []),
+  ("set_option compiler.extract_closed false\nset_option pp true\n",
+    [":1: set_option compiler.extract_closed not admitted", ":2: set_option pp not admitted"]),
+  -- `bv_decide`, `bv_decide?`, `bv_check` and grind's forms, refused by their syntax
+  ("theorem probeBv (x : BitVec 2) : x &&& x = x := by bv_decide\n" ++
+    "theorem probeBt : True := by bv_decide?\ntheorem probeBc : True := by bv_check \"p.lrat\"\n",
+    [s!":1: syntax kind {``Parser.Tactic.bvDecide} not admitted",
+     s!":2: syntax kind {``Parser.Tactic.bvTrace} not admitted",
+     s!":3: syntax kind {``Parser.Tactic.bvCheck} not admitted"]),
+  ("theorem probeGd (x : BitVec 2) : x = x := by grind => bv_decide\n" ++
+    "theorem probeGt (x : BitVec 2) : x = x := by grind => bv_decide?\n" ++
+    "theorem probeGc (x : BitVec 2) : x = x := by grind => bv_check \"p.lrat\"\n" ++
+    "theorem probeGs (x : BitVec 2) : x = x := by\n" ++
+    "  grind => set_option debug.skipKernelTC true in finish\n",
+    [s!":1: syntax kind {``Parser.Tactic.Grind.bvDecide} not admitted",
+     s!":2: syntax kind {``Parser.Tactic.Grind.bvTrace} not admitted",
+     s!":3: syntax kind {``Parser.Tactic.Grind.bvCheck} not admitted",
+     ":5: set_option debug.skipKernelTC not admitted"]),
+  -- `trace.profiler.serve` and `trace.profiler.output` (and below it), under the admitted
+  -- `trace.`: the command, the `in` form, the term and the tactic; the other `trace.`
+  -- options stay admitted
+  ("set_option trace.profiler.serve true\n" ++
+    "set_option trace.profiler.serve true in theorem probePs : True := trivial\n" ++
+    "set_option trace.profiler.output \"p.json\"\n" ++
+    "set_option trace.profiler.output \"p.json\" in theorem probePo : True := trivial\n" ++
+    "set_option trace.profiler.output.pp true\n" ++
+    "def probePm : Nat := set_option trace.profiler.serve true in 1\n" ++
+    "theorem probePt : True := by\n  set_option trace.profiler.output \"p.json\" in trivial\n",
+    [":1: set_option trace.profiler.serve not admitted",
+     ":2: set_option trace.profiler.serve not admitted",
+     ":3: set_option trace.profiler.output not admitted",
+     ":4: set_option trace.profiler.output not admitted",
+     ":5: set_option trace.profiler.output.pp not admitted",
+     ":6: set_option trace.profiler.serve not admitted",
+     ":8: set_option trace.profiler.output not admitted"]),
+  ("set_option trace.Meta.synthInstance true in theorem probePa : True := trivial\n" ++
+    "set_option trace.profiler true in\nset_option trace.profiler.threshold 5 in\n" ++
+    "set_option trace.profiler.useHeartbeats true in theorem probePb : True := trivial\n", [])]
 
-/-- Run `frontTest` in a temporary directory through the children. Returns the wrong
-answers. -/
+/-- The frontend cases run in a scope file's child, `selfTestVar` unset (as `frontTest`'s
+otherwise): `Elab.async`, admitted in a self-test child, is refused here. -/
+def scopeFrontTest : List (String × List String) := [
+  ("set_option Elab.async true in theorem probeSa : True := trivial\n",
+    [":1: set_option Elab.async not admitted"])]
+
+/-- `admittedOptions` on names, with no extra and with `selfTestOptions`: the extras,
+`options` and whether it is admitted. -/
+def optionTest : List (List Name × Name × Bool) := [
+  ([], `Elab.async, false), (selfTestOptions, `Elab.async, true),
+  ([], `debug.skipKernelTC, false), (selfTestOptions, `debug.skipKernelTC, false),
+  ([], `maxHeartbeats, true), ([], `synthInstance.maxHeartbeats, true), ([], `pp, false),
+  ([], `pp.all, true), ([], `linter.unusedVariables, true), ([], `trace.Meta.synthInstance, true),
+  ([], `compiler.extract_closed, false), ([], `maxHeartbeatsX, false),
+  ([], `trace.profiler.serve, false), (selfTestOptions, `trace.profiler.serve, false),
+  ([], `trace.profiler.output, false), ([], `trace.profiler.output.pp, false),
+  ([], `trace.profiler, true), ([], `trace.profiler.threshold, true)]
+
+/-- `decideNative` on configurations built by hand, one per branch, the three fail-closed
+branches among them (a layout the parser of the pinned toolchain does not give): the syntax
+and whether it is refused. -/
+def decideTest : List (Syntax × Bool) :=
+  let dec (cfg : Syntax) := mkNode ``Parser.Tactic.decide #[mkAtom "decide", cfg]
+  let opt (items : Array Syntax) := mkNode ``Parser.Tactic.optConfig #[mkNullNode items]
+  let item (it : Syntax) := mkNode ``Parser.Tactic.configItem #[it]
+  let pos (n : Name) := item (mkNode ``Parser.Tactic.posConfigItem #[mkAtom "+", mkIdent n])
+  let neg (n : Name) := item (mkNode ``Parser.Tactic.negConfigItem #[mkAtom "-", mkIdent n])
+  [(dec .missing, true),
+   (dec (opt #[mkNode `other #[]]), true),
+   (dec (opt #[item (mkNode `other #[])]), true),
+   (dec (opt #[]), false),
+   (dec (opt #[pos `kernel]), false),
+   (dec (opt #[neg `native]), false),
+   (dec (opt #[pos `kernel, pos `native]), true)]
+
+/-- Run `frontTest` (in self-test children) and `scopeFrontTest` (in children started as a
+scope file's, `selfTestVar` unset) in a temporary directory. Returns the wrong answers. -/
 def selfTest (self : System.FilePath) (jobs : Nat) : IO (Array String) := do
   let t ← IO.FS.createTempDir
   let mut wrong := #[]
   try
     let names := (List.range frontTest.length).map (fun k => s!"Case{k + 1}.lean")
-    for (n, (src, _)) in names.zip frontTest do
+    let scopeNames := (List.range scopeFrontTest.length).map (fun k => s!"Scope{k + 1}.lean")
+    let cases := names.zip frontTest ++ scopeNames.zip scopeFrontTest
+    for (n, (src, _)) in cases do
       IO.FS.writeFile (t / n) src
-    let got ← runChildren self t names.toArray jobs
-    for (n, (_, want)) in names.zip frontTest do
+    let got := (← runChildren self t true names.toArray jobs) ++
+      (← runChildren self t false scopeNames.toArray jobs)
+    for (n, (_, want)) in cases do
       let mine := got.filter (·.startsWith s!"FLOAT AUDIT FAIL: {n}:")
+      -- a Float case gives a line per constant met, named in part; every other line, a
+      -- refusal or an error, must be named, so a refused case gives exactly its lines
+      let named (l : String) := want.any (fun w => l.endsWith s!"{n}{w}")
       let ok := want.all (fun w => mine.any (·.endsWith s!"{n}{w}")) &&
+        mine.all (fun l => named l || l.endsWith " elaborated (Float)") &&
         (!want.isEmpty || mine.isEmpty) && (want.isEmpty || !mine.isEmpty)
       unless ok do wrong := wrong.push s!"{n} gave {mine}, wants {want}"
   finally
@@ -770,8 +1017,15 @@ def floatConstantFindings (env : Environment) (group : Array Name) : Array Strin
     initFails := initFails.push s!"INIT AUDIT FAIL: self-test: {w}"
   for w in ← FloatFront.selfTest self jobs do
     fails := fails.push s!"FLOAT AUDIT FAIL: self-test frontend case {w}"
+  for ((stx, want), k) in FloatFront.decideTest.zipIdx do
+    if FloatFront.decideNative stx != want then
+      fails := fails.push s!"FLOAT AUDIT FAIL: self-test decide case {k + 1} gave {!want}, wants {want}"
+  for ((extra, n, want), k) in FloatFront.optionTest.zipIdx do
+    if FloatFront.admittedOptions extra n != want then
+      fails := fails.push s!"FLOAT AUDIT FAIL: self-test option case {k + 1} ({n}) gave {!want}, wants {want}"
   let cases := FloatAudit.scopeTest.length + FloatAudit.usesTest.length + 1 +
-    FloatFront.frontTest.length
+    FloatFront.frontTest.length + FloatFront.scopeFrontTest.length +
+    FloatFront.decideTest.length + FloatFront.optionTest.length
   let mut files : Array System.FilePath := #[]
   try
     files ← floatScanFiles "."
@@ -823,7 +1077,7 @@ def floatConstantFindings (env : Environment) (group : Array Name) : Array Strin
     axiomFails := axiomFails.push "AXIOM AUDIT FAIL: no declaration checked"
   -- the frontend pass runs each file's imports' initializers: only once none is in scope
   if initFails.isEmpty then
-    fails := fails ++ (← FloatFront.runChildren self "." (files.map (·.toString)) jobs)
+    fails := fails ++ (← FloatFront.runChildren self "." false (files.map (·.toString)) jobs)
   else
     fails := fails.push "FLOAT AUDIT FAIL: the frontend pass not run: the initializer audit failed"
   for f in axiomFails do

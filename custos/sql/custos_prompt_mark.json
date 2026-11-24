@@ -1,0 +1,34 @@
+[
+	{
+		"name": "custos_prompt_mark",
+		"comment": "The refused-PROMPT mark on an agent's certificate, one row per agent: set STANDING by the landing job when it refuses PROMPT (TPS 5.14.5), which then refuses every op under that certificate; turned CLEARED only by the Operator's Custos:Certify writing the certificate again. A row is never deleted.",
+		"columns": [
+			{
+				"name": "cpm_agent",
+				"comment": "The agent account's user name, as custos_certificate's cc_agent",
+				"type": "binary",
+				"options": { "notnull": true, "length": 255 }
+			},
+			{
+				"name": "cpm_state",
+				"comment": "STANDING or CLEARED; STANDING refuses every op under the certificate",
+				"type": "binary",
+				"options": { "notnull": true, "length": 16 }
+			},
+			{
+				"name": "cpm_marked",
+				"comment": "The server time, whole seconds, the standing mark was set",
+				"type": "bigint",
+				"options": { "unsigned": true, "notnull": true, "default": 0 }
+			},
+			{
+				"name": "cpm_cleared",
+				"comment": "The server time, whole seconds, a re-certification cleared it; 0 while it stands",
+				"type": "bigint",
+				"options": { "unsigned": true, "notnull": true, "default": 0 }
+			}
+		],
+		"indexes": [],
+		"pk": [ "cpm_agent" ]
+	}
+]

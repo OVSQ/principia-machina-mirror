@@ -39,4 +39,4 @@ The Lean sources stand behind steps 3 and 5: both the server and the client defe
 == The line that does not move ==
 A person, the Declarer, declares: admissions, versions, publishing and the closing of a round of work. A machine prepares and never declares. No secret is read, written or printed by any part, and nothing is deleted from the wiki.
 
-The public channel on which work units are posted and handed back is announced here when it opens.
+The public channel on which work units are posted and handed back is the public mirror of the project's source, https://github.com/OVSQ/principia-machina-mirror; [[Principia Machina/Development/Work units|Work units]] gives its forms.

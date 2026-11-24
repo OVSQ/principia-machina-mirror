@@ -451,4 +451,31 @@ def calls : Family := [
     text ("|".intercalate [rat r.s, rat r.m, rat r.aInc])),
 ]
 
+/-- A list of at most `n` entries passes the bound. -/
+theorem within_ok (what : String) (n len : Nat) (h : len ≤ n) :
+    within what n len = .ok () := by
+  simp [within, Nat.not_lt.mpr h]
+
+/-- A list of more than `n` entries is refused, the refusal naming the list and the bound. -/
+theorem within_refused (what : String) (n len : Nat) (h : n < len) :
+    within what n len =
+      badArgument s!"{what} holds more than {n} entries (the Calculator's bound)" := by
+  simp [within, h]
+
+/-- A list counts its entries. -/
+theorem entries_arr (xs : List Value) : entries (.arr xs) = xs.length := rfl
+
+/-- An object counts no entries. -/
+theorem entries_obj (ms : List (String × Value)) : entries (.obj ms) = 0 := rfl
+
+/-- `null` counts no entries. -/
+theorem entries_null : entries .null = 0 := rfl
+
+/-- The member `k` of an object is the value its key `k` first holds, `null` when it holds none. -/
+theorem memberOf_obj (ms : List (String × Value)) (k : String) :
+    memberOf (.obj ms) k = (ms.lookup k).getD .null := rfl
+
+/-- A list has no members: every key reads `null`. -/
+theorem memberOf_arr (xs : List Value) (k : String) : memberOf (.arr xs) k = .null := rfl
+
 end Principia.Calculator.Score

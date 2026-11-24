@@ -212,6 +212,7 @@ function custos_wiring_files(): void {
 			'cm_bytes', 'cm_landed', 'cm_weight' ], 'METER' ],
 		'custos_budget' => [ 'DbMeterStore', [ 'cb_horizon', 'cb_use', 'cb_requests', 'cb_rolled', 'cb_level', 'cb_kept' ], 'BUDGET' ],
 		'custos_traffic' => [ 'DbMeterStore', [ 'ctr_account', 'ctr_record', 'ctr_stage', 'ctr_time' ], 'TRAFFIC' ],
+		'custos_prompt_mark' => [ 'DbCertificateStore', [ 'cpm_agent', 'cpm_state', 'cpm_marked', 'cpm_cleared' ], 'MARK' ],
 	];
 	$bad = [];
 	foreach ( $tables as $table => $spec ) {
@@ -237,10 +238,10 @@ function custos_wiring_files(): void {
 	$left = array_merge( glob( "$dir/sql/tables.json" ) ?: [], glob( "$dir/sql/*/tables-generated.sql" ) ?: [], glob( "$dir/sql/*/patch-*.sql" ) ?: [] );
 	$hook = (string)@file_get_contents( "$dir/includes/SchemaHooks.php" );
 	preg_match_all( '/\$updater->([A-Za-z]+)\(/', $hook, $calls );
-	$hookOk = str_contains( $hook, 'public const TABLES = [ DbTicketStore::TABLE, DbSeatStore::TABLE, DbCertificateStore::TABLE, DbJobRunStore::TABLE, DbNonceStore::TABLE, DbMeterStore::METER, DbMeterStore::BUDGET, DbMeterStore::TRAFFIC ];' )
+	$hookOk = str_contains( $hook, 'public const TABLES = [ DbTicketStore::TABLE, DbSeatStore::TABLE, DbCertificateStore::TABLE, DbJobRunStore::TABLE, DbNonceStore::TABLE, DbMeterStore::METER, DbMeterStore::BUDGET, DbMeterStore::TRAFFIC, DbCertificateStore::MARK ];' )
 		&& str_contains( $hook, '$updater->addExtensionTable( $table, "$sql/$table.sql" );' ) && $calls[1] === [ 'getDB', 'addExtensionTable' ];
 	G::ok( $bad === [] && $left === [] && $hookOk && ( $ext['Hooks']['LoadExtensionSchemaUpdates'] ?? '' ) === 'schema',
-		'W14 the tables custos_ticket (nine columns), custos_seat (four), custos_certificate (seven), custos_job_run (seven), custos_nonce (four), custos_meter (twelve), custos_budget (six) and custos_traffic (four), each registered by the schema hook by its own name with its own SQL '
+		'W14 the tables custos_ticket (nine columns), custos_seat (four), custos_certificate (seven), custos_job_run (seven), custos_nonce (four), custos_meter (twelve), custos_budget (six), custos_traffic (four) and custos_prompt_mark (four), each registered by the schema hook by its own name with its own SQL '
 		. '(sql/<type>/<table>.sql for sqlite and mysql, generated from sql/<table>.json, its one source); the hook only adds tables',
 		implode( ', ', array_merge( $bad, $left ) ) . ( $hookOk ? '' : ' (the hook)' ) );
 	G::ok( ( $ext['GroupPermissions']['pma-agent']['custos-landing'] ?? false ) === true && ( $ext['AvailableRights'] ?? [] ) === [ 'custos-landing', 'custos-role' ]

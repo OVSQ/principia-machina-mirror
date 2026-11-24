@@ -7,9 +7,12 @@ import Principia.Canonical
 import Principia.CanonicalReader
 import Principia.Cluster
 import Principia.Cluster.Bounded
+import Principia.Cluster.Month
 import Principia.Cluster.Rows
 import Principia.Cluster.Schedule
 import Principia.Cluster.Screen
+import Principia.Cluster.Squares
+import Principia.Cluster.TwoRoots
 import Principia.Decimal
 import Principia.Digest
 import Principia.Digest.Injective

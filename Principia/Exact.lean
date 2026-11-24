@@ -381,6 +381,100 @@ def printSqrt12 (q : Rat) : String :=
 example : printRat12 (1 / 60) = "0.0166666666667" := by decide +kernel
 example : printRat12 (149597870700 : Rat) = "149597870700" := by decide +kernel
 
+/-! ## The product's algebra
+
+An exact number is normal when a zero coefficient carries no power of π, the form `of`
+gives. Every product is normal; on normal numbers the product is a commutative monoid with
+unit `one`, and the rationals multiply as rationals. -/
+
+/-- A zero coefficient carries no power of π: zero is `0 × π^0`. -/
+def Normal (a : Exact) : Prop := a.coef = 0 → a.pi = 0
+
+/-- `of` keeps zero normal: a zero coefficient comes with exponent zero. -/
+theorem of_coef_eq_zero (q : Rat) (k : Int) : (of q k).coef = 0 → (of q k).pi = 0 := by
+  unfold of
+  split
+  · intro _; rfl
+  · intro h; exact absurd h (by assumption)
+
+/-- Every value `of` gives is normal. -/
+theorem of_normal (q : Rat) (k : Int) : Normal (of q k) := of_coef_eq_zero q k
+
+/-- Every product is normal. -/
+theorem mul_normal (a b : Exact) : Normal (mul a b) := of_normal _ _
+
+/-- `of` with a zero coefficient is zero, whatever the exponent. -/
+theorem of_zero (k : Int) : of 0 k = ⟨0, 0⟩ := by simp [of]
+
+/-- The product of two values of `of` is `of` of the products of their parts. -/
+theorem mul_of_of (p q : Rat) (k l : Int) : mul (of p k) (of q l) = of (p * q) (k + l) := by
+  by_cases hp : p = 0
+  · subst hp
+    simp [mul, of_zero, Rat.zero_mul]
+  · by_cases hq : q = 0
+    · subst hq
+      simp [mul, of_zero, Rat.mul_zero]
+    · simp [mul, of, hp, hq]
+
+/-- A product with `of` on the left is `of` of the products of the parts. -/
+theorem mul_of_left (p : Rat) (k : Int) (b : Exact) :
+    mul (of p k) b = of (p * b.coef) (k + b.pi) := by
+  by_cases hp : p = 0
+  · subst hp
+    simp [mul, of_zero, Rat.zero_mul]
+  · simp [mul, of, hp]
+
+/-- A product with `of` on the right is `of` of the products of the parts. -/
+theorem mul_of_right (a : Exact) (q : Rat) (l : Int) :
+    mul a (of q l) = of (a.coef * q) (a.pi + l) := by
+  by_cases hq : q = 0
+  · subst hq
+    simp [mul, of_zero, Rat.mul_zero]
+  · simp [mul, of, hq]
+
+/-- The product is commutative. -/
+theorem mul_comm (a b : Exact) : mul a b = mul b a := by
+  simp only [mul, Rat.mul_comm a.coef b.coef, Int.add_comm a.pi b.pi]
+
+/-- The product is associative. -/
+theorem mul_assoc (a b c : Exact) : mul (mul a b) c = mul a (mul b c) := by
+  show mul (of _ _) c = mul a (of _ _)
+  rw [mul_of_left, mul_of_right, Rat.mul_assoc, Int.add_assoc]
+
+/-- A normal value is `of` of its own parts. -/
+theorem of_self {a : Exact} (h : Normal a) : of a.coef a.pi = a := by
+  cases a with
+  | mk q k =>
+    by_cases hq : q = 0
+    · have hk : k = 0 := h hq
+      subst hq hk
+      simp [of]
+    · simp [of, hq]
+
+/-- One is a left unit on normal values. -/
+theorem one_mul {a : Exact} (h : Normal a) : mul one a = a := by
+  show of (1 * a.coef) (0 + a.pi) = a
+  rw [Rat.one_mul, Int.zero_add]
+  exact of_self h
+
+/-- One is a right unit on normal values. -/
+theorem mul_one {a : Exact} (h : Normal a) : mul a one = a := by
+  show of (a.coef * 1) (a.pi + 0) = a
+  rw [Rat.mul_one, Int.add_zero]
+  exact of_self h
+
+/-- The first power of a normal value is the value. -/
+theorem zpow_one {a : Exact} (h : Normal a) : zpow a 1 = a := by
+  show of (a.coef ^ (1 : Int)) (a.pi * 1) = a
+  rw [Rat.zpow_one, Int.mul_one]
+  exact of_self h
+
+/-- The product of two rationals is the rational of their product. -/
+theorem ofRat_mul_ofRat (p q : Rat) : mul (ofRat p) (ofRat q) = ofRat (p * q) := by
+  show mul (of p 0) (of q 0) = of (p * q) 0
+  rw [mul_of_of]
+  rfl
+
 end Exact
 
 end Principia

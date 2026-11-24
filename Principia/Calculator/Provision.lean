@@ -374,4 +374,36 @@ def calls : Family := [
         (g "carried") (g "modified"))),
 ]
 
+/-! ## The answers' and the members' laws -/
+
+/-- An object's member is the value under its key, `null` when the key is absent. -/
+theorem memberOf_obj (ms : List (String × Zone.Value)) (k : String) :
+    memberOf (.obj ms) k = (ms.lookup k).getD .null := rfl
+
+/-- A list has no member: every key gives `null`. -/
+theorem memberOf_arr (xs : List Zone.Value) (k : String) : memberOf (.arr xs) k = .null := rfl
+
+/-- A list gives its entries. -/
+theorem itemsOf_arr (xs : List Zone.Value) : itemsOf (.arr xs) = xs := rfl
+
+/-- An object gives no entries. -/
+theorem itemsOf_obj (ms : List (String × Zone.Value)) : itemsOf (.obj ms) = [] := rfl
+
+/-- A computed answer is "OK" followed by its parts. -/
+theorem answer_ok {α : Type} (p : α → List Value) (a : α) :
+    answer p (.ok a) = .ok (.arr (.str "OK" :: p a)) := rfl
+
+/-- A refusal is "REFUSED" followed by its reason. -/
+theorem answer_refused {α : Type} (p : α → List Value) (r : String) :
+    answer p (.refused r) = .ok (.arr [.str "REFUSED", .str r]) := rfl
+
+/-- An owed answer is refused as owed, its detail saying what is owed. -/
+theorem answer_owed {α : Type} (p : α → List Value) (w : Owed) :
+    answer p (.owed w) = .error ⟨.owed, owedDetail w⟩ := rfl
+
+/-- The detail of an owed digest is its fixed text. -/
+theorem owedDetail_digest :
+    owedDetail .digest = "the answer is owed: it needs a digest the Calculator does not compute" :=
+  rfl
+
 end Principia.Calculator.Provision

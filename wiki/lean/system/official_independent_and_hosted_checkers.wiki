@@ -1,0 +1,133 @@
+{{DISPLAYTITLE:Official, independent and hosted checkers}}
+{{Plebeian|Lean theorem prover/Explainers/The small trusted core|Lean theorem prover/Explainers/Checking a proof again later}}
+{{Lean theorem prover map}}
+
+Someone who wants a Lean proof checked has three kinds of program to choose from. There is
+the Lean kernel as the Lean project distributes it. There are checkers written independently,
+which read an exported proof and check it again. And there are services that run Lean on
+another party's computer. This page says where each comes from, how a project fixes which one
+it uses, and what each asks the reader to trust. It ends with the arrangement Principia
+Machina uses. It describes Lean 4.35.0, of 12 October 2026.
+
+== The official toolchain ==
+
+Lean is an open-source project, begun by Leonardo de Moura at Microsoft Research in
+2013.<ref name="about">"About", lean-lang.org. [https://lean-lang.org/about lean-lang.org/about]</ref>
+Since August 2023 its development has been led by the Lean FRO, a non-profit organisation
+formed for that purpose.<ref name="fro">"Lean FRO", lean-lang.org. [https://lean-lang.org/lean-fro lean-lang.org/lean-fro]</ref>
+The Lean kernel is not a separate download. It is the small type checker, written in C++,
+inside the program <code>lean</code>, and every toolchain carries it (see
+[[Lean theorem prover/System/The Lean kernel|the Lean kernel]]).
+
+Toolchains are installed by '''elan''', the toolchain manager. Unless told otherwise, elan
+fetches them from the official project repository, which it names
+<code>leanprover/lean4</code>.<ref name="elan422">"Managing Toolchains with Elan", a section of ''The Lean Language Reference'' (edition covering Lean 4.22.0). [https://lean-lang.org/doc/reference/4.22.0/Build-Tools-and-Distribution/Managing-Toolchains-with-Elan/ lean-lang.org/doc/reference/4.22.0/Build-Tools-and-Distribution/Managing-Toolchains-with-Elan/]</ref>
+A project fixes its version of Lean in a one-line file, <code>lean-toolchain</code>, kept with
+the project's sources so that everyone who works on it uses the same
+version.<ref name="elan428">"Managing Toolchains with Elan", a section of ''The Lean Language Reference'' (edition covering Lean 4.28.0). [https://lean-lang.org/doc/reference/4.28.0/Build-Tools-and-Distribution/Managing-Toolchains-with-Elan/ lean-lang.org/doc/reference/4.28.0/Build-Tools-and-Distribution/Managing-Toolchains-with-Elan/]</ref>
+The reference manual advises naming an exact version there rather than a channel such as
+<code>stable</code>.<ref name="elan426">"Managing Toolchains with Elan", a section of ''The Lean Language Reference'' (edition covering Lean 4.26.0). [https://lean-lang.org/doc/reference/4.26.0/Build-Tools-and-Distribution/Managing-Toolchains-with-Elan/ lean-lang.org/doc/reference/4.26.0/Build-Tools-and-Distribution/Managing-Toolchains-with-Elan/]</ref>
+A project pinned to the version this page describes has a file reading:
+
+<pre class="lean-output" style="background: #ffffff; border: 1px dashed #a2a9b1; padding: 0.6em; margin: 0.3em 0; font-size: 0.85em; line-height: 1.35; overflow-x: auto; white-space: pre;">leanprover/lean4:v4.35.0</pre>
+
+The page on [[Lean theorem prover/System/Lake and Lean projects|Lake and Lean projects]] shows
+the file at work.
+
+A copy of Lean compiled from its sources can be registered with elan under a name of its own,
+with <code>elan toolchain link</code>; the manual describes this for work on the Lean compiler
+itself.<ref name="elan430">"Managing Toolchains with Elan", a section of ''The Lean Language Reference'' (edition covering Lean 4.30.0). [https://lean-lang.org/doc/reference/4.30.0/Build-Tools-and-Distribution/Managing-Toolchains-with-Elan/ lean-lang.org/doc/reference/4.30.0/Build-Tools-and-Distribution/Managing-Toolchains-with-Elan/]</ref>
+For checking proofs there is little to gain from it. A pin is useful because every reader's
+copy of the Lean kernel is the same as everyone else's. A privately compiled copy is one
+more thing a reader would have to trust or rule out.
+
+== Independent checkers in the toolchain ==
+
+Until Lean 4.35.0, checking a Lean development with a second checker meant installing and
+configuring separate tools.<ref name="rn435b">"Lean 4.35.0 (2026-10-12)", in "Release Notes", ''The Lean Language Reference'' (edition covering Lean 4.36.0-rc1), section "Checking Projects with lake check and lake comparator". [https://lean-lang.org/doc/reference/4.36.0-rc1/releases/v4.35.0/ lean-lang.org/doc/reference/4.36.0-rc1/releases/v4.35.0/]</ref> That version changed this. Its toolchain
+includes four checkers written apart from the Lean kernel, '''lean4lean''', '''nanoda''',
+'''con-leche''' and '''con-ron''', and a fifth program, <code>leanchecker-paranoid</code>, which
+is the usual replay through the Lean kernel compiled with a hardened memory
+allocator.<ref name="rn435">"Lean 4.35.0 (2026-10-12)", in "Release Notes", ''The Lean Language Reference'' (edition covering Lean 4.35.0). [https://lean-lang.org/doc/reference/4.35.0/releases/v4.35.0/ lean-lang.org/doc/reference/4.35.0/releases/v4.35.0/]</ref>
+
+The same version added a Lake command, <code>lake check</code>. It compiles a project's
+default targets, exports them, replays the export through the Lean kernel, and fails if
+anything rests on an axiom other than the standard three. With <code>--paranoid</code> it also
+runs every bundled checker and accepts the project only if all of them
+do.<ref name="rn435b" />
+An export made somewhere else can be checked directly: the notes give the examples of an
+export made in a virtual machine and one made by someone with more computing power, and
+<code>leanchecker</code> itself gained a matching option,
+<code>--from-export</code>.<ref name="rn435b" /> The heavy work of compiling can therefore
+happen on one computer and the check on another.
+
+"Independent" covers a range. nanoda is written in Rust, separately from
+Lean.<ref name="arena-nanoda">"nanoda", checker page, Lean Kernel Arena. [https://arena.lean-lang.org/checker/nanoda/ arena.lean-lang.org/checker/nanoda/]</ref>
+lean4lean is written in Lean;<ref name="l4l">Mario Carneiro, "Lean4Lean: Verifying a Typechecker for Lean, in Lean", in ''31st International Conference on Types for Proofs and Programs (TYPES 2025)'', Leibniz International Proceedings in Informatics 384, Schloss Dagstuhl, 2026, 2:1–2:23. doi:[https://doi.org/10.4230/LIPIcs.TYPES.2025.2 10.4230/LIPIcs.TYPES.2025.2]; full version [https://arxiv.org/abs/2403.14064 arXiv:2403.14064].</ref> its description in the Lean Kernel Arena notes that it
+follows the C++ implementation closely and so is likely to share some of its
+faults.<ref name="arena-l4l">"lean4lean", checker page, Lean Kernel Arena. [https://arena.lean-lang.org/checker/lean4lean arena.lean-lang.org/checker/lean4lean]</ref>
+Recent history shows why the difference matters and also where it stops. Lean 4.33.0 fixed
+soundness faults in the Lean kernel, some of which survive in an exported proof and would
+mislead a check by the Lean kernel alone, unless a checker such as nanoda is run as
+well.<ref name="rn433">"Lean 4.33.0", in "Release Notes", ''The Lean Language Reference'' (edition covering Lean 4.35.0-rc3), section "Kernel soundness fixes and further improvements". [https://lean-lang.org/doc/reference/4.35.0-rc3/releases/v4.33.0/ lean-lang.org/doc/reference/4.35.0-rc3/releases/v4.33.0/]</ref>
+Lean 4.34.0 fixed a fault that a false proof exploited, and the notes record that nanoda
+accepted the same false proof.<ref name="rn434">"Lean 4.34.0", in "Release Notes", ''The Lean Language Reference'' (edition covering Lean 4.35.0-rc3), section "Kernel Soundness and Hardening". [https://lean-lang.org/doc/reference/4.35.0-rc3/releases/v4.34.0/ lean-lang.org/doc/reference/4.35.0-rc3/releases/v4.34.0/]</ref>
+A second checker does not make a fault impossible. It makes a fault matter only if every
+checker that runs shares it, which is why the checkers are run together and a single
+refusal decides.
+
+How exports are written and how such checkers work is the subject of
+[[Lean theorem prover/System/Proof export and independent checkers|Proof export and
+independent checkers]].
+
+== Hosted services ==
+
+Two services on the web come up in this context. Neither is a place to send a proof for a
+verdict.
+
+'''The Lean playground''' at <code>live.lean-lang.org</code> is the official web editor for
+Lean.<ref name="web-lc">"lean4web", the Lean 4 web editor's source repository, leanprover-community on GitHub. [https://github.com/leanprover-community/lean4web github.com/leanprover-community/lean4web]</ref>
+Lean runs on the playground's server, not in the reader's
+browser.<ref name="web-hhu">"lean4web", the development copy of the Lean 4 web editor's source, hhu-adam on GitHub. [https://github.com/hhu-adam/lean4web github.com/hhu-adam/lean4web]</ref>
+It is a way to try Lean without installing it. What it shows is the result of a check on a
+computer the reader does not control, and it leaves nothing a third party can check later.
+
+'''The Lean Kernel Arena''' runs many checkers on the same exported tests, some that a
+correct checker must accept and some that it must reject, and publishes how each
+did.<ref name="arena">Lean Kernel Arena: "presents, tests and benchmarks proof checkers for the Lean Theorem Prover". [https://arena.lean-lang.org arena.lean-lang.org]</ref>
+It grades checkers, not proofs. Its results are a reasonable basis for choosing which
+checkers to run and which version of each to rely on.
+
+A service that accepted a proof and returned a verdict would add its operator, its computer
+and the connection to the list of things a reader must trust. The option
+<code>--from-export</code> goes the other way: the expensive work may happen anywhere, and the
+check happens on a computer the person relying on it chooses.
+
+== Principia Machina ==
+
+[[Lean theorem prover/Applications/Principia Machina|Principia Machina]], the framework on
+this wiki for testing physical hypotheses, is written in Lean and uses the official toolchain
+at a pinned version. Its account of the move to Lean sets out why the Lean kernel is not
+left as the only check: a fault in the Lean kernel is the one fault no proof written in Lean
+can catch. The design therefore doubles it with nanoda, which reads the same definitions and
+proofs from an export file and checks them again, so a wrong proof has to deceive two checkers
+of different authorship. Every checker that runs must accept; one refusal is a refusal, and a
+crash counts as a refusal. Each run also includes exports broken on purpose, which every
+checker must refuse.<ref name="lt">"Principia Machina: the move to Lean", the page [[Principia Machina/Lean transition]] on this wiki, status as of 14 October 2026.</ref>
+The broken exports test the checkers rather than the proofs: a checker set up wrongly, or one
+that accepts everything, passes every good proof and fails only this test.
+
+The wiki's own server has no Lean toolchain, so it cannot call the Lean kernel. A derivation
+submitted there as a Lean proof is checked only once a small independent checker has been
+shown to run within the server's limits; the server's test ran nanoda within
+them.<ref name="lt" /> Until then such a proof is recorded as prose, never as
+checked.<ref name="lt" />
+
+== Next ==
+
+[[Lean theorem prover/System/Monads and do-notation|Monads and do-notation]] returns to Lean
+as a programming language.
+
+== References ==
+
+<references />

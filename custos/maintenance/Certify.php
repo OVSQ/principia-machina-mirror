@@ -7,7 +7,9 @@
  *       --d-prompt <hex64> --family <vendor family> --model <declared model> [--state <state>]
  *
  * Inserts the agent's row, or replaces it whole when one is there (a new Sponsor, a new D(PROMPT),
- * a state SUSPENDED or REVOKED). Prints one line, `certify: <agent> sponsor <sponsor>`; prints no
+ * a state SUSPENDED or REVOKED). Every write first clears the agent's refused-PROMPT mark, if one
+ * stands (the table custos_prompt_mark, CertificateStore::put): the re-certification after a PROMPT
+ * refusal, and the only way the mark clears; a first certification finds none. Prints one line, `certify: <agent> sponsor <sponsor>`; prints no
  * secret (a certificate holds none: two account names, two digests, two words and a state).
  *
  * Refused, nothing written: an account name empty, holding a control character or longer than 255

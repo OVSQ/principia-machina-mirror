@@ -31,8 +31,8 @@
 # of the Declarer's group by its title ("restricted: read admitted", transclusion still refused); before that, update.php makes the table custos_ticket and
 # generateSchemaSql must reproduce each table's sql/<type>/<table>.sql from its sql/<table>.json ("schema: current"),
 # and a second scratch wiki installed with custos_ticket alone gains custos_seat, custos_certificate, custos_job_run,
-# custos_nonce, custos_meter, custos_budget and custos_traffic by update.php ("schema: custos_seat, custos_certificate,
-# custos_job_run, custos_nonce, custos_meter, custos_budget and custos_traffic added by update to a wiki that had
+# custos_nonce, custos_meter, custos_budget, custos_traffic and custos_prompt_mark by update.php ("schema: custos_seat, custos_certificate,
+# custos_job_run, custos_nonce, custos_meter, custos_budget, custos_traffic and custos_prompt_mark added by update to a wiki that had
 # custos_ticket alone"); the agent account and a second account each given a certificate by
 # Custos:Certify, their Sponsor a third account ("certify: Rehearsalagent sponsor Rehearsalsponsor"), so admission
 # reads a Sponsor for each; then
@@ -43,8 +43,12 @@
 # With the built pcalc, after the seed: the landing job's path over HTTP (PETITION, PUSH of the spring UWC's
 # first RESULT and ASSUMPTION, RELEASE), each followed by `runJobs --type custosLand` and POLL ("land: PETITION
 # grant", "structure: line <the line> equal to the Calculator's answer" for the holder's STRUCTURE_TEST, compared
-# with the rehearsal's own call of pcalc eom eom_register_test over the pages, "land: PUSH CHALLENGE REASONED" for a wrong answer to the challenge, "land: PUSH landed EXECUTED" for the
-# Research Client's answer, "land: RELEASE released"), the register page read back over api.php ("land: READ
+# with the rehearsal's own call of pcalc eom eom_register_test over the pages, "land: PUSH PROMPT refused" for a
+# D(PROMPT) unequal to the certificate's (nothing landed, the nonce kept), "land: PUSH PROMPT mark stands" for the
+# certificate's own D(PROMPT) presented after it (the refused-PROMPT mark), "land: PROMPT mark cleared by Custos:Certify"
+# once the certificate is written again, "land: PUSH CHALLENGE REASONED" for a wrong answer to the challenge, "land: PUSH landed EXECUTED" for the
+# Research Client's answer, presenting the certificate's D(PROMPT) and a session log's head ("land: PUSH log_head echoed,
+# prompt_check MATCHED"), "land: RELEASE released"), the register page read back over api.php ("land: READ
 # 2 records": each with its DIGEST, the RESULT with DERIVATION_CLASS INSPECTION, the ASSUMPTION with none); after the grant, a second account's PETITION while the lock is held, run by Custos:Land, answered LOCK
 # HELD with a poll_after between the base and the base plus 10 per cent ("land: LOCK HELD poll_after jittered"); after
 # the release, a scratch agent account whose name has a space, an apostrophe and a letter outside ASCII petitions,
@@ -335,11 +339,11 @@ PHP
 }
 wiring() { php "$mw/maintenance/run.php" "$here/wiring.php" 2>&1; }
 
-# 4b. The tables custos_ticket, custos_seat, custos_certificate, custos_job_run, custos_nonce, custos_meter, custos_budget and custos_traffic, by the hook LoadExtensionSchemaUpdates (LocalSettings.custos.php written first)
+# 4b. The tables custos_ticket, custos_seat, custos_certificate, custos_job_run, custos_nonce, custos_meter, custos_budget, custos_traffic and custos_prompt_mark, by the hook LoadExtensionSchemaUpdates (LocalSettings.custos.php written first)
 settings "$res/pcalc"
 (cd "$mw" && php maintenance/run.php update --quick) > "$work/update.log" 2>&1 \
 	|| { tail -n 20 "$work/update.log" >&2; die "update.php failed (log: update.log in the scratch folder)"; }
-say "update: the tables custos_ticket, custos_seat, custos_certificate, custos_job_run, custos_nonce, custos_meter, custos_budget and custos_traffic made by the schema hook"
+say "update: the tables custos_ticket, custos_seat, custos_certificate, custos_job_run, custos_nonce, custos_meter, custos_budget, custos_traffic and custos_prompt_mark made by the schema hook"
 
 # 4c. The schema's SQL current: for each table, generateSchemaSql reproduces sql/<type>/<table>.sql byte for byte
 # from that table's own sql/<table>.json (the tables SchemaHooks::TABLES registers, each by its own name).
@@ -347,7 +351,7 @@ say "update: the tables custos_ticket, custos_seat, custos_certificate, custos_j
 # rehearsal.json pins, into <scratch>/schema-tools (or the folder $CUSTOS_SCHEMA_TOOLS names), loaded by
 # schema_tools.php. The JSON is copied into a real folder under extensions/, so the generated "Source:" line
 # is the extension-relative sql/<table>.json wherever the clone lives.
-custos_tables="custos_ticket custos_seat custos_certificate custos_job_run custos_nonce custos_meter custos_budget custos_traffic"
+custos_tables="custos_ticket custos_seat custos_certificate custos_job_run custos_nonce custos_meter custos_budget custos_traffic custos_prompt_mark"
 tools=${CUSTOS_SCHEMA_TOOLS:-$work/schema-tools}
 for lib in dbal sql-formatter jsonlint deprecations event-manager; do
 	if [ ! -d "$tools/$lib" ]; then
@@ -377,8 +381,8 @@ say "schema: current"
 # SQLite data in the scratch folder; MW_CONFIG_FILE names that LocalSettings, so MediaWiki never reads the first
 # wiki's), given custos_ticket alone, as the earlier schema hook made it (that table's own SQL, by maintenance/run.php
 # sql), Custos loaded, one ticket written through the ticket store (Custos:Ticket); then update.php with this head's
-# hook. The hook adds custos_seat, custos_certificate, custos_job_run, custos_nonce, custos_meter, custos_budget and
-# custos_traffic and only adds: the eight tables present (the catalog read by sql), the ticket kept.
+# hook. The hook adds custos_seat, custos_certificate, custos_job_run, custos_nonce, custos_meter, custos_budget,
+# custos_traffic and custos_prompt_mark and only adds: the nine tables present (the catalog read by sql), the ticket kept.
 if [ -z "$tamper_only" ]; then
 	old="$work/before-seat"
 	mkdir -p "$old/data"
@@ -408,13 +412,13 @@ PHP
 		|| { tail -n 20 "$work/update-before-seat.log" >&2; die "update.php of the second wiki failed"; }
 	after=$(tables_of)
 	kept=$(oldmw maintenance/run.php Custos:Ticket --count QUEUED | tail -n 1)
-	if [ "$after" != "custos_budget custos_certificate custos_job_run custos_meter custos_nonce custos_seat custos_ticket custos_traffic " ] || [ "$kept" != 1 ]; then
+	if [ "$after" != "custos_budget custos_certificate custos_job_run custos_meter custos_nonce custos_prompt_mark custos_seat custos_ticket custos_traffic " ] || [ "$kept" != 1 ]; then
 		tail -n 20 "$work/update-before-seat.log"
 		say "schema: the update of the wiki that had custos_ticket alone left: $after (tickets QUEUED: $kept)"
 		say "rehearsal: FAIL (schema)"
 		exit 1
 	fi
-	say "schema: custos_seat, custos_certificate, custos_job_run, custos_nonce, custos_meter, custos_budget and custos_traffic added by update to a wiki that had custos_ticket alone"
+	say "schema: custos_seat, custos_certificate, custos_job_run, custos_nonce, custos_meter, custos_budget, custos_traffic and custos_prompt_mark added by update to a wiki that had custos_ticket alone"
 fi
 
 # 5. The wiring with the true binary, then the web
@@ -909,6 +913,20 @@ print(r[1] if r[0] == "OK" else "")' "$root/client" "$res/pcalc" "$1"
 			|| fail_api "the second account's PETITION was not answered LOCK HELD with a jittered wait: $held"
 		say "land: LOCK HELD poll_after jittered"
 		records='[{"ASSUMPTIONS":[],"CITES":[],"CLASS":"RESULT","DERIVATION":{"STEPS":2,"TEXT":"The force law and the definition of v."},"EQUATION":"m * D(v, t) = -k_s * x","FALSIFIER":"A trajectory off the law.","FALSIFIER_CLASS":"F2","ID":"'"$seedprefix"'-1","REFS":["m","v","t","k_s","x"],"REGIME":"L","STATEMENT":"The equation of motion on the spring axis."},{"ASSUMPTIONS":[],"CITES":[],"CLASS":"ASSUMPTION","ID":"'"$seedprefix"'-2","PROPOSITION":"The mass is constant.","REFS":["m"]}]'
+		# D(PROMPT) unequal to the certificate's: refused PROMPT before the governor and the challenge, nothing landed.
+		land PUSH block=b1 "records=$records" "prompt_digest=$(printf 'f%.0s' {1..64})" "challenge_response=$(printf '0%.0s' {1..64})"
+		[ "$(php -r '$j = json_decode($argv[1], true); echo ($j["refused"] ?? "") . " " . var_export($j["recertify"] ?? null, true) . " " . (isset($j["execution"]) ? "x" : "-");' "$answer")" = "PROMPT true -" ] \
+			|| fail_api "a D(PROMPT) unequal to the certificate's was not refused PROMPT: $answer"
+		say "land: PUSH PROMPT refused"
+		# The refused-PROMPT mark: the certificate's own D(PROMPT) is refused too, until Custos:Certify writes the certificate again.
+		land PUSH block=b1 "records=$records" "prompt_digest=$rprompt" "challenge_response=$(printf '0%.0s' {1..64})"
+		[ "$(php -r '$j = json_decode($argv[1], true); echo ($j["refused"] ?? "") . " " . (str_starts_with((string)($j["detail"] ?? ""), "a refused-PROMPT mark stands") ? "mark" : "-") . " " . (isset($j["execution"]) ? "x" : "-");' "$answer")" = "PROMPT mark -" ] \
+			|| fail_api "the certificate's own D(PROMPT) after a PROMPT refusal was not refused under the mark: $answer"
+		say "land: PUSH PROMPT mark stands"
+		cert=$( (cd "$mw" && php maintenance/run.php Custos:Certify --agent Rehearsalagent --sponsor Rehearsalsponsor --d-is "$rdis" \
+			--d-prompt "$rprompt" --family rehearsal --model rehearsal-model) 2>&1) || fail_api "Custos:Certify again failed: $cert"
+		[ "$(tail -n 1 <<<"$cert")" = "certify: Rehearsalagent sponsor Rehearsalsponsor" ] || fail_api "Custos:Certify again: $cert"
+		say "land: PROMPT mark cleared by Custos:Certify"
 		land PUSH block=b1 "records=$records" "challenge_response=$(printf '0%.0s' {1..64})"
 		[ "$(php -r '$j = json_decode($argv[1], true); echo ($j["refused"] ?? "") . " " . ($j["execution"] ?? "");' "$answer")" = "CHALLENGE REASONED" ] \
 			|| fail_api "a wrong answer to the challenge was not refused REASONED: $answer"
@@ -916,7 +934,11 @@ print(r[1] if r[0] == "OK" else "")' "$root/client" "$res/pcalc" "$1"
 		nonce=$(challenge_of "$answer")
 		response=$(respond "$nonce")
 		[[ "$response" =~ ^[0-9a-f]{64}$ ]] || fail_api "the Research Client did not answer the challenge"
-		land PUSH block=b1 "records=$records" "challenge_response=$response"
+		loghead=$(printf 'rehearsal session log' | sha256sum | cut -c1-64)
+		land PUSH block=b1 "records=$records" "challenge_response=$response" "prompt_digest=$rprompt" "log_head=$loghead"
+		[ "$(php -r '$j = json_decode($argv[1], true); echo ($j["log_head"] ?? "") . " " . ($j["prompt_check"] ?? "");' "$answer")" = "$loghead MATCHED" ] \
+			|| fail_api "the landed PUSH did not echo its log_head with prompt_check MATCHED: $answer"
+		say "land: PUSH log_head echoed, prompt_check MATCHED"
 		[ "$first" = landed ] && [ "$(php -r '$j = json_decode($argv[1], true); echo $j["execution"] ?? "";' "$answer")" = EXECUTED ] && [ "$(php -r '$j = json_decode($argv[1], true); echo implode(",", array_column($j["landed"] ?? [], "id"));' "$answer")" = "$seedprefix-1,$seedprefix-2" ] \
 			|| fail_api "the PUSH did not land $seedprefix-1 and $seedprefix-2 (the records under the UWC's own prefix): $answer"
 		say "land: PUSH $first EXECUTED"

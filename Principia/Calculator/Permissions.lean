@@ -20,7 +20,7 @@ import Principia.Permissions
   Every context Custos can know reads as exactly one of them (the Calculator's
   tests check the 96 are distinct and complete).
 * `table {}`: the whole table in one answer, so that Custos's permission hook
-  reads it from a file generated from this residence (`scripts/permits_table.py`):
+  reads it from a file generated from this residence by the table generator:
   `{"cells", "contexts"}`, `contexts` the domain's 96 contexts and `cells` an object by
   asker word, then page class word, then operation word, of the 96 answer words in the
   contexts' order. `table_lookup_eq_permits`: every cell is the answer `permits` gives on
@@ -73,7 +73,7 @@ def requestOf (v : Value) : Except Refusal Request := do
   | none => badArgument "context is not a list of the context words"
 
 /-- The answer word on a context's words, read as the word arm reads them; a list that does
-not read (none of the domain's, `Tests/Calculator.lean`) answers `REFUSED`. -/
+not read (none of the domain's) answers `REFUSED`. -/
 def cellOn (a : Actor) (c : PageClass) (op : Op) (ws : List String) : String :=
   match readContext ws {} with
   | some context => ({ actor := a, pageClass := c, op, context } : Request).answer

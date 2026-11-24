@@ -1,6 +1,7 @@
 import Principia.Calculator.Interface
 import Principia.Cluster
 import Principia.Cluster.Bounded
+import Principia.Cluster.Month
 import Principia.Cluster.Rows
 import Principia.Cluster.Schedule
 import Principia.Cluster.Screen
@@ -53,6 +54,30 @@ import Principia.Calculator.Identity
   state word its sources and month do not bear out), `failing`, `month` (a month after the
   clock's, or not a month), `outcomes` (not an object of at most `maxSources` sources, each
   `SERVED` or `FAILED`, or given for a run not due).
+
+* `cluster_month {"clock", "state", "sources"?, "datasets"?, "exclusion", "map", "core",
+  "se_definition", "se_max", "released"?, "updated"?, "in_max"?, "cusp_max"?, "z"?,
+  "spacing_floor"?}`: the cluster month in one call (`Principia.Cluster.Month`). Without
+  `datasets` (the run has not fetched) the answer is `cluster_schedule`'s on `clock` and
+  `state`: `{"due": d, "month": "YYYY-MM"}`. With them it composes, in order:
+  `cluster_screen` on each source's raw rows; `cluster_rows` on the kept rows, each given as
+  `[model, config, benchmark, score, se]`, its last three the raw row's members named by its
+  source's declaration (`sources`: `[{"source", "benchmark_member", "score_member",
+  "se_member"}, ...]`, the Declarer's slots carried as data; an absent member is `null`);
+  the cluster rule over the LISTED ROWs' squared SEs and the resolving step over the
+  spacing's square, exactly (`clusterSq`, `resolvingStepSq`), under ITEM-SAMPLING;
+  `cluster_schedule` with each source `SERVED` (its dataset a list of raw rows) or `FAILED`
+  (`null`); and `cluster_text_check` on the page's text. Where the run does not publish,
+  the answer is `cluster_schedule`'s. Where it publishes and the text is clean, the answer
+  adds to it `clean` (true), `page` (v1's text of the cluster, a newline, v1's text of the
+  resolving step), `position` (`null`), `rows` (every ROW's measure, as `cluster_rows`
+  answers it) and `screen` (the three counts of `cluster_screen`, summed over the sources).
+  Where the text names an excluded token the answer is only `{"clean": false, "due": true,
+  "month", "position": i}`: nothing is written. A refusal is the first part's, its detail
+  `<part>: <word>` (`cluster_screen`, `cluster_rows`, `cluster`, `resolving_step`,
+  `cluster_schedule`, `cluster_text_check`); the function's own words are
+  `cluster_month: sources` and `cluster_month: datasets` (a dataset for every declared source
+  and no other).
 
 At most `maxRows` rows (or SEs) and `maxPaired` paired SEs. An absent threshold is its declared value (`Principia.Parameters`), an absent
 `spacing_floor` 0, an absent or `null` `paired` ITEM-SAMPLING. The answer is v1's text of
@@ -388,6 +413,161 @@ def clusterSchedule (v : Value) : Except Refusal Value := do
 
 end Schedule
 
+/-! ## The cluster month in one call -/
+
+/-- A part's refusal, its detail prefixed with the part's name. -/
+def inPart {α : Type} (part : String) : Except Refusal α → Except Refusal α
+  | .ok a => .ok a
+  | .error r => .error ⟨r.code, s!"{part}: {r.detail}"⟩
+
+/-- `cluster_month`'s own refusal: its word, prefixed with its name. -/
+def monthWord {α : Type} (w : String) : Except Refusal α → Except Refusal α
+  | .ok a => .ok a
+  | .error _ => badArgument s!"cluster_month: {w}"
+
+/-- The SOURCE DECLARATION: a list of at least one and at most `maxSources` objects
+`{"source", "benchmark_member", "score_member", "se_member"}`, each a text not empty, no source
+named twice; else the word `sources`. -/
+def readSources (v : Value) : Except Refusal (List (String × Principia.Cluster.Month.Members)) :=
+  monthWord "sources" do
+    let xs ← asList "sources" v
+    if xs.isEmpty || maxSources < xs.length then badArgument "sources"
+    let ss ← xs.mapM fun x => do
+      let ms ← membersOf ["source", "benchmark_member", "score_member", "se_member"] x
+      let text (n : String) : Except Refusal String := do
+        match ← needed ms n with
+        | .str s => if s.isEmpty then badArgument n else pure s
+        | _ => badArgument n
+      pure (← text "source",
+        (⟨← text "benchmark_member", ← text "score_member", ← text "se_member"⟩ :
+          Principia.Cluster.Month.Members))
+    if (ss.map (·.1)).eraseDups.length != ss.length then badArgument "sources"
+    pure ss
+
+/-- The fetched datasets: an object naming every declared source and no other, each a list of
+raw rows (served) or `null` (its fetch failed); in the declaration's order. Else the word
+`datasets`. -/
+def readDatasets (v : Value) (ss : List (String × Principia.Cluster.Month.Members)) :
+    Except Refusal (List (String × Option (List Value))) :=
+  monthWord "datasets" do
+    let ms ← match v with
+      | .obj ms => pure ms
+      | _ => badArgument "datasets"
+    if ms.length != ss.length || (ms.map (·.1)).eraseDups.length != ms.length then
+      badArgument "datasets"
+    ss.mapM fun (s, _) =>
+      match ms.lookup s with
+      | some .null => pure (s, none)
+      | some (.arr xs) => pure (s, some xs)
+      | _ => badArgument "datasets"
+
+/-- `cluster_rows`'s CORE SET, SE DEFINITION, SE MAX and dates, read and refused as
+`cluster_rows` reads and refuses them. -/
+def readCore (ms : List (String × Value)) :
+    Except Refusal (Principia.Cluster.Rows.CoreSet × List (String × String) × List (String × String)) := do
+  let coreList ← match ← needed ms "core" with
+    | .arr xs => pure xs
+    | _ => badArgument "core"
+  atMost "core" maxCore coreList
+  let core ← coreList.mapM fun
+    | .str b => if b.isEmpty then badArgument "core" else pure b
+    | _ => badArgument "core"
+  if core.isEmpty || core.eraseDups.length != core.length then badArgument "core"
+  let seDef ← match ← needed ms "se_definition" with
+    | .str "ITEM-SAMPLING" => pure false
+    | .str "FIXED-SET" => pure true
+    | _ => badArgument "se_definition"
+  let seMax ← match asNumber "se_max" (← needed ms "se_max") with
+    | .ok x => if x < 0 then badArgument "se_max" else pure x
+    | .error _ => badArgument "se_max"
+  let released ← readDates ms "released"
+  let updated ← readDates ms "updated"
+  if seDef then
+    throw ⟨.owed, "the SE under FIXED-SET (its run-to-run SE on shared items is marked VERIFY by the sources)"⟩
+  pure (⟨core, seMax⟩, released, updated)
+
+/-- The schedule's answer as an object's members. -/
+def objMembers : Value → List (String × Value)
+  | .obj ms => ms
+  | _ => []
+
+/-- `cluster_month`: the cluster month in one call. Without `datasets` (the run has not
+fetched) it is `cluster_schedule`'s due answer. With them, the parts in order: the screen of
+each source's raw rows, the ROWs' measures from the kept rows' declared members, the cluster
+rule over the LISTED ROWs' squared SEs, the resolving step over the spacing's square, the due
+rule and the page's next state from each source's outcome, and the text check of the page. -/
+def clusterMonth (v : Value) : Except Refusal Value := do
+  let ms ← membersOf ["clock", "state", "sources", "datasets", "exclusion", "map", "core",
+    "se_definition", "se_max", "released", "updated", "in_max", "cusp_max", "z",
+    "spacing_floor"] v
+  let scheduleArgs : Except Refusal (List (String × Value)) :=
+    inPart "cluster_schedule" do pure [("clock", ← needed ms "clock"), ("state", ← needed ms "state")]
+  match optional ms "datasets" with
+  | none => inPart "cluster_schedule" (clusterSchedule (.obj (← scheduleArgs)))
+  | some dv =>
+    let ss ← readSources (← monthWord "sources" (needed ms "sources"))
+    let ds ← readDatasets dv ss
+    -- The screen: every raw row, the EXCLUSION LIST, the MODEL MAP.
+    let (kept, counts) ← inPart "cluster_screen" do
+      let all := ds.flatMap fun (_, d) => d.getD []
+      atMost "rows" maxRows all
+      let raws ← ds.mapM fun (s, d) => do pure (s, ← (d.getD []).mapM readRaw)
+      let ps ← readExclusion ms
+      let map ← match Principia.Identity.checkMap
+          (Principia.Calculator.Identity.zoneValue (← needed ms "map")) with
+        | .ok m => pure m
+        | .error _ => badArgument "model_map"
+      let idChars := (map.map fun (_, r) => r.family.length +
+        (r.server.map String.length).getD 0 + (r.quantization.map String.length).getD 0).foldl max 0
+      let rowsAll := raws.flatMap (·.2)
+      withinWork (2 * ((rowsAll.flatMap Principia.Cluster.Screen.rawTexts).map String.length).sum +
+        rowsAll.length * idChars) ps
+      let answers := raws.map fun (s, rs) => (s, Principia.Cluster.Screen.screen ps map rs)
+      let kept := answers.flatMap fun (s, a) =>
+        match ss.lookup s with
+        | some m => a.kept.map (Principia.Cluster.Month.entry m)
+        | none => []
+      let sum (f : Principia.Cluster.Screen.Answer → Nat) := (answers.map fun (_, a) => f a).sum
+      pure (kept, (sum (·.ingestion), sum (·.afterMap), sum (·.unmapped)))
+    -- Each ROW's measure, from the kept rows' declared members.
+    let measures ← inPart "cluster_rows" do
+      atMost "scores" maxScores kept
+      let comps ← readScores kept []
+      let (cset, released, updated) ← readCore ms
+      let cs := comps.map (·.1)
+      let _ ← bounded (Principia.Cluster.Rows.rowsWithin cs cset)
+      pure (Principia.Cluster.Rows.rows cs cset released updated)
+    -- The cluster rule and the resolving step over the LISTED ROWs' squares.
+    let fed := Principia.Cluster.Month.fed measures
+    let t ← inPart "cluster" (thresholds ms)
+    let floor ← inPart "cluster" (threshold ms "spacing_floor" 0)
+    if !Principia.Cluster.Month.fedWithin fed t floor then
+      inPart "cluster" (badArgument Principia.ValueBound.tooLarge)
+    let (r, d) ← match Principia.Cluster.Month.clusterMonth fed t floor with
+      | .ok rd => pure rd
+      | .error (part, e) => inPart part (refuse e)
+    -- The due rule and the page's next state from each source's outcome.
+    let outs : List (String × Value) := ds.map fun (s, d) =>
+      (s, .str (if d.isSome then "SERVED" else "FAILED"))
+    let sched ← inPart "cluster_schedule"
+      (clusterSchedule (.obj ((← scheduleArgs) ++ [("outcomes", .obj outs)])))
+    let sm := objMembers sched
+    if sm.lookup "publish" != some (.bool true) then return sched
+    -- The page's text, checked against the EXCLUSION LIST.
+    let pageText := Principia.Cluster.Month.page r d
+    let check ← inPart "cluster_text_check"
+      (clusterTextCheck (.obj [("text", .str pageText), ("exclusion", ← needed ms "exclusion")]))
+    let cm := objMembers check
+    let position := (cm.lookup "position").getD .null
+    if cm.lookup "clean" != some (.bool true) then
+      return .obj [("clean", .bool false), ("due", .bool true),
+        ("month", (sm.lookup "month").getD .null), ("position", position)]
+    let (ing, after, unmapped) := counts
+    pure (.obj (sm ++ [("clean", .bool true), ("page", .str pageText), ("position", .null),
+      ("rows", .arr (measures.map measureValue)),
+      ("screen", .obj [("excluded_after_map", .int after), ("excluded_at_ingestion", .int ing),
+        ("unmapped", .int unmapped)])]))
+
 /-- The family's functions. -/
 def calls : Family := [
   ("cluster", fun v => do
@@ -431,6 +611,7 @@ def calls : Family := [
       match ← bounded (Principia.Cluster.Bounded.resolvingStep spacing ses t paired) with
       | .ok r => pure (.str (Principia.Cluster.renderResolving r))
       | .error e => refuse e),
+  ("cluster_month", clusterMonth),
   ("cluster_rows", clusterRows),
   ("cluster_schedule", clusterSchedule),
   ("cluster_screen", clusterScreen),

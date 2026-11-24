@@ -169,6 +169,49 @@ theorem preimage_injective : ∀ {xs ys : List String}, preimage xs = preimage y
 theorem preimage_inj {xs ys : List String} : preimage xs = preimage ys ↔ xs = ys :=
   ⟨preimage_injective, fun h => h ▸ rfl⟩
 
+/-- The preimage of two lists joined is the first list's preimage, then the second's. -/
+theorem preimage_append (xs ys : List String) :
+    preimage (xs ++ ys) = preimage xs ++ preimage ys :=
+  String.toList_injective (by simp [preimage_toList, String.toList_append])
+
+/-- A preimage's UTF-8 byte count is the sum, over its texts, of each length's digit count,
+one for the colon, and the text's own byte count. -/
+theorem preimage_utf8ByteSize (xs : List String) :
+    (preimage xs).utf8ByteSize =
+      (xs.map fun s => (toString s.utf8ByteSize).length + 1 + s.utf8ByteSize).sum := by
+  have hl : ∀ l : List Char, (∀ c ∈ l, c.isDigit = true) →
+      (String.ofList l).utf8ByteSize = l.length := by
+    intro l hl
+    induction l with
+    | nil => rfl
+    | cons c l ih =>
+      have hc : c.utf8Size = 1 := by
+        have := hl c List.mem_cons_self
+        simp only [Char.isDigit, Bool.and_eq_true, decide_eq_true_eq] at this
+        apply Char.utf8Size_eq_one_iff.mpr
+        exact UInt32.le_trans this.2 (by decide)
+      rw [String.ofList_cons, String.utf8ByteSize_append, String.utf8ByteSize_singleton, hc,
+        ih (fun d hd => hl d (List.mem_cons_of_mem c hd)), List.length_cons, Nat.add_comm]
+  have hn : ∀ n : Nat, (toString n).utf8ByteSize = (toString n).length := by
+    intro n
+    have he : toString n = String.ofList (Nat.toDigits 10 n) :=
+      String.toList_injective (by simp [toString, Nat.toList_repr])
+    rw [he, hl _ (fun c hc => Nat.isDigit_of_mem_toDigits (by decide) (by decide) hc),
+      ← String.length_toList, String.toList_ofList]
+  induction xs with
+  | nil => rfl
+  | cons x xs ih =>
+    have hc : preimage (x :: xs) = netstring x ++ preimage xs :=
+      String.toList_injective (by simp [preimage_toList, String.toList_append])
+    have hx : netstring x = toString x.utf8ByteSize ++ ":" ++ x :=
+      String.toList_injective (by
+        simp only [netstring_toList, String.toList_append, colon_toList, toString,
+          Nat.toList_repr]
+        simp)
+    rw [hc, String.utf8ByteSize_append, ih, hx, String.utf8ByteSize_append,
+      String.utf8ByteSize_append, hn, List.map_cons, List.sum_cons]
+    rfl
+
 /-! ## A field list (`preimageFields`) -/
 
 /-- A field's kind: an integer, or a text. -/
@@ -204,6 +247,15 @@ theorem preimageFields_injective : ∀ {a b : List Field}, a.map Field.isInt = b
         simp only [List.map_cons, List.cons.injEq] at hk hb
         rw [Field.bytes_inj hk.1 hb.1, ih _ hk.2 hb.2]
 
+/-- The preimage of the empty field list is the empty text. -/
+theorem preimageFields_nil : preimageFields [] = "" := preimage_nil
+
+/-- The preimage of two field lists joined is the first list's preimage, then the second's. -/
+theorem preimageFields_append (a b : List Field) :
+    preimageFields (a ++ b) = preimageFields a ++ preimageFields b := by
+  show preimage _ = preimage _ ++ preimage _
+  rw [List.map_append, preimage_append]
+
 /-! ## The combination rule and D(RAS) -/
 
 /-- **SC5.** Two lists of digests with one preimage are the same list (TPS 2.5.3). -/
@@ -212,6 +264,18 @@ theorem preimageDigests_injective {xs ys : List String} {p : String}
   unfold preimageDigests at hx hy
   split at hx <;> split at hy <;> simp only [Option.some.injEq, reduceCtorEq] at hx hy
   exact preimage_injective (hx.trans hy.symm)
+
+/-- A digest list's preimage is `p` exactly when every digest is hex and its preimage is `p`. -/
+theorem preimageDigests_eq_some_iff (ds : List String) (p : String) :
+    preimageDigests ds = some p ↔ ds.all isHex64 = true ∧ preimage ds = p := by
+  unfold preimageDigests
+  cases h : ds.all isHex64 <;> simp
+
+/-- A digest list has no preimage exactly when one of its digests is not a hex digest. -/
+theorem preimageDigests_eq_none_iff (ds : List String) :
+    preimageDigests ds = none ↔ ds.all isHex64 = false := by
+  unfold preimageDigests
+  cases h : ds.all isHex64 <;> simp
 
 /-- **SC5.** D(RAS)'s preimage gives the three zones' digests back, each in its place. -/
 theorem preimageResearchAssembly_injective {a b c a' b' c' p : String}

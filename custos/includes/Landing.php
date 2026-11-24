@@ -6,7 +6,18 @@
  *   run(id)  the ticket claimed (QUEUED -> IN WORK); its request read through the Calculator; the
  *            account's certificate read (CertificateStore, the table custos_certificate written by
  *            Custos:Certify): none, or one not ACTIVE, answers ADMISSION "the account has no
- *            certificate in force" before the governor is asked, nothing charged; the
+ *            certificate in force" before the governor is asked, nothing charged; at PETITION
+ *            and PUSH a presented `prompt_digest` compared with the certificate's D(PROMPT) (TPS
+ *            5.14.5; the server recomputes nothing): unequal answers PROMPT before the governor is
+ *            asked, nothing charged, written or stepped, the answer marking the account as needing
+ *            re-certification (`recertify`), and the certificate's refused-PROMPT mark set
+ *            (CertificateStore::markPrompt, the table custos_prompt_mark): while it stands, every op
+ *            under the certificate (PETITION, PUSH, RELEASE, HEARTBEAT, STRUCTURE_TEST) is refused
+ *            PROMPT (PROMPT_MARKED) right after the certificate's read, whatever D(PROMPT) it
+ *            presents or none, before the governor is asked, nothing charged, written or stepped;
+ *            only Custos:Certify's write of the certificate clears it; equal, or a certificate binding no D(PROMPT), goes on and
+ *            the answer says which (`prompt_check`, PROMPT_CHECKS); no digest presented, nothing
+ *            compared and the answer as before; the
  *            governor asked (`governor seat_cost`, then `governor admit` over a MeteredState read
  *            from the seat table, the certificate table, the ticket table and configuration: the
  *            agent's bucket its own account's, the sponsor's bucket the certificate's Sponsor's,
@@ -42,12 +53,27 @@
  *            mechanical tests over the register with the batch): a batch the strike rule would
  *            strike, or citing a record it would strike, refused RECORD CHECK, each problem
  *            STRIKE OWED (the strike is not written at landing yet); the open register volume rewritten with the batch
- *            appended and the INDEX AND BADGE page written last (PageWriter, one save per page);
+ *            appended and the INDEX AND BADGE page written last (PageWriter, one save per page); a
+ *            presented `log_head` (the session log's head, the commit half of its commit and reveal,
+ *            TPS 5.4.18) echoed in the landed answer as received, its content never read;
  *   RELEASE  the holder's lock freed and the badge's last release advanced;
  *   HEARTBEAT the holder's lock, within its lease, extended to now plus $wgCustosLockLease (its
  *            grant and block kept), else NOT HOLDER;
  *   STRUCTURE_TEST the holder's (within its lease, else NOT HOLDER): the structure test with
- *            register (TPS 5.3.47) and its line, below.
+ *            register (TPS 5.3.47) and its line, below;
+ *   RETURN   a Coworker's return of its assigned block (docs/design/pma_custos_ops.md 4.3): the
+ *            UWC LIVE; the lock held within its lease, else NO HOLDER, its block the VETTED_IN; the assignment of the request's block on the collaboration page (`hold
+ *            assignments` through Assignments, the server clock): no row NO ASSIGNMENT, a row naming
+ *            another account NOT ASSIGNEE, a row past its end EXPIRED, a block the Calculator refuses
+ *            answered with its word; the next return number n, the lowest with no staging page
+ *            `<UWC>/Collaboration/Staging/<block>/<n>`, read from 1 upward (at most MAX_RETURNS); the
+ *            DIGEST GATE and the BIBLIOGRAPHY SETTING as PUSH reads them; the records checked as PUSH
+ *            checks them (checkRecords, all or nothing, RECORD CHECK); AUTHOR (the returning account), BLOCK (the assigned block) and
+ *            VETTED_IN filled, nothing else (GRADE, STATUS, LANDED_BY, LANDED, TPS, D_IS and DIGEST are
+ *            the Holder's PUSH's); the staged text the Calculator's canonical JSON of the filled records,
+ *            its digest `digest digest_fields` over [RETURN_TAG, block, account, that text]; the one
+ *            staging page written through PageWriter::commitOne (no badge, no register, no lock). The
+ *            answer {"returned", "block", "records", "digest", "staging"}.
  * The structure test with register: the Research Assembly through the DIGEST GATE, the open register
  * volume (volume 1, as a PUSH), and one call `eom eom_register_test {"tfk", "records"}` over the
  * register whole: the Calculator takes the standing records whose declared form carries a ROLE. The
@@ -129,6 +155,27 @@ final class Landing {
 	public const SLOT_RETRY_AFTER = 5;
 	/** The detail of the ADMISSION refusal of an account with no certificate in force. */
 	public const NO_CERTIFICATE = 'the account has no certificate in force';
+	/** The detail of the PROMPT refusal: a presented D(PROMPT) unequal to the certificate's (TPS 5.14.5). */
+	public const PROMPT_MISMATCH = 'the presented D(PROMPT) differs from the certificate\'s; nothing is landed; the certificate '
+		. 'is re-bound by a DECLARED PROMPT CHANGE, or a new agent is certified (TPS 5.14.5)';
+	/**
+	 * The detail of the PROMPT refusal of every op under a certificate whose refused-PROMPT mark stands
+	 * (a PROMPT refusal was answered under it and no re-certification has followed).
+	 */
+	public const PROMPT_MARKED = 'a refused-PROMPT mark stands on the certificate; nothing is landed; it clears only when the '
+		. 'certificate is written again, by a DECLARED PROMPT CHANGE, or a new agent is certified (TPS 5.14.5)';
+	/**
+	 * The member `prompt_check` of an answer whose request presented `prompt_digest`: MATCHED, equal to
+	 * the certificate's D(PROMPT); UNBOUND, the certificate binds no D(PROMPT), nothing compared and
+	 * nothing refused. A request presenting none carries no member.
+	 */
+	public const PROMPT_CHECKS = [ 'MATCHED', 'UNBOUND' ];
+	/** A digest the request carries: 64 lowercase hexadecimal (prompt_digest, log_head). */
+	public const HEX64 = '/\A[0-9a-f]{64}\z/';
+	/** The tag of a RETURN's staged text's digest (docs/design/pma_custos_ops.md 4.5). */
+	public const RETURN_TAG = 'pma-return';
+	/** The returns of one block a UWC keeps at most: the bound of the read for the next return number. */
+	public const MAX_RETURNS = 1000;
 	/** The classes this unit lands; the rest are refused (the later briefs' corners). */
 	public const LANDS = [ 'RESULT', 'ASSUMPTION', 'ENTRY_STATUS' ];
 	/** The DRAFT UWC page's block naming the UWC's BIBLIOGRAPHY SETTING, its words, and the fleet default. */
@@ -178,6 +225,8 @@ final class Landing {
 	private ?array $after = null;
 	/** The admission's decision, to be stepped into the traffic record at the job's end; null: none made. */
 	private ?array $end = null;
+	/** The members a PETITION's or PUSH's answer carries once admitted: `prompt_check` when a digest was presented. */
+	private array $identity = [];
 	/** The governor's meter: the budget roll-up and the traffic records. */
 	private MeterStore $meter;
 	/** @var callable(string):void pushes the structure-test job for a UWC after a PUSH lands; null: none */
@@ -265,6 +314,7 @@ final class Landing {
 		$precision = (string)ini_get( 'serialize_precision' );
 		$this->after = null;
 		$this->end = null;
+		$this->identity = [];
 		try {
 			try {
 				if ( function_exists( 'ini_set' ) ) {
@@ -273,7 +323,7 @@ final class Landing {
 				if ( ini_get( 'serialize_precision' ) !== '-1' ) {
 					throw new LandRefused( 'CONFIGURATION', 'PHP\'s serialize_precision is not -1; nothing is landed' );
 				}
-				$answer = $this->attempt( $row ) + ( $this->after ?? [] );
+				$answer = $this->attempt( $row ) + $this->identity + ( $this->after ?? [] );
 				$outcome = 'SUCCEEDED';
 			} catch ( LandRefused $e ) {
 				$answer = Refusal::detail( $e ) + ( $this->after ?? [] );
@@ -414,7 +464,7 @@ final class Landing {
 			throw $e;
 		}
 		$now = ( $this->clock )();
-		$this->admit( $row, count( $records ), $now );
+		$this->admit( $row, $req, count( $records ), $now );
 		if ( $row['op'] === 'PUSH' ) {
 			// A PUSH lands under the block the lock was granted for, never one the request names.
 			$block = $this->granted( $row, $req, $now );
@@ -423,24 +473,55 @@ final class Landing {
 		$w = new PageWriter( $this->store, $this->titles );
 		$this->page = PageClass::INDEX_AND_BADGE;
 		$w->begin( (string)$row['prefix'], $block );
-		switch ( $row['op'] ) {
-			case 'PETITION':
-				return $this->petition( $w, $row, $block, $now );
-			case 'PUSH':
-				return $this->push( $w, $row, $block, $records, $now );
-			case 'RELEASE':
-				return $this->release( $w, $row, $now );
-			case 'HEARTBEAT':
-				return $this->heartbeat( $w, $row, $now );
-			case 'STRUCTURE_TEST':
-				return $this->structureOp( $w, $row, $now );
+		$handler = $this->handlers()[(string)$row['op']] ?? null;
+		if ( $handler === null ) {
+			throw new LandRefused( 'REQUEST', 'not an op the job runs: ' . PageTitles::show( (string)$row['op'] ) );
 		}
-		throw new LandRefused( 'REQUEST', 'not an op the job runs: ' . PageTitles::show( (string)$row['op'] ) );
+		return $handler( $w, $row, $req, $block, $records, $now );
 	}
 
 	/**
-	 * GA1, the request's shape: the ticket's request read (an object), its block, and a PUSH's
-	 * records read (a list of one record or more). @return array{0: stdClass, 1: string, 2: array}
+	 * The job's handlers, one per op word the job runs: each takes the open PageWriter, the ticket's
+	 * row, the request, the block, the records (a PUSH's) and the time, and answers the op's answer.
+	 * An op word with no handler is refused REQUEST.
+	 * @return array<string, callable(PageWriter, array, stdClass, string, array, int): array>
+	 */
+	private function handlers(): array {
+		return [
+			'PETITION' => fn ( PageWriter $w, array $row, stdClass $req, string $block, array $records, int $now ): array
+				=> $this->petition( $w, $row, $block, $now ),
+			'PUSH' => fn ( PageWriter $w, array $row, stdClass $req, string $block, array $records, int $now ): array
+				=> $this->push( $w, $row, $req, $block, $records, $now ),
+			'RELEASE' => fn ( PageWriter $w, array $row, stdClass $req, string $block, array $records, int $now ): array
+				=> $this->release( $w, $row, $now ),
+			'HEARTBEAT' => fn ( PageWriter $w, array $row, stdClass $req, string $block, array $records, int $now ): array
+				=> $this->heartbeat( $w, $row, $now ),
+			'STRUCTURE_TEST' => fn ( PageWriter $w, array $row, stdClass $req, string $block, array $records, int $now ): array
+				=> $this->structureOp( $w, $row, $now ),
+			'RETURN' => fn ( PageWriter $w, array $row, stdClass $req, string $block, array $records, int $now ): array
+				=> $this->returnRecords( $w, $row, $block, $records, $now ),
+		];
+	}
+
+	/** The op words the job has a handler for. @return string[] */
+	public function handled(): array {
+		return array_keys( $this->handlers() );
+	}
+
+	/**
+	 * What the governor is asked about a ticket, from one place: the request `governor seat_cost` takes,
+	 * its kind (the op word; a falcon's RETURN, by its key, is the kind FALCON RETURN with its rows
+	 * counted, when that op is built), the records counted (a PUSH's) and the result rows counted (none
+	 * yet). @return array{kind: string, records: int, rows: int}
+	 */
+	public static function governed( string $op, int $records ): array {
+		return [ 'kind' => $op, 'records' => $records, 'rows' => 0 ];
+	}
+
+	/**
+	 * GA1, the request's shape: the ticket's request read (an object), its block, and a PUSH's or a
+	 * RETURN's records read (a list of one record or more); a RETURN names its block.
+	 * @return array{0: stdClass, 1: string, 2: array}
 	 */
 	private function shape( array $row ): array {
 		$req = $this->read( (string)$row['request'], 'the ticket\'s request' );
@@ -449,13 +530,22 @@ final class Landing {
 		}
 		$block = isset( $req->block ) && is_string( $req->block ) ? $req->block : 't' . $row['id'];
 		$records = [];
-		if ( $row['op'] === 'PUSH' ) {
+		if ( $row['op'] === 'RETURN' && !( isset( $req->block ) && is_string( $req->block ) ) ) {
+			throw new LandRefused( 'REQUEST', 'a RETURN names its block' );
+		}
+		if ( $row['op'] === 'PUSH' || $row['op'] === 'RETURN' ) {
 			if ( !isset( $req->records ) || !is_string( $req->records ) ) {
-				throw new LandRefused( 'REQUEST', 'a PUSH carries records' );
+				throw new LandRefused( 'REQUEST', 'a ' . $row['op'] . ' carries records' );
 			}
 			$records = $this->read( $req->records, 'the records' );
 			if ( !is_array( $records ) || $records === [] ) {
 				throw new LandRefused( 'RECORDS', 'records is a list of one record or more' );
+			}
+		}
+		// The digests Ops shape-checked, read again here: a ticket written another way (Custos:Ticket) meets the same form.
+		foreach ( [ 'prompt_digest', 'log_head' ] as $k ) {
+			if ( property_exists( $req, $k ) && ( !is_string( $req->$k ) || preg_match( self::HEX64, $req->$k ) !== 1 ) ) {
+				throw new LandRefused( 'REQUEST', "$k is not 64 lowercase hexadecimal" );
 			}
 		}
 		return [ $req, $block, $records ];
@@ -468,18 +558,30 @@ final class Landing {
 	 * The read of the seats, the decision and the charge's write run under the account's seat lock,
 	 * released on every way out; a lock not obtained refuses ADMISSION with nothing charged.
 	 */
-	private function admit( array $row, int $records, int $now ): void {
+	private function admit( array $row, stdClass $req, int $records, int $now ): void {
 		$op = (string)$row['op'];
 		$account = (string)$row['account'];
-		// The certificate first: an agent with none in force is refused before the governor is asked,
+		// The refused-PROMPT mark is read before the certificate: put() clears it and writes the row
+		// together, so a mark read STANDING here refuses even when the row read next is a re-certification's,
+		// and a row read before a racing put() is never paired with that put()'s cleared mark.
+		$marked = $this->certs->promptMarked( $account );
+		// The certificate: an agent with none in force is refused before the governor is asked,
 		// and nothing is charged.
 		$cert = $this->certs->get( $account );
 		if ( $cert === null || ( $cert['state'] ?? null ) !== CertificateStore::ACTIVE || !is_string( $cert['sponsor'] ?? null )
 			|| $cert['sponsor'] === '' ) {
 			throw new LandRefused( 'ADMISSION', self::NO_CERTIFICATE );
 		}
+		// The refused-PROMPT mark: a PROMPT refusal stands for every op until the certificate is written again.
+		if ( $marked ) {
+			throw new LandRefused( 'PROMPT', self::PROMPT_MARKED, [ 'recertify' => true ] );
+		}
+		if ( $op === 'PETITION' || $op === 'PUSH' ) {
+			$this->prompt( $req, $cert, $account, $now );
+		}
 		$sponsor = $cert['sponsor'];
-		$seats = $this->ask( 'governor', 'seat_cost', [ 'kind' => $op, 'records' => $records, 'rows' => 0 ], 'the seats' );
+		$governed = self::governed( $op, $records );
+		$seats = $this->ask( 'governor', 'seat_cost', $governed, 'the seats' );
 		$within = max( 0, (int)$this->conf['seat_lock_seconds'] );
 		// The agent's seat lock and its Sponsor's, taken in the order of their names (two admissions
 		// never wait on each other in a cycle), so two agents of one Sponsor never both spend its last seat.
@@ -504,6 +606,50 @@ final class Landing {
 			throw $e;
 		}
 		$this->unlockAll( $held, (int)$row['id'], true );
+	}
+
+	/**
+	 * D(PROMPT) (TPS 5.14.5): the request's presented `prompt_digest` against the certificate's, before
+	 * the governor is asked, so a refusal charges, writes and steps nothing (neither a CONDUCT EVENT nor
+	 * a TRAFFIC EVENT). Custos recomputes nothing: it holds no PROMPT, salt or template. Unequal refuses
+	 * PROMPT and marks the account in the answer as needing re-certification (`recertify`: a DECLARED
+	 * PROMPT CHANGE re-binds the certificate, or a new agent is certified; Custos:Certify writes either,
+	 * never this job), and sets the certificate's refused-PROMPT mark before the refusal is answered (a
+	 * mark not written is a fault, the request refused all the same). A certificate whose D(PROMPT) is
+	 * empty refuses nothing and the answer says UNBOUND. A request presenting no digest is compared with
+	 * nothing (optional in this version).
+	 */
+	private function prompt( stdClass $req, array $cert, string $account, int $now ): void {
+		if ( !property_exists( $req, 'prompt_digest' ) ) {
+			return;
+		}
+		$bound = is_string( $cert['d_prompt'] ?? null ) ? $cert['d_prompt'] : '';
+		if ( $bound === '' ) {
+			$this->identity = [ 'prompt_check' => 'UNBOUND' ];
+			return;
+		}
+		if ( !self::digestEquals( $bound, (string)$req->prompt_digest ) ) {
+			$this->certs->markPrompt( $account, $now );
+			throw new LandRefused( 'PROMPT', self::PROMPT_MISMATCH, [ 'recertify' => true ] );
+		}
+		$this->identity = [ 'prompt_check' => 'MATCHED' ];
+	}
+
+	/**
+	 * Whether the digest $given equals the digest $known, byte for byte, in time independent of where
+	 * they first differ: a length that differs answers false at once (a digest's length is public),
+	 * else every byte is compared. Strict: no type juggling, no trimming, case kept.
+	 */
+	private static function digestEquals( string $known, string $given ): bool {
+		$n = strlen( $known );
+		if ( strlen( $given ) !== $n ) {
+			return false;
+		}
+		$diff = 0;
+		for ( $i = 0; $i < $n; $i++ ) {
+			$diff |= ord( $known[$i] ) ^ ord( $given[$i] );
+		}
+		return $diff === 0;
 	}
 
 	/**
@@ -803,7 +949,7 @@ final class Landing {
 		return $lock->block;
 	}
 
-	private function push( PageWriter $w, array $row, string $block, array $records, int $now ): array {
+	private function push( PageWriter $w, array $row, stdClass $req, string $block, array $records, int $now ): array {
 		$prefix = (string)$row['prefix'];
 		$account = (string)$row['account'];
 		[ $badgeText, $badge, $volume ] = $this->live( $w, $prefix );
@@ -822,56 +968,7 @@ final class Landing {
 		$setting = $this->setting( $w, $prefix );
 
 		// Every record checked before anything is filled: all or nothing.
-		$problems = [];
-		$views = [];
-		foreach ( $records as $i => $r ) {
-			if ( !$r instanceof stdClass ) {
-				$problems[] = [ 'index' => $i, 'answer' => [ 'REFUSED', [ [ 'REC-01', '-', 'the record is not an object' ] ] ] ];
-				continue;
-			}
-			$rt = self::json( $r );
-			$c = $this->askText( 'record', 'record_check', '{"record":' . $rt . ',"setting":' . $setting . ',"stage":"PUSH","tfk":' . $tfk . '}', 'the record check' );
-			if ( $c !== [ 'OK' ] ) {
-				$problems[] = [ 'index' => $i, 'answer' => $c ];
-				continue;
-			}
-			$v = $this->askText( 'record', 'record_view', '{"grade":null,"record":' . $rt . ',"view":"HOLD"}', 'the record\'s view' );
-			$kind = is_array( $v ) && ( $v[0] ?? null ) === 'OK' ? ( $v[1]['kind'] ?? null ) : null;
-			$id = is_array( $v ) && ( $v[0] ?? null ) === 'OK' ? ( $v[1]['id'] ?? null ) : null;
-			if ( !is_string( $kind ) || !is_string( $id ) ) {
-				$problems[] = [ 'index' => $i, 'answer' => $v ];
-				continue;
-			}
-			if ( !in_array( $kind, self::LANDS, true ) ) {
-				$problems[] = [ 'index' => $i, 'answer' => [ 'REFUSED', [ [ 'LANDS', 'CLASS', "a $kind record is not landed by this Custos yet" ] ] ] ];
-				continue;
-			}
-			// The withdrawal SUPERSEDES calls for is not built: a record carrying the member is refused
-			// whatever it names (fail closed), never landed with nothing withdrawn.
-			if ( property_exists( $r, 'SUPERSEDES' ) ) {
-				$problems[] = [ 'index' => $i, 'answer' => [ 'REFUSED', [ [ 'WITHDRAWAL', 'SUPERSEDES', 'a record carrying SUPERSEDES is not landed by this Custos yet: the withdrawal is not built' ] ] ] ];
-				continue;
-			}
-			$more = [];
-			if ( $kind === 'RESULT' || $kind === 'ASSUMPTION' ) {
-				$more[] = 'record_form_check';
-			}
-			if ( $kind === 'RESULT' ) {
-				$more[] = 'domain_check';
-			}
-			foreach ( $more as $fn ) {
-				$a = $this->askText( 'record', $fn, '{"record":' . $rt . ',"tfk":' . $tfk . '}', "the record's $fn" );
-				if ( $a !== [ 'OK' ] ) {
-					$problems[] = [ 'index' => $i, 'answer' => $a ];
-					continue 2;
-				}
-			}
-			$views[$i] = [ $kind, $id ];
-		}
-		if ( $problems !== [] ) {
-			throw new LandRefused( 'RECORD CHECK', count( $problems ) . ' of ' . count( $records ) . ' records refused; nothing is landed',
-				[ 'problems' => $problems ] );
-		}
+		$views = $this->checkRecords( $records, $setting, $tfk );
 
 		// The open register volume, its identifiers, and no identifier landed twice.
 		[ $regTitle, $regPayload ] = $this->registerText( $w, $prefix, $volume );
@@ -1010,7 +1107,166 @@ final class Landing {
 				$this->report( (int)$row['id'], $e );
 			}
 		}
-		return [ 'landed' => $landed, 'block' => $block, 'record_count' => count( $all ) ];
+		$out = [ 'landed' => $landed, 'block' => $block, 'record_count' => count( $all ) ];
+		if ( property_exists( $req, 'log_head' ) ) {
+			// The session log's head as received (shape-checked in shape()): the commit Custos keeps; it verifies nothing of the log.
+			$out['log_head'] = $req->log_head;
+		}
+		return $out;
+	}
+
+	/**
+	 * RETURN (docs/design/pma_custos_ops.md 4.3, its steps 1-4, 6-8 and 10; step 5 is the next return
+	 * number): every check before the one write, the staging page `<block>/<n>` beneath the
+	 * UWC's staging subpage, written by Custos alone through PageWriter::commitOne. The request's
+	 * block is the assigned one; the lock's block, the Holder's, is VETTED_IN.
+	 */
+	private function returnRecords( PageWriter $w, array $row, string $block, array $records, int $now ): array {
+		$prefix = (string)$row['prefix'];
+		$account = (string)$row['account'];
+		[ , $badge ] = $this->live( $w, $prefix );
+		$stamp = self::stamp( $now );
+
+		// The lock: a free one, or one past its lease, has no Holder to incorporate the return.
+		$lock = $this->lock( $w, $prefix );
+		if ( !is_string( $lock->holder ) || strcmp( (string)$lock->expires_at, $stamp ) <= 0 ) {
+			throw new LandRefused( 'NO HOLDER', "the lock of $prefix is free or past its lease; there is no Holder to return to; nothing is staged" );
+		}
+		if ( !is_string( $lock->block ?? null ) ) {
+			throw new LandRefused( 'UWC', "the lock of $prefix names no block" );
+		}
+		$holder = $lock->holder;
+		$vettedIn = $lock->block;
+
+		// The assignment: the Holder's block pma-assignments on the collaboration page, read by the Calculator.
+		$this->page = PageClass::COLLABORATION;
+		$read = Assignments::read( $this->calc, $w->read( $this->titles->collaboration( $prefix ) ), $holder, $stamp );
+		if ( isset( $read['refused'] ) && array_key_exists( 'detail', $read ) ) {
+			throw new LandRefused( 'CALCULATOR REFUSED', 'the assignments: ' . $read['refused'] . ': ' . $read['detail'],
+				[ 'calculator' => [ 'refused' => $read['refused'], 'detail' => $read['detail'] ] ] );
+		}
+		$found = Assignments::find( $read, $account, $block );
+		if ( isset( $found['refused'] ) ) {
+			$word = (string)$found['refused'];
+			$why = match ( $word ) {
+				Assignments::NO_ASSIGNMENT => "the collaboration page of $prefix assigns no block $block",
+				Assignments::NOT_ASSIGNEE => "the block $block is assigned to another account",
+				Assignments::EXPIRED => "the assignment of the block $block ended before the server time $stamp",
+				default => "the collaboration page's assignment block is refused by the Calculator, $word"
+					. ( is_int( $found['index'] ?? null ) ? ', at row ' . $found['index'] : '' ),
+			};
+			throw new LandRefused( $word, "$why; nothing is staged" );
+		}
+
+		// The next return number: the lowest n whose staging page `<block>/<n>` does not exist. The page
+		// read is this landing's base: a return staged at n meanwhile moves it, and commitOne refuses BASE MOVED.
+		$this->page = PageClass::STAGING;
+		$n = 0;
+		$title = null;
+		for ( $i = 1; $i <= self::MAX_RETURNS; $i++ ) {
+			$t = $this->titles->staging( $prefix, "$block/$i" );
+			if ( $w->read( $t ) === null ) {
+				[ $n, $title ] = [ $i, $t ];
+				break;
+			}
+		}
+		if ( $title === null ) {
+			throw new LandRefused( 'RETURNED', "the block $block holds " . self::MAX_RETURNS . ' returns, the bound; nothing is staged' );
+		}
+
+		// The DIGEST GATE and the setting, as PUSH reads them; every record checked at PUSH, all or nothing.
+		[ $tfk ] = $this->assembly( $w, $prefix, $badge );
+		$setting = $this->setting( $w, $prefix );
+		$this->checkRecords( $records, $setting, $tfk );
+
+		// The fields Custos owns for a returned record (4.3 step 8); the rest are the Holder's PUSH's.
+		foreach ( $records as $r ) {
+			$r->AUTHOR = $account;
+			$r->BLOCK = $block;
+			$r->VETTED_IN = $vettedIn;
+		}
+		$text = $this->askText( 'canonical', 'canonical_json', '{"value":' . self::json( $records ) . '}', 'the returned records\' text' );
+		if ( !is_string( $text ) ) {
+			throw new LandRefused( 'RECORDS', 'the returned records\' text is not a string' );
+		}
+		$digest = $this->ask( 'digest', 'digest_fields', [ 'fields' => [ self::RETURN_TAG, $block, $account, $text ] ], 'the return\'s digest' );
+		if ( !is_string( $digest ) || preg_match( self::HEX64, $digest ) !== 1 ) {
+			throw new CalculatorFault( 'the return\'s digest is not 64 lowercase hexadecimal characters', CalculatorFault::ANSWER_FORM,
+				'digest', 'digest_fields' );
+		}
+		$meta = $this->askText( 'canonical', 'canonical_json', '{"value":' . self::json( [ 'account' => $account, 'block' => $block,
+			'digest' => $digest, 'returned' => $stamp, 'staging' => $n, 'vetted_in' => $vettedIn ] ) . '}', 'the return\'s members' );
+		if ( !is_string( $meta ) ) {
+			throw new LandRefused( 'RECORDS', 'the return\'s members are not a string' );
+		}
+		$w->put( $title, PageTexts::staging( $prefix, $block, $n, $text, $meta ) );
+		$w->commitOne();
+		$this->page = null;
+		return [ 'returned' => $stamp, 'block' => $block, 'records' => count( $records ), 'digest' => $digest, 'staging' => $n ];
+	}
+
+	/**
+	 * Every record of a batch checked before anything is filled, all or nothing: each an object that
+	 * `record_check` passes at PUSH, whose view names a kind the landing takes and an identifier, that
+	 * carries no SUPERSEDES, and that passes the form and domain checks its kind asks for. A batch with
+	 * any record refused refuses RECORD CHECK with every problem. PUSH and RETURN call it.
+	 * @param stdClass[] $records the batch
+	 * @param string $setting the setting, as JSON text
+	 * @param string $tfk the Research Assembly's text, as JSON text
+	 * @return array<int, array{0: string, 1: string}> each record's kind and identifier, by its index
+	 */
+	private function checkRecords( array $records, string $setting, string $tfk ): array {
+		$problems = [];
+		$views = [];
+		foreach ( $records as $i => $r ) {
+			if ( !$r instanceof stdClass ) {
+				$problems[] = [ 'index' => $i, 'answer' => [ 'REFUSED', [ [ 'REC-01', '-', 'the record is not an object' ] ] ] ];
+				continue;
+			}
+			$rt = self::json( $r );
+			$c = $this->askText( 'record', 'record_check', '{"record":' . $rt . ',"setting":' . $setting . ',"stage":"PUSH","tfk":' . $tfk . '}', 'the record check' );
+			if ( $c !== [ 'OK' ] ) {
+				$problems[] = [ 'index' => $i, 'answer' => $c ];
+				continue;
+			}
+			$v = $this->askText( 'record', 'record_view', '{"grade":null,"record":' . $rt . ',"view":"HOLD"}', 'the record\'s view' );
+			$kind = is_array( $v ) && ( $v[0] ?? null ) === 'OK' ? ( $v[1]['kind'] ?? null ) : null;
+			$id = is_array( $v ) && ( $v[0] ?? null ) === 'OK' ? ( $v[1]['id'] ?? null ) : null;
+			if ( !is_string( $kind ) || !is_string( $id ) ) {
+				$problems[] = [ 'index' => $i, 'answer' => $v ];
+				continue;
+			}
+			if ( !in_array( $kind, self::LANDS, true ) ) {
+				$problems[] = [ 'index' => $i, 'answer' => [ 'REFUSED', [ [ 'LANDS', 'CLASS', "a $kind record is not landed by this Custos yet" ] ] ] ];
+				continue;
+			}
+			// The withdrawal SUPERSEDES calls for is not built: a record carrying the member is refused
+			// whatever it names (fail closed), never landed with nothing withdrawn.
+			if ( property_exists( $r, 'SUPERSEDES' ) ) {
+				$problems[] = [ 'index' => $i, 'answer' => [ 'REFUSED', [ [ 'WITHDRAWAL', 'SUPERSEDES', 'a record carrying SUPERSEDES is not landed by this Custos yet: the withdrawal is not built' ] ] ] ];
+				continue;
+			}
+			$more = [];
+			if ( $kind === 'RESULT' || $kind === 'ASSUMPTION' ) {
+				$more[] = 'record_form_check';
+			}
+			if ( $kind === 'RESULT' ) {
+				$more[] = 'domain_check';
+			}
+			foreach ( $more as $fn ) {
+				$a = $this->askText( 'record', $fn, '{"record":' . $rt . ',"tfk":' . $tfk . '}', "the record's $fn" );
+				if ( $a !== [ 'OK' ] ) {
+					$problems[] = [ 'index' => $i, 'answer' => $a ];
+					continue 2;
+				}
+			}
+			$views[$i] = [ $kind, $id ];
+		}
+		if ( $problems !== [] ) {
+			throw new LandRefused( 'RECORD CHECK', count( $problems ) . ' of ' . count( $records ) . ' records refused; nothing is landed',
+				[ 'problems' => $problems ] );
+		}
+		return $views;
 	}
 
 	/**

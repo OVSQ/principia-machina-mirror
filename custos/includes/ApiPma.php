@@ -122,6 +122,7 @@ final class ApiPma extends ApiBase {
 			'stated_model' => [ ParamValidator::PARAM_TYPE => 'string' ],
 			'relayed_model' => [ ParamValidator::PARAM_TYPE => 'string' ],
 			'challenge_response' => [ ParamValidator::PARAM_TYPE => 'string' ],
+			'log_head' => [ ParamValidator::PARAM_TYPE => 'string' ],
 		];
 	}
 }

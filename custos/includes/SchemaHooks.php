@@ -11,6 +11,9 @@
  * MediaWiki's maintenance/run.php generateSchemaSql from that table's own abstract schema,
  * sql/custos_ticket.json, sql/custos_seat.json, sql/custos_certificate.json, sql/custos_job_run.json and
  * sql/custos_nonce.json, the schema's one source each; the rehearsal checks that they are current.
+ * The meter's tables (custos_meter, custos_budget, custos_traffic) and the refused-PROMPT marks
+ * (custos_prompt_mark, DbCertificateStore::MARK) are registered the same way, each from its own JSON
+ * and SQL; a wiki that lacks one gains it on its next update.
  * An update only adds a table: it never drops, renames or rewrites one.
  */
 
@@ -20,7 +23,7 @@ use MediaWiki\Installer\Hook\LoadExtensionSchemaUpdatesHook;
 
 final class SchemaHooks implements LoadExtensionSchemaUpdatesHook {
 	/** The tables, each by its own name; its SQL is sql/<type>/<name>.sql, its source sql/<name>.json. */
-	public const TABLES = [ DbTicketStore::TABLE, DbSeatStore::TABLE, DbCertificateStore::TABLE, DbJobRunStore::TABLE, DbNonceStore::TABLE, DbMeterStore::METER, DbMeterStore::BUDGET, DbMeterStore::TRAFFIC ];
+	public const TABLES = [ DbTicketStore::TABLE, DbSeatStore::TABLE, DbCertificateStore::TABLE, DbJobRunStore::TABLE, DbNonceStore::TABLE, DbMeterStore::METER, DbMeterStore::BUDGET, DbMeterStore::TRAFFIC, DbCertificateStore::MARK ];
 
 	/** @inheritDoc */
 	public function onLoadExtensionSchemaUpdates( $updater ) {

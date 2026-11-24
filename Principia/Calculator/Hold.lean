@@ -1,6 +1,7 @@
 import Principia.Calculator.Interface
 import Principia.Calculator.Record
 import Principia.Hold
+import Principia.Hold.Assignments
 
 /-!
 # Family `hold`: hold scope, the HOLD and the RELEASE
@@ -22,6 +23,13 @@ as version 1 escaped it.
 * `release_record {"release_id", "hold", "reproduction", "records", "tier"}`: `["OK",
   [release_id, "RELEASE", hold_id, hold digest, kind, reproduction id, account, snapshot,
   [[id, status]], still held, [[bib_id, check]], digest]]`.
+* `assignments {"text", "holder", "now"}`: the assignment block `pma-assignments`
+  (`Principia.Hold.Assignments`), `["OK", [{"account", "block", "ends", "kind", "state"}]]`, the
+  state `LIVE` or `EXPIRED`; or `["REFUSED", word, index]`, the word `MALFORMED`, `TIME`,
+  `HOLDER` or `DUPLICATE` and the index (from 0) of the first bad row, `null` when the text is
+  not one JSON list. The Holder must be an account and the server time in the record's time
+  form; the text holds at most `maxBlockText` code points. The family's other bounds do not
+  apply to it.
 
 A HOLD's and a RELEASE's digests are SHA-256 over their field lists. An argument version 1's
 function reads must be present; each is read as version 1 read it (a number written with a
@@ -54,6 +62,9 @@ def maxText : Nat := 16384
 
 /-- The most code points the strings of a request hold in all. -/
 def maxTextTotal : Nat := 262144
+
+/-- The most code points an assignment block's text holds. -/
+def maxBlockText : Nat := 262144
 
 /-- A request within the bounds. -/
 def within (v : Value) : Except Refusal Unit := do
@@ -120,11 +131,34 @@ def releaseItems (r : ReleaseRecord) : List Value :=
     .str r.reproductionId, .str r.account, .str r.snapshot, pairs r.restored, strs r.stillHeld,
     pairs r.biblio, .str r.digest]]
 
+/-- The assignment reader's answer. -/
+def assignmentsAnswer : Except Assignments.Fault (List Assignments.Row) → Value
+  | .ok rows => .arr [.str "OK", .arr (rows.map fun r =>
+      .obj [("account", .str r.account), ("block", .str r.block), ("ends", .str r.ends),
+        ("kind", .str r.kind), ("state", .str (if r.expired then "EXPIRED" else "LIVE"))])]
+  | .error f => .arr [.str "REFUSED", .str f.word.text,
+      match f.index with | some i => .int i | none => .null]
+
+/-- The assignment reader's request: the block's text, the Holder, the server time. -/
+def assignmentsCall (v : Value) : Except Refusal Value := do
+  let (t, h, n) ← argument3 "text" "holder" "now" v
+  let text ← asString "text" t
+  let holder ← asString "holder" h
+  let now ← asString "now" n
+  if maxBlockText < text.length then
+    badArgument s!"the text holds more than {maxBlockText} code points (the Calculator's bound)"
+  unless Assignments.accountOk holder do
+    badArgument "the holder is not an account name"
+  unless Assignments.timeOk now do
+    badArgument "now is not a time YYYY-MM-DDTHH:MM:SSZ"
+  pure (assignmentsAnswer (Assignments.assignments text holder now))
+
 /-- The family's functions. -/
 def calls : Family := [
   ("allocate_identifiers", fun v => do
     let a ← read ["range"] v
     pure (answer allocationItems (custosAllocate (a "range")))),
+  ("assignments", assignmentsCall),
   ("held_closure", fun v => do
     let a ← read ["records", "seeds"] v
     pure (answer closureItems (heldClosure (a "records") (a "seeds")))),

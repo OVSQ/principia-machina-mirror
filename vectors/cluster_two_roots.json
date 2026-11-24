@@ -1,0 +1,517 @@
+{
+ "corpus": "cluster_two_roots",
+ "note": "The resolving step over the spacing's square (resolvingStepSq, renderResolvingSq) and Surd2.fixed6: every resolving case of cluster_corpus.json with the spacing and each SE given as squares, then cases of its own whose spacing and sds are roots, each worked in its note, then fixed6 cases of numbers with two roots at the rounding's boundaries.",
+ "cases": [
+  {
+   "name": "Q R01 the docs' specimen: u 1.6, SEs 0.6 with rank 6 at 0.7: 6.996 points, 4.37 spacings; the greatest 7.116",
+   "fn": "resolving",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "spacing_sq": 2.56,
+   "ses2": [0.36, 0.36, 0.36, 0.36, 0.36, 0.49],
+   "paired": null,
+   "expected": "resolving|6.995829|4.372393|5.395829|3.372393\ngreatest|7.116615|5.516615\nrank|3|6.995829|5.395829\nrank|4|6.995829|5.395829\nrank|5|6.995829|5.395829\nrank|6|7.116615|5.516615",
+   "note": "The cluster corpus's resolving case of this name, the spacing and each SE given as its square; the expected text is the corpus's."
+  },
+  {
+   "name": "Q R02 F30 row: ECI, SE 2.00, spacing 4.65: CUSP at 16.3, OUT at 20.9",
+   "fn": "resolving",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "spacing_sq": 21.6225,
+   "ses2": [4, 4, 4],
+   "paired": null,
+   "expected": "resolving|20.927763|4.500594|16.277763|3.500594\ngreatest|20.927763|16.277763\nrank|3|20.927763|16.277763",
+   "note": "The cluster corpus's resolving case of this name, the spacing and each SE given as its square; the expected text is the corpus's."
+  },
+  {
+   "name": "Q R03 F30 row: composite with CritPt, SE 1.66, spacing 3.86: 13.5 / 17.4",
+   "fn": "resolving",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "spacing_sq": 14.8996,
+   "ses2": [2.7556, 2.7556, 2.7556],
+   "paired": null,
+   "expected": "resolving|17.371793|4.500465|13.511793|3.500465\ngreatest|17.371793|13.511793\nrank|3|17.371793|13.511793",
+   "note": "The cluster corpus's resolving case of this name, the spacing and each SE given as its square; the expected text is the corpus's."
+  },
+  {
+   "name": "Q R04 F30 row: composite, item sampling, SE 0.96, spacing 2.23: 7.8 / 10.0",
+   "fn": "resolving",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "spacing_sq": 4.9729,
+   "ses2": [0.9216, 0.9216, 0.9216],
+   "paired": null,
+   "expected": "resolving|10.038326|4.501492|7.808326|3.501492\ngreatest|10.038326|7.808326\nrank|3|10.038326|7.808326",
+   "note": "The cluster corpus's resolving case of this name, the spacing and each SE given as its square; the expected text is the corpus's."
+  },
+  {
+   "name": "Q R05 F30 row: composite paired, SE 0.68, spacing 1.58: 5.5 / 7.1",
+   "fn": "resolving",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "spacing_sq": 2.4964,
+   "ses2": [0.4624, 0.4624, 0.4624],
+   "paired": null,
+   "expected": "resolving|7.111939|4.501227|5.531939|3.501227\ngreatest|7.111939|5.531939\nrank|3|7.111939|5.531939",
+   "note": "The cluster corpus's resolving case of this name, the spacing and each SE given as its square; the expected text is the corpus's."
+  },
+  {
+   "name": "Q R06 F30 row: fixed item set, SE 0.28, spacing 1.00: 3.2 / 4.2",
+   "fn": "resolving",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "spacing_sq": 1,
+   "ses2": [0.0784, 0.0784, 0.0784],
+   "paired": null,
+   "expected": "resolving|4.151387|4.151387|3.151387|3.151387\ngreatest|4.151387|3.151387\nrank|3|4.151387|3.151387",
+   "note": "The cluster corpus's resolving case of this name, the spacing and each SE given as its square; the expected text is the corpus's."
+  },
+  {
+   "name": "Q R07 example A: u 1, SEs zero: 3.5 points, 3.5 spacings; CUSP at 2.5",
+   "fn": "resolving",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "spacing_sq": 1,
+   "ses2": [0, 0, 0, 0],
+   "paired": null,
+   "expected": "resolving|3.500000|3.500000|2.500000|2.500000\ngreatest|3.500000|2.500000\nrank|3|3.500000|2.500000\nrank|4|3.500000|2.500000",
+   "note": "The cluster corpus's resolving case of this name, the spacing and each SE given as its square; the expected text is the corpus's."
+  },
+  {
+   "name": "Q R08 fewer than three ranks: NONE (two)",
+   "fn": "resolving",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "spacing_sq": 1,
+   "ses2": [0.25, 0.25],
+   "paired": null,
+   "expected": "resolving|NONE",
+   "note": "The cluster corpus's resolving case of this name, the spacing and each SE given as its square; the expected text is the corpus's."
+  },
+  {
+   "name": "Q R09 fewer than three ranks: NONE (none)",
+   "fn": "resolving",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "spacing_sq": 0,
+   "ses2": [],
+   "paired": null,
+   "expected": "resolving|NONE",
+   "note": "The cluster corpus's resolving case of this name, the spacing and each SE given as its square; the expected text is the corpus's."
+  },
+  {
+   "name": "Q R10 spacing zero: points only, spacings undefined",
+   "fn": "resolving",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "spacing_sq": 0,
+   "ses2": [0.25, 0.25, 0.25],
+   "paired": null,
+   "expected": "resolving|1.163191|-|1.163191|-\ngreatest|1.163191|1.163191\nrank|3|1.163191|1.163191",
+   "note": "The cluster corpus's resolving case of this name, the spacing and each SE given as its square; the expected text is the corpus's."
+  },
+  {
+   "name": "Q R11 z zero: the thresholds are the spacing multiples alone",
+   "fn": "resolving",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 0.0
+   },
+   "spacing_sq": 4,
+   "ses2": [1, 9, 4],
+   "paired": null,
+   "expected": "resolving|7.000000|3.500000|5.000000|2.500000\ngreatest|7.000000|5.000000\nrank|3|7.000000|5.000000",
+   "note": "The cluster corpus's resolving case of this name, the spacing and each SE given as its square; the expected text is the corpus's."
+  },
+  {
+   "name": "Q R12 varying SEs: the least pair sets the step, the greatest pair the greatest",
+   "fn": "resolving",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "spacing_sq": 1,
+   "ses2": [0.01, 0.04, 0.81, 0.0025, 0.09],
+   "paired": null,
+   "expected": "resolving|4.000307|4.000307|3.000307|3.000307\ngreatest|5.016615|4.016615\nrank|3|5.016615|4.016615\nrank|4|4.982783|3.982783\nrank|5|4.000307|3.000307",
+   "note": "The cluster corpus's resolving case of this name, the spacing and each SE given as its square; the expected text is the corpus's."
+  },
+  {
+   "name": "Q R13 FIXED-SET: paired SEs of the adjacent differences replace the unpaired terms",
+   "fn": "resolving",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "spacing_sq": 2.56,
+   "ses2": [0.36, 0.36, 0.36, 0.36, 0.36, 0.49],
+   "paired": [0.5, 0.4, 0.4, 0.4, 0.6],
+   "expected": "resolving|6.258000|3.911250|4.658000|2.911250\ngreatest|6.587000|4.987000\nrank|3|6.258000|4.658000\nrank|4|6.258000|4.658000\nrank|5|6.258000|4.658000\nrank|6|6.587000|4.987000",
+   "note": "The cluster corpus's resolving case of this name, the spacing and each SE given as its square; the expected text is the corpus's."
+  },
+  {
+   "name": "Q R14 FIXED-SET: paired list of the wrong length is refused",
+   "fn": "resolving",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "spacing_sq": 2.56,
+   "ses2": [0.36, 0.36, 0.36],
+   "paired": [0.4],
+   "expected": "ERROR:paired",
+   "note": "The cluster corpus's resolving case of this name, the spacing and each SE given as its square; the expected text is the corpus's."
+  },
+  {
+   "name": "Q R15 FIXED-SET: a negative paired SE is refused",
+   "fn": "resolving",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "spacing_sq": 2.56,
+   "ses2": [0.36, 0.36, 0.36],
+   "paired": [0.4, -0.1],
+   "expected": "ERROR:paired",
+   "note": "The cluster corpus's resolving case of this name, the spacing and each SE given as its square; the expected text is the corpus's."
+  },
+  {
+   "name": "Q R16 a negative SE is refused",
+   "fn": "resolving",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "spacing_sq": 1,
+   "ses2": [0.25, -0.25, 0.25],
+   "paired": null,
+   "expected": "ERROR:ses",
+   "note": "The cluster corpus's resolving case of this name, the spacing and each SE given as its square; the expected text is the corpus's. A negative spacing or SE is given as minus its square, so that it is negative and refused with the same word."
+  },
+  {
+   "name": "Q R17 a negative spacing is refused",
+   "fn": "resolving",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "spacing_sq": -1,
+   "ses2": [0.25, 0.25, 0.25],
+   "paired": null,
+   "expected": "ERROR:spacing",
+   "note": "The cluster corpus's resolving case of this name, the spacing and each SE given as its square; the expected text is the corpus's. A negative spacing or SE is given as minus its square, so that it is negative and refused with the same word."
+  },
+  {
+   "name": "Q R18 bad parameters (IN MAX above CUSP MAX) are refused",
+   "fn": "resolving",
+   "params": {
+    "cusp_max": 2.5,
+    "in_max": 3.5,
+    "z": 1.645
+   },
+   "spacing_sq": 1,
+   "ses2": [0.25, 0.25, 0.25],
+   "paired": null,
+   "expected": "ERROR:parameters",
+   "note": "The cluster corpus's resolving case of this name, the spacing and each SE given as its square; the expected text is the corpus's."
+  },
+  {
+   "name": "Q R19 a boolean SE is refused",
+   "fn": "resolving",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "spacing_sq": 1,
+   "ses2": [0.25, true, 0.25],
+   "paired": null,
+   "expected": "ERROR:ses",
+   "note": "The cluster corpus's resolving case of this name, the spacing and each SE given as its square; the expected text is the corpus's. A boolean SE stays a boolean, refused as a value that is not a number."
+  },
+  {
+   "name": "Q R20 ECI top twelve as F30 read them: u 6.01 by NOISE, SE 2.0 to 2.74",
+   "fn": "resolving",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "spacing_sq": 36.1201,
+   "ses2": [7.5076, 4, 2.0736, 4.41, 4, 3.61, 5.29, 4, 3.24, 2.89, 4.84, 6.25],
+   "paired": null,
+   "expected": "resolving|25.089049|4.174551|19.079049|3.174551\ngreatest|26.513122|20.503122\nrank|3|25.089049|19.079049\nrank|4|25.223649|19.213649\nrank|5|25.805500|19.795500\nrank|6|25.572935|19.562935\nrank|7|25.942507|19.932507\nrank|8|26.048878|20.038878\nrank|9|25.461242|19.451242\nrank|10|25.107829|19.097829\nrank|11|25.608573|19.598573\nrank|12|26.513122|20.503122",
+   "note": "The cluster corpus's resolving case of this name, the spacing and each SE given as its square; the expected text is the corpus's."
+  },
+  {
+   "name": "T01 one rank: u^2 2, se2 0.3, 0.4, 0.5",
+   "fn": "resolving",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "spacing_sq": 2,
+   "ses2": [0.3, 0.4, 0.5],
+   "paired": null,
+   "expected": "resolving|6.510331|4.603500|5.096118|3.603500\ngreatest|6.510331|5.096118\nrank|3|6.510331|5.096118",
+   "note": "Reference: u^2 = 2, se2 = 0.3, 0.4, 0.5; CUSP MAX 3.5, IN MAX 2.5, Z 1.645. u = sqrt(2) = 1.4142135624. Rank 3: sd^2 = 0.9 so sd = 0.9486832981; out = 3.5 u + 1.645 sd = 6.5103314936; cusp = 2.5 u + 1.645 sd = 5.0961179312. Spacings (least sd): CUSP MAX + Z sqrt(sd^2/u^2) = 3.5 + 1.645 * sqrt(9/20) = 4.6034995469; IN MAX + the same = 3.6034995469. Each to six decimals, a tie to the even neighbour."
+  },
+  {
+   "name": "T02 four ranks, the least and the greatest pair differ: u^2 3",
+   "fn": "resolving",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "spacing_sq": 3,
+   "ses2": [0.1, 0.2, 0.3, 0.7, 0.05],
+   "paired": null,
+   "expected": "resolving|7.225368|4.171568|5.493318|3.171568\ngreatest|7.707178|5.975127\nrank|3|7.225368|5.493318\nrank|4|7.707178|5.975127\nrank|5|7.486790|5.754739",
+   "note": "Reference: u^2 = 3, se2 = 0.1, 0.2, 0.3, 0.7, 0.05; CUSP MAX 3.5, IN MAX 2.5, Z 1.645. u = sqrt(3) = 1.7320508076. Rank 3: sd^2 = 0.5 so sd = 0.7071067812; out = 3.5 u + 1.645 sd = 7.2253684815; cusp = 2.5 u + 1.645 sd = 5.4933176740. Rank 4: sd^2 = 1.0 so sd = 1.0000000000; out = 3.5 u + 1.645 sd = 7.7071778265; cusp = 2.5 u + 1.645 sd = 5.9751270189. Rank 5: sd^2 = 0.75 so sd = 0.8660254038; out = 3.5 u + 1.645 sd = 7.4867896157; cusp = 2.5 u + 1.645 sd = 5.7547388081. Spacings (least sd): CUSP MAX + Z sqrt(sd^2/u^2) = 3.5 + 1.645 * sqrt(1/6) = 4.1715684378; IN MAX + the same = 3.1715684378. Each to six decimals, a tie to the even neighbour."
+  },
+  {
+   "name": "T03 equal se2 1.5: every rank alike, u^2 5",
+   "fn": "resolving",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "spacing_sq": 5,
+   "ses2": [1.5, 1.5, 1.5, 1.5],
+   "paired": null,
+   "expected": "resolving|10.675461|4.774212|8.439394|3.774212\ngreatest|10.675461|8.439394\nrank|3|10.675461|8.439394\nrank|4|10.675461|8.439394",
+   "note": "Reference: u^2 = 5, se2 = 1.5, 1.5, 1.5, 1.5; CUSP MAX 3.5, IN MAX 2.5, Z 1.645. u = sqrt(5) = 2.2360679775. Rank 3: sd^2 = 3.0 so sd = 1.7320508076; out = 3.5 u + 1.645 sd = 10.6754614997; cusp = 2.5 u + 1.645 sd = 8.4393935222. Rank 4: sd^2 = 3.0 so sd = 1.7320508076; out = 3.5 u + 1.645 sd = 10.6754614997; cusp = 2.5 u + 1.645 sd = 8.4393935222. Spacings (least sd): CUSP MAX + Z sqrt(sd^2/u^2) = 3.5 + 1.645 * sqrt(3/5) = 4.7742115209; IN MAX + the same = 3.7742115209. Each to six decimals, a tie to the even neighbour."
+  },
+  {
+   "name": "T04 one radicand for both roots: u^2 2, sd^2 2",
+   "fn": "resolving",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "spacing_sq": 2,
+   "ses2": [1, 1, 1],
+   "paired": null,
+   "expected": "resolving|7.276129|5.145000|5.861915|4.145000\ngreatest|7.276129|5.861915\nrank|3|7.276129|5.861915",
+   "note": "Reference: u^2 = 2, se2 = 1, 1, 1; CUSP MAX 3.5, IN MAX 2.5, Z 1.645. u = sqrt(2) = 1.4142135624. Rank 3: sd^2 = 2.0 so sd = 1.4142135624; out = 3.5 u + 1.645 sd = 7.2761287784; cusp = 2.5 u + 1.645 sd = 5.8619152160. Spacings (least sd): CUSP MAX + Z sqrt(sd^2/u^2) = 3.5 + 1.645 * sqrt(1) = 5.1450000000; IN MAX + the same = 4.1450000000. Each to six decimals, a tie to the even neighbour."
+  },
+  {
+   "name": "T05 the tie, down to even: sd^2 / u^2 = 4, Z 0.00000025, spacings 3.5000005 and 2.5000005",
+   "fn": "resolving",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 0.00000025
+   },
+   "spacing_sq": 2,
+   "ses2": [4, 4, 4],
+   "paired": null,
+   "expected": "resolving|4.949748|3.500000|3.535535|2.500000\ngreatest|4.949748|3.535535\nrank|3|4.949748|3.535535",
+   "note": "Reference: u^2 = 2, se2 = 4, 4, 4; CUSP MAX 3.5, IN MAX 2.5, Z 0.00000025. u = sqrt(2) = 1.4142135624. Rank 3: sd^2 = 8.0 so sd = 2.8284271247; out = 3.5 u + 0.00000025 sd = 4.9497481754; cusp = 2.5 u + 0.00000025 sd = 3.5355346130. Spacings (least sd): CUSP MAX + Z sqrt(sd^2/u^2) = 3.5 + 0.00000025 * sqrt(4) = 3.5000005000; IN MAX + the same = 2.5000005000. Each to six decimals, a tie to the even neighbour."
+  },
+  {
+   "name": "T06 the tie, up to even: sd^2 / u^2 = 4, Z 0.00000075, spacings 3.5000015 and 2.5000015",
+   "fn": "resolving",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 0.00000075
+   },
+   "spacing_sq": 2,
+   "ses2": [4, 4, 4],
+   "paired": null,
+   "expected": "resolving|4.949750|3.500002|3.535536|2.500002\ngreatest|4.949750|3.535536\nrank|3|4.949750|3.535536",
+   "note": "Reference: u^2 = 2, se2 = 4, 4, 4; CUSP MAX 3.5, IN MAX 2.5, Z 0.00000075. u = sqrt(2) = 1.4142135624. Rank 3: sd^2 = 8.0 so sd = 2.8284271247; out = 3.5 u + 0.00000075 sd = 4.9497495896; cusp = 2.5 u + 0.00000075 sd = 3.5355360273. Spacings (least sd): CUSP MAX + Z sqrt(sd^2/u^2) = 3.5 + 0.00000075 * sqrt(4) = 3.5000015000; IN MAX + the same = 2.5000015000. Each to six decimals, a tie to the even neighbour."
+  },
+  {
+   "name": "T07 Z zero: the steps are the spacing multiples alone, u^2 7",
+   "fn": "resolving",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 0
+   },
+   "spacing_sq": 7,
+   "ses2": [0.3, 0.6, 0.2],
+   "paired": null,
+   "expected": "resolving|9.260130|3.500000|6.614378|2.500000\ngreatest|9.260130|6.614378\nrank|3|9.260130|6.614378",
+   "note": "Reference: u^2 = 7, se2 = 0.3, 0.6, 0.2; CUSP MAX 3.5, IN MAX 2.5, Z 0. u = sqrt(7) = 2.6457513111. Rank 3: sd^2 = 0.8 so sd = 0.8944271910; out = 3.5 u + 0 sd = 9.2601295887; cusp = 2.5 u + 0 sd = 6.6143782777. Spacings (least sd): CUSP MAX + Z sqrt(sd^2/u^2) = 3.5 + 0 * sqrt(4/35) = 3.5000000000; IN MAX + the same = 2.5000000000. Each to six decimals, a tie to the even neighbour."
+  },
+  {
+   "name": "T08 a large month: u^2 37, se2 of ECI's order",
+   "fn": "resolving",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "spacing_sq": 37,
+   "ses2": [7.5076, 4, 2.0736, 4.41, 4, 3.61],
+   "paired": null,
+   "expected": "resolving|25.343718|4.166482|19.260955|3.166482\ngreatest|26.060169|19.977406\nrank|3|25.343718|19.260955\nrank|4|25.478318|19.395556\nrank|5|26.060169|19.977406\nrank|6|25.827603|19.744841",
+   "note": "Reference: u^2 = 37, se2 = 7.5076, 4, 2.0736, 4.41, 4, 3.61; CUSP MAX 3.5, IN MAX 2.5, Z 1.645. u = sqrt(37) = 6.0827625303. Rank 3: sd^2 = 6.0736 so sd = 2.4644674881; out = 3.5 u + 1.645 sd = 25.3437178740; cusp = 2.5 u + 1.645 sd = 19.2609553437. Rank 4: sd^2 = 6.4836 so sd = 2.5462914209; out = 3.5 u + 1.645 sd = 25.4783182434; cusp = 2.5 u + 1.645 sd = 19.3955557131. Rank 5: sd^2 = 8.41 so sd = 2.9000000000; out = 3.5 u + 1.645 sd = 26.0601688560; cusp = 2.5 u + 1.645 sd = 19.9774063257. Rank 6: sd^2 = 7.61 so sd = 2.7586228448; out = 3.5 u + 1.645 sd = 25.8276034358; cusp = 2.5 u + 1.645 sd = 19.7448409055. Spacings (least sd): CUSP MAX + Z sqrt(sd^2/u^2) = 3.5 + 1.645 * sqrt(3796/23125) = 4.1664815530; IN MAX + the same = 3.1664815530. Each to six decimals, a tie to the even neighbour."
+  },
+  {
+   "name": "T09 a small spacing: u^2 0.0005, se2 0.0002, 0.0003, 0.0007",
+   "fn": "resolving",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "spacing_sq": 0.0005,
+   "ses2": [0.0002, 0.0003, 0.0007],
+   "paired": null,
+   "expected": "resolving|0.130282|5.826381|0.107921|4.826381\ngreatest|0.130282|0.107921\nrank|3|0.130282|0.107921",
+   "note": "Reference: u^2 = 0.0005, se2 = 0.0002, 0.0003, 0.0007; CUSP MAX 3.5, IN MAX 2.5, Z 1.645. u = sqrt(0.0005) = 0.0223606798. Rank 3: sd^2 = 0.001 so sd = 0.0316227766; out = 3.5 u + 1.645 sd = 0.1302818467; cusp = 2.5 u + 1.645 sd = 0.1079211669. Spacings (least sd): CUSP MAX + Z sqrt(sd^2/u^2) = 3.5 + 1.645 * sqrt(2) = 5.8263813101; IN MAX + the same = 4.8263813101. Each to six decimals, a tie to the even neighbour."
+  },
+  {
+   "name": "T10 FIXED-SET over the square: u^2 2.5, paired SEs replace the terms",
+   "fn": "resolving",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "spacing_sq": 2.5,
+   "ses2": [0.36, 0.36, 0.36, 0.49],
+   "paired": [0.5, 0.4, 0.6],
+   "expected": "resolving|6.191986|3.916156|4.610847|2.916156\ngreatest|6.520986|4.939847\nrank|3|6.191986|4.610847\nrank|4|6.520986|4.939847",
+   "note": "Reference: u^2 = 2.5, se2 = 0.36, 0.36, 0.36, 0.49; CUSP MAX 3.5, IN MAX 2.5, Z 1.645. u = sqrt(2.5) = 1.5811388301. Rank 3: sd^2 = paired^2 = 0.16 so sd = 0.4000000000; out = 3.5 u + 1.645 sd = 6.1919859053; cusp = 2.5 u + 1.645 sd = 4.6108470752. Rank 4: sd^2 = paired^2 = 0.36 so sd = 0.6000000000; out = 3.5 u + 1.645 sd = 6.5209859053; cusp = 2.5 u + 1.645 sd = 4.9398470752. Spacings (least sd): CUSP MAX + Z sqrt(sd^2/u^2) = 3.5 + 1.645 * sqrt(8/125) = 3.9161557401; IN MAX + the same = 2.9161557401. Each to six decimals, a tie to the even neighbour."
+  },
+  {
+   "name": "T11 a negative u^2 is refused with the word for a negative spacing",
+   "fn": "resolving",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "spacing_sq": -2,
+   "ses2": [0.3, 0.4, 0.5],
+   "paired": null,
+   "expected": "ERROR:spacing",
+   "note": "Reference: u^2 = -2, se2 = 0.3, 0.4, 0.5; CUSP MAX 3.5, IN MAX 2.5, Z 1.645. Refused before any value is formed."
+  },
+  {
+   "name": "T12 a negative se2 is refused with the word for a negative SE",
+   "fn": "resolving",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "z": 1.645
+   },
+   "spacing_sq": 2,
+   "ses2": [0.3, -0.4, 0.5],
+   "paired": null,
+   "expected": "ERROR:ses",
+   "note": "Reference: u^2 = 2, se2 = 0.3, -0.4, 0.5; CUSP MAX 3.5, IN MAX 2.5, Z 1.645. Refused before any value is formed."
+  },
+  {
+   "name": "F01 a + sqrt 8 - 2 sqrt 2 with a 0.0000005: exactly a tie, down to even",
+   "fn": "fixed6",
+   "surd2": [0.0000005, 1, 8, -2, 2],
+   "expected": "0.000000",
+   "note": "sqrt 8 = 2 sqrt 2, so the value is a = 0.0000005 exactly: 0.5 millionths, the tie between 0 and 1, to the even 0. Reference value checked by exact integer square-root bounds."
+  },
+  {
+   "name": "F02 a + sqrt 8 - 2 sqrt 2 with a 0.0000015: exactly a tie, up to even",
+   "fn": "fixed6",
+   "surd2": [0.0000015, 1, 8, -2, 2],
+   "expected": "0.000002",
+   "note": "The value is 0.0000015 exactly: 1.5 millionths, the tie between 1 and 2, to the even 2. Reference value checked by exact integer square-root bounds."
+  },
+  {
+   "name": "F03 a + sqrt 8 - 2 sqrt 2 with a -0.0000005: a negative tie rounds to zero and keeps its sign",
+   "fn": "fixed6",
+   "surd2": [-0.0000005, 1, 8, -2, 2],
+   "expected": "-0.000000",
+   "note": "The value is -0.0000005 exactly: the tie between -1 and 0 goes to 0, printed -0.000000 as %.6f prints a negative value. Reference value checked by exact integer square-root bounds."
+  },
+  {
+   "name": "F04 sqrt 3 - sqrt 2 - 0.31783725: a negative value that rounds to zero",
+   "fn": "fixed6",
+   "surd2": [-0.31783725, 1, 3, -1, 2],
+   "expected": "-0.000000",
+   "note": "sqrt 3 - sqrt 2 = 0.3178372451957822...; less 0.31783725 is -0.0000000048042178...: rounds to 0, printed -0.000000. Reference value checked by exact integer square-root bounds."
+  },
+  {
+   "name": "F05 sqrt 3 - sqrt 2",
+   "fn": "fixed6",
+   "surd2": [0, 1, 3, -1, 2],
+   "expected": "0.317837",
+   "note": "sqrt 3 - sqrt 2 = 0.3178372451957822...: 0.317837 (the seventh decimal 2). Reference value checked by exact integer square-root bounds."
+  },
+  {
+   "name": "F06 sqrt 3 - sqrt 2 - 0.3178367: just above a half millionth",
+   "fn": "fixed6",
+   "surd2": [-0.3178367, 1, 3, -1, 2],
+   "expected": "0.000001",
+   "note": "0.3178372451957822 - 0.3178367 = 0.0000005451957822...: above the half, 0.000001. Reference value checked by exact integer square-root bounds."
+  },
+  {
+   "name": "F07 sqrt 3 - sqrt 2 - 0.31783675: just below a half millionth",
+   "fn": "fixed6",
+   "surd2": [-0.31783675, 1, 3, -1, 2],
+   "expected": "0.000000",
+   "note": "0.3178372451957822 - 0.31783675 = 0.0000004951957822...: below the half, 0.000000. Reference value checked by exact integer square-root bounds."
+  },
+  {
+   "name": "F08 2 sqrt 7 - 3 sqrt 5 + 2.5: the roots of opposite signs, the second larger",
+   "fn": "fixed6",
+   "surd2": [2.5, 2, 7, -3, 5],
+   "expected": "1.083299",
+   "note": "2 sqrt 7 = 5.2915026221291811..., 3 sqrt 5 = 6.7082039324993690...; 2.5 + 5.2915026221 - 6.7082039325 = 1.0832986896298121...: 1.083299. Reference value checked by exact integer square-root bounds."
+  },
+  {
+   "name": "F09 -sqrt 2 - sqrt 3: both roots negative",
+   "fn": "fixed6",
+   "surd2": [0, -1, 2, -1, 3],
+   "expected": "-3.146264",
+   "note": "-(1.4142135623730950 + 1.7320508075688772) = -3.1462643699419723...: -3.146264. Reference value checked by exact integer square-root bounds."
+  }
+ ]
+}

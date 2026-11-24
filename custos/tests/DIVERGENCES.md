@@ -1,6 +1,6 @@
 ---
 name: DIVERGENCES
-version: 0.2.5
+version: 0.2.6
 ---
 
 # Version 1's landing gates replayed: the divergences
@@ -305,7 +305,7 @@ clock starts; the register counts version 1 asserts include it, as they included
 | b1-inc4 | I5.2 | ... and the rendered register text shows it | corner | the reading views (the register view, GAP VIEW, ENTRY VIEW, the control panel's links) are generated pages not yet built |
 | b1-inc4 | I6.2 | a malformed prefix is a problem | corner | a prefix is bounded at 255 bytes (the column ct_prefix), not 64 characters, so a prefix of 65 letters is taken; SP-R, 1SPR, "SPR R" and ../x are refused custos-prefix |
 | b1-inc4 | I6.3 | an identifier passes (SPR, _a9) | Custos's design | a prefix that begins or ends with an underscore is refused custos-prefix (its title segment would begin or end with a space), so _a9 is refused; SPR passes |
-| b1-inc4 | I6.4 | every op that takes a prefix is listed (STATUS among them) | corner | action=pma's ops are PETITION, POLL, PUSH, RELEASE, HEARTBEAT, STATUS, INQUIRE and STRUCTURE_TEST: no NEWUWC (the seeding is the Operator's SeedUwc), ACQUIRE or RETURN, and STATUS is the site's part, taking no prefix |
+| b1-inc4 | I6.4 | every op that takes a prefix is listed (STATUS among them) | corner | action=pma's ops are PETITION, POLL, PUSH, RELEASE, HEARTBEAT, STATUS, INQUIRE and STRUCTURE_TEST, and RETURN where it is built: no NEWUWC (the seeding is the Operator's SeedUwc) or ACQUIRE, and STATUS is the site's part, taking no prefix |
 | b1-inc4 | I6.5 | TPCRUN's function table is tpc_record's | corner | the Calculator is not an op of action=pma (no TPCRUN): it is called by the landing job alone; GA1 refuses the op (custos-op) |
 | b1-inc4 | I6.6 | an unknown function is refused by name with the known list | corner | the Calculator is not an op of action=pma (no TPCRUN): it is called by the landing job alone; GA1 refuses the op (custos-op) |
 | b1-inc4 | I6.7 | scrub removes every path and line reference and keeps the error's words | Custos's design | a fault's answer carries a fixed word and a detail from a closed set (Refusal::TABLE), never the message, so there is nothing to scrub and no words of the error are kept |

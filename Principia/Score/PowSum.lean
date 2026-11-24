@@ -130,6 +130,33 @@ example : add (pow2 (1 / 2)) (pow2 (-1 / 2)) = ⟨[(1 / 2, 3 / 2)]⟩ := by deci
 example : sub (pow2 (3 / 2)) (scale 2 (pow2 (1 / 2))) = zero := by decide +kernel
 example : (mulPow2 (1 / 2) (pow2 (1 / 2))).isRat? = some 2 := by decide +kernel
 
+/-- The rational zero is the empty sum. -/
+theorem ofRat_zero : ofRat 0 = zero := by simp [ofRat]
+
+/-- The empty sum reads back as the rational 0. -/
+theorem isRat?_zero : zero.isRat? = some 0 := rfl
+
+/-- Every rational reads back as itself. -/
+theorem isRat?_ofRat (q : Rat) : (ofRat q).isRat? = some q := by
+  unfold ofRat
+  split
+  · subst_vars; rfl
+  · simp [isRat?]
+
+/-- Scaling by zero gives the empty sum. -/
+theorem scale_zero (x : PowSum) : scale 0 x = zero := by simp [scale]
+
+/-- A nonzero term inserted into the empty list is that one term. -/
+theorem insertTerm_nil {f c : Rat} (h : c ≠ 0) : insertTerm f c [] = [(f, c)] := by
+  simp [insertTerm, h]
+
+/-- A zero term inserted into the empty list leaves it empty. -/
+theorem insertTerm_nil_zero (f : Rat) : insertTerm f 0 [] = [] := by simp [insertTerm]
+
+/-- Two to an integer power reads back as that rational: its fractional part is 0. -/
+theorem isRat?_pow2_intCast (n : Int) : (pow2 (n : Rat)).isRat? = some ((2 : Rat) ^ n) := by
+  simp [pow2, split, isRat?, Rat.floor_intCast, Rat.sub_self]
+
 end PowSum
 
 end Principia.Score

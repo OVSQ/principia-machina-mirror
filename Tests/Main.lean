@@ -281,7 +281,9 @@ def runDerivationClass : IO Tally := do
 
 def main : IO UInt32 := do
   -- One runner per line, in code point order of its name, each line ending with a comma, so
-  -- that two runners added at once touch different lines; `main` refuses another order.
+  -- that two runners added at once touch different lines; `main` refuses another order. The
+  -- Calculator's runners (`pcalc ...`, `json_text`) are `Tests.Calculator.runners`, one file per
+  -- family under `Tests/Calculator/`, spliced in below at the places their names take.
   let corpora : List (String × IO Tally) := [
     ("beta", Tests.Beta.runBeta >>= fun (p, f) => pure { pass := p, fail := f }),
     ("biblio", Tests.Biblio.runBiblio >>= fun (p, f) => pure { pass := p, fail := f }),
@@ -307,54 +309,10 @@ def main : IO UInt32 := do
     ("governor", Tests.Governor.run >>= fun (p, f) => pure { pass := p, fail := f }),
     ("hold", Tests.Hold.runHold >>= fun (p, f) => pure { pass := p, fail := f }),
     ("identity", Tests.Identity.run >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("json_text", Tests.Calculator.runJsonText >>= fun (p, f) => pure { pass := p, fail := f }),
     ("lint", Tests.Lint.run >>= fun (p, f) => pure { pass := p, fail := f }),
     ("lint_tables", Tests.Lint.runTables >>= fun (p, f) => pure { pass := p, fail := f }),
     ("netstring", runNetstring),
-    ("pcalc", Tests.Calculator.runPcalc >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc biblio (biblio_corpus)", Tests.Calculator.runBiblioCalls >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc biblio bounds", Tests.Calculator.runBiblioBounds >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc cluster (cluster_corpus)", Tests.Calculator.runClusterCalls >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc coverage (pcalc.json)", Tests.Calculator.runPcalcCoverage >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc derivation (structured_credit, structured_wire)", Tests.Calculator.runDerivationCalls >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc derivation bounds", Tests.Calculator.runDerivationBounds >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc digest (digest_corpus)", Tests.Calculator.runDigestCalls >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc digest (dis_corpus)", Tests.Calculator.runDisCalls >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc eom (eom, settlement)", Tests.Calculator.runEomCalls >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc falcon (falcon_corpus, falcon_hand)", Tests.Calculator.runFalconCalls >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc falcon bounds", Tests.Calculator.runFalconBounds >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc family bounds", Tests.Calculator.runFamilyBounds >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc form (form_corpus, form_numbers)", Tests.Calculator.runFormCalls >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc form bounds", Tests.Calculator.runFormBounds >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc fundamental (tests_corpus)", Tests.Calculator.runFundamentalCalls >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc fundamental bounds", Tests.Calculator.runFundamentalBounds >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc governor (governor)", Tests.Calculator.runGovernorCalls >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc hold (hold_corpus)", Tests.Calculator.runHoldCalls >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc hold bounds", Tests.Calculator.runHoldBounds >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc identity (identity_corpus)", Tests.Calculator.runIdentityCalls >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc landing (landing_screen)", Tests.Calculator.runLandingCalls >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc lint (lint_corpus)", Tests.Calculator.runLintCalls >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc permissions (permissions)", Tests.Calculator.runPermissionsCalls >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc probe (probe_corpus)", Tests.Calculator.runProbeCalls >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc provision (module_corpus)", Tests.Calculator.runProvisionCalls >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc provision bounds", Tests.Calculator.runProvisionBounds >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc record (record, record_view, record_forms)", Tests.Calculator.runRecordCalls >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc record bounds", Tests.Calculator.runRecordBounds >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc request bounds (governor, permissions, sha256, unicode)", Tests.Calculator.runRequestBounds >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc score (score, beta)", Tests.Calculator.runScoreCalls >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc score bounds", Tests.Calculator.runScoreBounds >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc sha256 (sha256, SHA256ShortMsg, SHA256LongMsg)", Tests.Calculator.runSha256Calls >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc sponsor (sponsor_corpus)", Tests.Calculator.runSponsorCalls >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc sr9 (sr9_corpus)", Tests.Calculator.runSr9Calls >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc strike (conditions_corpus)", Tests.Calculator.runConditionsCalls >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc strike (sr3_scope_corpus)", Tests.Calculator.runSr3ScopeCalls >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc strike (strike, sr8_order)", Tests.Calculator.runStrikeCalls >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc unicode (NormalizationTest, UnicodeData)", Tests.Calculator.runUnicodeCalls >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc units (units_corpus, units_range, units_pi)", Tests.Calculator.runUnitsCalls >>= fun (p, f) => pure { pass := p, fail := f }),
     ("pcalc volunteer (volunteer_corpus)", Tests.Volunteer.runVolunteer >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc yardstick (yardstick_corpus)", Tests.Calculator.runYardstickCalls >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc zone (zone_corpus)", Tests.Calculator.runZoneCalls >>= fun (p, f) => pure { pass := p, fail := f }),
-    ("pcalc zone bounds", Tests.Calculator.runZoneBounds >>= fun (p, f) => pure { pass := p, fail := f }),
     ("permissions", Tests.Permissions.run >>= fun (p, f) => pure { pass := p, fail := f }),
     ("pi_scale", Tests.Units.runPiScale >>= fun (p, f) => pure { pass := p, fail := f }),
     ("probe", Tests.Probe.runProbe >>= fun (p, f) => pure { pass := p, fail := f }),
@@ -386,6 +344,11 @@ def main : IO UInt32 := do
     ("zone", Tests.Zone.runZone >>= fun (p, f) => pure { pass := p, fail := f }),
     ("zone_text", Tests.Zone.runZoneText >>= fun (p, f) => pure { pass := p, fail := f }),
   ]
+  let calculator : List (String × IO Tally) := Tests.Calculator.runners.map fun (name, run) =>
+    (name, run >>= fun (p, f) => pure { pass := p, fail := f })
+  -- Both lists are sorted, so the merge keeps each one's order and the check below holds over
+  -- the combined list: a name out of order in either, or a name twice, is refused.
+  let corpora := corpora.merge calculator fun a b => a.1 ≤ b.1
   let mut failed := 0
   -- The list is the place a new runner goes: it is kept sorted and without a name twice.
   let names := corpora.map Prod.fst

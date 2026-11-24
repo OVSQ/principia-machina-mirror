@@ -226,4 +226,35 @@ def formTotality (text : String) (t : DimTable) : Answer (List String) :=
     | .pred p => Answer.ofExcept (p.totalityProblems t)
     | _ => .refused "not a predicate").escaped
 
+/-! ## Tables and ranges -/
+
+/-- The range check accepts a list, unchanged, exactly when every exponent is within the
+bound. -/
+theorem inRange_ok_iff (kind : Bool) (e : List Int) :
+    inRange kind e = .ok e ↔ e.all (fun x => x.natAbs ≤ expMax) := by
+  unfold inRange
+  split <;> simp_all
+
+/-- The range check refuses a list, with the message its kind names, exactly when some
+exponent is outside the bound. -/
+theorem inRange_error_iff (kind : Bool) (e : List Int) :
+    inRange kind e = .error (if kind then "a kind exponent is out of range"
+      else "an exponent is out of range") ↔ ¬ e.all (fun x => x.natAbs ≤ expMax) := by
+  unfold inRange
+  split <;> simp_all
+
+/-- A name's first table entry counts: when it has a DIMENSION, its exponents are found. -/
+theorem DimTable.find?_cons_self (t : DimTable) (n : String) (d : Dims) :
+    DimTable.find? ((n, some d) :: t) n = some d := by
+  simp [DimTable.find?, List.lookup]
+
+/-- The empty table finds nothing. -/
+theorem DimTable.find?_nil (n : String) : DimTable.find? [] n = none := rfl
+
+/-- The literal zero's dimension prints as `ANY`. -/
+theorem dimsText_none : dimsText none = "ANY" := rfl
+
+/-- The dimensionless exponents have one entry for each of the seven base dimensions. -/
+theorem Dims.one_length : Dims.one.length = 7 := rfl
+
 end Principia.Form

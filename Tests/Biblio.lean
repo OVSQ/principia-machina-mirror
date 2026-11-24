@@ -308,20 +308,21 @@ def member (v : Principia.Canonical.Value) (k : String) : Option Principia.Canon
   | .obj ms => ms.lookup k
   | _ => none
 
-/-- Run `biblio_recheck_urls.json`: the counts of cases passed and failed. -/
-def runRecheckUrls : IO (Nat × Nat) := do
-  let file ← match Principia.Canonical.readString (← IO.FS.readFile "vectors/biblio_recheck_urls.json") with
+/-- Run one corpus of the recheck's calls through `biblio <fn>`: the counts of cases passed
+and failed. -/
+def runRecheckCorpus (file fn : String) : IO (Nat × Nat) := do
+  let file' ← match Principia.Canonical.readString (← IO.FS.readFile s!"vectors/{file}") with
     | .ok v => pure v
-    | .error _ => throw (IO.userError "biblio_recheck_urls.json: refused by the reader")
-  let cases ← match member file "cases" with
+    | .error _ => throw (IO.userError s!"{file}: refused by the reader")
+  let cases ← match member file' "cases" with
     | some (.arr cs) => pure cs
-    | _ => throw (IO.userError "biblio_recheck_urls.json: no cases")
+    | _ => throw (IO.userError s!"{file}: no cases")
   let mut pass := 0
   let mut fail := 0
   for c in cases do
     let some (.str name) := member c "name" | throw (IO.userError "a case without a name")
     let some request := member c "request" | throw (IO.userError s!"{name}: no request")
-    let got := Principia.Calculator.respondTo "biblio" "recheck_urls" request
+    let got := Principia.Calculator.respondTo "biblio" fn request
     let ok : Bool := match got, member c "expected", member c "refused" with
       | .ok v, some e, none => v.canonicalJson.isSome && v.canonicalJson == e.canonicalJson
       | .error r, none, some (.str w) =>
@@ -329,11 +330,24 @@ def runRecheckUrls : IO (Nat × Nat) := do
       | _, _, _ => false
     if ok then pass := pass + 1
     else
-      IO.eprintln s!"FAIL biblio_recheck_urls {name}: got {repr (match got with | .ok v => v.canonicalJson | .error r => some r.detail)}"
+      IO.eprintln s!"FAIL {file} {name}: got {repr (match got with | .ok v => v.canonicalJson | .error r => some r.detail)}"
       fail := fail + 1
   if cases.isEmpty then
-    IO.eprintln "FAIL biblio_recheck_urls: the corpus checked nothing"
+    IO.eprintln s!"FAIL {file}: the corpus checked nothing"
     fail := fail + 1
   return (pass, fail)
+
+/-! ## `vectors/biblio_recheck_batch.json`: the recheck's second call
+
+Each case's `request` goes through `biblio recheck_batch`, read with the Calculator's own
+reader, as the first call's cases are; its payloads are recorded registry answers, written by
+hand in each registry's form. The runner `biblio_recheck_urls` counts both corpora. -/
+
+/-- Run `biblio_recheck_urls.json` and `biblio_recheck_batch.json`: the counts of cases passed
+and failed. -/
+def runRecheckUrls : IO (Nat × Nat) := do
+  let (p1, f1) ← runRecheckCorpus "biblio_recheck_urls.json" "recheck_urls"
+  let (p2, f2) ← runRecheckCorpus "biblio_recheck_batch.json" "recheck_batch"
+  return (p1 + p2, f1 + f2)
 
 end Tests.Biblio

@@ -1,0 +1,3796 @@
+{
+ "corpus": "cluster_squares",
+ "note": "The cluster rule over squared SEs (clusterSq, renderSq): every cluster case of cluster_corpus.json with each SE given as its square, then cases of its own whose se2 is a two-component CORE SET's (se_a^2 + se_b^2)/4, mostly not a rational square, each worked in its note.",
+ "cases": [
+  {
+   "name": "Q C01 user example A",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "A1",
+     "default",
+     10.0,
+     0.00
+    ],
+    [
+     "A2",
+     "default",
+     9.0,
+     0.00
+    ],
+    [
+     "A3",
+     "default",
+     7.0,
+     0.00
+    ],
+    [
+     "A4",
+     "default",
+     3.0,
+     0.00
+    ]
+   ],
+   "expected": "spacing|1.000000|GAP\n1|A1|default|10.000000|0.000000|0.000000|0.000000|IN\n2|A2|default|9.000000|0.000000|0.000000|0.000000|IN\n3|A3|default|7.000000|0.000000|2.000000|2.000000|IN\n4|A4|default|3.000000|0.000000|4.000000|4.000000|OUT",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q C02 user example B",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "B1",
+     "default",
+     10.0,
+     0.00
+    ],
+    [
+     "B2",
+     "default",
+     9.0,
+     0.00
+    ],
+    [
+     "B3",
+     "default",
+     6.0,
+     0.00
+    ],
+    [
+     "B4",
+     "default",
+     3.0,
+     0.00
+    ]
+   ],
+   "expected": "spacing|1.000000|GAP\n1|B1|default|10.000000|0.000000|0.000000|0.000000|IN\n2|B2|default|9.000000|0.000000|0.000000|0.000000|IN\n3|B3|default|6.000000|0.000000|3.000000|3.000000|CUSP\n4|B4|default|3.000000|0.000000|3.000000|3.000000|OUT",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q C03 one model",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "solo",
+     "default",
+     50.0,
+     4.00
+    ]
+   ],
+   "expected": "spacing|0.000000|NONE\n1|solo|default|50.000000|2.000000|0.000000|0.000000|IN",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q C04 two models far apart",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "x",
+     "default",
+     80.0,
+     1.00
+    ],
+    [
+     "y",
+     "default",
+     20.0,
+     1.00
+    ]
+   ],
+   "expected": "spacing|0.000000|NONE\n1|x|default|80.000000|1.000000|0.000000|0.000000|IN\n2|y|default|20.000000|1.000000|0.000000|0.000000|IN",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q C05 three tied, zero se, then lower",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "t1",
+     "default",
+     10.0,
+     0.00
+    ],
+    [
+     "t2",
+     "default",
+     10.0,
+     0.00
+    ],
+    [
+     "t3",
+     "default",
+     10.0,
+     0.00
+    ],
+    [
+     "t4",
+     "default",
+     9.9,
+     0.00
+    ]
+   ],
+   "expected": "spacing|0.000000|GAP\n1|t1|default|10.000000|0.000000|0.000000|0.000000|IN\n2|t2|default|10.000000|0.000000|0.000000|0.000000|IN\n3|t3|default|10.000000|0.000000|0.000000|-|IN\n4|t4|default|9.900000|0.000000|0.100000|-|OUT",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q C06 leader far ahead",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "L",
+     "default",
+     90.0,
+     0.00
+    ],
+    [
+     "p2",
+     "default",
+     60.0,
+     0.00
+    ],
+    [
+     "p3",
+     "default",
+     55.0,
+     0.00
+    ],
+    [
+     "p4",
+     "default",
+     50.0,
+     0.00
+    ],
+    [
+     "p5",
+     "default",
+     45.0,
+     0.00
+    ],
+    [
+     "p6",
+     "default",
+     40.0,
+     0.00
+    ],
+    [
+     "p7",
+     "default",
+     20.0,
+     0.00
+    ]
+   ],
+   "expected": "spacing|5.000000|GAP\n1|L|default|90.000000|0.000000|0.000000|0.000000|IN\n2|p2|default|60.000000|0.000000|0.000000|0.000000|IN\n3|p3|default|55.000000|0.000000|5.000000|1.000000|IN\n4|p4|default|50.000000|0.000000|5.000000|1.000000|IN\n5|p5|default|45.000000|0.000000|5.000000|1.000000|IN\n6|p6|default|40.000000|0.000000|5.000000|1.000000|IN\n7|p7|default|20.000000|0.000000|20.000000|4.000000|OUT",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q C07 constant steps after the first",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "a",
+     "default",
+     10.0,
+     0.00
+    ],
+    [
+     "b",
+     "default",
+     9.0,
+     0.00
+    ],
+    [
+     "c",
+     "default",
+     7.0,
+     0.00
+    ],
+    [
+     "d",
+     "default",
+     5.0,
+     0.00
+    ],
+    [
+     "e",
+     "default",
+     3.0,
+     0.00
+    ],
+    [
+     "f",
+     "default",
+     1.0,
+     0.00
+    ]
+   ],
+   "expected": "spacing|1.000000|GAP\n1|a|default|10.000000|0.000000|0.000000|0.000000|IN\n2|b|default|9.000000|0.000000|0.000000|0.000000|IN\n3|c|default|7.000000|0.000000|2.000000|2.000000|IN\n4|d|default|5.000000|0.000000|2.000000|2.000000|IN\n5|e|default|3.000000|0.000000|2.000000|2.000000|IN\n6|f|default|1.000000|0.000000|2.000000|2.000000|IN",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q C08 a tie with the cusp row shares it",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "aa",
+     "default",
+     6.0,
+     0.00
+    ],
+    [
+     "b1",
+     "default",
+     10.0,
+     0.00
+    ],
+    [
+     "b2",
+     "default",
+     9.0,
+     0.00
+    ],
+    [
+     "zz",
+     "default",
+     6.0,
+     0.00
+    ],
+    [
+     "z3",
+     "default",
+     2.0,
+     0.00
+    ]
+   ],
+   "expected": "spacing|1.000000|GAP\n1|b1|default|10.000000|0.000000|0.000000|0.000000|IN\n2|b2|default|9.000000|0.000000|0.000000|0.000000|IN\n3|aa|default|6.000000|0.000000|3.000000|3.000000|CUSP\n4|zz|default|6.000000|0.000000|0.000000|0.000000|CUSP\n5|z3|default|2.000000|0.000000|4.000000|4.000000|OUT",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q C09 one model's two configurations at the top",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "X",
+     "high",
+     40.0,
+     0.00
+    ],
+    [
+     "X",
+     "med",
+     38.0,
+     0.00
+    ],
+    [
+     "Y",
+     "default",
+     30.0,
+     0.00
+    ],
+    [
+     "Z",
+     "default",
+     29.5,
+     0.00
+    ]
+   ],
+   "expected": "spacing|0.500000|GAP\n1|X|high|40.000000|0.000000|0.000000|0.000000|IN\n2|Y|default|30.000000|0.000000|0.000000|0.000000|IN\n3|Z|default|29.500000|0.000000|0.500000|1.000000|IN\n-|X|med|38.000000|0.000000|-|-|IN",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q C10 verifier case: two configurations and one other model",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.5,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "X",
+     "high",
+     40.0,
+     1.00
+    ],
+    [
+     "X",
+     "med",
+     38.0,
+     1.00
+    ],
+    [
+     "Y",
+     "d",
+     30.0,
+     1.00
+    ]
+   ],
+   "expected": "spacing|0.000000|NONE\n1|X|high|40.000000|1.000000|0.000000|0.000000|IN\n2|Y|d|30.000000|1.000000|0.000000|0.000000|IN\n-|X|med|38.000000|1.000000|-|-|IN",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q C11 noise sets the spacing (SE 1)",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.5,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "a",
+     "default",
+     40.0,
+     1.00
+    ],
+    [
+     "b",
+     "default",
+     38.0,
+     1.00
+    ],
+    [
+     "c",
+     "default",
+     37.9,
+     1.00
+    ],
+    [
+     "d",
+     "default",
+     34.0,
+     1.00
+    ],
+    [
+     "e",
+     "default",
+     32.0,
+     1.00
+    ]
+   ],
+   "expected": "spacing|2.326381|NOISE\n1|a|default|40.000000|1.000000|0.000000|0.000000|IN\n2|b|default|38.000000|1.000000|0.000000|0.000000|IN\n3|c|default|37.900000|1.000000|0.100000|0.042985|IN\n4|d|default|34.000000|1.000000|3.900000|1.676423|IN\n5|e|default|32.000000|1.000000|2.000000|0.859704|IN",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q C12 step exactly 2.5 spacings is IN",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "b1",
+     "default",
+     10.0,
+     0.00
+    ],
+    [
+     "b2",
+     "default",
+     9.0,
+     0.00
+    ],
+    [
+     "b3",
+     "default",
+     6.5,
+     0.00
+    ]
+   ],
+   "expected": "spacing|1.000000|GAP\n1|b1|default|10.000000|0.000000|0.000000|0.000000|IN\n2|b2|default|9.000000|0.000000|0.000000|0.000000|IN\n3|b3|default|6.500000|0.000000|2.500000|2.500000|IN",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q C13 step exactly 3.5 spacings is CUSP",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "b1",
+     "default",
+     10.0,
+     0.00
+    ],
+    [
+     "b2",
+     "default",
+     9.0,
+     0.00
+    ],
+    [
+     "b3",
+     "default",
+     5.5,
+     0.00
+    ]
+   ],
+   "expected": "spacing|1.000000|GAP\n1|b1|default|10.000000|0.000000|0.000000|0.000000|IN\n2|b2|default|9.000000|0.000000|0.000000|0.000000|IN\n3|b3|default|5.500000|0.000000|3.500000|3.500000|CUSP",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q C14 step 3.6 spacings is OUT",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "b1",
+     "default",
+     10.0,
+     0.00
+    ],
+    [
+     "b2",
+     "default",
+     9.0,
+     0.00
+    ],
+    [
+     "b3",
+     "default",
+     5.4,
+     0.00
+    ]
+   ],
+   "expected": "spacing|1.000000|GAP\n1|b1|default|10.000000|0.000000|0.000000|0.000000|IN\n2|b2|default|9.000000|0.000000|0.000000|0.000000|IN\n3|b3|default|5.400000|0.000000|3.600000|3.600000|OUT",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q C15 spacing zero, positive step",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "u1",
+     "default",
+     5.0,
+     0.00
+    ],
+    [
+     "u2",
+     "default",
+     5.0,
+     0.00
+    ],
+    [
+     "u3",
+     "default",
+     5.0,
+     0.00
+    ],
+    [
+     "u4",
+     "default",
+     4.9,
+     0.00
+    ]
+   ],
+   "expected": "spacing|0.000000|GAP\n1|u1|default|5.000000|0.000000|0.000000|0.000000|IN\n2|u2|default|5.000000|0.000000|0.000000|0.000000|IN\n3|u3|default|5.000000|0.000000|0.000000|-|IN\n4|u4|default|4.900000|0.000000|0.100000|-|OUT",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q C16 worked month (specimen)",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.5,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "Model A",
+     "high",
+     38.0,
+     0.36
+    ],
+    [
+     "Model B",
+     "high",
+     35.5,
+     0.36
+    ],
+    [
+     "Model C",
+     "default",
+     33.9,
+     0.36
+    ],
+    [
+     "Model D",
+     "high",
+     32.0,
+     0.36
+    ],
+    [
+     "Model E",
+     "default",
+     25.8,
+     0.36
+    ],
+    [
+     "Model F",
+     "default",
+     17.5,
+     0.49
+    ],
+    [
+     "Model A",
+     "low",
+     33.5,
+     0.36
+    ],
+    [
+     "Model D",
+     "default",
+     27.0,
+     0.36
+    ]
+   ],
+   "expected": "spacing|1.600000|GAP\n1|Model A|high|38.000000|0.600000|0.000000|0.000000|IN\n2|Model B|high|35.500000|0.600000|0.000000|0.000000|IN\n3|Model C|default|33.900000|0.600000|1.600000|1.000000|IN\n4|Model D|high|32.000000|0.600000|1.900000|1.187500|IN\n5|Model E|default|25.800000|0.600000|6.200000|3.875000|CUSP\n6|Model F|default|17.500000|0.700000|8.300000|5.187500|OUT\n-|Model A|low|33.500000|0.600000|-|-|IN\n-|Model D|default|27.000000|0.600000|-|-|CUSP",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q C17 a similar month with SE about 1.2: nothing resolves",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.5,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "Model A",
+     "high",
+     38.0,
+     1.44
+    ],
+    [
+     "Model B",
+     "high",
+     35.5,
+     1.21
+    ],
+    [
+     "Model C",
+     "default",
+     33.9,
+     1.44
+    ],
+    [
+     "Model D",
+     "high",
+     32.0,
+     1.44
+    ],
+    [
+     "Model E",
+     "default",
+     27.6,
+     1.44
+    ],
+    [
+     "Model F",
+     "default",
+     21.5,
+     1.69
+    ]
+   ],
+   "expected": "spacing|2.677866|NOISE\n1|Model A|high|38.000000|1.200000|0.000000|0.000000|IN\n2|Model B|high|35.500000|1.100000|0.000000|0.000000|IN\n3|Model C|default|33.900000|1.200000|1.600000|0.597491|IN\n4|Model D|high|32.000000|1.200000|1.900000|0.709520|IN\n5|Model E|default|27.600000|1.200000|4.400000|1.643099|IN\n6|Model F|default|21.500000|1.300000|6.100000|2.277933|IN",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q C18 empty",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [],
+   "expected": "spacing|0.000000|NONE",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q C19 stricter thresholds",
+   "params": {
+    "cusp_max": 2.0,
+    "in_max": 1.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "A1",
+     "default",
+     10.0,
+     0.00
+    ],
+    [
+     "A2",
+     "default",
+     9.0,
+     0.00
+    ],
+    [
+     "A3",
+     "default",
+     7.0,
+     0.00
+    ],
+    [
+     "A4",
+     "default",
+     3.0,
+     0.00
+    ]
+   ],
+   "expected": "spacing|1.000000|GAP\n1|A1|default|10.000000|0.000000|0.000000|0.000000|IN\n2|A2|default|9.000000|0.000000|0.000000|0.000000|IN\n3|A3|default|7.000000|0.000000|2.000000|2.000000|CUSP\n4|A4|default|3.000000|0.000000|4.000000|4.000000|OUT",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q C20 bad parameters",
+   "params": {
+    "cusp_max": 2.5,
+    "in_max": 3.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "A1",
+     "default",
+     10.0,
+     0.00
+    ],
+    [
+     "A2",
+     "default",
+     9.0,
+     0.00
+    ]
+   ],
+   "expected": "ERROR:parameters",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q C21 negative se",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "A1",
+     "default",
+     10.0,
+     -1.00
+    ],
+    [
+     "A2",
+     "default",
+     9.0,
+     0.00
+    ]
+   ],
+   "expected": "ERROR:score or se",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's. A negative SE is given as minus its square, so that se2 is negative and refused with the same word."
+  },
+  {
+   "name": "Q C22 duplicate model and configuration",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "A",
+     "d",
+     10.0,
+     0.00
+    ],
+    [
+     "A",
+     "d",
+     9.0,
+     0.00
+    ]
+   ],
+   "expected": "ERROR:ids",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q C23 empty configuration id",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "A",
+     "",
+     10.0,
+     0.00
+    ]
+   ],
+   "expected": "ERROR:ids",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q C24 lower configuration within noise of the cusp row",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.5,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "a",
+     "d",
+     40.0,
+     0.25
+    ],
+    [
+     "b",
+     "d",
+     38.0,
+     0.25
+    ],
+    [
+     "c",
+     "d",
+     36.0,
+     0.25
+    ],
+    [
+     "e",
+     "d",
+     29.0,
+     0.25
+    ],
+    [
+     "c",
+     "low",
+     28.5,
+     0.25
+    ],
+    [
+     "f",
+     "d",
+     10.0,
+     0.25
+    ]
+   ],
+   "expected": "spacing|2.000000|GAP\n1|a|d|40.000000|0.500000|0.000000|0.000000|IN\n2|b|d|38.000000|0.500000|0.000000|0.000000|IN\n3|c|d|36.000000|0.500000|2.000000|1.000000|IN\n4|e|d|29.000000|0.500000|7.000000|3.500000|CUSP\n5|f|d|10.000000|0.500000|19.000000|9.500000|OUT\n-|c|low|28.500000|0.500000|-|-|CUSP",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q C25 unsorted input; score ties by se then id",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.5,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "zeta",
+     "default",
+     7.0,
+     0.25
+    ],
+    [
+     "beta",
+     "default",
+     9.0,
+     0.04
+    ],
+    [
+     "alpha",
+     "default",
+     9.0,
+     0.04
+    ],
+    [
+     "gamma",
+     "default",
+     9.0,
+     0.01
+    ],
+    [
+     "eta",
+     "default",
+     8.0,
+     0.00
+    ]
+   ],
+   "expected": "spacing|0.500000|FLOOR\n1|gamma|default|9.000000|0.100000|0.000000|0.000000|IN\n2|alpha|default|9.000000|0.200000|0.000000|0.000000|IN\n3|beta|default|9.000000|0.200000|0.000000|0.000000|IN\n4|eta|default|8.000000|0.000000|1.000000|2.000000|IN\n5|zeta|default|7.000000|0.500000|1.000000|2.000000|IN",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q C26 after an OUT below a cusp, a noisy row level with the cusp row is OUT",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.5,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "a",
+     "default",
+     40.0,
+     0.01
+    ],
+    [
+     "b",
+     "default",
+     38.0,
+     0.01
+    ],
+    [
+     "c",
+     "default",
+     36.0,
+     0.01
+    ],
+    [
+     "d",
+     "default",
+     29.0,
+     0.01
+    ],
+    [
+     "e",
+     "default",
+     28.0,
+     0.01
+    ],
+    [
+     "f",
+     "default",
+     27.9,
+     25.00
+    ]
+   ],
+   "expected": "spacing|2.000000|GAP\n1|a|default|40.000000|0.100000|0.000000|0.000000|IN\n2|b|default|38.000000|0.100000|0.000000|0.000000|IN\n3|c|default|36.000000|0.100000|2.000000|1.000000|IN\n4|d|default|29.000000|0.100000|7.000000|3.500000|CUSP\n5|e|default|28.000000|0.100000|1.000000|0.500000|OUT\n6|f|default|27.900000|5.000000|0.100000|0.050000|OUT",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q P01 example A under FIXED-SET, paired SEs zero: as ITEM-SAMPLING",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "A1",
+     "default",
+     10.0,
+     0.00
+    ],
+    [
+     "A2",
+     "default",
+     9.0,
+     0.00
+    ],
+    [
+     "A3",
+     "default",
+     7.0,
+     0.00
+    ],
+    [
+     "A4",
+     "default",
+     3.0,
+     0.00
+    ]
+   ],
+   "paired": [
+    [
+     "A1",
+     "default",
+     "A2",
+     "default",
+     0.0
+    ],
+    [
+     "A1",
+     "default",
+     "A3",
+     "default",
+     0.0
+    ],
+    [
+     "A1",
+     "default",
+     "A4",
+     "default",
+     0.0
+    ],
+    [
+     "A2",
+     "default",
+     "A3",
+     "default",
+     0.0
+    ],
+    [
+     "A2",
+     "default",
+     "A4",
+     "default",
+     0.0
+    ],
+    [
+     "A3",
+     "default",
+     "A4",
+     "default",
+     0.0
+    ]
+   ],
+   "expected": "spacing|1.000000|GAP\n1|A1|default|10.000000|0.000000|0.000000|0.000000|IN\n2|A2|default|9.000000|0.000000|0.000000|0.000000|IN\n3|A3|default|7.000000|0.000000|2.000000|2.000000|IN\n4|A4|default|3.000000|0.000000|4.000000|4.000000|OUT",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q P02 specimen under FIXED-SET, paired SE 0.4 everywhere: Model E's step 0.6 past CUSP MAX inside its paired noise 0.658, CUSP",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.5,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "Model A",
+     "high",
+     38.0,
+     0.36
+    ],
+    [
+     "Model B",
+     "high",
+     35.5,
+     0.36
+    ],
+    [
+     "Model C",
+     "default",
+     33.9,
+     0.36
+    ],
+    [
+     "Model D",
+     "high",
+     32.0,
+     0.36
+    ],
+    [
+     "Model E",
+     "default",
+     25.8,
+     0.36
+    ],
+    [
+     "Model F",
+     "default",
+     17.5,
+     0.49
+    ],
+    [
+     "Model A",
+     "low",
+     33.5,
+     0.36
+    ],
+    [
+     "Model D",
+     "default",
+     27.0,
+     0.36
+    ]
+   ],
+   "paired": [
+    [
+     "Model A",
+     "high",
+     "Model B",
+     "high",
+     0.4
+    ],
+    [
+     "Model A",
+     "high",
+     "Model C",
+     "default",
+     0.4
+    ],
+    [
+     "Model A",
+     "high",
+     "Model D",
+     "high",
+     0.4
+    ],
+    [
+     "Model A",
+     "high",
+     "Model E",
+     "default",
+     0.4
+    ],
+    [
+     "Model A",
+     "high",
+     "Model F",
+     "default",
+     0.4
+    ],
+    [
+     "Model A",
+     "high",
+     "Model A",
+     "low",
+     0.4
+    ],
+    [
+     "Model A",
+     "high",
+     "Model D",
+     "default",
+     0.4
+    ],
+    [
+     "Model B",
+     "high",
+     "Model C",
+     "default",
+     0.4
+    ],
+    [
+     "Model B",
+     "high",
+     "Model D",
+     "high",
+     0.4
+    ],
+    [
+     "Model B",
+     "high",
+     "Model E",
+     "default",
+     0.4
+    ],
+    [
+     "Model B",
+     "high",
+     "Model F",
+     "default",
+     0.4
+    ],
+    [
+     "Model B",
+     "high",
+     "Model A",
+     "low",
+     0.4
+    ],
+    [
+     "Model B",
+     "high",
+     "Model D",
+     "default",
+     0.4
+    ],
+    [
+     "Model C",
+     "default",
+     "Model D",
+     "high",
+     0.4
+    ],
+    [
+     "Model C",
+     "default",
+     "Model E",
+     "default",
+     0.4
+    ],
+    [
+     "Model C",
+     "default",
+     "Model F",
+     "default",
+     0.4
+    ],
+    [
+     "Model C",
+     "default",
+     "Model A",
+     "low",
+     0.4
+    ],
+    [
+     "Model C",
+     "default",
+     "Model D",
+     "default",
+     0.4
+    ],
+    [
+     "Model D",
+     "high",
+     "Model E",
+     "default",
+     0.4
+    ],
+    [
+     "Model D",
+     "high",
+     "Model F",
+     "default",
+     0.4
+    ],
+    [
+     "Model D",
+     "high",
+     "Model A",
+     "low",
+     0.4
+    ],
+    [
+     "Model D",
+     "high",
+     "Model D",
+     "default",
+     0.4
+    ],
+    [
+     "Model E",
+     "default",
+     "Model F",
+     "default",
+     0.4
+    ],
+    [
+     "Model E",
+     "default",
+     "Model A",
+     "low",
+     0.4
+    ],
+    [
+     "Model E",
+     "default",
+     "Model D",
+     "default",
+     0.4
+    ],
+    [
+     "Model F",
+     "default",
+     "Model A",
+     "low",
+     0.4
+    ],
+    [
+     "Model F",
+     "default",
+     "Model D",
+     "default",
+     0.4
+    ],
+    [
+     "Model A",
+     "low",
+     "Model D",
+     "default",
+     0.4
+    ]
+   ],
+   "expected": "spacing|1.600000|GAP\n1|Model A|high|38.000000|0.600000|0.000000|0.000000|IN\n2|Model B|high|35.500000|0.600000|0.000000|0.000000|IN\n3|Model C|default|33.900000|0.600000|1.600000|1.000000|IN\n4|Model D|high|32.000000|0.600000|1.900000|1.187500|IN\n5|Model E|default|25.800000|0.600000|6.200000|3.875000|CUSP\n6|Model F|default|17.500000|0.700000|8.300000|5.187500|OUT\n-|Model A|low|33.500000|0.600000|-|-|IN\n-|Model D|default|27.000000|0.600000|-|-|CUSP",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q P03 specimen under FIXED-SET, paired SE 0.3: Model E's step 0.6 past CUSP MAX outside its noise 0.494, OUT",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.5,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "Model A",
+     "high",
+     38.0,
+     0.36
+    ],
+    [
+     "Model B",
+     "high",
+     35.5,
+     0.36
+    ],
+    [
+     "Model C",
+     "default",
+     33.9,
+     0.36
+    ],
+    [
+     "Model D",
+     "high",
+     32.0,
+     0.36
+    ],
+    [
+     "Model E",
+     "default",
+     25.8,
+     0.36
+    ],
+    [
+     "Model F",
+     "default",
+     17.5,
+     0.49
+    ],
+    [
+     "Model A",
+     "low",
+     33.5,
+     0.36
+    ],
+    [
+     "Model D",
+     "default",
+     27.0,
+     0.36
+    ]
+   ],
+   "paired": [
+    [
+     "Model A",
+     "high",
+     "Model B",
+     "high",
+     0.3
+    ],
+    [
+     "Model A",
+     "high",
+     "Model C",
+     "default",
+     0.3
+    ],
+    [
+     "Model A",
+     "high",
+     "Model D",
+     "high",
+     0.3
+    ],
+    [
+     "Model A",
+     "high",
+     "Model E",
+     "default",
+     0.3
+    ],
+    [
+     "Model A",
+     "high",
+     "Model F",
+     "default",
+     0.3
+    ],
+    [
+     "Model A",
+     "high",
+     "Model A",
+     "low",
+     0.3
+    ],
+    [
+     "Model A",
+     "high",
+     "Model D",
+     "default",
+     0.3
+    ],
+    [
+     "Model B",
+     "high",
+     "Model C",
+     "default",
+     0.3
+    ],
+    [
+     "Model B",
+     "high",
+     "Model D",
+     "high",
+     0.3
+    ],
+    [
+     "Model B",
+     "high",
+     "Model E",
+     "default",
+     0.3
+    ],
+    [
+     "Model B",
+     "high",
+     "Model F",
+     "default",
+     0.3
+    ],
+    [
+     "Model B",
+     "high",
+     "Model A",
+     "low",
+     0.3
+    ],
+    [
+     "Model B",
+     "high",
+     "Model D",
+     "default",
+     0.3
+    ],
+    [
+     "Model C",
+     "default",
+     "Model D",
+     "high",
+     0.3
+    ],
+    [
+     "Model C",
+     "default",
+     "Model E",
+     "default",
+     0.3
+    ],
+    [
+     "Model C",
+     "default",
+     "Model F",
+     "default",
+     0.3
+    ],
+    [
+     "Model C",
+     "default",
+     "Model A",
+     "low",
+     0.3
+    ],
+    [
+     "Model C",
+     "default",
+     "Model D",
+     "default",
+     0.3
+    ],
+    [
+     "Model D",
+     "high",
+     "Model E",
+     "default",
+     0.3
+    ],
+    [
+     "Model D",
+     "high",
+     "Model F",
+     "default",
+     0.3
+    ],
+    [
+     "Model D",
+     "high",
+     "Model A",
+     "low",
+     0.3
+    ],
+    [
+     "Model D",
+     "high",
+     "Model D",
+     "default",
+     0.3
+    ],
+    [
+     "Model E",
+     "default",
+     "Model F",
+     "default",
+     0.3
+    ],
+    [
+     "Model E",
+     "default",
+     "Model A",
+     "low",
+     0.3
+    ],
+    [
+     "Model E",
+     "default",
+     "Model D",
+     "default",
+     0.3
+    ],
+    [
+     "Model F",
+     "default",
+     "Model A",
+     "low",
+     0.3
+    ],
+    [
+     "Model F",
+     "default",
+     "Model D",
+     "default",
+     0.3
+    ],
+    [
+     "Model A",
+     "low",
+     "Model D",
+     "default",
+     0.3
+    ]
+   ],
+   "expected": "spacing|1.600000|GAP\n1|Model A|high|38.000000|0.600000|0.000000|0.000000|IN\n2|Model B|high|35.500000|0.600000|0.000000|0.000000|IN\n3|Model C|default|33.900000|0.600000|1.600000|1.000000|IN\n4|Model D|high|32.000000|0.600000|1.900000|1.187500|IN\n5|Model E|default|25.800000|0.600000|6.200000|3.875000|OUT\n6|Model F|default|17.500000|0.700000|8.300000|5.187500|OUT\n-|Model A|low|33.500000|0.600000|-|-|IN\n-|Model D|default|27.000000|0.600000|-|-|OUT",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q P04 specimen under FIXED-SET, paired SE 1.2 (wider than unpaired 0.85): noise sets the spacing",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.5,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "Model A",
+     "high",
+     38.0,
+     0.36
+    ],
+    [
+     "Model B",
+     "high",
+     35.5,
+     0.36
+    ],
+    [
+     "Model C",
+     "default",
+     33.9,
+     0.36
+    ],
+    [
+     "Model D",
+     "high",
+     32.0,
+     0.36
+    ],
+    [
+     "Model E",
+     "default",
+     25.8,
+     0.36
+    ],
+    [
+     "Model F",
+     "default",
+     17.5,
+     0.49
+    ],
+    [
+     "Model A",
+     "low",
+     33.5,
+     0.36
+    ],
+    [
+     "Model D",
+     "default",
+     27.0,
+     0.36
+    ]
+   ],
+   "paired": [
+    [
+     "Model A",
+     "high",
+     "Model B",
+     "high",
+     1.2
+    ],
+    [
+     "Model A",
+     "high",
+     "Model C",
+     "default",
+     1.2
+    ],
+    [
+     "Model A",
+     "high",
+     "Model D",
+     "high",
+     1.2
+    ],
+    [
+     "Model A",
+     "high",
+     "Model E",
+     "default",
+     1.2
+    ],
+    [
+     "Model A",
+     "high",
+     "Model F",
+     "default",
+     1.2
+    ],
+    [
+     "Model A",
+     "high",
+     "Model A",
+     "low",
+     1.2
+    ],
+    [
+     "Model A",
+     "high",
+     "Model D",
+     "default",
+     1.2
+    ],
+    [
+     "Model B",
+     "high",
+     "Model C",
+     "default",
+     1.2
+    ],
+    [
+     "Model B",
+     "high",
+     "Model D",
+     "high",
+     1.2
+    ],
+    [
+     "Model B",
+     "high",
+     "Model E",
+     "default",
+     1.2
+    ],
+    [
+     "Model B",
+     "high",
+     "Model F",
+     "default",
+     1.2
+    ],
+    [
+     "Model B",
+     "high",
+     "Model A",
+     "low",
+     1.2
+    ],
+    [
+     "Model B",
+     "high",
+     "Model D",
+     "default",
+     1.2
+    ],
+    [
+     "Model C",
+     "default",
+     "Model D",
+     "high",
+     1.2
+    ],
+    [
+     "Model C",
+     "default",
+     "Model E",
+     "default",
+     1.2
+    ],
+    [
+     "Model C",
+     "default",
+     "Model F",
+     "default",
+     1.2
+    ],
+    [
+     "Model C",
+     "default",
+     "Model A",
+     "low",
+     1.2
+    ],
+    [
+     "Model C",
+     "default",
+     "Model D",
+     "default",
+     1.2
+    ],
+    [
+     "Model D",
+     "high",
+     "Model E",
+     "default",
+     1.2
+    ],
+    [
+     "Model D",
+     "high",
+     "Model F",
+     "default",
+     1.2
+    ],
+    [
+     "Model D",
+     "high",
+     "Model A",
+     "low",
+     1.2
+    ],
+    [
+     "Model D",
+     "high",
+     "Model D",
+     "default",
+     1.2
+    ],
+    [
+     "Model E",
+     "default",
+     "Model F",
+     "default",
+     1.2
+    ],
+    [
+     "Model E",
+     "default",
+     "Model A",
+     "low",
+     1.2
+    ],
+    [
+     "Model E",
+     "default",
+     "Model D",
+     "default",
+     1.2
+    ],
+    [
+     "Model F",
+     "default",
+     "Model A",
+     "low",
+     1.2
+    ],
+    [
+     "Model F",
+     "default",
+     "Model D",
+     "default",
+     1.2
+    ],
+    [
+     "Model A",
+     "low",
+     "Model D",
+     "default",
+     1.2
+    ]
+   ],
+   "expected": "spacing|1.974000|NOISE\n1|Model A|high|38.000000|0.600000|0.000000|0.000000|IN\n2|Model B|high|35.500000|0.600000|0.000000|0.000000|IN\n3|Model C|default|33.900000|0.600000|1.600000|0.810537|IN\n4|Model D|high|32.000000|0.600000|1.900000|0.962513|IN\n5|Model E|default|25.800000|0.600000|6.200000|3.140831|IN\n6|Model F|default|17.500000|0.700000|8.300000|4.204661|CUSP\n-|Model A|low|33.500000|0.600000|-|-|IN\n-|Model D|default|27.000000|0.600000|-|-|IN",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q P05 band month (C11) under FIXED-SET, paired SE 0.2: the spacing is the gap 0.1 raised to the floor 0.5; d and e resolve",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.5,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "a",
+     "default",
+     40.0,
+     1.00
+    ],
+    [
+     "b",
+     "default",
+     38.0,
+     1.00
+    ],
+    [
+     "c",
+     "default",
+     37.9,
+     1.00
+    ],
+    [
+     "d",
+     "default",
+     34.0,
+     1.00
+    ],
+    [
+     "e",
+     "default",
+     32.0,
+     1.00
+    ]
+   ],
+   "paired": [
+    [
+     "a",
+     "default",
+     "b",
+     "default",
+     0.2
+    ],
+    [
+     "a",
+     "default",
+     "c",
+     "default",
+     0.2
+    ],
+    [
+     "a",
+     "default",
+     "d",
+     "default",
+     0.2
+    ],
+    [
+     "a",
+     "default",
+     "e",
+     "default",
+     0.2
+    ],
+    [
+     "b",
+     "default",
+     "c",
+     "default",
+     0.2
+    ],
+    [
+     "b",
+     "default",
+     "d",
+     "default",
+     0.2
+    ],
+    [
+     "b",
+     "default",
+     "e",
+     "default",
+     0.2
+    ],
+    [
+     "c",
+     "default",
+     "d",
+     "default",
+     0.2
+    ],
+    [
+     "c",
+     "default",
+     "e",
+     "default",
+     0.2
+    ],
+    [
+     "d",
+     "default",
+     "e",
+     "default",
+     0.2
+    ]
+   ],
+   "expected": "spacing|0.500000|FLOOR\n1|a|default|40.000000|1.000000|0.000000|0.000000|IN\n2|b|default|38.000000|1.000000|0.000000|0.000000|IN\n3|c|default|37.900000|1.000000|0.100000|0.200000|IN\n4|d|default|34.000000|1.000000|3.900000|7.800000|OUT\n5|e|default|32.000000|1.000000|2.000000|4.000000|OUT",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q P06 a missing pair the rule tests (ranks 4 and 5) is refused",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.5,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "Model A",
+     "high",
+     38.0,
+     0.36
+    ],
+    [
+     "Model B",
+     "high",
+     35.5,
+     0.36
+    ],
+    [
+     "Model C",
+     "default",
+     33.9,
+     0.36
+    ],
+    [
+     "Model D",
+     "high",
+     32.0,
+     0.36
+    ],
+    [
+     "Model E",
+     "default",
+     25.8,
+     0.36
+    ],
+    [
+     "Model F",
+     "default",
+     17.5,
+     0.49
+    ],
+    [
+     "Model A",
+     "low",
+     33.5,
+     0.36
+    ],
+    [
+     "Model D",
+     "default",
+     27.0,
+     0.36
+    ]
+   ],
+   "paired": [
+    [
+     "Model A",
+     "high",
+     "Model B",
+     "high",
+     0.4
+    ],
+    [
+     "Model A",
+     "high",
+     "Model C",
+     "default",
+     0.4
+    ],
+    [
+     "Model A",
+     "high",
+     "Model D",
+     "high",
+     0.4
+    ],
+    [
+     "Model A",
+     "high",
+     "Model E",
+     "default",
+     0.4
+    ],
+    [
+     "Model A",
+     "high",
+     "Model F",
+     "default",
+     0.4
+    ],
+    [
+     "Model A",
+     "high",
+     "Model A",
+     "low",
+     0.4
+    ],
+    [
+     "Model A",
+     "high",
+     "Model D",
+     "default",
+     0.4
+    ],
+    [
+     "Model B",
+     "high",
+     "Model C",
+     "default",
+     0.4
+    ],
+    [
+     "Model B",
+     "high",
+     "Model D",
+     "high",
+     0.4
+    ],
+    [
+     "Model B",
+     "high",
+     "Model E",
+     "default",
+     0.4
+    ],
+    [
+     "Model B",
+     "high",
+     "Model F",
+     "default",
+     0.4
+    ],
+    [
+     "Model B",
+     "high",
+     "Model A",
+     "low",
+     0.4
+    ],
+    [
+     "Model B",
+     "high",
+     "Model D",
+     "default",
+     0.4
+    ],
+    [
+     "Model C",
+     "default",
+     "Model D",
+     "high",
+     0.4
+    ],
+    [
+     "Model C",
+     "default",
+     "Model E",
+     "default",
+     0.4
+    ],
+    [
+     "Model C",
+     "default",
+     "Model F",
+     "default",
+     0.4
+    ],
+    [
+     "Model C",
+     "default",
+     "Model A",
+     "low",
+     0.4
+    ],
+    [
+     "Model C",
+     "default",
+     "Model D",
+     "default",
+     0.4
+    ],
+    [
+     "Model D",
+     "high",
+     "Model F",
+     "default",
+     0.4
+    ],
+    [
+     "Model D",
+     "high",
+     "Model A",
+     "low",
+     0.4
+    ],
+    [
+     "Model D",
+     "high",
+     "Model D",
+     "default",
+     0.4
+    ],
+    [
+     "Model E",
+     "default",
+     "Model F",
+     "default",
+     0.4
+    ],
+    [
+     "Model E",
+     "default",
+     "Model A",
+     "low",
+     0.4
+    ],
+    [
+     "Model E",
+     "default",
+     "Model D",
+     "default",
+     0.4
+    ],
+    [
+     "Model F",
+     "default",
+     "Model A",
+     "low",
+     0.4
+    ],
+    [
+     "Model F",
+     "default",
+     "Model D",
+     "default",
+     0.4
+    ],
+    [
+     "Model A",
+     "low",
+     "Model D",
+     "default",
+     0.4
+    ]
+   ],
+   "expected": "ERROR:paired",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q P06b a missing pair the rule never tests (two non-representatives) is not needed",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.5,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "Model A",
+     "high",
+     38.0,
+     0.36
+    ],
+    [
+     "Model B",
+     "high",
+     35.5,
+     0.36
+    ],
+    [
+     "Model C",
+     "default",
+     33.9,
+     0.36
+    ],
+    [
+     "Model D",
+     "high",
+     32.0,
+     0.36
+    ],
+    [
+     "Model E",
+     "default",
+     25.8,
+     0.36
+    ],
+    [
+     "Model F",
+     "default",
+     17.5,
+     0.49
+    ],
+    [
+     "Model A",
+     "low",
+     33.5,
+     0.36
+    ],
+    [
+     "Model D",
+     "default",
+     27.0,
+     0.36
+    ]
+   ],
+   "paired": [
+    [
+     "Model A",
+     "high",
+     "Model B",
+     "high",
+     0.4
+    ],
+    [
+     "Model A",
+     "high",
+     "Model C",
+     "default",
+     0.4
+    ],
+    [
+     "Model A",
+     "high",
+     "Model D",
+     "high",
+     0.4
+    ],
+    [
+     "Model A",
+     "high",
+     "Model E",
+     "default",
+     0.4
+    ],
+    [
+     "Model A",
+     "high",
+     "Model F",
+     "default",
+     0.4
+    ],
+    [
+     "Model A",
+     "high",
+     "Model A",
+     "low",
+     0.4
+    ],
+    [
+     "Model A",
+     "high",
+     "Model D",
+     "default",
+     0.4
+    ],
+    [
+     "Model B",
+     "high",
+     "Model C",
+     "default",
+     0.4
+    ],
+    [
+     "Model B",
+     "high",
+     "Model D",
+     "high",
+     0.4
+    ],
+    [
+     "Model B",
+     "high",
+     "Model E",
+     "default",
+     0.4
+    ],
+    [
+     "Model B",
+     "high",
+     "Model F",
+     "default",
+     0.4
+    ],
+    [
+     "Model B",
+     "high",
+     "Model A",
+     "low",
+     0.4
+    ],
+    [
+     "Model B",
+     "high",
+     "Model D",
+     "default",
+     0.4
+    ],
+    [
+     "Model C",
+     "default",
+     "Model D",
+     "high",
+     0.4
+    ],
+    [
+     "Model C",
+     "default",
+     "Model E",
+     "default",
+     0.4
+    ],
+    [
+     "Model C",
+     "default",
+     "Model F",
+     "default",
+     0.4
+    ],
+    [
+     "Model C",
+     "default",
+     "Model A",
+     "low",
+     0.4
+    ],
+    [
+     "Model C",
+     "default",
+     "Model D",
+     "default",
+     0.4
+    ],
+    [
+     "Model D",
+     "high",
+     "Model E",
+     "default",
+     0.4
+    ],
+    [
+     "Model D",
+     "high",
+     "Model F",
+     "default",
+     0.4
+    ],
+    [
+     "Model D",
+     "high",
+     "Model A",
+     "low",
+     0.4
+    ],
+    [
+     "Model D",
+     "high",
+     "Model D",
+     "default",
+     0.4
+    ],
+    [
+     "Model E",
+     "default",
+     "Model F",
+     "default",
+     0.4
+    ],
+    [
+     "Model E",
+     "default",
+     "Model A",
+     "low",
+     0.4
+    ],
+    [
+     "Model E",
+     "default",
+     "Model D",
+     "default",
+     0.4
+    ],
+    [
+     "Model F",
+     "default",
+     "Model A",
+     "low",
+     0.4
+    ],
+    [
+     "Model F",
+     "default",
+     "Model D",
+     "default",
+     0.4
+    ]
+   ],
+   "expected": "spacing|1.600000|GAP\n1|Model A|high|38.000000|0.600000|0.000000|0.000000|IN\n2|Model B|high|35.500000|0.600000|0.000000|0.000000|IN\n3|Model C|default|33.900000|0.600000|1.600000|1.000000|IN\n4|Model D|high|32.000000|0.600000|1.900000|1.187500|IN\n5|Model E|default|25.800000|0.600000|6.200000|3.875000|CUSP\n6|Model F|default|17.500000|0.700000|8.300000|5.187500|OUT\n-|Model A|low|33.500000|0.600000|-|-|IN\n-|Model D|default|27.000000|0.600000|-|-|CUSP",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q P07 a pair given twice, the second in reverse order, is refused",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "A1",
+     "default",
+     10.0,
+     0.00
+    ],
+    [
+     "A2",
+     "default",
+     9.0,
+     0.00
+    ],
+    [
+     "A3",
+     "default",
+     7.0,
+     0.00
+    ],
+    [
+     "A4",
+     "default",
+     3.0,
+     0.00
+    ]
+   ],
+   "paired": [
+    [
+     "A1",
+     "default",
+     "A2",
+     "default",
+     0.0
+    ],
+    [
+     "A1",
+     "default",
+     "A3",
+     "default",
+     0.0
+    ],
+    [
+     "A1",
+     "default",
+     "A4",
+     "default",
+     0.0
+    ],
+    [
+     "A2",
+     "default",
+     "A3",
+     "default",
+     0.0
+    ],
+    [
+     "A2",
+     "default",
+     "A4",
+     "default",
+     0.0
+    ],
+    [
+     "A3",
+     "default",
+     "A4",
+     "default",
+     0.0
+    ],
+    [
+     "A2",
+     "default",
+     "A1",
+     "default",
+     0.1
+    ]
+   ],
+   "expected": "ERROR:paired",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q P08 a self pair is refused",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "A1",
+     "default",
+     10.0,
+     0.00
+    ],
+    [
+     "A2",
+     "default",
+     9.0,
+     0.00
+    ],
+    [
+     "A3",
+     "default",
+     7.0,
+     0.00
+    ],
+    [
+     "A4",
+     "default",
+     3.0,
+     0.00
+    ]
+   ],
+   "paired": [
+    [
+     "A1",
+     "default",
+     "A2",
+     "default",
+     0.0
+    ],
+    [
+     "A1",
+     "default",
+     "A3",
+     "default",
+     0.0
+    ],
+    [
+     "A1",
+     "default",
+     "A4",
+     "default",
+     0.0
+    ],
+    [
+     "A2",
+     "default",
+     "A3",
+     "default",
+     0.0
+    ],
+    [
+     "A2",
+     "default",
+     "A4",
+     "default",
+     0.0
+    ],
+    [
+     "A3",
+     "default",
+     "A4",
+     "default",
+     0.0
+    ],
+    [
+     "A1",
+     "default",
+     "A1",
+     "default",
+     0.0
+    ]
+   ],
+   "expected": "ERROR:paired",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q P09 a pair naming an unknown row is refused",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "A1",
+     "default",
+     10.0,
+     0.00
+    ],
+    [
+     "A2",
+     "default",
+     9.0,
+     0.00
+    ],
+    [
+     "A3",
+     "default",
+     7.0,
+     0.00
+    ],
+    [
+     "A4",
+     "default",
+     3.0,
+     0.00
+    ]
+   ],
+   "paired": [
+    [
+     "A1",
+     "default",
+     "A2",
+     "default",
+     0.0
+    ],
+    [
+     "A1",
+     "default",
+     "A3",
+     "default",
+     0.0
+    ],
+    [
+     "A1",
+     "default",
+     "A4",
+     "default",
+     0.0
+    ],
+    [
+     "A2",
+     "default",
+     "A3",
+     "default",
+     0.0
+    ],
+    [
+     "A2",
+     "default",
+     "A4",
+     "default",
+     0.0
+    ],
+    [
+     "A3",
+     "default",
+     "A4",
+     "default",
+     0.0
+    ],
+    [
+     "A9",
+     "default",
+     "A1",
+     "default",
+     0.0
+    ]
+   ],
+   "expected": "ERROR:paired",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q P10 a negative paired SE is refused",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "A1",
+     "default",
+     10.0,
+     0.00
+    ],
+    [
+     "A2",
+     "default",
+     9.0,
+     0.00
+    ],
+    [
+     "A3",
+     "default",
+     7.0,
+     0.00
+    ],
+    [
+     "A4",
+     "default",
+     3.0,
+     0.00
+    ]
+   ],
+   "paired": [
+    [
+     "A1",
+     "default",
+     "A2",
+     "default",
+     -0.1
+    ],
+    [
+     "A1",
+     "default",
+     "A3",
+     "default",
+     0.0
+    ],
+    [
+     "A1",
+     "default",
+     "A4",
+     "default",
+     0.0
+    ],
+    [
+     "A2",
+     "default",
+     "A3",
+     "default",
+     0.0
+    ],
+    [
+     "A2",
+     "default",
+     "A4",
+     "default",
+     0.0
+    ],
+    [
+     "A3",
+     "default",
+     "A4",
+     "default",
+     0.0
+    ]
+   ],
+   "expected": "ERROR:paired",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q P11 a paired entry of the wrong length is refused",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "A1",
+     "default",
+     10.0,
+     0.00
+    ],
+    [
+     "A2",
+     "default",
+     9.0,
+     0.00
+    ],
+    [
+     "A3",
+     "default",
+     7.0,
+     0.00
+    ],
+    [
+     "A4",
+     "default",
+     3.0,
+     0.00
+    ]
+   ],
+   "paired": [
+    [
+     "A1",
+     "default",
+     "A2",
+     "default"
+    ],
+    [
+     "A1",
+     "default",
+     "A3",
+     "default",
+     0.0
+    ],
+    [
+     "A1",
+     "default",
+     "A4",
+     "default",
+     0.0
+    ],
+    [
+     "A2",
+     "default",
+     "A3",
+     "default",
+     0.0
+    ],
+    [
+     "A2",
+     "default",
+     "A4",
+     "default",
+     0.0
+    ],
+    [
+     "A3",
+     "default",
+     "A4",
+     "default",
+     0.0
+    ]
+   ],
+   "expected": "ERROR:paired",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q P12 two models under FIXED-SET need no pair",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "x",
+     "default",
+     80.0,
+     1.00
+    ],
+    [
+     "y",
+     "default",
+     20.0,
+     1.00
+    ]
+   ],
+   "paired": [],
+   "expected": "spacing|0.000000|NONE\n1|x|default|80.000000|1.000000|0.000000|0.000000|IN\n2|y|default|20.000000|1.000000|0.000000|0.000000|IN",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q P13 one model under FIXED-SET: NONE",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "solo",
+     "default",
+     50.0,
+     4.00
+    ]
+   ],
+   "paired": [],
+   "expected": "spacing|0.000000|NONE\n1|solo|default|50.000000|2.000000|0.000000|0.000000|IN",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q P14 FIXED-SET boundary: step - CUSP MAX x u equal to the paired noise is not OUT (CUSP)",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.0
+   },
+   "rows": [
+    [
+     "b1",
+     "default",
+     10.0,
+     0.00
+    ],
+    [
+     "b2",
+     "default",
+     9.0,
+     0.00
+    ],
+    [
+     "b3",
+     "default",
+     5.0,
+     0.00
+    ]
+   ],
+   "paired": [
+    [
+     "b1",
+     "default",
+     "b2",
+     "default",
+     0.5
+    ],
+    [
+     "b1",
+     "default",
+     "b3",
+     "default",
+     0.5
+    ],
+    [
+     "b2",
+     "default",
+     "b3",
+     "default",
+     0.5
+    ]
+   ],
+   "expected": "spacing|1.000000|GAP\n1|b1|default|10.000000|0.000000|0.000000|0.000000|IN\n2|b2|default|9.000000|0.000000|0.000000|0.000000|IN\n3|b3|default|5.000000|0.000000|4.000000|4.000000|CUSP",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q P15 FIXED-SET boundary: step - CUSP MAX x u past the paired noise by 0.01 is OUT",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.0
+   },
+   "rows": [
+    [
+     "b1",
+     "default",
+     10.0,
+     0.00
+    ],
+    [
+     "b2",
+     "default",
+     9.0,
+     0.00
+    ],
+    [
+     "b3",
+     "default",
+     4.99,
+     0.00
+    ]
+   ],
+   "paired": [
+    [
+     "b1",
+     "default",
+     "b2",
+     "default",
+     0.5
+    ],
+    [
+     "b1",
+     "default",
+     "b3",
+     "default",
+     0.5
+    ],
+    [
+     "b2",
+     "default",
+     "b3",
+     "default",
+     0.5
+    ]
+   ],
+   "expected": "spacing|1.000000|GAP\n1|b1|default|10.000000|0.000000|0.000000|0.000000|IN\n2|b2|default|9.000000|0.000000|0.000000|0.000000|IN\n3|b3|default|4.990000|0.000000|4.010000|4.010000|OUT",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q P16 FIXED-SET boundary: step - IN MAX x u equal to the paired noise is IN",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.0
+   },
+   "rows": [
+    [
+     "b1",
+     "default",
+     10.0,
+     0.00
+    ],
+    [
+     "b2",
+     "default",
+     9.0,
+     0.00
+    ],
+    [
+     "b3",
+     "default",
+     6.0,
+     0.00
+    ]
+   ],
+   "paired": [
+    [
+     "b1",
+     "default",
+     "b2",
+     "default",
+     0.5
+    ],
+    [
+     "b1",
+     "default",
+     "b3",
+     "default",
+     0.5
+    ],
+    [
+     "b2",
+     "default",
+     "b3",
+     "default",
+     0.5
+    ]
+   ],
+   "expected": "spacing|1.000000|GAP\n1|b1|default|10.000000|0.000000|0.000000|0.000000|IN\n2|b2|default|9.000000|0.000000|0.000000|0.000000|IN\n3|b3|default|6.000000|0.000000|3.000000|3.000000|IN",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q P17 non-representative rows judged by their paired SE against the lowest IN and CUSP representatives",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.5,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "a",
+     "d",
+     40.0,
+     0.25
+    ],
+    [
+     "b",
+     "d",
+     38.0,
+     0.25
+    ],
+    [
+     "c",
+     "d",
+     36.0,
+     0.25
+    ],
+    [
+     "e",
+     "d",
+     29.0,
+     0.25
+    ],
+    [
+     "c",
+     "low",
+     28.5,
+     0.25
+    ],
+    [
+     "f",
+     "d",
+     10.0,
+     0.25
+    ]
+   ],
+   "paired": [
+    [
+     "a",
+     "d",
+     "b",
+     "d",
+     0.2
+    ],
+    [
+     "a",
+     "d",
+     "c",
+     "d",
+     0.2
+    ],
+    [
+     "a",
+     "d",
+     "e",
+     "d",
+     0.2
+    ],
+    [
+     "a",
+     "d",
+     "c",
+     "low",
+     0.2
+    ],
+    [
+     "a",
+     "d",
+     "f",
+     "d",
+     0.2
+    ],
+    [
+     "b",
+     "d",
+     "c",
+     "d",
+     0.2
+    ],
+    [
+     "b",
+     "d",
+     "e",
+     "d",
+     0.2
+    ],
+    [
+     "b",
+     "d",
+     "c",
+     "low",
+     0.2
+    ],
+    [
+     "b",
+     "d",
+     "f",
+     "d",
+     0.2
+    ],
+    [
+     "c",
+     "d",
+     "e",
+     "d",
+     0.2
+    ],
+    [
+     "c",
+     "d",
+     "c",
+     "low",
+     0.2
+    ],
+    [
+     "c",
+     "d",
+     "f",
+     "d",
+     0.2
+    ],
+    [
+     "e",
+     "d",
+     "c",
+     "low",
+     0.2
+    ],
+    [
+     "e",
+     "d",
+     "f",
+     "d",
+     0.2
+    ],
+    [
+     "c",
+     "low",
+     "f",
+     "d",
+     0.2
+    ]
+   ],
+   "expected": "spacing|2.000000|GAP\n1|a|d|40.000000|0.500000|0.000000|0.000000|IN\n2|b|d|38.000000|0.500000|0.000000|0.000000|IN\n3|c|d|36.000000|0.500000|2.000000|1.000000|IN\n4|e|d|29.000000|0.500000|7.000000|3.500000|CUSP\n5|f|d|10.000000|0.500000|19.000000|9.500000|OUT\n-|c|low|28.500000|0.500000|-|-|OUT",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q P18 below a CUSP, a row level with it by its paired SE shares it; the next is OUT by its paired SE",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.5,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "a",
+     "default",
+     40.0,
+     0.01
+    ],
+    [
+     "b",
+     "default",
+     38.0,
+     0.01
+    ],
+    [
+     "c",
+     "default",
+     36.0,
+     0.01
+    ],
+    [
+     "d",
+     "default",
+     29.0,
+     0.01
+    ],
+    [
+     "e",
+     "default",
+     28.0,
+     0.01
+    ],
+    [
+     "f",
+     "default",
+     27.9,
+     25.00
+    ]
+   ],
+   "paired": [
+    [
+     "a",
+     "default",
+     "b",
+     "default",
+     0.1
+    ],
+    [
+     "a",
+     "default",
+     "c",
+     "default",
+     0.1
+    ],
+    [
+     "a",
+     "default",
+     "d",
+     "default",
+     0.1
+    ],
+    [
+     "a",
+     "default",
+     "e",
+     "default",
+     0.1
+    ],
+    [
+     "a",
+     "default",
+     "f",
+     "default",
+     0.1
+    ],
+    [
+     "b",
+     "default",
+     "c",
+     "default",
+     0.1
+    ],
+    [
+     "b",
+     "default",
+     "d",
+     "default",
+     0.1
+    ],
+    [
+     "b",
+     "default",
+     "e",
+     "default",
+     0.1
+    ],
+    [
+     "b",
+     "default",
+     "f",
+     "default",
+     0.1
+    ],
+    [
+     "c",
+     "default",
+     "d",
+     "default",
+     0.1
+    ],
+    [
+     "c",
+     "default",
+     "e",
+     "default",
+     0.1
+    ],
+    [
+     "c",
+     "default",
+     "f",
+     "default",
+     0.1
+    ],
+    [
+     "d",
+     "default",
+     "e",
+     "default",
+     0.8
+    ],
+    [
+     "d",
+     "default",
+     "f",
+     "default",
+     0.5
+    ],
+    [
+     "e",
+     "default",
+     "f",
+     "default",
+     0.1
+    ]
+   ],
+   "expected": "spacing|2.000000|GAP\n1|a|default|40.000000|0.100000|0.000000|0.000000|IN\n2|b|default|38.000000|0.100000|0.000000|0.000000|IN\n3|c|default|36.000000|0.100000|2.000000|1.000000|IN\n4|d|default|29.000000|0.100000|7.000000|3.500000|CUSP\n5|e|default|28.000000|0.100000|1.000000|0.500000|CUSP\n6|f|default|27.900000|5.000000|0.100000|0.050000|OUT",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q P19 unicode identifiers under FIXED-SET",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "Modèle É",
+     "défaut",
+     10.0,
+     0.00
+    ],
+    [
+     "模型乙",
+     "默认",
+     9.0,
+     0.00
+    ],
+    [
+     "μ-3",
+     "α",
+     7.0,
+     0.00
+    ],
+    [
+     "μ-4",
+     "α",
+     3.0,
+     0.00
+    ]
+   ],
+   "paired": [
+    [
+     "Modèle É",
+     "défaut",
+     "模型乙",
+     "默认",
+     0.0
+    ],
+    [
+     "Modèle É",
+     "défaut",
+     "μ-3",
+     "α",
+     0.0
+    ],
+    [
+     "Modèle É",
+     "défaut",
+     "μ-4",
+     "α",
+     0.0
+    ],
+    [
+     "模型乙",
+     "默认",
+     "μ-3",
+     "α",
+     0.0
+    ],
+    [
+     "模型乙",
+     "默认",
+     "μ-4",
+     "α",
+     0.0
+    ],
+    [
+     "μ-3",
+     "α",
+     "μ-4",
+     "α",
+     0.0
+    ]
+   ],
+   "expected": "spacing|1.000000|GAP\n1|Modèle É|défaut|10.000000|0.000000|0.000000|0.000000|IN\n2|模型乙|默认|9.000000|0.000000|0.000000|0.000000|IN\n3|μ-3|α|7.000000|0.000000|2.000000|2.000000|IN\n4|μ-4|α|3.000000|0.000000|4.000000|4.000000|OUT",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "Q P20 an extra pair beyond those the rule tests is accepted",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "x",
+     "default",
+     10.0,
+     0.00
+    ],
+    [
+     "y",
+     "default",
+     9.0,
+     0.00
+    ],
+    [
+     "z",
+     "default",
+     7.0,
+     0.00
+    ]
+   ],
+   "paired": [
+    [
+     "x",
+     "default",
+     "y",
+     "default",
+     0.0
+    ],
+    [
+     "x",
+     "default",
+     "z",
+     "default",
+     0.0
+    ],
+    [
+     "y",
+     "default",
+     "z",
+     "default",
+     0.0
+    ]
+   ],
+   "expected": "spacing|1.000000|GAP\n1|x|default|10.000000|0.000000|0.000000|0.000000|IN\n2|y|default|9.000000|0.000000|0.000000|0.000000|IN\n3|z|default|7.000000|0.000000|2.000000|2.000000|IN",
+   "note": "The cluster corpus's case of this name, each SE given as its square se2 = se*se; the expected text is the corpus's."
+  },
+  {
+   "name": "S01 three models, two-component SEs: GAP spacing 1, rank 3 IN",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "A",
+     "default",
+     10,
+     0.125
+    ],
+    [
+     "B",
+     "default",
+     9,
+     0.125
+    ],
+    [
+     "C",
+     "default",
+     7,
+     0.085
+    ]
+   ],
+   "expected": "spacing|1.000000|GAP\n1|A|default|10.000000|0.353553|0.000000|0.000000|IN\n2|B|default|9.000000|0.353553|0.000000|0.000000|IN\n3|C|default|7.000000|0.291548|2.000000|2.000000|IN",
+   "note": "A/default se2=(0.5^2+0.5^2)/4=1/8 (SE 0.353553); B/default se2=(0.5^2+0.5^2)/4=1/8 (SE 0.353553); C/default se2=(0.3^2+0.5^2)/4=17/200 (SE 0.291548). Top gaps give g=1, g^2=1; floor^2=0; Z^2 max(sd^2)=(329/200)^2*1/4=108241/160000; the largest sets u^2=GAP: u=1.000000. Rank 3: step 2; noise Z sqrt(21/100)=0.753834; OUT past CUSP MAX u + noise = 3.500000 + 0.753834, CUSP past IN MAX u + noise = 2.500000 + 0.753834: IN. Each SE line is sqrt(se2) to six decimals."
+  },
+  {
+   "name": "S02 noise sets the spacing from non-square se2 (Z sqrt(5/2))",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "A",
+     "default",
+     10,
+     1.25
+    ],
+    [
+     "B",
+     "default",
+     9.5,
+     1.25
+    ],
+    [
+     "C",
+     "default",
+     9,
+     1.25
+    ],
+    [
+     "D",
+     "default",
+     2,
+     1.25
+    ]
+   ],
+   "expected": "spacing|2.600973|NOISE\n1|A|default|10.000000|1.118034|0.000000|0.000000|IN\n2|B|default|9.500000|1.118034|0.000000|0.000000|IN\n3|C|default|9.000000|1.118034|0.500000|0.192236|IN\n4|D|default|2.000000|1.118034|7.000000|2.691300|IN",
+   "note": "A/default se2=(2^2+1^2)/4=5/4 (SE 1.118034); B/default se2=(2^2+1^2)/4=5/4 (SE 1.118034); C/default se2=(2^2+1^2)/4=5/4 (SE 1.118034); D/default se2=(2^2+1^2)/4=5/4 (SE 1.118034). Top gaps give g=1/2, g^2=1/4; floor^2=0; Z^2 max(sd^2)=(329/200)^2*5/2=108241/16000; the largest sets u^2=NOISE: u=2.600973. Rank 3: step 1/2; noise Z sqrt(5/2)=2.600973; OUT past CUSP MAX u + noise = 9.103407 + 2.600973, CUSP past IN MAX u + noise = 6.502433 + 2.600973: IN. Rank 4: step 7; noise Z sqrt(5/2)=2.600973; OUT past CUSP MAX u + noise = 9.103407 + 2.600973, CUSP past IN MAX u + noise = 6.502433 + 2.600973: IN. Each SE line is sqrt(se2) to six decimals."
+  },
+  {
+   "name": "S03 rank 4 between CUSP MAX u and CUSP MAX u plus an irrational noise: CUSP",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "A",
+     "default",
+     10,
+     0.0125
+    ],
+    [
+     "B",
+     "default",
+     9,
+     0.0125
+    ],
+    [
+     "C",
+     "default",
+     8,
+     0.0125
+    ],
+    [
+     "D",
+     "default",
+     4.2,
+     0.0325
+    ]
+   ],
+   "expected": "spacing|1.000000|GAP\n1|A|default|10.000000|0.111803|0.000000|0.000000|IN\n2|B|default|9.000000|0.111803|0.000000|0.000000|IN\n3|C|default|8.000000|0.111803|1.000000|1.000000|IN\n4|D|default|4.200000|0.180278|3.800000|3.800000|CUSP",
+   "note": "A/default se2=(0.1^2+0.2^2)/4=1/80 (SE 0.111803); B/default se2=(0.1^2+0.2^2)/4=1/80 (SE 0.111803); C/default se2=(0.1^2+0.2^2)/4=1/80 (SE 0.111803); D/default se2=(0.2^2+0.3^2)/4=13/400 (SE 0.180278). Top gaps give g=1, g^2=1; floor^2=0; Z^2 max(sd^2)=(329/200)^2*1/40=108241/1600000; the largest sets u^2=GAP: u=1.000000. Rank 3: step 1; noise Z sqrt(1/40)=0.260097; OUT past CUSP MAX u + noise = 3.500000 + 0.260097, CUSP past IN MAX u + noise = 2.500000 + 0.260097: IN. Rank 4: step 19/5; noise Z sqrt(9/200)=0.348957; OUT past CUSP MAX u + noise = 3.500000 + 0.348957, CUSP past IN MAX u + noise = 2.500000 + 0.348957: CUSP. Each SE line is sqrt(se2) to six decimals."
+  },
+  {
+   "name": "S04 a CUSP row, a row level with it by noise, then one significantly below: OUT",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "A",
+     "default",
+     10,
+     0.0125
+    ],
+    [
+     "B",
+     "default",
+     9,
+     0.0125
+    ],
+    [
+     "C",
+     "default",
+     8,
+     0.0125
+    ],
+    [
+     "D",
+     "default",
+     5,
+     0.0325
+    ],
+    [
+     "E",
+     "default",
+     4.5,
+     0.13
+    ],
+    [
+     "F",
+     "default",
+     3.5,
+     0.0325
+    ]
+   ],
+   "expected": "spacing|1.000000|GAP\n1|A|default|10.000000|0.111803|0.000000|0.000000|IN\n2|B|default|9.000000|0.111803|0.000000|0.000000|IN\n3|C|default|8.000000|0.111803|1.000000|1.000000|IN\n4|D|default|5.000000|0.180278|3.000000|3.000000|CUSP\n5|E|default|4.500000|0.360555|0.500000|0.500000|CUSP\n6|F|default|3.500000|0.180278|1.000000|1.000000|OUT",
+   "note": "A/default se2=(0.1^2+0.2^2)/4=1/80 (SE 0.111803); B/default se2=(0.1^2+0.2^2)/4=1/80 (SE 0.111803); C/default se2=(0.1^2+0.2^2)/4=1/80 (SE 0.111803); D/default se2=(0.2^2+0.3^2)/4=13/400 (SE 0.180278); E/default se2=(0.4^2+0.6^2)/4=13/100 (SE 0.360555); F/default se2=(0.2^2+0.3^2)/4=13/400 (SE 0.180278). Top gaps give g=1, g^2=1; floor^2=0; Z^2 max(sd^2)=(329/200)^2*1/40=108241/1600000; the largest sets u^2=GAP: u=1.000000. Rank 3: step 1; noise Z sqrt(1/40)=0.260097; OUT past CUSP MAX u + noise = 3.500000 + 0.260097, CUSP past IN MAX u + noise = 2.500000 + 0.260097: IN. Rank 4: step 3; noise Z sqrt(9/200)=0.348957; OUT past CUSP MAX u + noise = 3.500000 + 0.348957, CUSP past IN MAX u + noise = 2.500000 + 0.348957: CUSP. Rank 5: after the CUSP row D, gap 1/2 against Z sqrt(13/80)=0.663121: CUSP. Rank 6: after the CUSP row D, gap 3/2 against Z sqrt(13/200)=0.419394: OUT. Each SE line is sqrt(se2) to six decimals."
+  },
+  {
+   "name": "S05 the representative by lower se2 at a tied score; other rows IN and OUT by R6",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "X",
+     "high",
+     10,
+     0.1125
+    ],
+    [
+     "X",
+     "low",
+     10,
+     0.0625
+    ],
+    [
+     "Y",
+     "default",
+     9,
+     0.0125
+    ],
+    [
+     "Z",
+     "default",
+     8,
+     0.0125
+    ],
+    [
+     "X",
+     "mid",
+     5,
+     0.02
+    ]
+   ],
+   "expected": "spacing|1.000000|GAP\n1|X|low|10.000000|0.250000|0.000000|0.000000|IN\n2|Y|default|9.000000|0.111803|0.000000|0.000000|IN\n3|Z|default|8.000000|0.111803|1.000000|1.000000|IN\n-|X|high|10.000000|0.335410|-|-|IN\n-|X|mid|5.000000|0.141421|-|-|OUT",
+   "note": "X/high se2=(0.3^2+0.6^2)/4=9/80 (SE 0.335410); X/low se2=(0.3^2+0.4^2)/4=1/16 (SE 0.250000); Y/default se2=(0.1^2+0.2^2)/4=1/80 (SE 0.111803); Z/default se2=(0.1^2+0.2^2)/4=1/80 (SE 0.111803); X/mid se2=(0.2^2+0.2^2)/4=1/50 (SE 0.141421). Top gaps give g=1, g^2=1; floor^2=0; Z^2 max(sd^2)=(329/200)^2*3/40=324723/1600000; the largest sets u^2=GAP: u=1.000000. Rank 3: step 1; noise Z sqrt(1/40)=0.260097; OUT past CUSP MAX u + noise = 3.500000 + 0.260097, CUSP past IN MAX u + noise = 2.500000 + 0.260097: IN. Other row X/high: against the lowest IN Z, gap -2 against Z sqrt(1/8)=0.581595: IN. Other row X/mid: against the lowest IN Z, gap 3 against Z sqrt(13/400)=0.296557: OUT. Each SE line is sqrt(se2) to six decimals. X/low is the representative of X: tied score 10 with X/high, lower se2 1/16 < 9/80."
+  },
+  {
+   "name": "S06 tied scores ranked by se2; equal se2 from different components ranked by model id; FLOOR below NOISE",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.5,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "P",
+     "default",
+     10,
+     0.2
+    ],
+    [
+     "Q",
+     "default",
+     10,
+     0.1625
+    ],
+    [
+     "S",
+     "default",
+     9.9,
+     0.125
+    ],
+    [
+     "R",
+     "default",
+     9.9,
+     0.125
+    ]
+   ],
+   "expected": "spacing|0.990421|NOISE\n1|Q|default|10.000000|0.403113|0.000000|0.000000|IN\n2|P|default|10.000000|0.447214|0.000000|0.000000|IN\n3|R|default|9.900000|0.353553|0.100000|0.100967|IN\n4|S|default|9.900000|0.353553|0.000000|0.000000|IN",
+   "note": "P/default se2=(0.4^2+0.8^2)/4=1/5 (SE 0.447214); Q/default se2=(0.4^2+0.7^2)/4=13/80 (SE 0.403113); S/default se2=(0.1^2+0.7^2)/4=1/8 (SE 0.353553); R/default se2=(0.5^2+0.5^2)/4=1/8 (SE 0.353553). Top gaps give g=0, g^2=0; floor^2=1/4; Z^2 max(sd^2)=(329/200)^2*29/80=3138989/3200000; the largest sets u^2=NOISE: u=0.990421. Rank 3: step 1/10; noise Z sqrt(13/40)=0.937794; OUT past CUSP MAX u + noise = 3.466474 + 0.937794, CUSP past IN MAX u + noise = 2.476053 + 0.937794: IN. Rank 4: step 0; noise Z sqrt(1/4)=0.822500; OUT past CUSP MAX u + noise = 3.466474 + 0.822500, CUSP past IN MAX u + noise = 2.476053 + 0.822500: IN. Each SE line is sqrt(se2) to six decimals. Q before P: tied score 10, se2 13/80 < 1/5. R before S: tied score 9.9 and equal se2 1/8 (from SEs 0.5, 0.5 and 0.1, 0.7), model id R < S."
+  },
+  {
+   "name": "S07 FLOOR sets the spacing; rank 4 OUT by an irrational margin",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0.5,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "A",
+     "default",
+     10,
+     0.0005
+    ],
+    [
+     "B",
+     "default",
+     9.9,
+     0.0005
+    ],
+    [
+     "C",
+     "default",
+     9.8,
+     0.0005
+    ],
+    [
+     "D",
+     "default",
+     7.9,
+     0.005
+    ]
+   ],
+   "expected": "spacing|0.500000|FLOOR\n1|A|default|10.000000|0.022361|0.000000|0.000000|IN\n2|B|default|9.900000|0.022361|0.000000|0.000000|IN\n3|C|default|9.800000|0.022361|0.100000|0.200000|IN\n4|D|default|7.900000|0.070711|1.900000|3.800000|OUT",
+   "note": "A/default se2=(0.02^2+0.04^2)/4=1/2000 (SE 0.022361); B/default se2=(0.02^2+0.04^2)/4=1/2000 (SE 0.022361); C/default se2=(0.02^2+0.04^2)/4=1/2000 (SE 0.022361); D/default se2=(0.1^2+0.1^2)/4=1/200 (SE 0.070711). Top gaps give g=1/10, g^2=1/100; floor^2=1/4; Z^2 max(sd^2)=(329/200)^2*1/1000=108241/40000000; the largest sets u^2=FLOOR: u=0.500000. Rank 3: step 1/10; noise Z sqrt(1/1000)=0.052019; OUT past CUSP MAX u + noise = 1.750000 + 0.052019, CUSP past IN MAX u + noise = 1.250000 + 0.052019: IN. Rank 4: step 19/10; noise Z sqrt(11/2000)=0.121996; OUT past CUSP MAX u + noise = 1.750000 + 0.121996, CUSP past IN MAX u + noise = 1.250000 + 0.121996: OUT. Every later rank OUT. Each SE line is sqrt(se2) to six decimals."
+  },
+  {
+   "name": "S08 a negative se2 is refused with the word for a negative SE",
+   "params": {
+    "cusp_max": 3.5,
+    "in_max": 2.5,
+    "spacing_floor": 0,
+    "z": 1.645
+   },
+   "rows": [
+    [
+     "A",
+     "default",
+     10,
+     0.0325
+    ],
+    [
+     "B",
+     "default",
+     9,
+     -0.0325
+    ]
+   ],
+   "expected": "ERROR:score or se",
+   "note": "A/default se2=(0.2^2+0.3^2)/4=13/400 (SE 0.180278); B/default se2=-13/400. "
+  }
+ ]
+}

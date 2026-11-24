@@ -361,6 +361,105 @@ def preimageInstructionSetOf (version specification members : Value) : Except Re
 def digestInstructionSetOf (version specification members : Value) : Except Reason String :=
   (preimageInstructionSetOf version specification members).map ofPreimage
 
+/-! ## D(IS)'s members
+
+D(IS)'s members are the Agent Contract's pages outside the specification tree, the stated list
+of titles. Each member's `h` is formed as a kept page's is (`pageDigest` of its blocks), and
+the members are ordered by title, Lean's `String` order, code point by code point. The stated
+list of titles is an argument here. -/
+
+/-- The members' order: Lean's `String` order, code point by code point. -/
+def titleLe (a b : String) : Bool := decide (a ≤ b)
+
+/-- A character the wiki reads as a space in a title: the space, `_`, and the other spaces
+MediaWiki's title codec folds into one (U+00A0, U+1680, U+180E, U+2000 to U+200A, U+2028,
+U+2029, U+202F, U+205F, U+3000). -/
+def wikiSpace (c : Char) : Bool :=
+  c == ' ' || c == '_' || c.toNat == 0xA0 || c.toNat == 0x1680 || c.toNat == 0x180E ||
+    (0x2000 ≤ c.toNat && c.toNat ≤ 0x200A) || c.toNat == 0x2028 || c.toNat == 0x2029 ||
+    c.toNat == 0x202F || c.toNat == 0x205F || c.toNat == 0x3000
+
+/-- A direction mark the wiki drops from a title: U+200E, U+200F, U+202A to U+202E. -/
+def wikiMark (c : Char) : Bool :=
+  c.toNat == 0x200E || c.toNat == 0x200F || (0x202A ≤ c.toNat && c.toNat ≤ 0x202E)
+
+/-- A run of spaces made one. -/
+def collapseSpaces (cs : List Char) : List Char :=
+  (cs.foldl (fun acc c => match c, acc with
+    | ' ', ' ' :: _ => acc
+    | _, _ => c :: acc) []).reverse
+
+/-- Spaces at either end dropped. -/
+def trimSpaces (cs : List Char) : List Char :=
+  ((cs.dropWhile (· == ' ')).reverse.dropWhile (· == ' ')).reverse
+
+/-- A title as the wiki names its page: direction marks dropped, every space of `wikiSpace` a
+space, runs of spaces one, spaces at either end dropped, one leading colon dropped with the
+spaces after it, the first character in upper case (`Char.toUpper`, which changes only `a` to
+`z`; the tree's titles begin with `T`, and no other character's upper case is `T`). Two titles
+the wiki names one page by fold to one title here in these respects; the tree's titles are
+their own fold. -/
+def wikiTitle (title : String) : String :=
+  let cs := trimSpaces (collapseSpaces
+    ((title.toList.filter (fun c => !wikiMark c)).map (fun c => if wikiSpace c then ' ' else c)))
+  let cs := match cs with
+    | ':' :: rest => trimSpaces rest
+    | _ => cs
+  match cs with
+  | c :: rest => String.ofList (c.toUpper :: rest)
+  | [] => ""
+
+/-- A title names a page of the specification tree, as written or as the wiki names its
+page. -/
+def treeTitle (t : String) : Bool := (titleClass t).isSome || (titleClass (wikiTitle t)).isSome
+
+/-- A member's page has at least one block and its blocks are not refused. -/
+def memberBlocksOk (wikitext : String) : Bool :=
+  match preTexts wikitext with
+  | .ok (_ :: _) => true
+  | _ => false
+
+/-- A member's row: its title and the `h` of its page's blocks; `members` when the title has
+no page, `pre` when the page's blocks are refused or there is none. -/
+def memberRow (pages : List (String × String)) (title : String) :
+    Except Reason (String × String) :=
+  match pages.lookup title with
+  | none => .error .members
+  | some w =>
+    match preTexts w with
+    | .ok (b :: bs) => .ok (title, pageDigest (b :: bs))
+    | _ => .error .pre
+
+/-- D(IS)'s members, `(title, h)` for each stated title, from the pages as `(title, wikitext)`
+pairs, ordered by title. It refuses, the first that applies whatever the order of either list:
+`title` (a title of either list is a title of the specification tree, as written or as the wiki
+names its page, `treeTitle`); then `members` (an empty
+title, a title twice in either list, a page whose title is not stated, a stated title with no
+page); then `pre` (a page's blocks refused, or a page with no block). -/
+def memberPages (stated : List String) (pages : List (String × String)) :
+    Except Reason (List (String × String)) :=
+  let titles := pages.map Prod.fst
+  if (stated ++ titles).any treeTitle then .error .title
+  else if stated.any String.isEmpty || !decide stated.Nodup || !decide titles.Nodup ||
+      !stated.all (titles.contains ·) || !titles.all (stated.contains ·) then .error .members
+  else if pages.any (fun p => !memberBlocksOk p.2) then .error .pre
+  else (stated.mergeSort titleLe).mapM (memberRow pages)
+
+/-- Titles as given: a list of strings. -/
+def readTitles : Value → Option (List String)
+  | .arr ts => ts.mapM fun
+    | .str t => some t
+    | _ => none
+  | _ => none
+
+/-- D(IS)'s members over JSON values: `members` when the titles are not a list of strings,
+`pages` when the pages are not a list of pairs of strings. -/
+def memberPagesOf (titles pages : Value) : Except Reason (List (String × String)) :=
+  match readTitles titles, readPages pages with
+  | none, _ => .error .members
+  | some _, none => .error .pages
+  | some ts, some ps => memberPages ts ps
+
 /-! ## Answers as v1 writes them -/
 
 /-- v1's answer: `["OK", value]` or `["REFUSED", reason]`. -/
@@ -715,5 +814,210 @@ theorem preTexts_example :
 
 /-- A pre tag in another case is refused. -/
 theorem preTexts_upper : preTexts "<PRE>\nA\n</PRE>" = .error .pre := by rfl
+
+/-! ### D(IS)'s members -/
+
+/-- A lowercase hexadecimal digit, as `isHex64` reads one. -/
+def lowHexDigit (c : Char) : Bool := c.isDigit || ('a' ≤ c && c ≤ 'f')
+
+theorem hexDigit_low16 : ∀ k : Fin 16, lowHexDigit (Sha256.hexDigit (UInt8.ofNat k.val)) = true := by
+  decide
+
+theorem hexDigit_low {n : UInt8} (h : n.toNat < 16) : lowHexDigit (Sha256.hexDigit n) = true := by
+  simpa using hexDigit_low16 ⟨n.toNat, h⟩
+
+theorem shiftRight4_lt (b : UInt8) : (b >>> 4).toNat < 16 := by
+  simp [UInt8.toNat_shiftRight, Nat.shiftRight_eq_div_pow]
+  have := b.toNat_lt
+  omega
+
+theorem and15_lt (b : UInt8) : (b &&& 15).toNat < 16 := by
+  simp [UInt8.toNat_and]
+  exact Nat.lt_succ_of_le Nat.and_le_right
+
+/-- Every `h` is a digest as D(IS) takes one: 64 lowercase hexadecimal characters. -/
+theorem isHex64_pageDigest (blocks : List String) : isHex64 (pageDigest blocks) = true := by
+  have hlen := Sha256.digestText_length ("\n".intercalate blocks)
+  simp only [isHex64, pageDigest, hlen, beq_self_eq_true, Bool.true_and]
+  simp only [Sha256.digestText, Sha256.hex, String.all_bool_eq, String.toList_ofList,
+    List.all_eq_true, List.mem_flatMap, List.mem_cons, List.not_mem_nil, or_false]
+  rintro c ⟨b, _, rfl | rfl⟩
+  · exact hexDigit_low (shiftRight4_lt b)
+  · exact hexDigit_low (and15_lt b)
+
+theorem lookup_mem {t : String} {w : String} :
+    ∀ {pages : List (String × String)}, pages.lookup t = some w → (t, w) ∈ pages
+  | [], h => by simp at h
+  | (k, v) :: ps, h => by
+    simp only [List.lookup_cons] at h
+    split at h
+    · rename_i hk
+      simp only [Option.some.injEq] at h
+      have : t = k := by simpa using hk
+      subst this; subst h; exact List.mem_cons_self
+    · exact List.mem_cons_of_mem _ (lookup_mem h)
+
+theorem memberRow_ok {pages : List (String × String)} {t : String} {m : String × String}
+    (h : memberRow pages t = .ok m) :
+    m.1 = t ∧ ∃ w bs, (t, w) ∈ pages ∧ preTexts w = .ok bs ∧ m.2 = pageDigest bs := by
+  unfold memberRow at h
+  split at h
+  · simp at h
+  · rename_i w hw
+    split at h
+    · rename_i b bs hb
+      simp only [Except.ok.injEq] at h
+      subst h
+      exact ⟨rfl, w, b :: bs, lookup_mem hw, hb, rfl⟩
+    · simp at h
+
+/-- What `mapM` of `memberRow` answers: one row per title, in order, each from its title. -/
+theorem mapM_memberRow {pages : List (String × String)} :
+    ∀ {l : List String} {ms : List (String × String)}, l.mapM (memberRow pages) = .ok ms →
+      ms.map Prod.fst = l ∧ ∀ m ∈ ms, ∃ t ∈ l, memberRow pages t = .ok m
+  | [], ms, h => by
+    simp only [List.mapM_nil, pure, Except.pure, Except.ok.injEq] at h
+    subst h; simp
+  | a :: l, ms, h => by
+    simp only [List.mapM_cons, bind, Except.bind, pure, Except.pure] at h
+    cases hfa : memberRow pages a with
+    | error e => simp [hfa] at h
+    | ok b =>
+      cases hl : l.mapM (memberRow pages) with
+      | error e => simp [hfa, hl] at h
+      | ok bs =>
+        simp only [hfa, hl, Except.ok.injEq] at h
+        subst h
+        have ih := mapM_memberRow hl
+        refine ⟨?_, ?_⟩
+        · rw [List.map_cons, ih.1, (memberRow_ok hfa).1]
+        · intro m hm
+          rcases List.mem_cons.mp hm with rfl | hm'
+          · exact ⟨a, List.mem_cons_self, hfa⟩
+          · obtain ⟨t, ht, h'⟩ := ih.2 m hm'
+            exact ⟨t, List.mem_cons_of_mem _ ht, h'⟩
+
+/-- What `memberPages` answers on `.ok`: the stated titles sorted, each row from its title;
+the stated titles have no repeat and no empty title. -/
+theorem memberPages_rows {stated : List String} {pages : List (String × String)}
+    {ms : List (String × String)} (h : memberPages stated pages = .ok ms) :
+    (stated.mergeSort titleLe).mapM (memberRow pages) = .ok ms ∧
+      stated.Nodup ∧ stated.all (fun t => !t.isEmpty) = true := by
+  unfold memberPages at h
+  simp only at h
+  split at h
+  · simp at h
+  · split at h
+    · simp at h
+    · rename_i hm2
+      split at h
+      · simp at h
+      · simp only [Bool.or_eq_true, Bool.not_eq_true', decide_eq_false_iff_not, not_or,
+          Bool.not_eq_false] at hm2
+        refine ⟨h, Decidable.of_not_not hm2.1.1.1.2, ?_⟩
+        simp only [List.all_eq_true, Bool.not_eq_true']
+        intro t ht
+        have := List.any_eq_false.mp (Bool.eq_false_iff.mpr hm2.1.1.1.1) t ht
+        simpa using this
+
+/-- **The members' titles.** On `.ok ms`, the members' titles are exactly the stated titles
+sorted by `titleLe`. -/
+theorem memberPages_titles {stated : List String} {pages : List (String × String)}
+    {ms : List (String × String)} (h : memberPages stated pages = .ok ms) :
+    ms.map Prod.fst = stated.mergeSort titleLe :=
+  (mapM_memberRow (memberPages_rows h).1).1
+
+/-- The members' titles are a permutation of the stated titles and ordered by title. -/
+theorem memberPages_sorted {stated : List String} {pages : List (String × String)}
+    {ms : List (String × String)} (h : memberPages stated pages = .ok ms) :
+    (ms.map Prod.fst).Perm stated ∧ (ms.map Prod.fst).Pairwise (fun a b => a ≤ b) := by
+  rw [memberPages_titles h]
+  refine ⟨List.mergeSort_perm _ _, ?_⟩
+  have hp := List.pairwise_mergeSort (le := titleLe)
+    (fun a b c hab hbc => by
+      simp only [titleLe, decide_eq_true_eq] at *
+      exact String.le_trans hab hbc)
+    (fun a b => by
+      simp only [titleLe, Bool.or_eq_true, decide_eq_true_eq]
+      exact String.le_total a b) stated
+  exact hp.imp fun hab => by simpa [titleLe] using hab
+
+/-- **The members' digests.** On `.ok ms`, each member's `h` is `pageDigest` of the blocks of
+its own page, that page given under the member's title. -/
+theorem memberPages_digest {stated : List String} {pages : List (String × String)}
+    {ms : List (String × String)} (h : memberPages stated pages = .ok ms) :
+    ∀ m ∈ ms, ∃ w bs, (m.1, w) ∈ pages ∧ preTexts w = .ok bs ∧ m.2 = pageDigest bs := by
+  intro m hm
+  obtain ⟨t, _, ht⟩ := (mapM_memberRow (memberPages_rows h).1).2 m hm
+  have hr := memberRow_ok ht
+  rw [hr.1]
+  exact hr.2
+
+/-- **The members pass D(IS)'s check.** On `.ok ms`, `membersOk ms` holds: each title is not
+empty, each `h` is 64 lowercase hexadecimal characters, no title is twice. -/
+theorem memberPages_membersOk {stated : List String} {pages : List (String × String)}
+    {ms : List (String × String)} (h : memberPages stated pages = .ok ms) :
+    membersOk ms = true := by
+  obtain ⟨_, hnd, hne⟩ := memberPages_rows h
+  have ht := memberPages_titles h
+  unfold membersOk
+  simp only [Bool.and_eq_true, List.all_eq_true, decide_eq_true_eq, Bool.not_eq_true']
+  refine ⟨fun m hm => ⟨?_, ?_⟩, ?_⟩
+  · have hmem : m.1 ∈ stated := by
+      have : m.1 ∈ ms.map Prod.fst := List.mem_map_of_mem hm
+      rw [ht] at this
+      exact (List.mergeSort_perm _ _).mem_iff.mp this
+    have := List.all_eq_true.mp hne m.1 hmem
+    simpa using this
+  · obtain ⟨_, bs, _, _, hd⟩ := memberPages_digest h m hm
+    rw [hd]
+    exact isHex64_pageDigest bs
+  · rw [ht]
+    exact (List.mergeSort_perm _ _).nodup_iff.mpr hnd
+
+/-- So D(IS) never refuses `members` on what `memberPages` answers. -/
+theorem digestInstructionSet_memberPages {stated : List String} {pages : List (String × String)}
+    {ms : List (String × String)} (h : memberPages stated pages = .ok ms)
+    (version specification : String) :
+    digestInstructionSet version specification ms ≠ .error .members := by
+  have hok := memberPages_membersOk h
+  unfold digestInstructionSet preimageInstructionSet
+  cases versionOk version <;> cases isHex64 specification <;>
+    simp [hok, Except.map]
+
+/-- **A title of the specification tree is refused.** A title of either list that names the
+root, the contents page or a section page is refused `title`. -/
+theorem memberPages_treeTitle {stated : List String} {pages : List (String × String)}
+    {t : String} (ht : t ∈ stated ∨ t ∈ pages.map Prod.fst) (hc : (titleClass t).isSome = true) :
+    memberPages stated pages = .error .title := by
+  have hany : (stated ++ pages.map Prod.fst).any treeTitle = true :=
+    List.any_eq_true.mpr ⟨t, List.mem_append.mpr ht, by simp [treeTitle, hc]⟩
+  unfold memberPages
+  simp only [hany, ↓reduceIte]
+
+/-- **A tree title as the wiki spells it is refused.** A title of either list whose page, as
+the wiki names it, is the root, the contents page or a section page is refused `title`. -/
+theorem memberPages_wikiTreeTitle {stated : List String} {pages : List (String × String)}
+    {t : String} (ht : t ∈ stated ∨ t ∈ pages.map Prod.fst)
+    (hc : (titleClass (wikiTitle t)).isSome = true) :
+    memberPages stated pages = .error .title := by
+  have hany : (stated ++ pages.map Prod.fst).any treeTitle = true :=
+    List.any_eq_true.mpr ⟨t, List.mem_append.mpr ht, by simp [treeTitle, hc]⟩
+  unfold memberPages
+  simp only [hany, ↓reduceIte]
+
+/-- The root, spelled with underscores, a lower-case first letter, spaces around and doubled,
+or a leading colon, folds to the root. -/
+theorem wikiTitle_root_variants :
+    wikiTitle "The_Principia_Machina/TPS" = rootTitle ∧
+      wikiTitle "the Principia Machina/TPS" = rootTitle ∧
+      wikiTitle "  The Principia  Machina/TPS " = rootTitle ∧
+      wikiTitle ": The\u00A0Principia_Machina/TPS\u200E" = rootTitle := by
+  decide
+
+/-- The tree's own titles are their own fold. -/
+theorem wikiTitle_tree : wikiTitle rootTitle = rootTitle ∧ wikiTitle contentsTitle = contentsTitle ∧
+    wikiTitle "The Principia Machina/TPS/1.2 Rules" = "The Principia Machina/TPS/1.2 Rules" := by
+  decide
 
 end Principia.Digest.Specification

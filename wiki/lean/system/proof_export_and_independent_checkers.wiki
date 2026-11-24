@@ -236,8 +236,9 @@ taken up in [[Lean theorem prover/Explainers/Stating the right thing|stating the
 
 == Next ==
 
-[[Lean theorem prover/System/Monads and do-notation|Monads and do-notation]] returns to Lean
-as a programming language.
+[[Lean theorem prover/System/Official, independent and hosted checkers|Official, independent
+and hosted checkers]] says where the Lean kernel and these checkers come from, and what a
+hosted service can and cannot do.
 
 == References ==
 

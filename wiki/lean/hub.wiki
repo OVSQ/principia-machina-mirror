@@ -213,6 +213,7 @@ formulas of the Foundations pages beside Lean's own syntax for the same things, 
 * [[Lean theorem prover/System/The compiler and runtime|The compiler and runtime]]: from a definition to machine code.
 * [[Lean theorem prover/System/Lake and Lean projects|Lake and Lean projects]]: Lake, Lean's tool for compiling projects, and how a project fixes its version of Lean.
 * [[Lean theorem prover/System/Proof export and independent checkers|Proof export and independent checkers]]: checking a proof again, with other programs.
+* [[Lean theorem prover/System/Official, independent and hosted checkers|Official, independent and hosted checkers]]: where the checkers come from, and what a hosted service offers.
 * [[Lean theorem prover/System/Monads and do-notation|Monads and do-notation]]: effects as values in a pure language.
 
 === History ===

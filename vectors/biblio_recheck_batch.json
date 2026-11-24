@@ -1,0 +1,3040 @@
+{
+ "note": "Cases of biblio recheck_batch: the recheck's second call. Each request goes through the Calculator's reader; an expected answer is compared as canonical JSON, a refused case by its code and detail. The payloads are recorded in each registry's form, written by hand; the expected answers were worked by hand from TPS 5.21.14, 5.21.15 and 5.21.19.",
+ "cases": [
+  {
+   "name": "DOI-RA: agency Crossref, the works lookup owed",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "W1",
+      "item": {
+       "author": [
+        {
+         "family": "Wakefield",
+         "given": "A J"
+        }
+       ],
+       "container-title": "The Lancet",
+       "issued": {
+        "date-parts": [
+         [
+          1998,
+          2,
+          28
+         ]
+        ]
+       },
+       "title": "Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children",
+       "type": "article-journal",
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      },
+      "identifiers": {
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      }
+     }
+    ],
+    "lookups": [
+     {
+      "bib_id": "W1",
+      "kind": "DOI",
+      "identifier": "10.1016/S0140-6736(97)11096-0",
+      "registry": "DOI-RA",
+      "status": 200,
+      "text": "[{\"DOI\": \"10.1016/S0140-6736(97)11096-0\", \"RA\": \"Crossref\"}]"
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "DOI agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "name": "Crossref works",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "DOI-DATACITE",
+      "name": "DataCite dois",
+      "template": "https://api.datacite.org/dois/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "name": "arXiv API",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "name": "PubMed E-utilities summary",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "name": "PMC ID Converter",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-15"
+   },
+   "expected": {
+    "entries": [
+     {
+      "bib_id": "W1",
+      "state": "PENDING"
+     }
+    ],
+    "lookups": [
+     {
+      "bib_id": "W1",
+      "kind": "DOI",
+      "identifier": "10.1016/S0140-6736(97)11096-0",
+      "registry": "DOI-CROSSREF",
+      "url": "https://api.crossref.org/v1/works/10.1016/S0140-6736(97)11096-0"
+     }
+    ],
+    "counts": {
+     "changed": 0,
+     "unchanged": 0,
+     "pending": 1,
+     "failed": 0,
+     "refused": 0,
+     "gone": 0
+    }
+   }
+  },
+  {
+   "name": "Crossref: a work read, a retraction notice, the lines to write",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "W1",
+      "item": {
+       "author": [
+        {
+         "family": "Wakefield",
+         "given": "A J"
+        }
+       ],
+       "container-title": "The Lancet",
+       "issued": {
+        "date-parts": [
+         [
+          1998,
+          2,
+          28
+         ]
+        ]
+       },
+       "title": "Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children",
+       "type": "article-journal",
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      },
+      "identifiers": {
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      }
+     }
+    ],
+    "lookups": [
+     {
+      "bib_id": "W1",
+      "kind": "DOI",
+      "identifier": "10.1016/S0140-6736(97)11096-0",
+      "registry": "DOI-RA",
+      "status": 200,
+      "text": "[{\"DOI\": \"10.1016/S0140-6736(97)11096-0\", \"RA\": \"Crossref\"}]"
+     },
+     {
+      "bib_id": "W1",
+      "kind": "DOI",
+      "identifier": "10.1016/S0140-6736(97)11096-0",
+      "registry": "DOI-CROSSREF",
+      "status": 200,
+      "text": "{\"status\": \"ok\", \"message-type\": \"work\", \"message-version\": \"1.0.0\", \"message\": {\"DOI\": \"10.1016/s0140-6736(97)11096-0\", \"ISSN\": [\"0140-6736\"], \"issued\": {\"date-parts\": [[1998, 2, 28]]}, \"title\": [\"RETRACTED: Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children\"], \"author\": [{\"given\": \"A J\", \"family\": \"Wakefield\", \"sequence\": \"first\"}], \"updated-by\": [{\"updated\": {\"date-parts\": [[2010, 2, 6]]}, \"DOI\": \"10.1016/s0140-6736(10)60175-4\", \"type\": \"retraction\", \"source\": \"retraction-watch\", \"label\": \"Retraction\"}]}}"
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "DOI agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "name": "Crossref works",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "DOI-DATACITE",
+      "name": "DataCite dois",
+      "template": "https://api.datacite.org/dois/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "name": "arXiv API",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "name": "PubMed E-utilities summary",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "name": "PMC ID Converter",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-15"
+   },
+   "expected": {
+    "entries": [
+     {
+      "bib_id": "W1",
+      "state": "CHANGED",
+      "check_line": "CHECK 2026-11-15 CONFIRMED ; DOI 10.1016/S0140-6736(97)11096-0 CONFIRMED",
+      "notices_line": "NOTICES 2026-11-15 ; retraction-watch 10.1016/s0140-6736(10)60175-4 2010-02-06 retraction"
+     }
+    ],
+    "lookups": [],
+    "counts": {
+     "changed": 1,
+     "unchanged": 0,
+     "pending": 0,
+     "failed": 0,
+     "refused": 0,
+     "gone": 0
+    }
+   }
+  },
+  {
+   "name": "unchanged: the lines as written on the run's date",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "W1",
+      "item": {
+       "author": [
+        {
+         "family": "Wakefield",
+         "given": "A J"
+        }
+       ],
+       "container-title": "The Lancet",
+       "issued": {
+        "date-parts": [
+         [
+          1998,
+          2,
+          28
+         ]
+        ]
+       },
+       "title": "Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children",
+       "type": "article-journal",
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      },
+      "identifiers": {
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      },
+      "check_line": "CHECK 2026-11-15 CONFIRMED ; DOI 10.1016/S0140-6736(97)11096-0 CONFIRMED",
+      "notices_line": "NOTICES 2026-11-15 ; retraction-watch 10.1016/s0140-6736(10)60175-4 2010-02-06 retraction"
+     }
+    ],
+    "lookups": [
+     {
+      "bib_id": "W1",
+      "kind": "DOI",
+      "identifier": "10.1016/S0140-6736(97)11096-0",
+      "registry": "DOI-RA",
+      "status": 200,
+      "text": "[{\"DOI\": \"10.1016/S0140-6736(97)11096-0\", \"RA\": \"Crossref\"}]"
+     },
+     {
+      "bib_id": "W1",
+      "kind": "DOI",
+      "identifier": "10.1016/S0140-6736(97)11096-0",
+      "registry": "DOI-CROSSREF",
+      "status": 200,
+      "text": "{\"status\": \"ok\", \"message-type\": \"work\", \"message-version\": \"1.0.0\", \"message\": {\"DOI\": \"10.1016/s0140-6736(97)11096-0\", \"ISSN\": [\"0140-6736\"], \"issued\": {\"date-parts\": [[1998, 2, 28]]}, \"title\": [\"RETRACTED: Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children\"], \"author\": [{\"given\": \"A J\", \"family\": \"Wakefield\", \"sequence\": \"first\"}], \"updated-by\": [{\"updated\": {\"date-parts\": [[2010, 2, 6]]}, \"DOI\": \"10.1016/s0140-6736(10)60175-4\", \"type\": \"retraction\", \"source\": \"retraction-watch\", \"label\": \"Retraction\"}]}}"
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "DOI agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "name": "Crossref works",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "DOI-DATACITE",
+      "name": "DataCite dois",
+      "template": "https://api.datacite.org/dois/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "name": "arXiv API",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "name": "PubMed E-utilities summary",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "name": "PMC ID Converter",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-15"
+   },
+   "expected": {
+    "entries": [
+     {
+      "bib_id": "W1",
+      "state": "UNCHANGED"
+     }
+    ],
+    "lookups": [],
+    "counts": {
+     "changed": 0,
+     "unchanged": 1,
+     "pending": 0,
+     "failed": 0,
+     "refused": 0,
+     "gone": 0
+    }
+   }
+  },
+  {
+   "name": "Crossref: a changed CHECK date rewrites the lines",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "W1",
+      "item": {
+       "author": [
+        {
+         "family": "Wakefield",
+         "given": "A J"
+        }
+       ],
+       "container-title": "The Lancet",
+       "issued": {
+        "date-parts": [
+         [
+          1998,
+          2,
+          28
+         ]
+        ]
+       },
+       "title": "Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children",
+       "type": "article-journal",
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      },
+      "identifiers": {
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      },
+      "check_line": "CHECK 2026-10-01 CONFIRMED ; DOI 10.1016/S0140-6736(97)11096-0 CONFIRMED",
+      "notices_line": "NOTICES 2026-10-01 ; retraction-watch 10.1016/s0140-6736(10)60175-4 2010-02-06 retraction"
+     }
+    ],
+    "lookups": [
+     {
+      "bib_id": "W1",
+      "kind": "DOI",
+      "identifier": "10.1016/S0140-6736(97)11096-0",
+      "registry": "DOI-RA",
+      "status": 200,
+      "text": "[{\"DOI\": \"10.1016/S0140-6736(97)11096-0\", \"RA\": \"Crossref\"}]"
+     },
+     {
+      "bib_id": "W1",
+      "kind": "DOI",
+      "identifier": "10.1016/S0140-6736(97)11096-0",
+      "registry": "DOI-CROSSREF",
+      "status": 200,
+      "text": "{\"status\": \"ok\", \"message-type\": \"work\", \"message-version\": \"1.0.0\", \"message\": {\"DOI\": \"10.1016/s0140-6736(97)11096-0\", \"ISSN\": [\"0140-6736\"], \"issued\": {\"date-parts\": [[1998, 2, 28]]}, \"title\": [\"RETRACTED: Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children\"], \"author\": [{\"given\": \"A J\", \"family\": \"Wakefield\", \"sequence\": \"first\"}], \"updated-by\": [{\"updated\": {\"date-parts\": [[2010, 2, 6]]}, \"DOI\": \"10.1016/s0140-6736(10)60175-4\", \"type\": \"retraction\", \"source\": \"retraction-watch\", \"label\": \"Retraction\"}]}}"
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "DOI agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "name": "Crossref works",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "DOI-DATACITE",
+      "name": "DataCite dois",
+      "template": "https://api.datacite.org/dois/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "name": "arXiv API",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "name": "PubMed E-utilities summary",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "name": "PMC ID Converter",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-15"
+   },
+   "expected": {
+    "entries": [
+     {
+      "bib_id": "W1",
+      "state": "CHANGED",
+      "check_line": "CHECK 2026-11-15 CONFIRMED ; DOI 10.1016/S0140-6736(97)11096-0 CONFIRMED",
+      "notices_line": "NOTICES 2026-11-15 ; retraction-watch 10.1016/s0140-6736(10)60175-4 2010-02-06 retraction"
+     }
+    ],
+    "lookups": [],
+    "counts": {
+     "changed": 1,
+     "unchanged": 0,
+     "pending": 0,
+     "failed": 0,
+     "refused": 0,
+     "gone": 0
+    }
+   }
+  },
+  {
+   "name": "Crossref: a 404 after the agency named Crossref keeps the prior lines (status)",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "W1",
+      "item": {
+       "author": [
+        {
+         "family": "Wakefield",
+         "given": "A J"
+        }
+       ],
+       "container-title": "The Lancet",
+       "issued": {
+        "date-parts": [
+         [
+          1998,
+          2,
+          28
+         ]
+        ]
+       },
+       "title": "Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children",
+       "type": "article-journal",
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      },
+      "identifiers": {
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      }
+     }
+    ],
+    "lookups": [
+     {
+      "bib_id": "W1",
+      "kind": "DOI",
+      "identifier": "10.1016/S0140-6736(97)11096-0",
+      "registry": "DOI-RA",
+      "status": 200,
+      "text": "[{\"DOI\": \"10.1016/S0140-6736(97)11096-0\", \"RA\": \"Crossref\"}]"
+     },
+     {
+      "bib_id": "W1",
+      "kind": "DOI",
+      "identifier": "10.1016/S0140-6736(97)11096-0",
+      "registry": "DOI-CROSSREF",
+      "status": 404,
+      "text": "Resource not found."
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "DOI agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "name": "Crossref works",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "DOI-DATACITE",
+      "name": "DataCite dois",
+      "template": "https://api.datacite.org/dois/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "name": "arXiv API",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "name": "PubMed E-utilities summary",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "name": "PMC ID Converter",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-15"
+   },
+   "expected": {
+    "entries": [
+     {
+      "bib_id": "W1",
+      "state": "FAILED",
+      "kind": "DOI",
+      "word": "status"
+     }
+    ],
+    "lookups": [],
+    "counts": {
+     "changed": 0,
+     "unchanged": 0,
+     "pending": 0,
+     "failed": 1,
+     "refused": 0,
+     "gone": 0
+    }
+   }
+  },
+  {
+   "name": "Crossref: no answer keeps the prior lines (answer)",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "W1",
+      "item": {
+       "author": [
+        {
+         "family": "Wakefield",
+         "given": "A J"
+        }
+       ],
+       "container-title": "The Lancet",
+       "issued": {
+        "date-parts": [
+         [
+          1998,
+          2,
+          28
+         ]
+        ]
+       },
+       "title": "Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children",
+       "type": "article-journal",
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      },
+      "identifiers": {
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      }
+     }
+    ],
+    "lookups": [
+     {
+      "bib_id": "W1",
+      "kind": "DOI",
+      "identifier": "10.1016/S0140-6736(97)11096-0",
+      "registry": "DOI-RA",
+      "status": 200,
+      "text": "[{\"DOI\": \"10.1016/S0140-6736(97)11096-0\", \"RA\": \"Crossref\"}]"
+     },
+     {
+      "bib_id": "W1",
+      "kind": "DOI",
+      "identifier": "10.1016/S0140-6736(97)11096-0",
+      "registry": "DOI-CROSSREF",
+      "status": null,
+      "text": null
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "DOI agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "name": "Crossref works",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "DOI-DATACITE",
+      "name": "DataCite dois",
+      "template": "https://api.datacite.org/dois/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "name": "arXiv API",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "name": "PubMed E-utilities summary",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "name": "PMC ID Converter",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-15"
+   },
+   "expected": {
+    "entries": [
+     {
+      "bib_id": "W1",
+      "state": "FAILED",
+      "kind": "DOI",
+      "word": "answer"
+     }
+    ],
+    "lookups": [],
+    "counts": {
+     "changed": 0,
+     "unchanged": 0,
+     "pending": 0,
+     "failed": 1,
+     "refused": 0,
+     "gone": 0
+    }
+   }
+  },
+  {
+   "name": "unreadable payload: the entry's own word, the batch answered",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "W1",
+      "item": {
+       "author": [
+        {
+         "family": "Wakefield",
+         "given": "A J"
+        }
+       ],
+       "container-title": "The Lancet",
+       "issued": {
+        "date-parts": [
+         [
+          1998,
+          2,
+          28
+         ]
+        ]
+       },
+       "title": "Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children",
+       "type": "article-journal",
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      },
+      "identifiers": {
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      }
+     },
+     {
+      "bib_id": "D1",
+      "identifiers": {
+       "DOI": "10.5281/zenodo.1234567"
+      },
+      "item": {
+       "DOI": "10.5281/zenodo.1234567",
+       "author": [
+        {
+         "family": "Doe",
+         "given": "Jane"
+        }
+       ],
+       "issued": {
+        "date-parts": [
+         [
+          2021
+         ]
+        ]
+       },
+       "title": "A data set of falling spheres",
+       "type": "article-journal"
+      }
+     }
+    ],
+    "lookups": [
+     {
+      "bib_id": "W1",
+      "kind": "DOI",
+      "identifier": "10.1016/S0140-6736(97)11096-0",
+      "registry": "DOI-RA",
+      "status": 200,
+      "text": "[{\"DOI\": \"10.1016/S0140-6736(97)11096-0\", \"RA\": \"Crossref\"}]"
+     },
+     {
+      "bib_id": "W1",
+      "kind": "DOI",
+      "identifier": "10.1016/S0140-6736(97)11096-0",
+      "registry": "DOI-CROSSREF",
+      "status": 200,
+      "text": "{\"status\": \"ok\", "
+     },
+     {
+      "bib_id": "D1",
+      "kind": "DOI",
+      "identifier": "10.5281/zenodo.1234567",
+      "registry": "DOI-RA",
+      "status": 200,
+      "text": "[{\"DOI\": \"10.5281/zenodo.1234567\", \"RA\": \"mEDRA\"}]"
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "DOI agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "name": "Crossref works",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "DOI-DATACITE",
+      "name": "DataCite dois",
+      "template": "https://api.datacite.org/dois/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "name": "arXiv API",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "name": "PubMed E-utilities summary",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "name": "PMC ID Converter",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-15"
+   },
+   "expected": {
+    "entries": [
+     {
+      "bib_id": "W1",
+      "state": "FAILED",
+      "kind": "DOI",
+      "word": "payload"
+     },
+     {
+      "bib_id": "D1",
+      "state": "CHANGED",
+      "check_line": "CHECK 2026-11-15 FOUND UNCOMPARED ; DOI 10.5281/zenodo.1234567 FOUND UNCOMPARED",
+      "notices_line": null
+     }
+    ],
+    "lookups": [],
+    "counts": {
+     "changed": 1,
+     "unchanged": 0,
+     "pending": 0,
+     "failed": 1,
+     "refused": 0,
+     "gone": 0
+    }
+   }
+  },
+  {
+   "name": "Crossref: a payload of another form (message-type not work)",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "W1",
+      "item": {
+       "author": [
+        {
+         "family": "Wakefield",
+         "given": "A J"
+        }
+       ],
+       "container-title": "The Lancet",
+       "issued": {
+        "date-parts": [
+         [
+          1998,
+          2,
+          28
+         ]
+        ]
+       },
+       "title": "Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children",
+       "type": "article-journal",
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      },
+      "identifiers": {
+       "DOI": "10.1016/S0140-6736(97)11096-0"
+      }
+     }
+    ],
+    "lookups": [
+     {
+      "bib_id": "W1",
+      "kind": "DOI",
+      "identifier": "10.1016/S0140-6736(97)11096-0",
+      "registry": "DOI-RA",
+      "status": 200,
+      "text": "[{\"DOI\": \"10.1016/S0140-6736(97)11096-0\", \"RA\": \"Crossref\"}]"
+     },
+     {
+      "bib_id": "W1",
+      "kind": "DOI",
+      "identifier": "10.1016/S0140-6736(97)11096-0",
+      "registry": "DOI-CROSSREF",
+      "status": 200,
+      "text": "{\"status\": \"ok\", \"message-type\": \"work-list\", \"message\": {}}"
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "DOI agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "name": "Crossref works",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "DOI-DATACITE",
+      "name": "DataCite dois",
+      "template": "https://api.datacite.org/dois/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "name": "arXiv API",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "name": "PubMed E-utilities summary",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "name": "PMC ID Converter",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-15"
+   },
+   "expected": {
+    "entries": [
+     {
+      "bib_id": "W1",
+      "state": "FAILED",
+      "kind": "DOI",
+      "word": "payload"
+     }
+    ],
+    "lookups": [],
+    "counts": {
+     "changed": 0,
+     "unchanged": 0,
+     "pending": 0,
+     "failed": 1,
+     "refused": 0,
+     "gone": 0
+    }
+   }
+  },
+  {
+   "name": "DataCite: agency DataCite, a dois record read",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "D1",
+      "identifiers": {
+       "DOI": "10.5281/zenodo.1234567"
+      },
+      "item": {
+       "DOI": "10.5281/zenodo.1234567",
+       "author": [
+        {
+         "family": "Doe",
+         "given": "Jane"
+        }
+       ],
+       "issued": {
+        "date-parts": [
+         [
+          2021
+         ]
+        ]
+       },
+       "title": "A data set of falling spheres",
+       "type": "article-journal"
+      }
+     }
+    ],
+    "lookups": [
+     {
+      "bib_id": "D1",
+      "kind": "DOI",
+      "identifier": "10.5281/zenodo.1234567",
+      "registry": "DOI-RA",
+      "status": 200,
+      "text": "[{\"DOI\": \"10.5281/zenodo.1234567\", \"RA\": \"DataCite\"}]"
+     },
+     {
+      "bib_id": "D1",
+      "kind": "DOI",
+      "identifier": "10.5281/zenodo.1234567",
+      "registry": "DOI-DATACITE",
+      "status": 200,
+      "text": "{\"data\": {\"id\": \"10.5281/zenodo.1234567\", \"type\": \"dois\", \"attributes\": {\"doi\": \"10.5281/zenodo.1234567\", \"publicationYear\": 2021, \"titles\": [{\"title\": \"A data set of falling spheres\"}], \"creators\": [{\"name\": \"Doe, Jane\", \"nameType\": \"Personal\", \"givenName\": \"Jane\", \"familyName\": \"Doe\"}], \"identifiers\": []}}}"
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "DOI agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "name": "Crossref works",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "DOI-DATACITE",
+      "name": "DataCite dois",
+      "template": "https://api.datacite.org/dois/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "name": "arXiv API",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "name": "PubMed E-utilities summary",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "name": "PMC ID Converter",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-15"
+   },
+   "expected": {
+    "entries": [
+     {
+      "bib_id": "D1",
+      "state": "CHANGED",
+      "check_line": "CHECK 2026-11-15 CONFIRMED ; DOI 10.5281/zenodo.1234567 CONFIRMED",
+      "notices_line": null
+     }
+    ],
+    "lookups": [],
+    "counts": {
+     "changed": 1,
+     "unchanged": 0,
+     "pending": 0,
+     "failed": 0,
+     "refused": 0,
+     "gone": 0
+    }
+   }
+  },
+  {
+   "name": "DOI-RA: DOI does not exist is NOT FOUND",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "D1",
+      "identifiers": {
+       "DOI": "10.5281/zenodo.1234567"
+      },
+      "item": {
+       "DOI": "10.5281/zenodo.1234567",
+       "author": [
+        {
+         "family": "Doe",
+         "given": "Jane"
+        }
+       ],
+       "issued": {
+        "date-parts": [
+         [
+          2021
+         ]
+        ]
+       },
+       "title": "A data set of falling spheres",
+       "type": "article-journal"
+      }
+     }
+    ],
+    "lookups": [
+     {
+      "bib_id": "D1",
+      "kind": "DOI",
+      "identifier": "10.5281/zenodo.1234567",
+      "registry": "DOI-RA",
+      "status": 200,
+      "text": "[{\"DOI\": \"10.5281/zenodo.1234567\", \"status\": \"DOI does not exist\"}]"
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "DOI agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "name": "Crossref works",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "DOI-DATACITE",
+      "name": "DataCite dois",
+      "template": "https://api.datacite.org/dois/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "name": "arXiv API",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "name": "PubMed E-utilities summary",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "name": "PMC ID Converter",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-15"
+   },
+   "expected": {
+    "entries": [
+     {
+      "bib_id": "D1",
+      "state": "CHANGED",
+      "check_line": "CHECK 2026-11-15 NOT FOUND ; DOI 10.5281/zenodo.1234567 NOT FOUND",
+      "notices_line": null
+     }
+    ],
+    "lookups": [],
+    "counts": {
+     "changed": 1,
+     "unchanged": 0,
+     "pending": 0,
+     "failed": 0,
+     "refused": 0,
+     "gone": 0
+    }
+   }
+  },
+  {
+   "name": "DOI-RA: Invalid DOI is the agency's failure",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "D1",
+      "identifiers": {
+       "DOI": "10.5281/zenodo.1234567"
+      },
+      "item": {
+       "DOI": "10.5281/zenodo.1234567",
+       "author": [
+        {
+         "family": "Doe",
+         "given": "Jane"
+        }
+       ],
+       "issued": {
+        "date-parts": [
+         [
+          2021
+         ]
+        ]
+       },
+       "title": "A data set of falling spheres",
+       "type": "article-journal"
+      }
+     }
+    ],
+    "lookups": [
+     {
+      "bib_id": "D1",
+      "kind": "DOI",
+      "identifier": "10.5281/zenodo.1234567",
+      "registry": "DOI-RA",
+      "status": 200,
+      "text": "[{\"DOI\": \"10.5281/zenodo.1234567\", \"status\": \"Invalid DOI\"}]"
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "DOI agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "name": "Crossref works",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "DOI-DATACITE",
+      "name": "DataCite dois",
+      "template": "https://api.datacite.org/dois/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "name": "arXiv API",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "name": "PubMed E-utilities summary",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "name": "PMC ID Converter",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-15"
+   },
+   "expected": {
+    "entries": [
+     {
+      "bib_id": "D1",
+      "state": "FAILED",
+      "kind": "DOI",
+      "word": "agency"
+     }
+    ],
+    "lookups": [],
+    "counts": {
+     "changed": 0,
+     "unchanged": 0,
+     "pending": 0,
+     "failed": 1,
+     "refused": 0,
+     "gone": 0
+    }
+   }
+  },
+  {
+   "name": "arXiv: an Atom entry read, the title's line break collapsed",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "A1",
+      "identifiers": {
+       "ARXIV": "2202.01037"
+      },
+      "item": {
+       "author": [
+        {
+         "family": "Lovelace",
+         "given": "Ada"
+        }
+       ],
+       "issued": {
+        "date-parts": [
+         [
+          2022
+         ]
+        ]
+       },
+       "title": "Notes on a falling sphere",
+       "type": "article"
+      }
+     }
+    ],
+    "lookups": [
+     {
+      "bib_id": "A1",
+      "kind": "ARXIV",
+      "identifier": "2202.01037",
+      "registry": "ARXIV",
+      "status": 200,
+      "text": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<feed xmlns=\"http://www.w3.org/2005/Atom\">\n  <id>https://arxiv.org/api/x</id>\n  <title>arXiv Query</title>\n  <entry>\n    <id>http://arxiv.org/abs/2202.01037v2</id>\n    <updated>2022-06-01T10:00:00Z</updated>\n    <published>2022-02-02T18:00:00Z</published>\n    <title>Notes on a\n      falling sphere</title>\n    <summary>We drop a sphere.</summary>\n    <author>\n      <name>Ada Lovelace</name>\n    </author>\n  </entry>\n</feed>\n"
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "DOI agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "name": "Crossref works",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "DOI-DATACITE",
+      "name": "DataCite dois",
+      "template": "https://api.datacite.org/dois/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "name": "arXiv API",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "name": "PubMed E-utilities summary",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "name": "PMC ID Converter",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-15"
+   },
+   "expected": {
+    "entries": [
+     {
+      "bib_id": "A1",
+      "state": "CHANGED",
+      "check_line": "CHECK 2026-11-15 CONFIRMED ; ARXIV 2202.01037 CONFIRMED",
+      "notices_line": null
+     }
+    ],
+    "lookups": [],
+    "counts": {
+     "changed": 1,
+     "unchanged": 0,
+     "pending": 0,
+     "failed": 0,
+     "refused": 0,
+     "gone": 0
+    }
+   }
+  },
+  {
+   "name": "arXiv: a withdrawn comment is a notice",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "A1",
+      "identifiers": {
+       "ARXIV": "2202.01037"
+      },
+      "item": {
+       "author": [
+        {
+         "family": "Lovelace",
+         "given": "Ada"
+        }
+       ],
+       "issued": {
+        "date-parts": [
+         [
+          2022
+         ]
+        ]
+       },
+       "title": "Notes on a falling sphere",
+       "type": "article"
+      }
+     }
+    ],
+    "lookups": [
+     {
+      "bib_id": "A1",
+      "kind": "ARXIV",
+      "identifier": "2202.01037",
+      "registry": "ARXIV",
+      "status": 200,
+      "text": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<feed xmlns=\"http://www.w3.org/2005/Atom\">\n  <id>https://arxiv.org/api/x</id>\n  <title>arXiv Query</title>\n  <entry>\n    <id>http://arxiv.org/abs/2202.01037v2</id>\n    <updated>2022-06-01T10:00:00Z</updated>\n    <published>2022-02-02T18:00:00Z</published>\n    <title>Notes on a\n      falling sphere</title>\n    <summary>We drop a sphere.</summary>\n    <author>\n      <name>Ada Lovelace</name>\n    </author>\n    <arxiv:comment xmlns:arxiv=\"http://arxiv.org/schemas/atom\">This paper has been withdrawn by the author</arxiv:comment>\n  </entry>\n</feed>\n"
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "DOI agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "name": "Crossref works",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "DOI-DATACITE",
+      "name": "DataCite dois",
+      "template": "https://api.datacite.org/dois/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "name": "arXiv API",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "name": "PubMed E-utilities summary",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "name": "PMC ID Converter",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-15"
+   },
+   "expected": {
+    "entries": [
+     {
+      "bib_id": "A1",
+      "state": "CHANGED",
+      "check_line": "CHECK 2026-11-15 CONFIRMED ; ARXIV 2202.01037 CONFIRMED",
+      "notices_line": "NOTICES 2026-11-15 ; arxiv 2202.01037v2 2022-06-01 withdrawn"
+     }
+    ],
+    "lookups": [],
+    "counts": {
+     "changed": 1,
+     "unchanged": 0,
+     "pending": 0,
+     "failed": 0,
+     "refused": 0,
+     "gone": 0
+    }
+   }
+  },
+  {
+   "name": "arXiv: a feed with no entry is NOT FOUND",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "A1",
+      "identifiers": {
+       "ARXIV": "2202.01037"
+      },
+      "item": {
+       "author": [
+        {
+         "family": "Lovelace",
+         "given": "Ada"
+        }
+       ],
+       "issued": {
+        "date-parts": [
+         [
+          2022
+         ]
+        ]
+       },
+       "title": "Notes on a falling sphere",
+       "type": "article"
+      }
+     }
+    ],
+    "lookups": [
+     {
+      "bib_id": "A1",
+      "kind": "ARXIV",
+      "identifier": "2202.01037",
+      "registry": "ARXIV",
+      "status": 200,
+      "text": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<feed xmlns=\"http://www.w3.org/2005/Atom\">\n  <id>https://arxiv.org/api/x</id>\n  <title>arXiv Query</title>\n</feed>\n"
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "DOI agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "name": "Crossref works",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "DOI-DATACITE",
+      "name": "DataCite dois",
+      "template": "https://api.datacite.org/dois/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "name": "arXiv API",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "name": "PubMed E-utilities summary",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "name": "PMC ID Converter",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-15"
+   },
+   "expected": {
+    "entries": [
+     {
+      "bib_id": "A1",
+      "state": "CHANGED",
+      "check_line": "CHECK 2026-11-15 NOT FOUND ; ARXIV 2202.01037 NOT FOUND",
+      "notices_line": null
+     }
+    ],
+    "lookups": [],
+    "counts": {
+     "changed": 1,
+     "unchanged": 0,
+     "pending": 0,
+     "failed": 0,
+     "refused": 0,
+     "gone": 0
+    }
+   }
+  },
+  {
+   "name": "arXiv: the incorrect-format error entry is NOT FOUND",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "A1",
+      "identifiers": {
+       "ARXIV": "2202.01037"
+      },
+      "item": {
+       "author": [
+        {
+         "family": "Lovelace",
+         "given": "Ada"
+        }
+       ],
+       "issued": {
+        "date-parts": [
+         [
+          2022
+         ]
+        ]
+       },
+       "title": "Notes on a falling sphere",
+       "type": "article"
+      }
+     }
+    ],
+    "lookups": [
+     {
+      "bib_id": "A1",
+      "kind": "ARXIV",
+      "identifier": "2202.01037",
+      "registry": "ARXIV",
+      "status": 200,
+      "text": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<feed xmlns=\"http://www.w3.org/2005/Atom\">\n  <id>https://arxiv.org/api/x</id>\n  <title>arXiv Query</title>\n  <entry>\n    <id>http://arxiv.org/api/errors#incorrect_id_format_for_2202.01037</id>\n    <title>Error</title>\n  </entry>\n</feed>\n"
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "DOI agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "name": "Crossref works",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "DOI-DATACITE",
+      "name": "DataCite dois",
+      "template": "https://api.datacite.org/dois/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "name": "arXiv API",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "name": "PubMed E-utilities summary",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "name": "PMC ID Converter",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-15"
+   },
+   "expected": {
+    "entries": [
+     {
+      "bib_id": "A1",
+      "state": "CHANGED",
+      "check_line": "CHECK 2026-11-15 NOT FOUND ; ARXIV 2202.01037 NOT FOUND",
+      "notices_line": null
+     }
+    ],
+    "lookups": [],
+    "counts": {
+     "changed": 1,
+     "unchanged": 0,
+     "pending": 0,
+     "failed": 0,
+     "refused": 0,
+     "gone": 0
+    }
+   }
+  },
+  {
+   "name": "arXiv: another error entry is the agency's failure",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "A1",
+      "identifiers": {
+       "ARXIV": "2202.01037"
+      },
+      "item": {
+       "author": [
+        {
+         "family": "Lovelace",
+         "given": "Ada"
+        }
+       ],
+       "issued": {
+        "date-parts": [
+         [
+          2022
+         ]
+        ]
+       },
+       "title": "Notes on a falling sphere",
+       "type": "article"
+      }
+     }
+    ],
+    "lookups": [
+     {
+      "bib_id": "A1",
+      "kind": "ARXIV",
+      "identifier": "2202.01037",
+      "registry": "ARXIV",
+      "status": 200,
+      "text": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<feed xmlns=\"http://www.w3.org/2005/Atom\">\n  <id>https://arxiv.org/api/x</id>\n  <title>arXiv Query</title>\n  <entry>\n    <id>http://arxiv.org/api/errors#service_unavailable</id>\n    <title>Error</title>\n  </entry>\n</feed>\n"
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "DOI agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "name": "Crossref works",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "DOI-DATACITE",
+      "name": "DataCite dois",
+      "template": "https://api.datacite.org/dois/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "name": "arXiv API",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "name": "PubMed E-utilities summary",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "name": "PMC ID Converter",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-15"
+   },
+   "expected": {
+    "entries": [
+     {
+      "bib_id": "A1",
+      "state": "FAILED",
+      "kind": "ARXIV",
+      "word": "agency"
+     }
+    ],
+    "lookups": [],
+    "counts": {
+     "changed": 0,
+     "unchanged": 0,
+     "pending": 0,
+     "failed": 1,
+     "refused": 0,
+     "gone": 0
+    }
+   }
+  },
+  {
+   "name": "arXiv: an entry of another id does not read",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "A1",
+      "identifiers": {
+       "ARXIV": "2202.01037"
+      },
+      "item": {
+       "author": [
+        {
+         "family": "Lovelace",
+         "given": "Ada"
+        }
+       ],
+       "issued": {
+        "date-parts": [
+         [
+          2022
+         ]
+        ]
+       },
+       "title": "Notes on a falling sphere",
+       "type": "article"
+      }
+     }
+    ],
+    "lookups": [
+     {
+      "bib_id": "A1",
+      "kind": "ARXIV",
+      "identifier": "2202.01037",
+      "registry": "ARXIV",
+      "status": 200,
+      "text": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<feed xmlns=\"http://www.w3.org/2005/Atom\">\n  <id>https://arxiv.org/api/x</id>\n  <title>arXiv Query</title>\n  <entry>\n    <id>http://arxiv.org/abs/2202.09999v1</id>\n    <updated>2022-06-01T10:00:00Z</updated>\n    <published>2022-02-02T18:00:00Z</published>\n    <title>Notes on a\n      falling sphere</title>\n    <summary>We drop a sphere.</summary>\n    <author>\n      <name>Ada Lovelace</name>\n    </author>\n  </entry>\n</feed>\n"
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "DOI agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "name": "Crossref works",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "DOI-DATACITE",
+      "name": "DataCite dois",
+      "template": "https://api.datacite.org/dois/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "name": "arXiv API",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "name": "PubMed E-utilities summary",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "name": "PMC ID Converter",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-15"
+   },
+   "expected": {
+    "entries": [
+     {
+      "bib_id": "A1",
+      "state": "FAILED",
+      "kind": "ARXIV",
+      "word": "payload"
+     }
+    ],
+    "lookups": [],
+    "counts": {
+     "changed": 0,
+     "unchanged": 0,
+     "pending": 0,
+     "failed": 1,
+     "refused": 0,
+     "gone": 0
+    }
+   }
+  },
+  {
+   "name": "PubMed: a summary read, its retraction as notices",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "P1",
+      "identifiers": {
+       "PMID": "9500320"
+      },
+      "item": {
+       "author": [
+        {
+         "family": "Wakefield",
+         "given": "A J"
+        }
+       ],
+       "container-title": "The Lancet",
+       "issued": {
+        "date-parts": [
+         [
+          1998,
+          2,
+          28
+         ]
+        ]
+       },
+       "title": "Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children",
+       "type": "article-journal",
+       "PMID": "9500320"
+      }
+     }
+    ],
+    "lookups": [
+     {
+      "bib_id": "P1",
+      "kind": "PMID",
+      "identifier": "9500320",
+      "registry": "PMID",
+      "status": 200,
+      "text": "{\"header\": {\"type\": \"esummary\", \"version\": \"0.3\"}, \"result\": {\"uids\": [\"9500320\"], \"9500320\": {\"uid\": \"9500320\", \"pubdate\": \"1998 Feb 28\", \"source\": \"Lancet\", \"authors\": [{\"name\": \"Wakefield AJ\", \"authtype\": \"Author\"}], \"title\": \"Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children.\", \"pubtype\": [\"Journal Article\", \"Retracted Publication\"], \"articleids\": [{\"idtype\": \"pubmed\", \"value\": \"9500320\"}, {\"idtype\": \"doi\", \"value\": \"10.1016/s0140-6736(97)11096-0\"}], \"references\": [{\"refsource\": \"Lancet. 2010\", \"reftype\": \"Retraction in\", \"pmid\": 20137807}, {\"refsource\": \"Lancet. 2004\", \"reftype\": \"Expression of concern in\", \"pmid\": 14976303}], \"issn\": \"0140-6736\", \"essn\": \"1474-547X\"}}}"
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "DOI agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "name": "Crossref works",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "DOI-DATACITE",
+      "name": "DataCite dois",
+      "template": "https://api.datacite.org/dois/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "name": "arXiv API",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "name": "PubMed E-utilities summary",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "name": "PMC ID Converter",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-15"
+   },
+   "expected": {
+    "entries": [
+     {
+      "bib_id": "P1",
+      "state": "CHANGED",
+      "check_line": "CHECK 2026-11-15 CONFIRMED ; PMID 9500320 CONFIRMED",
+      "notices_line": "NOTICES 2026-11-15 ; pubmed - - retracted publication ; pubmed 20137807 - retraction in ; pubmed 14976303 - expression of concern in"
+     }
+    ],
+    "lookups": [],
+    "counts": {
+     "changed": 1,
+     "unchanged": 0,
+     "pending": 0,
+     "failed": 0,
+     "refused": 0,
+     "gone": 0
+    }
+   }
+  },
+  {
+   "name": "PubMed: an error summary is NOT FOUND",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "P1",
+      "identifiers": {
+       "PMID": "9500320"
+      },
+      "item": {
+       "author": [
+        {
+         "family": "Wakefield",
+         "given": "A J"
+        }
+       ],
+       "container-title": "The Lancet",
+       "issued": {
+        "date-parts": [
+         [
+          1998,
+          2,
+          28
+         ]
+        ]
+       },
+       "title": "Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children",
+       "type": "article-journal",
+       "PMID": "9500320"
+      }
+     }
+    ],
+    "lookups": [
+     {
+      "bib_id": "P1",
+      "kind": "PMID",
+      "identifier": "9500320",
+      "registry": "PMID",
+      "status": 200,
+      "text": "{\"result\": {\"uids\": [\"9500320\"], \"9500320\": {\"uid\": \"9500320\", \"error\": \"cannot get document summary\"}}}"
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "DOI agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "name": "Crossref works",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "DOI-DATACITE",
+      "name": "DataCite dois",
+      "template": "https://api.datacite.org/dois/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "name": "arXiv API",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "name": "PubMed E-utilities summary",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "name": "PMC ID Converter",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-15"
+   },
+   "expected": {
+    "entries": [
+     {
+      "bib_id": "P1",
+      "state": "CHANGED",
+      "check_line": "CHECK 2026-11-15 NOT FOUND ; PMID 9500320 NOT FOUND",
+      "notices_line": null
+     }
+    ],
+    "lookups": [],
+    "counts": {
+     "changed": 1,
+     "unchanged": 0,
+     "pending": 0,
+     "failed": 0,
+     "refused": 0,
+     "gone": 0
+    }
+   }
+  },
+  {
+   "name": "PubMed: the rate error is the agency's failure",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "P1",
+      "identifiers": {
+       "PMID": "9500320"
+      },
+      "item": {
+       "author": [
+        {
+         "family": "Wakefield",
+         "given": "A J"
+        }
+       ],
+       "container-title": "The Lancet",
+       "issued": {
+        "date-parts": [
+         [
+          1998,
+          2,
+          28
+         ]
+        ]
+       },
+       "title": "Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children",
+       "type": "article-journal",
+       "PMID": "9500320"
+      }
+     }
+    ],
+    "lookups": [
+     {
+      "bib_id": "P1",
+      "kind": "PMID",
+      "identifier": "9500320",
+      "registry": "PMID",
+      "status": 200,
+      "text": "{\"error\": \"API rate limit exceeded\", \"count\": \"11\"}"
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "DOI agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "name": "Crossref works",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "DOI-DATACITE",
+      "name": "DataCite dois",
+      "template": "https://api.datacite.org/dois/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "name": "arXiv API",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "name": "PubMed E-utilities summary",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "name": "PMC ID Converter",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-15"
+   },
+   "expected": {
+    "entries": [
+     {
+      "bib_id": "P1",
+      "state": "FAILED",
+      "kind": "PMID",
+      "word": "agency"
+     }
+    ],
+    "lookups": [],
+    "counts": {
+     "changed": 0,
+     "unchanged": 0,
+     "pending": 0,
+     "failed": 1,
+     "refused": 0,
+     "gone": 0
+    }
+   }
+  },
+  {
+   "name": "PMC converter: the PMID read, its summary owed",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "C1",
+      "identifiers": {
+       "PMCID": "PMC1234567"
+      },
+      "item": {
+       "author": [
+        {
+         "family": "Wakefield",
+         "given": "A J"
+        }
+       ],
+       "container-title": "The Lancet",
+       "issued": {
+        "date-parts": [
+         [
+          1998,
+          2,
+          28
+         ]
+        ]
+       },
+       "title": "Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children",
+       "type": "article-journal",
+       "PMCID": "PMC1234567"
+      }
+     }
+    ],
+    "lookups": [
+     {
+      "bib_id": "C1",
+      "kind": "PMCID",
+      "identifier": "PMC1234567",
+      "registry": "PMCID",
+      "status": 200,
+      "text": "{\"status\": \"ok\", \"responseDate\": \"2026-11-15 06:00:00\", \"request\": \"ids=PMC1234567;format=json\", \"records\": [{\"pmcid\": \"PMC1234567\", \"pmid\": \"9500320\", \"doi\": \"10.1016/s0140-6736(97)11096-0\", \"requested-id\": \"PMC1234567\"}]}"
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "DOI agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "name": "Crossref works",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "DOI-DATACITE",
+      "name": "DataCite dois",
+      "template": "https://api.datacite.org/dois/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "name": "arXiv API",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "name": "PubMed E-utilities summary",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "name": "PMC ID Converter",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-15"
+   },
+   "expected": {
+    "entries": [
+     {
+      "bib_id": "C1",
+      "state": "PENDING"
+     }
+    ],
+    "lookups": [
+     {
+      "bib_id": "C1",
+      "kind": "PMCID",
+      "identifier": "PMC1234567",
+      "registry": "PMID",
+      "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id=9500320"
+     }
+    ],
+    "counts": {
+     "changed": 0,
+     "unchanged": 0,
+     "pending": 1,
+     "failed": 0,
+     "refused": 0,
+     "gone": 0
+    }
+   }
+  },
+  {
+   "name": "PMC converter then PubMed: the PMCID compared through its PMID",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "C1",
+      "identifiers": {
+       "PMCID": "PMC1234567"
+      },
+      "item": {
+       "author": [
+        {
+         "family": "Wakefield",
+         "given": "A J"
+        }
+       ],
+       "container-title": "The Lancet",
+       "issued": {
+        "date-parts": [
+         [
+          1998,
+          2,
+          28
+         ]
+        ]
+       },
+       "title": "Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children",
+       "type": "article-journal",
+       "PMCID": "PMC1234567"
+      }
+     }
+    ],
+    "lookups": [
+     {
+      "bib_id": "C1",
+      "kind": "PMCID",
+      "identifier": "PMC1234567",
+      "registry": "PMCID",
+      "status": 200,
+      "text": "{\"status\": \"ok\", \"responseDate\": \"2026-11-15 06:00:00\", \"request\": \"ids=PMC1234567;format=json\", \"records\": [{\"pmcid\": \"PMC1234567\", \"pmid\": \"9500320\", \"doi\": \"10.1016/s0140-6736(97)11096-0\", \"requested-id\": \"PMC1234567\"}]}"
+     },
+     {
+      "bib_id": "C1",
+      "kind": "PMCID",
+      "identifier": "PMC1234567",
+      "registry": "PMID",
+      "status": 200,
+      "text": "{\"header\": {\"type\": \"esummary\", \"version\": \"0.3\"}, \"result\": {\"uids\": [\"9500320\"], \"9500320\": {\"uid\": \"9500320\", \"pubdate\": \"1998 Feb 28\", \"source\": \"Lancet\", \"authors\": [{\"name\": \"Wakefield AJ\", \"authtype\": \"Author\"}], \"title\": \"Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children.\", \"pubtype\": [\"Journal Article\", \"Retracted Publication\"], \"articleids\": [{\"idtype\": \"pubmed\", \"value\": \"9500320\"}, {\"idtype\": \"doi\", \"value\": \"10.1016/s0140-6736(97)11096-0\"}], \"references\": [{\"refsource\": \"Lancet. 2010\", \"reftype\": \"Retraction in\", \"pmid\": 20137807}, {\"refsource\": \"Lancet. 2004\", \"reftype\": \"Expression of concern in\", \"pmid\": 14976303}], \"issn\": \"0140-6736\", \"essn\": \"1474-547X\"}}}"
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "DOI agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "name": "Crossref works",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "DOI-DATACITE",
+      "name": "DataCite dois",
+      "template": "https://api.datacite.org/dois/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "name": "arXiv API",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "name": "PubMed E-utilities summary",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "name": "PMC ID Converter",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-15"
+   },
+   "expected": {
+    "entries": [
+     {
+      "bib_id": "C1",
+      "state": "CHANGED",
+      "check_line": "CHECK 2026-11-15 CONFIRMED ; PMCID PMC1234567 CONFIRMED",
+      "notices_line": "NOTICES 2026-11-15 ; pubmed - - retracted publication ; pubmed 20137807 - retraction in ; pubmed 14976303 - expression of concern in"
+     }
+    ],
+    "lookups": [],
+    "counts": {
+     "changed": 1,
+     "unchanged": 0,
+     "pending": 0,
+     "failed": 0,
+     "refused": 0,
+     "gone": 0
+    }
+   }
+  },
+  {
+   "name": "PMC converter: a record with an error is NOT FOUND",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "C1",
+      "identifiers": {
+       "PMCID": "PMC1234567"
+      },
+      "item": {
+       "author": [
+        {
+         "family": "Wakefield",
+         "given": "A J"
+        }
+       ],
+       "container-title": "The Lancet",
+       "issued": {
+        "date-parts": [
+         [
+          1998,
+          2,
+          28
+         ]
+        ]
+       },
+       "title": "Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children",
+       "type": "article-journal",
+       "PMCID": "PMC1234567"
+      }
+     }
+    ],
+    "lookups": [
+     {
+      "bib_id": "C1",
+      "kind": "PMCID",
+      "identifier": "PMC1234567",
+      "registry": "PMCID",
+      "status": 200,
+      "text": "{\"status\": \"ok\", \"records\": [{\"requested-id\": \"PMC1234567\", \"status\": \"error\", \"errmsg\": \"invalid article id\"}]}"
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "DOI agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "name": "Crossref works",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "DOI-DATACITE",
+      "name": "DataCite dois",
+      "template": "https://api.datacite.org/dois/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "name": "arXiv API",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "name": "PubMed E-utilities summary",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "name": "PMC ID Converter",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-15"
+   },
+   "expected": {
+    "entries": [
+     {
+      "bib_id": "C1",
+      "state": "CHANGED",
+      "check_line": "CHECK 2026-11-15 NOT FOUND ; PMCID PMC1234567 NOT FOUND",
+      "notices_line": null
+     }
+    ],
+    "lookups": [],
+    "counts": {
+     "changed": 1,
+     "unchanged": 0,
+     "pending": 0,
+     "failed": 0,
+     "refused": 0,
+     "gone": 0
+    }
+   }
+  },
+  {
+   "name": "an entry gone: a lookup no entry gives is counted, not read",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "P1",
+      "identifiers": {
+       "PMID": "9500320"
+      },
+      "item": {
+       "author": [
+        {
+         "family": "Wakefield",
+         "given": "A J"
+        }
+       ],
+       "container-title": "The Lancet",
+       "issued": {
+        "date-parts": [
+         [
+          1998,
+          2,
+          28
+         ]
+        ]
+       },
+       "title": "Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children",
+       "type": "article-journal",
+       "PMID": "9500320"
+      }
+     }
+    ],
+    "lookups": [
+     {
+      "bib_id": "P1",
+      "kind": "PMID",
+      "identifier": "9500320",
+      "registry": "PMID",
+      "status": 200,
+      "text": "{\"header\": {\"type\": \"esummary\", \"version\": \"0.3\"}, \"result\": {\"uids\": [\"9500320\"], \"9500320\": {\"uid\": \"9500320\", \"pubdate\": \"1998 Feb 28\", \"source\": \"Lancet\", \"authors\": [{\"name\": \"Wakefield AJ\", \"authtype\": \"Author\"}], \"title\": \"Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children.\", \"pubtype\": [\"Journal Article\", \"Retracted Publication\"], \"articleids\": [{\"idtype\": \"pubmed\", \"value\": \"9500320\"}, {\"idtype\": \"doi\", \"value\": \"10.1016/s0140-6736(97)11096-0\"}], \"references\": [{\"refsource\": \"Lancet. 2010\", \"reftype\": \"Retraction in\", \"pmid\": 20137807}, {\"refsource\": \"Lancet. 2004\", \"reftype\": \"Expression of concern in\", \"pmid\": 14976303}], \"issn\": \"0140-6736\", \"essn\": \"1474-547X\"}}}"
+     },
+     {
+      "bib_id": "B9",
+      "kind": "DOI",
+      "identifier": "10.1016/S0140-6736(97)11096-0",
+      "registry": "DOI-RA",
+      "status": 200,
+      "text": "[{\"DOI\": \"10.1016/S0140-6736(97)11096-0\", \"RA\": \"Crossref\"}]"
+     },
+     {
+      "bib_id": "P1",
+      "kind": "DOI",
+      "identifier": "10.1016/S0140-6736(97)11096-0",
+      "registry": "DOI-RA",
+      "status": 200,
+      "text": "[{\"DOI\": \"10.1016/S0140-6736(97)11096-0\", \"RA\": \"Crossref\"}]"
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "DOI agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "name": "Crossref works",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "DOI-DATACITE",
+      "name": "DataCite dois",
+      "template": "https://api.datacite.org/dois/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "name": "arXiv API",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "name": "PubMed E-utilities summary",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "name": "PMC ID Converter",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-15"
+   },
+   "expected": {
+    "entries": [
+     {
+      "bib_id": "P1",
+      "state": "CHANGED",
+      "check_line": "CHECK 2026-11-15 CONFIRMED ; PMID 9500320 CONFIRMED",
+      "notices_line": "NOTICES 2026-11-15 ; pubmed - - retracted publication ; pubmed 20137807 - retraction in ; pubmed 14976303 - expression of concern in"
+     }
+    ],
+    "lookups": [],
+    "counts": {
+     "changed": 1,
+     "unchanged": 0,
+     "pending": 0,
+     "failed": 0,
+     "refused": 0,
+     "gone": 2
+    }
+   }
+  },
+  {
+   "name": "a first-round lookup not supplied keeps the prior lines (lookup)",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "P1",
+      "identifiers": {
+       "PMID": "9500320"
+      },
+      "item": {
+       "author": [
+        {
+         "family": "Wakefield",
+         "given": "A J"
+        }
+       ],
+       "container-title": "The Lancet",
+       "issued": {
+        "date-parts": [
+         [
+          1998,
+          2,
+          28
+         ]
+        ]
+       },
+       "title": "Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children",
+       "type": "article-journal",
+       "PMID": "9500320"
+      }
+     }
+    ],
+    "lookups": [],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "DOI agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "name": "Crossref works",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "DOI-DATACITE",
+      "name": "DataCite dois",
+      "template": "https://api.datacite.org/dois/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "name": "arXiv API",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "name": "PubMed E-utilities summary",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "name": "PMC ID Converter",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-15"
+   },
+   "expected": {
+    "entries": [
+     {
+      "bib_id": "P1",
+      "state": "FAILED",
+      "kind": "PMID",
+      "word": "lookup"
+     }
+    ],
+    "lookups": [],
+    "counts": {
+     "changed": 0,
+     "unchanged": 0,
+     "pending": 0,
+     "failed": 1,
+     "refused": 0,
+     "gone": 0
+    }
+   }
+  },
+  {
+   "name": "an empty batch",
+   "request": {
+    "entries": [],
+    "lookups": [],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "DOI agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "name": "Crossref works",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "DOI-DATACITE",
+      "name": "DataCite dois",
+      "template": "https://api.datacite.org/dois/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "name": "arXiv API",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "name": "PubMed E-utilities summary",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "name": "PMC ID Converter",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-15"
+   },
+   "expected": {
+    "entries": [],
+    "lookups": [],
+    "counts": {
+     "changed": 0,
+     "unchanged": 0,
+     "pending": 0,
+     "failed": 0,
+     "refused": 0,
+     "gone": 0
+    }
+   }
+  },
+  {
+   "name": "an entry that does not read is its own refusal",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "P1",
+      "identifiers": {
+       "PMID": "0123"
+      },
+      "item": {
+       "author": [
+        {
+         "family": "Wakefield",
+         "given": "A J"
+        }
+       ],
+       "container-title": "The Lancet",
+       "issued": {
+        "date-parts": [
+         [
+          1998,
+          2,
+          28
+         ]
+        ]
+       },
+       "title": "Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children",
+       "type": "article-journal"
+      }
+     }
+    ],
+    "lookups": [],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "DOI agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "name": "Crossref works",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "DOI-DATACITE",
+      "name": "DataCite dois",
+      "template": "https://api.datacite.org/dois/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "name": "arXiv API",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "name": "PubMed E-utilities summary",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "name": "PMC ID Converter",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-15"
+   },
+   "expected": {
+    "entries": [
+     {
+      "bib_id": "P1",
+      "state": "REFUSED",
+      "word": "identifier:PMID"
+     }
+    ],
+    "lookups": [],
+    "counts": {
+     "changed": 0,
+     "unchanged": 0,
+     "pending": 0,
+     "failed": 0,
+     "refused": 1,
+     "gone": 0
+    }
+   }
+  },
+  {
+   "name": "a batch over its bound",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "P1",
+      "identifiers": {
+       "PMID": "9500320"
+      },
+      "item": {
+       "author": [
+        {
+         "family": "Wakefield",
+         "given": "A J"
+        }
+       ],
+       "container-title": "The Lancet",
+       "issued": {
+        "date-parts": [
+         [
+          1998,
+          2,
+          28
+         ]
+        ]
+       },
+       "title": "Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children",
+       "type": "article-journal",
+       "PMID": "9500320"
+      }
+     },
+     {
+      "bib_id": "D1",
+      "identifiers": {
+       "DOI": "10.5281/zenodo.1234567"
+      },
+      "item": {
+       "DOI": "10.5281/zenodo.1234567",
+       "author": [
+        {
+         "family": "Doe",
+         "given": "Jane"
+        }
+       ],
+       "issued": {
+        "date-parts": [
+         [
+          2021
+         ]
+        ]
+       },
+       "title": "A data set of falling spheres",
+       "type": "article-journal"
+      }
+     }
+    ],
+    "lookups": [],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "DOI agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "name": "Crossref works",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "DOI-DATACITE",
+      "name": "DataCite dois",
+      "template": "https://api.datacite.org/dois/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "name": "arXiv API",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "name": "PubMed E-utilities summary",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "name": "PMC ID Converter",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-15",
+    "batch": 1
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "batch"
+  },
+  {
+   "name": "a lookup of no declared registry kind",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "P1",
+      "identifiers": {
+       "PMID": "9500320"
+      },
+      "item": {
+       "author": [
+        {
+         "family": "Wakefield",
+         "given": "A J"
+        }
+       ],
+       "container-title": "The Lancet",
+       "issued": {
+        "date-parts": [
+         [
+          1998,
+          2,
+          28
+         ]
+        ]
+       },
+       "title": "Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children",
+       "type": "article-journal",
+       "PMID": "9500320"
+      }
+     }
+    ],
+    "lookups": [
+     {
+      "bib_id": "P1",
+      "kind": "PMID",
+      "identifier": "9500320",
+      "registry": "PUBMED",
+      "status": 200,
+      "text": "{\"header\": {\"type\": \"esummary\", \"version\": \"0.3\"}, \"result\": {\"uids\": [\"9500320\"], \"9500320\": {\"uid\": \"9500320\", \"pubdate\": \"1998 Feb 28\", \"source\": \"Lancet\", \"authors\": [{\"name\": \"Wakefield AJ\", \"authtype\": \"Author\"}], \"title\": \"Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children.\", \"pubtype\": [\"Journal Article\", \"Retracted Publication\"], \"articleids\": [{\"idtype\": \"pubmed\", \"value\": \"9500320\"}, {\"idtype\": \"doi\", \"value\": \"10.1016/s0140-6736(97)11096-0\"}], \"references\": [{\"refsource\": \"Lancet. 2010\", \"reftype\": \"Retraction in\", \"pmid\": 20137807}, {\"refsource\": \"Lancet. 2004\", \"reftype\": \"Expression of concern in\", \"pmid\": 14976303}], \"issn\": \"0140-6736\", \"essn\": \"1474-547X\"}}}"
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "DOI agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "name": "Crossref works",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "DOI-DATACITE",
+      "name": "DataCite dois",
+      "template": "https://api.datacite.org/dois/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "name": "arXiv API",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "name": "PubMed E-utilities summary",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "name": "PMC ID Converter",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-15"
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "lookups"
+  },
+  {
+   "name": "a lookup twice",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "P1",
+      "identifiers": {
+       "PMID": "9500320"
+      },
+      "item": {
+       "author": [
+        {
+         "family": "Wakefield",
+         "given": "A J"
+        }
+       ],
+       "container-title": "The Lancet",
+       "issued": {
+        "date-parts": [
+         [
+          1998,
+          2,
+          28
+         ]
+        ]
+       },
+       "title": "Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children",
+       "type": "article-journal",
+       "PMID": "9500320"
+      }
+     }
+    ],
+    "lookups": [
+     {
+      "bib_id": "P1",
+      "kind": "PMID",
+      "identifier": "9500320",
+      "registry": "PMID",
+      "status": 200,
+      "text": "{\"header\": {\"type\": \"esummary\", \"version\": \"0.3\"}, \"result\": {\"uids\": [\"9500320\"], \"9500320\": {\"uid\": \"9500320\", \"pubdate\": \"1998 Feb 28\", \"source\": \"Lancet\", \"authors\": [{\"name\": \"Wakefield AJ\", \"authtype\": \"Author\"}], \"title\": \"Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children.\", \"pubtype\": [\"Journal Article\", \"Retracted Publication\"], \"articleids\": [{\"idtype\": \"pubmed\", \"value\": \"9500320\"}, {\"idtype\": \"doi\", \"value\": \"10.1016/s0140-6736(97)11096-0\"}], \"references\": [{\"refsource\": \"Lancet. 2010\", \"reftype\": \"Retraction in\", \"pmid\": 20137807}, {\"refsource\": \"Lancet. 2004\", \"reftype\": \"Expression of concern in\", \"pmid\": 14976303}], \"issn\": \"0140-6736\", \"essn\": \"1474-547X\"}}}"
+     },
+     {
+      "bib_id": "P1",
+      "kind": "PMID",
+      "identifier": "9500320",
+      "registry": "PMID",
+      "status": 500,
+      "text": null
+     }
+    ],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "DOI agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "name": "Crossref works",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "DOI-DATACITE",
+      "name": "DataCite dois",
+      "template": "https://api.datacite.org/dois/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "name": "arXiv API",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "name": "PubMed E-utilities summary",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "name": "PMC ID Converter",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-15"
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "lookups"
+  },
+  {
+   "name": "an entry twice",
+   "request": {
+    "entries": [
+     {
+      "bib_id": "P1",
+      "identifiers": {
+       "PMID": "9500320"
+      },
+      "item": {
+       "author": [
+        {
+         "family": "Wakefield",
+         "given": "A J"
+        }
+       ],
+       "container-title": "The Lancet",
+       "issued": {
+        "date-parts": [
+         [
+          1998,
+          2,
+          28
+         ]
+        ]
+       },
+       "title": "Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children",
+       "type": "article-journal",
+       "PMID": "9500320"
+      }
+     },
+     {
+      "bib_id": "P1",
+      "identifiers": {
+       "PMID": "9500320"
+      },
+      "item": {
+       "author": [
+        {
+         "family": "Wakefield",
+         "given": "A J"
+        }
+       ],
+       "container-title": "The Lancet",
+       "issued": {
+        "date-parts": [
+         [
+          1998,
+          2,
+          28
+         ]
+        ]
+       },
+       "title": "Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children",
+       "type": "article-journal",
+       "PMID": "9500320"
+      }
+     }
+    ],
+    "lookups": [],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "DOI agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "name": "Crossref works",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "DOI-DATACITE",
+      "name": "DataCite dois",
+      "template": "https://api.datacite.org/dois/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "name": "arXiv API",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "name": "PubMed E-utilities summary",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "name": "PMC ID Converter",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-11-15"
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "entries"
+  },
+  {
+   "name": "a date not real",
+   "request": {
+    "entries": [],
+    "lookups": [],
+    "declarations": [
+     {
+      "kind": "DOI-RA",
+      "name": "DOI agency lookup",
+      "template": "https://doi.org/ra/{ID}"
+     },
+     {
+      "kind": "DOI-CROSSREF",
+      "name": "Crossref works",
+      "template": "https://api.crossref.org/v1/works/{ID}"
+     },
+     {
+      "kind": "DOI-DATACITE",
+      "name": "DataCite dois",
+      "template": "https://api.datacite.org/dois/{ID}"
+     },
+     {
+      "kind": "ARXIV",
+      "name": "arXiv API",
+      "template": "https://export.arxiv.org/api/query?id_list={ID}"
+     },
+     {
+      "kind": "PMID",
+      "name": "PubMed E-utilities summary",
+      "template": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id={ID}"
+     },
+     {
+      "kind": "PMCID",
+      "name": "PMC ID Converter",
+      "template": "https://pmc.ncbi.nlm.nih.gov/tools/idconv/api/v1/articles/?format=json&ids={ID}"
+     }
+    ],
+    "date": "2026-02-30"
+   },
+   "refused": "BAD_ARGUMENT",
+   "detail": "date"
+  }
+ ]
+}

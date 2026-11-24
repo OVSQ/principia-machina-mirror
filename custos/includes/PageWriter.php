@@ -16,7 +16,7 @@
  * The fence: put() takes only a title in MediaWiki's canonical form that classifies
  * (PageTitles::classify) as a page Custos writes under the landing's own UWC prefix (FENCED: the
  * DRAFT UWC page, a RESEARCH ASSEMBLY page, a register volume, the LOCK PAGE, the INDEX AND
- * BADGE page), or, where begin() names its class, a page beyond the UWC (BEYOND: the fleet's
+ * BADGE page, a STAGING page: RETURN's, Custos its one writer), or, where begin() names its class, a page beyond the UWC (BEYOND: the fleet's
  * index, the Declarer's root's chain heads and volumes). Any other title (another UWC's, a
  * governed title of no class, a class Custos does not write, an ordinary page) refuses the whole
  * landing before anything is saved, as BASE MOVED does: the landing is closed unsaved and the
@@ -32,7 +32,7 @@ final class PageWriter {
 	private const BLOCK = '/\A[A-Za-z0-9][A-Za-z0-9_.:-]{0,63}\z/';
 	/** The classes a landing writes under its own UWC prefix. */
 	public const FENCED = [ PageClass::DRAFT_UWC, PageClass::RESEARCH_ASSEMBLY, PageClass::REGISTER_OPEN,
-		PageClass::LOCK_PAGE, PageClass::INDEX_AND_BADGE ];
+		PageClass::LOCK_PAGE, PageClass::INDEX_AND_BADGE, PageClass::STAGING ];
 	/** The classes beyond the UWC an op may name at begin(): the fleet's index and the chain pages. */
 	public const BEYOND = [ PageClass::INDEX_AND_BADGE, PageClass::CHAIN_HEAD, PageClass::DECLARATIONS_VOLUME,
 		PageClass::BUILD_CHAIN_VOLUME ];
@@ -149,6 +149,40 @@ final class PageWriter {
 				$saved[] = $t;
 			}
 			return $saved;
+		} finally {
+			$this->close();
+		}
+	}
+
+	/**
+	 * Save a landing that collected one page and no badge (RETURN's staging page, the proposal op's
+	 * page): the same base check and the same summary as commit(), one casPut, which is atomic, so the
+	 * badge is no marker here. The marker rule of a one-page landing: exactly one page collected, and
+	 * not the INDEX AND BADGE page (that page is written by commit() with the landing that moves it).
+	 * Answers the title saved. The landing is closed whatever the outcome.
+	 *
+	 * @throws PageFault "BASE MOVED" (the page changed since this landing read it, or while it saved), or
+	 *   a landing that did not collect exactly one page, or collected the badge
+	 */
+	public function commitOne(): string {
+		$this->open();
+		try {
+			$titles = array_keys( $this->pending );
+			if ( count( $titles ) !== 1 ) {
+				throw new PageFault( 'a one-page landing collects exactly one page, not ' . count( $titles ) . '; nothing saved' );
+			}
+			$t = $titles[0];
+			if ( $t === $this->badge ) {
+				throw new PageFault( 'a one-page landing does not write the INDEX AND BADGE page, the commit marker; nothing saved' );
+			}
+			if ( $this->store->get( $t ) !== $this->base[$t] ) {
+				throw new PageFault( "BASE MOVED: the page \"$t\" changed since this landing read it; nothing saved" );
+			}
+			$summary = sprintf( self::SUMMARY, $this->block, $this->prefix );
+			if ( !$this->store->casPut( $t, $this->base[$t], $this->pending[$t], $summary, $this->actor ) ) {
+				throw new PageFault( "BASE MOVED: the page \"$t\" changed while this landing saved; 0 saved" );
+			}
+			return $t;
 		} finally {
 			$this->close();
 		}

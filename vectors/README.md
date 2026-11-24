@@ -728,6 +728,67 @@ the record types' corpora (`Principia/Record/`, `docs/design/pma_record_types.md
   batch, not the cap), and every refusal word. Expectations worked by hand; the URLs those the
   `url` cases of `biblio_corpus.json` state. No case is owed. `pcalc.json` gains three requests of
   the function.
+- `biblio_recheck_batch.json` (32 cases, `Tests/Biblio.lean`, `runRecheckUrls`, which counts it
+  with `biblio_recheck_urls.json`): `biblio recheck_batch` (`Principia/Biblio/Batch.lean`), a
+  recheck run's payloads read and each entry's next state (TPS 5.21.14, 5.21.15, 5.21.19): the
+  agency lookup naming Crossref, DataCite or another agency, and DOI does not exist and Invalid
+  DOI; a Crossref work with a retraction notice, a 404 after the agency, no answer, a payload
+  that does not read beside an entry that does, a payload of another form; a DataCite record;
+  an arXiv Atom entry with a folded title, a withdrawal comment, an empty feed, the
+  incorrect-format error, another error and an entry of another id; a PubMed summary with its
+  retraction notices, an error summary and the rate error; the PMC converter owing its PubMed
+  summary, then compared through it, and a converter error; the lines unchanged and a changed
+  CHECK date; a lookup no entry gives, a first-round lookup not supplied, an empty batch, an
+  entry that does not read, the batch over its bound and the refusal words. Payloads written by
+  hand in each registry's form; expectations worked by hand. No case is owed. `pcalc.json` gains
+  two requests of the function.
+- `cluster_month.json` (34 cases, `Tests/Cluster.lean`, `runMonth`, run by the `cluster`
+  runner): `cluster cluster_month` (`Principia/Cluster/Month.lean`,
+  `Principia/Calculator/Cluster.lean`), each answer compared as canonical JSON, each refusal by
+  its code and its detail `<part>: <word>`. A month not due and one due before the fetch (the
+  schedule's answer alone); a GAP month with every source served; a NOISE month with a
+  two-component CORE SET, its SE `√5/2`; two sources declaring different member names feeding
+  one ROW; the resolving step of an irrational spacing with varying SEs (two roots in each
+  `out_k`); a source failing (the state block only) and a source lost (published without it,
+  its ROWs UNLISTED, SOURCE LOST); an excluded token in the page's text (`clean` false, nothing
+  else); the empty month; rows excluded at ingestion and after the map, and unmapped. Then the
+  refusals, one per word each part can reach: `cluster_month: sources` (absent, a source twice)
+  and `datasets`; `cluster_screen: rows`, `exclusion`, `model_map`; `cluster_rows: scores` (the
+  declared benchmark member absent), `score or se` (the declared score member absent, a score as
+  text), `score twice`, `core`, `se_definition`, `se_max`, `dates`, and OWED for FIXED-SET;
+  `cluster: parameters` (twice) and `exact value too large` (a value past the 1024-bit cap);
+  `cluster_schedule: clock`, `state`, `month`, `outcomes`, and OWED for a failing source no
+  longer declared. `resolving_step`'s and `cluster_text_check`'s words cannot be reached
+  through the composition (the cluster refuses the thresholds first; the EXCLUSION LIST is read
+  by the screen). Expected answers were produced by the Calculator and checked by hand: the
+  composites and squared SEs, the NOISE spacing `1.645 √(5/2)`, each step in spacings, and
+  each `out_k` and `cusp_k` of the irrational case to six decimals. No case is owed.
+  `pcalc.json` gains one request of `cluster_month`.
+- `cluster_squares.json` (55 cases, `Tests/Cluster.lean`, `runSquares`, run by the `cluster`
+  runner): `clusterSq` and `renderSq` (`Principia/Cluster/Squares.lean`), the cluster rule over
+  squared SEs, each case's text compared whole. The 47 `cluster` cases of `cluster_corpus.json`
+  again with each SE given as its square and the corpus's expected text (C21's negative SE given
+  as minus its square, refused with the same word); then 8 cases of its own, each `se2` a
+  two-component CORE SET's `(se_a² + se_b²)/4`, mostly not a rational square: GAP, NOISE and
+  FLOOR spacings, a CUSP between `CUSP MAX u` and that plus an irrational noise, R5 after a CUSP,
+  R1 and R2 ties broken by `se2` and by model id at equal `se2`, R6's other rows IN and OUT, a
+  negative `se2` refused; each worked by hand in its `note`. No case is owed. The theorem
+  `clusterSq_ofRow` proves the rule equal to `cluster` on rational squares.
+- `cluster_two_roots.json` (41 cases, `Tests/Cluster.lean`, `runTwoRoots`, run by the `cluster`
+  runner): `resolvingStepSq` and `renderResolvingSq`, and `Surd2.fixed6`
+  (`Principia/Cluster/TwoRoots.lean`), each case's text compared whole. The 20 `resolving` cases
+  of `cluster_corpus.json` again with the spacing and each SE given as its square and the
+  corpus's expected text (R16's negative SE and R17's negative spacing given as minus their
+  squares, refused with the same words; R19's boolean SE kept, refused as before); then 12
+  `resolving` cases of their own, the spacing's square not a rational square and the noise terms'
+  squares mostly not: one rank and several, equal and varying SEs, one radicand for both roots,
+  the spacings form at an exact tie rounded down and up to even, Z zero, a large and a small
+  month, FIXED-SET, a negative `u²` and a negative `se2` refused; then 9 `fixed6` cases of
+  `a + c √b + d √e`: exact ties through `√8 - 2 √2`, a negative value rounding to zero, values
+  just above and below a half millionth, roots of opposite and of equal signs. Each worked in its
+  `note` from a reference outside Lean (decimal arithmetic at 100 digits, checked against exact
+  integer square-root bounds). No case is owed. The theorem `resolvingStepSq_agrees` proves the
+  step equal to `resolvingStep` on rational squares.
 
 A corpus that checks nothing fails `lake test`.
 
@@ -965,6 +1026,15 @@ refusal is compared by its reason; an answer is read from v1's text into the fun
 typed result and compared as a typed value, and a word v1's text cannot carry one to one
 (empty, or holding a comma or a bracket) fails the case.
 
+The same runner reads `assignments.json`, 36 cases of the assignment block's reader
+(`Principia.Hold.Assignments`, the Calculator's `hold assignments`), through
+`Calculator.respondTo`: an empty block, live and expired rows, a row ending at the server
+time (live), two rows for one account, each refusal word (`MALFORMED`, `TIME`, `HOLDER`,
+`DUPLICATE`) with the first bad row's index, the order of a row's faults, the block name's
+longest form and one past it, and the Calculator's own refusals of a bad Holder, a bad server
+time, a missing argument and a text that is not a string. Each case gives the answer's
+canonical JSON (`expect`) or the refusal's word (`refusal`); all 36 pass.
+
 ## The declared-forms corpus
 
 `Tests/Form.lean` runs all 555 cases of `form_corpus.json` (v1's `tpc_form` 0.2.1, corpus
@@ -1175,6 +1245,33 @@ the tags `TPC-TPS` and `TPC-DIS` are kept, so every digest of v1's corpus is rep
   (`digestSpecification_pages`); text outside the blocks moves nothing
   (`specificationPages_blocks`); and the list, the refusal and the digest do not depend on
   the pages' order (`specificationPages_perm`, `digestSpecification_perm`).
+- `dis_members.json` (36 cases, `Tests/Calculator/Digest.lean`, `runDisMembers`):
+  `digest instruction_set_members` (`memberPages`, `memberPagesOf` in
+  `Principia/Digest/Specification.lean`), D(IS)'s members from `titles` and `pages`: an empty
+  list, one member, three members given out of order (and the pages in another order) answered
+  by title in code point order, a block that is empty; the refusals `title` (the root, a
+  section page among the pages, the contents page before a `members` reason, the root with
+  underscores and with a lower-case first letter, the contents page with spaces doubled and
+  around, a section page with a leading colon, a no-break space and a direction mark),
+  `members` (a page
+  not stated, a stated title absent, a title twice in either list, an empty title, a `members`
+  reason before a `pre` one, titles not a list of strings, titles not a list before pages not
+  a list), `pre` (a pre tag in another case,
+  an unclosed block, a page with no block) and `pages` (a page not a pair, pages not a list, a pair whose wikitext is not a string); two orders where code
+  point order differs from another (a title that is a prefix of another, a supplementary-plane
+  character against U+FF21); the Calculator's own refusals `BAD_ARGUMENT` of a request without
+  `titles` or without `pages`, of 1001 titles, of 1001 pages and of both, the titles' bound named (1000 titles pass the
+  bound);
+  and one member whose
+  `h` is checked equal to the `h` `specification_pages` answers for the same blocks. Each `h`
+  written from literal block texts and digested apart from the Calculator. `pcalc.json` gains two
+  requests of the function. Proved in the same file: `memberPages_titles` (the titles are
+  the stated titles sorted), `memberPages_sorted` (a permutation of them, ordered),
+  `memberPages_digest` (each `h` is `pageDigest` of its page's blocks), `memberPages_membersOk`
+  and `digestInstructionSet_memberPages` (D(IS) never refuses `members` on them),
+  `memberPages_treeTitle` (a tree title is refused `title`), `memberPages_wikiTreeTitle` (so
+  is one whose `wikiTitle` fold is a tree title), `wikiTitle_root_variants` and
+  `wikiTitle_tree`, with `isHex64_pageDigest`.
 
 ## Unicode's tables in the families
 
@@ -1628,6 +1725,12 @@ regeneration only; `docs/v1/README.md` tells the rest.
   runner reads its own shape.
 - They carry public wiki account handles as test data (people are named by role; a public
   handle needs no placeholder).
+- `hunk_corpus.json` is no longer v1's bytes: in case H30 two historical names are reworded at
+  the same length (to `tpm_dlg_wiki_section_request` and `dlg-initializer`; the names they
+  replace stand only in v1's own record) and the case's result digest regenerated by v1's
+  `hunk_apply` (`87efc2d5...` to `04e18ddc...`), so the disclosure gate passes the file. The
+  identifier gate keeps the amended file byte for byte by its `AMENDED_PINS` entry, SHA-256
+  `33cce631...47a3`; v1's own pin of the original stands in `docs/v1/export_tpc_py.json`.
 
 | Corpus | Cases | Version (hub) |
 | --- | ---: | --- |

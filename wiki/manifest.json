@@ -911,6 +911,11 @@
       "class": "FRAMEWORK"
     },
     {
+      "title": "Lean theorem prover/System/Official, independent and hosted checkers",
+      "file": "lean/system/official_independent_and_hosted_checkers.wiki",
+      "class": "FRAMEWORK"
+    },
+    {
       "title": "Lean theorem prover/System/Monads and do-notation",
       "file": "lean/system/monads_and_do_notation.wiki",
       "class": "FRAMEWORK"

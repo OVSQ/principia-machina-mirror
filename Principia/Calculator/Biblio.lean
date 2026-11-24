@@ -2,6 +2,7 @@ import Principia.Calculator.Interface
 import Principia.Calculator.Record
 import Principia.Biblio
 import Principia.Biblio.Recheck
+import Principia.Biblio.Batch
 
 /-!
 # Family `biblio`: the bibliography's checks
@@ -45,6 +46,25 @@ structure of version 1's return value, written as canonical JSON:
   refusal words: `entries`, `check_line` (not a CHECK LINE, or dated after `date`),
   `declarations` (one not an object of a declared kind, or whose template `url` refuses when
   used), `date`, `lookups_today`, `recheck`, `batch`, `cap`.
+* `recheck_batch {"entries", "lookups", "declarations", "date", "batch"?}`: a recheck run's
+  payloads read and each entry's next state (TPS 5.21.14, 5.21.15, 5.21.19,
+  `Principia.Biblio.Batch`). `entries` lists `{"bib_id", "item", "identifiers",
+  "check_line"?, "notices_line"?}`, the item and identifiers as `compare` reads them and the
+  two lines as written (absent or `null`: none); `lookups` lists `{"bib_id", "kind",
+  "identifier", "registry", "url"?, "status", "text"}`, each lookup of the run as
+  `recheck_urls` or an earlier `recheck_batch` named it, with the HTTP status (`null`: no
+  answer) and the payload's text (`null`: none); `declarations` the REGISTRY DECLARATIONS
+  as `recheck_urls` reads them; `date` the run's UTC date; `batch` BIBLIO RECHECK BATCH, its
+  declared value when absent, the most entries a call takes. The answer is `{"entries":
+  [{"bib_id", "state", ...}], "lookups": [{"bib_id", "kind", "identifier", "registry",
+  "url"}], "counts": {"changed", "unchanged", "pending", "failed", "refused", "gone"}}`, each
+  entry's `state` one of `CHANGED` (with `check_line` and `notices_line`, `null` when there is
+  no notice: the lines to write), `UNCHANGED` (the lines as written), `PENDING` (a second
+  lookup is owed, listed in `lookups` with its URL: Custos fetches it and calls again with
+  every lookup of the run), `FAILED` (with `kind` and `word`: a lookup failed, the prior lines
+  are kept) and `REFUSED` (with `word`: the entry does not read); `gone` counts the lookups
+  that match no entry's identifier. A payload never refuses the call. Its refusal words:
+  `entries`, `lookups`, `declarations`, `date`, `batch`.
 
 Version 1's `ValueError` is refused `BAD_ARGUMENT`, its message the detail; every answer is
 computed, so none is refused as owed. Each argument is read as version 1 read it (a number
@@ -287,6 +307,150 @@ def recheckUrls (v : Value) : Except Refusal Value := do
 
 end RecheckUrls
 
+/-! ## The recheck's second call -/
+
+section RecheckBatch
+
+open Principia.Biblio.Batch (Lookup Next)
+
+/-- One lookup of the request: its entry, its identifier kind and text, its registry kind, and
+what the fetch gave. -/
+structure BatchLookup where
+  bibId : String
+  kind : String
+  identifier : String
+  registry : String
+  lookup : Lookup
+
+/-- A lookup of the request, read. -/
+def readLookup : Value → Except Refusal BatchLookup
+  | .obj ms => do
+    unless ms.all (fun m => ["bib_id", "kind", "identifier", "registry", "url", "status", "text"].contains m.1) do
+      badArgument "lookups"
+    let text (k : String) : Except Refusal String := match ms.lookup k with
+      | some (.str s) => pure s
+      | _ => badArgument "lookups"
+    let bib ← text "bib_id"
+    let kind ← text "kind"
+    let ident ← text "identifier"
+    let reg ← text "registry"
+    unless primaryOrder.contains kind && declKinds.contains reg do badArgument "lookups"
+    match ms.lookup "url" with
+    | none | some (.str _) => pure ()
+    | some _ => badArgument "lookups"
+    let status ← match ms.lookup "status" with
+      | some .null => pure none
+      | some (.int n) => if 100 ≤ n && n ≤ 599 then pure (some n.toNat) else badArgument "lookups"
+      | _ => badArgument "lookups"
+    let body ← match ms.lookup "text" with
+      | some .null => pure none
+      | some (.str t) => pure (some t)
+      | _ => badArgument "lookups"
+    pure ⟨bib, kind, ident, reg, ⟨status, body⟩⟩
+  | _ => badArgument "lookups"
+
+/-- The request with every payload's text set aside, for the family's bounds. -/
+def withoutTexts : Value → Value
+  | .obj ms => .obj (ms.map fun (k, v) =>
+    if k == "lookups" then
+      (k, match v with
+        | .arr xs => .arr (xs.map fun
+          | .obj ls => .obj (ls.map fun (n, x) => if n == "text" then (n, Value.null) else (n, x))
+          | x => x)
+        | x => x)
+    else (k, v))
+  | v => v
+
+/-- An entry of the request: its `bib_id`, its item and identifiers, its lines as written. -/
+def readBatchEntry : Value → Except Refusal (String × Value × Value × Option String × Option String)
+  | .obj ms => do
+    unless ms.all (fun m => ["bib_id", "item", "identifiers", "check_line", "notices_line"].contains m.1) do
+      badArgument "entries"
+    let bib ← match ms.lookup "bib_id" with
+      | some (.str b) => if b.isEmpty then badArgument "entries" else pure b
+      | _ => badArgument "entries"
+    let item ← match ms.lookup "item" with
+      | some x => pure x
+      | none => badArgument "entries"
+    let ids ← match ms.lookup "identifiers" with
+      | some x => pure x
+      | none => badArgument "entries"
+    let line (k : String) : Except Refusal (Option String) := match ms.lookup k with
+      | none | some .null => pure none
+      | some (.str s) => pure (some s)
+      | some _ => badArgument "entries"
+    pure (bib, item, ids, ← line "check_line", ← line "notices_line")
+  | _ => badArgument "entries"
+
+/-- The normalized identifier of a kind an entry gives, when its identifiers read. -/
+def entryIdentifier (ids : Value) (kind : String) : Option String :=
+  match readIdentifiers (zoneValue ids) with
+  | .ok i => i.get kind
+  | .error _ => none
+
+/-- `recheck_batch`. -/
+def recheckBatch (v : Value) : Except Refusal Value := do
+  within (withoutTexts v)
+  let ms ← membersOf ["entries", "lookups", "declarations", "date", "batch"] v
+  let es ← match ← needed ms "entries" with
+    | .arr xs => pure xs
+    | _ => badArgument "entries"
+  let ls ← match ← needed ms "lookups" with
+    | .arr xs => pure xs
+    | _ => badArgument "lookups"
+  let decls ← readDeclarations (← needed ms "declarations")
+  let date ← match ← needed ms "date" with
+    | .str d => if (Principia.Biblio.Recheck.parseDate d).isSome then pure d else badArgument "date"
+    | _ => badArgument "date"
+  let tuning : Principia.Parameters.BibliographyTuning := {}
+  let batch ← countOr ms "batch" tuning.recheckBatch
+  if batch < es.length then badArgument "batch"
+  let entries ← es.mapM readBatchEntry
+  if (entries.map (·.1)).eraseDups.length != entries.length then badArgument "entries"
+  let lookups ← ls.mapM readLookup
+  let keys := lookups.map fun l => (l.bibId, l.kind, l.registry)
+  if keys.eraseDups.length != keys.length then badArgument "lookups"
+  -- A lookup belongs to an entry when the entry gives that identifier, normalized alike.
+  let belongs (l : BatchLookup) : Bool := entries.any fun (b, _, ids, _, _) =>
+    b == l.bibId && entryIdentifier ids l.kind == some l.identifier
+  let gone := (lookups.filter fun l => !belongs l).length
+  let mut out : List Value := []
+  let mut owed : List Value := []
+  let mut counts : List (String × Nat) :=
+    [("changed", 0), ("unchanged", 0), ("pending", 0), ("failed", 0), ("refused", 0)]
+  let bump (cs : List (String × Nat)) (k : String) : List (String × Nat) :=
+    cs.map fun (n, c) => if n == k then (n, c + 1) else (n, c)
+  for (bib, item, ids, cl, nl) in entries do
+    let find (kind registry : String) : Option Lookup :=
+      (lookups.find? fun l => l.bibId == bib && l.kind == kind && l.registry == registry &&
+        entryIdentifier ids kind == some l.identifier).map (·.lookup)
+    let state := Principia.Biblio.Batch.next (zoneValue item) (zoneValue ids) (cl, nl) date find
+    let (word, more, extra) : String × List (String × Value) × List Value := match state with
+      | .changed c n => ("CHANGED", [("check_line", .str c), ("notices_line", orNull n)], [])
+      | .unchanged => ("UNCHANGED", [], [])
+      | .pending xs => ("PENDING", [], xs.filterMap fun (k, r, i) =>
+          match decls.find? (·.1 == r) with
+          | some (_, d) => match registryUrl (zoneValue d) (.str i) with
+            | .ok url => some (Value.obj [("bib_id", .str bib), ("kind", .str k),
+                ("identifier", .str ((entryIdentifier ids k).getD i)), ("registry", .str r), ("url", .str url)])
+            | .error _ => none
+          | none => none)
+      | .failed k w => ("FAILED", [("kind", if k.isEmpty then .null else .str k), ("word", .str w)], [])
+      | .refused w => ("REFUSED", [("word", .str w)], [])
+    -- A second lookup that cannot be built (no declaration of its kind, or a URL refused)
+    -- fails the entry as a lookup not made.
+    let (word, more, extra) := match state with
+      | .pending xs => if extra.length == xs.length then (word, more, extra) else
+          ("FAILED", [("kind", Value.str ((xs.head?.map (fun (p : String × String × String) => p.1)).getD "")), ("word", Value.str "lookup")], [])
+      | _ => (word, more, extra)
+    counts := bump counts word.toLower
+    owed := owed ++ extra
+    out := out ++ [Value.obj ([("bib_id", .str bib), ("state", .str word)] ++ more)]
+  pure (.obj [("entries", .arr out), ("lookups", .arr owed),
+    ("counts", .obj (counts.map (fun (k, c) => (k, Value.int c)) ++ [("gone", .int gone)]))])
+
+end RecheckBatch
+
 /-- The family's functions. -/
 def calls : Family := [
   ("arxiv", textCall "text" arxivParse arxivValue),
@@ -318,6 +482,7 @@ def calls : Family := [
     let a ← read entryArgs v
     answer Value.str (biblioPreimage (a "bib_id") (a "proposed_by") (a "landed_by") (a "landed")
       (a "supersedes") (a "identifiers") (a "item"))),
+  ("recheck_batch", recheckBatch),
   ("recheck_urls", recheckUrls),
   ("shape", textCall "text" doiShape Value.bool),
   ("url", fun v => do
@@ -328,5 +493,27 @@ def calls : Family := [
     answer viewValue (literatureView (a "records") (a "entries") (a "findings"))),
   ("withdrawn", textCall "comment" arxivWithdrawn Value.bool),
 ]
+
+/-! ## The answers' laws -/
+
+/-- A present text answers that text. -/
+theorem orNull_some (s : String) : orNull (some s) = .str s := rfl
+
+/-- An absent text answers null. -/
+theorem orNull_none : orNull none = .null := rfl
+
+/-- The empty list of texts answers the empty list. -/
+theorem strs_nil : strs [] = .arr [] := rfl
+
+/-- A list of texts keeps its first text first, the rest following as texts. -/
+theorem strs_cons (x : String) (xs : List String) :
+    strs (x :: xs) = .arr (.str x :: xs.map .str) := rfl
+
+/-- A computed result answers its value. -/
+theorem answer_ok {α : Type} (f : α → Value) (a : α) : answer f (.ok a) = .ok (f a) := rfl
+
+/-- A refusal is refused as a bad argument, its message the detail. -/
+theorem answer_refused {α : Type} (f : α → Value) (m : String) :
+    answer f (.error (.refused m)) = badArgument m := rfl
 
 end Principia.Calculator.Biblio

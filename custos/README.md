@@ -1,7 +1,7 @@
 ---
 name: README
-version: 0.3.0
-date: 2026-10-24
+version: 0.4.0
+date: 2026-11-13
 status: |
   Custos (Phase 3): the extension's skeleton, the store seam, the call into the Calculator
   with the binary's residence and digest checked, the page classes and blocks, and the API
@@ -40,7 +40,7 @@ MediaWiki 1.46 or later; PHP 8.3 or later (the host runs 8.4) with the `posix` e
 | `includes/ApiPma.php` | `action=pma`, thin glue over `Ops`: the parameters as received, the account the authenticated one, the group `pma-agent` and a CSRF token for a write, HTTP 202 on a queued ticket |
 | `includes/TicketStore.php`, `DbTicketStore.php` | the ticket seam (`create`, `get`, `answer`, `claimNext`, `claim` by id, `inWork`, `count` in a state) and the live store over MediaWiki's database |
 | `includes/SeatStore.php`, `DbSeatStore.php` | the seat seam (`get`, `put` of an account's agent or sponsor bucket, `[level, since]`; `charge`, both buckets in one write, both rows or neither; `lock`, `unlock` of the account's seat lock) and the live store over the table `custos_seat` and the database's named lock |
-| `includes/SchemaHooks.php`, `sql/custos_ticket.json`, `sql/custos_seat.json`, `sql/sqlite/custos_ticket.sql`, `sql/sqlite/custos_seat.sql`, `sql/mysql/custos_ticket.sql`, `sql/mysql/custos_seat.sql` | the tables `custos_ticket`, `custos_seat`, `custos_nonce`, `custos_meter`, `custos_budget` and `custos_traffic` (below; `SchemaHooks::TABLES`): each table's own abstract schema its one source, its SQL written from it by `maintenance/run.php generateSchemaSql`, one file per table per database type; the hook `LoadExtensionSchemaUpdates` registers each table by its own name with its own SQL, so `update.php` adds whichever a wiki lacks |
+| `includes/SchemaHooks.php`, `sql/custos_ticket.json`, `sql/custos_seat.json`, `sql/sqlite/custos_ticket.sql`, `sql/sqlite/custos_seat.sql`, `sql/mysql/custos_ticket.sql`, `sql/mysql/custos_seat.sql` | the tables `custos_ticket`, `custos_seat`, `custos_nonce`, `custos_meter`, `custos_budget`, `custos_traffic` and `custos_prompt_mark` (below; `SchemaHooks::TABLES`): each table's own abstract schema its one source, its SQL written from it by `maintenance/run.php generateSchemaSql`, one file per table per database type; the hook `LoadExtensionSchemaUpdates` registers each table by its own name with its own SQL, so `update.php` adds whichever a wiki lacks |
 | `includes/NonceStore.php`, `DbNonceStore.php`, `MemNonceStore.php`, `sql/custos_nonce.json`, `sql/sqlite/custos_nonce.sql`, `sql/mysql/custos_nonce.sql` | the execution challenge's nonces (below): the seam (`put` of an account's nonce on a UWC, `take`, which removes it), the live store over the table `custos_nonce`, and one object's memory, the default of a `Landing` named no store |
 | `includes/Challenge.php` | the execution challenge (TPS 5.3.19, version 1's form): `preimage`, `response` and `verify` over `pcalc digest preimage_fields` and `digest_fields` of `["TPC-EXECUTION-CHALLENGE", "1", nonce]`; the nonce's and the response's forms checked in PHP, no digest computed there |
 | `includes/PageWriter.php` | one landing's page writes, batched: `begin`, `put`, `read`, `commit`; each page saved once through `casPut` against the text the landing read, the INDEX AND BADGE page last (below) |
@@ -55,7 +55,7 @@ MediaWiki 1.46 or later; PHP 8.3 or later (the host runs 8.4) with the `posix` e
 | `maintenance/SeedUwc.php` | `php maintenance/run.php Custos:SeedUwc --prefix <p> --draft <file>`: a new UWC's seven pages in one landing, the Operator's act |
 | `includes/Landing.php`, `LandRefused.php` | the landing job's work on one ticket, plain PHP without MediaWiki (below); a refusal's word and the members its answer adds |
 | `includes/LandJob.php`, `JobContext.php` | the job class `custosLand`, enqueued with each ticket's id: the job's context checked, then `Landing` over the ticket; not retried |
-| `includes/CertificateStore.php`, `DbCertificateStore.php`, `sql/custos_certificate.json`, `sql/sqlite/custos_certificate.sql`, `sql/mysql/custos_certificate.sql` | the certificate seam (`get` of an agent's row, `agentsOf` a Sponsor, `put` of one row) and the live store over the table `custos_certificate` (below), its schema and generated SQL |
+| `includes/CertificateStore.php`, `DbCertificateStore.php`, `sql/custos_certificate.json`, `sql/custos_prompt_mark.json`, their SQL under `sql/sqlite/` and `sql/mysql/` | the certificate seam (`get` of an agent's row, `agentsOf` a Sponsor, `put` of one row, which clears the agent's refused-PROMPT mark first; `promptMarked` and `markPrompt`, the mark) and the live store over the tables `custos_certificate` and `custos_prompt_mark` (below), their schemas and generated SQL |
 | `includes/BatchJob.php`, `BatchJobBase.php`, `ReauditJob.php`, `ClusterJob.php`, `RecheckJob.php`, `JobRunStore.php`, `DbJobRunStore.php`, `sql/custos_job_run.json`, `sql/sqlite/custos_job_run.sql`, `sql/mysql/custos_job_run.sql` | the frame of the batch jobs (below): the run store and the table `custos_job_run`, the frame that checks the context, asks the governor in lane 5 and writes the run record, and the three job classes registered (each answering `NOT BUILT` until its unit) |
 | `maintenance/Job.php` | `php maintenance/run.php Custos:Job --job <reaudit\|cluster\|recheck>` enqueues a batch job; `--last <name>` prints its last run |
 | `maintenance/Certify.php` | `php maintenance/run.php Custos:Certify --agent <a> --sponsor <s> --d-is <hex> --d-prompt <hex> --family <f> --model <m> [--state <s>]`: one agent's certificate written, the Operator's act at a declared admission |
@@ -67,9 +67,10 @@ MediaWiki 1.46 or later; PHP 8.3 or later (the host runs 8.4) with the `posix` e
 
 ## The ops of action=pma
 
-The eight ops, by their wire words: the four of the live-exercise path (PETITION, PUSH, RELEASE,
-POLL), below, the governor's STATUS, INQUIRE and HEARTBEAT (see "The governor's meter"), and
-STRUCTURE_TEST (see "The structure test with register"). An op that writes a ticket is a
+The nine ops, by their wire words: the four of the live-exercise path (PETITION, PUSH, RELEASE,
+POLL), below, the governor's STATUS, INQUIRE and HEARTBEAT (see "The governor's meter"),
+STRUCTURE_TEST (see "The structure test with register"), and RETURN, a Coworker's return of its
+assigned block (below; `docs/design/pma_custos_ops.md` section 4). An op that writes a ticket is a
 POST with a CSRF token by an account of the group `pma-agent` (the right `custos-landing`);
 it checks the request's shape and nothing else (GA1): every parameter one string; `records` at
 most `$wgCustosMaxRequestBytes` bytes and UTF-8, its bytes counted, never parsed; `prefix` a
@@ -81,22 +82,35 @@ called in a web request: the ticket's work is the job's.
 | Op | Parameters | Answer |
 |---|---|---|
 | `PETITION` | `prefix`, `block`, `prompt_digest`, `stated_model`, `relayed_model` (each optional) | `{"ticket": <id>, "state": "QUEUED", "poll_after": <s>}` |
-| `PUSH` | `prefix`, `records`, `block`, `prompt_digest`, `relayed_model` (each optional but `records`), `challenge_response` (the answer to the outstanding challenge) | the same |
+| `PUSH` | `prefix`, `records`, `block`, `prompt_digest`, `relayed_model`, `log_head` (each optional but `records`), `challenge_response` (the answer to the outstanding challenge) | the same |
 | `RELEASE` | `prefix`, `block` (optional) | the same |
+| `RETURN` | `prefix`, `block`, `records` (each required; `block` and `records` in PUSH's forms); `entries`, `difference` and `idempotency_key` are not taken yet (`custos-unknown-param`) | the same |
 | `POLL` | `ticket` (a read; no token) | `{"ticket", "ticket_op", "state", "poll_after"}`, or when DONE `{"ticket", "ticket_op", "state": "DONE", "answer": <the job's answer text>}` |
 
-The identity values: `prompt_digest` is 64 lowercase hexadecimal; `stated_model` (PETITION only)
+The identity values: `prompt_digest` is 64 lowercase hexadecimal, and so is a PUSH's `log_head`, the
+session log's head (the commit half of the log's commit and reveal); `stated_model` (PETITION only)
 and `relayed_model` are 1 to `Ops::MAX_MODEL_BYTES` (128) bytes of UTF-8 with no control character.
 A malformed value is refused `custos-shape`; a value on an op that does not take it (`stated_model`
 on PUSH, any of them on RELEASE or POLL) `custos-unknown-param`. A presented value is carried on the
-ticket's request as received, and nothing compares, maps or rewrites it. OWED, by the unit that
-enforces them: the refusals FAMILY (the relayed model maps to another vendor family than the
-certificate's), MODEL (the model excluded or unlisted) and PROMPT (the digest differs from the
-certificate's `d_prompt`), which need the model map and the certificate's fields; the ranking
-rule makes them an obligation, not a completeness defect. The client is untouched.
+ticket's request as received, and the web request compares, maps or rewrites none of it. The landing
+job, at PETITION and PUSH, compares a presented `prompt_digest` with the certificate's `d_prompt`
+(TPS 5.14.5; Custos recomputes nothing) right after the certificate's read and before the governor
+is asked: unequal is refused `PROMPT` with `"recertify": true`, nothing charged, written or stepped
+into the traffic record, and the certificate's refused-PROMPT mark is set (`custos_prompt_mark`,
+below); while the mark stands, every PETITION, PUSH, RELEASE, HEARTBEAT and STRUCTURE_TEST under that
+certificate is refused `PROMPT` with `"recertify": true` and the fixed detail `Landing::PROMPT_MARKED`
+("a refused-PROMPT mark stands on the certificate; ..."), whatever `prompt_digest` it presents (the
+certificate's own included) or none, right after the certificate's read, nothing charged, written or
+stepped; only `Custos:Certify` writing the certificate again clears it; equal answers `"prompt_check": "MATCHED"`; a certificate whose `d_prompt` is
+empty refuses nothing and answers `"prompt_check": "UNBOUND"`; a request presenting no digest is
+compared with nothing and answered as before. A landed PUSH's answer echoes its `log_head` as
+received; Custos verifies nothing of the log's content. OWED: the refusals FAMILY (the relayed
+model maps to another vendor family than the certificate's) and MODEL (the model excluded or
+unlisted), which need the model map, which has no store; `prompt_digest` and `log_head` required
+at PUSH, a later version; the ranking rule makes these obligations, not completeness defects.
 
 Every answer also carries `op`, the op asked; `ticket_op` is the ticket's own op. A work block's name is a letter or digit, then at most 63 of letters, digits, `_`, `.`, `:`,
-`-`. The refusals, each an API error: `custos-op` (no op, or one outside the seven),
+`-`. The refusals, each an API error: `custos-op` (no op, or one outside the nine),
 `custos-not-agent`, `custos-shape`, `custos-prefix`, `custos-account`, `custos-too-large`,
 `custos-unknown-param`, `custos-missing-param`, `custos-no-ticket`, `custos-ticket-not-yours`
 (POLL of another account's ticket), `custos-internal` (every path stripped). A POST without
@@ -174,6 +188,32 @@ It inserts the agent's row or replaces it whole, and prints `certify: <agent> sp
 it refuses, writing nothing, an agent named as its own Sponsor, a digest not of the form, an empty
 or over-long name, family or model, and a state outside the three. A certificate holds no secret.
 `DbCertificateStore` reads and writes it through the primary's autocommit connection.
+
+## The table custos_prompt_mark
+
+| Column | What it holds |
+|---|---|
+| `cpm_agent` | the agent account's user name, as `cc_agent` (the primary key) |
+| `cpm_state` | `STANDING` or `CLEARED`; `STANDING` refuses every op under the certificate |
+| `cpm_marked` | the server time, whole seconds, the standing mark was set |
+| `cpm_cleared` | the server time a re-certification cleared it; 0 while it stands |
+
+The refused-PROMPT mark keeps the stop on a PROMPT refusal on the server, whatever the client
+remembers. The landing job writes `STANDING` when it refuses PROMPT for a presented D(PROMPT) that
+is not the certificate's (a mark standing keeps its first time); every later op under that
+certificate is then refused PROMPT (above). Nothing in a web request reads or writes the table.
+`Custos:Certify`, writing the certificate (`CertificateStore::put`), turns a standing mark
+`CLEARED` and writes the certificate's row in one atomic section, so a re-certification, a DECLARED
+PROMPT CHANGE or the same values written again, clears it, and a row write that fails rolls the clear
+back (the mark stands); a first certification finds none. Admission reads the mark before the
+certificate, so a request never pairs the row before a re-certification with the mark that
+re-certification cleared. A refusal racing that write marks the new row (it refuses more, never
+less), and `Custos:Certify` run again clears it. The server-side stop holds only while the mark's
+write succeeds: a mark write that fails faults the job (the request is refused all the same, answered
+JOB FAULT with no PROMPT and no `recertify`) and stores no mark. A row is never deleted, and it keeps
+the latest episode's times per agent (a new mark over a `CLEARED` row replaces its times): it is not
+an audit trail. A wiki installed before this table gains it on its next `update.php` (the schema
+hook); until then the mark's read faults the landing job, which refuses and admits nothing.
 
 ## The batch jobs' frame
 
@@ -289,6 +329,7 @@ started. `Landing::run` then claims the ticket (QUEUED to IN WORK) and:
 | `PETITION` | the ACCESS POLICY asked (below); the lock granted when free, or past its expiry (`$wgCustosLockLease`, 3600 s) | `{"grant", "expires", "block", "challenge"}`, or `LOCK HELD` with `poll_after` |
 | `PUSH` | the holder within the lease, under the block the lock was granted for (a request naming another refused `NOT HOLDER`); the execution challenge (above); the ACCESS POLICY asked again; the DIGEST GATE (the three RESEARCH ASSEMBLY pages carry one text whose `zone digest_research_assembly_of` is the badge's); each record `record_check` at PUSH under the UWC's BIBLIOGRAPHY SETTING (the DRAFT UWC page's block `pma-setting`, one word `OFF`, `ON` or `CLOSED`; `OFF`, the fleet default, when it states none; another word refused `UWC`), then `record_form_check` (RESULT, ASSUMPTION) and `domain_check` (RESULT); a record carrying the member SUPERSEDES refused (`RECORD CHECK`, problem `WITHDRAWAL`: the withdrawal is not built); each identifier the next free one, in order (`hold allocate_identifiers` under the UWC's own prefix, the records' prefix as in version 1, from 1, its next the register's count plus one; problem `SEQUENCE`, naming the record's index and the Calculator's identifier; a prefix the allocation refuses refuses the push; a UWC whose open volume is not volume 1 refused `REGISTER` until the volume roll is built); the fields Custos owns filled (BLOCK, AUTHOR, LANDED_BY `Custos`, LANDED, GRADE and STATUS the record table's first values, TPS `$wgCustosTps`, D_IS `$wgCustosDIs`); `derivation credit_record` for a RESULT's class, written into it as DERIVATION_CLASS before the digest (INSPECTION when the credit is refused or owed; a record of another class carries none); `record citation_check` against the register as read and the batch's records before it (no bibliography entry landed, `supersede_decided` false: a CITES or ASSUMPTIONS member not a standing RESULT or ASSUMPTION of the register refused REC-58 or REC-59, a LITERATURE member REC-61); `record_digest` as DIGEST, covering it; the filled record checked again at LANDED; the open register volume rewritten with the batch appended (the Calculator's canonical JSON) and the badge's last push and count | `{"landed": [{"id", "digest", "derivation_class"}], "block", "record_count", "execution": "EXECUTED", "challenge"}`; the execution challenge (above) before the ACCESS POLICY and the DIGEST GATE, a REASONED PUSH refused `CHALLENGE` |
 | `RELEASE` | the holder's lock freed; the badge's last release advanced | `{"released", "block"}` |
+| `RETURN` | the UWC LIVE; the lock held within its lease, else `NO HOLDER` (a free or expired lock), its block the returned records' VETTED_IN; the request's block assigned to the account on the collaboration page (the Holder's block `pma-assignments`, read by `pcalc hold assignments` with the Holder and the server time, through `Assignments`): no row `NO ASSIGNMENT`, a row naming another account `NOT ASSIGNEE`, a row past its end `EXPIRED`, a block the Calculator refuses answered with its word (`MALFORMED`, `TIME`, `HOLDER`, `DUPLICATE`); the next return number n, the lowest with no page `<UWC>/Collaboration/Staging/<block>/<n>`, read from 1 upward (past `Landing::MAX_RETURNS`, 1000, `RETURNED`); the DIGEST GATE and the BIBLIOGRAPHY SETTING as PUSH reads them; every record checked as PUSH checks it, all or nothing (`RECORD CHECK`); AUTHOR (the account), BLOCK (the assigned block) and VETTED_IN filled, nothing else; the staged text the Calculator's canonical JSON of the records, its digest `digest digest_fields` over [`pma-return`, block, account, that text]; the one staging page written by `PageWriter::commitOne` (Custos its one writer), no badge, register or lock touched; a return staged at n meanwhile refuses this one `PAGE FAULT` (`BASE MOVED`) | `{"returned", "block", "records", "digest", "staging": <n>}` |
 
 A refusal is `{"refused": <word>, "detail", ...}`: `NOT READ` (the Calculator's reader refused a
 text, or the value PHP decodes from its canonical text, written back, is not that text byte for
@@ -296,7 +337,8 @@ byte and the Calculator's canonical text of it is not either, detail `a number t
 hold exactly`: an integer outside PHP's 64-bit range or past binary64's; a number written with an
 exponent, or a string holding U+2028 or U+2029, which PHP spells otherwise, is held; nothing landed), `REQUEST`, `RECORDS`, `ADMISSION`, `UWC`, `ACCESS`, `LOCK HELD`, `NOT HOLDER`, `CONFIGURATION`,
 `DIGEST GATE`, `RECORD CHECK` (with `problems`, each record's index and the Calculator's answer;
-all or nothing), `REGISTER`, `PAGE FAULT`, `CALCULATOR REFUSED` (with `calculator`, the
+all or nothing), `REGISTER`, RETURN's `NO HOLDER`, `NO ASSIGNMENT`, `NOT ASSIGNEE`, `EXPIRED`,
+`RETURNED` and the assignment reader's words, `PAGE FAULT`, `CALCULATOR REFUSED` (with `calculator`, the
 Calculator's own refusal code and its detail). POLL shows the answer to the ticket's account, so a
 fault answers a fixed word and a detail from a closed set, never a path, a query, a host name, a
 title's bytes or pcalc's stderr, all of which are RESTRICTED; the one function `Refusal::detail`
@@ -421,7 +463,8 @@ never written over a partial landing. The text read stands for the revision.
 
 The fence: `put` takes only a title in MediaWiki's canonical form that `PageTitles::classify`
 reads as a page Custos writes under the landing's own UWC prefix (the DRAFT UWC page, a
-RESEARCH ASSEMBLY page, a register volume, the LOCK PAGE, the INDEX AND BADGE page), or, beyond
+RESEARCH ASSEMBLY page, a register volume, the LOCK PAGE, the INDEX AND BADGE page, a STAGING
+page, RETURN's, saved alone by `commitOne`), or, beyond
 the UWC, a class the op names at `begin(prefix, block, beyond)`: the fleet's index and the
 Declarer's root's chain heads and volumes (no op names one yet). Any other title (another UWC's
 page, a governed title of no class, a class Custos does not write, an ordinary page) refuses the
@@ -434,6 +477,7 @@ the class it read, and the ticket answers `PAGE FAULT` with the fault `landing o
 |---|---|
 | LOCK PAGE | `pma-lock`: `{"block","expires_at","granted_at","holder"}`, the Calculator's canonical JSON of the members; all null when free |
 | REGISTER OPEN | `pma-register`: the records as the Calculator wrote them, carried through whole |
+| STAGING (RETURN's `<UWC>/Collaboration/Staging/<block>/<n>`) | `pma-return`: the returned records as the Calculator wrote them, carried through whole; `pma-returnmeta`: the Calculator's canonical JSON of `{"account","block","digest","returned","staging","vetted_in"}` |
 | INDEX AND BADGE | `pma-badge`: `{"calculator_digest","calculator_version","last_push","last_release","record_count","research_assembly"}`; `pma-state`: `LIVE` or `RETIRED`; `pma-open`: the open register volume's number |
 
 PHP reads no field of a payload and writes no JSON of its own beyond the badge. A held lock's
@@ -602,9 +646,10 @@ run, and the wiki runs jobs only from its job runner (`$wgJobRunRate = 0`).
     php custos/tests/wiring.php                  # W1-W17 alone
     bash custos/tests/rehearsal.sh [<folder>]    # "schema: current", "schema: custos_seat,
                                                  # custos_certificate, custos_job_run,
-                                                 # custos_nonce, custos_meter, custos_budget
-                                                 # and custos_traffic added by update to a
-                                                 # wiki that had custos_ticket alone",
+                                                 # custos_nonce, custos_meter, custos_budget,
+                                                 # custos_traffic and custos_prompt_mark
+                                                 # added by update to a wiki that had
+                                                 # custos_ticket alone",
                                                  # "wiring: ALL PASS",
                                                  # "api: PETITION 202", "api: POLL QUEUED",
                                                  # "api: PUSH 202", "api: RELEASE 202", the
@@ -619,8 +664,10 @@ run, and the wiki runs jobs only from its job runner (`$wgJobRunRate = 0`).
                                                  # "restricted: history refused",
                                                  # "restricted: recent changes show
                                                  # nothing", "restricted: read admitted",
-                                                 # "land: PETITION grant", "land: PUSH CHALLENGE
-                                                 # REASONED", "land: PUSH landed EXECUTED",
+                                                 # "land: PETITION grant", "land: PUSH PROMPT
+                                                 # refused", "land: PUSH CHALLENGE REASONED",
+                                                 # "land: PUSH log_head echoed, prompt_check
+                                                 # MATCHED", "land: PUSH landed EXECUTED",
                                                  # "land: READ 2 records", "land: RELEASE released",
                                                  # "lock: holder carried exactly",
                                                  # "sweep: a QUEUED ticket without its job,

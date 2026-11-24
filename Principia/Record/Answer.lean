@@ -353,4 +353,70 @@ def eomName? (s : String) : Option String :=
     if Zone.isIdent n then some n else none
   else none
 
+namespace V
+
+/-- A member is present exactly when it is found. -/
+theorem has_iff (v : Value) (k : String) : has v k = true ↔ (get? v k).isSome := Iff.rfl
+
+/-- An object's keys are its members' names, in order. -/
+theorem keys_obj (ms : List (String × Value)) : keys (.obj ms) = ms.map Prod.fst := rfl
+
+/-- A member set on an object is then found with its new value, whether it replaced a
+member of that name or was appended. -/
+theorem get?_set_self (ms : List (String × Value)) (k : String) (x : Value) :
+    get? (set (.obj ms) k x) k = some x := by
+  simp only [set]
+  by_cases h : ms.any (·.1 == k) = true
+  · simp only [h, ↓reduceIte]
+    simp only [get?]
+    induction ms with
+    | nil => simp at h
+    | cons m ms ih =>
+      by_cases hm : m.1 = k
+      · simp [hm]
+      · have hk : (k == m.1) = false := beq_false_of_ne (Ne.symm hm)
+        have hm' : (m.1 == k) = false := beq_false_of_ne hm
+        simp only [List.map_cons, hm', Bool.false_eq_true, ↓reduceIte, List.lookup, hk]
+        exact ih (by simpa [List.any_cons, hm'] using h)
+  · simp only [h, Bool.false_eq_true, ↓reduceIte]
+    simp only [get?]
+    induction ms with
+    | nil => simp
+    | cons m ms ih =>
+      have hm : (m.1 == k) = false := by
+        cases e : (m.1 == k)
+        · rfl
+        · exact absurd (by simp [List.any_cons, e]) h
+      have hk : (k == m.1) = false := beq_false_of_ne (Ne.symm (ne_of_beq_false hm))
+      simp only [List.cons_append, List.lookup, hk]
+      exact ih (by simpa [List.any_cons, hm] using h)
+
+/-- A member erased from an object is then not found. -/
+theorem get?_erase_self (ms : List (String × Value)) (k : String) :
+    get? (erase (.obj ms) k) k = none := by
+  simp only [erase, get?]
+  induction ms with
+  | nil => rfl
+  | cons m ms ih =>
+    by_cases hm : m.1 = k
+    · simp [hm, ih]
+    · have hk : (k == m.1) = false := beq_false_of_ne (Ne.symm hm)
+      have hm' : (m.1 != k) = true := by simp [hm]
+      simp only [List.filter_cons, hm', ↓reduceIte, List.lookup, hk]
+      exact ih
+
+/-- Setting a member of anything but an object leaves it unchanged. -/
+theorem set_not_obj (v : Value) (k : String) (x : Value) (h : isObj v = false) :
+    set v k x = v := by
+  cases v <;> simp_all [isObj, set]
+
+/-- Erasing a member of anything but an object leaves it unchanged. -/
+theorem erase_not_obj (v : Value) (k : String) (h : isObj v = false) : erase v k = v := by
+  cases v <;> simp_all [isObj, erase]
+
+/-- No value has no member strings. -/
+theorem members_none : members none = [] := rfl
+
+end V
+
 end Principia.Record
