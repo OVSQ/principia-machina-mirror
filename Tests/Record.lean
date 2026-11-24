@@ -94,10 +94,13 @@ def answerOf (fn : String) (a : Value) : Option Answer :=
   | "reaudit_scope" => some (.ofM (reauditScope (x "src") (x "dst")))
   | "repromote_batch" => some (.ofM (repromoteBatch (x "src_records") (x "src_words")
       (x "dst_records") (x "dst_words") (x "tfk") (x "open_audits")))
-  | "reaudit_batch" => some (.ofM (reauditBatch (x "src") (x "dst") (x "src_records")
-      (x "src_words") (x "dst_records") (x "dst_words") (x "tfk") (x "setting")
-      (x "promotion_id") (x "landing_block") (x "prefix") (x "ic2") (x "under") (x "trigger")
-      (x "landed") (x "tps")))
+  | "reaudit_batch" => some (.ofM (reauditBatch (x "src_tfk") (x "dst_tfk")
+      (x "src_records") (x "dst_records") (x "setting") (x "promotion_id") (x "landing_block")
+      (x "prefix") (x "trigger") (x "landed") (x "tps")))
+  | "reaudit_under" => some (.ofM (do
+      match ← underOf (x "tfk") with
+      | .ok l => pure (okWith [V.strs l])
+      | .error b => pure b))
   | _ => none
 
 /-! ## Running a corpus -/
@@ -188,7 +191,8 @@ hand-written; no case is owed. -/
 def runRecordForms : IO (Nat × Nat) :=
   runCorpus "record_forms" "vectors/record_forms.json" "vectors/record_forms.owed.json"
 
-/-- `vectors/reaudit_corpus.json`: `reaudit_batch`, hand-written; no case is owed. -/
+/-- `vectors/reaudit_corpus.json`: `reaudit_batch`, and `reaudit_under` (the batch's UNDER
+reading, `underOf`, called alone), hand-written; no case is owed. -/
 def runReaudit : IO (Nat × Nat) :=
   runCorpus "reaudit" "vectors/reaudit_corpus.json" "vectors/reaudit_corpus.owed.json"
 

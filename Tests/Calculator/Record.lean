@@ -131,6 +131,48 @@ def verificationAt (n : Nat) (value zeta : String) : Value :=
       ("EXTERNAL", .obj [("QUANTITY", .str "period"), ("VALUE", .str "0"),
         ("U_C", .str "3"), ("UNIT", .str "s")])]), ("k", .str "2")]
 
+/-- A request of `reaudit_batch`, its successor's register padded with `n` RESULTs no
+re-check reads (none carries INHERITS). -/
+def reauditPadded (request : Value) (n : Nat) : Value :=
+  let pad : List Value := (List.range n).map fun i => recordResult s!"PP-{i + 1}" []
+  match request with
+  | .obj ms => .obj (ms.map fun m =>
+      match m with
+      | ("dst_records", .arr rs) => ("dst_records", .arr (rs ++ pad))
+      | m => m)
+  | v => v
+
+/-- The length of the register a request of `reaudit_batch` answers, `none` for a refusal. -/
+def reauditRegister (got : Except Refusal Value) : Option Nat :=
+  match got with
+  | .ok (.arr [.str "OK", o]) =>
+    match member o "REGISTER" with
+    | some (.arr xs) => some xs.length
+    | _ => none
+  | _ => none
+
+/-- The register after the re-audit within `maxRecords`: RX17 of
+`vectors/reaudit_corpus.json` (a failed re-check opening an IC2 and a UNDER gap) with its
+successor's register padded so that the register it answers holds 64 records is answered;
+padded with one record more, it is refused whole by the bound, never written past it. -/
+def runReauditRegisterBound : IO (Nat × Nat) := do
+  let mut t : Counts := {}
+  let some rx17 := (← v1Cases "vectors/reaudit_corpus.json").find? fun c =>
+      match member c "name" with
+      | some (.str s) => s.startsWith "RX17"
+      | _ => false
+    | throw (IO.userError "reaudit_corpus.json: no RX17")
+  let some request := member rx17 "args" | throw (IO.userError "RX17: no args")
+  -- RX17 answers its 3 records and 2 gap records, and promotes nothing. Padded with `n`
+  -- RESULTs it answers the 3 + n records and the 2 gap records, the padding not promoted.
+  let at64 := respondTo "record" "reaudit_batch" (reauditPadded request 59)
+  t ← t.check (reauditRegister at64 == some 64)
+    s!"record reaudit_batch, the register after the re-audit at 64: got {repr (at64.toOption.map (·.canonicalJson))} or {repr (match at64 with | .error r => some r.detail | _ => none)}"
+  let past := respondTo "record" "reaudit_batch" (reauditPadded request 60)
+  t ← t.check (boundRefusal past)
+    s!"record reaudit_batch, the register after the re-audit past 64: got {repr (past.toOption.map (·.canonicalJson))} or {repr (match past with | .error r => some r.detail | _ => none)}"
+  return t.pair
+
 def runRecordBounds : IO (Nat × Nat) := do
   let mut t : Counts := {}
   let tfk := .obj [("TPK", .obj []), ("TrM", .obj [("ENTRIES", .arr [])]),
@@ -168,7 +210,10 @@ def runRecordBounds : IO (Nat × Nat) := do
         ("dst_records", recordRegister 1 0), ("dst_words", .obj []), ("tfk", tfk),
         ("open_audits", strs [])], .bound),
     ("successor records past 64", "reaudit_batch",
-      .obj [("dst_records", recordRegister 65 0), ("dst_words", .obj []), ("tfk", tfk)], .bound),
+      .obj [("dst_records", recordRegister 65 0), ("dst_tfk", tfk)], .bound),
+    ("predecessor records past 64", "reaudit_batch",
+      .obj [("src_records", recordRegister 65 0), ("dst_records", recordRegister 1 0),
+        ("dst_tfk", tfk)], .bound),
     ("open audits at 64", "promotion_pass", promotion 64 64, .answered),
     ("open audits past 64", "promotion_pass", promotion 64 65, .bound),
     ("an uncertainty of 10^-19728", "field_values",
@@ -209,6 +254,7 @@ open Tests.Calculator
 def runners : List (String × IO (Nat × Nat)) := [
   ("pcalc record (record, record_view, record_forms)", runRecordCalls),
   ("pcalc record bounds", runRecordBounds),
+  ("pcalc record reaudit register bound", runReauditRegisterBound),
 ]
 
 end Tests.Calculator.Record

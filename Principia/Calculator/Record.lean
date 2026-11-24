@@ -48,12 +48,15 @@ a value stays a value.
   {"promotion_id", "landing_block", "promoted"}`, `entry_view {"records", "words", "tfk",
   "entry"}`, `reaudit_scope {"src", "dst"}`, `repromote_batch {"src_records", "src_words",
   "dst_records", "dst_words", "tfk", "open_audits"}`;
-* the successor's re-audit in one call: `reaudit_batch {"src", "dst", "src_records",
-  "src_words", "dst_records", "dst_words", "tfk", "setting", "promotion_id", "landing_block",
-  "prefix", "ic2", "under", "trigger", "landed", "tps"}` (`Principia.Record.reauditBatch`):
-  the scope, the re-check of the inherited records, `status_next` on `HOLD` for a record that
-  fails it with the gap records `gap_records` opens, the re-promotion and its PROMOTION record;
-  a successor above `maxRecords` is refused whole.
+* the successor's re-audit in one call: `reaudit_batch {"src_tfk", "dst_tfk",
+  "src_records", "dst_records", "setting", "promotion_id", "landing_block", "prefix",
+  "trigger", "landed", "tps"}` (`Principia.Record.reauditBatch`), the two Research Assemblies
+  and the two registers whole: the scope over the assemblies' zone digests, the re-check of
+  the inherited records, `status_next` on `HOLD` for a record that fails it with the gap
+  records `gap_records` opens over the successor's IC2 and UNDER DOFs, the re-promotion and
+  its PROMOTION record, and the successor's register after the re-audit (`"REGISTER"`), each
+  held record's DIGEST formed again; a register above `maxRecords` is refused whole, the
+  register the re-audit answers included (`answerWithin`).
 
 Every digest is SHA-256, as version 1's. Every number a function forms from its arguments,
 a measurement normalized or a budget's sums, is formed within the bound on an exact value's
@@ -78,7 +81,14 @@ in a chain, one holding 385 assumptions, with 64 open audits, 0.70 s; the digest
 result whose 1024 budget components hold 130,000 code points of combining marks to
 reorder, 0.49 s; a MASTER checked against a Starting Set of 28 laws of 4,000 code points,
 0.44 s; a citation check over 63 withdrawals naming 6,300 records, 0.29 s; 2,048 named
-gaps written, 0.27 s. A request of a mebibyte past the bounds is refused in at most 0.43 s.
+gaps written, 0.27 s. The successor's re-audit runs the final checks and the
+equations-of-motion analysis once, over the successor's assembly only, whose lists this
+family bounds at `maxEntries`, not the 64 of the families `fundamental` and `eom`: an
+assembly of 445 DOFs, 442 FIX constraints and 443 laws (a request of 128,000 bytes), 441 of
+its DOFs untied, took 0.43 s; 62 records of which 60 fail their re-check, each held and its
+DIGEST formed again, 0.16 s, and with that assembly's first 305 DOFs 0.33 s. Each was
+refused at its end, the register it would answer past `maxRecords`, save the second. A
+request of a mebibyte past the bounds is refused in at most 0.43 s.
 -/
 
 namespace Principia.Calculator.Record
@@ -174,6 +184,17 @@ def registerWithin (what : String) : Value → Except Refusal Unit
       badArgument s!"the records of {what} hold more than {maxListed} CITES, ASSUMPTIONS and ENTRIES in all (the Calculator's bound)"
   | _ => pure ()
 
+/-- An answer's REGISTER within the bounds of a register the family reads: the register the
+re-audit answers is the next re-audit's `src_records`, so one past `maxRecords` or `maxListed`
+(the successor's records with the gap records and the PROMOTION record after them) is refused
+whole, never written. -/
+def answerWithin : Value → Except Refusal Unit
+  | .arr [.str "OK", .obj ms] =>
+    match ms.lookup "REGISTER" with
+    | some rs => registerWithin "the register after the re-audit" rs
+    | none => pure ()
+  | _ => pure ()
+
 /-- A request's registers and open audits within their bounds. -/
 def registersWithin (a : String → Value) : Except Refusal Unit := do
   for k in ["register", "records", "src_records", "dst_records"] do
@@ -240,12 +261,11 @@ def registerFunctions : List (String × List String × ((String → Value) → P
   ("promotion_record", ["promotion_id", "landing_block", "promoted"], fun a =>
     .ofM (promotionRecord (a "promotion_id") (a "landing_block") (a "promoted"))),
   ("reaudit_scope", ["src", "dst"], fun a => .ofM (reauditScope (a "src") (a "dst"))),
-  ("reaudit_batch", ["src", "dst", "src_records", "src_words", "dst_records", "dst_words",
-      "tfk", "setting", "promotion_id", "landing_block", "prefix", "ic2", "under", "trigger",
-      "landed", "tps"], fun a =>
-    .ofM (reauditBatch (a "src") (a "dst") (a "src_records") (a "src_words") (a "dst_records")
-      (a "dst_words") (a "tfk") (a "setting") (a "promotion_id") (a "landing_block") (a "prefix")
-      (a "ic2") (a "under") (a "trigger") (a "landed") (a "tps"))),
+  ("reaudit_batch", ["src_tfk", "dst_tfk", "src_records", "dst_records", "setting",
+      "promotion_id", "landing_block", "prefix", "trigger", "landed", "tps"], fun a =>
+    .ofM (reauditBatch (a "src_tfk") (a "dst_tfk") (a "src_records") (a "dst_records")
+      (a "setting") (a "promotion_id") (a "landing_block") (a "prefix") (a "trigger")
+      (a "landed") (a "tps"))),
   ("record_check", ["record", "tfk", "setting", "stage"], fun a =>
     recordCheck (a "record") (a "tfk") (a "setting") (a "stage")),
   ("record_digest", ["record"], fun a => recordDigest (a "record")),
@@ -280,7 +300,9 @@ def registerCall (names : List String) (f : (String → Value) → Principia.Rec
     let a ← readArgs names v
     sizeWithin v
     registersWithin a
-    answer (f a)
+    let v ← answer (f a)
+    answerWithin v
+    pure v
 
 /-- The family's functions. -/
 def calls : Family := [
