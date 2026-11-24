@@ -8,7 +8,7 @@ import Principia.Zone.Text
 The block `pma-assignments` on a UWC's collaboration page: written by the Holder by its own
 edit, read by Custos through this reader before a RETURN. Its text is a
 JSON list of rows, one per assigned block, each an object of exactly six members
-(`pma_custos_ops.md` section 4.4; version 1's ASSIGNMENT row, TPS 5.8.3):
+(the Custos operations note, section 4.4; version 1's ASSIGNMENT row, TPS 5.8.3):
 
 * `block`: the work block's name, in the lock's form (a letter or digit, then at most 63
   letters, digits, `_`, `.`, `:` or `-`);
