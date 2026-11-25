@@ -660,20 +660,53 @@ the record types' corpora (`Principia/Record/`, `docs/design/pma_record_types.md
   alone in the plain, OPEN and CLOSED-and-listed cases; the CLOSED PREDICATE case of the
   Coworker's listed WRITE on STAGING now expects a refusal; two cases of
   `coworker_never_writes_staging` refuse its WRITE and APPEND with every condition set.
-- `reaudit_corpus.json` (13 cases, `Tests/Record.lean`, `runReaudit`): `reaudit_batch`
-  (`Principia/Record/Reaudit.lean`), hand-written from `record_corpus.json`'s RB01, RA01 and
-  RA04, each RESULT given DERIVATION_CLASS INSPECTION so that it passes `record_check` at
-  LANDED, a failed re-check made by removing it (REC-43). The scope naming no check (nothing
+- `reaudit_corpus.json` (42 cases, `Tests/Record.lean`, `runReaudit`): `reaudit_batch`
+  (`Principia/Record/Reaudit.lean`), given the two Research Assemblies and the two registers
+  whole, hand-written from `record_corpus.json`'s RB01, RA01 and RA04, each RESULT given
+  DERIVATION_CLASS INSPECTION so that it passes `record_check` at LANDED, a failed re-check
+  made by removing it (REC-43); the assembly is RB01's spring with the law KIN removed (UNDER
+  x), with a DOF theta fixed and untied for the IC2 cases. The scope naming no check (nothing
   re-checked, a record that would fail included); a changed Criteria Set (K) with every record
   passing; a failed premise HELD, a gap opened and its dependent not re-promoted; a failed
   dependent HELD and its premise re-promoted; a REFUTED record not re-checked; a HELD record
-  that fails staying HELD; an IC2 gap; refusals from the scope, the words, the gap records, a
-  gap ID already in the register (REC-57) and the PROMOTION record. Expectations written from
-  the Calculator and checked outside it against the functions the batch composes, each
-  called alone (`reaudit_scope`, `record_check`, `status_next` on HOLD, `gap_records`,
-  `repromote_batch` over the changed words with the gap IDs as open audits,
-  `promotion_record`). `pcalc.json` gains one request of `reaudit_batch` (the failed premise),
-  and the record bounds one case (a successor of 65 records refused whole).
+  that fails staying HELD; an IC2 gap; an IC2 and an UNDER gap formed from one assembly;
+  STRUCTURE_CHECK OFF opening no UNDER gap; REGISTER over records carrying their DIGESTs, the
+  held record's formed again, the gap records and the PROMOTION record after them, and equal
+  to the successor's register when nothing changes; refusals from the scope, a register that
+  does not read (either), an assembly that does not read (REC-39) or does not pass its final
+  checks (REC-39), the gap records, a gap ID already in the register (REC-57) and the
+  PROMOTION record; over a failed re-check, a record whose STATUS HOLD does not apply to
+  (REC-54, as `status_next` refuses it), a held record whose DIGEST `record_digest` refuses,
+  and an assembly whose equations of motion do not read, refused by its final checks first
+  (REC-39); a successor register holding two records of one ID (REC-50), IC2_POLICY REJECT
+  over an untied DOF (REC-39), and a predecessor's assembly that is not an object, or either
+  assembly whose zone does not digest, handed to the scope as given; a successor whose
+  Starting Set does not digest carrying the predecessor's D_TPK and D_TRM, and a predecessor
+  given as D_TPK, D_TRM and TMS alone, each handed to the scope less those members and refused
+  (REC-50); a held record whose given DIGEST is stale, REGISTER carrying the DIGEST formed
+  again; a predecessor register that does not read under a failed re-check and an assembly
+  that does not pass its final checks, the register's refusal answered first (REC-50); a
+  re-promotion whose
+  PROMOTION ID is a keyed record's, a positional record's or the opened gap's ID, and a gap ID
+  that is a positional record's (each REC-57). RU01 to RU05 call `reaudit_under`, the batch's
+  UNDER reading (`underOf`), alone: its refusal of equations of motion that do not read
+  (REC-39), which the batch never reaches since the final checks refuse such an assembly
+  first, and four readings that answer, two with the Criteria Set's PARAMETERS or the
+  Criteria Set itself absent (STRUCTURE_CHECK then ON). RX01 to RX11 and RX13 keep the answers of the earlier input form but for
+  REGISTER; RX12 refused dst_words, which the input no longer takes, and now refuses a
+  dst_records that is not a register. Expectations written from the Calculator and checked
+  outside it against the functions the batch composes, each called alone (`reaudit_scope`,
+  `record_check`, `status_next` on HOLD, `final_checks` and `eom_findings` for the gap DOFs,
+  `gap_records`, `repromote_batch` over the changed words with the gap IDs as open audits,
+  `promotion_record`), and REGISTER against a reference outside Lean: the successor's records
+  with each STATUS pair applied and the DIGEST from `record_digest`, then the gap records and
+  the PROMOTION record. `pcalc.json`'s request of `reaudit_batch` (the failed premise) is
+  restated in the new input form, with a second request whose final checks owe their verdict
+  (two FIX values of one DOF whose twelve-digit forms the precisions tried do not decide),
+  answered OWED, and the record bounds case of a successor of 65 records
+  names `dst_tfk`, beside a new one of a predecessor of 65 records; a new runner pads RX17's
+  successor register so that the register it answers holds 64 records (answered) and 65
+  (refused by the bound).
 - No corpus moves; the client README's Owed line restated.
 - No corpus moves; the client README's Owed line restated.
 - No corpus moves.
@@ -789,6 +822,9 @@ the record types' corpora (`Principia/Record/`, `docs/design/pma_record_types.md
   `note` from a reference outside Lean (decimal arithmetic at 100 digits, checked against exact
   integer square-root bounds). No case is owed. The theorem `resolvingStepSq_agrees` proves the
   step equal to `resolvingStep` on rational squares.
+- `scripts/test_review_queue.py` (the review queue's tests, no corpus): the rework step's day cap
+  counts every rework task opened in the last 24 hours, whichever change it answers; one case
+  holds a day at the cap with tasks of two other changes and shows a 25-hour-old one lifting it.
 
 A corpus that checks nothing fails `lake test`.
 
