@@ -85,8 +85,10 @@ theorem cellOn_eq_permits {a : Actor} {c : PageClass} {op : Op} {ws : List Strin
     cellOn a c op ws = if permits a c op ctx then "PERMITTED" else "REFUSED" := by
   simp [cellOn, h, Request.answer]
 
-/-- The table's cells: by asker, page class, operation and context, in the domain's orders. -/
-def cells : List (List (List (List String))) :=
+/-- The table's cells: by asker, page class, operation and context, in the domain's orders.
+A function of `Unit`, not a constant: a compiled constant is computed when the Calculator's
+process starts, whatever it was asked; this one is computed on its first call. -/
+def cells (_ : Unit) : List (List (List (List String))) :=
   (WireWord.members : List Actor).map fun a =>
     (WireWord.members : List PageClass).map fun c =>
       (WireWord.members : List Op).map fun op =>
@@ -94,7 +96,7 @@ def cells : List (List (List (List String))) :=
 
 /-- The cell at the domain's indices: asker, page class, operation, context. -/
 def lookup (ia ic io ix : Nat) : Option String := do
-  let classes ← cells[ia]?
+  let classes ← (cells ())[ia]?
   let ops ← classes[ic]?
   let answers ← ops[io]?
   answers[ix]?
@@ -111,9 +113,10 @@ theorem table_lookup_eq_permits {ia ic io ix : Nat} {a : Actor} {c : PageClass} 
   simp only [lookup, cells, List.getElem?_map, ha, hc, ho, hw, Option.map_some,
     Option.bind_eq_bind, Option.bind_some]
 
-/-- The table as the family answers it: `cells` rendered under the domain's words. -/
-def tableValue : Value :=
-  .obj [("cells", .obj (((WireWord.members : List Actor).zip cells).map fun (a, byClass) =>
+/-- The table as the family answers it: `cells` rendered under the domain's words. A
+function of `Unit`, as `cells` is, so that only a call of `table` computes it. -/
+def tableValue (_ : Unit) : Value :=
+  .obj [("cells", .obj (((WireWord.members : List Actor).zip (cells ())).map fun (a, byClass) =>
       (WireWord.toWire a, .obj (((WireWord.members : List PageClass).zip byClass).map
         fun (c, byOp) => (WireWord.toWire c, .obj (((WireWord.members : List Op).zip byOp).map
           fun (op, answers) => (WireWord.toWire op, .arr (answers.map .str)))))))),
@@ -128,7 +131,7 @@ def calls : Family := [
   ("permits", fun v => do pure (.str (← requestOf v).answer)),
   ("table", fun v => do
     let _ ← arguments [] v
-    pure tableValue),
+    pure (tableValue ())),
 ]
 
 end Principia.Calculator.Permissions

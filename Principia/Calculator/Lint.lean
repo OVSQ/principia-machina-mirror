@@ -66,8 +66,9 @@ def hexBytes? (s : String) : Option ByteArray :=
   (go s.toList #[]).map ByteArray.mk
 
 /-- A text past version 1's size, in place of one given in pieces: any such text is PL0 for
-its size alone. -/
-def pastSize : String := String.ofList (List.replicate (Principia.Lint.maxBytes + 1) ' ')
+its size alone. A function of `Unit`, not a constant: a compiled constant is computed when the
+Calculator's process starts, whatever it was asked; this one only when a text is past the size. -/
+def pastSize (_ : Unit) : String := String.ofList (List.replicate (Principia.Lint.maxBytes + 1) ' ')
 
 /-- The pieces of `<name>_parts`, each a text and how many times it is repeated (a count
 below 0 as 0, as version 1 repeated it). -/
@@ -90,7 +91,7 @@ def readInput (ms : List (String × Value)) (name : String) : Except Refusal Inp
   | some p =>
     let parts ← readParts name p
     if Principia.Lint.maxBytes < (parts.map fun (s, n) => s.utf8ByteSize * n).sum then
-      pure (.text pastSize)
+      pure (.text (pastSize ()))
     else pure (.text (String.join (parts.map fun (s, n) => String.join (List.replicate n s))))
   | none =>
   match ms.lookup name with
