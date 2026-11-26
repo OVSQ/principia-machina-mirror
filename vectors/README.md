@@ -825,6 +825,37 @@ the record types' corpora (`Principia/Record/`, `docs/design/pma_record_types.md
 - `scripts/test_review_queue.py` (the review queue's tests, no corpus): the rework step's day cap
   counts every rework task opened in the last 24 hours, whichever change it answers; one case
   holds a day at the cap with tasks of two other changes and shows a 25-hour-old one lifting it.
+- `register_structure_test.json` (18 cases, `Tests/Calculator/Eom.lean`,
+  `runRegisterStructureCalls`, the runner `pcalc eom (register structure test)`):
+  `eom register_structure_test` (`Principia/Calculator/Eom.lean`), the structure test with
+  register over a register as Custos lands it. Each expectation is computed by
+  `scripts/register_structure_vectors.py` from version 1's reference functions (`tpc_record`'s
+  `_register` and `status_words`, the view `tpc_eom.settlement_check` forms, `tpc_eom`'s
+  `eom_register_test`), never by the Calculator, and written as canonical JSON (`--check`
+  compares). The Research Assembly is v1's example `corner_no_eom_x.json` (v UNDER). Cases: an
+  empty register; a RESULT as landed (PROVISIONAL, UNMARKED) and one with no STATUS; ESTABLISHED
+  by its GRADE; STATUS HELD and REFUTED; a PROMOTION and a WITHDRAWAL (REFUTED, WITHDRAWN)
+  member moving the word; a gap record, a ROLE without an EQUATION and an EQUATION without a
+  ROLE passed over; two standing records over-determining v, USED by prefix then number; an
+  EQUATION that does not parse; and four registers that do not read. No case is owed.
+  `pcalc.json` gains four `register_structure_test` requests (a landed record entering, a HELD
+  one not, a register that is not one, the argument missing), their answers checked against
+  the same reference composition. The bounds, measured on the built `pcalc`: a register of
+  1024 members in 0.55 s, 1025 refused; 64 standing records with a form answered in 0.28 s,
+  65 refused.
+- `falcon_validate.json`, written by hand for `pcalc falcon falcon_validate`
+  (`Principia/Calculator/Falcon.lean`, run by `Tests/Calculator/Falcon.lean`): 32 cases of
+  one falcon output checked against its kind's output schema's fields, usable (each field
+  type, IV counted, rows in key order, a rows field of no rows), OVERDUE, MALFORMED for each
+  reason (refusal, shape, IV, a field's own name, a rows field malformed: not a list, a
+  column missing or extra, a value that does not read, two rows of one key once canonical)
+  and refused (`schema`, `status`, `result`). Every expectation is v1's: the fields checked
+  by `_check_schema` of `docs/v1/tpc_py/tpc_falcon.py`, the status and an OVERDUE output's
+  result as its `falcon_reconcile` checks them, then its `_validate`, rendered in the line
+  forms of its `render_reconcile`. None is owed. `pcalc.json` gains three request pairs
+  for the function (usable, MALFORMED, refused `schema`), and `runFalconBounds` five cases
+  (rows in a result at 1000 and past, fields past 100, value lines at 1,000,000 characters
+  and past) and the check that the value lines' case is built at exactly its bound.
 
 A corpus that checks nothing fails `lake test`.
 
