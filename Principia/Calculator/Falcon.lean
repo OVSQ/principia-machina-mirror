@@ -14,6 +14,9 @@ arguments named as v1's `run_case` names them:
 * `falcon_schema_canon {"schema"}` and `falcon_schema_digest {"schema"}`: the output schema's
   canonical text and its SHA-256 digest.
 * `falcon_stop {"counts", "limits"}`: the per-kind stop.
+* `falcon_validate {"fields", "status", "result"}`: one output checked against its kind's
+  output schema, as the reconciliation checks each (v1's `_validate`): usable, with its
+  canonical values and its IV count, OVERDUE, or MALFORMED with the reason.
 * `quote_check {"page", "quote", "value", "affix"?, "scale"?, "accounting"?}`: the QUOTE
   CHECK over a page's text (`page` `null`: UNKNOWN).
 * `source_hop {"hop", "matched", "sources"}`: a redirect hop matched again.
@@ -55,6 +58,11 @@ one past a bound below is refused (`BAD_ARGUMENT`, "the Calculator's bound").
   the line of each of its columns and of each vote, so the item lines' identifiers and values
   are counted before the answer is written, at most `maxItemText` characters: a key of 45,000
   characters over 100 columns is refused in 0.04 s.
+* `falcon_validate`: at most `maxRows` rows in the result's rows fields, and value lines of at
+  most `maxItemText` characters of identifiers and values, counted before the answer is
+  written: a row's key stands in the identifier of each of its columns. 1000 rows of 45
+  columns, the most the bound on the request's strings leaves, take 0.46 s; one row keyed by
+  9,888 characters over 100 columns, at the bound on the value lines, 0.35 s.
 * `sponsor_stage` and `falcon_stop`: at most `maxEvents` events or records, each landed day,
   suspended agent and falcon checked against those before it: 10,000 take 0.51 s and 0.78 s.
 * `source_match` and `source_hop`: at most `maxSources` entries and CODE HOST marks, and
@@ -105,7 +113,8 @@ def maxRows : Nat := 1000
 def maxQuoteItems : Nat := 1000
 
 /-- The most characters of a reconciliation's item lines, their identifiers and values: a
-row's key and its field's name stand in the line of each of its columns and each vote. -/
+row's key and its field's name stand in the line of each of its columns and each vote; and
+of a validated result's value lines. -/
 def maxItemText : Nat := 1000000
 
 /-- The most events of a sponsor's stage, and the most records of a stop. -/
@@ -215,6 +224,60 @@ def itemChars (d : Principia.Falcon.Reconcile.Reconciled) : Nat :=
   (d.items.map fun it => it.id.length * (1 + it.votes.length) +
     (it.value.map String.length).getD 0 + (it.votes.map fun (_, v, _) => v.length).sum).sum
 
+/-! ## One result validated -/
+
+/-- One falcon result checked against its kind's output schema: v1's `_validate(out, schema)`
+over the schema's `fields`, an output's `status` and its `result`, the arguments checked as
+v1's `falcon_reconcile` checks a schema and an output: the fields as `_check_schema` checks
+them (v1's word `schema`), a status RETURNED or OVERDUE (`status`), and an OVERDUE output's
+result `null` (`result`). -/
+def falconValidate (fields status result : Value) : Result Principia.Falcon.Reconcile.Checked := do
+  if !Principia.Falcon.Reconcile.checkSchema
+      (.obj [("class", .str "SURVEY"), ("narrow", .bool false), ("fields", fields)]) then
+    Principia.Falcon.refuse "schema"
+  let st ← match status with
+    | .str "RETURNED" => pure "RETURNED"
+    | .str "OVERDUE" => pure "OVERDUE"
+    | _ => Principia.Falcon.refuse "status"
+  if st == "OVERDUE" then
+    match result with
+    | .null => pure ()
+    | _ => Principia.Falcon.refuse "result"
+  let specs := match fields with
+    | .arr fs => fs.filterMap Principia.Falcon.members?
+    | _ => []
+  Principia.Falcon.Reconcile.validate specs st result
+
+/-- A usable result's value lines: each one-value field's name and canonical value, and each
+rows field's rows in key order, every column of a row under the identifier
+`<field>[<key>].<column>` that the reconciliation's items carry. -/
+def validateLines (vals : List (String × Principia.Falcon.Reconcile.Canon)) : List (String × String) :=
+  vals.flatMap fun (nm, c) => match c with
+    | .one v => [(nm, v)]
+    | .rows rs =>
+      (rs.mergeSort (fun a b => a.1 ≤ b.1)).flatMap fun (k, cv) =>
+        cv.map fun (col, v) => (nm ++ "[" ++ k ++ "]." ++ col, v)
+
+/-- The characters of a usable result's value lines, before escaping: their identifiers and
+values. -/
+def validateChars : Principia.Falcon.Reconcile.Checked → Nat
+  | .ok (vals, _) => ((validateLines vals).map fun (i, v) => i.length + v.length).sum
+  | .error _ => 0
+
+/-- The answer's text, in the line forms of v1's `render_reconcile`: `validate|OK|iv=<n>`
+then a line `value|<identifier>|<value>` for each value, a rows field's lines after its line
+`rows|<field>|<count>`; `validate|OVERDUE`; or `validate|MALFORMED|<reason>`. -/
+def renderValidate : Principia.Falcon.Reconcile.Checked → String
+  | .error "OVERDUE" => "validate|OVERDUE"
+  | .error r => "validate|MALFORMED|" ++ r
+  | .ok (vals, iv) =>
+    "\n".intercalate (s!"validate|OK|iv={iv}" :: vals.flatMap fun (nm, c) =>
+      let lines := (validateLines [(nm, c)]).map fun (i, v) =>
+        s!"value|{Principia.Falcon.esc i}|{Principia.Falcon.esc v}"
+      match c with
+      | .one _ => lines
+      | .rows rs => s!"rows|{Principia.Falcon.esc nm}|{rs.length}" :: lines)
+
 /-! ## The calls -/
 
 /-- An answer as `pcalc` gives it: v1's text, or v1's word as a refusal. -/
@@ -291,6 +354,22 @@ def calls : Family := [
     textsWithin v
     within "count records" maxEvents (listOf counts).length
     answer Principia.Falcon.Stop.renderStop (Principia.Falcon.Stop.falconStop counts limits)),
+  ("falcon_validate", fun v => do
+    let (fields, status, result) ← argument3 "fields" "status" "result" v
+    textsWithin v
+    specsWithin (listOf fields)
+    within "rows in the result" maxRows
+      ((listOf fields).map fun f => match memberOf f "type" with
+        | .str "rows" => (listOf (memberOf result (match memberOf f "name" with
+          | .str n => n
+          | _ => ""))).length
+        | _ => 0).sum
+    match falconValidate fields status result with
+    | .ok c =>
+      if maxItemText < validateChars c then
+        badArgument s!"the value lines would hold more than {maxItemText} characters (the Calculator's bound)"
+      pure (.str (renderValidate c))
+    | .error (.refused w) => badArgument w),
   ("quote_check", fun v => do
     let ms ← membersOf ["page", "quote", "value", "affix", "scale", "accounting"] v
     let page ← needed ms "page"

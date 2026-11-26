@@ -1,0 +1,1488 @@
+{
+ "corpus": "falcon_validate",
+ "version": "1",
+ "note": "Hand vectors for falcon_validate: one falcon output checked against its kind's output schema's fields. Every expectation is computed by v1's own code, docs/v1/tpc_py/tpc_falcon.py at Unicode 15.1.0: the fields checked by its _check_schema (word schema), the status RETURNED or OVERDUE (word status), an OVERDUE output's result null (word result), as its falcon_reconcile checks an output; then its _validate(out, schema), rendered in the line forms of its render_reconcile: validate|OK|iv=<n> and a line value|<identifier>|<value> per canonical value, a rows field's rows in key order after its line rows|<field>|<count>, each column under <field>[<key>].<column>; validate|OVERDUE; validate|MALFORMED|<reason>. A refusal is ERROR:<word>.",
+ "cases": [
+  {
+   "name": "VV01 OK, one field of each type, no IV",
+   "fn": "validate",
+   "args": {
+    "fields": [
+     {
+      "name": "score",
+      "type": "decimal",
+      "class": "MECHANICAL",
+      "quote": true,
+      "affix": "%"
+     },
+     {
+      "name": "note",
+      "type": "text",
+      "class": "INSPECTION"
+     },
+     {
+      "name": "day",
+      "type": "date",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "site",
+      "type": "url",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "kind",
+      "type": "enum",
+      "class": "MECHANICAL",
+      "values": [
+       "A",
+       "B"
+      ]
+     },
+     {
+      "name": "ok",
+      "type": "boolean",
+      "class": "MECHANICAL"
+     }
+    ],
+    "status": "RETURNED",
+    "result": {
+     "score": "87.30",
+     "note": "  fine \t a|b ",
+     "day": "2026-02-28",
+     "site": "HTTP://Example.COM/a/./b",
+     "kind": "B",
+     "ok": true
+    }
+   },
+   "expected": "validate|OK|iv=0\nvalue|score|873e-1\nvalue|note|fine a\\|b\nvalue|day|2026-02-28\nvalue|site|http://example.com/a/b\nvalue|kind|B\nvalue|ok|true"
+  },
+  {
+   "name": "VV02 OK, IV of two",
+   "fn": "validate",
+   "args": {
+    "fields": [
+     {
+      "name": "score",
+      "type": "decimal",
+      "class": "MECHANICAL",
+      "quote": true,
+      "affix": "%"
+     },
+     {
+      "name": "note",
+      "type": "text",
+      "class": "INSPECTION"
+     },
+     {
+      "name": "day",
+      "type": "date",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "site",
+      "type": "url",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "kind",
+      "type": "enum",
+      "class": "MECHANICAL",
+      "values": [
+       "A",
+       "B"
+      ]
+     },
+     {
+      "name": "ok",
+      "type": "boolean",
+      "class": "MECHANICAL"
+     }
+    ],
+    "status": "RETURNED",
+    "result": {
+     "score": "87.30",
+     "note": "  fine \t a|b ",
+     "day": "2026-02-28",
+     "site": "HTTP://Example.COM/a/./b",
+     "kind": "B",
+     "ok": true,
+     "IV": [
+      "kind",
+      "note"
+     ]
+    }
+   },
+   "expected": "validate|OK|iv=2\nvalue|score|873e-1\nvalue|note|fine a\\|b\nvalue|day|2026-02-28\nvalue|site|http://example.com/a/b\nvalue|kind|B\nvalue|ok|true"
+  },
+  {
+   "name": "VV03 OK, IV empty",
+   "fn": "validate",
+   "args": {
+    "fields": [
+     {
+      "name": "a",
+      "type": "text",
+      "class": "MECHANICAL"
+     }
+    ],
+    "status": "RETURNED",
+    "result": {
+     "a": "café",
+     "IV": []
+    }
+   },
+   "expected": "validate|OK|iv=0\nvalue|a|café"
+  },
+  {
+   "name": "VV04 OK, rows in key order",
+   "fn": "validate",
+   "args": {
+    "fields": [
+     {
+      "name": "label",
+      "type": "text",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "r",
+      "type": "rows",
+      "class": "MECHANICAL",
+      "key": [
+       "k"
+      ],
+      "columns": [
+       {
+        "name": "k",
+        "type": "text",
+        "class": "MECHANICAL"
+       },
+       {
+        "name": "v",
+        "type": "decimal",
+        "class": "MECHANICAL"
+       },
+       {
+        "name": "w",
+        "type": "text",
+        "class": "INSPECTION"
+       }
+      ]
+     }
+    ],
+    "status": "RETURNED",
+    "result": {
+     "label": "x",
+     "r": [
+      {
+       "k": "b",
+       "v": "2.50",
+       "w": "y"
+      },
+      {
+       "k": "a",
+       "v": "-0",
+       "w": "x|z"
+      }
+     ]
+    }
+   },
+   "expected": "validate|OK|iv=0\nvalue|label|x\nrows|r|2\nvalue|r[1:a].k|a\nvalue|r[1:a].v|0\nvalue|r[1:a].w|x\\|z\nvalue|r[1:b].k|b\nvalue|r[1:b].v|25e-1\nvalue|r[1:b].w|y"
+  },
+  {
+   "name": "VV05 OK, a rows field of no rows",
+   "fn": "validate",
+   "args": {
+    "fields": [
+     {
+      "name": "label",
+      "type": "text",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "r",
+      "type": "rows",
+      "class": "MECHANICAL",
+      "key": [
+       "k"
+      ],
+      "columns": [
+       {
+        "name": "k",
+        "type": "text",
+        "class": "MECHANICAL"
+       },
+       {
+        "name": "v",
+        "type": "decimal",
+        "class": "MECHANICAL"
+       },
+       {
+        "name": "w",
+        "type": "text",
+        "class": "INSPECTION"
+       }
+      ]
+     }
+    ],
+    "status": "RETURNED",
+    "result": {
+     "label": "x",
+     "r": []
+    }
+   },
+   "expected": "validate|OK|iv=0\nvalue|label|x\nrows|r|0"
+  },
+  {
+   "name": "VV06 OVERDUE",
+   "fn": "validate",
+   "args": {
+    "fields": [
+     {
+      "name": "score",
+      "type": "decimal",
+      "class": "MECHANICAL",
+      "quote": true,
+      "affix": "%"
+     },
+     {
+      "name": "note",
+      "type": "text",
+      "class": "INSPECTION"
+     },
+     {
+      "name": "day",
+      "type": "date",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "site",
+      "type": "url",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "kind",
+      "type": "enum",
+      "class": "MECHANICAL",
+      "values": [
+       "A",
+       "B"
+      ]
+     },
+     {
+      "name": "ok",
+      "type": "boolean",
+      "class": "MECHANICAL"
+     }
+    ],
+    "status": "OVERDUE",
+    "result": null
+   },
+   "expected": "validate|OVERDUE"
+  },
+  {
+   "name": "VV07 MALFORMED refusal: result null",
+   "fn": "validate",
+   "args": {
+    "fields": [
+     {
+      "name": "score",
+      "type": "decimal",
+      "class": "MECHANICAL",
+      "quote": true,
+      "affix": "%"
+     },
+     {
+      "name": "note",
+      "type": "text",
+      "class": "INSPECTION"
+     },
+     {
+      "name": "day",
+      "type": "date",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "site",
+      "type": "url",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "kind",
+      "type": "enum",
+      "class": "MECHANICAL",
+      "values": [
+       "A",
+       "B"
+      ]
+     },
+     {
+      "name": "ok",
+      "type": "boolean",
+      "class": "MECHANICAL"
+     }
+    ],
+    "status": "RETURNED",
+    "result": null
+   },
+   "expected": "validate|MALFORMED|refusal"
+  },
+  {
+   "name": "VV08 MALFORMED shape: a field missing",
+   "fn": "validate",
+   "args": {
+    "fields": [
+     {
+      "name": "score",
+      "type": "decimal",
+      "class": "MECHANICAL",
+      "quote": true,
+      "affix": "%"
+     },
+     {
+      "name": "note",
+      "type": "text",
+      "class": "INSPECTION"
+     },
+     {
+      "name": "day",
+      "type": "date",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "site",
+      "type": "url",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "kind",
+      "type": "enum",
+      "class": "MECHANICAL",
+      "values": [
+       "A",
+       "B"
+      ]
+     },
+     {
+      "name": "ok",
+      "type": "boolean",
+      "class": "MECHANICAL"
+     }
+    ],
+    "status": "RETURNED",
+    "result": {
+     "score": "87.30",
+     "note": "  fine \t a|b ",
+     "site": "HTTP://Example.COM/a/./b",
+     "kind": "B",
+     "ok": true
+    }
+   },
+   "expected": "validate|MALFORMED|shape"
+  },
+  {
+   "name": "VV09 MALFORMED shape: a member outside the schema",
+   "fn": "validate",
+   "args": {
+    "fields": [
+     {
+      "name": "score",
+      "type": "decimal",
+      "class": "MECHANICAL",
+      "quote": true,
+      "affix": "%"
+     },
+     {
+      "name": "note",
+      "type": "text",
+      "class": "INSPECTION"
+     },
+     {
+      "name": "day",
+      "type": "date",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "site",
+      "type": "url",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "kind",
+      "type": "enum",
+      "class": "MECHANICAL",
+      "values": [
+       "A",
+       "B"
+      ]
+     },
+     {
+      "name": "ok",
+      "type": "boolean",
+      "class": "MECHANICAL"
+     }
+    ],
+    "status": "RETURNED",
+    "result": {
+     "score": "87.30",
+     "note": "  fine \t a|b ",
+     "day": "2026-02-28",
+     "site": "HTTP://Example.COM/a/./b",
+     "kind": "B",
+     "ok": true,
+     "extra": "x"
+    }
+   },
+   "expected": "validate|MALFORMED|shape"
+  },
+  {
+   "name": "VV10 MALFORMED shape: result a list",
+   "fn": "validate",
+   "args": {
+    "fields": [
+     {
+      "name": "score",
+      "type": "decimal",
+      "class": "MECHANICAL",
+      "quote": true,
+      "affix": "%"
+     },
+     {
+      "name": "note",
+      "type": "text",
+      "class": "INSPECTION"
+     },
+     {
+      "name": "day",
+      "type": "date",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "site",
+      "type": "url",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "kind",
+      "type": "enum",
+      "class": "MECHANICAL",
+      "values": [
+       "A",
+       "B"
+      ]
+     },
+     {
+      "name": "ok",
+      "type": "boolean",
+      "class": "MECHANICAL"
+     }
+    ],
+    "status": "RETURNED",
+    "result": [
+     {
+      "score": "87.30",
+      "note": "  fine \t a|b ",
+      "day": "2026-02-28",
+      "site": "HTTP://Example.COM/a/./b",
+      "kind": "B",
+      "ok": true
+     }
+    ]
+   },
+   "expected": "validate|MALFORMED|shape"
+  },
+  {
+   "name": "VV11 MALFORMED IV: not a list",
+   "fn": "validate",
+   "args": {
+    "fields": [
+     {
+      "name": "score",
+      "type": "decimal",
+      "class": "MECHANICAL",
+      "quote": true,
+      "affix": "%"
+     },
+     {
+      "name": "note",
+      "type": "text",
+      "class": "INSPECTION"
+     },
+     {
+      "name": "day",
+      "type": "date",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "site",
+      "type": "url",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "kind",
+      "type": "enum",
+      "class": "MECHANICAL",
+      "values": [
+       "A",
+       "B"
+      ]
+     },
+     {
+      "name": "ok",
+      "type": "boolean",
+      "class": "MECHANICAL"
+     }
+    ],
+    "status": "RETURNED",
+    "result": {
+     "score": "87.30",
+     "note": "  fine \t a|b ",
+     "day": "2026-02-28",
+     "site": "HTTP://Example.COM/a/./b",
+     "kind": "B",
+     "ok": true,
+     "IV": "kind"
+    }
+   },
+   "expected": "validate|MALFORMED|IV"
+  },
+  {
+   "name": "VV12 MALFORMED IV: an entry not a string",
+   "fn": "validate",
+   "args": {
+    "fields": [
+     {
+      "name": "score",
+      "type": "decimal",
+      "class": "MECHANICAL",
+      "quote": true,
+      "affix": "%"
+     },
+     {
+      "name": "note",
+      "type": "text",
+      "class": "INSPECTION"
+     },
+     {
+      "name": "day",
+      "type": "date",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "site",
+      "type": "url",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "kind",
+      "type": "enum",
+      "class": "MECHANICAL",
+      "values": [
+       "A",
+       "B"
+      ]
+     },
+     {
+      "name": "ok",
+      "type": "boolean",
+      "class": "MECHANICAL"
+     }
+    ],
+    "status": "RETURNED",
+    "result": {
+     "score": "87.30",
+     "note": "  fine \t a|b ",
+     "day": "2026-02-28",
+     "site": "HTTP://Example.COM/a/./b",
+     "kind": "B",
+     "ok": true,
+     "IV": [
+      "kind",
+      1
+     ]
+    }
+   },
+   "expected": "validate|MALFORMED|IV"
+  },
+  {
+   "name": "VV13 MALFORMED IV: null",
+   "fn": "validate",
+   "args": {
+    "fields": [
+     {
+      "name": "score",
+      "type": "decimal",
+      "class": "MECHANICAL",
+      "quote": true,
+      "affix": "%"
+     },
+     {
+      "name": "note",
+      "type": "text",
+      "class": "INSPECTION"
+     },
+     {
+      "name": "day",
+      "type": "date",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "site",
+      "type": "url",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "kind",
+      "type": "enum",
+      "class": "MECHANICAL",
+      "values": [
+       "A",
+       "B"
+      ]
+     },
+     {
+      "name": "ok",
+      "type": "boolean",
+      "class": "MECHANICAL"
+     }
+    ],
+    "status": "RETURNED",
+    "result": {
+     "score": "87.30",
+     "note": "  fine \t a|b ",
+     "day": "2026-02-28",
+     "site": "HTTP://Example.COM/a/./b",
+     "kind": "B",
+     "ok": true,
+     "IV": null
+    }
+   },
+   "expected": "validate|MALFORMED|IV"
+  },
+  {
+   "name": "VV14 MALFORMED score: a decimal that does not read",
+   "fn": "validate",
+   "args": {
+    "fields": [
+     {
+      "name": "score",
+      "type": "decimal",
+      "class": "MECHANICAL",
+      "quote": true,
+      "affix": "%"
+     },
+     {
+      "name": "note",
+      "type": "text",
+      "class": "INSPECTION"
+     },
+     {
+      "name": "day",
+      "type": "date",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "site",
+      "type": "url",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "kind",
+      "type": "enum",
+      "class": "MECHANICAL",
+      "values": [
+       "A",
+       "B"
+      ]
+     },
+     {
+      "name": "ok",
+      "type": "boolean",
+      "class": "MECHANICAL"
+     }
+    ],
+    "status": "RETURNED",
+    "result": {
+     "score": "87,3",
+     "note": "  fine \t a|b ",
+     "day": "2026-02-28",
+     "site": "HTTP://Example.COM/a/./b",
+     "kind": "B",
+     "ok": true
+    }
+   },
+   "expected": "validate|MALFORMED|score"
+  },
+  {
+   "name": "VV15 MALFORMED day: no such date",
+   "fn": "validate",
+   "args": {
+    "fields": [
+     {
+      "name": "score",
+      "type": "decimal",
+      "class": "MECHANICAL",
+      "quote": true,
+      "affix": "%"
+     },
+     {
+      "name": "note",
+      "type": "text",
+      "class": "INSPECTION"
+     },
+     {
+      "name": "day",
+      "type": "date",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "site",
+      "type": "url",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "kind",
+      "type": "enum",
+      "class": "MECHANICAL",
+      "values": [
+       "A",
+       "B"
+      ]
+     },
+     {
+      "name": "ok",
+      "type": "boolean",
+      "class": "MECHANICAL"
+     }
+    ],
+    "status": "RETURNED",
+    "result": {
+     "score": "87.30",
+     "note": "  fine \t a|b ",
+     "day": "2026-02-30",
+     "site": "HTTP://Example.COM/a/./b",
+     "kind": "B",
+     "ok": true
+    }
+   },
+   "expected": "validate|MALFORMED|day"
+  },
+  {
+   "name": "VV16 MALFORMED kind: not among the values",
+   "fn": "validate",
+   "args": {
+    "fields": [
+     {
+      "name": "score",
+      "type": "decimal",
+      "class": "MECHANICAL",
+      "quote": true,
+      "affix": "%"
+     },
+     {
+      "name": "note",
+      "type": "text",
+      "class": "INSPECTION"
+     },
+     {
+      "name": "day",
+      "type": "date",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "site",
+      "type": "url",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "kind",
+      "type": "enum",
+      "class": "MECHANICAL",
+      "values": [
+       "A",
+       "B"
+      ]
+     },
+     {
+      "name": "ok",
+      "type": "boolean",
+      "class": "MECHANICAL"
+     }
+    ],
+    "status": "RETURNED",
+    "result": {
+     "score": "87.30",
+     "note": "  fine \t a|b ",
+     "day": "2026-02-28",
+     "site": "HTTP://Example.COM/a/./b",
+     "kind": "C",
+     "ok": true
+    }
+   },
+   "expected": "validate|MALFORMED|kind"
+  },
+  {
+   "name": "VV17 MALFORMED ok: not a boolean",
+   "fn": "validate",
+   "args": {
+    "fields": [
+     {
+      "name": "score",
+      "type": "decimal",
+      "class": "MECHANICAL",
+      "quote": true,
+      "affix": "%"
+     },
+     {
+      "name": "note",
+      "type": "text",
+      "class": "INSPECTION"
+     },
+     {
+      "name": "day",
+      "type": "date",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "site",
+      "type": "url",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "kind",
+      "type": "enum",
+      "class": "MECHANICAL",
+      "values": [
+       "A",
+       "B"
+      ]
+     },
+     {
+      "name": "ok",
+      "type": "boolean",
+      "class": "MECHANICAL"
+     }
+    ],
+    "status": "RETURNED",
+    "result": {
+     "score": "87.30",
+     "note": "  fine \t a|b ",
+     "day": "2026-02-28",
+     "site": "HTTP://Example.COM/a/./b",
+     "kind": "B",
+     "ok": "true"
+    }
+   },
+   "expected": "validate|MALFORMED|ok"
+  },
+  {
+   "name": "VV18 MALFORMED note: text not a string",
+   "fn": "validate",
+   "args": {
+    "fields": [
+     {
+      "name": "score",
+      "type": "decimal",
+      "class": "MECHANICAL",
+      "quote": true,
+      "affix": "%"
+     },
+     {
+      "name": "note",
+      "type": "text",
+      "class": "INSPECTION"
+     },
+     {
+      "name": "day",
+      "type": "date",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "site",
+      "type": "url",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "kind",
+      "type": "enum",
+      "class": "MECHANICAL",
+      "values": [
+       "A",
+       "B"
+      ]
+     },
+     {
+      "name": "ok",
+      "type": "boolean",
+      "class": "MECHANICAL"
+     }
+    ],
+    "status": "RETURNED",
+    "result": {
+     "score": "87.30",
+     "note": 5,
+     "day": "2026-02-28",
+     "site": "HTTP://Example.COM/a/./b",
+     "kind": "B",
+     "ok": true
+    }
+   },
+   "expected": "validate|MALFORMED|note"
+  },
+  {
+   "name": "VV19 MALFORMED r: rows not a list",
+   "fn": "validate",
+   "args": {
+    "fields": [
+     {
+      "name": "label",
+      "type": "text",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "r",
+      "type": "rows",
+      "class": "MECHANICAL",
+      "key": [
+       "k"
+      ],
+      "columns": [
+       {
+        "name": "k",
+        "type": "text",
+        "class": "MECHANICAL"
+       },
+       {
+        "name": "v",
+        "type": "decimal",
+        "class": "MECHANICAL"
+       },
+       {
+        "name": "w",
+        "type": "text",
+        "class": "INSPECTION"
+       }
+      ]
+     }
+    ],
+    "status": "RETURNED",
+    "result": {
+     "label": "x",
+     "r": {
+      "k": "a",
+      "v": "1",
+      "w": "x"
+     }
+    }
+   },
+   "expected": "validate|MALFORMED|r"
+  },
+  {
+   "name": "VV20 MALFORMED r: a row missing a column",
+   "fn": "validate",
+   "args": {
+    "fields": [
+     {
+      "name": "label",
+      "type": "text",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "r",
+      "type": "rows",
+      "class": "MECHANICAL",
+      "key": [
+       "k"
+      ],
+      "columns": [
+       {
+        "name": "k",
+        "type": "text",
+        "class": "MECHANICAL"
+       },
+       {
+        "name": "v",
+        "type": "decimal",
+        "class": "MECHANICAL"
+       },
+       {
+        "name": "w",
+        "type": "text",
+        "class": "INSPECTION"
+       }
+      ]
+     }
+    ],
+    "status": "RETURNED",
+    "result": {
+     "label": "x",
+     "r": [
+      {
+       "k": "a",
+       "v": "1"
+      }
+     ]
+    }
+   },
+   "expected": "validate|MALFORMED|r"
+  },
+  {
+   "name": "VV21 MALFORMED r: a row with a member outside the columns",
+   "fn": "validate",
+   "args": {
+    "fields": [
+     {
+      "name": "label",
+      "type": "text",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "r",
+      "type": "rows",
+      "class": "MECHANICAL",
+      "key": [
+       "k"
+      ],
+      "columns": [
+       {
+        "name": "k",
+        "type": "text",
+        "class": "MECHANICAL"
+       },
+       {
+        "name": "v",
+        "type": "decimal",
+        "class": "MECHANICAL"
+       },
+       {
+        "name": "w",
+        "type": "text",
+        "class": "INSPECTION"
+       }
+      ]
+     }
+    ],
+    "status": "RETURNED",
+    "result": {
+     "label": "x",
+     "r": [
+      {
+       "k": "a",
+       "v": "1",
+       "w": "x",
+       "u": "y"
+      }
+     ]
+    }
+   },
+   "expected": "validate|MALFORMED|r"
+  },
+  {
+   "name": "VV22 MALFORMED r: a column's value that does not read",
+   "fn": "validate",
+   "args": {
+    "fields": [
+     {
+      "name": "label",
+      "type": "text",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "r",
+      "type": "rows",
+      "class": "MECHANICAL",
+      "key": [
+       "k"
+      ],
+      "columns": [
+       {
+        "name": "k",
+        "type": "text",
+        "class": "MECHANICAL"
+       },
+       {
+        "name": "v",
+        "type": "decimal",
+        "class": "MECHANICAL"
+       },
+       {
+        "name": "w",
+        "type": "text",
+        "class": "INSPECTION"
+       }
+      ]
+     }
+    ],
+    "status": "RETURNED",
+    "result": {
+     "label": "x",
+     "r": [
+      {
+       "k": "a",
+       "v": "one",
+       "w": "x"
+      }
+     ]
+    }
+   },
+   "expected": "validate|MALFORMED|r"
+  },
+  {
+   "name": "VV23 MALFORMED r: two rows of one key, equal once canonical",
+   "fn": "validate",
+   "args": {
+    "fields": [
+     {
+      "name": "label",
+      "type": "text",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "r",
+      "type": "rows",
+      "class": "MECHANICAL",
+      "key": [
+       "k"
+      ],
+      "columns": [
+       {
+        "name": "k",
+        "type": "text",
+        "class": "MECHANICAL"
+       },
+       {
+        "name": "v",
+        "type": "decimal",
+        "class": "MECHANICAL"
+       },
+       {
+        "name": "w",
+        "type": "text",
+        "class": "INSPECTION"
+       }
+      ]
+     }
+    ],
+    "status": "RETURNED",
+    "result": {
+     "label": "x",
+     "r": [
+      {
+       "k": "é",
+       "v": "1",
+       "w": "x"
+      },
+      {
+       "k": "é",
+       "v": "2",
+       "w": "y"
+      }
+     ]
+    }
+   },
+   "expected": "validate|MALFORMED|r"
+  },
+  {
+   "name": "VV24 MALFORMED label: the first field in schema order",
+   "fn": "validate",
+   "args": {
+    "fields": [
+     {
+      "name": "label",
+      "type": "text",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "r",
+      "type": "rows",
+      "class": "MECHANICAL",
+      "key": [
+       "k"
+      ],
+      "columns": [
+       {
+        "name": "k",
+        "type": "text",
+        "class": "MECHANICAL"
+       },
+       {
+        "name": "v",
+        "type": "decimal",
+        "class": "MECHANICAL"
+       },
+       {
+        "name": "w",
+        "type": "text",
+        "class": "INSPECTION"
+       }
+      ]
+     }
+    ],
+    "status": "RETURNED",
+    "result": {
+     "label": 1,
+     "r": [
+      {
+       "k": "a",
+       "v": "one",
+       "w": "x"
+      }
+     ]
+    }
+   },
+   "expected": "validate|MALFORMED|label"
+  },
+  {
+   "name": "VV25 refused: fields empty",
+   "fn": "validate",
+   "args": {
+    "fields": [],
+    "status": "RETURNED",
+    "result": {
+     "score": "87.30",
+     "note": "  fine \t a|b ",
+     "day": "2026-02-28",
+     "site": "HTTP://Example.COM/a/./b",
+     "kind": "B",
+     "ok": true
+    }
+   },
+   "expected": "ERROR:schema"
+  },
+  {
+   "name": "VV26 refused: two fields of one name",
+   "fn": "validate",
+   "args": {
+    "fields": [
+     {
+      "name": "a",
+      "type": "text",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "a",
+      "type": "date",
+      "class": "MECHANICAL"
+     }
+    ],
+    "status": "RETURNED",
+    "result": {
+     "a": "x"
+    }
+   },
+   "expected": "ERROR:schema"
+  },
+  {
+   "name": "VV27 refused: a field named IV",
+   "fn": "validate",
+   "args": {
+    "fields": [
+     {
+      "name": "IV",
+      "type": "text",
+      "class": "MECHANICAL"
+     }
+    ],
+    "status": "RETURNED",
+    "result": {
+     "IV": "x"
+    }
+   },
+   "expected": "ERROR:schema"
+  },
+  {
+   "name": "VV28 refused: fields not a list",
+   "fn": "validate",
+   "args": {
+    "fields": {
+     "name": "a",
+     "type": "text",
+     "class": "MECHANICAL"
+    },
+    "status": "RETURNED",
+    "result": {
+     "a": "x"
+    }
+   },
+   "expected": "ERROR:schema"
+  },
+  {
+   "name": "VV29 refused: status not RETURNED or OVERDUE",
+   "fn": "validate",
+   "args": {
+    "fields": [
+     {
+      "name": "score",
+      "type": "decimal",
+      "class": "MECHANICAL",
+      "quote": true,
+      "affix": "%"
+     },
+     {
+      "name": "note",
+      "type": "text",
+      "class": "INSPECTION"
+     },
+     {
+      "name": "day",
+      "type": "date",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "site",
+      "type": "url",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "kind",
+      "type": "enum",
+      "class": "MECHANICAL",
+      "values": [
+       "A",
+       "B"
+      ]
+     },
+     {
+      "name": "ok",
+      "type": "boolean",
+      "class": "MECHANICAL"
+     }
+    ],
+    "status": "PENDING",
+    "result": {
+     "score": "87.30",
+     "note": "  fine \t a|b ",
+     "day": "2026-02-28",
+     "site": "HTTP://Example.COM/a/./b",
+     "kind": "B",
+     "ok": true
+    }
+   },
+   "expected": "ERROR:status"
+  },
+  {
+   "name": "VV30 refused: status not a string",
+   "fn": "validate",
+   "args": {
+    "fields": [
+     {
+      "name": "score",
+      "type": "decimal",
+      "class": "MECHANICAL",
+      "quote": true,
+      "affix": "%"
+     },
+     {
+      "name": "note",
+      "type": "text",
+      "class": "INSPECTION"
+     },
+     {
+      "name": "day",
+      "type": "date",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "site",
+      "type": "url",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "kind",
+      "type": "enum",
+      "class": "MECHANICAL",
+      "values": [
+       "A",
+       "B"
+      ]
+     },
+     {
+      "name": "ok",
+      "type": "boolean",
+      "class": "MECHANICAL"
+     }
+    ],
+    "status": null,
+    "result": {
+     "score": "87.30",
+     "note": "  fine \t a|b ",
+     "day": "2026-02-28",
+     "site": "HTTP://Example.COM/a/./b",
+     "kind": "B",
+     "ok": true
+    }
+   },
+   "expected": "ERROR:status"
+  },
+  {
+   "name": "VV31 refused: an OVERDUE output with a result",
+   "fn": "validate",
+   "args": {
+    "fields": [
+     {
+      "name": "score",
+      "type": "decimal",
+      "class": "MECHANICAL",
+      "quote": true,
+      "affix": "%"
+     },
+     {
+      "name": "note",
+      "type": "text",
+      "class": "INSPECTION"
+     },
+     {
+      "name": "day",
+      "type": "date",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "site",
+      "type": "url",
+      "class": "MECHANICAL"
+     },
+     {
+      "name": "kind",
+      "type": "enum",
+      "class": "MECHANICAL",
+      "values": [
+       "A",
+       "B"
+      ]
+     },
+     {
+      "name": "ok",
+      "type": "boolean",
+      "class": "MECHANICAL"
+     }
+    ],
+    "status": "OVERDUE",
+    "result": {
+     "score": "87.30",
+     "note": "  fine \t a|b ",
+     "day": "2026-02-28",
+     "site": "HTTP://Example.COM/a/./b",
+     "kind": "B",
+     "ok": true
+    }
+   },
+   "expected": "ERROR:result"
+  },
+  {
+   "name": "VV32 MALFORMED shape: result an empty object",
+   "fn": "validate",
+   "args": {
+    "fields": [
+     {
+      "name": "a",
+      "type": "text",
+      "class": "MECHANICAL"
+     }
+    ],
+    "status": "RETURNED",
+    "result": {}
+   },
+   "expected": "validate|MALFORMED|shape"
+  }
+ ]
+}

@@ -128,6 +128,24 @@ def itemsReconcile (extra : Nat) : Value :=
   .obj [("outputs", .arr [out 0, out 1]), ("quotes", .arr [.obj [], .obj []]),
     ("schema", rowsSchema names)]
 
+/-- A `falcon_validate` request over the fields of `schema`, RETURNED with `result`. -/
+def validateOf (schema result : Value) : Value :=
+  .obj [("fields", Falcon.memberOf schema "fields"), ("status", .str "RETURNED"),
+    ("result", result)]
+
+/-- A result of `rows` rows of distinct keys over `rowsSchema ["c"]`. -/
+def rowsValidate (rows : Nat) : Value :=
+  validateOf (rowsSchema ["c"]) (.obj [("r", .arr ((List.range rows).map fun i =>
+    .obj [("k", .str s!"{i}"), ("c", .str "x")]))])
+
+/-- A result of one row keyed by 9888 characters, over 99 columns besides its key, the first
+of them holding `e` characters: its value lines' identifiers and values hold 999,984
+characters and `e` more. -/
+def linesValidate (e : Nat) : Value :=
+  let names := (List.range 99).map fun j => s!"c{j / 10}{j % 10}"
+  validateOf (rowsSchema names) (.obj [("r", .arr [.obj (("k", .str (copies 9888 'k')) ::
+    names.map fun c => (c, .str (if c == "c00" then copies e 'x' else "x")))])])
+
 /-- A source list of `marks` CODE HOST marks holding `templates` templates in all, then
 `entries` EXACT entries. -/
 def falconSources (marks templates entries : Nat) : Value :=
@@ -199,6 +217,12 @@ def runFalconBounds : IO (Nat × Nat) := do
     ("quote outcomes past 1000", "falcon_reconcile", rowsReconcile 2 501, true),
     ("item lines at 1,000,000 characters", "falcon_reconcile", itemsReconcile 100, false),
     ("item lines past 1,000,000 characters", "falcon_reconcile", itemsReconcile 101, true),
+    ("rows in a result at 1000", "falcon_validate", rowsValidate 1000, false),
+    ("rows in a result past 1000", "falcon_validate", rowsValidate 1001, true),
+    ("a result's fields past 100", "falcon_validate",
+      validateOf (falconSchema (fieldsOf 101)) (.obj []), true),
+    ("value lines at 1,000,000 characters", "falcon_validate", linesValidate 16, false),
+    ("value lines past 1,000,000 characters", "falcon_validate", linesValidate 17, true),
     ("events at 10,000", "sponsor_stage", stageEvents 10000, false),
     ("events past 10,000", "sponsor_stage", stageEvents 10001, true),
     ("count records at 10,000", "falcon_stop", stopCounts 10000, false),
@@ -226,6 +250,15 @@ def runFalconBounds : IO (Nat × Nat) := do
     | _ => 0
   t ← t.check (atBound == Falcon.maxItemText)
     s!"falcon_reconcile: the item lines' case holds {atBound} characters, not {Falcon.maxItemText}"
+  -- The value lines' case is built at the bound exactly, and answered there.
+  let linesAt := match linesValidate 16 with
+    | .obj [("fields", f), ("status", st), ("result", r)] =>
+      match Falcon.falconValidate f st r with
+      | .ok c => Falcon.validateChars c
+      | .error _ => 0
+    | _ => 0
+  t ← t.check (linesAt == Falcon.maxItemText)
+    s!"falcon_validate: the value lines' case holds {linesAt} characters, not {Falcon.maxItemText}"
   return t.pair
 
 end Tests.Calculator
@@ -234,9 +267,17 @@ namespace Tests.Calculator.Falcon
 
 open Tests.Calculator
 
+/-- `falcon_validate.json`: one output checked against its kind's output schema, every
+case's `args` through `falcon falcon_validate`, each giving v1's text, or v1's word as a
+refusal's detail; none owed. -/
+def runFalconValidate : IO (Nat × Nat) :=
+  runTextCalls "falcon" "vectors/falcon_validate.json" [] [("validate", "falcon_validate")]
+    (respondTo "falcon")
+
 /-- The family `falcon`'s runners: each name as `lake test` prints it, in code point order. -/
 def runners : List (String × IO (Nat × Nat)) := [
   ("pcalc falcon (falcon_corpus, falcon_hand)", runFalconCalls),
+  ("pcalc falcon (falcon_validate)", runFalconValidate),
   ("pcalc falcon bounds", runFalconBounds),
 ]
 
