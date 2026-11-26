@@ -1,5 +1,6 @@
 import Principia.Calculator.Interface
 import Principia.Eom
+import Principia.Record.Register
 
 /-!
 # Family `eom`: the structure check of the equations of motion
@@ -18,6 +19,12 @@ name them:
 * `settlement_check {"tfk", "records", "words", "naming"}`: `["OK", {"BY_TEST",
   "BY_NAMING", "OPEN", "USED"}]`, what the structure test and the lead's naming settle of
   the register's open gaps.
+* `register_structure_test {"tfk", "register"}`: the structure test with register over a
+  register as it is landed: the register read as `record status_words` reads it, each keyed
+  record's status word as that function computes it (its STATUS when HELD or REFUTED, else
+  its grade now), the standing keyed records that carry a ROLE and an EQUATION taken in the
+  register's order as `settlement_check` takes them, and `eom_register_test`'s answer over
+  them. A register that does not read is `["REFUSED", "register: not a register"]`.
 
 The answers are v1's values, written as canonical JSON; v1's `canon` text of each is v1's
 expectation. v1's own refusals are values too, `["REFUSED", reason]` (for
@@ -53,6 +60,13 @@ def maxEntries : Nat := 64
 words and namings a settlement check is given: every record that enters is a law of the
 analysis, which a register test runs twice. -/
 def maxRecords : Nat := 64
+
+/-- The most members a register given to `register_structure_test` holds: its words are
+read over every member before the standing records with a form, at most `maxRecords`, enter
+the analysis. A register of 1024 members (960 gap records and 64 WITHDRAWAL members) took
+0.55 s on the Calculator's command line, beside another build; one of 1025 is refused in
+0.15 s. -/
+def maxRegister : Nat := 1024
 
 /-- The most code points an EQUATION's text holds before it is read: four times the
 declared forms' bound on a form, which is checked after NFC. Normalizing an EQUATION of a
@@ -119,6 +133,88 @@ def readTfk (tfk : Value) : Except Refusal Zone.Value := do
   tfkWithin tfk
   pure (Principia.Strike.toZoneValue tfk)
 
+/-! ## The structure test with register over a register as it is landed -/
+
+/-- A register as `record status_words` reads it (`Principia.Record.readRegister`, its
+members read by `readMember`), or none. -/
+def registerOf : Value → Option Principia.Record.Register
+  | .arr rs => rs.foldlM Principia.Record.readMember { keyed := [], lists := [] }
+  | _ => none
+
+/-- The entry of the EOM view a keyed record gives: its ID, its status word, its ROLE and its
+EQUATION, when its word stands and it carries both. -/
+def viewEntry (reg : Principia.Record.Register) (rid : String) (r : Value) : Option Value :=
+  match r with
+  | .obj ms =>
+    match ms.lookup "ROLE", ms.lookup "EQUATION" with
+    | some role, some eqn =>
+      if Principia.Record.standing (reg.word rid) then
+        some (.obj [("ID", .str rid), ("STATUS", .str (reg.word rid)), ("ROLE", role),
+          ("EQUATION", eqn)])
+      else none
+    | _, _ => none
+  | _ => none
+
+/-- The EOM view of a register, as v1's `settlement_check` forms it from the register and its
+words: every keyed record in the register's order whose status word stands and that carries
+a ROLE and an EQUATION. -/
+def registerView (reg : Principia.Record.Register) : List Value :=
+  reg.keyed.filterMap fun (rid, r) => viewEntry reg rid r
+
+/-- The structure test with register over a register as it is landed: `eom_register_test`'s
+answer over the register's EOM view, or `["REFUSED", "register: not a register"]`. -/
+def registerStructureTest (forms : Principia.Eom.FormHook) (tfk : Zone.Value) (register : Value) :
+    Principia.Eom.Result :=
+  match registerOf register with
+  | none => .ok (.arr [.str "REFUSED", .str "register: not a register"])
+  | some reg =>
+    Principia.Eom.eomRegisterTest forms tfk (Principia.Strike.toZoneValue (.arr (registerView reg)))
+
+/-- Every entry of the view stands: it is a keyed record's ID, its status word (PROVISIONAL or
+ESTABLISHED), its ROLE and its EQUATION. -/
+theorem registerView_stands (reg : Principia.Record.Register) (v : Value)
+    (h : v ∈ registerView reg) :
+    ∃ rid ms role eqn, (rid, Value.obj ms) ∈ reg.keyed ∧ ms.lookup "ROLE" = some role ∧
+      ms.lookup "EQUATION" = some eqn ∧ Principia.Record.standing (reg.word rid) = true ∧
+      v = .obj [("ID", .str rid), ("STATUS", .str (reg.word rid)), ("ROLE", role),
+        ("EQUATION", eqn)] := by
+  unfold registerView at h
+  rw [List.mem_filterMap] at h
+  obtain ⟨⟨rid, r⟩, hm, he⟩ := h
+  cases r with
+  | obj ms =>
+    cases hr : ms.lookup "ROLE" with
+    | none => simp [viewEntry, hr] at he
+    | some role =>
+      cases hq : ms.lookup "EQUATION" with
+      | none => simp [viewEntry, hr, hq] at he
+      | some eqn =>
+        by_cases hs : Principia.Record.standing (reg.word rid) = true
+        · simp [viewEntry, hr, hq, hs] at he
+          exact ⟨rid, ms, role, eqn, hm, hr, hq, hs, he.symm⟩
+        · simp [viewEntry, hr, hq, hs] at he
+  | _ => simp [viewEntry] at he
+
+/-- Every keyed record whose status word stands and that carries a ROLE and an EQUATION enters
+the view. -/
+theorem registerView_complete (reg : Principia.Record.Register) (rid : String)
+    (ms : List (String × Value)) (role eqn : Value) (hm : (rid, Value.obj ms) ∈ reg.keyed)
+    (hr : ms.lookup "ROLE" = some role) (he : ms.lookup "EQUATION" = some eqn)
+    (hs : Principia.Record.standing (reg.word rid) = true) :
+    Value.obj [("ID", .str rid), ("STATUS", .str (reg.word rid)), ("ROLE", role),
+      ("EQUATION", eqn)] ∈ registerView reg := by
+  unfold registerView
+  rw [List.mem_filterMap]
+  exact ⟨(rid, .obj ms), hm, by simp [viewEntry, hr, he, hs]⟩
+
+/-- On a register that reads, the function is `eom_register_test` over the register's view. -/
+theorem registerStructureTest_eq (forms : Principia.Eom.FormHook) (tfk : Zone.Value)
+    (register : Value) (reg : Principia.Record.Register) (h : registerOf register = some reg) :
+    registerStructureTest forms tfk register =
+      Principia.Eom.eomRegisterTest forms tfk
+        (Principia.Strike.toZoneValue (.arr (registerView reg))) := by
+  simp [registerStructureTest, h]
+
 /-- The family's functions. -/
 def calls : Family := [
   ("eom_class", fun v => do
@@ -135,6 +231,16 @@ def calls : Family := [
     let tfk ← readTfk t
     recordsWithin r
     answer (Principia.Eom.eomRegisterTest forms tfk (Principia.Strike.toZoneValue r))),
+  ("register_structure_test", fun v => do
+    let (t, r) ← argument2 "tfk" "register" v
+    let tfk ← readTfk t
+    within "the register" maxRegister r
+    equationsWithin "a record of the register" r
+    match registerOf r with
+    | none => answer (registerStructureTest forms tfk r)
+    | some reg =>
+      atMost "the register's EOM view" maxRecords (registerView reg)
+      answer (registerStructureTest forms tfk r)),
   ("settlement_check", fun v => do
     let ms ← membersOf ["tfk", "records", "words", "naming"] v
     let t ← needed ms "tfk"

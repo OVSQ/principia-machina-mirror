@@ -43,6 +43,23 @@ def runEomCalls : IO (Nat × Nat) := do
           s!"eom {fn} {id}: expected {repr expect}, got {repr (got.toOption.map text)} or {repr (match got with | .error r => some r.detail | _ => none)}"
   return t.pair
 
+/-- `register_structure_test.json`: every case's request through `eom register_structure_test`,
+its answer's canonical JSON equal to the case's `expected`, which version 1's reference functions
+computed (`scripts/register_structure_vectors.py`). No case is owed. -/
+def runRegisterStructureCalls : IO (Nat × Nat) := do
+  let mut t : Counts := {}
+  for c in ← v1Cases "vectors/register_structure_test.json" do
+    let name ← memberStr c "name"
+    let expect ← memberStr c "expected"
+    let some args := member c "input" | throw (IO.userError s!"{name}: no input")
+    let got := respondTo "eom" "register_structure_test" args
+    let ok := match got with
+      | .ok v => v.canonicalJson == some expect
+      | .error _ => false
+    t ← t.check ok
+      s!"eom register_structure_test {name}: expected {repr expect}, got {repr (got.toOption.map (·.canonicalJson))} or {repr (match got with | .error r => some r.detail | _ => none)}"
+  return t.pair
+
 end Tests.Calculator
 
 namespace Tests.Calculator.Eom
@@ -52,6 +69,7 @@ open Tests.Calculator
 /-- The family `eom`'s runners: each name as `lake test` prints it, in code point order. -/
 def runners : List (String × IO (Nat × Nat)) := [
   ("pcalc eom (eom, settlement)", runEomCalls),
+  ("pcalc eom (register structure test)", runRegisterStructureCalls),
 ]
 
 end Tests.Calculator.Eom
